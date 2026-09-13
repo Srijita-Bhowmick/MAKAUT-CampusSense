@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAKAUT CampusSense - AI Academic & Career Aggregator</title>
+    <meta name="description" content="Enterprise academic resource aggregator and conversational RAG system tailored for Maulana Abul Kalam Azad University of Technology (MAKAUT).">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="background-mesh"></div>
+
+    <!-- Navigation Header -->
+    <header class="app-header">
+        <div class="header-container">
+            <div class="brand-group">
+                <div class="brand-logo">
+                    <span class="logo-icon">🎓</span>
+                </div>
+                <div class="brand-info">
+                    <div class="brand-title">MAKAUT <span class="accent-text">CampusSense</span></div>
+                    <div class="brand-subtitle">AI Academic & Career Aggregator • AICTE CBCS 2018+</div>
+                </div>
+            </div>
+
+            <div class="college-pills">
+                <span class="college-tag active" title="Code 109">IEM (109)</span>
+                <span class="college-tag active" title="Code 126">Heritage (126)</span>
+                <span class="college-tag active" title="Code 104">TMSL (104)</span>
+                <span class="college-tag active" title="Code 103">HIT (103)</span>
+                <span class="college-tag active" title="Code 108">NSEC (108)</span>
+            </div>
+
+            <div class="nav-actions">
+                <a href="https://github.com/Srijita-Bhowmick/MAKAUT-CampusSense" target="_blank" class="nav-link" id="github-link">
+                    <span class="icon">⭐</span> GitHub Repo
+                </a>
+                <div class="status-indicator" id="engine-status-pill" title="Click to view API settings">
+                    <span class="dot live"></span>
+                    <span class="status-text" id="engine-status-text">RAG Engine Live</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="main-layout">
+        <!-- Tab Navigation Bar -->
+        <nav class="view-tabs" role="tablist">
+            <button class="tab-btn active" data-tab="chat-view" id="tab-chat">
+                <span class="tab-icon">💬</span> Conversational RAG
+            </button>
+            <button class="tab-btn" data-tab="resources-view" id="tab-resources">
+                <span class="tab-icon">📚</span> Curriculum & PYQs
+            </button>
+            <button class="tab-btn" data-tab="placements-view" id="tab-placements">
+                <span class="tab-icon">📊</span> Placement Analytics
+            </button>
+            <button class="tab-btn" data-tab="admin-view" id="tab-admin">
+                <span class="tab-icon">⚙️</span> Ingestion Engine
+            </button>
+        </nav>
+
+        <!-- View 1: Conversational RAG Chat -->
+        <section id="chat-view" class="view-section active">
+            <div class="chat-container">
+                <div class="chat-sidebar">
+                    <div class="sidebar-block">
+                        <h3 class="block-title">Session Controls</h3>
+                        <div class="session-card">
+                            <span class="session-label">Active Session:</span>
+                            <code class="session-id" id="display-session-id">Initializing...</code>
+                            <button class="btn btn-secondary btn-sm" id="btn-new-session">New Session</button>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-block">
+                        <h3 class="block-title">Curriculum Scope</h3>
+                        <div class="form-group">
+                            <label for="filter-stream">Stream</label>
+                            <select id="filter-stream" class="custom-select">
+                                <option value="">All Streams (Default CSE)</option>
+                                <option value="CSE" selected>CSE - Computer Science</option>
+                                <option value="IT">IT - Information Tech</option>
+                                <option value="ECE">ECE - Electronics</option>
+                                <option value="EE">EE - Electrical</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="filter-semester">Semester</label>
+                            <select id="filter-semester" class="custom-select">
+                                <option value="">All Semesters</option>
+                                <option value="1">1st Semester</option>
+                                <option value="2">2nd Semester</option>
+                                <option value="3">3rd Semester</option>
+                                <option value="4">4th Semester</option>
+                                <option value="5" selected>5th Semester</option>
+                                <option value="6">6th Semester</option>
+                                <option value="7">7th Semester</option>
+                                <option value="8">8th Semester</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-block">
+                        <h3 class="block-title">Quick MAKAUT Inquiries</h3>
+                        <div class="prompt-chips">
+                            <button class="chip" data-query="What are the topics in Module 3 of Operating Systems (PCC-CS501)?">
+                                📖 OS Module 3 Topics
+                            </button>
+                            <button class="chip" data-query="Explain MAKAUT Mandatory Additional Requirements (MAR) 100 points rule">
+                                🎯 MAR 100 Points Rule
+                            </button>
+                            <button class="chip" data-query="What was the highest and average CTC at IEM in 2023 placements?">
+                                💼 IEM 2023 Placements
+                            </button>
+                            <button class="chip" data-query="How are Continuous Assessment (CA) and SGPA calculated in MAKAUT?">
+                                🧮 CA & SGPA Grading
+                            </button>
+                            <button class="chip" data-query="What questions came in 2022 PYQ for Operating Systems Banker Algorithm?">
+                                📝 2022 Banker's Algorithm PYQ
+                            </button>
+                            <button class="chip" data-query="What are the rules for B.Tech Honours via MOOCs SWAYAM courses?">
+                                🏅 MOOCs Honours Credits
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-main">
+                    <div class="chat-messages" id="chat-messages">
+                        <!-- Welcome message -->
+                        <div class="message assistant welcome">
+                            <div class="msg-avatar">🎓</div>
+                            <div class="msg-body">
+                                <div class="msg-header">
+                                    <span class="sender-name">MAKAUT CampusSense AI</span>
+                                    <span class="badge verified-badge">Grounded RAG</span>
+                                </div>
+                                <div class="msg-text">
+                                    Welcome to <strong>MAKAUT CampusSense</strong>! I am your AI academic advisor grounded in official Maulana Abul Kalam Azad University of Technology curriculum regulations, AICTE CBCS syllabus, past examination papers (PYQs), MAR/MOOCs requirements, and college placement statistics (IEM, Heritage, TMSL, HIT).
+                                    <br><br>
+                                    Every response includes explicit syllabus module citations and negative grounding verification. Try selecting a quick prompt on the left or type any inquiry below!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chat-input-area">
+                        <form id="chat-form" class="input-form">
+                            <div class="input-wrapper">
+                                <textarea id="query-input" placeholder="Ask about MAKAUT syllabus modules, PYQs, MAR points, CA evaluation, or college placements..." rows="2" required></textarea>
+                                <button type="submit" class="btn btn-primary" id="btn-send">
+                                    <span>Send Query</span>
+                                    <span class="send-icon">➔</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- View 2: Curriculum & PYQ Resources -->
+        <section id="resources-view" class="view-section">
+            <div class="section-toolbar">
+                <div class="filter-controls">
+                    <input type="text" id="res-search-input" placeholder="Search subject code (e.g. PCC-CS501, DBMS)..." class="custom-input">
+                    <select id="res-stream-select" class="custom-select">
+                        <option value="">All Streams</option>
+                        <option value="CSE">CSE</option>
+                        <option value="IT">IT</option>
+                        <option value="ECE">ECE</option>
+                    </select>
+                    <select id="res-sem-select" class="custom-select">
+                        <option value="">All Semesters</option>
+                        <option value="5">5th Semester</option>
+                        <option value="6">6th Semester</option>
+                    </select>
+                    <select id="res-type-select" class="custom-select">
+                        <option value="">All Types</option>
+                        <option value="SYLLABUS">Syllabus</option>
+                        <option value="PYQ">Past Question Paper (PYQ)</option>
+                        <option value="REGULATION">Regulation / MAR</option>
+                    </select>
+                    <button class="btn btn-secondary" id="btn-filter-resources">Filter</button>
+                </div>
+            </div>
+
+            <div class="resources-grid" id="resources-grid">
+                <div class="loading-spinner">Loading official curriculum resources...</div>
+            </div>
+        </section>
+
+        <!-- View 3: Placement Analytics -->
+        <section id="placements-view" class="view-section">
+            <div class="placement-dashboard">
+                <div class="placement-filters">
+                    <div class="filter-group">
+                        <label>Filter by College:</label>
+                        <select id="placement-college-select" class="custom-select">
+                            <option value="">All Affiliated Colleges</option>
+                            <option value="1">IEM Kolkata (Code 109)</option>
+                            <option value="2">Heritage Institute of Tech (Code 126)</option>
+                            <option value="3">Techno Main Salt Lake (Code 104)</option>
+                            <option value="4">Haldia Institute of Tech (Code 103)</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Batch Year:</label>
+                        <select id="placement-year-select" class="custom-select">
+                            <option value="">All Years</option>
+                            <option value="2024">2024</option>
+                            <option value="2023" selected>2023</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" id="btn-load-placements">Refresh Analytics</button>
+                </div>
+
+                <div class="metric-cards-row" id="placement-metrics">
+                    <div class="metric-card">
+                        <div class="metric-icon">🚀</div>
+                        <div class="metric-info">
+                            <div class="metric-label">Highest Package</div>
+                            <div class="metric-value" id="metric-highest">-- LPA</div>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">📈</div>
+                        <div class="metric-info">
+                            <div class="metric-label">Average CTC</div>
+                            <div class="metric-value" id="metric-avg">-- LPA</div>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">💼</div>
+                        <div class="metric-info">
+                            <div class="metric-label">Total Offers</div>
+                            <div class="metric-value" id="metric-offers">--</div>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">🏢</div>
+                        <div class="metric-info">
+                            <div class="metric-label">Recruiting Companies</div>
+                            <div class="metric-value" id="metric-companies">--</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="custom-table" id="placement-table">
+                        <thead>
+                            <tr>
+                                <th>College</th>
+                                <th>Batch Year</th>
+                                <th>Company</th>
+                                <th>Highest CTC</th>
+                                <th>Average CTC</th>
+                                <th>Total Offers</th>
+                                <th>Source</th>
+                            </tr>
+                        </thead>
+                        <tbody id="placement-table-body">
+                            <tr><td colspan="7" class="text-center">Loading placement records...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- View 4: Admin Ingestion Engine -->
+        <section id="admin-view" class="view-section">
+            <div class="admin-panel">
+                <div class="admin-card">
+                    <h2 class="card-title">Ingest Syllabus / PYQ Text</h2>
+                    <p class="card-desc">Ingest syllabus regulations or past questions into vector embeddings with 500-token sliding window.</p>
+
+                    <form id="ingest-text-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Subject Code</label>
+                                <input type="text" id="ingest-code" placeholder="e.g. PCC-CS601" class="custom-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Subject Name</label>
+                                <input type="text" id="ingest-name" placeholder="e.g. Compiler Design" class="custom-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Stream</label>
+                                <select id="ingest-stream" class="custom-select">
+                                    <option value="CSE">CSE</option>
+                                    <option value="IT">IT</option>
+                                    <option value="ECE">ECE</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Semester</label>
+                                <input type="number" id="ingest-semester" value="6" min="1" max="8" class="custom-input">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Raw Document Text (Modules, Syllabus, Exam Questions)</label>
+                            <textarea id="ingest-text" rows="8" class="custom-textarea" placeholder="Paste official module contents or exam paper text..." required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" id="btn-submit-ingest">
+                            ⚡ Ingest & Generate Embeddings
+                        </button>
+                    </form>
+
+                    <div id="ingest-result" class="result-box" style="display: none;"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

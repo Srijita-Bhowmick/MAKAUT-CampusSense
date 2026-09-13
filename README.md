@@ -3,6 +3,12 @@
 > **AI Academic & Career Aggregator for Maulana Abul Kalam Azad University of Technology (MAKAUT)**
 > Built with Java 21, Spring Boot 3.3+, PostgreSQL with `pgvector`, Apache PDFBox 3.0.3, JSoup, and Dual-Mode Conversational RAG.
 
+[![GitHub Pages](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-4f46e5?style=for-the-badge&logo=github)](https://srijita-bhowmick.github.io/MAKAUT-CampusSense/)
+[![CI Build & Test](https://github.com/Srijita-Bhowmick/MAKAUT-CampusSense/actions/workflows/ci.yml/badge.svg)](https://github.com/Srijita-Bhowmick/MAKAUT-CampusSense/actions)
+[![Deploy Pages](https://github.com/Srijita-Bhowmick/MAKAUT-CampusSense/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/Srijita-Bhowmick/MAKAUT-CampusSense/actions)
+
+🌐 **Live Demo Website**: [https://srijita-bhowmick.github.io/MAKAUT-CampusSense/](https://srijita-bhowmick.github.io/MAKAUT-CampusSense/)
+
 ---
 
 ## 🌟 Key Highlights
@@ -80,6 +86,14 @@ makaut-campussense/
 │   │   ├── V1__init_schema.sql             # Flyway DDL with vector extension & HNSW index
 │   │   └── V2__seed_makaut_data.sql        # Realistic MAKAUT curriculum and placement data
 │   └── static/                             # Modern Web Client (HTML5 / Glassmorphic CSS / JS)
+├── docs/                                   # Standalone GitHub Pages Live Web Distribution
+│   ├── index.html                          # Live Web UI
+│   ├── styles.css                          # Glassmorphic Design System
+│   ├── app.js                              # Dual-Engine Client-Side RAG Simulator & Live API Client
+│   └── .nojekyll                           # GitHub Pages Jekyll bypass
+├── .github/workflows/
+│   ├── ci.yml                              # Automated Maven CI & Test Runner
+│   └── deploy-pages.yml                    # Automated GitHub Pages Deployment
 ├── docker-compose.yml                      # PostgreSQL 16 + pgvector container
 └── pom.xml
 ```
@@ -88,7 +102,18 @@ makaut-campussense/
 
 ## 🚀 Quick Start Guide
 
-### Option A: In-Memory Dev Mode (Zero external dependencies)
+### Option A: Live Web Demo (Instant in Browser via GitHub Pages)
+
+No local setup required! Visit:
+👉 **[https://srijita-bhowmick.github.io/MAKAUT-CampusSense/](https://srijita-bhowmick.github.io/MAKAUT-CampusSense/)**
+
+- **Interactive Conversational AI**: Real-time academic RAG grounded in official MAKAUT regulations.
+- **Embedded Knowledge & Vector Engine**: Includes PCC-CS501 (OS), PCC-CS502 (DBMS), MAR (100 points), MOOCs (20 credits for Honours), and placement statistics (IEM, Heritage, TMSL, HIT, NSEC).
+- **Zero Configuration**: Fully functional client-side cosine similarity search and responsive glassmorphic UI.
+
+---
+
+### Option B: In-Memory Dev Mode (Zero external dependencies)
 
 The application starts by default in `dev` mode with an in-memory database pre-seeded with MAKAUT colleges (IEM, Heritage, TMSL, HIT), syllabi (PCC-CS501, PCC-CS502), PYQs, and placement statistics:
 
@@ -222,3 +247,23 @@ Results:
 - `EmbeddingServiceTest`: 3/3 passed (1536-dim vector normalization, semantic cosine similarity ranking, vector serialization)
 - `PdfBoxParserTest`: 1/1 passed (PDFBox 3.0.3 `Loader.loadPDF` text & module extraction)
 - `TextChunkerTest`: 2/2 passed (500-token sliding window with 50-token overlap)
+
+---
+
+## 🌐 GitHub Pages Deployment Setup
+
+To make the site live at **`https://srijita-bhowmick.github.io/MAKAUT-CampusSense/`**:
+
+1. **Push Changes via GitHub Desktop**:
+   - Open **GitHub Desktop**.
+   - Click **Commit to main** (or view the committed changes) and press **Push origin**.
+2. **Configure GitHub Pages in Repository Settings**:
+   - Open your GitHub repository in your browser: `https://github.com/Srijita-Bhowmick/MAKAUT-CampusSense`
+   - Navigate to **Settings** ➔ **Pages** (in the left sidebar).
+   - Under **Build and deployment**:
+     - **Option 1 (Automated GitHub Actions - Recommended)**: Under **Source**, select **GitHub Actions**. The included `.github/workflows/deploy-pages.yml` workflow will automatically build and publish your site upon every push.
+     - **Option 2 (Branch Deploy)**: Under **Source**, select **Deploy from a branch**, set Branch to `main` and folder to `/docs`, then click **Save**.
+3. **Enjoy your live site**:
+   - Your site will immediately be live and accessible worldwide at:
+   - 👉 **`https://srijita-bhowmick.github.io/MAKAUT-CampusSense/`**
+
