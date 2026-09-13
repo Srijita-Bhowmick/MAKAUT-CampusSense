@@ -33,4 +33,16 @@ public class SourceCitationDto {
 
     @Schema(description = "Direct URL to source document", example = "https://makautexam.net/syllabus/PCC-CS501.pdf")
     private String fileUrl;
+
+    @Schema(description = "Document display title")
+    private String title;
+
+    @Schema(description = "Exam question group e.g. Group B or Group C")
+    private String group;
+
+    @Schema(description = "Specific question number e.g. Q4")
+    private String questionNumber;
+
+    @Schema(description = "Link to source PDF/page")
+    private String pageUrl;
 }

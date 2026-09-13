@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MAKAUT CampusSense - AI Academic & Career Aggregator</title>
-    <meta name="description" content="Enterprise academic resource aggregator and conversational RAG system tailored for Maulana Abul Kalam Azad University of Technology (MAKAUT).">
+    <title>MAKAUT CampusSense - Bento Academic Dashboard & Panic Pack</title>
+    <meta name="description" content="Centralized syllabi, 5-year question banks, and panic-pack revisions for MAKAUT students. Built for Maulana Abul Kalam Azad University of Technology.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="background-mesh"></div>
 
-    <!-- Navigation Header -->
+    <!-- 1. Top Navigation Bar -->
     <header class="app-header">
         <div class="header-container">
             <div class="brand-group">
@@ -22,303 +22,490 @@
                 </div>
                 <div class="brand-info">
                     <div class="brand-title">MAKAUT <span class="accent-text">CampusSense</span></div>
-                    <div class="brand-subtitle">AI Academic & Career Aggregator • AICTE CBCS 2018+</div>
+                    <div class="brand-subtitle">AI Academic & Career Aggregator</div>
                 </div>
             </div>
 
-            <div class="college-pills">
-                <span class="college-tag active" title="Code 109">IEM (109)</span>
-                <span class="college-tag active" title="Code 126">Heritage (126)</span>
-                <span class="college-tag active" title="Code 104">TMSL (104)</span>
-                <span class="college-tag active" title="Code 103">HIT (103)</span>
-                <span class="college-tag active" title="Code 108">NSEC (108)</span>
-            </div>
+            <!-- Context Lock Pill (Click to Change Stream/Sem) -->
+            <button class="context-pill" id="btn-context-switcher" title="Click to switch Department or Semester">
+                <span class="context-icon">🏛️</span>
+                <span id="current-context-text">1st Year Common • Sem 1</span>
+                <span class="dropdown-chevron">▾</span>
+            </button>
 
             <div class="nav-actions">
-                <a href="https://github.com/Srijita-Bhowmick/MAKAUT-CampusSense" target="_blank" class="nav-link" id="github-link">
-                    <span class="icon">⭐</span> GitHub Repo
-                </a>
-                <div class="status-indicator" id="engine-status-pill" title="Click to view API settings">
-                    <span class="dot live"></span>
-                    <span class="status-text" id="engine-status-text">RAG Engine Live</span>
+                <button class="nav-btn flame-btn" id="btn-open-panic-mode" title="Open Panic Pack 48h High-Yield Revision">
+                    <span class="flame-icon">🔥</span>
+                    <span class="btn-label">Panic Pack</span>
+                    <span class="badge flame-badge" id="panic-count-badge">16 High-Yield</span>
+                </button>
+
+                <button class="nav-btn deck-btn" id="btn-open-saved-deck" title="View Saved Review Deck">
+                    <span class="deck-icon">🔖</span>
+                    <span class="btn-label">My Saved Deck</span>
+                    <span class="badge deck-badge" id="deck-counter-badge">0</span>
+                </button>
+
+                <button class="nav-btn" id="btn-open-feedback" title="Report broken link or request missing paper">
+                    <span class="icon">💬</span> Feedback
+                </button>
+
+                <div class="user-profile-pill" id="user-profile-pill" title="User Profile / Guest Mode">
+                    <span class="user-avatar" id="user-avatar-icon">👤</span>
+                    <span class="user-name" id="user-display-name">Guest Student</span>
                 </div>
+
+                <a href="https://github.com/Srijita-Bhowmick/MAKAUT-CampusSense" target="_blank" class="nav-link github-pill" id="github-link" title="View on GitHub">
+                    <span>⭐ GitHub</span>
+                </a>
             </div>
         </div>
     </header>
 
-    <!-- Main Content Container -->
+    <!-- 2. Main Content Container -->
     <main class="main-layout">
-        <!-- Tab Navigation Bar -->
-        <nav class="view-tabs" role="tablist">
-            <button class="tab-btn active" data-tab="chat-view" id="tab-chat">
-                <span class="tab-icon">💬</span> Conversational RAG
-            </button>
-            <button class="tab-btn" data-tab="resources-view" id="tab-resources">
-                <span class="tab-icon">📚</span> Curriculum & PYQs
-            </button>
-            <button class="tab-btn" data-tab="placements-view" id="tab-placements">
-                <span class="tab-icon">📊</span> Placement Analytics
-            </button>
-            <button class="tab-btn" data-tab="admin-view" id="tab-admin">
-                <span class="tab-icon">⚙️</span> Ingestion Engine
-            </button>
-        </nav>
-
-        <!-- View 1: Conversational RAG Chat -->
-        <section id="chat-view" class="view-section active">
-            <div class="chat-container">
-                <div class="chat-sidebar">
-                    <div class="sidebar-block">
-                        <h3 class="block-title">Session Controls</h3>
-                        <div class="session-card">
-                            <span class="session-label">Active Session:</span>
-                            <code class="session-id" id="display-session-id">Initializing...</code>
-                            <button class="btn btn-secondary btn-sm" id="btn-new-session">New Session</button>
-                        </div>
+        <!-- Hero Search Section -->
+        <section class="hero-search-section">
+            <div class="search-hero-container">
+                <div class="search-bar-wrapper">
+                    <span class="search-lens">🔍</span>
+                    <input type="text" id="global-search-input" class="hero-search-input"
+                           placeholder="Ask anything (e.g., 'Thevenin theorem questions 2022') or jump to a paper..."
+                           autocomplete="off">
+                    <div class="shortcut-chip">
+                        <kbd>Ctrl</kbd> + <kbd>K</kbd>
                     </div>
-
-                    <div class="sidebar-block">
-                        <h3 class="block-title">Curriculum Scope</h3>
-                        <div class="form-group">
-                            <label for="filter-stream">Stream</label>
-                            <select id="filter-stream" class="custom-select">
-                                <option value="">All Streams (Default CSE)</option>
-                                <option value="CSE" selected>CSE - Computer Science</option>
-                                <option value="IT">IT - Information Tech</option>
-                                <option value="ECE">ECE - Electronics</option>
-                                <option value="EE">EE - Electrical</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="filter-semester">Semester</label>
-                            <select id="filter-semester" class="custom-select">
-                                <option value="">All Semesters</option>
-                                <option value="1">1st Semester</option>
-                                <option value="2">2nd Semester</option>
-                                <option value="3">3rd Semester</option>
-                                <option value="4">4th Semester</option>
-                                <option value="5" selected>5th Semester</option>
-                                <option value="6">6th Semester</option>
-                                <option value="7">7th Semester</option>
-                                <option value="8">8th Semester</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="sidebar-block">
-                        <h3 class="block-title">Quick MAKAUT Inquiries</h3>
-                        <div class="prompt-chips">
-                            <button class="chip" data-query="What are the topics in Module 3 of Operating Systems (PCC-CS501)?">
-                                📖 OS Module 3 Topics
-                            </button>
-                            <button class="chip" data-query="Explain MAKAUT Mandatory Additional Requirements (MAR) 100 points rule">
-                                🎯 MAR 100 Points Rule
-                            </button>
-                            <button class="chip" data-query="What was the highest and average CTC at IEM in 2023 placements?">
-                                💼 IEM 2023 Placements
-                            </button>
-                            <button class="chip" data-query="How are Continuous Assessment (CA) and SGPA calculated in MAKAUT?">
-                                🧮 CA & SGPA Grading
-                            </button>
-                            <button class="chip" data-query="What questions came in 2022 PYQ for Operating Systems Banker Algorithm?">
-                                📝 2022 Banker's Algorithm PYQ
-                            </button>
-                            <button class="chip" data-query="What are the rules for B.Tech Honours via MOOCs SWAYAM courses?">
-                                🏅 MOOCs Honours Credits
-                            </button>
-                        </div>
-                    </div>
+                    <button class="search-submit-btn" id="btn-hero-search">
+                        Ask AI ⚡
+                    </button>
                 </div>
-
-                <div class="chat-main">
-                    <div class="chat-messages" id="chat-messages">
-                        <!-- Welcome message -->
-                        <div class="message assistant welcome">
-                            <div class="msg-avatar">🎓</div>
-                            <div class="msg-body">
-                                <div class="msg-header">
-                                    <span class="sender-name">MAKAUT CampusSense AI</span>
-                                    <span class="badge verified-badge">Grounded RAG</span>
-                                </div>
-                                <div class="msg-text">
-                                    Welcome to <strong>MAKAUT CampusSense</strong>! I am your AI academic advisor grounded in official Maulana Abul Kalam Azad University of Technology curriculum regulations, AICTE CBCS syllabus, past examination papers (PYQs), MAR/MOOCs requirements, and college placement statistics (IEM, Heritage, TMSL, HIT).
-                                    <br><br>
-                                    Every response includes explicit syllabus module citations and negative grounding verification. Try selecting a quick prompt on the left or type any inquiry below!
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="chat-input-area">
-                        <form id="chat-form" class="input-form">
-                            <div class="input-wrapper">
-                                <textarea id="query-input" placeholder="Ask about MAKAUT syllabus modules, PYQs, MAR points, CA evaluation, or college placements..." rows="2" required></textarea>
-                                <button type="submit" class="btn btn-primary" id="btn-send">
-                                    <span>Send Query</span>
-                                    <span class="send-icon">➔</span>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+                <div class="search-quick-tags">
+                    <span class="quick-tag-label">Trending Revisions:</span>
+                    <button class="quick-chip" data-query="Thevenin Theorem repeated questions">⚡ Thevenin Theorem</button>
+                    <button class="quick-chip" data-query="Newton Rings derivation proof">🔬 Newton's Rings</button>
+                    <button class="quick-chip" data-query="malloc vs calloc differences in C">💻 malloc() vs calloc()</button>
+                    <button class="quick-chip" data-query="Banker's Algorithm deadlock avoidance">🛡️ Banker's Algorithm</button>
+                    <button class="quick-chip" data-query="What are MAR 100 points categories?">📜 MAR 100 Points</button>
                 </div>
             </div>
         </section>
 
-        <!-- View 2: Curriculum & PYQ Resources -->
-        <section id="resources-view" class="view-section">
-            <div class="section-toolbar">
-                <div class="filter-controls">
-                    <input type="text" id="res-search-input" placeholder="Search subject code (e.g. PCC-CS501, DBMS)..." class="custom-input">
-                    <select id="res-stream-select" class="custom-select">
-                        <option value="">All Streams</option>
-                        <option value="CSE">CSE</option>
-                        <option value="IT">IT</option>
-                        <option value="ECE">ECE</option>
-                    </select>
-                    <select id="res-sem-select" class="custom-select">
-                        <option value="">All Semesters</option>
-                        <option value="5">5th Semester</option>
-                        <option value="6">6th Semester</option>
-                    </select>
-                    <select id="res-type-select" class="custom-select">
-                        <option value="">All Types</option>
-                        <option value="SYLLABUS">Syllabus</option>
-                        <option value="PYQ">Past Question Paper (PYQ)</option>
-                        <option value="REGULATION">Regulation / MAR</option>
-                    </select>
-                    <button class="btn btn-secondary" id="btn-filter-resources">Filter</button>
+        <!-- 3. Bento Grid Dashboard -->
+        <section class="bento-container">
+            <!-- Bento Card A: Active Semester Subjects & Checklist Rings (2-columns wide) -->
+            <div class="bento-card bento-card-subjects">
+                <div class="card-header-flex">
+                    <div class="header-titles">
+                        <div class="card-pretitle">SEMESTER CURRICULUM</div>
+                        <h2 class="card-title" id="subjects-heading">Active Subjects & Syllabus Progress</h2>
+                    </div>
+                    <div class="header-action">
+                        <span class="stat-pill" id="overall-syllabus-progress-pill">0% Completed</span>
+                    </div>
+                </div>
+                <p class="card-subtitle">Click any subject card to launch the <strong>Subject Hub</strong> with interactive checklist, 5-year PYQs, and topic clusters.</p>
+
+                <div class="subjects-grid" id="active-subjects-grid">
+                    <!-- Populated dynamically by app.js -->
                 </div>
             </div>
 
-            <div class="resources-grid" id="resources-grid">
-                <div class="loading-spinner">Loading official curriculum resources...</div>
-            </div>
-        </section>
+            <!-- Bento Card B: The Panic Pack (High-Yield 48h PYQ Analysis) -->
+            <div class="bento-card bento-card-panic">
+                <div class="card-header-flex">
+                    <div class="header-titles">
+                        <div class="card-pretitle flame-pretitle">EXAM IN 48 HOURS?</div>
+                        <h2 class="card-title flame-heading">🔥 The Panic Pack</h2>
+                    </div>
+                    <span class="flame-tag">Top 20% Repeated</span>
+                </div>
+                <p class="card-subtitle">Ranked by appearance frequency across 5-year MAKAUT semester exams. Guaranteed high yield.</p>
 
-        <!-- View 3: Placement Analytics -->
-        <section id="placements-view" class="view-section">
-            <div class="placement-dashboard">
-                <div class="placement-filters">
-                    <div class="filter-group">
-                        <label>Filter by College:</label>
-                        <select id="placement-college-select" class="custom-select">
-                            <option value="">All Affiliated Colleges</option>
-                            <option value="1">IEM Kolkata (Code 109)</option>
-                            <option value="2">Heritage Institute of Tech (Code 126)</option>
-                            <option value="3">Techno Main Salt Lake (Code 104)</option>
-                            <option value="4">Haldia Institute of Tech (Code 103)</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label>Batch Year:</label>
-                        <select id="placement-year-select" class="custom-select">
-                            <option value="">All Years</option>
-                            <option value="2024">2024</option>
-                            <option value="2023" selected>2023</option>
-                        </select>
-                    </div>
-                    <button class="btn btn-primary" id="btn-load-placements">Refresh Analytics</button>
+                <div class="panic-pack-preview-list" id="panic-preview-list">
+                    <!-- Populated dynamically by app.js -->
                 </div>
 
-                <div class="metric-cards-row" id="placement-metrics">
-                    <div class="metric-card">
-                        <div class="metric-icon">🚀</div>
-                        <div class="metric-info">
-                            <div class="metric-label">Highest Package</div>
-                            <div class="metric-value" id="metric-highest">-- LPA</div>
-                        </div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-icon">📈</div>
-                        <div class="metric-info">
-                            <div class="metric-label">Average CTC</div>
-                            <div class="metric-value" id="metric-avg">-- LPA</div>
-                        </div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-icon">💼</div>
-                        <div class="metric-info">
-                            <div class="metric-label">Total Offers</div>
-                            <div class="metric-value" id="metric-offers">--</div>
-                        </div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-icon">🏢</div>
-                        <div class="metric-info">
-                            <div class="metric-label">Recruiting Companies</div>
-                            <div class="metric-value" id="metric-companies">--</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="table-container">
-                    <table class="custom-table" id="placement-table">
-                        <thead>
-                            <tr>
-                                <th>College</th>
-                                <th>Batch Year</th>
-                                <th>Company</th>
-                                <th>Highest CTC</th>
-                                <th>Average CTC</th>
-                                <th>Total Offers</th>
-                                <th>Source</th>
-                            </tr>
-                        </thead>
-                        <tbody id="placement-table-body">
-                            <tr><td colspan="7" class="text-center">Loading placement records...</td></tr>
-                        </tbody>
-                    </table>
+                <div class="card-footer-action">
+                    <button class="btn btn-flame-full" id="btn-enter-panic-mode-cta">
+                        ⚡ Enter Full Panic Mode (All Repeated Questions)
+                    </button>
                 </div>
             </div>
-        </section>
 
-        <!-- View 4: Admin Ingestion Engine -->
-        <section id="admin-view" class="view-section">
-            <div class="admin-panel">
-                <div class="admin-card">
-                    <h2 class="card-title">Ingest Syllabus / PYQ Text</h2>
-                    <p class="card-desc">Ingest syllabus regulations or past questions into vector embeddings with 500-token sliding window.</p>
+            <!-- Bento Card C: My Saved Revision Deck -->
+            <div class="bento-card bento-card-deck">
+                <div class="card-header-flex">
+                    <div class="header-titles">
+                        <div class="card-pretitle">OFFLINE REVISION</div>
+                        <h2 class="card-title">🔖 My Saved Deck</h2>
+                    </div>
+                    <span class="badge deck-count-tag" id="deck-card-counter">0 Cards</span>
+                </div>
+                <p class="card-subtitle">Quick-access bookmark deck of questions and papers saved for your night-before exam drill.</p>
 
-                    <form id="ingest-text-form">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Subject Code</label>
-                                <input type="text" id="ingest-code" placeholder="e.g. PCC-CS601" class="custom-input" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Subject Name</label>
-                                <input type="text" id="ingest-name" placeholder="e.g. Compiler Design" class="custom-input" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Stream</label>
-                                <select id="ingest-stream" class="custom-select">
-                                    <option value="CSE">CSE</option>
-                                    <option value="IT">IT</option>
-                                    <option value="ECE">ECE</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Semester</label>
-                                <input type="number" id="ingest-semester" value="6" min="1" max="8" class="custom-input">
-                            </div>
-                        </div>
+                <div class="deck-preview-list" id="deck-preview-list">
+                    <!-- Populated dynamically by app.js -->
+                </div>
+            </div>
 
-                        <div class="form-group">
-                            <label>Raw Document Text (Modules, Syllabus, Exam Questions)</label>
-                            <textarea id="ingest-text" rows="8" class="custom-textarea" placeholder="Paste official module contents or exam paper text..." required></textarea>
-                        </div>
+            <!-- Bento Card D: Verified College Placement Pulse -->
+            <div class="bento-card bento-card-placements">
+                <div class="card-header-flex">
+                    <div class="header-titles">
+                        <div class="card-pretitle">CAREER PULSE</div>
+                        <h2 class="card-title">📊 Placement Analytics</h2>
+                    </div>
+                    <span class="badge verified-badge">Verified 2023-24</span>
+                </div>
+                <p class="card-subtitle">Aggregated recruitment metrics across affiliated colleges (IEM, Heritage, TMSL, HIT, NSEC).</p>
 
-                        <button type="submit" class="btn btn-primary" id="btn-submit-ingest">
-                            ⚡ Ingest & Generate Embeddings
-                        </button>
-                    </form>
+                <div class="placement-stats-summary" id="placement-stats-summary">
+                    <div class="quick-metric-item">
+                        <div class="metric-val" id="bento-highest-ctc">72.00 LPA</div>
+                        <div class="metric-lbl">Highest Package (IEM)</div>
+                    </div>
+                    <div class="quick-metric-item">
+                        <div class="metric-val" id="bento-avg-ctc">8.50 LPA</div>
+                        <div class="metric-lbl">Top College Average</div>
+                    </div>
+                    <div class="quick-metric-item">
+                        <div class="metric-val" id="bento-total-offers">3,740+</div>
+                        <div class="metric-lbl">Total Offers Indexed</div>
+                    </div>
+                </div>
 
-                    <div id="ingest-result" class="result-box" style="display: none;"></div>
+                <div class="placement-college-pills-row">
+                    <span class="pill-badge active" data-college="IEM">IEM Kolkata</span>
+                    <span class="pill-badge active" data-college="Heritage">Heritage HITK</span>
+                    <span class="pill-badge active" data-college="TMSL">Techno Salt Lake</span>
+                    <span class="pill-badge active" data-college="HIT">HIT Haldia</span>
                 </div>
             </div>
         </section>
     </main>
 
+    <!-- 4. Landing & Auth Screen Modal (Shown if first time or signed out) -->
+    <div class="modal-backdrop" id="auth-modal" style="display: none;">
+        <div class="modal-card auth-modal-card">
+            <div class="auth-header">
+                <div class="brand-logo large-logo">
+                    <span class="logo-icon">🎓</span>
+                </div>
+                <span class="badge auth-badge">MAKAUT Official Academic Engine</span>
+                <h1 class="auth-title">Stop asking the class WhatsApp group for PYQs.</h1>
+                <p class="auth-subhead">Centralized syllabi, 5-year question banks, and panic-pack revisions for MAKAUT students.</p>
+            </div>
+
+            <div class="auth-actions">
+                <button class="btn btn-google" id="btn-auth-google">
+                    <svg class="google-icon" viewBox="0 0 24 24" width="20" height="20">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                    </svg>
+                    Continue with Google
+                </button>
+
+                <div class="auth-divider">
+                    <span>or</span>
+                </div>
+
+                <button class="btn btn-guest" id="btn-auth-guest">
+                    ⚡ Browse as Guest (Instant Access)
+                </button>
+            </div>
+
+            <div class="auth-footer">
+                <span>Free & Open Access for all MAKAUT & affiliated college students.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. One-Time Onboarding & Scope Selector Modal (NO Regulation Selector) -->
+    <div class="modal-backdrop" id="onboarding-modal" style="display: none;">
+        <div class="modal-card onboarding-card">
+            <div class="modal-header">
+                <div>
+                    <h2 class="modal-title">Select Your Academic Scope</h2>
+                    <p class="modal-subtitle">Locks your dashboard to your exact department and current semester.</p>
+                </div>
+                <button class="modal-close-btn" id="btn-close-onboarding" title="Close">✕</button>
+            </div>
+
+            <form id="onboarding-form" class="onboarding-form">
+                <div class="form-group">
+                    <label class="form-label">Department / Engineering Stream</label>
+                    <div class="stream-select-grid" id="stream-picker-grid">
+                        <button type="button" class="stream-option active" data-stream="COMMON">
+                            <span class="stream-icon">🌱</span>
+                            <span class="stream-name">1st Year Common</span>
+                            <span class="stream-desc">Sem 1 & 2 All Branches</span>
+                        </button>
+                        <button type="button" class="stream-option" data-stream="CSE">
+                            <span class="stream-icon">💻</span>
+                            <span class="stream-name">Computer Science (CSE)</span>
+                            <span class="stream-desc">Core Engineering</span>
+                        </button>
+                        <button type="button" class="stream-option" data-stream="IT">
+                            <span class="stream-icon">🌐</span>
+                            <span class="stream-name">Information Tech (IT)</span>
+                            <span class="stream-desc">Software & Systems</span>
+                        </button>
+                        <button type="button" class="stream-option" data-stream="AIML">
+                            <span class="stream-icon">🤖</span>
+                            <span class="stream-name">AI & Machine Learning</span>
+                            <span class="stream-desc">Specialized Stream</span>
+                        </button>
+                        <button type="button" class="stream-option" data-stream="ECE">
+                            <span class="stream-icon">📡</span>
+                            <span class="stream-name">Electronics & Comm (ECE)</span>
+                            <span class="stream-desc">Circuits & Signals</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Current Semester</label>
+                    <div class="sem-pills-selector" id="sem-picker-row">
+                        <button type="button" class="sem-btn active" data-sem="1">Sem 1</button>
+                        <button type="button" class="sem-btn" data-sem="2">Sem 2</button>
+                        <button type="button" class="sem-btn" data-sem="3">Sem 3</button>
+                        <button type="button" class="sem-btn" data-sem="4">Sem 4</button>
+                        <button type="button" class="sem-btn" data-sem="5">Sem 5</button>
+                        <button type="button" class="sem-btn" data-sem="6">Sem 6</button>
+                        <button type="button" class="sem-btn" data-sem="7">Sem 7</button>
+                        <button type="button" class="sem-btn" data-sem="8">Sem 8</button>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary btn-large" id="btn-save-onboarding">
+                        Lock Context & Enter Dashboard 🚀
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 6. Subject Hub Modal (Checklist, PYQ Archive, Recurring Topics) -->
+    <div class="modal-backdrop" id="subject-hub-modal" style="display: none;">
+        <div class="modal-card subject-hub-card">
+            <div class="hub-header">
+                <div class="hub-title-group">
+                    <div class="hub-meta-row">
+                        <span class="subject-code-tag" id="hub-subject-code">BS-M101</span>
+                        <span class="badge" id="hub-credits-badge">4 Credits</span>
+                        <span class="badge verified-badge" id="hub-stream-badge">1st Year Common</span>
+                    </div>
+                    <h2 class="hub-title" id="hub-subject-name">Mathematics 1A (Calculus & Linear Algebra)</h2>
+                </div>
+                <div class="hub-progress-stat">
+                    <div class="stat-num" id="hub-progress-number">0%</div>
+                    <div class="stat-lbl">Syllabus Mastered</div>
+                </div>
+                <button class="modal-close-btn" id="btn-close-subject-hub" title="Close">✕</button>
+            </div>
+
+            <!-- Subject Hub Tabs -->
+            <div class="hub-tabs-row" role="tablist">
+                <button class="hub-tab-btn active" data-hubtab="hub-checklist">
+                    📋 Syllabus Checklist (<span id="hub-unit-count">4</span> Units)
+                </button>
+                <button class="hub-tab-btn" data-hubtab="hub-pyqs">
+                    📑 5-Year PYQs & PDF Reader
+                </button>
+                <button class="hub-tab-btn" data-hubtab="hub-recurring">
+                    🔥 Top Recurring Topics (<span id="hub-recurring-count">3</span>)
+                </button>
+            </div>
+
+            <!-- Hub Tab 1: Syllabus Checklist -->
+            <div class="hub-tab-content active" id="hub-checklist-content">
+                <div class="checklist-instructions">
+                    <span>💡 Check off units as you study. Your progress persists in real time and updates your dashboard rings.</span>
+                </div>
+                <div class="units-checklist-container" id="hub-units-list">
+                    <!-- Populated dynamically by app.js -->
+                </div>
+            </div>
+
+            <!-- Hub Tab 2: PYQ Archive -->
+            <div class="hub-tab-content" id="hub-pyqs-content" style="display: none;">
+                <div class="pyq-filters-row" id="hub-pyq-year-filters">
+                    <!-- Year filter buttons -->
+                </div>
+                <div class="pyq-cards-list" id="hub-pyq-cards-list">
+                    <!-- PYQ items with preview and download buttons -->
+                </div>
+            </div>
+
+            <!-- Hub Tab 3: Recurring Topics -->
+            <div class="hub-tab-content" id="hub-recurring-content" style="display: none;">
+                <div class="recurring-topics-list" id="hub-recurring-topics-list">
+                    <!-- Clustered repeated questions -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7. Dedicated Full Panic Mode View / Modal -->
+    <div class="modal-backdrop" id="panic-mode-modal" style="display: none;">
+        <div class="modal-card panic-mode-card">
+            <div class="panic-modal-header">
+                <div class="flame-header-title">
+                    <span class="flame-icon large">🔥</span>
+                    <div>
+                        <h2 class="panic-title">MAKAUT Panic Pack — 48-Hour Exam Drill</h2>
+                        <p class="panic-subhead">The top 20% most repeated exam questions across the past 5 years. Prioritize these for guaranteed pass & scoring.</p>
+                    </div>
+                </div>
+                <button class="modal-close-btn" id="btn-close-panic-modal" title="Close">✕</button>
+            </div>
+
+            <div class="panic-filter-bar">
+                <span class="filter-label">Filter by Subject:</span>
+                <select id="panic-subject-filter" class="custom-select">
+                    <option value="">All Current Semester Subjects</option>
+                </select>
+                <div class="panic-sort-info">
+                    <span>Sorted by: <strong>Frequency of Appearance</strong></span>
+                </div>
+            </div>
+
+            <div class="panic-questions-grid" id="panic-questions-container">
+                <!-- Full ranked question cards -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 8. PDF Previewer Modal -->
+    <div class="modal-backdrop" id="pdf-viewer-modal" style="display: none;">
+        <div class="modal-card pdf-viewer-card">
+            <div class="pdf-viewer-header">
+                <div class="pdf-file-info">
+                    <span class="doc-icon">📄</span>
+                    <div>
+                        <div class="pdf-title" id="pdf-modal-title">PCC-CS501 2022 Examination Paper</div>
+                        <div class="pdf-subtitle" id="pdf-modal-subtitle">Official Maulana Abul Kalam Azad University of Technology Archive</div>
+                    </div>
+                </div>
+                <div class="pdf-viewer-actions">
+                    <a href="#" target="_blank" class="btn btn-secondary" id="btn-pdf-external-download">
+                        ⬇ Download PDF
+                    </a>
+                    <button class="btn btn-secondary" id="btn-pdf-fullscreen">
+                        ⛶ Fullscreen
+                    </button>
+                    <button class="modal-close-btn" id="btn-close-pdf-modal" title="Close">✕</button>
+                </div>
+            </div>
+
+            <div class="pdf-viewer-body" id="pdf-viewer-body">
+                <iframe id="pdf-viewer-iframe" src="about:blank" title="Document Viewer"></iframe>
+                <div class="pdf-fallback-view" id="pdf-fallback-view" style="display: none;">
+                    <div class="paper-text-preview" id="pdf-extracted-text"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 9. Feedback & Support Modal -->
+    <div class="modal-backdrop" id="feedback-modal" style="display: none;">
+        <div class="modal-card feedback-modal-card">
+            <div class="modal-header">
+                <div>
+                    <h2 class="modal-title">Feedback & Academic Help Desk</h2>
+                    <p class="modal-subtitle">Report a broken paper link, submit missing question papers, or request model answers.</p>
+                </div>
+                <button class="modal-close-btn" id="btn-close-feedback-modal" title="Close">✕</button>
+            </div>
+
+            <form id="feedback-form" class="feedback-form">
+                <div class="form-group">
+                    <label class="form-label">Category</label>
+                    <select id="feedback-category" class="custom-select" required>
+                        <option value="BROKEN_PDF">🚨 Broken / Missing PDF Paper Link</option>
+                        <option value="MISSING_PYQ">📄 Submit / Request Missing Year PYQ</option>
+                        <option value="MODEL_ANSWER">💡 Request Model Answer for Question</option>
+                        <option value="FEATURE_REQUEST">✨ Feature Request / UI Suggestion</option>
+                        <option value="BUG">🐛 Bug Report</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Subject Code (Optional)</label>
+                    <input type="text" id="feedback-subject" class="custom-input" placeholder="e.g. BS-M101, ES-CS101, PCC-CS501">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Your Message or Issue Details</label>
+                    <textarea id="feedback-message" rows="5" class="custom-textarea"
+                              placeholder="Describe the issue, specify the year/paper, or paste Google Drive links..." required></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary" id="btn-submit-feedback">
+                        Submit Feedback 📨
+                    </button>
+                </div>
+                <div id="feedback-result-msg" class="result-box" style="display: none;"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 10. AI RAG Slide-Over Drawer -->
+    <div class="drawer-backdrop" id="ai-drawer-backdrop" style="display: none;"></div>
+    <aside class="ai-slide-drawer" id="ai-slide-drawer">
+        <div class="drawer-header">
+            <div class="drawer-title-group">
+                <span class="drawer-icon">🎓</span>
+                <div>
+                    <div class="drawer-title">MAKAUT CampusSense AI</div>
+                    <div class="drawer-subtitle">Grounded Conversational RAG • Top-K Vector Engine</div>
+                </div>
+            </div>
+            <button class="drawer-close-btn" id="btn-close-ai-drawer" title="Close Drawer (Esc)">✕</button>
+        </div>
+
+        <div class="drawer-chat-messages" id="drawer-chat-messages">
+            <div class="message assistant welcome">
+                <div class="msg-avatar">🎓</div>
+                <div class="msg-body">
+                    <div class="msg-header">
+                        <span class="sender-name">MAKAUT CampusSense AI</span>
+                        <span class="badge verified-badge">Grounded</span>
+                    </div>
+                    <div class="msg-text">
+                        Welcome to MAKAUT CampusSense! Ask me anything about your <strong>syllabi modules</strong>, <strong>5-year question papers</strong>, <strong>MAR 100 points</strong>, or <strong>college placements</strong>.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="drawer-chat-input-area">
+            <div class="chat-shortcuts-row">
+                <button class="chip-shortcut" data-prompt="What are the recurring questions for Thévenin's Theorem in Basic Electrical?">Thevenin PYQ</button>
+                <button class="chip-shortcut" data-prompt="State Banker's algorithm and steps for safe state">Banker's Algorithm</button>
+                <button class="chip-shortcut" data-prompt="What are the MAR activity categories to earn 100 points?">MAR 100 Points</button>
+            </div>
+            <form id="drawer-chat-form" class="drawer-input-form">
+                <textarea id="drawer-query-input" rows="2" class="drawer-textarea"
+                          placeholder="Ask a MAKAUT question... (e.g., 'What is in Module 3 of OS?')"></textarea>
+                <button type="submit" class="btn btn-primary drawer-send-btn" id="btn-drawer-send">
+                    Send 🚀
+                </button>
+            </form>
+        </div>
+    </aside>
+
+    <!-- 11. Persistent Floating Action Button (FAB) for AI Drawer -->
+    <button class="ai-fab-btn" id="btn-open-ai-fab" title="Ask MAKAUT AI (Ctrl + K)">
+        <span class="fab-icon">🎓</span>
+        <span class="fab-text">Ask AI</span>
+    </button>
+
+    <!-- Application Script -->
     <script src="app.js"></script>
 </body>
 </html>

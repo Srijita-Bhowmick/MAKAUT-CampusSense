@@ -107,6 +107,14 @@ public class RagService {
                         .append(hit.getEmbedding().getContent())
                         .append("\n\n");
 
+                String chunkText = hit.getEmbedding().getContent();
+                String groupDetected = chunkText.contains("GROUP B") ? "Group B" : (chunkText.contains("GROUP C") ? "Group C" : "Syllabus Module");
+                String qNum = null;
+                java.util.regex.Matcher qm = java.util.regex.Pattern.compile("(Q[0-9]+)").matcher(chunkText);
+                if (qm.find()) {
+                    qNum = qm.group(1);
+                }
+
                 citations.add(SourceCitationDto.builder()
                         .subjectName(hit.getEmbedding().getResource().getSubjectName())
                         .subjectCode(hit.getEmbedding().getResource().getSubjectCode())
@@ -115,6 +123,10 @@ public class RagService {
                         .year(hit.getEmbedding().getResource().getYear())
                         .similarity(hit.getSimilarity())
                         .fileUrl(hit.getEmbedding().getResource().getFileUrl())
+                        .title(hit.getEmbedding().getResource().getSubjectName() + " (" + hit.getEmbedding().getResource().getSubjectCode() + ")")
+                        .group(groupDetected)
+                        .questionNumber(qNum != null ? qNum : "Syllabus")
+                        .pageUrl(hit.getEmbedding().getResource().getFileUrl())
                         .build());
             }
         }

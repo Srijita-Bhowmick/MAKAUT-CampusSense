@@ -1,16 +1,10 @@
 package com.makaut.campussense.config;
 
 import com.makaut.campussense.aggregation.parsers.TextChunker;
-import com.makaut.campussense.model.College;
-import com.makaut.campussense.model.CourseResource;
-import com.makaut.campussense.model.DocumentEmbedding;
-import com.makaut.campussense.model.PlacementRecord;
+import com.makaut.campussense.model.*;
 import com.makaut.campussense.model.enums.ResourceType;
 import com.makaut.campussense.model.enums.StreamType;
-import com.makaut.campussense.repository.CollegeRepository;
-import com.makaut.campussense.repository.CourseResourceRepository;
-import com.makaut.campussense.repository.DocumentEmbeddingRepository;
-import com.makaut.campussense.repository.PlacementRecordRepository;
+import com.makaut.campussense.repository.*;
 import com.makaut.campussense.service.EmbeddingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +27,10 @@ public class DataInitializer implements CommandLineRunner {
     private final CourseResourceRepository courseResourceRepository;
     private final DocumentEmbeddingRepository documentEmbeddingRepository;
     private final PlacementRecordRepository placementRecordRepository;
+    private final SyllabusUnitRepository syllabusUnitRepository;
+    private final FrequentQuestionRepository frequentQuestionRepository;
+    private final UserBookmarkRepository userBookmarkRepository;
+    private final UserSyllabusProgressRepository userSyllabusProgressRepository;
     private final EmbeddingService embeddingService;
     private final TextChunker textChunker;
 
@@ -44,7 +42,7 @@ public class DataInitializer implements CommandLineRunner {
             return;
         }
 
-        log.info("Seeding in-memory dev database with MAKAUT colleges, curriculum, and placement data...");
+        log.info("Seeding in-memory dev database with MAKAUT colleges, 1st-year and core curriculum, bento units, and panic pack...");
 
         // 1. Colleges
         College iem = collegeRepository.save(College.builder()
@@ -77,8 +75,101 @@ public class DataInitializer implements CommandLineRunner {
                 .location("Garia, Kolkata")
                 .build());
 
-        // 2. Academic Resources
-        CourseResource osSyllabus = CourseResource.builder()
+        // 2. First-Year Common & Core Academic Resources
+        // BS-M101
+        CourseResource math101 = courseResourceRepository.save(CourseResource.builder()
+                .stream(StreamType.COMMON)
+                .semester(1)
+                .subjectCode("BS-M101")
+                .subjectName("Mathematics 1A (Calculus & Linear Algebra)")
+                .resourceType(ResourceType.SYLLABUS)
+                .year(2023)
+                .fileUrl("https://makautexam.net/syllabus/BS-M101.pdf")
+                .rawText("""
+                        Module 1: Calculus: Evolutes and involutes; Evaluation of definite and improper integrals; Beta and Gamma functions; Applications of definite integrals to evaluate surface areas and volumes of revolutions; Rolle theorem, Mean value theorems, Taylor and Maclaurin theorems with remainders.
+                        Module 2: Multivariable Calculus: Limit, continuity and partial derivatives, directional derivatives, total derivative; Tangent plane and normal line; Maxima, minima and saddle points; Method of Lagrange multipliers.
+                        Module 3: Matrices: Inverse and rank of a matrix, rank-nullity theorem; System of linear equations; Symmetric, skew-symmetric and orthogonal matrices; Determinants; Eigenvalues and eigenvectors; Diagonalization of matrices; Cayley-Hamilton Theorem.
+                        Module 4: Vector Spaces: Vector Space, linear dependence and independence of vectors, basis, dimension; Linear transformations (maps), range and kernel of a linear map, rank and nullity, Inverse of a linear transformation, rank-nullity theorem.
+                        """)
+                .metadata("{\"credits\": 4, \"department\": \"1st Year Common\"}")
+                .build());
+
+        // BS-PH101
+        CourseResource physics101 = courseResourceRepository.save(CourseResource.builder()
+                .stream(StreamType.COMMON)
+                .semester(1)
+                .subjectCode("BS-PH101")
+                .subjectName("Physics (Optics & Quantum Mechanics)")
+                .resourceType(ResourceType.SYLLABUS)
+                .year(2023)
+                .fileUrl("https://makautexam.net/syllabus/BS-PH101.pdf")
+                .rawText("""
+                        Module 1: Wave Optics: Huygens principle, superposition of waves, interference of light, Young double slit experiment, Newton rings, thin film interference; Fraunhofer diffraction, single slit, double slit, diffraction grating; Polarization, Brewster law, Malus law.
+                        Module 2: Quantum Mechanics: Blackbody radiation, Planck distribution, photoelectric effect, Compton effect; Wave-particle duality, de Broglie hypothesis, Davisson-Germer experiment; Heisenberg uncertainty principle; Wave function, Born interpretation, expectation values; Time-dependent and time-independent Schrodinger equation; Particle in a 1D box.
+                        Module 3: Lasers & Fiber Optics: Spontaneous and stimulated emission, Einstein A and B coefficients, population inversion, optical pumping; Ruby laser, He-Ne laser; Principle of optical fibers, total internal reflection, numerical aperture, acceptance angle.
+                        Module 4: Electromagnetism: Gauss law in electrostatics and magnetostatics, Ampere law, Faraday law of induction; Maxwell equations in differential and integral forms, displacement current; Electromagnetic wave propagation in vacuum, Poynting vector.
+                        """)
+                .metadata("{\"credits\": 4, \"department\": \"1st Year Common\"}")
+                .build());
+
+        // ES-EE101
+        CourseResource ee101 = courseResourceRepository.save(CourseResource.builder()
+                .stream(StreamType.COMMON)
+                .semester(1)
+                .subjectCode("ES-EE101")
+                .subjectName("Basic Electrical Engineering")
+                .resourceType(ResourceType.SYLLABUS)
+                .year(2023)
+                .fileUrl("https://makautexam.net/syllabus/ES-EE101.pdf")
+                .rawText("""
+                        Module 1: DC Circuits: Electrical circuit elements (R, L, and C), voltage and current sources, Kirchhoff current and voltage laws, analysis of simple circuits with DC excitation; Superposition, Thevenin and Norton Theorems; Maximum Power Transfer theorem; Star-Delta conversion.
+                        Module 2: AC Circuits: Representation of sinusoidal waveforms, peak and RMS values, phasor representation, real power, reactive power, apparent power, power factor; Analysis of single-phase AC circuits consisting of R, L, C, RL, RC, RLC combinations (series and parallel), series and parallel resonance.
+                        Module 3: Transformers: Magnetic materials, BH characteristics, ideal and practical transformer, equivalent circuit, losses in transformers, regulation and efficiency; Auto-transformer and three-phase transformer connections.
+                        Module 4: Electrical Machines: Generation of rotating magnetic fields, Construction and working of a three-phase induction motor, significance of torque-slip characteristic; Loss components and efficiency, starting and speed control; Single-phase induction motor; Construction and working of synchronous machines and DC machines.
+                        """)
+                .metadata("{\"credits\": 4, \"department\": \"1st Year Common\"}")
+                .build());
+
+        // ES-CS101
+        CourseResource cs101 = courseResourceRepository.save(CourseResource.builder()
+                .stream(StreamType.COMMON)
+                .semester(1)
+                .subjectCode("ES-CS101")
+                .subjectName("Programming for Problem Solving")
+                .resourceType(ResourceType.SYLLABUS)
+                .year(2023)
+                .fileUrl("https://makautexam.net/syllabus/ES-CS101.pdf")
+                .rawText("""
+                        Module 1: Introduction to Programming: Idea of Algorithm: steps to solve logical and numerical problems; Representation of Algorithm: Flowchart/Pseudocode with examples; From algorithms to programs; source code, variables, data types and sizes; Compilation, execution, and debugging.
+                        Module 2: Arithmetic Expressions and Precedence: Conditional Branching and Loops: Writing and evaluation of conditionals and consequent branching; Iteration and loops (for, while, do-while); Nested loops, break and continue statements.
+                        Module 3: Arrays & Strings: Arrays (1-D, 2-D), Number representation and character representation, Strings; Character arrays and manipulation, matrix addition and multiplication.
+                        Module 4: Functions & Recursion: Functions (including using built in libraries), Parameter passing in functions, call by value, Passing arrays to functions: idea of call by reference; Recursion, as a different way of solving problems; Example programs: finding Factorial, Fibonacci series, Ackerman function, Tower of Hanoi.
+                        Module 5: Pointers & Structures: Idea of pointers, Defining pointers, Use of Pointers in self-referential structures, notion of linked list (no implementation); Dynamic memory allocation: malloc, calloc, realloc, free; Structures, defining structures and Array of Structures.
+                        """)
+                .metadata("{\"credits\": 4, \"department\": \"1st Year Common\"}")
+                .build());
+
+        // HM-HU101
+        CourseResource english101 = courseResourceRepository.save(CourseResource.builder()
+                .stream(StreamType.COMMON)
+                .semester(1)
+                .subjectCode("HM-HU101")
+                .subjectName("English & Professional Communication")
+                .resourceType(ResourceType.SYLLABUS)
+                .year(2023)
+                .fileUrl("https://makautexam.net/syllabus/HM-HU101.pdf")
+                .rawText("""
+                        Module 1: Vocabulary Building: The concept of Word Formation; Root words from foreign languages and their use in English; Acquaintance with prefixes and suffixes; Synonyms, antonyms, and standard abbreviations.
+                        Module 2: Basic Writing Skills: Sentence Structures; Use of phrases and clauses in sentences; Importance of proper punctuation; Creating coherence; Organizing principles of paragraphs in documents; Techniques for writing precisely.
+                        Module 3: Identifying Common Errors in Writing: Subject-verb agreement; Noun-pronoun agreement; Misplaced modifiers; Articles; Prepositions; Redundancies; Clichés.
+                        Module 4: Nature and Style of sensible Writing: Describing, defining, classifying; Providing examples or evidence; Writing introduction and conclusion; Comprehension; Précis Writing; Essay Writing.
+                        Module 5: Technical Communication: Formal letters and email correspondence; Curriculum Vitae and Resume writing; Technical report writing.
+                        """)
+                .metadata("{\"credits\": 2, \"department\": \"1st Year Common\"}")
+                .build());
+
+        // 3. Core 2nd/3rd Year Subjects (CSE Core)
+        CourseResource osSyllabus = courseResourceRepository.save(CourseResource.builder()
                 .stream(StreamType.CSE)
                 .semester(5)
                 .subjectCode("PCC-CS501")
@@ -94,11 +185,10 @@ public class DataInitializer implements CommandLineRunner {
                         Module 5: Memory Management: Basic concept, Logical and Physical address map, Memory allocation: Contiguous Memory allocation - Fixed and variable partition- Internal and External fragmentation and Compaction; Paging: Principle of operation - Page allocation - Hardware support for paging, Protection and sharing, Disadvantages of paging. Virtual Memory: Basics of Virtual Memory - Hardware and control structures - Locality of reference, Page fault, Working Set, Dirty page/Dirty bit - Demand paging, Page Replacement algorithms: Optimal, First in First Out (FIFO), Second Chance (SC), Not recently used (NRU) and Least Recently used (LRU).
                         Module 6: I/O Hardware: I/O devices, Device controllers, Direct Memory Access Principles of I/O Software: Goals of Interrupt handlers, Device drivers, Device independent I/O software. Secondary-Storage Structure: Disk structure, Disk scheduling algorithms (FCFS, SSTF, SCAN, C-SCAN).
                         """)
-                .metadata("{\"credits\": 3, \"regulation\": \"AICTE CBCS 2018\"}")
-                .build();
-        osSyllabus = courseResourceRepository.save(osSyllabus);
+                .metadata("{\"credits\": 3, \"department\": \"Computer Science & Engineering\"}")
+                .build());
 
-        CourseResource osPyq2022 = CourseResource.builder()
+        CourseResource osPyq2022 = courseResourceRepository.save(CourseResource.builder()
                 .stream(StreamType.CSE)
                 .semester(5)
                 .subjectCode("PCC-CS501")
@@ -113,10 +203,9 @@ public class DataInitializer implements CommandLineRunner {
                         GROUP C: Q4. (a) Producer-Consumer problem using counting semaphores. (b) Banker's Algorithm safety state and safe sequence calculation. Q5. Demand paging with FIFO and LRU page replacement evaluation on reference string: 7, 0, 1, 2, 0, 3, 0, 4, 2, 3, 0, 3, 2.
                         """)
                 .metadata("{\"exam_year\": 2022, \"marks\": 70}")
-                .build();
-        osPyq2022 = courseResourceRepository.save(osPyq2022);
+                .build());
 
-        CourseResource dbmsSyllabus = CourseResource.builder()
+        CourseResource dbmsSyllabus = courseResourceRepository.save(CourseResource.builder()
                 .stream(StreamType.CSE)
                 .semester(5)
                 .subjectCode("PCC-CS502")
@@ -132,11 +221,10 @@ public class DataInitializer implements CommandLineRunner {
                         Module 5: Transaction Processing & Concurrency Control: ACID properties, Serializability, Two-Phase Locking (2PL), Deadlock handling.
                         Module 6: Storage and Indexing: RAID, B-Trees, B+ Trees indexing techniques.
                         """)
-                .metadata("{\"credits\": 3, \"regulation\": \"AICTE CBCS 2018\"}")
-                .build();
-        dbmsSyllabus = courseResourceRepository.save(dbmsSyllabus);
+                .metadata("{\"credits\": 3, \"department\": \"Computer Science & Engineering\"}")
+                .build());
 
-        CourseResource marGuide = CourseResource.builder()
+        CourseResource marGuide = courseResourceRepository.save(CourseResource.builder()
                 .stream(StreamType.GENERAL)
                 .semester(0)
                 .subjectCode("MAR-100")
@@ -159,10 +247,9 @@ public class DataInitializer implements CommandLineRunner {
                         Submission: Upload documentary proofs on student MAKAUT portal (makautexam.net) before end of each even semester for college coordinator verification.
                         """)
                 .metadata("{\"mandatory_points\": 100, \"lateral_points\": 75}")
-                .build();
-        marGuide = courseResourceRepository.save(marGuide);
+                .build());
 
-        CourseResource moocsGuide = CourseResource.builder()
+        CourseResource moocsGuide = courseResourceRepository.save(CourseResource.builder()
                 .stream(StreamType.GENERAL)
                 .semester(0)
                 .subjectCode("MOOCS-HONOURS")
@@ -181,11 +268,258 @@ public class DataInitializer implements CommandLineRunner {
                         5. MOOCs credits cannot be double-counted for regular elective requirements.
                         """)
                 .metadata("{\"required_credits\": 20, \"platform\": \"SWAYAM/NPTEL\"}")
-                .build();
-        moocsGuide = courseResourceRepository.save(moocsGuide);
+                .build());
 
-        // 3. Document Embeddings
-        List<CourseResource> allResources = List.of(osSyllabus, osPyq2022, dbmsSyllabus, marGuide, moocsGuide);
+        // 4. Populate Syllabus Units for Interactive Checklists
+        List<SyllabusUnit> units = new ArrayList<>();
+        // Math 101
+        units.add(SyllabusUnit.builder().courseResource(math101).unitNumber(1).unitTitle("Unit 1: Calculus & Evolutes").subtopics("Evolutes, involutes, definite integrals, Beta/Gamma functions, Rolle and Mean Value Theorems").hours(10).build());
+        units.add(SyllabusUnit.builder().courseResource(math101).unitNumber(2).unitTitle("Unit 2: Multivariable Calculus").subtopics("Partial derivatives, directional derivatives, maxima and minima, Lagrange multipliers").hours(8).build());
+        units.add(SyllabusUnit.builder().courseResource(math101).unitNumber(3).unitTitle("Unit 3: Matrices & Linear Algebra").subtopics("Inverse, rank, rank-nullity theorem, Cayley-Hamilton theorem, eigenvalues and eigenvectors").hours(10).build());
+        units.add(SyllabusUnit.builder().courseResource(math101).unitNumber(4).unitTitle("Unit 4: Vector Spaces").subtopics("Vector spaces, linear independence, basis, dimension, linear transformations and kernel").hours(8).build());
+
+        // Physics 101
+        units.add(SyllabusUnit.builder().courseResource(physics101).unitNumber(1).unitTitle("Unit 1: Wave Optics").subtopics("Interference, Young double slit, Newton rings, thin film, Fraunhofer diffraction, diffraction grating").hours(10).build());
+        units.add(SyllabusUnit.builder().courseResource(physics101).unitNumber(2).unitTitle("Unit 2: Quantum Mechanics").subtopics("Planck distribution, de Broglie hypothesis, Heisenberg uncertainty, Schrodinger equation, particle in box").hours(10).build());
+        units.add(SyllabusUnit.builder().courseResource(physics101).unitNumber(3).unitTitle("Unit 3: Lasers & Optical Fibers").subtopics("Einstein coefficients, Ruby and He-Ne lasers, optical fibers, numerical aperture").hours(6).build());
+        units.add(SyllabusUnit.builder().courseResource(physics101).unitNumber(4).unitTitle("Unit 4: Electromagnetism").subtopics("Gauss, Ampere, Faraday laws, Maxwell equations, displacement current, Poynting vector").hours(8).build());
+
+        // Electrical 101
+        units.add(SyllabusUnit.builder().courseResource(ee101).unitNumber(1).unitTitle("Unit 1: DC Circuits & Theorems").subtopics("Kirchhoff laws, Superposition, Thevenin, Norton, Maximum Power Transfer theorems, Star-Delta").hours(9).build());
+        units.add(SyllabusUnit.builder().courseResource(ee101).unitNumber(2).unitTitle("Unit 2: AC Circuits & Resonance").subtopics("Sinusoidal waveforms, phasor representation, series/parallel RLC circuits, series resonance, Q-factor").hours(9).build());
+        units.add(SyllabusUnit.builder().courseResource(ee101).unitNumber(3).unitTitle("Unit 3: Transformers").subtopics("BH characteristics, ideal and practical transformer, equivalent circuit, losses, efficiency").hours(8).build());
+        units.add(SyllabusUnit.builder().courseResource(ee101).unitNumber(4).unitTitle("Unit 4: Electrical Machines").subtopics("Rotating magnetic fields, 3-phase induction motor, torque-slip curve, DC machines").hours(8).build());
+
+        // Programming 101
+        units.add(SyllabusUnit.builder().courseResource(cs101).unitNumber(1).unitTitle("Unit 1: Intro to C & Algorithms").subtopics("Flowcharts, pseudocode, compilation, data types, arithmetic operators").hours(6).build());
+        units.add(SyllabusUnit.builder().courseResource(cs101).unitNumber(2).unitTitle("Unit 2: Conditionals & Loops").subtopics("if-else, switch, for, while, do-while, nested loops, break, continue").hours(6).build());
+        units.add(SyllabusUnit.builder().courseResource(cs101).unitNumber(3).unitTitle("Unit 3: Arrays & Strings").subtopics("1D and 2D arrays, matrix multiplication, character strings, string library functions").hours(8).build());
+        units.add(SyllabusUnit.builder().courseResource(cs101).unitNumber(4).unitTitle("Unit 4: Functions & Recursion").subtopics("Call by value, call by reference, recursive functions: Factorial, Fibonacci, Tower of Hanoi").hours(8).build());
+        units.add(SyllabusUnit.builder().courseResource(cs101).unitNumber(5).unitTitle("Unit 5: Pointers & Dynamic Memory").subtopics("Pointers, pointer arithmetic, malloc, calloc, free, structures and unions").hours(8).build());
+
+        // English 101
+        units.add(SyllabusUnit.builder().courseResource(english101).unitNumber(1).unitTitle("Unit 1: Vocabulary Building").subtopics("Word formation, prefixes, suffixes, root words, synonyms and antonyms").hours(6).build());
+        units.add(SyllabusUnit.builder().courseResource(english101).unitNumber(2).unitTitle("Unit 2: Writing & Paragraph Coherence").subtopics("Sentence structures, punctuation, coherence, précis writing, essay drafting").hours(6).build());
+        units.add(SyllabusUnit.builder().courseResource(english101).unitNumber(3).unitTitle("Unit 3: Professional Communication").subtopics("Technical reports, formal letters, email etiquette, CV and resume design").hours(8).build());
+
+        // OS PCC-CS501
+        units.add(SyllabusUnit.builder().courseResource(osSyllabus).unitNumber(1).unitTitle("Unit 1: OS Concepts & Structures").subtopics("Generations, OS types, system calls, Monolithic vs Microkernel architecture").hours(5).build());
+        units.add(SyllabusUnit.builder().courseResource(osSyllabus).unitNumber(2).unitTitle("Unit 2: Processes & Scheduling").subtopics("PCB, context switching, FCFS, SJF, Round Robin, Multiprocessor scheduling").hours(6).build());
+        units.add(SyllabusUnit.builder().courseResource(osSyllabus).unitNumber(3).unitTitle("Unit 3: Inter-Process Communication").subtopics("Critical sections, Peterson solution, semaphores, Producer-Consumer, Dining Philosophers").hours(7).build());
+        units.add(SyllabusUnit.builder().courseResource(osSyllabus).unitNumber(4).unitTitle("Unit 4: Deadlocks").subtopics("4 conditions, Prevention, Banker algorithm for avoidance, Detection and recovery").hours(6).build());
+        units.add(SyllabusUnit.builder().courseResource(osSyllabus).unitNumber(5).unitTitle("Unit 5: Memory Management").subtopics("Paging, segmentation, TLB, Virtual memory, page replacement: FIFO, LRU, Optimal").hours(8).build());
+        units.add(SyllabusUnit.builder().courseResource(osSyllabus).unitNumber(6).unitTitle("Unit 6: Storage & Disk Scheduling").subtopics("I/O hardware, disk scheduling: FCFS, SSTF, SCAN, C-SCAN, RAID levels").hours(5).build());
+
+        // DBMS PCC-CS502
+        units.add(SyllabusUnit.builder().courseResource(dbmsSyllabus).unitNumber(1).unitTitle("Unit 1: Architecture & Data Models").subtopics("Three-schema architecture, data independence, DDL, DML, relational model").hours(6).build());
+        units.add(SyllabusUnit.builder().courseResource(dbmsSyllabus).unitNumber(2).unitTitle("Unit 2: E-R Modeling & Relational Algebra").subtopics("Entities, relationships, weak entity sets, Relational Algebra operations").hours(8).build());
+        units.add(SyllabusUnit.builder().courseResource(dbmsSyllabus).unitNumber(3).unitTitle("Unit 3: SQL & Relational Design").subtopics("Functional dependencies, Normalization: 1NF, 2NF, 3NF, BCNF, lossless join").hours(8).build());
+        units.add(SyllabusUnit.builder().courseResource(dbmsSyllabus).unitNumber(4).unitTitle("Unit 4: Concurrency & Transactions").subtopics("ACID properties, serializability, two-phase locking (2PL), deadlock resolution").hours(8).build());
+        units.add(SyllabusUnit.builder().courseResource(dbmsSyllabus).unitNumber(5).unitTitle("Unit 5: Indexing & Storage").subtopics("File organization, B-Trees, B+ Trees indexing, hashing").hours(6).build());
+
+        syllabusUnitRepository.saveAll(units);
+
+        // 5. Populate Frequent Questions (Panic Pack)
+        List<FrequentQuestion> questions = List.of(
+                // Electrical
+                FrequentQuestion.builder()
+                        .subjectCode("ES-EE101")
+                        .topicName("Network Theorems")
+                        .questionText("State Thevenin theorem. For a given bridge circuit with 10V DC source, find the Thevenin equivalent voltage (Vth) and Thevenin resistance (Rth) across load terminals AB.")
+                        .marks(10)
+                        .frequencyCount(5)
+                        .examYears("2019, 2021, 2022, 2023, 2024")
+                        .groupType("Group C")
+                        .modelAnswerSnippet("Thevenin Theorem: Any linear bilateral DC network across two terminals can be replaced by an equivalent voltage source Vth in series with resistance Rth. Vth is open-circuit voltage across AB. Rth is equivalent resistance looking into AB with independent sources deactivated.")
+                        .build(),
+
+                FrequentQuestion.builder()
+                        .subjectCode("ES-EE101")
+                        .topicName("AC Resonance")
+                        .questionText("Derive the condition for series resonance in an RLC circuit. Show that the resonant frequency is fr = 1 / (2 * pi * sqrt(L * C)). Calculate the Q-factor.")
+                        .marks(5)
+                        .frequencyCount(4)
+                        .examYears("2019, 2021, 2022, 2023")
+                        .groupType("Group B")
+                        .modelAnswerSnippet("At series resonance, inductive reactance equals capacitive reactance (X_L = X_C). Hence omega * L = 1 / (omega * C) => omega = 1 / sqrt(LC). Quality factor Q = (omega0 * L) / R = 1 / (R * sqrt(C/L)).")
+                        .build(),
+
+                FrequentQuestion.builder()
+                        .subjectCode("ES-EE101")
+                        .topicName("Transformers")
+                        .questionText("Explain the losses in a single phase transformer. Derive the condition for maximum efficiency of a transformer.")
+                        .marks(10)
+                        .frequencyCount(4)
+                        .examYears("2018, 2020, 2022, 2023")
+                        .groupType("Group C")
+                        .modelAnswerSnippet("Transformer losses include Iron Losses (Hysteresis + Eddy Current) and Copper Losses (I^2 * R). Maximum efficiency occurs when variable copper losses equal constant iron losses: P_cu = P_i.")
+                        .build(),
+
+                // Programming C
+                FrequentQuestion.builder()
+                        .subjectCode("ES-CS101")
+                        .topicName("Dynamic Memory Allocation")
+                        .questionText("Explain the differences between malloc() and calloc() in C. Write a program to dynamically allocate memory for an array of n integers and find their average.")
+                        .marks(5)
+                        .frequencyCount(5)
+                        .examYears("2018, 2019, 2021, 2022, 2023")
+                        .groupType("Group B")
+                        .modelAnswerSnippet("malloc(size): allocates single contiguous block of specified bytes with garbage values. calloc(n, size): allocates n blocks of size bytes initialized to zero. Both return void pointer or NULL on failure.")
+                        .build(),
+
+                FrequentQuestion.builder()
+                        .subjectCode("ES-CS101")
+                        .topicName("Recursion")
+                        .questionText("Write a recursive C function to solve the Tower of Hanoi problem for n disks. Trace the function call tree for n = 3 disks.")
+                        .marks(10)
+                        .frequencyCount(4)
+                        .examYears("2019, 2021, 2022, 2024")
+                        .groupType("Group C")
+                        .modelAnswerSnippet("void towerOfHanoi(int n, char from, char to, char aux) { if (n == 1) { printf(\"Move disk 1 from %c to %c\\n\", from, to); return; } towerOfHanoi(n - 1, from, aux, to); printf(\"Move disk %d from %c to %c\\n\", n, from, to); towerOfHanoi(n - 1, aux, to, from); } Total moves: 2^n - 1 = 7.")
+                        .build(),
+
+                FrequentQuestion.builder()
+                        .subjectCode("ES-CS101")
+                        .topicName("Pointers & Arrays")
+                        .questionText("What is a dangling pointer? Explain with an example how it differs from a void pointer and a NULL pointer.")
+                        .marks(5)
+                        .frequencyCount(3)
+                        .examYears("2020, 2022, 2023")
+                        .groupType("Group B")
+                        .modelAnswerSnippet("A dangling pointer points to a memory location that has been deallocated (e.g. after free(ptr)). A NULL pointer points to 0. A void pointer (void*) is a generic pointer that can hold the address of any data type.")
+                        .build(),
+
+                // Mathematics
+                FrequentQuestion.builder()
+                        .subjectCode("BS-M101")
+                        .topicName("Cayley-Hamilton Theorem")
+                        .questionText("State Cayley-Hamilton Theorem. Verify it for matrix A = [[1, 2], [3, 4]] and hence compute A^-1.")
+                        .marks(10)
+                        .frequencyCount(5)
+                        .examYears("2018, 2019, 2021, 2022, 2023")
+                        .groupType("Group C")
+                        .modelAnswerSnippet("Statement: Every square matrix satisfies its own characteristic equation: det(A - lambda * I) = 0. Characteristic polynomial: lambda^2 - tr(A)*lambda + det(A) = 0. Substituting A gives A^2 - 5A - 2I = 0. Multiplying by A^-1 gives A^-1 = (A - 5I) / 2.")
+                        .build(),
+
+                FrequentQuestion.builder()
+                        .subjectCode("BS-M101")
+                        .topicName("Multivariable Extrema")
+                        .questionText("Find the maximum and minimum distances from the origin to the surface xyz = 8 using the method of Lagrange multipliers.")
+                        .marks(10)
+                        .frequencyCount(4)
+                        .examYears("2019, 2021, 2022, 2024")
+                        .groupType("Group C")
+                        .modelAnswerSnippet("Objective function: f(x, y, z) = x^2 + y^2 + z^2. Constraint: g(x, y, z) = xyz - 8 = 0. Form Lagrangian L = f - lambda*g. Setting partial derivatives to 0 gives x^2 = y^2 = z^2 = lambda*xyz / 2. Yields stationary points at x = y = z = 2, distance = 2*sqrt(3).")
+                        .build(),
+
+                // Physics
+                FrequentQuestion.builder()
+                        .subjectCode("BS-PH101")
+                        .topicName("Newton Rings")
+                        .questionText("Explain the formation of Newton rings in reflected light. Prove that the diameters of dark rings are proportional to square roots of natural numbers.")
+                        .marks(10)
+                        .frequencyCount(4)
+                        .examYears("2019, 2021, 2022, 2023")
+                        .groupType("Group C")
+                        .modelAnswerSnippet("Newton rings are formed by interference between light reflected from upper surface of glass plate and lower surface of plano-convex lens. Path difference for reflected ray: Delta = 2*mu*t + lambda/2. For dark rings, 2*t = n*lambda. Since t = r^2 / (2R), D_n = sqrt(4*n*lambda*R) proportional to sqrt(n).")
+                        .build(),
+
+                FrequentQuestion.builder()
+                        .subjectCode("BS-PH101")
+                        .topicName("Quantum Mechanics")
+                        .questionText("Derive the time-independent Schrodinger wave equation for a free particle. Find the energy eigenvalues for a particle trapped in an infinite 1D potential well of width L.")
+                        .marks(10)
+                        .frequencyCount(5)
+                        .examYears("2018, 2019, 2021, 2022, 2023")
+                        .groupType("Group C")
+                        .modelAnswerSnippet("Starting from total energy E = p^2/(2m) + V and substituting quantum momentum operator p = -i*hbar*d/dx gives -hbar^2/(2m) * d^2(psi)/dx^2 + V*psi = E*psi. Boundary conditions psi(0) = psi(L) = 0 yield E_n = (n^2 * pi^2 * hbar^2) / (2 * m * L^2).")
+                        .build(),
+
+                // English
+                FrequentQuestion.builder()
+                        .subjectCode("HM-HU101")
+                        .topicName("Technical Report Writing")
+                        .questionText("Discuss the structure and key components of a formal technical report. Draft an outline of a report on 'Campus Smart Waste Management'.")
+                        .marks(10)
+                        .frequencyCount(4)
+                        .examYears("2019, 2021, 2022, 2024")
+                        .groupType("Group C")
+                        .modelAnswerSnippet("Standard technical report sections: 1. Title Page, 2. Executive Summary/Abstract, 3. Table of Contents, 4. Introduction & Scope, 5. Methodology & Technical Discussion, 6. Findings & Cost Analysis, 7. Conclusions & Recommendations, 8. References & Appendices.")
+                        .build(),
+
+                // OS PCC-CS501
+                FrequentQuestion.builder()
+                        .subjectCode("PCC-CS501")
+                        .topicName("Banker Algorithm")
+                        .questionText("Explain Banker Algorithm for Deadlock Avoidance. Given Allocation, Max, and Available matrices for 5 processes and 3 resource types, determine if the system is in a safe state and compute the safe sequence.")
+                        .marks(10)
+                        .frequencyCount(4)
+                        .examYears("2019, 2021, 2022, 2023")
+                        .groupType("Group C")
+                        .modelAnswerSnippet("Banker Algorithm simulates resource allocation safety: 1. Calculate Need = Max - Allocation. 2. Find process where Need <= Available. 3. Simulate process execution and release its resources to Available. 4. If all processes complete, the state is safe with an identified Safe Sequence e.g. <P1, P3, P4, P0, P2>.")
+                        .build(),
+
+                FrequentQuestion.builder()
+                        .subjectCode("PCC-CS501")
+                        .topicName("Process Synchronization")
+                        .questionText("Define Critical Section. What are the three requirements for a valid critical section solution? Explain how counting semaphores solve the Producer-Consumer problem.")
+                        .marks(10)
+                        .frequencyCount(5)
+                        .examYears("2018, 2019, 2021, 2022, 2023")
+                        .groupType("Group C")
+                        .modelAnswerSnippet("Requirements: 1. Mutual Exclusion, 2. Progress, 3. Bounded Waiting. Producer-Consumer solution uses three semaphores: mutex = 1 (mutual exclusion for buffer access), empty = N (tracks empty slots), full = 0 (tracks filled slots).")
+                        .build(),
+
+                FrequentQuestion.builder()
+                        .subjectCode("PCC-CS501")
+                        .topicName("Page Replacement")
+                        .questionText("Compare FIFO and LRU page replacement algorithms on the reference string: 7, 0, 1, 2, 0, 3, 0, 4, 2, 3, 0, 3, 2 for 3 frames. Calculate the number of page faults for each.")
+                        .marks(10)
+                        .frequencyCount(4)
+                        .examYears("2019, 2021, 2022, 2024")
+                        .groupType("Group C")
+                        .modelAnswerSnippet("Trace shows FIFO yields 15 page faults, while LRU yields 12 page faults. FIFO suffers from Belady Anomaly where more frames can lead to more faults; LRU is a stack algorithm and immune to Belady Anomaly.")
+                        .build(),
+
+                // DBMS PCC-CS502
+                FrequentQuestion.builder()
+                        .subjectCode("PCC-CS502")
+                        .topicName("Database Normalization")
+                        .questionText("Explain Boyce-Codd Normal Form (BCNF). How does BCNF differ from 3NF? Provide a relation that is in 3NF but not in BCNF.")
+                        .marks(10)
+                        .frequencyCount(5)
+                        .examYears("2019, 2020, 2022, 2023, 2024")
+                        .groupType("Group C")
+                        .modelAnswerSnippet("A relation is in 3NF if for every FD X -> A, X is superkey OR A is prime attribute. In BCNF, X must strictly be a superkey for every non-trivial FD. Relation R(Student, Subject, Teacher) with FDs {Student, Subject} -> Teacher and Teacher -> Subject is in 3NF but not in BCNF.")
+                        .build(),
+
+                FrequentQuestion.builder()
+                        .subjectCode("PCC-CS502")
+                        .topicName("Concurrency Control")
+                        .questionText("Explain the Two-Phase Locking (2PL) protocol. Prove that Strict 2PL guarantees conflict serializability and prevents cascading aborts.")
+                        .marks(10)
+                        .frequencyCount(4)
+                        .examYears("2018, 2019, 2021, 2023")
+                        .groupType("Group C")
+                        .modelAnswerSnippet("2PL has Growing Phase (locks acquired, none released) and Shrinking Phase (locks released, none acquired). Strict 2PL holds all exclusive locks until transaction commits or aborts, ensuring no other transaction reads uncommitted data, preventing cascading rollbacks.")
+                        .build()
+        );
+        frequentQuestionRepository.saveAll(questions);
+
+        // 6. Preload initial sample Bookmark & Progress for default session
+        if (!questions.isEmpty()) {
+            userBookmarkRepository.save(UserBookmark.builder()
+                    .userIdentifier("guest-default")
+                    .question(questions.get(0))
+                    .build());
+            userBookmarkRepository.save(UserBookmark.builder()
+                    .userIdentifier("guest-default")
+                    .question(questions.get(3))
+                    .build());
+        }
+
+        // 7. Document Embeddings (Vectors for semantic search across all subjects)
+        List<CourseResource> allResources = List.of(math101, physics101, ee101, cs101, english101, osSyllabus, osPyq2022, dbmsSyllabus, marGuide, moocsGuide);
         List<DocumentEmbedding> embeddings = new ArrayList<>();
 
         for (CourseResource cr : allResources) {
@@ -204,7 +538,7 @@ public class DataInitializer implements CommandLineRunner {
         }
         documentEmbeddingRepository.saveAll(embeddings);
 
-        // 4. Placements
+        // 8. Placements
         // IEM
         placementRecordRepository.save(PlacementRecord.builder().college(iem).batchYear(2023).companyName("Amazon").highestCtc(BigDecimal.valueOf(44.00)).averageCtc(BigDecimal.valueOf(44.00)).totalOffers(18).sourceUrl("https://iem.edu.in").build());
         placementRecordRepository.save(PlacementRecord.builder().college(iem).batchYear(2023).companyName("Adobe").highestCtc(BigDecimal.valueOf(42.50)).averageCtc(BigDecimal.valueOf(42.50)).totalOffers(6).sourceUrl("https://iem.edu.in").build());
@@ -229,7 +563,7 @@ public class DataInitializer implements CommandLineRunner {
         // HIT
         placementRecordRepository.save(PlacementRecord.builder().college(hit).batchYear(2023).companyName("Overall HIT Summary").highestCtc(BigDecimal.valueOf(32.00)).averageCtc(BigDecimal.valueOf(5.80)).totalOffers(780).sourceUrl("https://hithaldia.in").build());
 
-        log.info("Dev database initialization completed: {} colleges, {} resources, {} embeddings, {} placement records.",
-                collegeRepository.count(), courseResourceRepository.count(), documentEmbeddingRepository.count(), placementRecordRepository.count());
+        log.info("Dev database initialization completed: {} colleges, {} resources, {} embeddings, {} syllabus units, {} panic questions, {} placement records.",
+                collegeRepository.count(), courseResourceRepository.count(), documentEmbeddingRepository.count(), syllabusUnitRepository.count(), frequentQuestionRepository.count(), placementRecordRepository.count());
     }
 }
