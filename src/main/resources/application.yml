@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: makaut-campussense
+  profiles:
+    default: dev
+
+campussense:
+  vector:
+    dimensions: 1536
+    similarity-threshold: 0.35
+    top-k: 5
+    chunk-size-tokens: 500
+    chunk-overlap-tokens: 50
+  llm:
+    provider: ${LLM_PROVIDER:mock} # mock | openai | gemini
+    api-key: ${OPENAI_API_KEY:}
+    model: ${LLM_MODEL:gpt-4o-mini}
+    temperature: 0.2
+    max-tokens: 1000
+  embedding:
+    provider: ${EMBEDDING_PROVIDER:mock} # mock | openai
+    api-key: ${OPENAI_API_KEY:}
+    model: ${EMBEDDING_MODEL:text-embedding-3-small}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: method

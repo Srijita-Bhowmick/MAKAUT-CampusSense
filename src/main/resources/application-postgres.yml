@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:campussense}
+    username: ${DB_USER:campussense_user}
+    password: ${DB_PASSWORD:campussense_password}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 15
+      minimum-idle: 5
+      idle-timeout: 30000
+      connection-timeout: 20000
+      max-lifetime: 1800000
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: false
+        show_sql: false
+        jdbc:
+          batch_size: 25
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
