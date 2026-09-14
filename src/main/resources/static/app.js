@@ -3,19 +3,48 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
-    // 1. User & Academic Context State
+    // 1. Theme Engine (Dark & Light Mode with SVG Icon Rotation)
     // ==========================================
-    let userIdentifier = localStorage.getItem('campussense_user_id');
-    let userName = localStorage.getItem('campussense_user_name') || 'Guest Student';
-    let currentStream = localStorage.getItem('campussense_context_stream') || 'COMMON';
-    let currentSem = parseInt(localStorage.getItem('campussense_context_sem') || '1', 10);
+    let currentTheme = localStorage.getItem('campussense_theme') || 'dark';
+    const themeToggleBtn = document.getElementById('btn-theme-toggle');
+    const sunIcon = document.getElementById('theme-toggle-sun');
+    const moonIcon = document.getElementById('theme-toggle-moon');
+
+    function applyTheme(theme) {
+        currentTheme = theme;
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('campussense_theme', theme);
+        if (sunIcon && moonIcon) {
+            if (theme === 'dark') {
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'block';
+            } else {
+                sunIcon.style.display = 'block';
+                moonIcon.style.display = 'none';
+            }
+        }
+    }
+    applyTheme(currentTheme);
+
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', () => {
+            const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            applyTheme(nextTheme);
+        });
+    }
+
+    // ==========================================
+    // 2. User & Academic Context State
+    // ==========================================
+    let isLoggedIn = localStorage.getItem('campussense_logged_in') === 'true';
+    let userIdentifier = localStorage.getItem('campussense_user_id') || ('student-' + Math.random().toString(36).substring(2, 11));
+    let userName = localStorage.getItem('campussense_user_name') || 'Student';
+    let currentStream = localStorage.getItem('campussense_stream') || localStorage.getItem('campussense_context_stream') || 'COMMON';
+    let currentSem = parseInt(localStorage.getItem('campussense_semester') || localStorage.getItem('campussense_context_sem') || '1', 10);
     let userChecklistState = JSON.parse(localStorage.getItem('campussense_checklist_state') || '{}');
     let savedBookmarks = JSON.parse(localStorage.getItem('campussense_saved_deck') || '[]');
 
-    if (!userIdentifier) {
-        userIdentifier = 'guest-' + Math.random().toString(36).substring(2, 11);
-        localStorage.setItem('campussense_user_id', userIdentifier);
-    }
+    localStorage.setItem('campussense_user_id', userIdentifier);
 
     // Update Header Context UI
     function updateContextUI() {
@@ -24,7 +53,10 @@ document.addEventListener('DOMContentLoaded', () => {
             'CSE': 'Computer Science (CSE)',
             'IT': 'Information Tech (IT)',
             'AIML': 'AI & Machine Learning',
-            'ECE': 'Electronics (ECE)'
+            'ECE': 'Electronics (ECE)',
+            'EE': 'Electrical Eng (EE)',
+            'ME': 'Mechanical Eng (ME)',
+            'CE': 'Civil Eng (CE)'
         };
         const streamLabel = streamNames[currentStream] || currentStream;
         const contextTextEl = document.getElementById('current-context-text');
@@ -37,6 +69,53 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     updateContextUI();
+
+    // ==========================================
+    // 3. View Routing (Landing Page vs Bento Dashboard)
+    // ==========================================
+    const landingView = document.getElementById('landing-view');
+    const dashboardView = document.getElementById('dashboard-view');
+    const contextSwitcherBtn = document.getElementById('btn-context-switcher');
+    const btnOpenPanicNav = document.getElementById('btn-open-panic-mode');
+    const btnOpenSavedDeck = document.getElementById('btn-open-saved-deck');
+    const btnOpenFeedback = document.getElementById('btn-open-feedback');
+    const userProfileWrapper = document.getElementById('user-profile-wrapper');
+    const btnOpenAiFab = document.getElementById('btn-open-ai-fab');
+    const landingNavLinks = document.getElementById('landing-nav-links');
+    const btnLandingAuth = document.getElementById('btn-landing-auth');
+
+    function switchView(targetView) {
+        if (targetView === 'dashboard') {
+            if (landingView) landingView.style.display = 'none';
+            if (dashboardView) dashboardView.style.display = 'block';
+            if (contextSwitcherBtn) contextSwitcherBtn.style.display = 'flex';
+            if (btnOpenPanicNav) btnOpenPanicNav.style.display = 'inline-flex';
+            if (btnOpenSavedDeck) btnOpenSavedDeck.style.display = 'inline-flex';
+            if (btnOpenFeedback) btnOpenFeedback.style.display = 'inline-flex';
+            if (userProfileWrapper) userProfileWrapper.style.display = 'block';
+            if (btnOpenAiFab) btnOpenAiFab.style.display = 'flex';
+            if (landingNavLinks) landingNavLinks.style.display = 'none';
+            if (btnLandingAuth) btnLandingAuth.style.display = 'none';
+
+            updateContextUI();
+            renderActiveSubjects();
+            renderPanicPackPreview();
+            renderSavedDeckPreview();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+            if (landingView) landingView.style.display = 'block';
+            if (dashboardView) dashboardView.style.display = 'none';
+            if (contextSwitcherBtn) contextSwitcherBtn.style.display = 'none';
+            if (btnOpenPanicNav) btnOpenPanicNav.style.display = 'none';
+            if (btnOpenSavedDeck) btnOpenSavedDeck.style.display = 'none';
+            if (btnOpenFeedback) btnOpenFeedback.style.display = 'none';
+            if (userProfileWrapper) userProfileWrapper.style.display = 'none';
+            if (btnOpenAiFab) btnOpenAiFab.style.display = 'none';
+            if (landingNavLinks) landingNavLinks.style.display = 'flex';
+            if (btnLandingAuth) btnLandingAuth.style.display = 'inline-flex';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
 
     // ==========================================
     // 2. Verified MAKAUT Static Dataset (Fallback & Offline Sync)
@@ -773,27 +852,162 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 8. Onboarding / Context Switcher Modal
+    // 8. PDF Download Gate & Action Preservation
     // ==========================================
-    const contextSwitcherBtn = document.getElementById('btn-context-switcher');
-    const onboardingModal = document.getElementById('onboarding-modal');
-    const closeOnboardingBtn = document.getElementById('btn-close-onboarding');
+    const authModal = document.getElementById('auth-modal');
+    const authGateBanner = document.getElementById('auth-gate-banner');
+    const scopeModal = document.getElementById('scope-modal') || document.getElementById('onboarding-modal');
+    const btnCloseScope = document.getElementById('btn-close-scope-modal') || document.getElementById('btn-close-onboarding');
 
-    function openOnboarding() {
-        // Highlight active stream and sem
+    function showAuthModal(isGate = false) {
+        if (authGateBanner) {
+            authGateBanner.style.display = isGate ? 'flex' : 'none';
+        }
+        if (authModal) authModal.style.display = 'flex';
+    }
+
+    function triggerPdfDownload(fileUrl, title) {
+        openPdfViewer(title || 'Official MAKAUT Examination Paper', fileUrl);
+    }
+
+    // Attach gated click listener to all download/preview buttons
+    document.querySelectorAll('.btn-download-pdf, .btn-preview-pdf, .btn-download-pdf-gate').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const resourceId = btn.getAttribute('data-resource-id') || '1';
+            const subjectCode = btn.getAttribute('data-subject') || 'BS-M101';
+            const paperYear = btn.getAttribute('data-paper') || '2023';
+            const title = btn.getAttribute('data-name') || `${subjectCode} ${paperYear} Paper`;
+            const fileUrl = `https://makautexam.net/pyq/${paperYear}/${subjectCode}.pdf`;
+
+            if (localStorage.getItem('campussense_logged_in') !== 'true') {
+                sessionStorage.setItem('pending_download_action', JSON.stringify({ resourceId, fileUrl, subjectCode, title }));
+                showAuthModal(true); // displays gate banner
+                return;
+            }
+            triggerPdfDownload(fileUrl, title);
+        });
+    });
+
+    // Landing Page CTAs
+    if (btnLandingAuth) {
+        btnLandingAuth.addEventListener('click', () => showAuthModal(false));
+    }
+
+    const btnHeroPanicPack = document.getElementById('btn-hero-panic-pack');
+    if (btnHeroPanicPack) {
+        btnHeroPanicPack.addEventListener('click', openFullPanicMode);
+    }
+
+    const btnBrandHome = document.getElementById('btn-brand-home');
+    if (btnBrandHome) {
+        btnBrandHome.addEventListener('click', () => {
+            if (isLoggedIn) {
+                switchView('dashboard');
+            } else {
+                switchView('landing');
+            }
+        });
+    }
+
+    // ==========================================
+    // 9. Auth Modal Logic (Tabs & Submission, ZERO Guest Access)
+    // ==========================================
+    const tabAuthLogin = document.getElementById('tab-auth-login');
+    const tabAuthSignup = document.getElementById('tab-auth-signup');
+    const formAuthLogin = document.getElementById('form-auth-login');
+    const formAuthSignup = document.getElementById('form-auth-signup');
+    const btnCloseAuthModal = document.getElementById('btn-close-auth-modal');
+    const btnAuthGoogle = document.getElementById('btn-auth-google');
+
+    if (tabAuthLogin && tabAuthSignup) {
+        tabAuthLogin.addEventListener('click', () => {
+            tabAuthLogin.classList.add('active');
+            tabAuthSignup.classList.remove('active');
+            if (formAuthLogin) formAuthLogin.style.display = 'flex';
+            if (formAuthSignup) formAuthSignup.style.display = 'none';
+        });
+
+        tabAuthSignup.addEventListener('click', () => {
+            tabAuthSignup.classList.add('active');
+            tabAuthLogin.classList.remove('active');
+            if (formAuthSignup) formAuthSignup.style.display = 'flex';
+            if (formAuthLogin) formAuthLogin.style.display = 'none';
+        });
+    }
+
+    if (btnCloseAuthModal) {
+        btnCloseAuthModal.addEventListener('click', () => {
+            if (authModal) authModal.style.display = 'none';
+        });
+    }
+
+    function openScopeModal() {
         document.querySelectorAll('.stream-option').forEach(btn => {
             btn.classList.toggle('active', btn.getAttribute('data-stream') === currentStream);
         });
         document.querySelectorAll('.sem-btn').forEach(btn => {
             btn.classList.toggle('active', parseInt(btn.getAttribute('data-sem'), 10) === currentSem);
         });
-        onboardingModal.style.display = 'flex';
+        if (scopeModal) scopeModal.style.display = 'flex';
     }
 
-    if (contextSwitcherBtn) contextSwitcherBtn.addEventListener('click', openOnboarding);
-    if (closeOnboardingBtn) closeOnboardingBtn.addEventListener('click', () => onboardingModal.style.display = 'none');
+    function completeAuthentication(name, email) {
+        isLoggedIn = true;
+        userName = name || 'Student';
+        const userEmail = email || `${userName.toLowerCase().replace(/\s+/g, '')}@makaut.edu.in`;
 
-    // Stream picker selection
+        localStorage.setItem('campussense_logged_in', 'true');
+        localStorage.setItem('campussense_user_name', userName);
+        localStorage.setItem('campussense_user_email', userEmail);
+        localStorage.setItem('campussense_user_id', userEmail);
+
+        if (authModal) authModal.style.display = 'none';
+
+        // Step 2: Prompt Academic Scope Selection
+        openScopeModal();
+    }
+
+    if (formAuthLogin) {
+        formAuthLogin.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const emailInput = document.getElementById('login-email');
+            const emailVal = emailInput ? emailInput.value.trim() : 'student@makaut.edu';
+            const baseName = emailVal.split('@')[0];
+            const formatted = baseName.charAt(0).toUpperCase() + baseName.slice(1);
+            completeAuthentication(formatted, emailVal);
+        });
+    }
+
+    if (formAuthSignup) {
+        formAuthSignup.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const nameInput = document.getElementById('signup-name');
+            const emailInput = document.getElementById('signup-email');
+            const collegeSelect = document.getElementById('signup-college');
+
+            const fullName = nameInput ? nameInput.value.trim() : 'Student';
+            const emailVal = emailInput ? emailInput.value.trim() : 'student@makaut.edu';
+            if (collegeSelect) localStorage.setItem('campussense_college', collegeSelect.value);
+
+            completeAuthentication(fullName, emailVal);
+        });
+    }
+
+    if (btnAuthGoogle) {
+        btnAuthGoogle.addEventListener('click', () => {
+            completeAuthentication('Srijita Bhowmick', 'srijitabhowmick42@gmail.com');
+        });
+    }
+
+    // ==========================================
+    // 10. Academic Scope Selection Modal
+    // ==========================================
+    if (contextSwitcherBtn) contextSwitcherBtn.addEventListener('click', openScopeModal);
+    if (btnCloseScope) btnCloseScope.addEventListener('click', () => {
+        if (scopeModal) scopeModal.style.display = 'none';
+    });
+
     document.querySelectorAll('.stream-option').forEach(btn => {
         btn.addEventListener('click', () => {
             document.querySelectorAll('.stream-option').forEach(b => b.classList.remove('active'));
@@ -801,7 +1015,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Sem picker selection
     document.querySelectorAll('.sem-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             document.querySelectorAll('.sem-btn').forEach(b => b.classList.remove('active'));
@@ -809,10 +1022,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Form submit
-    const onboardingForm = document.getElementById('onboarding-form');
-    if (onboardingForm) {
-        onboardingForm.addEventListener('submit', (e) => {
+    const scopeForm = document.getElementById('scope-form') || document.getElementById('onboarding-form');
+    if (scopeForm) {
+        scopeForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const activeStreamBtn = document.querySelector('.stream-option.active');
             const activeSemBtn = document.querySelector('.sem-btn.active');
@@ -820,48 +1032,69 @@ document.addEventListener('DOMContentLoaded', () => {
             if (activeStreamBtn) currentStream = activeStreamBtn.getAttribute('data-stream');
             if (activeSemBtn) currentSem = parseInt(activeSemBtn.getAttribute('data-sem'), 10);
 
+            localStorage.setItem('campussense_stream', currentStream);
+            localStorage.setItem('campussense_semester', currentSem.toString());
             localStorage.setItem('campussense_context_stream', currentStream);
             localStorage.setItem('campussense_context_sem', currentSem.toString());
 
-            updateContextUI();
-            renderActiveSubjects();
-            onboardingModal.style.display = 'none';
+            if (scopeModal) scopeModal.style.display = 'none';
+
+            // Transition into Dashboard
+            switchView('dashboard');
+
+            // Action Preservation: Check if user was downloading a PDF
+            const pendingActionRaw = sessionStorage.getItem('pending_download_action');
+            if (pendingActionRaw) {
+                try {
+                    const pending = JSON.parse(pendingActionRaw);
+                    sessionStorage.removeItem('pending_download_action');
+                    triggerPdfDownload(pending.fileUrl, pending.title);
+                } catch (err) {
+                    sessionStorage.removeItem('pending_download_action');
+                }
+            }
         });
     }
 
-    // ==========================================
-    // 9. Auth & Landing Screen
-    // ==========================================
-    const authModal = document.getElementById('auth-modal');
-    const hasOnboarded = localStorage.getItem('campussense_has_onboarded');
+    // User Profile Dropdown Menu
+    const userProfilePill = document.getElementById('user-profile-pill');
+    const userDropdownMenu = document.getElementById('user-dropdown-menu');
+    const btnMenuSwitchScope = document.getElementById('btn-menu-switch-scope');
+    const btnMenuLandingPage = document.getElementById('btn-menu-landing-page');
+    const btnMenuSignOut = document.getElementById('btn-menu-sign-out');
 
-    if (!hasOnboarded) {
-        authModal.style.display = 'flex';
-    }
+    if (userProfilePill && userDropdownMenu) {
+        userProfilePill.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isVisible = userDropdownMenu.style.display === 'flex';
+            userDropdownMenu.style.display = isVisible ? 'none' : 'flex';
+        });
 
-    const btnAuthGoogle = document.getElementById('btn-auth-google');
-    if (btnAuthGoogle) {
-        btnAuthGoogle.addEventListener('click', () => {
-            userName = 'Srijita Bhowmick (MAKAUT)';
-            userIdentifier = 'srijitabhowmick42@gmail.com';
-            localStorage.setItem('campussense_user_name', userName);
-            localStorage.setItem('campussense_user_id', userIdentifier);
-            localStorage.setItem('campussense_has_onboarded', 'true');
-            updateContextUI();
-            authModal.style.display = 'none';
-            openOnboarding();
+        document.addEventListener('click', () => {
+            userDropdownMenu.style.display = 'none';
         });
     }
 
-    const btnAuthGuest = document.getElementById('btn-auth-guest');
-    if (btnAuthGuest) {
-        btnAuthGuest.addEventListener('click', () => {
-            userName = 'Guest Student';
-            localStorage.setItem('campussense_user_name', userName);
-            localStorage.setItem('campussense_has_onboarded', 'true');
-            updateContextUI();
-            authModal.style.display = 'none';
-            openOnboarding();
+    if (btnMenuSwitchScope) {
+        btnMenuSwitchScope.addEventListener('click', () => {
+            if (userDropdownMenu) userDropdownMenu.style.display = 'none';
+            openScopeModal();
+        });
+    }
+
+    if (btnMenuLandingPage) {
+        btnMenuLandingPage.addEventListener('click', () => {
+            if (userDropdownMenu) userDropdownMenu.style.display = 'none';
+            switchView('landing');
+        });
+    }
+
+    if (btnMenuSignOut) {
+        btnMenuSignOut.addEventListener('click', () => {
+            if (userDropdownMenu) userDropdownMenu.style.display = 'none';
+            isLoggedIn = false;
+            localStorage.removeItem('campussense_logged_in');
+            switchView('landing');
         });
     }
 
@@ -1220,9 +1453,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 13. Initial Boot
+    // 13. Initial Boot & View Router
     // ==========================================
-    renderActiveSubjects();
-    renderPanicPackPreview();
-    renderSavedDeckPreview();
+    if (isLoggedIn) {
+        switchView('dashboard');
+    } else {
+        switchView('landing');
+    }
 });
