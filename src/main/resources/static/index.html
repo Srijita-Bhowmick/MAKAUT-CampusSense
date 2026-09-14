@@ -14,6 +14,9 @@
         (function() {
             const savedTheme = localStorage.getItem('campussense_theme') || 'dark';
             document.documentElement.setAttribute('data-theme', savedTheme);
+            if (savedTheme === 'light') {
+                document.documentElement.classList.add('light-theme');
+            }
         })();
     </script>
 </head>
@@ -29,27 +32,28 @@
                 </div>
                 <div class="brand-info">
                     <div class="brand-title">MAKAUT-<span class="accent-text">CampusSense</span></div>
-                    <div class="brand-subtitle">Curated Academic & Career Engine</div>
+                    <div class="brand-subtitle">Curated Academic Engine</div>
                 </div>
             </div>
 
             <!-- Navigation Links (Shown on Landing Page) -->
             <nav class="landing-nav-links" id="landing-nav-links">
                 <a href="#landing-features" class="landing-nav-link">Features</a>
-                <a href="#landing-curriculum" class="landing-nav-link">Curriculum & PYQs</a>
+                <a href="#landing-curriculum" class="landing-nav-link">Curriculum</a>
+                <a href="#landing-pyqs" class="landing-nav-link">PYQ Archives</a>
                 <a href="#landing-panic-drill" class="landing-nav-link">🔥 Panic Pack</a>
             </nav>
 
             <!-- Context Lock Pill (Visible when Dashboard is active) -->
             <button class="context-pill" id="btn-context-switcher" style="display: none;" title="Click to switch Department or Semester">
                 <span class="context-icon">🏛️</span>
-                <span id="current-context-text">1st Year Common • Sem 1</span>
+                <span id="current-context-text">CSE • Sem 5</span>
                 <span class="dropdown-chevron">▾</span>
             </button>
 
             <!-- Navigation Actions & Controls -->
             <div class="nav-actions">
-                <!-- Theme Toggle Button (Available everywhere with SVG sun/moon) -->
+                <!-- Theme Toggle Button (Dynamic SVG Sun/Moon) -->
                 <button class="theme-toggle-btn" id="btn-theme-toggle" title="Toggle Light / Dark Mode">
                     <svg id="theme-toggle-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none; width: 20px; height: 20px;">
                         <circle cx="12" cy="12" r="5"></circle>
@@ -109,7 +113,14 @@
                     <span>⭐ GitHub</span>
                 </a>
 
-                <button class="btn btn-primary" id="btn-landing-auth" title="Sign In or Create Account">
+                <!-- Dedicated Top-Right Auth Triggers -->
+                <button class="btn btn-outline" id="btn-nav-signin" title="Sign In">
+                    Sign In
+                </button>
+                <button class="btn btn-primary" id="btn-nav-signup" title="Create Account">
+                    Sign Up
+                </button>
+                <button class="btn btn-primary" id="btn-landing-auth" style="display: none;" title="Sign In or Create Account">
                     Sign In / Sign Up
                 </button>
             </div>
@@ -117,14 +128,14 @@
     </header>
 
     <!-- ====================================================================
-         VIEW A: DEDICATED LANDING PAGE (Root Entry Point for Unauthenticated Visitors)
+         VIEW A: DEDICATED LANDING PAGE (Root Entry Point for Visitors)
          ==================================================================== -->
     <section id="landing-view">
         <!-- Hero Section -->
         <div class="landing-hero">
             <div class="landing-badge-pill">
                 <span>🎓</span>
-                <span>Official MAKAUT Curricula • 5-Year Exam Archives</span>
+                <span>University Curricula • Verified PYQ Repository</span>
             </div>
 
             <h1 class="landing-hero-title">MAKAUT-CampusSense</h1>
@@ -153,7 +164,7 @@
                 </div>
                 <div class="landing-stat-item">
                     <span>📄</span>
-                    <span><strong>5-Year Question Papers</strong> & Solutions</span>
+                    <span><strong>PYQ Archives</strong> & Solutions</span>
                 </div>
                 <div class="landing-stat-item">
                     <span>🤖</span>
@@ -162,7 +173,7 @@
             </div>
         </div>
 
-        <!-- Features Bento Grid -->
+        <!-- Features Bento Grid (Placement Pulse Permanently Purged) -->
         <div id="landing-features">
             <div class="landing-section-header">
                 <div class="landing-section-pretitle">WHY CAMPUSSENSE</div>
@@ -171,221 +182,116 @@
             </div>
 
             <div class="landing-features-grid">
+                <!-- Card 1: Syllabus Checklist -->
                 <div class="landing-feature-card">
                     <div class="feature-icon-box">📋</div>
                     <h3 class="feature-card-title">Curated Syllabi & Unit Checklists</h3>
                     <p class="feature-card-desc">Complete syllabus units with module hours, exact topic breakdowns, and interactive checklist rings to track your exam readiness.</p>
+                    <button class="feature-card-cta" id="btn-feature-syllabus">
+                        Explore Syllabus Checklist ➔
+                    </button>
                 </div>
 
+                <!-- Card 2: Panic Pack -->
                 <div class="landing-feature-card">
                     <div class="feature-icon-box flame">🔥</div>
                     <h3 class="feature-card-title">The 48-Hour Panic Pack</h3>
-                    <p class="feature-card-desc">High-yield algorithm analyzing 5 years of exam papers to isolate the top 20% most repeated questions with marks distribution and model answers.</p>
+                    <p class="feature-card-desc">High-yield algorithm analyzing exam papers to isolate the top 20% most repeated questions with marks distribution and model answers.</p>
+                    <button class="feature-card-cta flame" id="btn-feature-panic">
+                        Access Panic Pack 🔥
+                    </button>
                 </div>
 
+                <!-- Card 3: PYQ Archives -->
                 <div class="landing-feature-card">
                     <div class="feature-icon-box emerald">📑</div>
-                    <h3 class="feature-card-title">5-Year PYQ Archives</h3>
-                    <p class="feature-card-desc">Official semester examination papers arranged by stream, year, and group (Group A, B, and C) with instant PDF viewing and downloads.</p>
+                    <h3 class="feature-card-title">PYQ Archives</h3>
+                    <p class="feature-card-desc">Semester examination papers arranged by stream, year, and group (Group A, B, and C) with instant PDF viewing and downloads.</p>
+                    <button class="feature-card-cta emerald" id="btn-feature-pyq">
+                        Browse PYQ Repository ➔
+                    </button>
                 </div>
 
+                <!-- Card 4: AI Assistant (Span 2) -->
                 <div class="landing-feature-card span-2">
                     <div class="feature-icon-box cyan">🤖</div>
-                    <h3 class="feature-card-title">Grounded Conversational RAG Assistant</h3>
+                    <h3 class="feature-card-title">Grounded Conversational AI Assistant</h3>
                     <p class="feature-card-desc">Need a clarification right before your exam? Ask our university-grounded AI engine. Every response cites exact syllabus modules and exam paper years.</p>
-                </div>
-
-                <div class="landing-feature-card">
-                    <div class="feature-icon-box">📊</div>
-                    <h3 class="feature-card-title">College Placement Pulse</h3>
-                    <p class="feature-card-desc">Verified placement statistics and packages across top MAKAUT colleges including IEM Kolkata, Heritage Institute, Techno Salt Lake, and HIT Haldia.</p>
+                    <button class="feature-card-cta cyan" id="btn-feature-ai">
+                        Launch AI Assistant 🤖
+                    </button>
                 </div>
             </div>
         </div>
 
-        <!-- Curriculum Explorer Preview & PDF Download Gate -->
-        <div id="landing-curriculum">
+        <!-- ==========================================================
+             SECTION 1: CURRICULUM ARCHITECTURE & SYLLABUS CHECKLISTS
+             (Strictly academic structure: course codes, credits, expandable units 1-5)
+             ========================================================== -->
+        <section id="landing-curriculum" class="landing-content-section">
+            <div class="landing-section-header">
+                <div class="landing-section-pretitle">ACADEMIC STRUCTURE</div>
+                <h2 class="landing-section-title">Curriculum & Syllabus Trackers</h2>
+                <p class="landing-section-subhead">Explore verified MAKAUT curriculum course codes, credit distribution, and expandable unit-by-unit module checklists with lecture hours.</p>
+            </div>
+
+            <!-- Stream Filter Tabs for Curriculum -->
+            <div class="curriculum-filter-tabs" id="curriculum-stream-filter">
+                <button class="curriculum-tab-btn active" data-curriculum-stream="ALL">All Subjects</button>
+                <button class="curriculum-tab-btn" data-curriculum-stream="COMMON">1st Year Common</button>
+                <button class="curriculum-tab-btn" data-curriculum-stream="CSE">CSE & CSCS</button>
+                <button class="curriculum-tab-btn" data-curriculum-stream="IT">Information Tech</button>
+                <button class="curriculum-tab-btn" data-curriculum-stream="ECE">ECE</button>
+            </div>
+
+            <div class="curriculum-cards-grid" id="curriculum-cards-container">
+                <!-- Rendered dynamically by app.js with expandable Unit 1-5 accordions -->
+            </div>
+        </section>
+
+        <!-- ==========================================================
+             SECTION 2: PAST EXAMINATION PAPERS (PYQ ARCHIVES)
+             (Strictly examination papers categorized by Year and Exam Type)
+             ========================================================== -->
+        <section id="landing-pyqs" class="landing-content-section">
             <div class="landing-section-header" id="landing-panic-drill">
-                <div class="landing-section-pretitle">CURRICULUM & ARCHIVES</div>
-                <h2 class="landing-section-title">Official Syllabi & 5-Year Question Papers</h2>
-                <p class="landing-section-subhead">Explore official curriculum modules and past papers below. Sign in to download full PDF papers or track your syllabus progress.</p>
+                <div class="landing-section-pretitle">PAST EXAMINATION REPOSITORY</div>
+                <h2 class="landing-section-title">MAKAUT PYQ Archives</h2>
+                <p class="landing-section-subhead">Semester examination papers categorized by Year and Exam Type. Preview papers instantly or sign in to download full PDFs.</p>
             </div>
 
-            <div class="landing-subjects-grid">
-                <!-- 1. Mathematics 1A -->
-                <div class="landing-subject-card">
-                    <div>
-                        <div class="landing-subject-header">
-                            <span class="landing-subject-code">BS-M101</span>
-                            <span class="badge">4 Credits</span>
-                        </div>
-                        <h3 class="landing-subject-name">Mathematics 1A (Calculus & Linear Algebra)</h3>
-                        <p class="card-subtitle">Evolutes, definite integrals, multivariable extrema, Cayley-Hamilton theorem, and vector spaces.</p>
-                        <div class="landing-unit-pills">
-                            <span class="landing-unit-pill">Unit 1: Calculus</span>
-                            <span class="landing-unit-pill">Unit 2: Multivariable</span>
-                            <span class="landing-unit-pill">Unit 3: Matrices</span>
-                            <span class="landing-unit-pill">Unit 4: Vector Spaces</span>
-                        </div>
-                    </div>
-                    <div class="landing-paper-actions">
-                        <button class="btn-download-pdf btn-preview-pdf btn-download-pdf-gate" data-subject="BS-M101" data-paper="2023" data-name="Mathematics 1A (BS-M101) 2023 Paper" data-resource-id="1">
-                            <span>📄 2023 Examination Paper</span>
-                            <span class="pdf-gate-badge">PDF</span>
-                        </button>
-                        <button class="btn-download-pdf btn-preview-pdf btn-download-pdf-gate" data-subject="BS-M101" data-paper="2022" data-name="Mathematics 1A (BS-M101) 2022 Paper" data-resource-id="2">
-                            <span>📄 2022 Examination Paper</span>
-                            <span class="pdf-gate-badge">PDF</span>
-                        </button>
+            <!-- PYQ Filter Bar: Year & Exam Type -->
+            <div class="pyq-repo-filter-bar">
+                <div class="filter-group">
+                    <span class="filter-lbl">Year:</span>
+                    <div class="filter-pills" id="pyq-year-pills">
+                        <button class="filter-pill active" data-pyq-year="ALL">All Years</button>
+                        <button class="filter-pill" data-pyq-year="2024">2024</button>
+                        <button class="filter-pill" data-pyq-year="2023">2023</button>
+                        <button class="filter-pill" data-pyq-year="2022">2022</button>
+                        <button class="filter-pill" data-pyq-year="2021">2021</button>
+                        <button class="filter-pill" data-pyq-year="2019">2019</button>
                     </div>
                 </div>
-
-                <!-- 2. Physics -->
-                <div class="landing-subject-card">
-                    <div>
-                        <div class="landing-subject-header">
-                            <span class="landing-subject-code">BS-PH101</span>
-                            <span class="badge">4 Credits</span>
-                        </div>
-                        <h3 class="landing-subject-name">Physics (Optics & Quantum Mechanics)</h3>
-                        <p class="card-subtitle">Newton's rings, Fraunhofer diffraction, Schrödinger wave equation, Ruby lasers, and Maxwell's equations.</p>
-                        <div class="landing-unit-pills">
-                            <span class="landing-unit-pill">Unit 1: Wave Optics</span>
-                            <span class="landing-unit-pill">Unit 2: Quantum</span>
-                            <span class="landing-unit-pill">Unit 3: Lasers</span>
-                            <span class="landing-unit-pill">Unit 4: Electromagnetism</span>
-                        </div>
-                    </div>
-                    <div class="landing-paper-actions">
-                        <button class="btn-download-pdf btn-preview-pdf btn-download-pdf-gate" data-subject="BS-PH101" data-paper="2023" data-name="Physics (BS-PH101) 2023 Paper" data-resource-id="3">
-                            <span>📄 2023 Examination Paper</span>
-                            <span class="pdf-gate-badge">PDF</span>
-                        </button>
-                        <button class="btn-download-pdf btn-preview-pdf btn-download-pdf-gate" data-subject="BS-PH101" data-paper="2022" data-name="Physics (BS-PH101) 2022 Paper" data-resource-id="4">
-                            <span>📄 2022 Examination Paper</span>
-                            <span class="pdf-gate-badge">PDF</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- 3. Basic Electrical -->
-                <div class="landing-subject-card">
-                    <div>
-                        <div class="landing-subject-header">
-                            <span class="landing-subject-code">ES-EE101</span>
-                            <span class="badge">4 Credits</span>
-                        </div>
-                        <h3 class="landing-subject-name">Basic Electrical Engineering</h3>
-                        <p class="card-subtitle">Kirchhoff's laws, Thévenin's & Norton's theorems, AC series resonance, single phase transformers, and induction motors.</p>
-                        <div class="landing-unit-pills">
-                            <span class="landing-unit-pill">Unit 1: DC Circuits</span>
-                            <span class="landing-unit-pill">Unit 2: AC Circuits</span>
-                            <span class="landing-unit-pill">Unit 3: Transformers</span>
-                            <span class="landing-unit-pill">Unit 4: Machines</span>
-                        </div>
-                    </div>
-                    <div class="landing-paper-actions">
-                        <button class="btn-download-pdf btn-preview-pdf btn-download-pdf-gate" data-subject="ES-EE101" data-paper="2023" data-name="Basic Electrical (ES-EE101) 2023 Paper" data-resource-id="5">
-                            <span>📄 2023 Examination Paper</span>
-                            <span class="pdf-gate-badge">PDF</span>
-                        </button>
-                        <button class="btn-download-pdf btn-preview-pdf btn-download-pdf-gate" data-subject="ES-EE101" data-paper="2022" data-name="Basic Electrical (ES-EE101) 2022 Paper" data-resource-id="6">
-                            <span>📄 2022 Examination Paper</span>
-                            <span class="pdf-gate-badge">PDF</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- 4. Programming for Problem Solving in C -->
-                <div class="landing-subject-card">
-                    <div>
-                        <div class="landing-subject-header">
-                            <span class="landing-subject-code">ES-CS101</span>
-                            <span class="badge">4 Credits</span>
-                        </div>
-                        <h3 class="landing-subject-name">Programming for Problem Solving (C)</h3>
-                        <p class="card-subtitle">Algorithms, conditionals, loops, multidimensional arrays, pointer arithmetic, dynamic allocation, and recursion.</p>
-                        <div class="landing-unit-pills">
-                            <span class="landing-unit-pill">Unit 1: Intro to C</span>
-                            <span class="landing-unit-pill">Unit 2: Conditionals</span>
-                            <span class="landing-unit-pill">Unit 3: Arrays</span>
-                            <span class="landing-unit-pill">Unit 4: Functions</span>
-                            <span class="landing-unit-pill">Unit 5: Pointers</span>
-                        </div>
-                    </div>
-                    <div class="landing-paper-actions">
-                        <button class="btn-download-pdf btn-preview-pdf btn-download-pdf-gate" data-subject="ES-CS101" data-paper="2023" data-name="Programming in C (ES-CS101) 2023 Paper" data-resource-id="7">
-                            <span>📄 2023 Examination Paper</span>
-                            <span class="pdf-gate-badge">PDF</span>
-                        </button>
-                        <button class="btn-download-pdf btn-preview-pdf btn-download-pdf-gate" data-subject="ES-CS101" data-paper="2022" data-name="Programming in C (ES-CS101) 2022 Paper" data-resource-id="8">
-                            <span>📄 2022 Examination Paper</span>
-                            <span class="pdf-gate-badge">PDF</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- 5. Operating Systems (CSE) -->
-                <div class="landing-subject-card">
-                    <div>
-                        <div class="landing-subject-header">
-                            <span class="landing-subject-code">PCC-CS501</span>
-                            <span class="badge">3 Credits</span>
-                        </div>
-                        <h3 class="landing-subject-name">Operating Systems (CSE Sem 5)</h3>
-                        <p class="card-subtitle">Processes, CPU scheduling, Banker's deadlock avoidance, semaphores, paging, LRU page replacement, and file systems.</p>
-                        <div class="landing-unit-pills">
-                            <span class="landing-unit-pill">Unit 1: Intro</span>
-                            <span class="landing-unit-pill">Unit 2: Processes</span>
-                            <span class="landing-unit-pill">Unit 3: Deadlocks</span>
-                            <span class="landing-unit-pill">Unit 4: Memory</span>
-                        </div>
-                    </div>
-                    <div class="landing-paper-actions">
-                        <button class="btn-download-pdf btn-preview-pdf btn-download-pdf-gate" data-subject="PCC-CS501" data-paper="2023" data-name="Operating Systems (PCC-CS501) 2023 Paper" data-resource-id="9">
-                            <span>📄 2023 Examination Paper</span>
-                            <span class="pdf-gate-badge">PDF</span>
-                        </button>
-                        <button class="btn-download-pdf btn-preview-pdf btn-download-pdf-gate" data-subject="PCC-CS501" data-paper="2022" data-name="Operating Systems (PCC-CS501) 2022 Paper" data-resource-id="10">
-                            <span>📄 2022 Examination Paper</span>
-                            <span class="pdf-gate-badge">PDF</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- 6. Database Management Systems -->
-                <div class="landing-subject-card">
-                    <div>
-                        <div class="landing-subject-header">
-                            <span class="landing-subject-code">PCC-CS502</span>
-                            <span class="badge">3 Credits</span>
-                        </div>
-                        <h3 class="landing-subject-name">Database Management Systems</h3>
-                        <p class="card-subtitle">ER modeling, relational algebra, SQL, normal forms (1NF to BCNF), ACID transactions, and 2-phase locking protocol.</p>
-                        <div class="landing-unit-pills">
-                            <span class="landing-unit-pill">Unit 1: ER Model</span>
-                            <span class="landing-unit-pill">Unit 2: SQL</span>
-                            <span class="landing-unit-pill">Unit 3: Normalization</span>
-                            <span class="landing-unit-pill">Unit 4: Transactions</span>
-                        </div>
-                    </div>
-                    <div class="landing-paper-actions">
-                        <button class="btn-download-pdf btn-preview-pdf btn-download-pdf-gate" data-subject="PCC-CS502" data-paper="2023" data-name="DBMS (PCC-CS502) 2023 Paper" data-resource-id="11">
-                            <span>📄 2023 Examination Paper</span>
-                            <span class="pdf-gate-badge">PDF</span>
-                        </button>
-                        <button class="btn-download-pdf btn-preview-pdf btn-download-pdf-gate" data-subject="PCC-CS502" data-paper="2022" data-name="DBMS (PCC-CS502) 2022 Paper" data-resource-id="12">
-                            <span>📄 2022 Examination Paper</span>
-                            <span class="pdf-gate-badge">PDF</span>
-                        </button>
+                <div class="filter-group">
+                    <span class="filter-lbl">Exam Type:</span>
+                    <div class="filter-pills" id="pyq-type-pills">
+                        <button class="filter-pill active" data-pyq-type="ALL">All Types</button>
+                        <button class="filter-pill" data-pyq-type="END_SEM">End-Sem</button>
+                        <button class="filter-pill" data-pyq-type="MID_SEM">Mid-Sem / CA</button>
                     </div>
                 </div>
             </div>
-        </div>
+
+            <!-- PYQ Repository Grid -->
+            <div class="pyq-repo-grid" id="landing-pyq-grid">
+                <!-- Rendered dynamically by app.js with Preview and Gated Download -->
+            </div>
+        </section>
 
         <!-- Landing Footer -->
         <footer class="landing-footer">
-            <p><strong>MAKAUT-CampusSense</strong> • Academic Resource Aggregator & Conversational RAG</p>
+            <p><strong>MAKAUT-CampusSense</strong> • Academic Resource Aggregator & Conversational RAG Engine</p>
             <p style="margin-top: 0.35rem; font-size: 0.8rem;">
                 Curated for Maulana Abul Kalam Azad University of Technology affiliated colleges. Maintained by <a href="https://github.com/Srijita-Bhowmick" target="_blank">Srijita Bhowmick</a>.
             </p>
@@ -424,7 +330,7 @@
 
         <!-- Bento Grid Dashboard -->
         <section class="bento-container">
-            <!-- Bento Card A: Active Semester Subjects & Checklist Rings (2-columns wide) -->
+            <!-- Bento Card A: Active Semester Subjects & Checklist Rings -->
             <div class="bento-card bento-card-subjects">
                 <div class="card-header-flex">
                     <div class="header-titles">
@@ -435,7 +341,7 @@
                         <span class="stat-pill" id="overall-syllabus-progress-pill">0% Completed</span>
                     </div>
                 </div>
-                <p class="card-subtitle">Click any subject card to launch the <strong>Subject Hub</strong> with interactive checklist, 5-year PYQs, and topic clusters.</p>
+                <p class="card-subtitle">Click any subject card to launch the <strong>Subject Hub</strong> with interactive checklist, PYQ Archives, and topic clusters.</p>
 
                 <div class="subjects-grid" id="active-subjects-grid">
                     <!-- Populated dynamically by app.js -->
@@ -451,7 +357,7 @@
                     </div>
                     <span class="flame-tag">Top 20% Repeated</span>
                 </div>
-                <p class="card-subtitle">Ranked by appearance frequency across 5-year MAKAUT semester exams. Guaranteed high yield.</p>
+                <p class="card-subtitle">Ranked by appearance frequency across MAKAUT semester exams. Guaranteed high yield.</p>
 
                 <div class="panic-pack-preview-list" id="panic-preview-list">
                     <!-- Populated dynamically by app.js -->
@@ -479,40 +385,6 @@
                     <!-- Populated dynamically by app.js -->
                 </div>
             </div>
-
-            <!-- Bento Card D: Verified College Placement Pulse -->
-            <div class="bento-card bento-card-placements">
-                <div class="card-header-flex">
-                    <div class="header-titles">
-                        <div class="card-pretitle">CAREER PULSE</div>
-                        <h2 class="card-title">📊 Placement Analytics</h2>
-                    </div>
-                    <span class="badge verified-badge">Verified 2023-24</span>
-                </div>
-                <p class="card-subtitle">Aggregated recruitment metrics across affiliated colleges (IEM, Heritage, TMSL, HIT, NSEC).</p>
-
-                <div class="placement-stats-summary" id="placement-stats-summary">
-                    <div class="quick-metric-item">
-                        <div class="metric-val" id="bento-highest-ctc">72.00 LPA</div>
-                        <div class="metric-lbl">Highest Package (IEM)</div>
-                    </div>
-                    <div class="quick-metric-item">
-                        <div class="metric-val" id="bento-avg-ctc">8.50 LPA</div>
-                        <div class="metric-lbl">Top College Average</div>
-                    </div>
-                    <div class="quick-metric-item">
-                        <div class="metric-val" id="bento-total-offers">3,740+</div>
-                        <div class="metric-lbl">Total Offers Indexed</div>
-                    </div>
-                </div>
-
-                <div class="placement-college-pills-row">
-                    <span class="pill-badge active" data-college="IEM">IEM Kolkata</span>
-                    <span class="pill-badge active" data-college="Heritage">Heritage HITK</span>
-                    <span class="pill-badge active" data-college="TMSL">Techno Salt Lake</span>
-                    <span class="pill-badge active" data-college="HIT">HIT Haldia</span>
-                </div>
-            </div>
         </section>
     </main>
 
@@ -527,18 +399,18 @@
                 <div class="brand-logo large-logo" style="margin: 0 auto 0.75rem;">
                     <span class="logo-icon">🎓</span>
                 </div>
-                <span class="badge auth-badge">MAKAUT Official Academic Engine</span>
+                <span class="badge auth-badge">MAKAUT Student Academic Engine</span>
                 <h2 class="auth-title">Welcome to MAKAUT-CampusSense</h2>
                 <p class="auth-subhead">Curated syllabi, subject-wise PYQs, and exam-ready revisions for MAKAUT students</p>
             </div>
 
-            <!-- Dynamic Gate Banner (Visible when triggered by PDF download intercept) -->
+            <!-- Dynamic Gate Banner (Visible when triggered by PDF download or Panic Pack intercept) -->
             <div class="auth-gate-alert" id="auth-gate-banner" style="display: none;">
                 <span style="font-size: 1.25rem;">🔒</span>
                 <div>
-                    <strong>Please sign in or create an account to download official MAKAUT exam papers</strong>
+                    <strong id="auth-gate-message">Please sign in or create an account to access this resource</strong>
                     <div style="font-size: 0.78rem; opacity: 0.9; margin-top: 0.15rem;">
-                        Curated syllabi, subject-wise PYQs, and exam-ready revisions for MAKAUT students.
+                        Instant access to syllabus checklists, PYQ Archives, and 48-Hour Panic Packs.
                     </div>
                 </div>
             </div>
@@ -573,9 +445,9 @@
                 <div class="form-group" style="margin-bottom: 0.85rem;">
                     <label class="form-label">College</label>
                     <select id="signup-college" class="custom-select" required>
-                        <option value="IEM">Institute of Engineering & Management (IEM)</option>
-                        <option value="Heritage">Heritage Institute of Technology (HITK)</option>
                         <option value="TMSL">Techno Main Salt Lake (TMSL)</option>
+                        <option value="Heritage">Heritage Institute of Technology (HITK)</option>
+                        <option value="IEM">Institute of Engineering & Management (IEM)</option>
                         <option value="HIT">Haldia Institute of Technology (HIT)</option>
                         <option value="MAKAUT_MAIN">MAKAUT In-House (Haringhata Main Campus)</option>
                         <option value="OTHER">Other MAKAUT Affiliated College</option>
@@ -618,64 +490,76 @@
         </div>
     </div>
 
-    <!-- Academic Scope Selection Modal (#scope-modal) -->
+    <!-- Academic Scope Onboarding Modal (#scope-modal) with Regulation, Stream, and Semester -->
     <div class="modal-backdrop" id="scope-modal" style="display: none;">
         <div class="modal-card onboarding-card">
             <div class="modal-header">
                 <div>
-                    <h2 class="modal-title">Select Your Academic Scope</h2>
-                    <p class="modal-subtitle">Locks your dashboard to your exact department and current semester.</p>
+                    <h2 class="modal-title">Set Your Academic Context</h2>
+                    <p class="modal-subtitle">Locks your dashboard to your exact regulation, department stream, and current semester.</p>
                 </div>
                 <button class="modal-close-btn" id="btn-close-scope-modal" title="Close">✕</button>
             </div>
 
             <form id="scope-form" class="onboarding-form">
+                <!-- 1. Regulation Selector -->
                 <div class="form-group">
-                    <label class="form-label">Department / Engineering Stream</label>
-                    <div class="stream-select-grid" id="stream-picker-grid">
-                        <button type="button" class="stream-option active" data-stream="COMMON">
-                            <span class="stream-icon">🌱</span>
-                            <span class="stream-name">1st Year Common</span>
-                            <span class="stream-desc">Sem 1 & 2 All Branches</span>
+                    <label class="form-label">University Regulation Scheme</label>
+                    <div class="regulation-toggle-row" id="regulation-picker-row">
+                        <button type="button" class="regulation-btn active" data-regulation="2018">
+                            <span class="reg-title">AICTE 2018 Model</span>
+                            <span class="reg-sub">Established 4-Year B.Tech Curriculum</span>
                         </button>
-                        <button type="button" class="stream-option" data-stream="CSE">
-                            <span class="stream-icon">💻</span>
-                            <span class="stream-name">Computer Science (CSE)</span>
-                            <span class="stream-desc">Core Engineering</span>
-                        </button>
-                        <button type="button" class="stream-option" data-stream="IT">
-                            <span class="stream-icon">🌐</span>
-                            <span class="stream-name">Information Tech (IT)</span>
-                            <span class="stream-desc">Software & Systems</span>
-                        </button>
-                        <button type="button" class="stream-option" data-stream="AIML">
-                            <span class="stream-icon">🤖</span>
-                            <span class="stream-name">AI & Machine Learning</span>
-                            <span class="stream-desc">Specialized Stream</span>
-                        </button>
-                        <button type="button" class="stream-option" data-stream="ECE">
-                            <span class="stream-icon">📡</span>
-                            <span class="stream-name">Electronics & Comm (ECE)</span>
-                            <span class="stream-desc">Circuits & Signals</span>
-                        </button>
-                        <button type="button" class="stream-option" data-stream="EE">
-                            <span class="stream-icon">⚡</span>
-                            <span class="stream-name">Electrical Eng (EE)</span>
-                            <span class="stream-desc">Power & Grid</span>
-                        </button>
-                        <button type="button" class="stream-option" data-stream="ME">
-                            <span class="stream-icon">⚙️</span>
-                            <span class="stream-name">Mechanical Eng (ME)</span>
-                            <span class="stream-desc">Thermodynamics</span>
-                        </button>
-                        <button type="button" class="stream-option" data-stream="CE">
-                            <span class="stream-icon">🏗️</span>
-                            <span class="stream-name">Civil Eng (CE)</span>
-                            <span class="stream-desc">Structures</span>
+                        <button type="button" class="regulation-btn" data-regulation="2026">
+                            <span class="reg-title">NEP 2026 Scheme</span>
+                            <span class="reg-sub">National Education Policy Framework</span>
                         </button>
                     </div>
                 </div>
 
+                <!-- 2. Department / Engineering Stream Selector -->
+                <div class="form-group">
+                    <label class="form-label">Department / Engineering Stream</label>
+                    <div class="stream-select-grid" id="stream-picker-grid">
+                        <button type="button" class="stream-option active" data-stream="GROUP_A">
+                            <span class="stream-icon">🌱</span>
+                            <span class="stream-name">1st Year (Group A / Physics)</span>
+                            <span class="stream-desc">Physics, Math 1A, BEE</span>
+                        </button>
+                        <button type="button" class="stream-option" data-stream="GROUP_B">
+                            <span class="stream-icon">🧪</span>
+                            <span class="stream-name">1st Year (Group B / Chemistry)</span>
+                            <span class="stream-desc">Chemistry, Math 1B, PPS (C)</span>
+                        </button>
+                        <button type="button" class="stream-option" data-stream="CSE">
+                            <span class="stream-icon">💻</span>
+                            <span class="stream-name">CSE</span>
+                            <span class="stream-desc">Computer Science & Engineering</span>
+                        </button>
+                        <button type="button" class="stream-option" data-stream="CSCS">
+                            <span class="stream-icon">🔒</span>
+                            <span class="stream-name">CSCS</span>
+                            <span class="stream-desc">Cyber Security & Computer Science</span>
+                        </button>
+                        <button type="button" class="stream-option" data-stream="IT">
+                            <span class="stream-icon">🌐</span>
+                            <span class="stream-name">IT</span>
+                            <span class="stream-desc">Information Technology</span>
+                        </button>
+                        <button type="button" class="stream-option" data-stream="AIML">
+                            <span class="stream-icon">🤖</span>
+                            <span class="stream-name">AIML</span>
+                            <span class="stream-desc">AI & Machine Learning</span>
+                        </button>
+                        <button type="button" class="stream-option" data-stream="ECE">
+                            <span class="stream-icon">📡</span>
+                            <span class="stream-name">ECE</span>
+                            <span class="stream-desc">Electronics & Communication</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 3. Semester Selector -->
                 <div class="form-group">
                     <label class="form-label">Current Semester</label>
                     <div class="sem-pills-selector" id="sem-picker-row">
@@ -699,7 +583,7 @@
         </div>
     </div>
 
-    <!-- Subject Hub Modal (Checklist + 5Y PYQ + Recurring Topic Clusters) -->
+    <!-- Subject Hub Modal (Checklist + PYQ Archive + Recurring Topic Clusters) -->
     <div class="modal-backdrop" id="subject-hub-modal" style="display: none;">
         <div class="modal-card subject-hub-card">
             <div class="hub-header">
@@ -707,6 +591,7 @@
                     <div class="hub-meta-row">
                         <span class="badge" id="hub-subject-code">BS-M101</span>
                         <span class="stat-pill" id="hub-subject-stream">1st Year Common • Sem 1</span>
+                        <span class="badge" id="hub-credits-badge">4 Credits</span>
                     </div>
                     <h2 class="hub-title" id="hub-subject-name">Mathematics 1A (Calculus & Linear Algebra)</h2>
                 </div>
@@ -719,7 +604,7 @@
 
             <div class="hub-tabs-row">
                 <button class="hub-tab-btn active" data-hub-tab="checklist">📋 Syllabus Units Checklist</button>
-                <button class="hub-tab-btn" data-hub-tab="pyqs">📑 5-Year Question Papers</button>
+                <button class="hub-tab-btn" data-hub-tab="pyqs">📑 PYQ Archives</button>
                 <button class="hub-tab-btn" data-hub-tab="clusters">⚡ High-Frequency Topics</button>
             </div>
 
@@ -733,7 +618,7 @@
                 </div>
             </div>
 
-            <!-- Tab 2: 5-Year PYQs Archive -->
+            <!-- Tab 2: PYQ Archives -->
             <div class="hub-tab-content" id="tab-content-pyqs" style="display: none;">
                 <div class="pyq-archive-list" id="hub-pyqs-container">
                     <!-- Populated dynamically by app.js -->
@@ -757,7 +642,7 @@
                     <span class="flame-icon large">🔥</span>
                     <div>
                         <h2 class="panic-title">MAKAUT Panic Pack — 48-Hour Exam Drill</h2>
-                        <p class="panic-subhead">The top 20% most repeated exam questions across the past 5 years. Prioritize these for guaranteed pass & scoring.</p>
+                        <p class="panic-subhead">The top 20% most repeated exam questions across MAKAUT semester papers. Prioritize these for guaranteed pass & scoring.</p>
                     </div>
                 </div>
                 <button class="modal-close-btn" id="btn-close-panic-modal" title="Close">✕</button>
@@ -787,7 +672,7 @@
                     <span class="doc-icon">📄</span>
                     <div>
                         <div class="pdf-title" id="pdf-modal-title">Examination Paper</div>
-                        <div class="pdf-subtitle" id="pdf-modal-subtitle">Official Maulana Abul Kalam Azad University of Technology Archive</div>
+                        <div class="pdf-subtitle" id="pdf-modal-subtitle">Maulana Abul Kalam Azad University of Technology Question Repository</div>
                     </div>
                 </div>
                 <div class="pdf-viewer-actions">
@@ -877,7 +762,7 @@
                         <span class="badge verified-badge">Grounded</span>
                     </div>
                     <div class="msg-text">
-                        Welcome to MAKAUT CampusSense! Ask me anything about your <strong>syllabi modules</strong>, <strong>5-year question papers</strong>, <strong>MAR 100 points</strong>, or <strong>college placements</strong>.
+                        Welcome to MAKAUT CampusSense! Ask me anything about your <strong>syllabi modules</strong>, <strong>PYQ Archives</strong>, or <strong>MAR 100 points</strong>.
                     </div>
                 </div>
             </div>

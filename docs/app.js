@@ -1,9 +1,9 @@
-// MAKAUT CampusSense — Bento UI, Panic Pack & Dynamic Resource Engine
-// Dual-Mode Architecture: Works both with Spring Boot REST backend AND offline standalone on GitHub Pages!
+// MAKAUT-CampusSense — End-to-End Academic Engine & Conversational RAG
+// Maintained by Srijita Bhowmick (srijitabhowmick42@gmail.com)
 
 document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
-    // 1. Theme Engine (Dark & Light Mode with SVG Icon Rotation)
+    // 1. Theme Engine (Dark & Light Mode with Dynamic SVG Sun/Moon)
     // ==========================================
     let currentTheme = localStorage.getItem('campussense_theme') || 'dark';
     const themeToggleBtn = document.getElementById('btn-theme-toggle');
@@ -13,55 +13,63 @@ document.addEventListener('DOMContentLoaded', () => {
     function applyTheme(theme) {
         currentTheme = theme;
         document.documentElement.setAttribute('data-theme', theme);
+        if (theme === 'light') {
+            document.documentElement.classList.add('light-theme');
+        } else {
+            document.documentElement.classList.remove('light-theme');
+        }
         localStorage.setItem('campussense_theme', theme);
+
         if (sunIcon && moonIcon) {
-            if (theme === 'dark') {
-                sunIcon.style.display = 'none';
-                moonIcon.style.display = 'block';
-            } else {
+            if (theme === 'light') {
                 sunIcon.style.display = 'block';
                 moonIcon.style.display = 'none';
+            } else {
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'block';
             }
         }
     }
     applyTheme(currentTheme);
 
     if (themeToggleBtn) {
-        themeToggleBtn.addEventListener('click', () => {
+        themeToggleBtn.addEventListener('click', (e) => {
+            e.preventDefault();
             const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
             applyTheme(nextTheme);
         });
     }
 
     // ==========================================
-    // 2. User & Academic Context State
+    // 2. State Machine & User Context
     // ==========================================
     let isLoggedIn = localStorage.getItem('campussense_logged_in') === 'true';
     let userIdentifier = localStorage.getItem('campussense_user_id') || ('student-' + Math.random().toString(36).substring(2, 11));
     let userName = localStorage.getItem('campussense_user_name') || 'Student';
-    let currentStream = localStorage.getItem('campussense_stream') || localStorage.getItem('campussense_context_stream') || 'COMMON';
-    let currentSem = parseInt(localStorage.getItem('campussense_semester') || localStorage.getItem('campussense_context_sem') || '1', 10);
+    let currentRegulation = localStorage.getItem('campussense_regulation') || '2018';
+    let currentStream = localStorage.getItem('campussense_stream') || 'CSE';
+    let currentSem = parseInt(localStorage.getItem('campussense_semester') || '5', 10);
     let userChecklistState = JSON.parse(localStorage.getItem('campussense_checklist_state') || '{}');
     let savedBookmarks = JSON.parse(localStorage.getItem('campussense_saved_deck') || '[]');
 
     localStorage.setItem('campussense_user_id', userIdentifier);
 
-    // Update Header Context UI
+    const STREAM_LABELS = {
+        'GROUP_A': '1st Year (Group A / Physics)',
+        'GROUP_B': '1st Year (Group B / Chemistry)',
+        'COMMON': '1st Year Common',
+        'CSE': 'Computer Science (CSE)',
+        'CSCS': 'Cyber Security (CSCS)',
+        'IT': 'Information Tech (IT)',
+        'AIML': 'AI & Machine Learning',
+        'ECE': 'Electronics & Comm (ECE)'
+    };
+
     function updateContextUI() {
-        const streamNames = {
-            'COMMON': '1st Year Common',
-            'CSE': 'Computer Science (CSE)',
-            'IT': 'Information Tech (IT)',
-            'AIML': 'AI & Machine Learning',
-            'ECE': 'Electronics (ECE)',
-            'EE': 'Electrical Eng (EE)',
-            'ME': 'Mechanical Eng (ME)',
-            'CE': 'Civil Eng (CE)'
-        };
-        const streamLabel = streamNames[currentStream] || currentStream;
+        const streamLabel = STREAM_LABELS[currentStream] || currentStream;
         const contextTextEl = document.getElementById('current-context-text');
         if (contextTextEl) {
-            contextTextEl.textContent = `${streamLabel} • Sem ${currentSem}`;
+            contextTextEl.textContent = `${currentStream} • Sem ${currentSem} ▾`;
         }
         const userDisplayEl = document.getElementById('user-display-name');
         if (userDisplayEl) {
@@ -71,7 +79,288 @@ document.addEventListener('DOMContentLoaded', () => {
     updateContextUI();
 
     // ==========================================
-    // 3. View Routing (Landing Page vs Bento Dashboard)
+    // 3. Verified Curriculum & PYQ Master Dataset
+    // ==========================================
+    const MAKAUT_CURRICULUM = [
+        // --- 1st Year Common / Group A ---
+        {
+            code: 'BS-M101',
+            name: 'Mathematics 1A (Calculus & Linear Algebra)',
+            stream: 'GROUP_A',
+            semester: 1,
+            credits: 4,
+            department: '1st Year (Group A)',
+            description: 'Evolutes, definite integrals, multivariable extrema, Cayley-Hamilton theorem, and vector spaces.',
+            units: [
+                { id: 1011, unitNumber: 1, title: 'Unit 1: Calculus & Evolutes', subtopics: 'Evolutes, involutes, definite integrals, Beta & Gamma functions, Rolle and Mean Value Theorems.', hours: 10 },
+                { id: 1012, unitNumber: 2, title: 'Unit 2: Multivariable Calculus', subtopics: 'Partial derivatives, directional derivatives, tangent planes, maxima and minima, Lagrange multipliers.', hours: 8 },
+                { id: 1013, unitNumber: 3, title: 'Unit 3: Matrices & Linear Algebra', subtopics: 'Inverse, rank, rank-nullity theorem, Cayley-Hamilton theorem, eigenvalues, eigenvectors, diagonalization.', hours: 10 },
+                { id: 1014, unitNumber: 4, title: 'Unit 4: Vector Spaces & Linear Transforms', subtopics: 'Vector spaces, linear independence, basis, dimension, linear transformations, kernel, and range.', hours: 8 }
+            ],
+            pyqs: [
+                { id: 2011, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Mathematics 1A (BS-M101)', fileUrl: 'https://makautexam.net/pyq/2024/BS-M101.pdf' },
+                { id: 2012, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Mathematics 1A (BS-M101)', fileUrl: 'https://makautexam.net/pyq/2023/BS-M101.pdf' },
+                { id: 2013, year: 2022, type: 'END_SEM', title: 'MAKAUT 2022 Mathematics 1A (BS-M101)', fileUrl: 'https://makautexam.net/pyq/2022/BS-M101.pdf' },
+                { id: 2014, year: 2021, type: 'END_SEM', title: 'MAKAUT 2021 Mathematics 1A (BS-M101)', fileUrl: 'https://makautexam.net/pyq/2021/BS-M101.pdf' },
+                { id: 2015, year: 2019, type: 'END_SEM', title: 'MAKAUT 2019 Mathematics 1A (BS-M101)', fileUrl: 'https://makautexam.net/pyq/2019/BS-M101.pdf' }
+            ]
+        },
+        {
+            code: 'BS-PH101',
+            name: 'Physics (Optics & Quantum Mechanics)',
+            stream: 'GROUP_A',
+            semester: 1,
+            credits: 4,
+            department: '1st Year (Group A)',
+            description: 'Newton\'s rings, Fraunhofer diffraction, Schrödinger wave equation, Ruby lasers, and Maxwell\'s equations.',
+            units: [
+                { id: 1021, unitNumber: 1, title: 'Unit 1: Wave Optics & Interference', subtopics: 'Huygens principle, superposition, Young\'s double slit, Newton\'s rings theory, Fresnel & Fraunhofer diffraction.', hours: 10 },
+                { id: 1022, unitNumber: 2, title: 'Unit 3: Lasers & Optical Fibers', subtopics: 'Einstein coefficients, population inversion, He-Ne laser, Ruby laser, numerical aperture, step-index fibers.', hours: 8 },
+                { id: 1023, unitNumber: 3, title: 'Unit 3: Quantum Mechanics', subtopics: 'de Broglie wavelength, Heisenberg uncertainty principle, time-dependent Schrödinger equation, particle in a box.', hours: 10 },
+                { id: 1024, unitNumber: 4, title: 'Unit 4: Electromagnetism & Maxwell Equations', subtopics: 'Gauss, Ampere, Faraday laws, Maxwell equations, displacement current, Poynting vector, wave equation.', hours: 8 }
+            ],
+            pyqs: [
+                { id: 2021, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Physics (BS-PH101)', fileUrl: 'https://makautexam.net/pyq/2024/BS-PH101.pdf' },
+                { id: 2022, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Physics (BS-PH101)', fileUrl: 'https://makautexam.net/pyq/2023/BS-PH101.pdf' },
+                { id: 2023, year: 2022, type: 'END_SEM', title: 'MAKAUT 2022 Physics (BS-PH101)', fileUrl: 'https://makautexam.net/pyq/2022/BS-PH101.pdf' },
+                { id: 2024, year: 2021, type: 'END_SEM', title: 'MAKAUT 2021 Physics (BS-PH101)', fileUrl: 'https://makautexam.net/pyq/2021/BS-PH101.pdf' },
+                { id: 2025, year: 2019, type: 'END_SEM', title: 'MAKAUT 2019 Physics (BS-PH101)', fileUrl: 'https://makautexam.net/pyq/2019/BS-PH101.pdf' }
+            ]
+        },
+        {
+            code: 'ES-EE101',
+            name: 'Basic Electrical Engineering',
+            stream: 'GROUP_A',
+            semester: 1,
+            credits: 4,
+            department: '1st Year (Group A)',
+            description: 'Kirchhoff\'s laws, Thévenin\'s & Norton\'s theorems, AC series resonance, single phase transformers, and motors.',
+            units: [
+                { id: 1031, unitNumber: 1, title: 'Unit 1: DC Circuits & Network Theorems', subtopics: 'KVL, KCL, mesh and nodal analysis, Superposition, Thévenin\'s Theorem, Norton\'s Theorem, Maximum Power.', hours: 10 },
+                { id: 1032, unitNumber: 2, title: 'Unit 2: AC Circuits & Phasors', subtopics: 'Sinusoidal alternating quantities, phasor representation, RLC series and parallel circuits, resonance, Q-factor.', hours: 10 },
+                { id: 1033, unitNumber: 3, title: 'Unit 3: Transformers', subtopics: 'Magnetic materials, ideal and practical transformers, equivalent circuit, losses, regulation and efficiency.', hours: 8 },
+                { id: 1034, unitNumber: 4, title: 'Unit 4: Electrical Machines & Installations', subtopics: 'DC machines generation principle, 3-phase induction motor, torque-speed curve, earthing and miniature circuit breakers.', hours: 8 }
+            ],
+            pyqs: [
+                { id: 2031, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Basic Electrical (ES-EE101)', fileUrl: 'https://makautexam.net/pyq/2024/ES-EE101.pdf' },
+                { id: 2032, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Basic Electrical (ES-EE101)', fileUrl: 'https://makautexam.net/pyq/2023/ES-EE101.pdf' },
+                { id: 2033, year: 2022, type: 'END_SEM', title: 'MAKAUT 2022 Basic Electrical (ES-EE101)', fileUrl: 'https://makautexam.net/pyq/2022/ES-EE101.pdf' },
+                { id: 2034, year: 2021, type: 'END_SEM', title: 'MAKAUT 2021 Basic Electrical (ES-EE101)', fileUrl: 'https://makautexam.net/pyq/2021/ES-EE101.pdf' },
+                { id: 2035, year: 2019, type: 'END_SEM', title: 'MAKAUT 2019 Basic Electrical (ES-EE101)', fileUrl: 'https://makautexam.net/pyq/2019/ES-EE101.pdf' }
+            ]
+        },
+        {
+            code: 'ES-CS101',
+            name: 'Programming for Problem Solving (C)',
+            stream: 'GROUP_B',
+            semester: 1,
+            credits: 4,
+            department: '1st Year (Group B)',
+            description: 'Algorithms, conditionals, loops, multidimensional arrays, pointer arithmetic, dynamic allocation, and recursion.',
+            units: [
+                { id: 1041, unitNumber: 1, title: 'Unit 1: Introduction to Programming & Flowcharts', subtopics: 'Algorithm, pseudo-code, flowcharts, variables, datatypes, operators, precedence, expressions.', hours: 8 },
+                { id: 1042, unitNumber: 2, title: 'Unit 2: Conditionals & Iterations', subtopics: 'if-else, switch-case, while, do-while, for loops, nested loops, break, continue, return statements.', hours: 8 },
+                { id: 1043, unitNumber: 3, title: 'Unit 3: Arrays & Strings', subtopics: '1D & 2D arrays, matrix multiplication, string manipulation, string.h library functions.', hours: 8 },
+                { id: 1044, unitNumber: 4, title: 'Unit 4: Functions & Recursion', subtopics: 'Call by value vs reference, parameter passing, recursion, Tower of Hanoi, Fibonacci series, scope and lifetime.', hours: 8 },
+                { id: 1045, unitNumber: 5, title: 'Unit 5: Pointers & Memory Management', subtopics: 'Pointer arithmetic, pointers to pointers, malloc(), calloc(), free(), structures, unions, file I/O operations.', hours: 8 }
+            ],
+            pyqs: [
+                { id: 2041, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Programming in C (ES-CS101)', fileUrl: 'https://makautexam.net/pyq/2024/ES-CS101.pdf' },
+                { id: 2042, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Programming in C (ES-CS101)', fileUrl: 'https://makautexam.net/pyq/2023/ES-CS101.pdf' },
+                { id: 2043, year: 2022, type: 'END_SEM', title: 'MAKAUT 2022 Programming in C (ES-CS101)', fileUrl: 'https://makautexam.net/pyq/2022/ES-CS101.pdf' },
+                { id: 2044, year: 2021, type: 'END_SEM', title: 'MAKAUT 2021 Programming in C (ES-CS101)', fileUrl: 'https://makautexam.net/pyq/2021/ES-CS101.pdf' },
+                { id: 2045, year: 2019, type: 'MID_SEM', title: 'MAKAUT 2019 Mid-Sem Programming in C (ES-CS101)', fileUrl: 'https://makautexam.net/pyq/2019/ES-CS101-CA.pdf' }
+            ]
+        },
+
+        // --- Core Engineering (CSE / CSCS - Semester 5) ---
+        {
+            code: 'PCC-CS501',
+            name: 'Operating Systems',
+            stream: 'CSE',
+            semester: 5,
+            credits: 3,
+            department: 'Computer Science (CSE / CSCS)',
+            description: 'Processes, CPU scheduling, Banker\'s deadlock avoidance, semaphores, paging, LRU page replacement, and file systems.',
+            units: [
+                { id: 5011, unitNumber: 1, title: 'Unit 1: OS Fundamentals & System Calls', subtopics: 'OS structures, kernel architecture, monolitihic vs microkernel, system call execution, dual-mode operation.', hours: 6 },
+                { id: 5012, unitNumber: 2, title: 'Unit 2: Process Scheduling & Threads', subtopics: 'PCB, context switching, FCFS, SJF, Priority, Round Robin scheduling algorithms, Gantt charts, multi-threading models.', hours: 10 },
+                { id: 5013, unitNumber: 3, title: 'Unit 3: Process Synchronization & Deadlocks', subtopics: 'Critical section, Peterson solution, semaphores, Producer-Consumer, Readers-Writers, Banker algorithm, Deadlock detection.', hours: 10 },
+                { id: 5014, unitNumber: 4, title: 'Unit 4: Memory Management & Paging', subtopics: 'Paging, page table structures, TLB hardware, segmentation, virtual memory, demand paging, thrashing.', hours: 8 },
+                { id: 5015, unitNumber: 5, title: 'Unit 5: Page Replacement & Storage', subtopics: 'FIFO, LRU, Optimal page replacement, Belady anomaly, disk scheduling: FCFS, SSTF, SCAN, LOOK, RAID architectures.', hours: 8 }
+            ],
+            pyqs: [
+                { id: 3011, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Operating Systems (PCC-CS501)', fileUrl: 'https://makautexam.net/pyq/2024/PCC-CS501.pdf' },
+                { id: 3012, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Operating Systems (PCC-CS501)', fileUrl: 'https://makautexam.net/pyq/2023/PCC-CS501.pdf' },
+                { id: 2023, year: 2022, type: 'END_SEM', title: 'MAKAUT 2022 Operating Systems (PCC-CS501)', fileUrl: 'https://makautexam.net/pyq/2022/PCC-CS501.pdf' },
+                { id: 3014, year: 2021, type: 'END_SEM', title: 'MAKAUT 2021 Operating Systems (PCC-CS501)', fileUrl: 'https://makautexam.net/pyq/2021/PCC-CS501.pdf' },
+                { id: 3015, year: 2019, type: 'MID_SEM', title: 'MAKAUT 2019 Mid-Sem Operating Systems (PCC-CS501)', fileUrl: 'https://makautexam.net/pyq/2019/PCC-CS501-CA.pdf' }
+            ]
+        },
+        {
+            code: 'PCC-CS502',
+            name: 'Database Management Systems',
+            stream: 'CSE',
+            semester: 5,
+            credits: 3,
+            department: 'Computer Science (CSE / CSCS)',
+            description: 'ER modeling, relational algebra, SQL, normal forms (1NF to BCNF), ACID transactions, and 2-phase locking protocol.',
+            units: [
+                { id: 5021, unitNumber: 1, title: 'Unit 1: ER Data Models & Schema Design', subtopics: 'Entity sets, relationships, cardinalities, weak entity sets, Extended ER features, Schema architecture.', hours: 6 },
+                { id: 5022, unitNumber: 2, title: 'Unit 2: Relational Algebra & SQL Queries', subtopics: 'Selection, projection, Cartesian product, joins, division, DDL, DML, aggregate functions, nested subqueries.', hours: 8 },
+                { id: 5023, unitNumber: 3, title: 'Unit 3: Relational Database Normalization', subtopics: 'Functional dependencies, closure, candidate keys, 1NF, 2NF, 3NF, BCNF, lossless join decomposition.', hours: 10 },
+                { id: 5024, unitNumber: 4, title: 'Unit 4: Transactions & Concurrency Control', subtopics: 'ACID properties, serializability, conflict serializability, 2PL (Two-Phase Locking), Deadlock handling in DBMS.', hours: 8 },
+                { id: 5025, unitNumber: 5, title: 'Unit 5: Crash Recovery & Indexing', subtopics: 'Log-based recovery, WAL protocol, checkpoints, B-trees, B+ trees indexing, hashing techniques.', hours: 8 }
+            ],
+            pyqs: [
+                { id: 3021, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 DBMS (PCC-CS502)', fileUrl: 'https://makautexam.net/pyq/2024/PCC-CS502.pdf' },
+                { id: 3022, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 DBMS (PCC-CS502)', fileUrl: 'https://makautexam.net/pyq/2023/PCC-CS502.pdf' },
+                { id: 3023, year: 2022, type: 'END_SEM', title: 'MAKAUT 2022 DBMS (PCC-CS502)', fileUrl: 'https://makautexam.net/pyq/2022/PCC-CS502.pdf' },
+                { id: 3024, year: 2021, type: 'END_SEM', title: 'MAKAUT 2021 DBMS (PCC-CS502)', fileUrl: 'https://makautexam.net/pyq/2021/PCC-CS502.pdf' },
+                { id: 3025, year: 2019, type: 'END_SEM', title: 'MAKAUT 2019 DBMS (PCC-CS502)', fileUrl: 'https://makautexam.net/pyq/2019/PCC-CS502.pdf' }
+            ]
+        },
+        {
+            code: 'PCC-CS503',
+            name: 'Computer Networks',
+            stream: 'CSE',
+            semester: 5,
+            credits: 3,
+            department: 'Computer Science (CSE / CSCS)',
+            description: 'OSI model, TCP/IP stack, sliding window protocols, subnetting, Dijkstra routing, TCP congestion control, and DNS/HTTP.',
+            units: [
+                { id: 5031, unitNumber: 1, title: 'Unit 1: Physical Layer & Network Reference Models', subtopics: 'OSI 7-layer model, TCP/IP model, transmission media, multiplexing, switching, topology comparison.', hours: 6 },
+                { id: 5032, unitNumber: 2, title: 'Unit 2: Data Link Layer & Framing', subtopics: 'Framing, error detection (CRC, parity), Stop-and-Wait ARQ, Go-Back-N, Selective Repeat, CSMA/CD, Ethernet.', hours: 10 },
+                { id: 5033, unitNumber: 3, title: 'Unit 3: Network Layer & IPv4/IPv6 Addressing', subtopics: 'Classful and classless IP addressing, subnetting, CIDR, distance vector routing, link state routing, Dijkstra algorithm.', hours: 10 },
+                { id: 5034, unitNumber: 4, title: 'Unit 4: Transport Layer & TCP Flow Control', subtopics: 'UDP vs TCP, 3-way handshake, sliding window flow control, TCP congestion control (AIMD, slow start), socket API.', hours: 8 },
+                { id: 5035, unitNumber: 5, title: 'Unit 5: Application Layer Protocols & Security', subtopics: 'DNS domain resolution, HTTP/HTTPS, FTP, SMTP, symmetric and asymmetric cryptography, SSL/TLS handshake.', hours: 8 }
+            ],
+            pyqs: [
+                { id: 3031, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Computer Networks (PCC-CS503)', fileUrl: 'https://makautexam.net/pyq/2024/PCC-CS503.pdf' },
+                { id: 3032, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Computer Networks (PCC-CS503)', fileUrl: 'https://makautexam.net/pyq/2023/PCC-CS503.pdf' },
+                { id: 3033, year: 2022, type: 'END_SEM', title: 'MAKAUT 2022 Computer Networks (PCC-CS503)', fileUrl: 'https://makautexam.net/pyq/2022/PCC-CS503.pdf' },
+                { id: 3034, year: 2021, type: 'END_SEM', title: 'MAKAUT 2021 Computer Networks (PCC-CS503)', fileUrl: 'https://makautexam.net/pyq/2021/PCC-CS503.pdf' },
+                { id: 3035, year: 2019, type: 'END_SEM', title: 'MAKAUT 2019 Computer Networks (PCC-CS503)', fileUrl: 'https://makautexam.net/pyq/2019/PCC-CS503.pdf' }
+            ]
+        }
+    ];
+
+    // Verified High-Frequency Panic Pack Questions
+    const MAKAUT_PANIC_QUESTIONS = [
+        {
+            id: 1,
+            subjectCode: 'ES-EE101',
+            topicName: 'Thévenin\'s Theorem',
+            questionText: 'State and prove Thévenin\'s Theorem. Calculate the load current through a 10 ohm load using Thévenin\'s equivalent circuit in a dual-source bridge network.',
+            marks: 10,
+            frequencyCount: 5,
+            examYears: ['2019', '2021', '2022', '2023', '2024'],
+            groupType: 'Group C',
+            modelAnswerSnippet: '1. Remove load resistor RL. 2. Calculate open-circuit voltage Voc (Vth) across terminals AB using nodal analysis. 3. Deactivate all independent sources (short voltage, open current) to calculate Rth. 4. Equivalent load current: IL = Vth / (Rth + RL).'
+        },
+        {
+            id: 2,
+            subjectCode: 'ES-EE101',
+            topicName: 'Series Resonance',
+            questionText: 'Derive the resonant frequency for an RLC series circuit. Prove that Q-factor = (1/R) * sqrt(L/C) and define bandwidth.',
+            marks: 10,
+            frequencyCount: 4,
+            examYears: ['2019', '2020', '2022', '2023'],
+            groupType: 'Group C',
+            modelAnswerSnippet: 'At resonance, inductive reactance equals capacitive reactance (omega*L = 1/(omega*C)). Hence f0 = 1 / (2*pi*sqrt(L*C)). Impedance is purely resistive (Z = R). Quality factor Q = omega0*L / R = (1/R)*sqrt(L/C). Bandwidth = f0 / Q.'
+        },
+        {
+            id: 3,
+            subjectCode: 'ES-CS101',
+            topicName: 'Pointer Arithmetic & Dynamic Memory',
+            questionText: 'Explain the difference between malloc() and calloc(). Write a C program to dynamically allocate memory for an array of n integers and reverse it using pointers.',
+            marks: 10,
+            frequencyCount: 5,
+            examYears: ['2019', '2021', '2022', '2023', '2024'],
+            groupType: 'Group C',
+            modelAnswerSnippet: 'malloc(size) allocates single contiguous uninitialized block. calloc(n, size) allocates n elements initialized to 0. Reversal uses two pointer variables ptrStart and ptrEnd swapping values while ptrStart < ptrEnd.'
+        },
+        {
+            id: 4,
+            subjectCode: 'ES-CS101',
+            topicName: 'Recursion (Tower of Hanoi)',
+            questionText: 'Write a recursive C function to solve the Tower of Hanoi problem for n disks. Trace the function call tree for n = 3 disks.',
+            marks: 10,
+            frequencyCount: 4,
+            examYears: ['2019', '2021', '2022', '2024'],
+            groupType: 'Group C',
+            modelAnswerSnippet: 'void tower(int n, char src, char dest, char aux) { if(n==1) { printf("Move disk 1 from %c to %c\\n", src, dest); return; } tower(n-1, src, aux, dest); printf("Move disk %d from %c to %c\\n", n, src, dest); tower(n-1, aux, dest, src); } Total moves: 2^n - 1 = 7 for n=3.'
+        },
+        {
+            id: 5,
+            subjectCode: 'BS-M101',
+            topicName: 'Cayley-Hamilton Theorem',
+            questionText: 'State Cayley-Hamilton Theorem. Verify it for matrix A = [[1, 2], [3, 4]] and hence compute A^-1.',
+            marks: 10,
+            frequencyCount: 5,
+            examYears: ['2018', '2019', '2021', '2022', '2023'],
+            groupType: 'Group C',
+            modelAnswerSnippet: 'Every square matrix satisfies its characteristic polynomial: det(A - lambda*I) = 0. Characteristic polynomial: lambda^2 - 5*lambda - 2 = 0. Verify A^2 - 5A - 2I = 0. Multiply by A^-1: A^-1 = (A - 5I)/2.'
+        },
+        {
+            id: 6,
+            subjectCode: 'BS-PH101',
+            topicName: 'Newton\'s Rings',
+            questionText: 'Explain the formation of Newton rings in reflected light. Prove that the diameters of dark rings are proportional to square roots of natural numbers.',
+            marks: 10,
+            frequencyCount: 4,
+            examYears: ['2019', '2021', '2022', '2023'],
+            groupType: 'Group C',
+            modelAnswerSnippet: 'Formed by interference between rays reflected from upper surface of glass plate and lower curved surface of plano-convex lens. Path difference Delta = 2*t + lambda/2. For dark rings: 2t = n*lambda. Since t = r^2 / (2R), Dn^2 = 4*n*lambda*R => Dn directly proportional to sqrt(n).'
+        },
+        {
+            id: 7,
+            subjectCode: 'PCC-CS501',
+            topicName: 'Banker’s Algorithm',
+            questionText: 'Explain Banker Algorithm for Deadlock Avoidance. Given Allocation, Max, and Available matrices, demonstrate how to compute Need matrix and test for Safe Sequence.',
+            marks: 10,
+            frequencyCount: 5,
+            examYears: ['2019', '2021', '2022', '2023', '2024'],
+            groupType: 'Group C',
+            modelAnswerSnippet: '1. Need = Max - Allocation. 2. Work = Available, Finish[i] = false. 3. Find process Pi where Finish[i] == false and Need_i <= Work. 4. Work = Work + Allocation_i, Finish[i] = true. 5. If all Finish[i] == true, system is in Safe State with a Safe Sequence e.g. <P1, P3, P4, P0, P2>.'
+        },
+        {
+            id: 8,
+            subjectCode: 'PCC-CS501',
+            topicName: 'Process Synchronization (Semaphores)',
+            questionText: 'Define Critical Section and the three criteria for a valid solution. Explain how counting semaphores solve the Producer-Consumer bounded buffer problem.',
+            marks: 10,
+            frequencyCount: 5,
+            examYears: ['2018', '2019', '2021', '2022', '2023'],
+            groupType: 'Group C',
+            modelAnswerSnippet: 'Criteria: 1. Mutual Exclusion, 2. Progress, 3. Bounded Waiting. Solution uses mutex = 1, empty = N, full = 0. Producer: wait(empty); wait(mutex); add_item(); signal(mutex); signal(full). Consumer: wait(full); wait(mutex); remove_item(); signal(mutex); signal(empty).'
+        },
+        {
+            id: 9,
+            subjectCode: 'PCC-CS502',
+            topicName: 'Database Normalization (BCNF vs 3NF)',
+            questionText: 'Explain Boyce-Codd Normal Form (BCNF). How does BCNF differ from 3NF? Provide a relational schema that satisfies 3NF but violates BCNF.',
+            marks: 10,
+            frequencyCount: 5,
+            examYears: ['2019', '2020', '2022', '2023', '2024'],
+            groupType: 'Group C',
+            modelAnswerSnippet: '3NF permits non-trivial FD X -> A if X is a superkey OR A is prime attribute. BCNF strictly requires X to be a superkey for every non-trivial FD. Relation R(Student, Subject, Teacher) with FDs {Student, Subject} -> Teacher and Teacher -> Subject is in 3NF but violates BCNF.'
+        },
+        {
+            id: 10,
+            subjectCode: 'PCC-CS503',
+            topicName: 'Subnetting & Dijkstra Routing',
+            questionText: 'Given the network IP 192.168.10.0/24, design 4 subnets. State subnet masks and usable host ranges. Explain Dijkstra Shortest Path algorithm with a 5-node graph.',
+            marks: 10,
+            frequencyCount: 4,
+            examYears: ['2019', '2021', '2022', '2024'],
+            groupType: 'Group C',
+            modelAnswerSnippet: 'To create 4 subnets, borrow 2 bits: Subnet mask is 255.255.255.192 (/26). Subnet 1: 192.168.10.0/26 (Hosts 1-62). Subnet 2: 192.168.10.64/26 (Hosts 65-126). Subnet 3: 192.168.10.128/26. Subnet 4: 192.168.10.192/26. Dijkstra maintains visited set and relaxes unvisited adjacent edge distances iteratively.'
+        }
+    ];
+
+    // ==========================================
+    // 4. View Routing Engine (Landing Page vs Bento Dashboard)
     // ==========================================
     const landingView = document.getElementById('landing-view');
     const dashboardView = document.getElementById('dashboard-view');
@@ -82,6 +371,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const userProfileWrapper = document.getElementById('user-profile-wrapper');
     const btnOpenAiFab = document.getElementById('btn-open-ai-fab');
     const landingNavLinks = document.getElementById('landing-nav-links');
+    const btnNavSignIn = document.getElementById('btn-nav-signin');
+    const btnNavSignUp = document.getElementById('btn-nav-signup');
     const btnLandingAuth = document.getElementById('btn-landing-auth');
 
     function switchView(targetView) {
@@ -95,6 +386,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (userProfileWrapper) userProfileWrapper.style.display = 'block';
             if (btnOpenAiFab) btnOpenAiFab.style.display = 'flex';
             if (landingNavLinks) landingNavLinks.style.display = 'none';
+            if (btnNavSignIn) btnNavSignIn.style.display = 'none';
+            if (btnNavSignUp) btnNavSignUp.style.display = 'none';
             if (btnLandingAuth) btnLandingAuth.style.display = 'none';
 
             updateContextUI();
@@ -112,275 +405,556 @@ document.addEventListener('DOMContentLoaded', () => {
             if (userProfileWrapper) userProfileWrapper.style.display = 'none';
             if (btnOpenAiFab) btnOpenAiFab.style.display = 'none';
             if (landingNavLinks) landingNavLinks.style.display = 'flex';
-            if (btnLandingAuth) btnLandingAuth.style.display = 'inline-flex';
+            if (btnNavSignIn) btnNavSignIn.style.display = 'inline-flex';
+            if (btnNavSignUp) btnNavSignUp.style.display = 'inline-flex';
+            if (btnLandingAuth) btnLandingAuth.style.display = 'none';
+
+            renderLandingCurriculum('ALL');
+            renderLandingPyqRepo('ALL', 'ALL');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     }
 
     // ==========================================
-    // 2. Verified MAKAUT Static Dataset (Fallback & Offline Sync)
+    // 5. Landing Page: Curriculum Explorer with Expandable Units
     // ==========================================
-    const MAKAUT_CURRICULUM = [
-        // 1st Year Common
-        {
-            code: 'BS-M101',
-            name: 'Mathematics 1A (Calculus & Linear Algebra)',
-            stream: 'COMMON',
-            semester: 1,
-            credits: 4,
-            department: '1st Year Common',
-            fileUrl: 'https://makautexam.net/syllabus/BS-M101.pdf',
-            units: [
-                { id: 1011, unitNumber: 1, title: 'Unit 1: Calculus & Evolutes', subtopics: 'Evolutes, involutes, definite integrals, Beta/Gamma functions, Rolle and Mean Value Theorems.', hours: 10 },
-                { id: 1012, unitNumber: 2, title: 'Unit 2: Multivariable Calculus', subtopics: 'Partial derivatives, directional derivatives, maxima and minima, Lagrange multipliers.', hours: 8 },
-                { id: 1013, unitNumber: 3, title: 'Unit 3: Matrices & Linear Algebra', subtopics: 'Inverse, rank, rank-nullity theorem, Cayley-Hamilton theorem, eigenvalues and eigenvectors.', hours: 10 },
-                { id: 1014, unitNumber: 4, title: 'Unit 4: Vector Spaces', subtopics: 'Vector spaces, linear independence, basis, dimension, linear transformations and kernel.', hours: 8 }
-            ],
-            pyqs: [
-                { id: 2011, year: 2023, title: 'MAKAUT 2023 Mathematics 1A (BS-M101)', fileUrl: 'https://makautexam.net/pyq/2023/BS-M101.pdf' },
-                { id: 2012, year: 2022, title: 'MAKAUT 2022 Mathematics 1A (BS-M101)', fileUrl: 'https://makautexam.net/pyq/2022/BS-M101.pdf' },
-                { id: 2013, year: 2021, title: 'MAKAUT 2021 Mathematics 1A (BS-M101)', fileUrl: 'https://makautexam.net/pyq/2021/BS-M101.pdf' }
-            ]
-        },
-        {
-            code: 'BS-PH101',
-            name: 'Physics (Optics & Quantum Mechanics)',
-            stream: 'COMMON',
-            semester: 1,
-            credits: 4,
-            department: '1st Year Common',
-            fileUrl: 'https://makautexam.net/syllabus/BS-PH101.pdf',
-            units: [
-                { id: 1021, unitNumber: 1, title: 'Unit 1: Wave Optics', subtopics: 'Interference, Young double slit, Newton rings, thin film, Fraunhofer diffraction, diffraction grating.', hours: 10 },
-                { id: 1022, unitNumber: 2, title: 'Unit 2: Quantum Mechanics', subtopics: 'Planck distribution, de Broglie hypothesis, Heisenberg uncertainty, Schrodinger equation, particle in box.', hours: 10 },
-                { id: 1023, unitNumber: 3, title: 'Unit 3: Lasers & Optical Fibers', subtopics: 'Einstein coefficients, Ruby and He-Ne lasers, optical fibers, numerical aperture.', hours: 6 },
-                { id: 1024, unitNumber: 4, title: 'Unit 4: Electromagnetism', subtopics: 'Gauss, Ampere, Faraday laws, Maxwell equations, displacement current, Poynting vector.', hours: 8 }
-            ],
-            pyqs: [
-                { id: 2021, year: 2023, title: 'MAKAUT 2023 Physics (BS-PH101)', fileUrl: 'https://makautexam.net/pyq/2023/BS-PH101.pdf' },
-                { id: 2022, year: 2022, title: 'MAKAUT 2022 Physics (BS-PH101)', fileUrl: 'https://makautexam.net/pyq/2022/BS-PH101.pdf' }
-            ]
-        },
-        {
-            code: 'ES-EE101',
-            name: 'Basic Electrical Engineering',
-            stream: 'COMMON',
-            semester: 1,
-            credits: 4,
-            department: '1st Year Common',
-            fileUrl: 'https://makautexam.net/syllabus/ES-EE101.pdf',
-            units: [
-                { id: 1031, unitNumber: 1, title: 'Unit 1: DC Circuits & Theorems', subtopics: 'Kirchhoff laws, Superposition, Thevenin, Norton, Maximum Power Transfer theorems, Star-Delta.', hours: 9 },
-                { id: 1032, unitNumber: 2, title: 'Unit 2: AC Circuits & Resonance', subtopics: 'Sinusoidal waveforms, phasor representation, series/parallel RLC circuits, series resonance, Q-factor.', hours: 9 },
-                { id: 1033, unitNumber: 3, title: 'Unit 3: Transformers', subtopics: 'BH characteristics, ideal and practical transformer, equivalent circuit, losses, efficiency.', hours: 8 },
-                { id: 1034, unitNumber: 4, title: 'Unit 4: Electrical Machines', subtopics: 'Rotating magnetic fields, 3-phase induction motor, torque-slip curve, DC machines.', hours: 8 }
-            ],
-            pyqs: [
-                { id: 2031, year: 2023, title: 'MAKAUT 2023 Basic Electrical (ES-EE101)', fileUrl: 'https://makautexam.net/pyq/2023/ES-EE101.pdf' },
-                { id: 2032, year: 2022, title: 'MAKAUT 2022 Basic Electrical (ES-EE101)', fileUrl: 'https://makautexam.net/pyq/2022/ES-EE101.pdf' },
-                { id: 2033, year: 2019, title: 'MAKAUT 2019 Basic Electrical (ES-EE101)', fileUrl: 'https://makautexam.net/pyq/2019/ES-EE101.pdf' }
-            ]
-        },
-        {
-            code: 'ES-CS101',
-            name: 'Programming for Problem Solving (C)',
-            stream: 'COMMON',
-            semester: 1,
-            credits: 4,
-            department: '1st Year Common',
-            fileUrl: 'https://makautexam.net/syllabus/ES-CS101.pdf',
-            units: [
-                { id: 1041, unitNumber: 1, title: 'Unit 1: Intro to C & Algorithms', subtopics: 'Flowcharts, pseudocode, compilation, data types, arithmetic operators.', hours: 6 },
-                { id: 1042, unitNumber: 2, title: 'Unit 2: Conditionals & Loops', subtopics: 'if-else, switch, for, while, do-while, nested loops, break, continue.', hours: 6 },
-                { id: 1043, unitNumber: 3, title: 'Unit 3: Arrays & Strings', subtopics: '1D and 2D arrays, matrix multiplication, character strings, string library functions.', hours: 8 },
-                { id: 1044, unitNumber: 4, title: 'Unit 4: Functions & Recursion', subtopics: 'Call by value, call by reference, recursive functions: Factorial, Fibonacci, Tower of Hanoi.', hours: 8 },
-                { id: 1045, unitNumber: 5, title: 'Unit 5: Pointers & Dynamic Memory', subtopics: 'Pointers, pointer arithmetic, malloc, calloc, free, structures and unions.', hours: 8 }
-            ],
-            pyqs: [
-                { id: 2041, year: 2023, title: 'MAKAUT 2023 Programming in C (ES-CS101)', fileUrl: 'https://makautexam.net/pyq/2023/ES-CS101.pdf' },
-                { id: 2042, year: 2022, title: 'MAKAUT 2022 Programming in C (ES-CS101)', fileUrl: 'https://makautexam.net/pyq/2022/ES-CS101.pdf' }
-            ]
-        },
-        {
-            code: 'HM-HU101',
-            name: 'English & Professional Communication',
-            stream: 'COMMON',
-            semester: 1,
-            credits: 2,
-            department: '1st Year Common',
-            fileUrl: 'https://makautexam.net/syllabus/HM-HU101.pdf',
-            units: [
-                { id: 1051, unitNumber: 1, title: 'Unit 1: Vocabulary Building', subtopics: 'Word formation, prefixes, suffixes, root words, synonyms and antonyms.', hours: 6 },
-                { id: 1052, unitNumber: 2, title: 'Unit 2: Writing & Paragraph Coherence', subtopics: 'Sentence structures, punctuation, coherence, précis writing, essay drafting.', hours: 6 },
-                { id: 1053, unitNumber: 3, title: 'Unit 3: Professional Communication', subtopics: 'Technical reports, formal letters, email etiquette, CV and resume design.', hours: 8 }
-            ],
-            pyqs: [
-                { id: 2051, year: 2023, title: 'MAKAUT 2023 English & Communication (HM-HU101)', fileUrl: 'https://makautexam.net/pyq/2023/HM-HU101.pdf' }
-            ]
-        },
+    function renderLandingCurriculum(filterStream = 'ALL') {
+        const container = document.getElementById('curriculum-cards-container');
+        if (!container) return;
 
-        // Core 3rd Year (CSE Core)
-        {
-            code: 'PCC-CS501',
-            name: 'Operating Systems',
-            stream: 'CSE',
-            semester: 5,
-            credits: 3,
-            department: 'Computer Science & Engineering',
-            fileUrl: 'https://makautexam.net/syllabus/PCC-CS501.pdf',
-            units: [
-                { id: 5011, unitNumber: 1, title: 'Unit 1: OS Concepts & Structures', subtopics: 'Generations, OS types, system calls, Monolithic vs Microkernel architecture.', hours: 5 },
-                { id: 5012, unitNumber: 2, title: 'Unit 2: Processes & Scheduling', subtopics: 'PCB, context switching, FCFS, SJF, Round Robin, Multiprocessor scheduling.', hours: 6 },
-                { id: 5013, unitNumber: 3, title: 'Unit 3: Inter-Process Communication', subtopics: 'Critical sections, Peterson solution, semaphores, Producer-Consumer, Dining Philosophers.', hours: 7 },
-                { id: 5014, unitNumber: 4, title: 'Unit 4: Deadlocks', subtopics: '4 conditions, Prevention, Banker algorithm for avoidance, Detection and recovery.', hours: 6 },
-                { id: 5015, unitNumber: 5, title: 'Unit 5: Memory Management', subtopics: 'Paging, segmentation, TLB, Virtual memory, page replacement: FIFO, LRU, Optimal.', hours: 8 },
-                { id: 5016, unitNumber: 6, title: 'Unit 6: Storage & Disk Scheduling', subtopics: 'I/O hardware, disk scheduling: FCFS, SSTF, SCAN, C-SCAN, RAID levels.', hours: 5 }
-            ],
-            pyqs: [
-                { id: 2501, year: 2023, title: 'MAKAUT 2023 Operating Systems (PCC-CS501)', fileUrl: 'https://makautexam.net/pyq/2023/PCC-CS501.pdf' },
-                { id: 2502, year: 2022, title: 'MAKAUT 2022 Operating Systems (PCC-CS501)', fileUrl: 'https://makautexam.net/pyq/2022/PCC-CS501.pdf' }
-            ]
-        },
-        {
-            code: 'PCC-CS502',
-            name: 'Database Management Systems',
-            stream: 'CSE',
-            semester: 5,
-            credits: 3,
-            department: 'Computer Science & Engineering',
-            fileUrl: 'https://makautexam.net/syllabus/PCC-CS502.pdf',
-            units: [
-                { id: 5021, unitNumber: 1, title: 'Unit 1: Architecture & Data Models', subtopics: 'Three-schema architecture, data independence, DDL, DML, relational model.', hours: 6 },
-                { id: 5022, unitNumber: 2, title: 'Unit 2: E-R Modeling & Relational Algebra', subtopics: 'Entities, relationships, weak entity sets, Relational Algebra operations.', hours: 8 },
-                { id: 5023, unitNumber: 3, title: 'Unit 3: SQL & Relational Design', subtopics: 'Functional dependencies, Normalization: 1NF, 2NF, 3NF, BCNF, lossless join.', hours: 8 },
-                { id: 5024, unitNumber: 4, title: 'Unit 4: Concurrency & Transactions', subtopics: 'ACID properties, serializability, two-phase locking (2PL), deadlock resolution.', hours: 8 },
-                { id: 5025, unitNumber: 5, title: 'Unit 5: Indexing & Storage', subtopics: 'File organization, B-Trees, B+ Trees indexing, hashing.', hours: 6 }
-            ],
-            pyqs: [
-                { id: 2511, year: 2023, title: 'MAKAUT 2023 DBMS (PCC-CS502)', fileUrl: 'https://makautexam.net/pyq/2023/PCC-CS502.pdf' },
-                { id: 2512, year: 2022, title: 'MAKAUT 2022 DBMS (PCC-CS502)', fileUrl: 'https://makautexam.net/pyq/2022/PCC-CS502.pdf' }
-            ]
+        let filtered = MAKAUT_CURRICULUM;
+        if (filterStream === 'COMMON') {
+            filtered = MAKAUT_CURRICULUM.filter(s => s.stream === 'GROUP_A' || s.stream === 'GROUP_B' || s.stream === 'COMMON');
+        } else if (filterStream === 'CSE') {
+            filtered = MAKAUT_CURRICULUM.filter(s => s.stream === 'CSE' || s.stream === 'CSCS');
+        } else if (filterStream !== 'ALL') {
+            filtered = MAKAUT_CURRICULUM.filter(s => s.stream === filterStream);
         }
-    ];
 
-    const MAKAUT_PANIC_QUESTIONS = [
-        {
-            id: 1,
-            subjectCode: 'ES-EE101',
-            topicName: 'Network Theorems',
-            questionText: 'State Thévenin’s Theorem. For a bridge circuit with 10V DC source, find the Thévenin equivalent voltage (Vth) and resistance (Rth) across load terminals AB.',
-            marks: 10,
-            frequencyCount: 5,
-            examYears: ['2019', '2021', '2022', '2023', '2024'],
-            groupType: 'Group C',
-            modelAnswerSnippet: 'Thévenin’s Theorem: Any linear bilateral DC network across two terminals can be replaced by an equivalent voltage source Vth in series with resistance Rth. Vth is open-circuit voltage across AB. Rth is equivalent resistance looking into AB with independent sources deactivated.'
-        },
-        {
-            id: 2,
-            subjectCode: 'ES-EE101',
-            topicName: 'AC Resonance',
-            questionText: 'Derive the condition for series resonance in an RLC circuit. Show that the resonant frequency is fr = 1 / (2 * pi * sqrt(L * C)). Calculate the Q-factor.',
-            marks: 5,
-            frequencyCount: 4,
-            examYears: ['2019', '2021', '2022', '2023'],
-            groupType: 'Group B',
-            modelAnswerSnippet: 'At series resonance, inductive reactance equals capacitive reactance (X_L = X_C). Hence omega * L = 1 / (omega * C) => omega = 1 / sqrt(LC). Quality factor Q = (omega0 * L) / R = 1 / (R * sqrt(C/L)).'
-        },
-        {
-            id: 3,
-            subjectCode: 'ES-CS101',
-            topicName: 'Dynamic Memory Allocation',
-            questionText: 'Explain the differences between malloc() and calloc() in C. Write a program to dynamically allocate memory for an array of n integers and find their average.',
-            marks: 5,
-            frequencyCount: 5,
-            examYears: ['2018', '2019', '2021', '2022', '2023'],
-            groupType: 'Group B',
-            modelAnswerSnippet: 'malloc(size): allocates single contiguous block of specified bytes with garbage values. calloc(n, size): allocates n blocks of size bytes initialized to zero. Both return void pointer or NULL on failure.'
-        },
-        {
-            id: 4,
-            subjectCode: 'ES-CS101',
-            topicName: 'Recursion',
-            questionText: 'Write a recursive C function to solve the Tower of Hanoi problem for n disks. Trace the function call tree for n = 3 disks.',
-            marks: 10,
-            frequencyCount: 4,
-            examYears: ['2019', '2021', '2022', '2024'],
-            groupType: 'Group C',
-            modelAnswerSnippet: 'void towerOfHanoi(int n, char from, char to, char aux) { if (n == 1) { printf("Move disk 1 from %c to %c\\n", from, to); return; } towerOfHanoi(n - 1, from, aux, to); printf("Move disk %d from %c to %c\\n", n, from, to); towerOfHanoi(n - 1, aux, to, from); } Total moves: 2^n - 1 = 7.'
-        },
-        {
-            id: 5,
-            subjectCode: 'BS-M101',
-            topicName: 'Cayley-Hamilton Theorem',
-            questionText: 'State Cayley-Hamilton Theorem. Verify it for matrix A = [[1, 2], [3, 4]] and hence compute A^-1.',
-            marks: 10,
-            frequencyCount: 5,
-            examYears: ['2018', '2019', '2021', '2022', '2023'],
-            groupType: 'Group C',
-            modelAnswerSnippet: 'Statement: Every square matrix satisfies its own characteristic equation: det(A - lambda * I) = 0. Characteristic polynomial: lambda^2 - tr(A)*lambda + det(A) = 0. Substituting A gives A^2 - 5A - 2I = 0. Multiplying by A^-1 gives A^-1 = (A - 5I) / 2.'
-        },
-        {
-            id: 6,
-            subjectCode: 'BS-PH101',
-            topicName: 'Newton\'s Rings',
-            questionText: 'Explain the formation of Newton rings in reflected light. Prove that the diameters of dark rings are proportional to square roots of natural numbers.',
-            marks: 10,
-            frequencyCount: 4,
-            examYears: ['2019', '2021', '2022', '2023'],
-            groupType: 'Group C',
-            modelAnswerSnippet: 'Newton rings are formed by interference between light reflected from upper surface of glass plate and lower surface of plano-convex lens. Path difference for reflected ray: Delta = 2*mu*t + lambda/2. For dark rings, 2*t = n*lambda. Since t = r^2 / (2R), D_n = sqrt(4*n*lambda*R) proportional to sqrt(n).'
-        },
-        {
-            id: 7,
-            subjectCode: 'PCC-CS501',
-            topicName: 'Banker’s Algorithm',
-            questionText: 'Explain Banker Algorithm for Deadlock Avoidance. Given Allocation, Max, and Available matrices for 5 processes and 3 resource types, determine if the system is in a safe state and compute the safe sequence.',
-            marks: 10,
-            frequencyCount: 4,
-            examYears: ['2019', '2021', '2022', '2023'],
-            groupType: 'Group C',
-            modelAnswerSnippet: 'Banker Algorithm simulates resource allocation safety: 1. Calculate Need = Max - Allocation. 2. Find process where Need <= Available. 3. Simulate process execution and release its resources to Available. 4. If all processes complete, the state is safe with an identified Safe Sequence e.g. <P1, P3, P4, P0, P2>.'
-        },
-        {
-            id: 8,
-            subjectCode: 'PCC-CS501',
-            topicName: 'Process Synchronization',
-            questionText: 'Define Critical Section. What are the three requirements for a valid critical section solution? Explain how counting semaphores solve the Producer-Consumer problem.',
-            marks: 10,
-            frequencyCount: 5,
-            examYears: ['2018', '2019', '2021', '2022', '2023'],
-            groupType: 'Group C',
-            modelAnswerSnippet: 'Requirements: 1. Mutual Exclusion, 2. Progress, 3. Bounded Waiting. Producer-Consumer solution uses three semaphores: mutex = 1 (mutual exclusion for buffer access), empty = N (tracks empty slots), full = 0 (tracks filled slots).'
-        },
-        {
-            id: 9,
-            subjectCode: 'PCC-CS502',
-            topicName: 'Database Normalization',
-            questionText: 'Explain Boyce-Codd Normal Form (BCNF). How does BCNF differ from 3NF? Provide a relation that is in 3NF but not in BCNF.',
-            marks: 10,
-            frequencyCount: 5,
-            examYears: ['2019', '2020', '2022', '2023', '2024'],
-            groupType: 'Group C',
-            modelAnswerSnippet: 'A relation is in 3NF if for every FD X -> A, X is superkey OR A is prime attribute. In BCNF, X must strictly be a superkey for every non-trivial FD. Relation R(Student, Subject, Teacher) with FDs {Student, Subject} -> Teacher and Teacher -> Subject is in 3NF but not in BCNF.'
-        }
-    ];
+        container.innerHTML = filtered.map(sub => {
+            const units = sub.units || [];
+            return `
+                <div class="curriculum-card" data-code="${escapeHtml(sub.code)}">
+                    <div>
+                        <div class="curriculum-card-header">
+                            <span class="landing-subject-code">${escapeHtml(sub.code)}</span>
+                            <span class="badge" style="background: rgba(255,255,255,0.06); font-family: var(--font-mono);">${sub.credits} Credits</span>
+                        </div>
+                        <h3 class="curriculum-card-title">${escapeHtml(sub.name)}</h3>
+                        <div class="curriculum-card-meta">${escapeHtml(sub.department)} • Semester ${sub.semester}</div>
+
+                        <div class="curriculum-units-accordion">
+                            ${units.map(u => `
+                                <div class="curriculum-unit-item" data-unit-id="${u.id}">
+                                    <button type="button" class="curriculum-unit-trigger">
+                                        <span><strong>Unit ${u.unitNumber}:</strong> ${escapeHtml(u.title.replace(/^Unit \d+:\s*/, ''))}</span>
+                                        <div style="display: flex; align-items: center; gap: 0.4rem;">
+                                            <span class="unit-hours">${u.hours} hrs</span>
+                                            <span class="accordion-chevron">▾</span>
+                                        </div>
+                                    </button>
+                                    <div class="curriculum-unit-body">
+                                        ${escapeHtml(u.subtopics)}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="curriculum-card-action">
+                        <button class="btn-curriculum-track" data-code="${escapeHtml(sub.code)}">
+                            Track Checklist in Dashboard ➔
+                        </button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        // Wire accordion toggle handlers
+        container.querySelectorAll('.curriculum-unit-trigger').forEach(trigger => {
+            trigger.addEventListener('click', (e) => {
+                e.preventDefault();
+                const item = trigger.closest('.curriculum-unit-item');
+                if (item) item.classList.toggle('open');
+            });
+        });
+
+        // Wire "Track Checklist in Dashboard" CTA
+        container.querySelectorAll('.btn-curriculum-track').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const code = btn.getAttribute('data-code');
+                if (isLoggedIn) {
+                    switchView('dashboard');
+                    openSubjectHub(code);
+                } else {
+                    showAuthModal(true, "Sign in to track your syllabus progress in the interactive dashboard");
+                }
+            });
+        });
+    }
+
+    // Stream filter tabs for Curriculum Explorer
+    document.querySelectorAll('#curriculum-stream-filter .curriculum-tab-btn').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('#curriculum-stream-filter .curriculum-tab-btn').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            const stream = tab.getAttribute('data-curriculum-stream') || 'ALL';
+            renderLandingCurriculum(stream);
+        });
+    });
 
     // ==========================================
-    // 3. Render Bento Dashboard: Active Subjects
+    // 6. Landing Page: PYQ Archives Repository
+    // ==========================================
+    let currentPyqYearFilter = 'ALL';
+    let currentPyqTypeFilter = 'ALL';
+
+    function renderLandingPyqRepo(yearFilter = 'ALL', typeFilter = 'ALL') {
+        const grid = document.getElementById('landing-pyq-grid');
+        if (!grid) return;
+
+        // Collect all papers from curriculum subjects
+        const allPapers = [];
+        MAKAUT_CURRICULUM.forEach(sub => {
+            (sub.pyqs || []).forEach(p => {
+                allPapers.push({
+                    subjectCode: sub.code,
+                    subjectName: sub.name,
+                    year: p.year,
+                    type: p.type || 'END_SEM',
+                    title: p.title,
+                    fileUrl: p.fileUrl
+                });
+            });
+        });
+
+        let filtered = allPapers;
+        if (yearFilter !== 'ALL') {
+            const yr = parseInt(yearFilter, 10);
+            filtered = filtered.filter(p => p.year === yr);
+        }
+        if (typeFilter !== 'ALL') {
+            filtered = filtered.filter(p => p.type === typeFilter);
+        }
+
+        if (filtered.length === 0) {
+            grid.innerHTML = '<div style="grid-column: 1/-1; padding: 2.5rem; text-align: center; color: var(--text-muted);">No past papers matching this filter combination. Try selecting "All Years".</div>';
+            return;
+        }
+
+        grid.innerHTML = filtered.map(p => `
+            <div class="pyq-repo-card">
+                <div>
+                    <div class="pyq-repo-card-top">
+                        <span class="pyq-paper-code">${escapeHtml(p.subjectCode)}</span>
+                        <span class="pyq-year-tag">${p.year}</span>
+                    </div>
+                    <h4 class="pyq-repo-title">${escapeHtml(p.subjectName)}</h4>
+                    <div class="pyq-repo-meta">
+                        <span class="pyq-exam-type-pill">${p.type === 'MID_SEM' ? 'Mid-Sem / CA' : 'End-Sem Exam'}</span>
+                        <span>•</span>
+                        <span>70 Marks Theory • Group A, B, C</span>
+                    </div>
+                </div>
+
+                <div class="pyq-repo-actions">
+                    <button class="btn-preview-paper" data-title="${escapeHtml(p.title)}" data-url="${escapeHtml(p.fileUrl)}">
+                        👁 Preview Paper
+                    </button>
+                    <button class="btn-download-paper btn-download-pdf-gate" data-subject="${escapeHtml(p.subjectCode)}" data-paper="${p.year}" data-name="${escapeHtml(p.title)}" data-url="${escapeHtml(p.fileUrl)}">
+                        📥 Download PDF
+                    </button>
+                </div>
+            </div>
+        `).join('');
+
+        // Wire Preview buttons
+        grid.querySelectorAll('.btn-preview-paper').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const title = btn.getAttribute('data-title');
+                const url = btn.getAttribute('data-url');
+                openPdfViewer(title, url);
+            });
+        });
+
+        // Wire Download buttons (Gated Flow)
+        grid.querySelectorAll('.btn-download-pdf-gate').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const subjectCode = btn.getAttribute('data-subject');
+                const paperYear = btn.getAttribute('data-paper');
+                const title = btn.getAttribute('data-name');
+                const fileUrl = btn.getAttribute('data-url') || `https://makautexam.net/pyq/${paperYear}/${subjectCode}.pdf`;
+
+                if (localStorage.getItem('campussense_logged_in') !== 'true') {
+                    sessionStorage.setItem('pending_download_action', JSON.stringify({ fileUrl, title, subjectCode, paperYear }));
+                    showAuthModal(true, "Please sign in or create an account to download MAKAUT examination papers");
+                    return;
+                }
+                openPdfViewer(title, fileUrl);
+            });
+        });
+    }
+
+    // PYQ Year Pills
+    document.querySelectorAll('#pyq-year-pills .filter-pill').forEach(pill => {
+        pill.addEventListener('click', () => {
+            document.querySelectorAll('#pyq-year-pills .filter-pill').forEach(p => p.classList.remove('active'));
+            pill.classList.add('active');
+            currentPyqYearFilter = pill.getAttribute('data-pyq-year') || 'ALL';
+            renderLandingPyqRepo(currentPyqYearFilter, currentPyqTypeFilter);
+        });
+    });
+
+    // PYQ Exam Type Pills
+    document.querySelectorAll('#pyq-type-pills .filter-pill').forEach(pill => {
+        pill.addEventListener('click', () => {
+            document.querySelectorAll('#pyq-type-pills .filter-pill').forEach(p => p.classList.remove('active'));
+            pill.classList.add('active');
+            currentPyqTypeFilter = pill.getAttribute('data-pyq-type') || 'ALL';
+            renderLandingPyqRepo(currentPyqYearFilter, currentPyqTypeFilter);
+        });
+    });
+
+    // ==========================================
+    // 7. Hero & Bento Feature Grid CTA Triggers
+    // ==========================================
+    // Hero Panic Pack Button
+    const btnHeroPanicPack = document.getElementById('btn-hero-panic-pack');
+    if (btnHeroPanicPack) {
+        btnHeroPanicPack.addEventListener('click', () => {
+            if (isLoggedIn) {
+                switchView('dashboard');
+                openFullPanicMode();
+            } else {
+                showAuthModal(true, "Sign in to access the 48-Hour Exam Panic Pack");
+            }
+        });
+    }
+
+    // Feature Card CTAs
+    const btnFeatureSyllabus = document.getElementById('btn-feature-syllabus');
+    if (btnFeatureSyllabus) {
+        btnFeatureSyllabus.addEventListener('click', () => {
+            if (isLoggedIn) {
+                switchView('dashboard');
+            } else {
+                const el = document.getElementById('landing-curriculum');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
+
+    const btnFeaturePanic = document.getElementById('btn-feature-panic');
+    if (btnFeaturePanic) {
+        btnFeaturePanic.addEventListener('click', () => {
+            if (isLoggedIn) {
+                switchView('dashboard');
+                openFullPanicMode();
+            } else {
+                showAuthModal(true, "Sign in to access the 48-Hour Exam Panic Pack");
+            }
+        });
+    }
+
+    const btnFeaturePyq = document.getElementById('btn-feature-pyq');
+    if (btnFeaturePyq) {
+        btnFeaturePyq.addEventListener('click', () => {
+            const el = document.getElementById('landing-pyqs');
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+        });
+    }
+
+    const btnFeatureAi = document.getElementById('btn-feature-ai');
+    if (btnFeatureAi) {
+        btnFeatureAi.addEventListener('click', () => {
+            openAiDrawer();
+        });
+    }
+
+    // Brand Home Trigger
+    const btnBrandHome = document.getElementById('btn-brand-home');
+    if (btnBrandHome) {
+        btnBrandHome.addEventListener('click', () => {
+            if (isLoggedIn) {
+                switchView('dashboard');
+            } else {
+                switchView('landing');
+            }
+        });
+    }
+
+    // ==========================================
+    // 8. Auth Modal (Sign In & Sign Up)
+    // ==========================================
+    const authModal = document.getElementById('auth-modal');
+    const authGateBanner = document.getElementById('auth-gate-banner');
+    const authGateMsg = document.getElementById('auth-gate-message');
+    const tabAuthLogin = document.getElementById('tab-auth-login');
+    const tabAuthSignup = document.getElementById('tab-auth-signup');
+    const formAuthLogin = document.getElementById('form-auth-login');
+    const formAuthSignup = document.getElementById('form-auth-signup');
+    const btnCloseAuthModal = document.getElementById('btn-close-auth-modal');
+    const btnAuthGoogle = document.getElementById('btn-auth-google');
+
+    function showAuthModal(isGate = false, message = '') {
+        if (authGateBanner) {
+            authGateBanner.style.display = isGate ? 'flex' : 'none';
+        }
+        if (authGateMsg && message) {
+            authGateMsg.textContent = message;
+        }
+        if (authModal) authModal.style.display = 'flex';
+    }
+
+    function setAuthTab(tab) {
+        if (tab === 'signup') {
+            if (tabAuthSignup) tabAuthSignup.classList.add('active');
+            if (tabAuthLogin) tabAuthLogin.classList.remove('active');
+            if (formAuthSignup) formAuthSignup.style.display = 'block';
+            if (formAuthLogin) formAuthLogin.style.display = 'none';
+        } else {
+            if (tabAuthLogin) tabAuthLogin.classList.add('active');
+            if (tabAuthSignup) tabAuthSignup.classList.remove('active');
+            if (formAuthLogin) formAuthLogin.style.display = 'block';
+            if (formAuthSignup) formAuthSignup.style.display = 'none';
+        }
+    }
+
+    if (btnNavSignIn) {
+        btnNavSignIn.addEventListener('click', () => {
+            setAuthTab('login');
+            showAuthModal(false);
+        });
+    }
+
+    if (btnNavSignUp) {
+        btnNavSignUp.addEventListener('click', () => {
+            setAuthTab('signup');
+            showAuthModal(false);
+        });
+    }
+
+    if (btnLandingAuth) {
+        btnLandingAuth.addEventListener('click', () => {
+            setAuthTab('login');
+            showAuthModal(false);
+        });
+    }
+
+    if (tabAuthLogin) tabAuthLogin.addEventListener('click', () => setAuthTab('login'));
+    if (tabAuthSignup) tabAuthSignup.addEventListener('click', () => setAuthTab('signup'));
+
+    if (btnCloseAuthModal) {
+        btnCloseAuthModal.addEventListener('click', () => {
+            if (authModal) authModal.style.display = 'none';
+        });
+    }
+
+    function completeAuthentication(name, email) {
+        isLoggedIn = true;
+        userName = name || 'Student';
+        const userEmail = email || `${userName.toLowerCase().replace(/\s+/g, '')}@makaut.edu.in`;
+
+        localStorage.setItem('campussense_logged_in', 'true');
+        localStorage.setItem('campussense_user_name', userName);
+        localStorage.setItem('campussense_user_email', userEmail);
+        localStorage.setItem('campussense_user_id', userEmail);
+
+        if (authModal) authModal.style.display = 'none';
+
+        // Prompt Academic Scope Selection Onboarding
+        openScopeModal();
+    }
+
+    if (formAuthLogin) {
+        formAuthLogin.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const emailInput = document.getElementById('login-email');
+            const emailVal = emailInput ? emailInput.value.trim() : 'student@makaut.edu';
+            const baseName = emailVal.split('@')[0];
+            const formatted = baseName.charAt(0).toUpperCase() + baseName.slice(1);
+            completeAuthentication(formatted, emailVal);
+        });
+    }
+
+    if (formAuthSignup) {
+        formAuthSignup.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const nameInput = document.getElementById('signup-name');
+            const emailInput = document.getElementById('signup-email');
+            const collegeSelect = document.getElementById('signup-college');
+
+            const fullName = nameInput ? nameInput.value.trim() : 'Student';
+            const emailVal = emailInput ? emailInput.value.trim() : 'student@makaut.edu';
+            if (collegeSelect) localStorage.setItem('campussense_college', collegeSelect.value);
+
+            completeAuthentication(fullName, emailVal);
+        });
+    }
+
+    if (btnAuthGoogle) {
+        btnAuthGoogle.addEventListener('click', () => {
+            completeAuthentication('Srijita Bhowmick', 'srijitabhowmick42@gmail.com');
+        });
+    }
+
+    // ==========================================
+    // 9. Academic Scope Onboarding Modal (#scope-modal)
+    // ==========================================
+    const scopeModal = document.getElementById('scope-modal');
+    const btnCloseScopeModal = document.getElementById('btn-close-scope-modal');
+    const scopeForm = document.getElementById('scope-form');
+
+    function openScopeModal() {
+        // Highlight active regulation
+        document.querySelectorAll('.regulation-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.getAttribute('data-regulation') === currentRegulation);
+        });
+        // Highlight active stream
+        document.querySelectorAll('.stream-option').forEach(btn => {
+            btn.classList.toggle('active', btn.getAttribute('data-stream') === currentStream);
+        });
+        // Highlight active semester
+        document.querySelectorAll('.sem-btn').forEach(btn => {
+            btn.classList.toggle('active', parseInt(btn.getAttribute('data-sem'), 10) === currentSem);
+        });
+        if (scopeModal) scopeModal.style.display = 'flex';
+    }
+
+    if (contextSwitcherBtn) contextSwitcherBtn.addEventListener('click', openScopeModal);
+
+    if (btnCloseScopeModal) {
+        btnCloseScopeModal.addEventListener('click', () => {
+            if (scopeModal) scopeModal.style.display = 'none';
+        });
+    }
+
+    // Regulation pickers
+    document.querySelectorAll('.regulation-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.regulation-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        });
+    });
+
+    // Stream pickers
+    document.querySelectorAll('.stream-option').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.stream-option').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        });
+    });
+
+    // Semester pickers
+    document.querySelectorAll('.sem-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.sem-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        });
+    });
+
+    // Scope form submission
+    if (scopeForm) {
+        scopeForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const activeRegBtn = document.querySelector('.regulation-btn.active');
+            const activeStreamBtn = document.querySelector('.stream-option.active');
+            const activeSemBtn = document.querySelector('.sem-btn.active');
+
+            if (activeRegBtn) currentRegulation = activeRegBtn.getAttribute('data-regulation') || '2018';
+            if (activeStreamBtn) currentStream = activeStreamBtn.getAttribute('data-stream') || 'CSE';
+            if (activeSemBtn) currentSem = parseInt(activeSemBtn.getAttribute('data-sem'), 10) || 5;
+
+            localStorage.setItem('campussense_regulation', currentRegulation);
+            localStorage.setItem('campussense_stream', currentStream);
+            localStorage.setItem('campussense_semester', currentSem.toString());
+            localStorage.setItem('campussense_scope', JSON.stringify({
+                regulation: currentRegulation,
+                stream: currentStream,
+                semester: currentSem
+            }));
+
+            if (scopeModal) scopeModal.style.display = 'none';
+
+            // Transition to Dashboard
+            switchView('dashboard');
+
+            // Action Preservation: Check if user triggered a download before auth
+            const pendingActionRaw = sessionStorage.getItem('pending_download_action');
+            if (pendingActionRaw) {
+                try {
+                    const pending = JSON.parse(pendingActionRaw);
+                    sessionStorage.removeItem('pending_download_action');
+                    openPdfViewer(pending.title, pending.fileUrl);
+                } catch (err) {
+                    sessionStorage.removeItem('pending_download_action');
+                }
+            }
+        });
+    }
+
+    // User Profile Dropdown Menu in Dashboard
+    const userProfilePill = document.getElementById('user-profile-pill');
+    const userDropdownMenu = document.getElementById('user-dropdown-menu');
+    const btnMenuSwitchScope = document.getElementById('btn-menu-switch-scope');
+    const btnMenuLandingPage = document.getElementById('btn-menu-landing-page');
+    const btnMenuSignOut = document.getElementById('btn-menu-sign-out');
+
+    if (userProfilePill && userDropdownMenu) {
+        userProfilePill.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isVisible = userDropdownMenu.style.display === 'flex';
+            userDropdownMenu.style.display = isVisible ? 'none' : 'flex';
+        });
+
+        document.addEventListener('click', () => {
+            if (userDropdownMenu) userDropdownMenu.style.display = 'none';
+        });
+    }
+
+    if (btnMenuSwitchScope) {
+        btnMenuSwitchScope.addEventListener('click', () => {
+            if (userDropdownMenu) userDropdownMenu.style.display = 'none';
+            openScopeModal();
+        });
+    }
+
+    if (btnMenuLandingPage) {
+        btnMenuLandingPage.addEventListener('click', () => {
+            if (userDropdownMenu) userDropdownMenu.style.display = 'none';
+            switchView('landing');
+        });
+    }
+
+    if (btnMenuSignOut) {
+        btnMenuSignOut.addEventListener('click', () => {
+            if (userDropdownMenu) userDropdownMenu.style.display = 'none';
+            isLoggedIn = false;
+            localStorage.removeItem('campussense_logged_in');
+            switchView('landing');
+        });
+    }
+
+    // ==========================================
+    // 10. Dashboard Bento: Active Subjects & Circular Progress Rings
     // ==========================================
     function renderActiveSubjects() {
         const grid = document.getElementById('active-subjects-grid');
         if (!grid) return;
 
-        // Filter subjects matching current stream and semester
+        // Filter subjects matching current scope
         let matchingSubjects = MAKAUT_CURRICULUM.filter(s => {
-            if (currentStream === 'COMMON') {
-                return s.stream === 'COMMON' && s.semester === currentSem;
+            if (currentStream === 'GROUP_A' || currentStream === 'GROUP_B' || currentStream === 'COMMON') {
+                return (s.stream === currentStream || s.stream === 'GROUP_A' || s.stream === 'COMMON') && s.semester === currentSem;
+            }
+            if (currentStream === 'CSCS') {
+                return (s.stream === 'CSE' || s.stream === 'CSCS') && s.semester === currentSem;
             }
             return s.stream === currentStream && s.semester === currentSem;
         });
 
-        // Fallback: If department has no specific subjects yet, display common or first available
+        // Fallback: If department has no subjects indexed for this semester, show available semester subjects
         if (matchingSubjects.length === 0) {
             matchingSubjects = MAKAUT_CURRICULUM.filter(s => s.semester === currentSem);
             if (matchingSubjects.length === 0) {
@@ -396,7 +970,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const totalUnits = units.length;
             totalUnitsAll += totalUnits;
 
-            // Count completed from user state
             const completedCount = units.filter(u => userChecklistState[u.id] === true).length;
             completedUnitsAll += completedCount;
 
@@ -432,14 +1005,14 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         }).join('');
 
-        // Update overall pill
+        // Update overall progress pill in heading
         const overallPercentage = totalUnitsAll > 0 ? Math.round((completedUnitsAll / totalUnitsAll) * 100) : 0;
         const progressPill = document.getElementById('overall-syllabus-progress-pill');
         if (progressPill) {
             progressPill.textContent = `${overallPercentage}% Completed (${completedUnitsAll}/${totalUnitsAll} Units)`;
         }
 
-        // Attach click handlers to open Subject Hub
+        // Attach card click handlers to launch Subject Hub
         grid.querySelectorAll('.subject-item-card').forEach(card => {
             card.addEventListener('click', () => {
                 const code = card.getAttribute('data-code');
@@ -449,32 +1022,217 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 4. Render Bento Dashboard: Panic Pack & Saved Deck
+    // 11. Subject Hub Modal (Checklist, PYQ Archive, Recurring Topics)
     // ==========================================
-    async function renderPanicPackPreview() {
+    let currentHubSubject = null;
+
+    function openSubjectHub(subjectCode) {
+        let subject = MAKAUT_CURRICULUM.find(s => s.code.toLowerCase() === subjectCode.toLowerCase());
+        if (!subject) return;
+        currentHubSubject = subject;
+
+        const codeEl = document.getElementById('hub-subject-code');
+        const nameEl = document.getElementById('hub-subject-name');
+        const streamEl = document.getElementById('hub-subject-stream');
+        const creditsEl = document.getElementById('hub-credits-badge');
+
+        if (codeEl) codeEl.textContent = subject.code;
+        if (nameEl) nameEl.textContent = subject.name;
+        if (streamEl) streamEl.textContent = `${subject.department} • Sem ${subject.semester}`;
+        if (creditsEl) creditsEl.textContent = `${subject.credits} Credits`;
+
+        // Render Tabs
+        renderHubChecklist(subject);
+        renderHubPyqs(subject);
+        renderHubClusters(subject);
+
+        // Reset to Checklist tab
+        activateHubTab('checklist');
+
+        const hubModal = document.getElementById('subject-hub-modal');
+        if (hubModal) hubModal.style.display = 'flex';
+    }
+
+    function renderHubChecklist(subject) {
+        const container = document.getElementById('hub-units-container');
+        const statNum = document.getElementById('hub-completion-stat');
+        if (!container) return;
+
+        const units = subject.units || [];
+        const completedCount = units.filter(u => userChecklistState[u.id] === true).length;
+        const percentage = units.length > 0 ? Math.round((completedCount / units.length) * 100) : 0;
+
+        if (statNum) statNum.textContent = `${percentage}%`;
+
+        container.innerHTML = units.map(u => {
+            const isChecked = userChecklistState[u.id] === true;
+            return `
+                <div class="unit-checklist-item ${isChecked ? 'completed' : ''}" data-unit-id="${u.id}">
+                    <div class="unit-checkbox-custom">${isChecked ? '✓' : ''}</div>
+                    <div class="unit-item-content">
+                        <div class="unit-item-header">
+                            <span class="unit-item-title">${escapeHtml(u.title)}</span>
+                            <span class="badge" style="background: rgba(255,255,255,0.06); font-family: var(--font-mono); font-size: 0.72rem;">${u.hours} Lecture Hours</span>
+                        </div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">${escapeHtml(u.subtopics)}</div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        // Wire check/uncheck events
+        container.querySelectorAll('.unit-checklist-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const unitId = item.getAttribute('data-unit-id');
+                const newStatus = !userChecklistState[unitId];
+                userChecklistState[unitId] = newStatus;
+                localStorage.setItem('campussense_checklist_state', JSON.stringify(userChecklistState));
+
+                // Re-render checklist and active subjects
+                renderHubChecklist(subject);
+                renderActiveSubjects();
+            });
+        });
+    }
+
+    function renderHubPyqs(subject) {
+        const container = document.getElementById('hub-pyqs-container');
+        if (!container) return;
+
+        const pyqs = subject.pyqs || [];
+        if (pyqs.length === 0) {
+            container.innerHTML = '<div style="padding: 2.5rem; text-align: center; color: var(--text-muted);">No past question papers uploaded for this subject yet.</div>';
+            return;
+        }
+
+        container.innerHTML = pyqs.map(p => `
+            <div class="pyq-repo-card" style="margin-bottom: 0.85rem;">
+                <div class="pyq-repo-card-top">
+                    <span class="pyq-paper-code">${escapeHtml(subject.code)}</span>
+                    <span class="pyq-year-tag">${p.year}</span>
+                </div>
+                <h4 class="pyq-repo-title">${escapeHtml(p.title)}</h4>
+                <div class="pyq-repo-meta">
+                    <span class="pyq-exam-type-pill">${p.type === 'MID_SEM' ? 'Mid-Sem / CA' : 'End-Sem Exam'}</span>
+                    <span>•</span>
+                    <span>70 Marks Theory • Verified Paper</span>
+                </div>
+                <div class="pyq-repo-actions">
+                    <button class="btn-preview-paper btn-hub-preview" data-title="${escapeHtml(p.title)}" data-url="${escapeHtml(p.fileUrl)}">
+                        👁 Preview Paper
+                    </button>
+                    <a href="${p.fileUrl}" target="_blank" class="btn-download-paper" style="text-decoration: none;">
+                        📥 Download PDF
+                    </a>
+                </div>
+            </div>
+        `).join('');
+
+        container.querySelectorAll('.btn-hub-preview').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const title = btn.getAttribute('data-title');
+                const url = btn.getAttribute('data-url');
+                openPdfViewer(title, url);
+            });
+        });
+    }
+
+    function renderHubClusters(subject) {
+        const container = document.getElementById('hub-clusters-container');
+        if (!container) return;
+
+        const subjectQuestions = MAKAUT_PANIC_QUESTIONS.filter(q => q.subjectCode.toLowerCase() === subject.code.toLowerCase());
+        if (subjectQuestions.length === 0) {
+            container.innerHTML = '<div style="padding: 2.5rem; text-align: center; color: var(--text-muted);">No recurring topic clusters indexed for this course code yet.</div>';
+            return;
+        }
+
+        container.innerHTML = subjectQuestions.map(q => {
+            const isBookmarked = savedBookmarks.some(b => b.id === q.id);
+            return `
+                <div class="panic-full-card" style="margin-bottom: 1rem;">
+                    <div class="panic-full-top">
+                        <span class="panic-freq-badge">🔥 Seen ${q.frequencyCount} Times</span>
+                        <div class="panic-year-chips">
+                            ${q.examYears.map(y => `<span class="year-chip">${y}</span>`).join('')}
+                        </div>
+                    </div>
+                    <div class="panic-full-question">${escapeHtml(q.questionText)}</div>
+                    <div class="panic-model-answer">
+                        <strong>High-Yield Model Answer / Proof:</strong><br>
+                        ${escapeHtml(q.modelAnswerSnippet)}
+                    </div>
+                    <div class="panic-card-actions">
+                        <button class="btn btn-secondary btn-hub-bookmark" data-id="${q.id}">
+                            ${isBookmarked ? '✓ In Revision Deck' : '🔖 Add to Saved Deck'}
+                        </button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        container.querySelectorAll('.btn-hub-bookmark').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const qId = parseInt(btn.getAttribute('data-id'), 10);
+                const qObj = MAKAUT_PANIC_QUESTIONS.find(item => item.id === qId);
+                if (qObj) {
+                    const idx = savedBookmarks.findIndex(b => b.id === qObj.id);
+                    if (idx >= 0) {
+                        savedBookmarks.splice(idx, 1);
+                        btn.textContent = '🔖 Add to Saved Deck';
+                    } else {
+                        savedBookmarks.push(qObj);
+                        btn.textContent = '✓ In Revision Deck';
+                    }
+                    localStorage.setItem('campussense_saved_deck', JSON.stringify(savedBookmarks));
+                    renderSavedDeckPreview();
+                }
+            });
+        });
+    }
+
+    function activateHubTab(tabName) {
+        document.querySelectorAll('.hub-tab-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.getAttribute('data-hub-tab') === tabName);
+        });
+
+        const tabChecklist = document.getElementById('tab-content-checklist');
+        const tabPyqs = document.getElementById('tab-content-pyqs');
+        const tabClusters = document.getElementById('tab-content-clusters');
+
+        if (tabChecklist) tabChecklist.style.display = tabName === 'checklist' ? 'block' : 'none';
+        if (tabPyqs) tabPyqs.style.display = tabName === 'pyqs' ? 'block' : 'none';
+        if (tabClusters) tabClusters.style.display = tabName === 'clusters' ? 'block' : 'none';
+    }
+
+    document.querySelectorAll('.hub-tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const tabName = btn.getAttribute('data-hub-tab');
+            activateHubTab(tabName);
+        });
+    });
+
+    const btnCloseHubModal = document.getElementById('btn-close-hub-modal');
+    if (btnCloseHubModal) {
+        btnCloseHubModal.addEventListener('click', () => {
+            const hub = document.getElementById('subject-hub-modal');
+            if (hub) hub.style.display = 'none';
+        });
+    }
+
+    // ==========================================
+    // 12. Dashboard Bento: Panic Pack & Saved Review Deck
+    // ==========================================
+    function renderPanicPackPreview() {
         const previewList = document.getElementById('panic-preview-list');
         if (!previewList) return;
 
-        let questions = [];
-        try {
-            // Attempt live backend call
-            const res = await fetch(`/api/v1/panic-pack?minFrequency=4&userIdentifier=${userIdentifier}`);
-            if (res.ok) {
-                questions = await res.json();
-            } else {
-                throw new Error("Using client panic questions");
-            }
-        } catch (e) {
-            questions = MAKAUT_PANIC_QUESTIONS;
-        }
-
-        // Top 3 for bento widget
-        const top3 = questions.slice(0, 3);
+        const top3 = MAKAUT_PANIC_QUESTIONS.slice(0, 3);
         previewList.innerHTML = top3.map(q => `
             <div class="panic-preview-card" data-id="${q.id}">
                 <div class="panic-card-header-row">
-                    <span class="panic-freq-badge">🔥 Seen ${q.frequencyCount || 4} times</span>
-                    <span class="panic-marks-badge">${q.marks} Marks • ${escapeHtml(q.groupType || 'Group C')}</span>
+                    <span class="panic-freq-badge">🔥 Seen ${q.frequencyCount} times</span>
+                    <span class="panic-marks-badge">${q.marks} Marks • ${escapeHtml(q.groupType)}</span>
                 </div>
                 <div class="panic-preview-question">${escapeHtml(q.questionText)}</div>
                 <div class="panic-card-footer">
@@ -484,15 +1242,11 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `).join('');
 
-        // Badge in navbar
         const panicBadge = document.getElementById('panic-count-badge');
-        if (panicBadge) {
-            panicBadge.textContent = `${questions.length} High-Yield`;
-        }
+        if (panicBadge) panicBadge.textContent = `${MAKAUT_PANIC_QUESTIONS.length} High-Yield`;
 
-        // Attach clicks to launch full panic mode
         previewList.querySelectorAll('.panic-preview-card').forEach(card => {
-            card.addEventListener('click', () => openFullPanicMode());
+            card.addEventListener('click', openFullPanicMode);
         });
     }
 
@@ -519,14 +1273,13 @@ document.addEventListener('DOMContentLoaded', () => {
         deckList.innerHTML = savedBookmarks.slice(0, 3).map((item, idx) => `
             <div class="deck-item-card">
                 <div class="deck-item-info">
-                    <div class="deck-item-title">${escapeHtml(item.title || item.topicName || 'Exam Question')}</div>
-                    <div class="deck-item-sub">${escapeHtml(item.subjectCode || 'MAKAUT')} • ${escapeHtml(item.frequencyBadge || 'High Yield')}</div>
+                    <div class="deck-item-title">${escapeHtml(item.topicName || item.title || 'Exam Question')}</div>
+                    <div class="deck-item-sub">${escapeHtml(item.subjectCode || 'MAKAUT')} • Seen ${item.frequencyCount || 4} Times</div>
                 </div>
                 <button class="deck-action-btn" data-index="${idx}" title="Remove from Deck">✕</button>
             </div>
         `).join('');
 
-        // Remove handlers
         deckList.querySelectorAll('.deck-action-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -539,199 +1292,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 5. Subject Hub Modal Logic (Checklist, PYQ Archive)
-    // ==========================================
-    let currentHubSubject = null;
-
-    async function openSubjectHub(subjectCode) {
-        let subject = MAKAUT_CURRICULUM.find(s => s.code.toLowerCase() === subjectCode.toLowerCase());
-        if (!subject) return;
-        currentHubSubject = subject;
-
-        document.getElementById('hub-subject-code').textContent = subject.code;
-        document.getElementById('hub-subject-name').textContent = subject.name;
-        document.getElementById('hub-credits-badge').textContent = `${subject.credits} Credits`;
-        document.getElementById('hub-stream-badge').textContent = subject.department || subject.stream;
-        document.getElementById('hub-unit-count').textContent = subject.units.length;
-
-        // Render Units Checklist
-        renderHubChecklist(subject);
-
-        // Render PYQs
-        renderHubPyqs(subject);
-
-        // Render Recurring Topics
-        renderHubRecurring(subject);
-
-        // Open Modal
-        document.getElementById('subject-hub-modal').style.display = 'flex';
-    }
-
-    function renderHubChecklist(subject) {
-        const listEl = document.getElementById('hub-units-list');
-        const units = subject.units || [];
-        const completedCount = units.filter(u => userChecklistState[u.id] === true).length;
-        const percentage = units.length > 0 ? Math.round((completedCount / units.length) * 100) : 0;
-
-        document.getElementById('hub-progress-number').textContent = `${percentage}%`;
-
-        listEl.innerHTML = units.map(u => {
-            const isChecked = userChecklistState[u.id] === true;
-            return `
-                <div class="unit-checklist-item ${isChecked ? 'completed' : ''}" data-unit-id="${u.id}">
-                    <div class="unit-checkbox-custom">${isChecked ? '✓' : ''}</div>
-                    <div class="unit-item-content">
-                        <div class="unit-item-header">
-                            <span class="unit-item-title">${escapeHtml(u.title)}</span>
-                            <span class="unit-hours-badge">${u.hours} Lecture Hours</span>
-                        </div>
-                        <div class="unit-subtopics-text">${escapeHtml(u.subtopics)}</div>
-                    </div>
-                </div>
-            `;
-        }).join('');
-
-        // Toggle handlers
-        listEl.querySelectorAll('.unit-checklist-item').forEach(item => {
-            item.addEventListener('click', async () => {
-                const unitId = item.getAttribute('data-unit-id');
-                const newStatus = !userChecklistState[unitId];
-                userChecklistState[unitId] = newStatus;
-                localStorage.setItem('campussense_checklist_state', JSON.stringify(userChecklistState));
-
-                // Attempt server toggle sync
-                try {
-                    fetch('/api/v1/syllabus/progress/toggle', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            userIdentifier: userIdentifier,
-                            unitId: parseInt(unitId, 10),
-                            completed: newStatus
-                        })
-                    }).catch(() => {});
-                } catch(e) {}
-
-                // Re-render checklist and active subjects
-                renderHubChecklist(subject);
-                renderActiveSubjects();
-            });
-        });
-    }
-
-    function renderHubPyqs(subject) {
-        const listEl = document.getElementById('hub-pyq-cards-list');
-        const pyqs = subject.pyqs || [];
-
-        if (pyqs.length === 0) {
-            listEl.innerHTML = '<div style="padding: 2rem; text-align: center; color: var(--text-muted);">No past question papers uploaded yet. Use Feedback to request one!</div>';
-            return;
-        }
-
-        listEl.innerHTML = pyqs.map(p => `
-            <div class="pyq-card-item">
-                <div>
-                    <div class="pyq-info-title">${escapeHtml(p.title)}</div>
-                    <div class="pyq-info-meta">Year ${p.year} • 70 Marks Theory • Verified Official Paper</div>
-                </div>
-                <div class="pyq-actions-row">
-                    <button class="btn btn-secondary btn-preview-pyq" data-title="${escapeHtml(p.title)}" data-url="${escapeHtml(p.fileUrl)}">
-                        👁 Preview PDF
-                    </button>
-                    <a href="${p.fileUrl}" target="_blank" class="btn btn-secondary">
-                        ⬇ Download
-                    </a>
-                </div>
-            </div>
-        `).join('');
-
-        listEl.querySelectorAll('.btn-preview-pyq').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const title = btn.getAttribute('data-title');
-                const url = btn.getAttribute('data-url');
-                openPdfViewer(title, url);
-            });
-        });
-    }
-
-    function renderHubRecurring(subject) {
-        const listEl = document.getElementById('hub-recurring-topics-list');
-        const subjectQuestions = MAKAUT_PANIC_QUESTIONS.filter(q => q.subjectCode.toLowerCase() === subject.code.toLowerCase());
-
-        document.getElementById('hub-recurring-count').textContent = subjectQuestions.length;
-
-        if (subjectQuestions.length === 0) {
-            listEl.innerHTML = '<div style="padding: 2rem; text-align: center; color: var(--text-muted);">No recurring topics indexed for this paper code yet.</div>';
-            return;
-        }
-
-        listEl.innerHTML = subjectQuestions.map(q => `
-            <div class="panic-full-card">
-                <div class="panic-full-top">
-                    <span class="panic-freq-badge">Seen ${q.frequencyCount} Times</span>
-                    <div class="panic-year-chips">
-                        ${q.examYears.map(y => `<span class="year-chip">${y}</span>`).join('')}
-                    </div>
-                </div>
-                <div class="panic-full-question">${escapeHtml(q.questionText)}</div>
-                <div class="panic-model-answer">
-                    <strong>Model Answer Summary:</strong><br>
-                    ${escapeHtml(q.modelAnswerSnippet)}
-                </div>
-                <div class="panic-card-actions">
-                    <button class="btn btn-secondary btn-bookmark-q" data-id="${q.id}">
-                        🔖 Add to Saved Deck
-                    </button>
-                </div>
-            </div>
-        `).join('');
-
-        listEl.querySelectorAll('.btn-bookmark-q').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const qId = parseInt(btn.getAttribute('data-id'), 10);
-                const qObj = MAKAUT_PANIC_QUESTIONS.find(item => item.id === qId);
-                if (qObj && !savedBookmarks.some(b => b.id === qObj.id)) {
-                    savedBookmarks.push(qObj);
-                    localStorage.setItem('campussense_saved_deck', JSON.stringify(savedBookmarks));
-                    renderSavedDeckPreview();
-                    btn.textContent = '✓ Saved in Deck';
-                    btn.disabled = true;
-                }
-            });
-        });
-    }
-
-    // Hub Tab Switching
-    document.querySelectorAll('.hub-tab-btn').forEach(tab => {
-        tab.addEventListener('click', () => {
-            document.querySelectorAll('.hub-tab-btn').forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-
-            const tabTarget = tab.getAttribute('data-hubtab');
-            document.getElementById('hub-checklist-content').style.display = tabTarget === 'hub-checklist' ? 'block' : 'none';
-            document.getElementById('hub-pyqs-content').style.display = tabTarget === 'hub-pyqs' ? 'block' : 'none';
-            document.getElementById('hub-recurring-content').style.display = tabTarget === 'hub-recurring' ? 'block' : 'none';
-        });
-    });
-
-    const btnCloseHub = document.getElementById('btn-close-subject-hub');
-    if (btnCloseHub) {
-        btnCloseHub.addEventListener('click', () => {
-            document.getElementById('subject-hub-modal').style.display = 'none';
-        });
-    }
-
-    // ==========================================
-    // 6. Full Panic Mode Modal Logic
+    // 13. Full Panic Mode Modal
     // ==========================================
     function openFullPanicMode() {
         const container = document.getElementById('panic-questions-container');
         const filterSelect = document.getElementById('panic-subject-filter');
+        if (!container) return;
 
-        // Populate subject options
+        // Populate subject options in filter
         const uniqueCodes = [...new Set(MAKAUT_PANIC_QUESTIONS.map(q => q.subjectCode))];
-        filterSelect.innerHTML = '<option value="">All Indexed Subjects</option>' +
-            uniqueCodes.map(c => `<option value="${c}">${c}</option>`).join('');
+        if (filterSelect) {
+            filterSelect.innerHTML = '<option value="">All Current Semester Subjects</option>' +
+                uniqueCodes.map(c => `<option value="${c}">${c}</option>`).join('');
+        }
 
         function renderQuestions(filterCode) {
             const filtered = filterCode
@@ -743,7 +1316,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return `
                     <div class="panic-full-card">
                         <div class="panic-full-top">
-                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
                                 <span class="subject-code-tag">${escapeHtml(q.subjectCode)}</span>
                                 <span class="panic-freq-badge">🔥 Seen ${q.frequencyCount} times</span>
                                 <span class="panic-marks-badge">${q.marks} Marks • ${escapeHtml(q.groupType)}</span>
@@ -787,26 +1360,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         renderQuestions('');
-        filterSelect.onchange = () => renderQuestions(filterSelect.value);
+        if (filterSelect) filterSelect.onchange = () => renderQuestions(filterSelect.value);
 
-        document.getElementById('panic-mode-modal').style.display = 'flex';
+        const modal = document.getElementById('panic-mode-modal');
+        if (modal) modal.style.display = 'flex';
     }
 
-    const btnOpenPanicNav = document.getElementById('btn-open-panic-mode');
     if (btnOpenPanicNav) btnOpenPanicNav.addEventListener('click', openFullPanicMode);
+    const btnEnterPanicCta = document.getElementById('btn-enter-panic-mode-cta');
+    if (btnEnterPanicCta) btnEnterPanicCta.addEventListener('click', openFullPanicMode);
 
-    const btnOpenPanicCta = document.getElementById('btn-enter-panic-mode-cta');
-    if (btnOpenPanicCta) btnOpenPanicCta.addEventListener('click', openFullPanicMode);
-
-    const btnClosePanic = document.getElementById('btn-close-panic-modal');
-    if (btnClosePanic) {
-        btnClosePanic.addEventListener('click', () => {
-            document.getElementById('panic-mode-modal').style.display = 'none';
+    const btnClosePanicModal = document.getElementById('btn-close-panic-modal');
+    if (btnClosePanicModal) {
+        btnClosePanicModal.addEventListener('click', () => {
+            const modal = document.getElementById('panic-mode-modal');
+            if (modal) modal.style.display = 'none';
         });
     }
 
     // ==========================================
-    // 7. PDF Viewer Modal Logic
+    // 14. PDF Viewer Modal
     // ==========================================
     function openPdfViewer(title, url) {
         const modal = document.getElementById('pdf-viewer-modal');
@@ -816,24 +1389,25 @@ document.addEventListener('DOMContentLoaded', () => {
         const fallbackView = document.getElementById('pdf-fallback-view');
         const extractedText = document.getElementById('pdf-extracted-text');
 
-        titleEl.textContent = title;
-        downloadBtn.href = url;
+        if (titleEl) titleEl.textContent = title || 'MAKAUT Examination Paper';
+        if (downloadBtn) downloadBtn.href = url || '#';
+        if (iframe) iframe.src = url || 'about:blank';
+        if (fallbackView) fallbackView.style.display = 'none';
 
-        // Try setting iframe
-        iframe.src = url;
-        fallbackView.style.display = 'none';
+        if (extractedText) {
+            extractedText.textContent = `Document Viewer: ${title}\n\nMaulana Abul Kalam Azad University of Technology verified question paper.\nDirect link: ${url}\n\nIf embedded viewing is restricted by your browser, click "Download PDF" above to view directly.`;
+        }
 
-        // Provide preview text fallback if needed
-        extractedText.textContent = `Document Viewer: ${title}\n\nOfficial Maulana Abul Kalam Azad University of Technology archive paper.\nDirect link: ${url}\n\nIf the browser blocks embedded viewing for external CDN domains, click "Download PDF" above to view directly in your browser.`;
-
-        modal.style.display = 'flex';
+        if (modal) modal.style.display = 'flex';
     }
 
-    const btnClosePdf = document.getElementById('btn-close-pdf-modal');
-    if (btnClosePdf) {
-        btnClosePdf.addEventListener('click', () => {
-            document.getElementById('pdf-viewer-modal').style.display = 'none';
-            document.getElementById('pdf-viewer-iframe').src = 'about:blank';
+    const btnClosePdfModal = document.getElementById('btn-close-pdf-modal');
+    if (btnClosePdfModal) {
+        btnClosePdfModal.addEventListener('click', () => {
+            const modal = document.getElementById('pdf-viewer-modal');
+            if (modal) modal.style.display = 'none';
+            const iframe = document.getElementById('pdf-viewer-iframe');
+            if (iframe) iframe.src = 'about:blank';
         });
     }
 
@@ -843,275 +1417,27 @@ document.addEventListener('DOMContentLoaded', () => {
             const card = document.querySelector('.pdf-viewer-card');
             if (card) {
                 if (!document.fullscreenElement) {
-                    card.requestFullscreen ? card.requestFullscreen() : null;
+                    if (card.requestFullscreen) card.requestFullscreen();
                 } else {
-                    document.exitFullscreen ? document.exitFullscreen() : null;
+                    if (document.exitFullscreen) document.exitFullscreen();
                 }
             }
         });
     }
 
     // ==========================================
-    // 8. PDF Download Gate & Action Preservation
-    // ==========================================
-    const authModal = document.getElementById('auth-modal');
-    const authGateBanner = document.getElementById('auth-gate-banner');
-    const scopeModal = document.getElementById('scope-modal') || document.getElementById('onboarding-modal');
-    const btnCloseScope = document.getElementById('btn-close-scope-modal') || document.getElementById('btn-close-onboarding');
-
-    function showAuthModal(isGate = false) {
-        if (authGateBanner) {
-            authGateBanner.style.display = isGate ? 'flex' : 'none';
-        }
-        if (authModal) authModal.style.display = 'flex';
-    }
-
-    function triggerPdfDownload(fileUrl, title) {
-        openPdfViewer(title || 'Official MAKAUT Examination Paper', fileUrl);
-    }
-
-    // Attach gated click listener to all download/preview buttons
-    document.querySelectorAll('.btn-download-pdf, .btn-preview-pdf, .btn-download-pdf-gate').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            const resourceId = btn.getAttribute('data-resource-id') || '1';
-            const subjectCode = btn.getAttribute('data-subject') || 'BS-M101';
-            const paperYear = btn.getAttribute('data-paper') || '2023';
-            const title = btn.getAttribute('data-name') || `${subjectCode} ${paperYear} Paper`;
-            const fileUrl = `https://makautexam.net/pyq/${paperYear}/${subjectCode}.pdf`;
-
-            if (localStorage.getItem('campussense_logged_in') !== 'true') {
-                sessionStorage.setItem('pending_download_action', JSON.stringify({ resourceId, fileUrl, subjectCode, title }));
-                showAuthModal(true); // displays gate banner
-                return;
-            }
-            triggerPdfDownload(fileUrl, title);
-        });
-    });
-
-    // Landing Page CTAs
-    if (btnLandingAuth) {
-        btnLandingAuth.addEventListener('click', () => showAuthModal(false));
-    }
-
-    const btnHeroPanicPack = document.getElementById('btn-hero-panic-pack');
-    if (btnHeroPanicPack) {
-        btnHeroPanicPack.addEventListener('click', openFullPanicMode);
-    }
-
-    const btnBrandHome = document.getElementById('btn-brand-home');
-    if (btnBrandHome) {
-        btnBrandHome.addEventListener('click', () => {
-            if (isLoggedIn) {
-                switchView('dashboard');
-            } else {
-                switchView('landing');
-            }
-        });
-    }
-
-    // ==========================================
-    // 9. Auth Modal Logic (Tabs & Submission, ZERO Guest Access)
-    // ==========================================
-    const tabAuthLogin = document.getElementById('tab-auth-login');
-    const tabAuthSignup = document.getElementById('tab-auth-signup');
-    const formAuthLogin = document.getElementById('form-auth-login');
-    const formAuthSignup = document.getElementById('form-auth-signup');
-    const btnCloseAuthModal = document.getElementById('btn-close-auth-modal');
-    const btnAuthGoogle = document.getElementById('btn-auth-google');
-
-    if (tabAuthLogin && tabAuthSignup) {
-        tabAuthLogin.addEventListener('click', () => {
-            tabAuthLogin.classList.add('active');
-            tabAuthSignup.classList.remove('active');
-            if (formAuthLogin) formAuthLogin.style.display = 'flex';
-            if (formAuthSignup) formAuthSignup.style.display = 'none';
-        });
-
-        tabAuthSignup.addEventListener('click', () => {
-            tabAuthSignup.classList.add('active');
-            tabAuthLogin.classList.remove('active');
-            if (formAuthSignup) formAuthSignup.style.display = 'flex';
-            if (formAuthLogin) formAuthLogin.style.display = 'none';
-        });
-    }
-
-    if (btnCloseAuthModal) {
-        btnCloseAuthModal.addEventListener('click', () => {
-            if (authModal) authModal.style.display = 'none';
-        });
-    }
-
-    function openScopeModal() {
-        document.querySelectorAll('.stream-option').forEach(btn => {
-            btn.classList.toggle('active', btn.getAttribute('data-stream') === currentStream);
-        });
-        document.querySelectorAll('.sem-btn').forEach(btn => {
-            btn.classList.toggle('active', parseInt(btn.getAttribute('data-sem'), 10) === currentSem);
-        });
-        if (scopeModal) scopeModal.style.display = 'flex';
-    }
-
-    function completeAuthentication(name, email) {
-        isLoggedIn = true;
-        userName = name || 'Student';
-        const userEmail = email || `${userName.toLowerCase().replace(/\s+/g, '')}@makaut.edu.in`;
-
-        localStorage.setItem('campussense_logged_in', 'true');
-        localStorage.setItem('campussense_user_name', userName);
-        localStorage.setItem('campussense_user_email', userEmail);
-        localStorage.setItem('campussense_user_id', userEmail);
-
-        if (authModal) authModal.style.display = 'none';
-
-        // Step 2: Prompt Academic Scope Selection
-        openScopeModal();
-    }
-
-    if (formAuthLogin) {
-        formAuthLogin.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const emailInput = document.getElementById('login-email');
-            const emailVal = emailInput ? emailInput.value.trim() : 'student@makaut.edu';
-            const baseName = emailVal.split('@')[0];
-            const formatted = baseName.charAt(0).toUpperCase() + baseName.slice(1);
-            completeAuthentication(formatted, emailVal);
-        });
-    }
-
-    if (formAuthSignup) {
-        formAuthSignup.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const nameInput = document.getElementById('signup-name');
-            const emailInput = document.getElementById('signup-email');
-            const collegeSelect = document.getElementById('signup-college');
-
-            const fullName = nameInput ? nameInput.value.trim() : 'Student';
-            const emailVal = emailInput ? emailInput.value.trim() : 'student@makaut.edu';
-            if (collegeSelect) localStorage.setItem('campussense_college', collegeSelect.value);
-
-            completeAuthentication(fullName, emailVal);
-        });
-    }
-
-    if (btnAuthGoogle) {
-        btnAuthGoogle.addEventListener('click', () => {
-            completeAuthentication('Srijita Bhowmick', 'srijitabhowmick42@gmail.com');
-        });
-    }
-
-    // ==========================================
-    // 10. Academic Scope Selection Modal
-    // ==========================================
-    if (contextSwitcherBtn) contextSwitcherBtn.addEventListener('click', openScopeModal);
-    if (btnCloseScope) btnCloseScope.addEventListener('click', () => {
-        if (scopeModal) scopeModal.style.display = 'none';
-    });
-
-    document.querySelectorAll('.stream-option').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.stream-option').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-        });
-    });
-
-    document.querySelectorAll('.sem-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.sem-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-        });
-    });
-
-    const scopeForm = document.getElementById('scope-form') || document.getElementById('onboarding-form');
-    if (scopeForm) {
-        scopeForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const activeStreamBtn = document.querySelector('.stream-option.active');
-            const activeSemBtn = document.querySelector('.sem-btn.active');
-
-            if (activeStreamBtn) currentStream = activeStreamBtn.getAttribute('data-stream');
-            if (activeSemBtn) currentSem = parseInt(activeSemBtn.getAttribute('data-sem'), 10);
-
-            localStorage.setItem('campussense_stream', currentStream);
-            localStorage.setItem('campussense_semester', currentSem.toString());
-            localStorage.setItem('campussense_context_stream', currentStream);
-            localStorage.setItem('campussense_context_sem', currentSem.toString());
-
-            if (scopeModal) scopeModal.style.display = 'none';
-
-            // Transition into Dashboard
-            switchView('dashboard');
-
-            // Action Preservation: Check if user was downloading a PDF
-            const pendingActionRaw = sessionStorage.getItem('pending_download_action');
-            if (pendingActionRaw) {
-                try {
-                    const pending = JSON.parse(pendingActionRaw);
-                    sessionStorage.removeItem('pending_download_action');
-                    triggerPdfDownload(pending.fileUrl, pending.title);
-                } catch (err) {
-                    sessionStorage.removeItem('pending_download_action');
-                }
-            }
-        });
-    }
-
-    // User Profile Dropdown Menu
-    const userProfilePill = document.getElementById('user-profile-pill');
-    const userDropdownMenu = document.getElementById('user-dropdown-menu');
-    const btnMenuSwitchScope = document.getElementById('btn-menu-switch-scope');
-    const btnMenuLandingPage = document.getElementById('btn-menu-landing-page');
-    const btnMenuSignOut = document.getElementById('btn-menu-sign-out');
-
-    if (userProfilePill && userDropdownMenu) {
-        userProfilePill.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const isVisible = userDropdownMenu.style.display === 'flex';
-            userDropdownMenu.style.display = isVisible ? 'none' : 'flex';
-        });
-
-        document.addEventListener('click', () => {
-            userDropdownMenu.style.display = 'none';
-        });
-    }
-
-    if (btnMenuSwitchScope) {
-        btnMenuSwitchScope.addEventListener('click', () => {
-            if (userDropdownMenu) userDropdownMenu.style.display = 'none';
-            openScopeModal();
-        });
-    }
-
-    if (btnMenuLandingPage) {
-        btnMenuLandingPage.addEventListener('click', () => {
-            if (userDropdownMenu) userDropdownMenu.style.display = 'none';
-            switchView('landing');
-        });
-    }
-
-    if (btnMenuSignOut) {
-        btnMenuSignOut.addEventListener('click', () => {
-            if (userDropdownMenu) userDropdownMenu.style.display = 'none';
-            isLoggedIn = false;
-            localStorage.removeItem('campussense_logged_in');
-            switchView('landing');
-        });
-    }
-
-    // ==========================================
-    // 10. AI RAG Slide-Over Drawer
+    // 15. AI RAG Slide-Over Drawer
     // ==========================================
     const aiDrawer = document.getElementById('ai-slide-drawer');
     const aiDrawerBackdrop = document.getElementById('ai-drawer-backdrop');
-    const btnOpenAiFab = document.getElementById('btn-open-ai-fab');
     const btnCloseAiDrawer = document.getElementById('btn-close-ai-drawer');
     const drawerChatForm = document.getElementById('drawer-chat-form');
     const drawerQueryInput = document.getElementById('drawer-query-input');
     const drawerChatMessages = document.getElementById('drawer-chat-messages');
 
     function openAiDrawer(initialQuery = '') {
-        aiDrawer.classList.add('open');
-        aiDrawerBackdrop.style.display = 'block';
+        if (aiDrawer) aiDrawer.classList.add('open');
+        if (aiDrawerBackdrop) aiDrawerBackdrop.style.display = 'block';
         if (initialQuery && drawerQueryInput) {
             drawerQueryInput.value = initialQuery;
             executeAiQuery(initialQuery);
@@ -1121,8 +1447,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function closeAiDrawer() {
-        aiDrawer.classList.remove('open');
-        aiDrawerBackdrop.style.display = 'none';
+        if (aiDrawer) aiDrawer.classList.remove('open');
+        if (aiDrawerBackdrop) aiDrawerBackdrop.style.display = 'none';
     }
 
     if (btnOpenAiFab) btnOpenAiFab.addEventListener('click', () => openAiDrawer());
@@ -1133,7 +1459,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('keydown', (e) => {
         if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
             e.preventDefault();
-            if (aiDrawer.classList.contains('open')) {
+            if (aiDrawer && aiDrawer.classList.contains('open')) {
                 closeAiDrawer();
             } else {
                 openAiDrawer();
@@ -1145,7 +1471,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Hero search input handler
+    // Hero Search Input
     const heroSearchInput = document.getElementById('global-search-input');
     const btnHeroSearch = document.getElementById('btn-hero-search');
 
@@ -1171,7 +1497,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Drawer shortcuts
+    // Drawer shortcut chips
     document.querySelectorAll('.chip-shortcut').forEach(chip => {
         chip.addEventListener('click', () => {
             const prompt = chip.getAttribute('data-prompt');
@@ -1184,7 +1510,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (drawerChatForm) {
         drawerChatForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const query = drawerQueryInput.value.trim();
+            const query = drawerQueryInput ? drawerQueryInput.value.trim() : '';
             if (!query) return;
             executeAiQuery(query);
         });
@@ -1208,8 +1534,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="msg-text">Evaluating MAKAUT syllabus modules, exam papers, and computing similarity...</div>
             </div>
         `;
-        drawerChatMessages.appendChild(typingEl);
-        drawerChatMessages.scrollTop = drawerChatMessages.scrollHeight;
+        if (drawerChatMessages) {
+            drawerChatMessages.appendChild(typingEl);
+            drawerChatMessages.scrollTop = drawerChatMessages.scrollHeight;
+        }
 
         try {
             const controller = new AbortController();
@@ -1236,7 +1564,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             throw new Error("Backend not OK, using client RAG");
         } catch (err) {
-            // Client-side RAG fallback
             typingEl.remove();
             const clientResult = executeClientRAG(query);
             appendDrawerAssistantResponse(clientResult);
@@ -1244,6 +1571,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function appendDrawerMessage(role, text) {
+        if (!drawerChatMessages) return;
         const msg = document.createElement('div');
         msg.className = `message ${role}`;
         msg.innerHTML = `
@@ -1260,17 +1588,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function appendDrawerAssistantResponse(data) {
+        if (!drawerChatMessages) return;
         const msg = document.createElement('div');
         msg.className = 'message assistant';
 
         let sourcesHtml = '';
         if (data.sources && data.sources.length > 0) {
             sourcesHtml = `
-                <div class="msg-sources">
-                    <div class="sources-title">Verified MAKAUT Paper Citations:</div>
-                    <div class="source-badges-flex">
+                <div class="msg-sources" style="margin-top: 0.85rem; padding-top: 0.65rem; border-top: 1px solid var(--card-border);">
+                    <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.35rem;">Verified Citations:</div>
+                    <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
                         ${data.sources.map(s => `
-                            <button class="citation-pill" data-title="${escapeHtml(s.title || s.subjectName)}" data-url="${escapeHtml(s.pageUrl || s.fileUrl || '#')}">
+                            <button class="citation-pill" data-title="${escapeHtml(s.title || s.subjectName || 'MAKAUT Paper')}" data-url="${escapeHtml(s.pageUrl || s.fileUrl || '#')}">
                                 📄 ${escapeHtml(s.subjectCode || 'MAKAUT')} ${s.year ? `[${s.year}` : ''}${s.group ? ` • ${s.group}` : ''}${s.questionNumber ? ` • ${s.questionNumber}` : ''}${s.year ? ']' : ''}
                             </button>
                         `).join('')}
@@ -1285,7 +1614,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="msg-header">
                     <span class="sender-name">MAKAUT CampusSense AI</span>
                     <span class="badge ${data.verified ? 'verified-badge' : 'unverified-badge'}">
-                        ${data.verified ? '✓ Grounded Response' : '⚠ Guardrail'}
+                        ${data.verified ? '✓ Grounded' : '⚠ Guardrail'}
                     </span>
                 </div>
                 <div class="msg-text">${formatMarkdown(data.response)}</div>
@@ -1295,7 +1624,6 @@ document.addEventListener('DOMContentLoaded', () => {
         drawerChatMessages.appendChild(msg);
         drawerChatMessages.scrollTop = drawerChatMessages.scrollHeight;
 
-        // Clicking citation opens PDF previewer!
         msg.querySelectorAll('.citation-pill').forEach(pill => {
             pill.addEventListener('click', () => {
                 const title = pill.getAttribute('data-title');
@@ -1305,15 +1633,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Client-side fallback semantic matcher
     function executeClientRAG(query) {
         const lower = query.toLowerCase();
 
-        // Check if query is about Thévenin
         if (lower.includes('thevenin') || lower.includes('thévenin')) {
             return {
                 verified: true,
-                response: `**Thévenin's Theorem (Basic Electrical ES-EE101):**\n\n- **Statement:** Any linear, bilateral network with DC voltage sources and resistances across two output terminals can be replaced by an equivalent circuit consisting of a single voltage source **Vth** in series with a resistance **Rth**.\n- **Calculation of Vth:** Open-circuit voltage across load terminals AB.\n- **Calculation of Rth:** Deactivate independent sources (short circuit voltage sources, open circuit current sources) and find resistance looking into AB.\n\n*This question appeared in MAKAUT 2019, 2021, 2022, 2023, and 2024 examinations (10 Marks, Group C).*`,
+                response: `**Thévenin's Theorem (Basic Electrical ES-EE101):**\n\n- **Statement:** Any linear, bilateral network with DC voltage sources and resistances across two output terminals can be replaced by an equivalent circuit consisting of a single voltage source **Vth** in series with a resistance **Rth**.\n- **Calculation of Vth:** Open-circuit voltage across load terminals AB.\n- **Calculation of Rth:** Deactivate independent sources (short circuit voltage sources, open circuit current sources) and find resistance looking into AB.\n\n*Featured 5 times across MAKAUT examinations (10 Marks, Group C).*`,
                 sources: [{
                     title: 'Basic Electrical Engineering (ES-EE101)',
                     subjectCode: 'ES-EE101',
@@ -1325,11 +1651,10 @@ document.addEventListener('DOMContentLoaded', () => {
             };
         }
 
-        // Check if query is about Newton's Rings
         if (lower.includes('newton') || lower.includes('rings')) {
             return {
                 verified: true,
-                response: `**Newton's Rings Proof (Physics BS-PH101):**\n\n- **Formation:** Formed due to interference between rays reflected from upper surface of glass plate and bottom surface of plano-convex lens.\n- **Path Difference for Dark Rings:** $2t = n\\lambda$.\n- **Ring Diameter Proof:** Since thickness $t = r^2 / (2R)$, substituting gives $D_n^2 = 4n\\lambda R$, proving that dark ring diameters are directly proportional to $\\sqrt{n}$.\n\n*Featured 4 times across 5-year MAKAUT examinations (10 Marks, Group C).*`,
+                response: `**Newton's Rings Proof (Physics BS-PH101):**\n\n- **Formation:** Formed due to interference between rays reflected from upper surface of glass plate and bottom surface of plano-convex lens.\n- **Path Difference for Dark Rings:** $2t = n\\lambda$.\n- **Ring Diameter Proof:** Since thickness $t = r^2 / (2R)$, substituting gives $D_n^2 = 4n\\lambda R$, proving that dark ring diameters are directly proportional to $\\sqrt{n}$.\n\n*Featured 4 times across MAKAUT examinations (10 Marks, Group C).*`,
                 sources: [{
                     title: 'Physics Wave Optics (BS-PH101)',
                     subjectCode: 'BS-PH101',
@@ -1341,7 +1666,21 @@ document.addEventListener('DOMContentLoaded', () => {
             };
         }
 
-        // Check if query is about MAR
+        if (lower.includes('banker')) {
+            return {
+                verified: true,
+                response: `**Banker's Algorithm for Deadlock Avoidance (Operating Systems PCC-CS501):**\n\n- **Data Structures:** Available[m], Max[n][m], Allocation[n][m], Need[n][m].\n- **Formula:** Need[i][j] = Max[i][j] - Allocation[i][j].\n- **Safety Algorithm:**\n  1. Let Work = Available and Finish[i] = false for all i.\n  2. Find an i such that Finish[i] == false and Need_i <= Work.\n  3. Work = Work + Allocation_i; Finish[i] = true. Repeat step 2.\n  4. If Finish[i] == true for all i, system is in a Safe State.`,
+                sources: [{
+                    title: 'Operating Systems (PCC-CS501)',
+                    subjectCode: 'PCC-CS501',
+                    year: 2023,
+                    group: 'Group C',
+                    questionNumber: 'Q5',
+                    pageUrl: 'https://makautexam.net/syllabus/PCC-CS501.pdf'
+                }]
+            };
+        }
+
         if (lower.includes('mar') || lower.includes('activity points')) {
             return {
                 verified: true,
@@ -1357,13 +1696,12 @@ document.addEventListener('DOMContentLoaded', () => {
             };
         }
 
-        // Generic fallback
         return {
             verified: true,
-            response: `Based on official MAKAUT curriculum data for **${currentStream} Semester ${currentSem}**, we indexed syllabus modules and past question patterns matching your query. Review the linked verified paper citation below.`,
+            response: `Based on verified MAKAUT curriculum data for **${currentStream} Semester ${currentSem}**, we indexed syllabus modules and past question patterns matching your query. Review the linked verified paper citation below.`,
             sources: [{
-                title: 'Official MAKAUT Syllabus Archive',
-                subjectCode: currentStream === 'COMMON' ? 'BS-M101' : 'PCC-CS501',
+                title: 'MAKAUT Syllabus Archive',
+                subjectCode: currentStream === 'GROUP_A' ? 'BS-M101' : 'PCC-CS501',
                 year: 2023,
                 group: 'Group B',
                 questionNumber: 'Q2',
@@ -1373,24 +1711,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 11. Feedback Modal Logic
+    // 16. Feedback Modal
     // ==========================================
-    const btnOpenFeedback = document.getElementById('btn-open-feedback');
+    const btnOpenFeedbackNav = document.getElementById('btn-open-feedback');
     const feedbackModal = document.getElementById('feedback-modal');
-    const btnCloseFeedback = document.getElementById('btn-close-feedback-modal');
+    const btnCloseFeedbackModal = document.getElementById('btn-close-feedback-modal');
     const feedbackForm = document.getElementById('feedback-form');
     const feedbackResult = document.getElementById('feedback-result-msg');
 
-    if (btnOpenFeedback) {
-        btnOpenFeedback.addEventListener('click', () => {
-            feedbackModal.style.display = 'flex';
+    if (btnOpenFeedbackNav) {
+        btnOpenFeedbackNav.addEventListener('click', () => {
+            if (feedbackModal) feedbackModal.style.display = 'flex';
             if (feedbackResult) feedbackResult.style.display = 'none';
         });
     }
 
-    if (btnCloseFeedback) {
-        btnCloseFeedback.addEventListener('click', () => {
-            feedbackModal.style.display = 'none';
+    if (btnCloseFeedbackModal) {
+        btnCloseFeedbackModal.addEventListener('click', () => {
+            if (feedbackModal) feedbackModal.style.display = 'none';
         });
     }
 
@@ -1413,24 +1751,23 @@ document.addEventListener('DOMContentLoaded', () => {
                     })
                 });
 
-                feedbackResult.style.display = 'block';
-                if (res.ok) {
+                if (feedbackResult) {
+                    feedbackResult.style.display = 'block';
                     feedbackResult.innerHTML = '✅ Thank you! Your feedback has been sent directly to the MAKAUT CampusSense academic team.';
-                    feedbackForm.reset();
-                } else {
-                    feedbackResult.innerHTML = '✅ Feedback noted locally in your session. Thank you for contributing!';
-                    feedbackForm.reset();
                 }
-            } catch(err) {
-                feedbackResult.style.display = 'block';
-                feedbackResult.innerHTML = '✅ Feedback recorded offline. Thank you for contributing!';
+                feedbackForm.reset();
+            } catch (err) {
+                if (feedbackResult) {
+                    feedbackResult.style.display = 'block';
+                    feedbackResult.innerHTML = '✅ Feedback recorded offline. Thank you for contributing!';
+                }
                 feedbackForm.reset();
             }
         });
     }
 
     // ==========================================
-    // 12. Helpers
+    // 17. Helpers
     // ==========================================
     function escapeHtml(text) {
         if (!text) return '';
@@ -1453,7 +1790,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 13. Initial Boot & View Router
+    // 18. Initial View Boot
     // ==========================================
     if (isLoggedIn) {
         switchView('dashboard');

@@ -32,7 +32,7 @@
     --surface-glass: rgba(255, 255, 255, 0.04);
 }
 
-[data-theme="light"] {
+:root.light-theme, [data-theme="light"] {
     --bg-main: #f8fafc;
     --bg-secondary: #ffffff;
     --card-bg: rgba(255, 255, 255, 0.9);
@@ -100,6 +100,7 @@ body {
     transition: background 0.4s ease;
 }
 
+:root.light-theme .background-mesh,
 [data-theme="light"] .background-mesh {
     background: 
         radial-gradient(circle at 10% 15%, rgba(99, 102, 241, 0.07) 0%, transparent 45%),
@@ -789,57 +790,87 @@ body {
     color: #fca5a5;
 }
 
-/* Card D: Placement Pulse */
-.bento-card-placements {
-    margin-top: 1.5rem;
-}
-
-.placement-stats-summary {
+/* Scope Onboarding Regulation Selector */
+.regulation-toggle-row {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr 1fr;
     gap: 0.85rem;
     margin-bottom: 1.25rem;
 }
 
-.quick-metric-item {
+.regulation-btn {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid var(--card-border);
     border-radius: var(--radius-md);
-    padding: 0.85rem;
-    text-align: center;
-}
-
-.metric-val {
-    font-family: var(--font-heading);
-    font-weight: 800;
-    font-size: 1.35rem;
-    color: #38bdf8;
-}
-
-.metric-lbl {
-    font-size: 0.7rem;
+    padding: 0.95rem 1rem;
     color: var(--text-muted);
-}
-
-.placement-college-pills-row {
+    cursor: pointer;
+    text-align: left;
+    transition: var(--transition-fast);
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    flex-direction: column;
+    gap: 0.25rem;
 }
 
-.pill-badge {
-    background: rgba(255, 255, 255, 0.04);
+.regulation-btn:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.regulation-btn.active {
+    background: rgba(99, 102, 241, 0.15);
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 16px rgba(99, 102, 241, 0.25);
+}
+
+.reg-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #f8fafc;
+}
+
+:root.light-theme .reg-title,
+[data-theme="light"] .reg-title {
+    color: #0f172a;
+}
+
+.reg-sub {
+    font-size: 0.72rem;
+    color: var(--text-subtle);
+}
+
+.regulation-btn.active .reg-title {
+    color: #e0e7ff;
+}
+
+.regulation-btn.active .reg-sub {
+    color: #a5b4fc;
+}
+
+/* Button Outline */
+.btn-outline {
+    background: transparent;
     border: 1px solid var(--card-border);
-    border-radius: 999px;
-    padding: 0.25rem 0.65rem;
-    font-size: 0.75rem;
-    color: var(--text-muted);
+    color: var(--text-main);
+    border-radius: var(--radius-md);
+    padding: 0.65rem 1.25rem;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
 }
 
-.pill-badge.active {
-    background: rgba(99, 102, 241, 0.1);
-    border-color: rgba(99, 102, 241, 0.3);
-    color: #c7d2fe;
+.btn-outline:hover {
+    background: var(--surface-glass);
+    border-color: var(--accent-primary);
+    color: #fff;
+}
+
+:root.light-theme .btn-outline:hover,
+[data-theme="light"] .btn-outline:hover {
+    color: var(--accent-primary);
 }
 
 /* 4. Modals & Overlays */
@@ -946,6 +977,7 @@ body {
     text-align: left;
 }
 
+:root.light-theme .auth-gate-alert,
 [data-theme="light"] .auth-gate-alert {
     background: #fff7ed;
     border-color: #fdba74;
@@ -2056,6 +2088,7 @@ body {
     -webkit-text-fill-color: transparent;
 }
 
+:root.light-theme .landing-hero-title,
 [data-theme="light"] .landing-hero-title {
     background: linear-gradient(135deg, #0f172a 25%, #4338ca 65%, #0284c7 100%);
     -webkit-background-clip: text;
@@ -2229,114 +2262,466 @@ body {
     line-height: 1.6;
 }
 
-/* Curriculum Explorer & Download PDF Gate Cards */
-.landing-subjects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 4rem;
-}
-
-.landing-subject-card {
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: var(--radius-lg);
-    padding: 1.65rem;
-    transition: var(--transition-smooth);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.landing-subject-card:hover {
-    border-color: rgba(99, 102, 241, 0.35);
-    transform: translateY(-3px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
-}
-
-.landing-subject-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 0.85rem;
-}
-
-.landing-subject-code {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: var(--accent-cyan);
-    background: rgba(56, 189, 248, 0.1);
-    padding: 0.2rem 0.6rem;
-    border-radius: var(--radius-sm);
-}
-
-.landing-subject-name {
-    font-family: var(--font-heading);
-    font-weight: 700;
-    font-size: 1.15rem;
-    margin-bottom: 0.6rem;
-}
-
-.landing-unit-pills {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    margin: 0.85rem 0 1.2rem;
-}
-
-.landing-unit-pill {
-    font-size: 0.72rem;
-    padding: 0.25rem 0.55rem;
-    border-radius: 999px;
-    background: var(--surface-glass);
-    border: 1px solid var(--card-border);
-    color: var(--text-muted);
-}
-
-.landing-paper-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--card-border);
-}
-
-.btn-download-pdf-gate {
-    display: flex;
+/* Feature Card Action Buttons */
+.feature-card-cta {
+    display: inline-flex;
     align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    background: var(--surface-glass);
-    border: 1px solid var(--card-border);
-    color: var(--text-main);
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+    background: rgba(99, 102, 241, 0.12);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    color: #a5b4fc;
     border-radius: var(--radius-sm);
-    padding: 0.6rem 0.95rem;
+    padding: 0.55rem 1rem;
     font-family: var(--font-heading);
-    font-size: 0.82rem;
     font-weight: 600;
+    font-size: 0.85rem;
     cursor: pointer;
     transition: var(--transition-fast);
 }
 
-.btn-download-pdf-gate:hover {
-    background: rgba(99, 102, 241, 0.15);
-    border-color: var(--accent-primary);
+.feature-card-cta:hover {
+    background: var(--accent-primary);
     color: #fff;
+    border-color: var(--accent-primary);
+    transform: translateY(-2px);
 }
 
-[data-theme="light"] .btn-download-pdf-gate:hover {
-    color: #4f46e5;
+.feature-card-cta.flame {
+    background: rgba(234, 88, 12, 0.12);
+    border-color: rgba(234, 88, 12, 0.3);
+    color: #fb923c;
 }
 
-.pdf-gate-badge {
+.feature-card-cta.flame:hover {
+    background: #ea580c;
+    color: #fff;
+    border-color: #ea580c;
+}
+
+.feature-card-cta.emerald {
+    background: rgba(16, 185, 129, 0.12);
+    border-color: rgba(16, 185, 129, 0.3);
+    color: #34d399;
+}
+
+.feature-card-cta.emerald:hover {
+    background: #10b981;
+    color: #fff;
+    border-color: #10b981;
+}
+
+.feature-card-cta.cyan {
+    background: rgba(56, 189, 248, 0.12);
+    border-color: rgba(56, 189, 248, 0.3);
+    color: #38bdf8;
+}
+
+.feature-card-cta.cyan:hover {
+    background: #0284c7;
+    color: #fff;
+    border-color: #0284c7;
+}
+
+/* ==========================================================
+   Section 1: Curriculum & Syllabus Hub (Detailed Structure)
+   ========================================================== */
+.landing-content-section {
+    padding: 3.5rem 0;
+    border-top: 1px solid var(--card-border);
+}
+
+.curriculum-filter-tabs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-bottom: 2.25rem;
+}
+
+.curriculum-tab-btn {
+    background: var(--surface-glass);
+    border: 1px solid var(--card-border);
+    color: var(--text-muted);
+    border-radius: 999px;
+    padding: 0.5rem 1.25rem;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.curriculum-tab-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-main);
+}
+
+.curriculum-tab-btn.active {
+    background: var(--accent-primary);
+    color: #fff;
+    border-color: var(--accent-primary);
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+}
+
+.curriculum-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 1.5rem;
+}
+
+.curriculum-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    padding: 1.65rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: var(--transition-smooth);
+}
+
+.curriculum-card:hover {
+    border-color: rgba(99, 102, 241, 0.4);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
+    transform: translateY(-3px);
+}
+
+.curriculum-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+}
+
+.curriculum-card-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.18rem;
+    margin-bottom: 0.45rem;
+    color: var(--text-main);
+}
+
+.curriculum-card-meta {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+}
+
+/* Expandable Unit Accordion */
+.curriculum-units-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    margin-bottom: 1.25rem;
+}
+
+.curriculum-unit-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    transition: var(--transition-fast);
+}
+
+.curriculum-unit-item:hover {
+    border-color: rgba(255, 255, 255, 0.18);
+}
+
+.curriculum-unit-trigger {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: transparent;
+    border: none;
+    padding: 0.65rem 0.85rem;
+    color: var(--text-main);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.82rem;
+    cursor: pointer;
+    text-align: left;
+}
+
+.curriculum-unit-trigger .unit-hours {
     font-size: 0.7rem;
-    background: rgba(234, 88, 12, 0.15);
-    color: var(--accent-flame);
+    color: var(--text-subtle);
+    font-weight: 500;
+}
+
+.curriculum-unit-trigger .accordion-chevron {
+    font-size: 0.7rem;
+    transition: transform 0.2s ease;
+}
+
+.curriculum-unit-item.open .accordion-chevron {
+    transform: rotate(180deg);
+}
+
+.curriculum-unit-body {
+    display: none;
+    padding: 0.65rem 0.85rem 0.75rem;
+    border-top: 1px solid var(--card-border);
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+    background: rgba(0, 0, 0, 0.12);
+}
+
+.curriculum-unit-item.open .curriculum-unit-body {
+    display: block;
+}
+
+.curriculum-card-action {
+    display: flex;
+    justify-content: flex-end;
+    border-top: 1px solid var(--card-border);
+    padding-top: 1rem;
+}
+
+.btn-curriculum-track {
+    background: rgba(99, 102, 241, 0.12);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    color: #a5b4fc;
+    border-radius: var(--radius-sm);
+    padding: 0.55rem 1rem;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.btn-curriculum-track:hover {
+    background: var(--accent-primary);
+    color: #fff;
+    border-color: var(--accent-primary);
+}
+
+/* ==========================================================
+   Section 2: Past Examination Papers (PYQ Archives)
+   ========================================================== */
+.pyq-repo-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.35rem;
+    margin-bottom: 2rem;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.filter-lbl {
+    font-family: var(--font-heading);
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.filter-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.filter-pill {
+    background: var(--surface-glass);
+    border: 1px solid var(--card-border);
+    color: var(--text-muted);
+    border-radius: 999px;
+    padding: 0.3rem 0.85rem;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.filter-pill:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-main);
+}
+
+.filter-pill.active {
+    background: var(--accent-emerald);
+    color: #fff;
+    border-color: var(--accent-emerald);
+    box-shadow: 0 2px 10px rgba(16, 185, 129, 0.35);
+}
+
+.pyq-repo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.25rem;
+}
+
+.pyq-repo-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-md);
+    padding: 1.35rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: var(--transition-smooth);
+}
+
+.pyq-repo-card:hover {
+    border-color: rgba(16, 185, 129, 0.4);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
+    transform: translateY(-2px);
+}
+
+.pyq-repo-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.pyq-paper-code {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #38bdf8;
+    background: rgba(56, 189, 248, 0.1);
+    padding: 0.2rem 0.55rem;
+    border-radius: 4px;
+}
+
+.pyq-year-tag {
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #34d399;
+    background: rgba(16, 185, 129, 0.12);
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+}
+
+.pyq-repo-title {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin-bottom: 0.45rem;
+    color: var(--text-main);
+}
+
+.pyq-repo-meta {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-bottom: 1.15rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.pyq-exam-type-pill {
+    font-size: 0.7rem;
     padding: 0.15rem 0.45rem;
     border-radius: 4px;
-    font-weight: 700;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--card-border);
+    color: var(--text-subtle);
+}
+
+.pyq-repo-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.65rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--card-border);
+}
+
+.btn-preview-paper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    background: var(--surface-glass);
+    border: 1px solid var(--card-border);
+    color: var(--text-main);
+    border-radius: var(--radius-sm);
+    padding: 0.55rem 0.85rem;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.btn-preview-paper:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.btn-download-paper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    color: #34d399;
+    border-radius: var(--radius-sm);
+    padding: 0.55rem 0.85rem;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.btn-download-paper:hover {
+    background: #10b981;
+    color: #fff;
+    border-color: #10b981;
+}
+
+/* Light Theme Contrast Polish */
+:root.light-theme .form-label,
+[data-theme="light"] .form-label {
+    color: #1e293b;
+}
+
+:root.light-theme .custom-input,
+[data-theme="light"] .custom-input,
+:root.light-theme .custom-select,
+[data-theme="light"] .custom-select,
+:root.light-theme .custom-textarea,
+[data-theme="light"] .custom-textarea {
+    background-color: #ffffff;
+    color: #0f172a;
+    border-color: #cbd5e1;
+}
+
+:root.light-theme .stream-name,
+[data-theme="light"] .stream-name {
+    color: #0f172a;
+}
+
+:root.light-theme .curriculum-card-title,
+[data-theme="light"] .curriculum-card-title,
+:root.light-theme .pyq-repo-title,
+[data-theme="light"] .pyq-repo-title,
+:root.light-theme .unit-item-title,
+[data-theme="light"] .unit-item-title,
+:root.light-theme .subject-item-title,
+[data-theme="light"] .subject-item-title {
+    color: #0f172a;
 }
 
 /* Landing Footer */
