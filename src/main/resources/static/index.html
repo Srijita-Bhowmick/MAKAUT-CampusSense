@@ -1,69 +1,401 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MAKAUT CampusSense - Bento Academic Dashboard & Panic Pack</title>
-    <meta name="description" content="Centralized syllabi, 5-year question banks, and panic-pack revisions for MAKAUT students. Built for Maulana Abul Kalam Azad University of Technology.">
+    <title>MAKAUT-CampusSense — Curated Syllabi, Subject-wise PYQs & Exam Revisions</title>
+    <meta name="description" content="Curated syllabi, subject-wise PYQs, and exam-ready revisions for MAKAUT students. Built for Maulana Abul Kalam Azad University of Technology.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <!-- Immediate theme application script to eliminate theme flash -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('campussense_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
 </head>
 <body>
     <div class="background-mesh"></div>
 
-    <!-- 1. Top Navigation Bar -->
-    <header class="app-header">
+    <!-- 1. Universal Top Navigation Bar -->
+    <header class="app-header" id="main-header">
         <div class="header-container">
-            <div class="brand-group">
+            <div class="brand-group" id="btn-brand-home" title="MAKAUT-CampusSense">
                 <div class="brand-logo">
                     <span class="logo-icon">🎓</span>
                 </div>
                 <div class="brand-info">
-                    <div class="brand-title">MAKAUT <span class="accent-text">CampusSense</span></div>
-                    <div class="brand-subtitle">AI Academic & Career Aggregator</div>
+                    <div class="brand-title">MAKAUT-<span class="accent-text">CampusSense</span></div>
+                    <div class="brand-subtitle">Curated Academic & Career Engine</div>
                 </div>
             </div>
 
-            <!-- Context Lock Pill (Click to Change Stream/Sem) -->
-            <button class="context-pill" id="btn-context-switcher" title="Click to switch Department or Semester">
+            <!-- Navigation Links (Shown on Landing Page) -->
+            <nav class="landing-nav-links" id="landing-nav-links">
+                <a href="#landing-features" class="landing-nav-link">Features</a>
+                <a href="#landing-curriculum" class="landing-nav-link">Curriculum & PYQs</a>
+                <a href="#landing-panic-drill" class="landing-nav-link">🔥 Panic Pack</a>
+            </nav>
+
+            <!-- Context Lock Pill (Visible when Dashboard is active) -->
+            <button class="context-pill" id="btn-context-switcher" style="display: none;" title="Click to switch Department or Semester">
                 <span class="context-icon">🏛️</span>
                 <span id="current-context-text">1st Year Common • Sem 1</span>
                 <span class="dropdown-chevron">▾</span>
             </button>
 
+            <!-- Navigation Actions & Controls -->
             <div class="nav-actions">
-                <button class="nav-btn flame-btn" id="btn-open-panic-mode" title="Open Panic Pack 48h High-Yield Revision">
+                <!-- Theme Toggle Button (Available everywhere with SVG sun/moon) -->
+                <button class="theme-toggle-btn" id="btn-theme-toggle" title="Toggle Light / Dark Mode">
+                    <svg id="theme-toggle-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none; width: 20px; height: 20px;">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg id="theme-toggle-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+
+                <!-- Dashboard Specific Buttons (Hidden on Landing) -->
+                <button class="nav-btn flame-btn" id="btn-open-panic-mode" style="display: none;" title="Open Panic Pack 48h High-Yield Revision">
                     <span class="flame-icon">🔥</span>
                     <span class="btn-label">Panic Pack</span>
                     <span class="badge flame-badge" id="panic-count-badge">16 High-Yield</span>
                 </button>
 
-                <button class="nav-btn deck-btn" id="btn-open-saved-deck" title="View Saved Review Deck">
+                <button class="nav-btn deck-btn" id="btn-open-saved-deck" style="display: none;" title="View Saved Review Deck">
                     <span class="deck-icon">🔖</span>
-                    <span class="btn-label">My Saved Deck</span>
+                    <span class="btn-label">Saved Deck</span>
                     <span class="badge deck-badge" id="deck-counter-badge">0</span>
                 </button>
 
-                <button class="nav-btn" id="btn-open-feedback" title="Report broken link or request missing paper">
+                <button class="nav-btn" id="btn-open-feedback" style="display: none;" title="Report broken link or request missing paper">
                     <span class="icon">💬</span> Feedback
                 </button>
 
-                <div class="user-profile-pill" id="user-profile-pill" title="User Profile / Guest Mode">
-                    <span class="user-avatar" id="user-avatar-icon">👤</span>
-                    <span class="user-name" id="user-display-name">Guest Student</span>
+                <!-- Dashboard User Profile Pill with Dropdown -->
+                <div class="user-profile-menu-wrapper" id="user-profile-wrapper" style="display: none;">
+                    <div class="user-profile-pill" id="user-profile-pill" title="Click to view profile menu" style="cursor: pointer;">
+                        <span class="user-avatar" id="user-avatar-icon">👤</span>
+                        <span class="user-name" id="user-display-name">Student</span>
+                        <span style="font-size: 0.65rem; opacity: 0.7;">▾</span>
+                    </div>
+                    <div class="user-dropdown-menu" id="user-dropdown-menu">
+                        <button class="user-dropdown-item" id="btn-menu-switch-scope">
+                            <span>🎯</span> Change Stream / Semester
+                        </button>
+                        <button class="user-dropdown-item" id="btn-menu-landing-page">
+                            <span>🏠</span> Return to Landing Page
+                        </button>
+                        <button class="user-dropdown-item danger-item" id="btn-menu-sign-out">
+                            <span>🚪</span> Sign Out
+                        </button>
+                    </div>
                 </div>
 
+                <!-- Landing Page Specific CTAs -->
                 <a href="https://github.com/Srijita-Bhowmick/MAKAUT-CampusSense" target="_blank" class="nav-link github-pill" id="github-link" title="View on GitHub">
                     <span>⭐ GitHub</span>
                 </a>
+
+                <button class="btn btn-primary" id="btn-landing-auth" title="Sign In or Create Account">
+                    Sign In / Sign Up
+                </button>
             </div>
         </div>
     </header>
 
-    <!-- 2. Main Content Container -->
-    <main class="main-layout">
+    <!-- ====================================================================
+         VIEW A: DEDICATED LANDING PAGE (Root Entry Point for Unauthenticated Visitors)
+         ==================================================================== -->
+    <section id="landing-view">
+        <!-- Hero Section -->
+        <div class="landing-hero">
+            <div class="landing-badge-pill">
+                <span>🎓</span>
+                <span>Official MAKAUT Curricula • 5-Year Exam Archives</span>
+            </div>
+
+            <h1 class="landing-hero-title">MAKAUT-CampusSense</h1>
+
+            <p class="landing-hero-subtitle">
+                Curated syllabi, subject-wise PYQs, and exam-ready revisions for MAKAUT students
+            </p>
+
+            <div class="landing-hero-actions">
+                <a href="#landing-curriculum" class="btn btn-primary btn-hero-cta" id="btn-explore-curriculum">
+                    Explore Curriculum ➔
+                </a>
+                <button class="btn btn-flame-hero" id="btn-hero-panic-pack">
+                    🔥 View 48h Panic Pack
+                </button>
+            </div>
+
+            <div class="landing-stats-bar">
+                <div class="landing-stat-item">
+                    <span>📚</span>
+                    <span><strong>1st Year & Core Streams</strong> Ingested</span>
+                </div>
+                <div class="landing-stat-item">
+                    <span>🔥</span>
+                    <span><strong>Top 20% Repeated</strong> Exam Questions</span>
+                </div>
+                <div class="landing-stat-item">
+                    <span>📄</span>
+                    <span><strong>5-Year Question Papers</strong> & Solutions</span>
+                </div>
+                <div class="landing-stat-item">
+                    <span>🤖</span>
+                    <span><strong>Grounded AI Assistant</strong> with Citations</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Bento Grid -->
+        <div id="landing-features">
+            <div class="landing-section-header">
+                <div class="landing-section-pretitle">WHY CAMPUSSENSE</div>
+                <h2 class="landing-section-title">Built Specially for MAKAUT Engineering Students</h2>
+                <p class="landing-section-subhead">Everything you need to master your semester syllabus and clear your examinations with high marks.</p>
+            </div>
+
+            <div class="landing-features-grid">
+                <div class="landing-feature-card">
+                    <div class="feature-icon-box">📋</div>
+                    <h3 class="feature-card-title">Curated Syllabi & Unit Checklists</h3>
+                    <p class="feature-card-desc">Complete syllabus units with module hours, exact topic breakdowns, and interactive checklist rings to track your exam readiness.</p>
+                </div>
+
+                <div class="landing-feature-card">
+                    <div class="feature-icon-box flame">🔥</div>
+                    <h3 class="feature-card-title">The 48-Hour Panic Pack</h3>
+                    <p class="feature-card-desc">High-yield algorithm analyzing 5 years of exam papers to isolate the top 20% most repeated questions with marks distribution and model answers.</p>
+                </div>
+
+                <div class="landing-feature-card">
+                    <div class="feature-icon-box emerald">📑</div>
+                    <h3 class="feature-card-title">5-Year PYQ Archives</h3>
+                    <p class="feature-card-desc">Official semester examination papers arranged by stream, year, and group (Group A, B, and C) with instant PDF viewing and downloads.</p>
+                </div>
+
+                <div class="landing-feature-card span-2">
+                    <div class="feature-icon-box cyan">🤖</div>
+                    <h3 class="feature-card-title">Grounded Conversational RAG Assistant</h3>
+                    <p class="feature-card-desc">Need a clarification right before your exam? Ask our university-grounded AI engine. Every response cites exact syllabus modules and exam paper years.</p>
+                </div>
+
+                <div class="landing-feature-card">
+                    <div class="feature-icon-box">📊</div>
+                    <h3 class="feature-card-title">College Placement Pulse</h3>
+                    <p class="feature-card-desc">Verified placement statistics and packages across top MAKAUT colleges including IEM Kolkata, Heritage Institute, Techno Salt Lake, and HIT Haldia.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Curriculum Explorer Preview & PDF Download Gate -->
+        <div id="landing-curriculum">
+            <div class="landing-section-header" id="landing-panic-drill">
+                <div class="landing-section-pretitle">CURRICULUM & ARCHIVES</div>
+                <h2 class="landing-section-title">Official Syllabi & 5-Year Question Papers</h2>
+                <p class="landing-section-subhead">Explore official curriculum modules and past papers below. Sign in to download full PDF papers or track your syllabus progress.</p>
+            </div>
+
+            <div class="landing-subjects-grid">
+                <!-- 1. Mathematics 1A -->
+                <div class="landing-subject-card">
+                    <div>
+                        <div class="landing-subject-header">
+                            <span class="landing-subject-code">BS-M101</span>
+                            <span class="badge">4 Credits</span>
+                        </div>
+                        <h3 class="landing-subject-name">Mathematics 1A (Calculus & Linear Algebra)</h3>
+                        <p class="card-subtitle">Evolutes, definite integrals, multivariable extrema, Cayley-Hamilton theorem, and vector spaces.</p>
+                        <div class="landing-unit-pills">
+                            <span class="landing-unit-pill">Unit 1: Calculus</span>
+                            <span class="landing-unit-pill">Unit 2: Multivariable</span>
+                            <span class="landing-unit-pill">Unit 3: Matrices</span>
+                            <span class="landing-unit-pill">Unit 4: Vector Spaces</span>
+                        </div>
+                    </div>
+                    <div class="landing-paper-actions">
+                        <button class="btn-download-pdf btn-preview-pdf btn-download-pdf-gate" data-subject="BS-M101" data-paper="2023" data-name="Mathematics 1A (BS-M101) 2023 Paper" data-resource-id="1">
+                            <span>📄 2023 Examination Paper</span>
+                            <span class="pdf-gate-badge">PDF</span>
+                        </button>
+                        <button class="btn-download-pdf btn-preview-pdf btn-download-pdf-gate" data-subject="BS-M101" data-paper="2022" data-name="Mathematics 1A (BS-M101) 2022 Paper" data-resource-id="2">
+                            <span>📄 2022 Examination Paper</span>
+                            <span class="pdf-gate-badge">PDF</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 2. Physics -->
+                <div class="landing-subject-card">
+                    <div>
+                        <div class="landing-subject-header">
+                            <span class="landing-subject-code">BS-PH101</span>
+                            <span class="badge">4 Credits</span>
+                        </div>
+                        <h3 class="landing-subject-name">Physics (Optics & Quantum Mechanics)</h3>
+                        <p class="card-subtitle">Newton's rings, Fraunhofer diffraction, Schrödinger wave equation, Ruby lasers, and Maxwell's equations.</p>
+                        <div class="landing-unit-pills">
+                            <span class="landing-unit-pill">Unit 1: Wave Optics</span>
+                            <span class="landing-unit-pill">Unit 2: Quantum</span>
+                            <span class="landing-unit-pill">Unit 3: Lasers</span>
+                            <span class="landing-unit-pill">Unit 4: Electromagnetism</span>
+                        </div>
+                    </div>
+                    <div class="landing-paper-actions">
+                        <button class="btn-download-pdf btn-preview-pdf btn-download-pdf-gate" data-subject="BS-PH101" data-paper="2023" data-name="Physics (BS-PH101) 2023 Paper" data-resource-id="3">
+                            <span>📄 2023 Examination Paper</span>
+                            <span class="pdf-gate-badge">PDF</span>
+                        </button>
+                        <button class="btn-download-pdf btn-preview-pdf btn-download-pdf-gate" data-subject="BS-PH101" data-paper="2022" data-name="Physics (BS-PH101) 2022 Paper" data-resource-id="4">
+                            <span>📄 2022 Examination Paper</span>
+                            <span class="pdf-gate-badge">PDF</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 3. Basic Electrical -->
+                <div class="landing-subject-card">
+                    <div>
+                        <div class="landing-subject-header">
+                            <span class="landing-subject-code">ES-EE101</span>
+                            <span class="badge">4 Credits</span>
+                        </div>
+                        <h3 class="landing-subject-name">Basic Electrical Engineering</h3>
+                        <p class="card-subtitle">Kirchhoff's laws, Thévenin's & Norton's theorems, AC series resonance, single phase transformers, and induction motors.</p>
+                        <div class="landing-unit-pills">
+                            <span class="landing-unit-pill">Unit 1: DC Circuits</span>
+                            <span class="landing-unit-pill">Unit 2: AC Circuits</span>
+                            <span class="landing-unit-pill">Unit 3: Transformers</span>
+                            <span class="landing-unit-pill">Unit 4: Machines</span>
+                        </div>
+                    </div>
+                    <div class="landing-paper-actions">
+                        <button class="btn-download-pdf btn-preview-pdf btn-download-pdf-gate" data-subject="ES-EE101" data-paper="2023" data-name="Basic Electrical (ES-EE101) 2023 Paper" data-resource-id="5">
+                            <span>📄 2023 Examination Paper</span>
+                            <span class="pdf-gate-badge">PDF</span>
+                        </button>
+                        <button class="btn-download-pdf btn-preview-pdf btn-download-pdf-gate" data-subject="ES-EE101" data-paper="2022" data-name="Basic Electrical (ES-EE101) 2022 Paper" data-resource-id="6">
+                            <span>📄 2022 Examination Paper</span>
+                            <span class="pdf-gate-badge">PDF</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 4. Programming for Problem Solving in C -->
+                <div class="landing-subject-card">
+                    <div>
+                        <div class="landing-subject-header">
+                            <span class="landing-subject-code">ES-CS101</span>
+                            <span class="badge">4 Credits</span>
+                        </div>
+                        <h3 class="landing-subject-name">Programming for Problem Solving (C)</h3>
+                        <p class="card-subtitle">Algorithms, conditionals, loops, multidimensional arrays, pointer arithmetic, dynamic allocation, and recursion.</p>
+                        <div class="landing-unit-pills">
+                            <span class="landing-unit-pill">Unit 1: Intro to C</span>
+                            <span class="landing-unit-pill">Unit 2: Conditionals</span>
+                            <span class="landing-unit-pill">Unit 3: Arrays</span>
+                            <span class="landing-unit-pill">Unit 4: Functions</span>
+                            <span class="landing-unit-pill">Unit 5: Pointers</span>
+                        </div>
+                    </div>
+                    <div class="landing-paper-actions">
+                        <button class="btn-download-pdf btn-preview-pdf btn-download-pdf-gate" data-subject="ES-CS101" data-paper="2023" data-name="Programming in C (ES-CS101) 2023 Paper" data-resource-id="7">
+                            <span>📄 2023 Examination Paper</span>
+                            <span class="pdf-gate-badge">PDF</span>
+                        </button>
+                        <button class="btn-download-pdf btn-preview-pdf btn-download-pdf-gate" data-subject="ES-CS101" data-paper="2022" data-name="Programming in C (ES-CS101) 2022 Paper" data-resource-id="8">
+                            <span>📄 2022 Examination Paper</span>
+                            <span class="pdf-gate-badge">PDF</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 5. Operating Systems (CSE) -->
+                <div class="landing-subject-card">
+                    <div>
+                        <div class="landing-subject-header">
+                            <span class="landing-subject-code">PCC-CS501</span>
+                            <span class="badge">3 Credits</span>
+                        </div>
+                        <h3 class="landing-subject-name">Operating Systems (CSE Sem 5)</h3>
+                        <p class="card-subtitle">Processes, CPU scheduling, Banker's deadlock avoidance, semaphores, paging, LRU page replacement, and file systems.</p>
+                        <div class="landing-unit-pills">
+                            <span class="landing-unit-pill">Unit 1: Intro</span>
+                            <span class="landing-unit-pill">Unit 2: Processes</span>
+                            <span class="landing-unit-pill">Unit 3: Deadlocks</span>
+                            <span class="landing-unit-pill">Unit 4: Memory</span>
+                        </div>
+                    </div>
+                    <div class="landing-paper-actions">
+                        <button class="btn-download-pdf btn-preview-pdf btn-download-pdf-gate" data-subject="PCC-CS501" data-paper="2023" data-name="Operating Systems (PCC-CS501) 2023 Paper" data-resource-id="9">
+                            <span>📄 2023 Examination Paper</span>
+                            <span class="pdf-gate-badge">PDF</span>
+                        </button>
+                        <button class="btn-download-pdf btn-preview-pdf btn-download-pdf-gate" data-subject="PCC-CS501" data-paper="2022" data-name="Operating Systems (PCC-CS501) 2022 Paper" data-resource-id="10">
+                            <span>📄 2022 Examination Paper</span>
+                            <span class="pdf-gate-badge">PDF</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 6. Database Management Systems -->
+                <div class="landing-subject-card">
+                    <div>
+                        <div class="landing-subject-header">
+                            <span class="landing-subject-code">PCC-CS502</span>
+                            <span class="badge">3 Credits</span>
+                        </div>
+                        <h3 class="landing-subject-name">Database Management Systems</h3>
+                        <p class="card-subtitle">ER modeling, relational algebra, SQL, normal forms (1NF to BCNF), ACID transactions, and 2-phase locking protocol.</p>
+                        <div class="landing-unit-pills">
+                            <span class="landing-unit-pill">Unit 1: ER Model</span>
+                            <span class="landing-unit-pill">Unit 2: SQL</span>
+                            <span class="landing-unit-pill">Unit 3: Normalization</span>
+                            <span class="landing-unit-pill">Unit 4: Transactions</span>
+                        </div>
+                    </div>
+                    <div class="landing-paper-actions">
+                        <button class="btn-download-pdf btn-preview-pdf btn-download-pdf-gate" data-subject="PCC-CS502" data-paper="2023" data-name="DBMS (PCC-CS502) 2023 Paper" data-resource-id="11">
+                            <span>📄 2023 Examination Paper</span>
+                            <span class="pdf-gate-badge">PDF</span>
+                        </button>
+                        <button class="btn-download-pdf btn-preview-pdf btn-download-pdf-gate" data-subject="PCC-CS502" data-paper="2022" data-name="DBMS (PCC-CS502) 2022 Paper" data-resource-id="12">
+                            <span>📄 2022 Examination Paper</span>
+                            <span class="pdf-gate-badge">PDF</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Landing Footer -->
+        <footer class="landing-footer">
+            <p><strong>MAKAUT-CampusSense</strong> • Academic Resource Aggregator & Conversational RAG</p>
+            <p style="margin-top: 0.35rem; font-size: 0.8rem;">
+                Curated for Maulana Abul Kalam Azad University of Technology affiliated colleges. Maintained by <a href="https://github.com/Srijita-Bhowmick" target="_blank">Srijita Bhowmick</a>.
+            </p>
+        </footer>
+    </section>
+
+    <!-- ====================================================================
+         VIEW B: BENTO GRID DASHBOARD (Active When Authenticated)
+         ==================================================================== -->
+    <main class="main-layout" id="dashboard-view" style="display: none;">
         <!-- Hero Search Section -->
         <section class="hero-search-section">
             <div class="search-hero-container">
@@ -81,7 +413,7 @@
                 </div>
                 <div class="search-quick-tags">
                     <span class="quick-tag-label">Trending Revisions:</span>
-                    <button class="quick-chip" data-query="Thevenin Theorem repeated questions">⚡ Thevenin Theorem</button>
+                    <button class="quick-chip" data-query="Thévenin's Theorem repeated questions">⚡ Thévenin's Theorem</button>
                     <button class="quick-chip" data-query="Newton Rings derivation proof">🔬 Newton's Rings</button>
                     <button class="quick-chip" data-query="malloc vs calloc differences in C">💻 malloc() vs calloc()</button>
                     <button class="quick-chip" data-query="Banker's Algorithm deadlock avoidance">🛡️ Banker's Algorithm</button>
@@ -90,7 +422,7 @@
             </div>
         </section>
 
-        <!-- 3. Bento Grid Dashboard -->
+        <!-- Bento Grid Dashboard -->
         <section class="bento-container">
             <!-- Bento Card A: Active Semester Subjects & Checklist Rings (2-columns wide) -->
             <div class="bento-card bento-card-subjects">
@@ -184,56 +516,120 @@
         </section>
     </main>
 
-    <!-- 4. Landing & Auth Screen Modal (Shown if first time or signed out) -->
+    <!-- ====================================================================
+         MODALS & OVERLAYS
+         ==================================================================== -->
+
+    <!-- Auth Modal (Sign In / Create Account, Zero Guest Option) -->
     <div class="modal-backdrop" id="auth-modal" style="display: none;">
         <div class="modal-card auth-modal-card">
             <div class="auth-header">
-                <div class="brand-logo large-logo">
+                <div class="brand-logo large-logo" style="margin: 0 auto 0.75rem;">
                     <span class="logo-icon">🎓</span>
                 </div>
                 <span class="badge auth-badge">MAKAUT Official Academic Engine</span>
-                <h1 class="auth-title">Stop asking the class WhatsApp group for PYQs.</h1>
-                <p class="auth-subhead">Centralized syllabi, 5-year question banks, and panic-pack revisions for MAKAUT students.</p>
+                <h2 class="auth-title">Welcome to MAKAUT-CampusSense</h2>
+                <p class="auth-subhead">Curated syllabi, subject-wise PYQs, and exam-ready revisions for MAKAUT students</p>
+            </div>
+
+            <!-- Dynamic Gate Banner (Visible when triggered by PDF download intercept) -->
+            <div class="auth-gate-alert" id="auth-gate-banner" style="display: none;">
+                <span style="font-size: 1.25rem;">🔒</span>
+                <div>
+                    <strong>Please sign in or create an account to download official MAKAUT exam papers</strong>
+                    <div style="font-size: 0.78rem; opacity: 0.9; margin-top: 0.15rem;">
+                        Curated syllabi, subject-wise PYQs, and exam-ready revisions for MAKAUT students.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Auth Mode Tabs (Sign In vs Create Account) -->
+            <div class="auth-tabs-row">
+                <button type="button" class="auth-tab-btn active" id="tab-auth-login">Sign In</button>
+                <button type="button" class="auth-tab-btn" id="tab-auth-signup">Create Account</button>
+            </div>
+
+            <!-- Panel 1: Sign In -->
+            <form id="form-auth-login" class="auth-form-panel">
+                <div class="form-group" style="margin-bottom: 0.85rem;">
+                    <label class="form-label">Student Email or Roll Number</label>
+                    <input type="text" id="login-email" class="custom-input" placeholder="e.g. roll@college.edu.in" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 1.2rem;">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="login-password" class="custom-input" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.85rem;">
+                    Sign In to CampusSense ➔
+                </button>
+            </form>
+
+            <!-- Panel 2: Create Account -->
+            <form id="form-auth-signup" class="auth-form-panel" style="display: none;">
+                <div class="form-group" style="margin-bottom: 0.85rem;">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" id="signup-name" class="custom-input" placeholder="e.g. Srijita Bhowmick" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 0.85rem;">
+                    <label class="form-label">College</label>
+                    <select id="signup-college" class="custom-select" required>
+                        <option value="IEM">Institute of Engineering & Management (IEM)</option>
+                        <option value="Heritage">Heritage Institute of Technology (HITK)</option>
+                        <option value="TMSL">Techno Main Salt Lake (TMSL)</option>
+                        <option value="HIT">Haldia Institute of Technology (HIT)</option>
+                        <option value="MAKAUT_MAIN">MAKAUT In-House (Haringhata Main Campus)</option>
+                        <option value="OTHER">Other MAKAUT Affiliated College</option>
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 0.85rem;">
+                    <label class="form-label">Email or University Roll Number</label>
+                    <input type="text" id="signup-email" class="custom-input" placeholder="e.g. student@iemcal.com" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 1.2rem;">
+                    <label class="form-label">Create Password</label>
+                    <input type="password" id="signup-password" class="custom-input" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.85rem;">
+                    Create Student Account ➔
+                </button>
+            </form>
+
+            <div class="auth-divider">
+                <span>or</span>
             </div>
 
             <div class="auth-actions">
-                <button class="btn btn-google" id="btn-auth-google">
+                <button type="button" class="btn-google" id="btn-auth-google">
                     <svg class="google-icon" viewBox="0 0 24 24" width="20" height="20">
                         <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                         <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
                         <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
                         <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
                     </svg>
-                    Continue with Google
-                </button>
-
-                <div class="auth-divider">
-                    <span>or</span>
-                </div>
-
-                <button class="btn btn-guest" id="btn-auth-guest">
-                    ⚡ Browse as Guest (Instant Access)
+                    Continue with Student Google Account
                 </button>
             </div>
 
-            <div class="auth-footer">
-                <span>Free & Open Access for all MAKAUT & affiliated college students.</span>
+            <div class="auth-footer" style="margin-top: 1.25rem;">
+                <button type="button" class="btn" id="btn-close-auth-modal" style="background: transparent; color: var(--text-muted); font-size: 0.8rem; border: none; cursor: pointer;">
+                    ✕ Close
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- 5. One-Time Onboarding & Scope Selector Modal (NO Regulation Selector) -->
-    <div class="modal-backdrop" id="onboarding-modal" style="display: none;">
+    <!-- Academic Scope Selection Modal (#scope-modal) -->
+    <div class="modal-backdrop" id="scope-modal" style="display: none;">
         <div class="modal-card onboarding-card">
             <div class="modal-header">
                 <div>
                     <h2 class="modal-title">Select Your Academic Scope</h2>
                     <p class="modal-subtitle">Locks your dashboard to your exact department and current semester.</p>
                 </div>
-                <button class="modal-close-btn" id="btn-close-onboarding" title="Close">✕</button>
+                <button class="modal-close-btn" id="btn-close-scope-modal" title="Close">✕</button>
             </div>
 
-            <form id="onboarding-form" class="onboarding-form">
+            <form id="scope-form" class="onboarding-form">
                 <div class="form-group">
                     <label class="form-label">Department / Engineering Stream</label>
                     <div class="stream-select-grid" id="stream-picker-grid">
@@ -262,6 +658,21 @@
                             <span class="stream-name">Electronics & Comm (ECE)</span>
                             <span class="stream-desc">Circuits & Signals</span>
                         </button>
+                        <button type="button" class="stream-option" data-stream="EE">
+                            <span class="stream-icon">⚡</span>
+                            <span class="stream-name">Electrical Eng (EE)</span>
+                            <span class="stream-desc">Power & Grid</span>
+                        </button>
+                        <button type="button" class="stream-option" data-stream="ME">
+                            <span class="stream-icon">⚙️</span>
+                            <span class="stream-name">Mechanical Eng (ME)</span>
+                            <span class="stream-desc">Thermodynamics</span>
+                        </button>
+                        <button type="button" class="stream-option" data-stream="CE">
+                            <span class="stream-icon">🏗️</span>
+                            <span class="stream-name">Civil Eng (CE)</span>
+                            <span class="stream-desc">Structures</span>
+                        </button>
                     </div>
                 </div>
 
@@ -280,76 +691,65 @@
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" class="btn btn-primary btn-large" id="btn-save-onboarding">
-                        Lock Context & Enter Dashboard 🚀
+                    <button type="submit" class="btn btn-primary btn-large" id="btn-confirm-scope">
+                        Enter Dashboard ➔
                     </button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- 6. Subject Hub Modal (Checklist, PYQ Archive, Recurring Topics) -->
+    <!-- Subject Hub Modal (Checklist + 5Y PYQ + Recurring Topic Clusters) -->
     <div class="modal-backdrop" id="subject-hub-modal" style="display: none;">
         <div class="modal-card subject-hub-card">
             <div class="hub-header">
-                <div class="hub-title-group">
+                <div>
                     <div class="hub-meta-row">
-                        <span class="subject-code-tag" id="hub-subject-code">BS-M101</span>
-                        <span class="badge" id="hub-credits-badge">4 Credits</span>
-                        <span class="badge verified-badge" id="hub-stream-badge">1st Year Common</span>
+                        <span class="badge" id="hub-subject-code">BS-M101</span>
+                        <span class="stat-pill" id="hub-subject-stream">1st Year Common • Sem 1</span>
                     </div>
                     <h2 class="hub-title" id="hub-subject-name">Mathematics 1A (Calculus & Linear Algebra)</h2>
                 </div>
                 <div class="hub-progress-stat">
-                    <div class="stat-num" id="hub-progress-number">0%</div>
-                    <div class="stat-lbl">Syllabus Mastered</div>
+                    <div class="stat-num" id="hub-completion-stat">0%</div>
+                    <div class="stat-lbl">Syllabus Covered</div>
                 </div>
-                <button class="modal-close-btn" id="btn-close-subject-hub" title="Close">✕</button>
+                <button class="modal-close-btn" id="btn-close-hub-modal" title="Close">✕</button>
             </div>
 
-            <!-- Subject Hub Tabs -->
-            <div class="hub-tabs-row" role="tablist">
-                <button class="hub-tab-btn active" data-hubtab="hub-checklist">
-                    📋 Syllabus Checklist (<span id="hub-unit-count">4</span> Units)
-                </button>
-                <button class="hub-tab-btn" data-hubtab="hub-pyqs">
-                    📑 5-Year PYQs & PDF Reader
-                </button>
-                <button class="hub-tab-btn" data-hubtab="hub-recurring">
-                    🔥 Top Recurring Topics (<span id="hub-recurring-count">3</span>)
-                </button>
+            <div class="hub-tabs-row">
+                <button class="hub-tab-btn active" data-hub-tab="checklist">📋 Syllabus Units Checklist</button>
+                <button class="hub-tab-btn" data-hub-tab="pyqs">📑 5-Year Question Papers</button>
+                <button class="hub-tab-btn" data-hub-tab="clusters">⚡ High-Frequency Topics</button>
             </div>
 
-            <!-- Hub Tab 1: Syllabus Checklist -->
-            <div class="hub-tab-content active" id="hub-checklist-content">
+            <!-- Tab 1: Interactive Syllabus Units Checklist -->
+            <div class="hub-tab-content active" id="tab-content-checklist">
                 <div class="checklist-instructions">
-                    <span>💡 Check off units as you study. Your progress persists in real time and updates your dashboard rings.</span>
+                    ✓ Check off units as you finish revising them. Progress is automatically persisted.
                 </div>
-                <div class="units-checklist-container" id="hub-units-list">
+                <div class="units-checklist-container" id="hub-units-container">
                     <!-- Populated dynamically by app.js -->
                 </div>
             </div>
 
-            <!-- Hub Tab 2: PYQ Archive -->
-            <div class="hub-tab-content" id="hub-pyqs-content" style="display: none;">
-                <div class="pyq-filters-row" id="hub-pyq-year-filters">
-                    <!-- Year filter buttons -->
-                </div>
-                <div class="pyq-cards-list" id="hub-pyq-cards-list">
-                    <!-- PYQ items with preview and download buttons -->
+            <!-- Tab 2: 5-Year PYQs Archive -->
+            <div class="hub-tab-content" id="tab-content-pyqs" style="display: none;">
+                <div class="pyq-archive-list" id="hub-pyqs-container">
+                    <!-- Populated dynamically by app.js -->
                 </div>
             </div>
 
-            <!-- Hub Tab 3: Recurring Topics -->
-            <div class="hub-tab-content" id="hub-recurring-content" style="display: none;">
-                <div class="recurring-topics-list" id="hub-recurring-topics-list">
-                    <!-- Clustered repeated questions -->
+            <!-- Tab 3: Recurring Topic Clusters -->
+            <div class="hub-tab-content" id="tab-content-clusters" style="display: none;">
+                <div class="topic-frequency-list" id="hub-clusters-container">
+                    <!-- Populated dynamically by app.js -->
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 7. Dedicated Full Panic Mode View / Modal -->
+    <!-- Full Panic Mode Modal (48h High-Yield PYQ Drill) -->
     <div class="modal-backdrop" id="panic-mode-modal" style="display: none;">
         <div class="modal-card panic-mode-card">
             <div class="panic-modal-header">
@@ -379,20 +779,20 @@
         </div>
     </div>
 
-    <!-- 8. PDF Previewer Modal -->
+    <!-- PDF Previewer Modal -->
     <div class="modal-backdrop" id="pdf-viewer-modal" style="display: none;">
         <div class="modal-card pdf-viewer-card">
             <div class="pdf-viewer-header">
                 <div class="pdf-file-info">
                     <span class="doc-icon">📄</span>
                     <div>
-                        <div class="pdf-title" id="pdf-modal-title">PCC-CS501 2022 Examination Paper</div>
+                        <div class="pdf-title" id="pdf-modal-title">Examination Paper</div>
                         <div class="pdf-subtitle" id="pdf-modal-subtitle">Official Maulana Abul Kalam Azad University of Technology Archive</div>
                     </div>
                 </div>
                 <div class="pdf-viewer-actions">
                     <a href="#" target="_blank" class="btn btn-secondary" id="btn-pdf-external-download">
-                        ⬇ Download PDF
+                        📥 Download PDF
                     </a>
                     <button class="btn btn-secondary" id="btn-pdf-fullscreen">
                         ⛶ Fullscreen
@@ -410,7 +810,7 @@
         </div>
     </div>
 
-    <!-- 9. Feedback & Support Modal -->
+    <!-- Feedback & Support Modal -->
     <div class="modal-backdrop" id="feedback-modal" style="display: none;">
         <div class="modal-card feedback-modal-card">
             <div class="modal-header">
@@ -425,7 +825,7 @@
                 <div class="form-group">
                     <label class="form-label">Category</label>
                     <select id="feedback-category" class="custom-select" required>
-                        <option value="BROKEN_PDF">🚨 Broken / Missing PDF Paper Link</option>
+                        <option value="BROKEN_PDF">🔗 Broken / Missing PDF Paper Link</option>
                         <option value="MISSING_PYQ">📄 Submit / Request Missing Year PYQ</option>
                         <option value="MODEL_ANSWER">💡 Request Model Answer for Question</option>
                         <option value="FEATURE_REQUEST">✨ Feature Request / UI Suggestion</option>
@@ -446,7 +846,7 @@
 
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary" id="btn-submit-feedback">
-                        Submit Feedback 📨
+                        Submit Feedback ✉️
                     </button>
                 </div>
                 <div id="feedback-result-msg" class="result-box" style="display: none;"></div>
@@ -454,12 +854,12 @@
         </div>
     </div>
 
-    <!-- 10. AI RAG Slide-Over Drawer -->
+    <!-- AI RAG Slide-Over Drawer -->
     <div class="drawer-backdrop" id="ai-drawer-backdrop" style="display: none;"></div>
     <aside class="ai-slide-drawer" id="ai-slide-drawer">
         <div class="drawer-header">
             <div class="drawer-title-group">
-                <span class="drawer-icon">🎓</span>
+                <span class="drawer-icon">🤖</span>
                 <div>
                     <div class="drawer-title">MAKAUT CampusSense AI</div>
                     <div class="drawer-subtitle">Grounded Conversational RAG • Top-K Vector Engine</div>
@@ -470,7 +870,7 @@
 
         <div class="drawer-chat-messages" id="drawer-chat-messages">
             <div class="message assistant welcome">
-                <div class="msg-avatar">🎓</div>
+                <div class="msg-avatar">🤖</div>
                 <div class="msg-body">
                     <div class="msg-header">
                         <span class="sender-name">MAKAUT CampusSense AI</span>
@@ -493,15 +893,15 @@
                 <textarea id="drawer-query-input" rows="2" class="drawer-textarea"
                           placeholder="Ask a MAKAUT question... (e.g., 'What is in Module 3 of OS?')"></textarea>
                 <button type="submit" class="btn btn-primary drawer-send-btn" id="btn-drawer-send">
-                    Send 🚀
+                    Send ⚡
                 </button>
             </form>
         </div>
     </aside>
 
-    <!-- 11. Persistent Floating Action Button (FAB) for AI Drawer -->
-    <button class="ai-fab-btn" id="btn-open-ai-fab" title="Ask MAKAUT AI (Ctrl + K)">
-        <span class="fab-icon">🎓</span>
+    <!-- Persistent Floating Action Button (FAB) for AI Drawer (Visible on Dashboard) -->
+    <button class="ai-fab-btn" id="btn-open-ai-fab" style="display: none;" title="Ask MAKAUT AI (Ctrl + K)">
+        <span class="fab-icon">🤖</span>
         <span class="fab-text">Ask AI</span>
     </button>
 
