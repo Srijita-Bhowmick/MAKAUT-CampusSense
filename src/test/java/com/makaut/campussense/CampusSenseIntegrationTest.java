@@ -107,4 +107,22 @@ class CampusSenseIntegrationTest {
                 .andExpect(jsonPath("$.status", is("SUCCESS")))
                 .andExpect(jsonPath("$.chunkCount", greaterThan(0)));
     }
+
+    @Test
+    @DisplayName("Integration: GET /assets/resources/1st_year/syllabus/Physics.pdf - Static Resource Delivery")
+    void testStaticSyllabusDelivery() throws Exception {
+        mockMvc.perform(get("/assets/resources/1st_year/syllabus/Physics.pdf"))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Content-Type", containsString("application/pdf")))
+                .andExpect(header().string("X-Frame-Options", "SAMEORIGIN"));
+    }
+
+    @Test
+    @DisplayName("Integration: GET /assets/resources/1st_year/pyq/physics/... - Static PYQ Delivery")
+    void testStaticPyqDelivery() throws Exception {
+        mockMvc.perform(get("/assets/resources/1st_year/pyq/physics/btech-1-sem-physics-1-bs-ph101-2026.pdf"))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Content-Type", containsString("application/pdf")))
+                .andExpect(header().string("X-Frame-Options", "SAMEORIGIN"));
+    }
 }

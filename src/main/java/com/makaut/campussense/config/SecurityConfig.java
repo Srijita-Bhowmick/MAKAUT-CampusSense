@@ -32,6 +32,7 @@ public class SecurityConfig {
                                 "/styles.css",
                                 "/app.js",
                                 "/favicon.ico",
+                                "/assets/**",
                                 "/h2-console/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",

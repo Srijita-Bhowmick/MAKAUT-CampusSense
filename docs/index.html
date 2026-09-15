@@ -759,9 +759,29 @@
             </div>
 
             <div class="pdf-viewer-body" id="pdf-viewer-body">
+                <div class="pdf-loading-spinner" id="pdf-loading-spinner" style="display: none;">
+                    <div class="spinner-ring"></div>
+                    <span>Loading Document Preview...</span>
+                </div>
                 <iframe id="pdf-viewer-iframe" src="about:blank" title="Document Viewer"></iframe>
                 <div class="pdf-fallback-view" id="pdf-fallback-view" style="display: none;">
-                    <div class="paper-text-preview" id="pdf-extracted-text"></div>
+                    <div class="pdf-fallback-alert">
+                        <div class="pdf-fallback-alert-title">
+                            <span>⚠️</span> Embedded Preview Restricted
+                        </div>
+                        <div class="pdf-fallback-alert-desc">
+                            Your browser environment prevented direct inline PDF rendering. You can download the complete document or view the syllabus breakdown below.
+                        </div>
+                        <div class="pdf-fallback-actions">
+                            <button type="button" class="btn btn-primary" id="btn-fallback-direct-download">
+                                ⬇ Direct Download PDF
+                            </button>
+                            <button type="button" class="btn btn-secondary" id="btn-fallback-new-tab">
+                                ↗ Open in New Window
+                            </button>
+                        </div>
+                    </div>
+                    <div id="pdf-fallback-content"></div>
                 </div>
             </div>
         </div>

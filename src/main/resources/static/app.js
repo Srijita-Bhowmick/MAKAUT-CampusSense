@@ -49,8 +49,10 @@ document.addEventListener('DOMContentLoaded', () => {
             return relativePath;
         }
         const clean = relativePath.replace(/^\.?\//, '');
-        const base = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '/');
-        return new URL(clean, base).href;
+        if (window.location.pathname.includes('/MAKAUT-CampusSense/')) {
+            return window.location.origin + '/MAKAUT-CampusSense/' + clean;
+        }
+        return window.location.origin + '/' + clean;
     }
 
     async function downloadPdfFile(fileUrl, preferredName) {
@@ -1833,15 +1835,88 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 14. PDF Viewer Modal
+    // 14. PDF Viewer Modal & Embed Fallback
     // ==========================================
+    function findSubjectForUrl(url, title) {
+        if (!url && !title) return null;
+        const lowerUrl = (url || '').toLowerCase();
+        const lowerTitle = (title || '').toLowerCase();
+        return MAKAUT_CURRICULUM.find(s => {
+            if (s.syllabusUrl && lowerUrl.includes(s.syllabusUrl.toLowerCase())) return true;
+            if (lowerUrl.includes(s.code.toLowerCase()) || lowerTitle.includes(s.code.toLowerCase())) return true;
+            if (s.altCode && (lowerUrl.includes(s.altCode.toLowerCase()) || lowerTitle.includes(s.altCode.toLowerCase()))) return true;
+            if (s.syllabusUrl) {
+                const base = s.syllabusUrl.split('/').pop().toLowerCase();
+                if (lowerUrl.includes(base)) return true;
+            }
+            if (s.pyqs && s.pyqs.some(p => p.fileUrl && lowerUrl.includes(p.fileUrl.toLowerCase()))) return true;
+            return false;
+        });
+    }
+
+    function renderPdfFallbackContent(title, resolvedUrl, preferredName) {
+        const spinner = document.getElementById('pdf-loading-spinner');
+        const iframe = document.getElementById('pdf-viewer-iframe');
+        const fallbackView = document.getElementById('pdf-fallback-view');
+        const fallbackContent = document.getElementById('pdf-fallback-content');
+        const directBtn = document.getElementById('btn-fallback-direct-download');
+        const newTabBtn = document.getElementById('btn-fallback-new-tab');
+
+        if (spinner) spinner.style.display = 'none';
+        if (iframe) iframe.style.display = 'none';
+        if (fallbackView) fallbackView.style.display = 'flex';
+
+        if (directBtn) {
+            directBtn.onclick = (e) => {
+                e.preventDefault();
+                downloadPdfFile(resolvedUrl, preferredName);
+            };
+        }
+        if (newTabBtn) {
+            newTabBtn.onclick = (e) => {
+                e.preventDefault();
+                window.open(resolvedUrl, '_blank');
+            };
+        }
+
+        const subj = findSubjectForUrl(resolvedUrl, title);
+        let checklistHtml = '';
+        if (subj && subj.units && subj.units.length > 0) {
+            checklistHtml = `
+                <div class="pdf-fallback-checklist">
+                    <h4 style="font-size: 1rem; color: var(--primary-accent); margin: 0.5rem 0;">📚 ${escapeHtml(subj.name)} (${escapeHtml(subj.code)}) — Syllabus Unit Checklist</h4>
+                    ${subj.units.map(u => `
+                        <div class="pdf-fallback-unit-item">
+                            <div class="pdf-fallback-unit-title">${escapeHtml(u.title)} <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: normal;">• ${u.hours} hrs</span></div>
+                            <div class="pdf-fallback-unit-topics">${escapeHtml(u.subtopics)}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        } else {
+            checklistHtml = `
+                <div class="pdf-fallback-unit-item" style="margin-top: 0.75rem;">
+                    <div class="pdf-fallback-unit-title">📄 Document Details</div>
+                    <div class="pdf-fallback-unit-topics">
+                        <strong>Title:</strong> ${escapeHtml(title || 'MAKAUT Academic Resource')}<br/>
+                        <strong>Direct Path:</strong> <code>${escapeHtml(resolvedUrl)}</code>
+                    </div>
+                </div>
+            `;
+        }
+
+        if (fallbackContent) {
+            fallbackContent.innerHTML = checklistHtml;
+        }
+    }
+
     function openPdfViewer(title, url) {
         const modal = document.getElementById('pdf-viewer-modal');
         const titleEl = document.getElementById('pdf-modal-title');
         const iframe = document.getElementById('pdf-viewer-iframe');
         const downloadBtn = document.getElementById('btn-pdf-external-download');
         const fallbackView = document.getElementById('pdf-fallback-view');
-        const extractedText = document.getElementById('pdf-extracted-text');
+        const spinner = document.getElementById('pdf-loading-spinner');
 
         const resolvedUrl = resolveAssetPath(url);
         const preferredName = (title || 'MAKAUT_Resource').replace(/[^a-zA-Z0-9_-]/g, '_') + '.pdf';
@@ -1854,17 +1929,42 @@ document.addEventListener('DOMContentLoaded', () => {
             };
         }
 
+        // Initially show spinner and reset fallback/iframe
+        if (spinner) spinner.style.display = 'flex';
+        if (fallbackView) fallbackView.style.display = 'none';
+
         if (iframe) {
+            iframe.style.display = 'block';
+            iframe.style.opacity = '0';
+
+            let loadTimeout = null;
+            let hasLoaded = false;
+
+            iframe.onload = () => {
+                hasLoaded = true;
+                if (loadTimeout) clearTimeout(loadTimeout);
+                if (spinner) spinner.style.display = 'none';
+                iframe.style.opacity = '1';
+            };
+
+            iframe.onerror = () => {
+                if (loadTimeout) clearTimeout(loadTimeout);
+                renderPdfFallbackContent(title, resolvedUrl, preferredName);
+            };
+
+            // Safety timeout: reveal iframe or fallback if onload doesn't trigger
+            loadTimeout = setTimeout(() => {
+                if (!hasLoaded && modal && modal.style.display === 'flex') {
+                    if (spinner) spinner.style.display = 'none';
+                    iframe.style.opacity = '1';
+                }
+            }, 3000);
+
             let finalUrl = resolvedUrl || 'about:blank';
             if (finalUrl.indexOf('.pdf') !== -1 && finalUrl.indexOf('#') === -1) {
                 finalUrl += '#toolbar=0';
             }
             iframe.src = finalUrl;
-        }
-        if (fallbackView) fallbackView.style.display = 'none';
-
-        if (extractedText) {
-            extractedText.textContent = `Document Viewer: ${title}\n\nMaulana Abul Kalam Azad University of Technology verified academic paper.\nDirect link: ${resolvedUrl}\n\nIf embedded viewing is restricted by your browser, click "Download PDF" above to view directly.`;
         }
 
         if (modal) modal.style.display = 'flex';
@@ -1876,7 +1976,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const modal = document.getElementById('pdf-viewer-modal');
             if (modal) modal.style.display = 'none';
             const iframe = document.getElementById('pdf-viewer-iframe');
-            if (iframe) iframe.src = 'about:blank';
+            if (iframe) {
+                iframe.src = 'about:blank';
+                iframe.style.opacity = '0';
+            }
+            const fallbackView = document.getElementById('pdf-fallback-view');
+            if (fallbackView) fallbackView.style.display = 'none';
+            const spinner = document.getElementById('pdf-loading-spinner');
+            if (spinner) spinner.style.display = 'none';
         });
     }
 
