@@ -343,6 +343,26 @@
                 </div>
                 <p class="card-subtitle">Click any subject card to launch the <strong>Subject Hub</strong> with interactive checklist, PYQ Archives, and topic clusters.</p>
 
+                <!-- Regulation Notice Banner (Shown on 1st-Year View) -->
+                <div class="regulation-alert-card" id="regulation-notice" style="display: none;">
+                    <div class="alert-icon">⚡</div>
+                    <div class="alert-content">
+                        <span class="alert-title">Curriculum & Paper Context:</span>
+                        <p>Your 1st-year syllabus follows the updated 2026 MAKAUT curriculum scheme, while past question papers originate from the 2018 model they were examined under. The foundational physics and math principles remain identical, but keep the syllabus evolution in mind when solving older problems.</p>
+                    </div>
+                </div>
+
+                <!-- 1st-Year Unified Subject Category Filter Pills -->
+                <div class="category-filter-row" id="first-year-filter-row" style="display: none;">
+                    <span class="filter-label">Filter Stream:</span>
+                    <div class="category-pills">
+                        <button type="button" class="category-pill active" data-category="ALL">All Subjects</button>
+                        <button type="button" class="category-pill" data-category="GROUP_A">Group A (Physics / Electrical)</button>
+                        <button type="button" class="category-pill" data-category="GROUP_B">Group B (Chemistry / PPS)</button>
+                        <button type="button" class="category-pill" data-category="MATH">Mathematics</button>
+                    </div>
+                </div>
+
                 <div class="subjects-grid" id="active-subjects-grid">
                     <!-- Populated dynamically by app.js -->
                 </div>
@@ -490,87 +510,86 @@
         </div>
     </div>
 
-    <!-- Academic Scope Onboarding Modal (#scope-modal) with Regulation, Stream, and Semester -->
+    <!-- Academic Scope Onboarding Modal (#scope-modal) -->
     <div class="modal-backdrop" id="scope-modal" style="display: none;">
         <div class="modal-card onboarding-card">
             <div class="modal-header">
                 <div>
                     <h2 class="modal-title">Set Your Academic Context</h2>
-                    <p class="modal-subtitle">Locks your dashboard to your exact regulation, department stream, and current semester.</p>
+                    <p class="modal-subtitle">Choose your academic stage to load verified MAKAUT syllabi and PYQs.</p>
                 </div>
                 <button class="modal-close-btn" id="btn-close-scope-modal" title="Close">✕</button>
             </div>
 
             <form id="scope-form" class="onboarding-form">
-                <!-- 1. Regulation Selector -->
+                <!-- 1. Primary Year Level Selector -->
                 <div class="form-group">
-                    <label class="form-label">University Regulation Scheme</label>
-                    <div class="regulation-toggle-row" id="regulation-picker-row">
-                        <button type="button" class="regulation-btn active" data-regulation="2018">
-                            <span class="reg-title">AICTE 2018 Model</span>
-                            <span class="reg-sub">Established 4-Year B.Tech Curriculum</span>
+                    <label class="form-label">Academic Stage</label>
+                    <div class="primary-year-select-row" id="primary-year-select-row">
+                        <button type="button" class="primary-year-btn active" id="btn-scope-first-year" data-year-mode="FIRST_YEAR">
+                            <span class="year-btn-icon">🌱</span>
+                            <div class="year-btn-content">
+                                <span class="year-btn-title">1st Year (Common Curriculum)</span>
+                                <span class="year-btn-sub">Physics, Chemistry, Maths 1 & 2, BEE, PPS, English</span>
+                            </div>
+                            <span class="year-check-icon">✓</span>
                         </button>
-                        <button type="button" class="regulation-btn" data-regulation="2026">
-                            <span class="reg-title">NEP 2026 Scheme</span>
-                            <span class="reg-sub">National Education Policy Framework</span>
+                        <button type="button" class="primary-year-btn" id="btn-scope-upper-years" data-year-mode="UPPER_YEARS">
+                            <span class="year-btn-icon">⚡</span>
+                            <div class="year-btn-content">
+                                <span class="year-btn-title">Upper Years (Sem 3 – 8)</span>
+                                <span class="year-btn-sub">Branch-Specific Engineering Core</span>
+                            </div>
+                            <span class="year-check-icon">✓</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- 2. Department / Engineering Stream Selector -->
-                <div class="form-group">
-                    <label class="form-label">Department / Engineering Stream</label>
-                    <div class="stream-select-grid" id="stream-picker-grid">
-                        <button type="button" class="stream-option active" data-stream="GROUP_A">
-                            <span class="stream-icon">🌱</span>
-                            <span class="stream-name">1st Year (Group A / Physics)</span>
-                            <span class="stream-desc">Physics, Math 1A, BEE</span>
-                        </button>
-                        <button type="button" class="stream-option" data-stream="GROUP_B">
-                            <span class="stream-icon">🧪</span>
-                            <span class="stream-name">1st Year (Group B / Chemistry)</span>
-                            <span class="stream-desc">Chemistry, Math 1B, PPS (C)</span>
-                        </button>
-                        <button type="button" class="stream-option" data-stream="CSE">
-                            <span class="stream-icon">💻</span>
-                            <span class="stream-name">CSE</span>
-                            <span class="stream-desc">Computer Science & Engineering</span>
-                        </button>
-                        <button type="button" class="stream-option" data-stream="CSCS">
-                            <span class="stream-icon">🔒</span>
-                            <span class="stream-name">CSCS</span>
-                            <span class="stream-desc">Cyber Security & Computer Science</span>
-                        </button>
-                        <button type="button" class="stream-option" data-stream="IT">
-                            <span class="stream-icon">🌐</span>
-                            <span class="stream-name">IT</span>
-                            <span class="stream-desc">Information Technology</span>
-                        </button>
-                        <button type="button" class="stream-option" data-stream="AIML">
-                            <span class="stream-icon">🤖</span>
-                            <span class="stream-name">AIML</span>
-                            <span class="stream-desc">AI & Machine Learning</span>
-                        </button>
-                        <button type="button" class="stream-option" data-stream="ECE">
-                            <span class="stream-icon">📡</span>
-                            <span class="stream-name">ECE</span>
-                            <span class="stream-desc">Electronics & Communication</span>
-                        </button>
+                <!-- Upper Years Controls (Shown only when Upper Years is active) -->
+                <div id="upper-years-controls" style="display: none;">
+                    <!-- Department / Engineering Stream Selector -->
+                    <div class="form-group">
+                        <label class="form-label">Department / Engineering Stream</label>
+                        <div class="stream-select-grid" id="stream-picker-grid">
+                            <button type="button" class="stream-option active" data-stream="CSE">
+                                <span class="stream-icon">💻</span>
+                                <span class="stream-name">CSE</span>
+                                <span class="stream-desc">Computer Science & Engineering</span>
+                            </button>
+                            <button type="button" class="stream-option" data-stream="CSCS">
+                                <span class="stream-icon">🔒</span>
+                                <span class="stream-name">CSCS</span>
+                                <span class="stream-desc">Cyber Security & Computer Science</span>
+                            </button>
+                            <button type="button" class="stream-option" data-stream="IT">
+                                <span class="stream-icon">🌐</span>
+                                <span class="stream-name">IT</span>
+                                <span class="stream-desc">Information Technology</span>
+                            </button>
+                            <button type="button" class="stream-option" data-stream="AIML">
+                                <span class="stream-icon">🤖</span>
+                                <span class="stream-name">AIML</span>
+                                <span class="stream-desc">AI & Machine Learning</span>
+                            </button>
+                            <button type="button" class="stream-option" data-stream="ECE">
+                                <span class="stream-icon">📡</span>
+                                <span class="stream-name">ECE</span>
+                                <span class="stream-desc">Electronics & Communication</span>
+                            </button>
+                        </div>
                     </div>
-                </div>
 
-                <!-- 3. Semester Selector -->
-                <div class="form-group">
-                    <label class="form-label">Current Semester</label>
-                    <div class="sem-pills-selector" id="sem-picker-row">
-                        <button type="button" class="sem-btn active" data-sem="1">Sem 1</button>
-                        <button type="button" class="sem-btn" data-sem="2">Sem 2</button>
-                        <button type="button" class="sem-btn" data-sem="3">Sem 3</button>
-                        <button type="button" class="sem-btn" data-sem="4">Sem 4</button>
-                        <button type="button" class="sem-btn" data-sem="5">Sem 5</button>
-                        <button type="button" class="sem-btn" data-sem="6">Sem 6</button>
-                        <button type="button" class="sem-btn" data-sem="7">Sem 7</button>
-                        <button type="button" class="sem-btn" data-sem="8">Sem 8</button>
+                    <!-- Semester Selector (Sem 3 through Sem 8) -->
+                    <div class="form-group">
+                        <label class="form-label">Current Semester</label>
+                        <div class="sem-pills-selector" id="sem-picker-row">
+                            <button type="button" class="sem-btn active" data-sem="3">Sem 3</button>
+                            <button type="button" class="sem-btn" data-sem="4">Sem 4</button>
+                            <button type="button" class="sem-btn" data-sem="5">Sem 5</button>
+                            <button type="button" class="sem-btn" data-sem="6">Sem 6</button>
+                            <button type="button" class="sem-btn" data-sem="7">Sem 7</button>
+                            <button type="button" class="sem-btn" data-sem="8">Sem 8</button>
+                        </div>
                     </div>
                 </div>
 
@@ -620,6 +639,17 @@
 
             <!-- Tab 2: PYQ Archives -->
             <div class="hub-tab-content" id="tab-content-pyqs" style="display: none;">
+                <div class="hub-pyq-filter-row" id="hub-pyq-filter-row">
+                    <span class="filter-label">Filter Exam Year:</span>
+                    <div class="hub-pyq-pills" id="hub-pyq-pills">
+                        <button type="button" class="hub-pyq-pill active" data-pyq-year="ALL">All Papers</button>
+                        <button type="button" class="hub-pyq-pill" data-pyq-year="2026">2026</button>
+                        <button type="button" class="hub-pyq-pill" data-pyq-year="2025">2025</button>
+                        <button type="button" class="hub-pyq-pill" data-pyq-year="2024">2024</button>
+                        <button type="button" class="hub-pyq-pill" data-pyq-year="2023">2023</button>
+                        <button type="button" class="hub-pyq-pill" data-pyq-year="2020">2020</button>
+                    </div>
+                </div>
                 <div class="pyq-archive-list" id="hub-pyqs-container">
                     <!-- Populated dynamically by app.js -->
                 </div>

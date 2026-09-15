@@ -46,15 +46,18 @@ document.addEventListener('DOMContentLoaded', () => {
     let isLoggedIn = localStorage.getItem('campussense_logged_in') === 'true';
     let userIdentifier = localStorage.getItem('campussense_user_id') || ('student-' + Math.random().toString(36).substring(2, 11));
     let userName = localStorage.getItem('campussense_user_name') || 'Student';
-    let currentRegulation = localStorage.getItem('campussense_regulation') || '2018';
-    let currentStream = localStorage.getItem('campussense_stream') || 'CSE';
-    let currentSem = parseInt(localStorage.getItem('campussense_semester') || '5', 10);
+    let currentRegulation = localStorage.getItem('campussense_regulation') || '2026';
+    let currentYearMode = localStorage.getItem('campussense_year_mode') || 'FIRST_YEAR';
+    let currentStream = localStorage.getItem('campussense_stream') || (currentYearMode === 'FIRST_YEAR' ? 'FIRST_YEAR' : 'CSE');
+    let currentSem = parseInt(localStorage.getItem('campussense_semester') || (currentYearMode === 'FIRST_YEAR' ? '1' : '5'), 10);
     let userChecklistState = JSON.parse(localStorage.getItem('campussense_checklist_state') || '{}');
     let savedBookmarks = JSON.parse(localStorage.getItem('campussense_saved_deck') || '[]');
 
     localStorage.setItem('campussense_user_id', userIdentifier);
+    localStorage.setItem('campussense_year_mode', currentYearMode);
 
     const STREAM_LABELS = {
+        'FIRST_YEAR': '1st Year Common Scheme',
         'GROUP_A': '1st Year (Group A / Physics)',
         'GROUP_B': '1st Year (Group B / Chemistry)',
         'COMMON': '1st Year Common',
@@ -66,10 +69,13 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function updateContextUI() {
-        const streamLabel = STREAM_LABELS[currentStream] || currentStream;
         const contextTextEl = document.getElementById('current-context-text');
         if (contextTextEl) {
-            contextTextEl.textContent = `${currentStream} • Sem ${currentSem} ▾`;
+            if (currentYearMode === 'FIRST_YEAR') {
+                contextTextEl.textContent = '1st Year • Common Curriculum ▾';
+            } else {
+                contextTextEl.textContent = `${currentStream} • Sem ${currentSem} ▾`;
+            }
         }
         const userDisplayEl = document.getElementById('user-display-name');
         if (userDisplayEl) {
@@ -82,14 +88,74 @@ document.addEventListener('DOMContentLoaded', () => {
     // 3. Verified Curriculum & PYQ Master Dataset
     // ==========================================
     const MAKAUT_CURRICULUM = [
-        // --- 1st Year Common / Group A ---
+        // --- 1st Year Common Scheme (All 7 Foundational Subjects) ---
         {
-            code: 'BS-M101',
-            name: 'Mathematics 1A (Calculus & Linear Algebra)',
+            code: 'BS-PH101',
+            altCode: 'BS-PH201',
+            name: 'Physics-I (Optics & Quantum Mechanics)',
+            isFirstYear: true,
+            category: 'GROUP_A',
             stream: 'GROUP_A',
             semester: 1,
             credits: 4,
             department: '1st Year (Group A)',
+            syllabusUrl: 'assets/resources/1st_year/syllabus/Physics.pdf',
+            description: 'Newton\'s rings, Fraunhofer diffraction, Schrödinger wave equation, Ruby lasers, and Maxwell\'s equations.',
+            units: [
+                { id: 1021, unitNumber: 1, title: 'Unit 1: Wave Optics & Interference', subtopics: 'Huygens principle, superposition, Young\'s double slit, Newton\'s rings theory, Fresnel & Fraunhofer diffraction.', hours: 10 },
+                { id: 1022, unitNumber: 2, title: 'Unit 2: Lasers & Optical Fibers', subtopics: 'Einstein coefficients, population inversion, He-Ne laser, Ruby laser, numerical aperture, step-index fibers.', hours: 8 },
+                { id: 1023, unitNumber: 3, title: 'Unit 3: Quantum Mechanics', subtopics: 'de Broglie wavelength, Heisenberg uncertainty principle, time-dependent Schrödinger equation, particle in a box.', hours: 10 },
+                { id: 1024, unitNumber: 4, title: 'Unit 4: Electromagnetism & Maxwell Equations', subtopics: 'Gauss, Ampere, Faraday laws, Maxwell equations, displacement current, Poynting vector, wave equation.', hours: 8 }
+            ],
+            pyqs: [
+                { id: 2101, year: 2026, type: 'END_SEM', title: 'MAKAUT 2026 Physics-I (BS-PH101)', fileUrl: 'assets/resources/1st_year/pyq/physics/btech-1-sem-physics-1-bs-ph101-2026.pdf' },
+                { id: 2102, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Physics-I (BS-PH101)', fileUrl: 'assets/resources/1st_year/pyq/physics/btech-1-sem-physics-1-bs-ph101-2025.pdf' },
+                { id: 2103, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Sem 1 Physics-I (BS-PH101)', fileUrl: 'assets/resources/1st_year/pyq/physics/btech-1-sem-physics-1-bs-ph101-2024.pdf' },
+                { id: 2104, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Sem 2 Physics-I (BS-PH201)', fileUrl: 'assets/resources/1st_year/pyq/physics/btech-2-sem-physics-1-bsph201-2024.pdf' },
+                { id: 2105, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Sem 1 Physics-I (BS-PH101)', fileUrl: 'assets/resources/1st_year/pyq/physics/btech-1-sem-physics-1-bsph101-2023.pdf' },
+                { id: 2106, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Sem 2 Physics-I (BS-PH201)', fileUrl: 'assets/resources/1st_year/pyq/physics/btech-2-sem-physics-1-bsph201-2023.pdf' },
+                { id: 2107, year: 2020, type: 'END_SEM', title: 'MAKAUT 2020 Physics-I (PH-101)', fileUrl: 'assets/resources/1st_year/pyq/physics/btech-1-sem-physics-1-ph-101-2020.pdf' }
+            ]
+        },
+        {
+            code: 'BS-CH101',
+            altCode: 'BS-CH201',
+            name: 'Chemistry-I (Chemical Principles & Spectroscopy)',
+            isFirstYear: true,
+            category: 'GROUP_B',
+            stream: 'GROUP_B',
+            semester: 1,
+            credits: 4,
+            department: '1st Year (Group B)',
+            syllabusUrl: 'assets/resources/1st_year/syllabus/Chemistry.pdf',
+            description: 'Schrödinger equation for microscopic systems, molecular orbitals of diatomic molecules, UV-Vis and IR spectroscopy, periodic properties, and organic synthesis.',
+            units: [
+                { id: 1051, unitNumber: 1, title: 'Unit 1: Atomic & Molecular Structure', subtopics: 'Schrödinger equation, particle in a box, molecular orbital theory, homonuclear and heteronuclear diatomic molecules.', hours: 10 },
+                { id: 1052, unitNumber: 2, title: 'Unit 2: Spectroscopic Techniques', subtopics: 'Principles of spectroscopy, selection rules, UV-Vis electronic transitions, Beer-Lambert law, IR rotational-vibrational modes.', hours: 8 },
+                { id: 1053, unitNumber: 3, title: 'Unit 3: Intermolecular Forces & Potential Energy Surfaces', subtopics: 'Ionic, dipolar, and van der Waals interactions, equations of state of real gases, critical phenomena.', hours: 6 },
+                { id: 1054, unitNumber: 4, title: 'Unit 4: Periodic Properties & Thermodynamic Systems', subtopics: 'Effective nuclear charge, ionization energies, electron affinity, electronegativity, polarizability, oxidation states.', hours: 8 },
+                { id: 1055, unitNumber: 5, title: 'Unit 5: Stereochemistry & Organic Reactions', subtopics: 'Isomerism, chirality, enantiomers, diastereomers, nucleophilic substitutions (SN1, SN2), addition and elimination.', hours: 8 }
+            ],
+            pyqs: [
+                { id: 2201, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Chemistry (BS-CH201)', fileUrl: 'assets/resources/1st_year/pyq/chemistry/btech-2-sem-chemistry-bsch201-2025.pdf' },
+                { id: 2202, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Sem 1 Chemistry-I (BS-CH101)', fileUrl: 'assets/resources/1st_year/pyq/chemistry/btech-1-sem-chemistry-1-bs-ch101-2024.pdf' },
+                { id: 2203, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Sem 2 Chemistry-I (BS-CH201)', fileUrl: 'assets/resources/1st_year/pyq/chemistry/btech-2-sem-chemistry-1-bsch201-2024.pdf' },
+                { id: 2204, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Sem 1 Chemistry-I (BS-CH101)', fileUrl: 'assets/resources/1st_year/pyq/chemistry/btech-1-sem-chemistry-1-bsch101-2023.pdf' },
+                { id: 2205, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Sem 2 Chemistry-I (BS-CH201)', fileUrl: 'assets/resources/1st_year/pyq/chemistry/btech-2-sem-chemistry-1-bsch201-2023.pdf' },
+                { id: 2206, year: 2020, type: 'END_SEM', title: 'MAKAUT 2020 Chemistry-I (BS-CH101)', fileUrl: 'assets/resources/1st_year/pyq/chemistry/btech-1-sem-chemistry-1-bs-ch-101-2020.pdf' }
+            ]
+        },
+        {
+            code: 'BS-M101',
+            altCode: 'BS-M102',
+            name: 'Mathematics-IA & IB (Calculus & Linear Algebra)',
+            isFirstYear: true,
+            category: 'MATH',
+            stream: 'GROUP_A',
+            semester: 1,
+            credits: 4,
+            department: '1st Year (Common)',
+            syllabusUrl: 'assets/resources/1st_year/syllabus/Maths-1.pdf',
             description: 'Evolutes, definite integrals, multivariable extrema, Cayley-Hamilton theorem, and vector spaces.',
             units: [
                 { id: 1011, unitNumber: 1, title: 'Unit 1: Calculus & Evolutes', subtopics: 'Evolutes, involutes, definite integrals, Beta & Gamma functions, Rolle and Mean Value Theorems.', hours: 10 },
@@ -98,42 +164,52 @@ document.addEventListener('DOMContentLoaded', () => {
                 { id: 1014, unitNumber: 4, title: 'Unit 4: Vector Spaces & Linear Transforms', subtopics: 'Vector spaces, linear independence, basis, dimension, linear transformations, kernel, and range.', hours: 8 }
             ],
             pyqs: [
-                { id: 2011, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Mathematics 1A (BS-M101)', fileUrl: 'https://makautexam.net/pyq/2024/BS-M101.pdf' },
-                { id: 2012, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Mathematics 1A (BS-M101)', fileUrl: 'https://makautexam.net/pyq/2023/BS-M101.pdf' },
-                { id: 2013, year: 2022, type: 'END_SEM', title: 'MAKAUT 2022 Mathematics 1A (BS-M101)', fileUrl: 'https://makautexam.net/pyq/2022/BS-M101.pdf' },
-                { id: 2014, year: 2021, type: 'END_SEM', title: 'MAKAUT 2021 Mathematics 1A (BS-M101)', fileUrl: 'https://makautexam.net/pyq/2021/BS-M101.pdf' },
-                { id: 2015, year: 2019, type: 'END_SEM', title: 'MAKAUT 2019 Mathematics 1A (BS-M101)', fileUrl: 'https://makautexam.net/pyq/2019/BS-M101.pdf' }
+                { id: 2301, year: 2026, type: 'END_SEM', title: 'MAKAUT 2026 Mathematics-1A (BS-M101)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_1a/btech-1-sem-mathematics-1a-bs-m101-2026.pdf' },
+                { id: 2302, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Mathematics-1A (BS-M101)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_1a/btech-1-sem-mathematics-1a-bs-m101-2025.pdf' },
+                { id: 2303, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Mathematics-1A (BS-M101)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_1a/btech-1-sem-mathematics-1a-bsm101-2023.pdf' },
+                { id: 2304, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Mathematics-1B (BS-M102)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_1b/btech-1-sem-mathematics-1b-bsm102-2023.pdf' },
+                { id: 2305, year: 2020, type: 'END_SEM', title: 'MAKAUT 2020 Mathematics-1A (BS-M101)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_1a/btech-1-sem-mathematics-1a-bsm-101-2020.pdf' },
+                { id: 2306, year: 2020, type: 'END_SEM', title: 'MAKAUT 2020 Mathematics-1B (BS-M102)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_1b/btech-1-sem-mathematics-1b-bs-m-102-2020.pdf' }
             ]
         },
         {
-            code: 'BS-PH101',
-            name: 'Physics (Optics & Quantum Mechanics)',
+            code: 'BS-M201',
+            altCode: 'BS-M202',
+            name: 'Mathematics-IIA & IIB (Differential Equations & Complex Variables)',
+            isFirstYear: true,
+            category: 'MATH',
             stream: 'GROUP_A',
             semester: 1,
             credits: 4,
-            department: '1st Year (Group A)',
-            description: 'Newton\'s rings, Fraunhofer diffraction, Schrödinger wave equation, Ruby lasers, and Maxwell\'s equations.',
+            department: '1st Year (Common)',
+            syllabusUrl: 'assets/resources/1st_year/syllabus/Maths-2.pdf',
+            description: 'First and second order ODEs, series solutions, Bessel and Legendre functions, partial differential equations, and complex contour integration.',
             units: [
-                { id: 1021, unitNumber: 1, title: 'Unit 1: Wave Optics & Interference', subtopics: 'Huygens principle, superposition, Young\'s double slit, Newton\'s rings theory, Fresnel & Fraunhofer diffraction.', hours: 10 },
-                { id: 1022, unitNumber: 2, title: 'Unit 3: Lasers & Optical Fibers', subtopics: 'Einstein coefficients, population inversion, He-Ne laser, Ruby laser, numerical aperture, step-index fibers.', hours: 8 },
-                { id: 1023, unitNumber: 3, title: 'Unit 3: Quantum Mechanics', subtopics: 'de Broglie wavelength, Heisenberg uncertainty principle, time-dependent Schrödinger equation, particle in a box.', hours: 10 },
-                { id: 1024, unitNumber: 4, title: 'Unit 4: Electromagnetism & Maxwell Equations', subtopics: 'Gauss, Ampere, Faraday laws, Maxwell equations, displacement current, Poynting vector, wave equation.', hours: 8 }
+                { id: 1061, unitNumber: 1, title: 'Unit 1: First and Higher Order ODEs', subtopics: 'Exact ODEs, integrating factors, linear differential equations of higher order with constant coefficients, method of variation of parameters.', hours: 10 },
+                { id: 1062, unitNumber: 2, title: 'Unit 2: Series Solutions & Special Functions', subtopics: 'Power series solutions, Frobenius method, Legendre polynomials, Bessel functions of the first kind.', hours: 8 },
+                { id: 1063, unitNumber: 3, title: 'Unit 3: Partial Differential Equations', subtopics: 'First-order linear and non-linear PDEs, Charpit\'s method, separation of variables, wave and heat equations.', hours: 10 },
+                { id: 1064, unitNumber: 4, title: 'Unit 4: Complex Variables & Contour Integrals', subtopics: 'Cauchy-Riemann equations, analytic functions, Cauchy\'s integral formula, Taylor and Laurent series, residue theorem.', hours: 8 }
             ],
             pyqs: [
-                { id: 2021, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Physics (BS-PH101)', fileUrl: 'https://makautexam.net/pyq/2024/BS-PH101.pdf' },
-                { id: 2022, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Physics (BS-PH101)', fileUrl: 'https://makautexam.net/pyq/2023/BS-PH101.pdf' },
-                { id: 2023, year: 2022, type: 'END_SEM', title: 'MAKAUT 2022 Physics (BS-PH101)', fileUrl: 'https://makautexam.net/pyq/2022/BS-PH101.pdf' },
-                { id: 2024, year: 2021, type: 'END_SEM', title: 'MAKAUT 2021 Physics (BS-PH101)', fileUrl: 'https://makautexam.net/pyq/2021/BS-PH101.pdf' },
-                { id: 2025, year: 2019, type: 'END_SEM', title: 'MAKAUT 2019 Physics (BS-PH101)', fileUrl: 'https://makautexam.net/pyq/2019/BS-PH101.pdf' }
+                { id: 2401, year: 2026, type: 'END_SEM', title: 'MAKAUT 2026 Mathematics-2A (BS-M201)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_2a/btech-2-sem-mathematics-2-a-bs-m201-2026.pdf' },
+                { id: 2402, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Mathematics-2A (BS-M201)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_2a/btech-2-sem-mathematics-2a-bsm201-2025.pdf' },
+                { id: 2403, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Mathematics-2B (BS-M202)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_2b/btech-2-sem-mathematics-2b-bsm202-2025.pdf' },
+                { id: 2404, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Mathematics-2A (BS-M201)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_2a/btech-2-sem-mathematics-2a-bsm201-2024.pdf' },
+                { id: 2405, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Mathematics-2A (BS-M201)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_2a/btech-2-sem-mathematics-2a-bsm201-2023.pdf' },
+                { id: 2406, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Mathematics-2B (BS-M202)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_2b/btech-2-sem-mathematics-2-b-bsm202-2023.pdf' }
             ]
         },
         {
             code: 'ES-EE101',
+            altCode: 'ES-EE201',
             name: 'Basic Electrical Engineering',
+            isFirstYear: true,
+            category: 'GROUP_A',
             stream: 'GROUP_A',
             semester: 1,
             credits: 4,
             department: '1st Year (Group A)',
+            syllabusUrl: 'assets/resources/1st_year/syllabus/BEE.pdf',
             description: 'Kirchhoff\'s laws, Thévenin\'s & Norton\'s theorems, AC series resonance, single phase transformers, and motors.',
             units: [
                 { id: 1031, unitNumber: 1, title: 'Unit 1: DC Circuits & Network Theorems', subtopics: 'KVL, KCL, mesh and nodal analysis, Superposition, Thévenin\'s Theorem, Norton\'s Theorem, Maximum Power.', hours: 10 },
@@ -142,20 +218,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 { id: 1034, unitNumber: 4, title: 'Unit 4: Electrical Machines & Installations', subtopics: 'DC machines generation principle, 3-phase induction motor, torque-speed curve, earthing and miniature circuit breakers.', hours: 8 }
             ],
             pyqs: [
-                { id: 2031, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Basic Electrical (ES-EE101)', fileUrl: 'https://makautexam.net/pyq/2024/ES-EE101.pdf' },
-                { id: 2032, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Basic Electrical (ES-EE101)', fileUrl: 'https://makautexam.net/pyq/2023/ES-EE101.pdf' },
-                { id: 2033, year: 2022, type: 'END_SEM', title: 'MAKAUT 2022 Basic Electrical (ES-EE101)', fileUrl: 'https://makautexam.net/pyq/2022/ES-EE101.pdf' },
-                { id: 2034, year: 2021, type: 'END_SEM', title: 'MAKAUT 2021 Basic Electrical (ES-EE101)', fileUrl: 'https://makautexam.net/pyq/2021/ES-EE101.pdf' },
-                { id: 2035, year: 2019, type: 'END_SEM', title: 'MAKAUT 2019 Basic Electrical (ES-EE101)', fileUrl: 'https://makautexam.net/pyq/2019/ES-EE101.pdf' }
+                { id: 2501, year: 2026, type: 'END_SEM', title: 'MAKAUT 2026 Basic Electrical (ES-EE101)', fileUrl: 'assets/resources/1st_year/pyq/bee/btech-1-sem-basic-electrical-engineering-es-ee101-2026.pdf' },
+                { id: 2502, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Sem 2 Basic Electrical (ES-EE101)', fileUrl: 'assets/resources/1st_year/pyq/bee/btech-2-sem-basic-electrical-engineering-es-ee101-2024.pdf' },
+                { id: 2503, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Basic Electrical (ES-EE101)', fileUrl: 'assets/resources/1st_year/pyq/bee/btech-1-sem-basic-electrical-engineering-esee101-2023.pdf' },
+                { id: 2504, year: 2020, type: 'END_SEM', title: 'MAKAUT 2020 Basic Electrical (ES-EE-101)', fileUrl: 'assets/resources/1st_year/pyq/bee/btech-1-sem-basic-electrical-engineering-es-ee-101-2020.pdf' }
             ]
         },
         {
             code: 'ES-CS101',
+            altCode: 'ES-CS201',
             name: 'Programming for Problem Solving (C)',
+            isFirstYear: true,
+            category: 'GROUP_B',
             stream: 'GROUP_B',
             semester: 1,
             credits: 4,
             department: '1st Year (Group B)',
+            syllabusUrl: 'assets/resources/1st_year/syllabus/PPS.pdf',
             description: 'Algorithms, conditionals, loops, multidimensional arrays, pointer arithmetic, dynamic allocation, and recursion.',
             units: [
                 { id: 1041, unitNumber: 1, title: 'Unit 1: Introduction to Programming & Flowcharts', subtopics: 'Algorithm, pseudo-code, flowcharts, variables, datatypes, operators, precedence, expressions.', hours: 8 },
@@ -165,18 +244,42 @@ document.addEventListener('DOMContentLoaded', () => {
                 { id: 1045, unitNumber: 5, title: 'Unit 5: Pointers & Memory Management', subtopics: 'Pointer arithmetic, pointers to pointers, malloc(), calloc(), free(), structures, unions, file I/O operations.', hours: 8 }
             ],
             pyqs: [
-                { id: 2041, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Programming in C (ES-CS101)', fileUrl: 'https://makautexam.net/pyq/2024/ES-CS101.pdf' },
-                { id: 2042, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Programming in C (ES-CS101)', fileUrl: 'https://makautexam.net/pyq/2023/ES-CS101.pdf' },
-                { id: 2043, year: 2022, type: 'END_SEM', title: 'MAKAUT 2022 Programming in C (ES-CS101)', fileUrl: 'https://makautexam.net/pyq/2022/ES-CS101.pdf' },
-                { id: 2044, year: 2021, type: 'END_SEM', title: 'MAKAUT 2021 Programming in C (ES-CS101)', fileUrl: 'https://makautexam.net/pyq/2021/ES-CS101.pdf' },
-                { id: 2045, year: 2019, type: 'MID_SEM', title: 'MAKAUT 2019 Mid-Sem Programming in C (ES-CS101)', fileUrl: 'https://makautexam.net/pyq/2019/ES-CS101-CA.pdf' }
+                { id: 2601, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 PPS in C (ES-CS201)', fileUrl: 'assets/resources/1st_year/pyq/pps/btech-2-sem-programming-for-problem-solving-escs201-2025.pdf' },
+                { id: 2602, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 PPS in C (ES-CS201)', fileUrl: 'assets/resources/1st_year/pyq/pps/btech-es-cs-2-sem-programming-for-problem-solving-escs201-2024.pdf' },
+                { id: 2603, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 PPS in C (ES-CS201)', fileUrl: 'assets/resources/1st_year/pyq/pps/btech-2-sem-programming-for-problem-solving-escs201-2023.pdf' }
+            ]
+        },
+        {
+            code: 'HM-HU101',
+            altCode: 'HM-HU201',
+            name: 'English (Professional Communication)',
+            isFirstYear: true,
+            category: 'COMMON',
+            stream: 'COMMON',
+            semester: 1,
+            credits: 2,
+            department: '1st Year (Common)',
+            syllabusUrl: 'assets/resources/1st_year/syllabus/English.pdf',
+            description: 'Vocabulary building, sentence structures, common errors in writing, technical reporting, and oral communication.',
+            units: [
+                { id: 1071, unitNumber: 1, title: 'Unit 1: Vocabulary & Word Formation', subtopics: 'Roots, prefixes, suffixes, synonyms, antonyms, standard abbreviations, technical vocabulary.', hours: 6 },
+                { id: 1072, unitNumber: 2, title: 'Unit 2: Sentence Structure & Grammar', subtopics: 'Phrases, clauses, subject-verb agreement, active and passive voice, prepositions, direct and indirect speech.', hours: 8 },
+                { id: 1073, unitNumber: 3, title: 'Unit 3: Common Errors & Mechanics', subtopics: 'Dangling modifiers, run-on sentences, punctuation rules, capitalization, spelling conventions.', hours: 6 },
+                { id: 1074, unitNumber: 4, title: 'Unit 4: Technical Writing & Reports', subtopics: 'Paragraph development, coherence, technical proposals, resume writing, business correspondence.', hours: 8 },
+                { id: 1075, unitNumber: 5, title: 'Unit 5: Oral & Presentation Skills', subtopics: 'Phonetics, pronunciation, group discussions, seminar presentations, interview etiquette.', hours: 6 }
+            ],
+            pyqs: [
+                { id: 2701, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 English (HM-HU201)', fileUrl: 'assets/resources/1st_year/pyq/english/btech-2-sem-english-hmhu201-2025.pdf' },
+                { id: 2702, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 English (HM-HU201)', fileUrl: 'assets/resources/1st_year/pyq/english/btech-2-sem-english-hmhu201-2024.pdf' },
+                { id: 2703, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 English (HM-HU201)', fileUrl: 'assets/resources/1st_year/pyq/english/btech-2-sem-english-hmhu201-2023.pdf' }
             ]
         },
 
-        // --- Core Engineering (CSE / CSCS - Semester 5) ---
+        // --- Core Engineering (CSE / CSCS - Upper Years) ---
         {
             code: 'PCC-CS501',
             name: 'Operating Systems',
+            isFirstYear: false,
             stream: 'CSE',
             semester: 5,
             credits: 3,
@@ -192,7 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
             pyqs: [
                 { id: 3011, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Operating Systems (PCC-CS501)', fileUrl: 'https://makautexam.net/pyq/2024/PCC-CS501.pdf' },
                 { id: 3012, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Operating Systems (PCC-CS501)', fileUrl: 'https://makautexam.net/pyq/2023/PCC-CS501.pdf' },
-                { id: 2023, year: 2022, type: 'END_SEM', title: 'MAKAUT 2022 Operating Systems (PCC-CS501)', fileUrl: 'https://makautexam.net/pyq/2022/PCC-CS501.pdf' },
+                { id: 3013, year: 2022, type: 'END_SEM', title: 'MAKAUT 2022 Operating Systems (PCC-CS501)', fileUrl: 'https://makautexam.net/pyq/2022/PCC-CS501.pdf' },
                 { id: 3014, year: 2021, type: 'END_SEM', title: 'MAKAUT 2021 Operating Systems (PCC-CS501)', fileUrl: 'https://makautexam.net/pyq/2021/PCC-CS501.pdf' },
                 { id: 3015, year: 2019, type: 'MID_SEM', title: 'MAKAUT 2019 Mid-Sem Operating Systems (PCC-CS501)', fileUrl: 'https://makautexam.net/pyq/2019/PCC-CS501-CA.pdf' }
             ]
@@ -200,6 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             code: 'PCC-CS502',
             name: 'Database Management Systems',
+            isFirstYear: false,
             stream: 'CSE',
             semester: 5,
             credits: 3,
@@ -223,6 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             code: 'PCC-CS503',
             name: 'Computer Networks',
+            isFirstYear: false,
             stream: 'CSE',
             semester: 5,
             credits: 3,
@@ -356,6 +461,28 @@ document.addEventListener('DOMContentLoaded', () => {
             examYears: ['2019', '2021', '2022', '2024'],
             groupType: 'Group C',
             modelAnswerSnippet: 'To create 4 subnets, borrow 2 bits: Subnet mask is 255.255.255.192 (/26). Subnet 1: 192.168.10.0/26 (Hosts 1-62). Subnet 2: 192.168.10.64/26 (Hosts 65-126). Subnet 3: 192.168.10.128/26. Subnet 4: 192.168.10.192/26. Dijkstra maintains visited set and relaxes unvisited adjacent edge distances iteratively.'
+        },
+        {
+            id: 11,
+            subjectCode: 'BS-CH101',
+            topicName: 'Spectroscopy & Beer-Lambert Law',
+            questionText: 'State Beer-Lambert law of absorption spectrophotometry and write its mathematical form. Explain the origins of UV-visible electronic transitions (sigma->sigma*, pi->pi*, n->pi*).',
+            marks: 10,
+            frequencyCount: 5,
+            examYears: ['2020', '2023', '2024', '2025'],
+            groupType: 'Group C',
+            modelAnswerSnippet: 'Beer-Lambert law: Absorbance A = log(I0/I) = epsilon * c * l, where epsilon is molar absorptivity, c is concentration, and l is path length. Electronic transitions occur when outer electrons absorb UV-Vis photons. Energy order: sigma->sigma* > n->sigma* > pi->pi* > n->pi*.'
+        },
+        {
+            id: 12,
+            subjectCode: 'BS-M201',
+            topicName: 'Exact Differential Equations',
+            questionText: 'Define an exact differential equation. State the necessary and sufficient condition for M dx + N dy = 0 to be exact. Solve (x^2 + y^2) dx + 2xy dy = 0.',
+            marks: 10,
+            frequencyCount: 4,
+            examYears: ['2023', '2024', '2025', '2026'],
+            groupType: 'Group C',
+            modelAnswerSnippet: 'Condition for exactness: del(M)/del(y) = del(N)/del(x). Here M = x^2 + y^2, N = 2xy. del(M)/del(y) = 2y, del(N)/del(x) = 2y => Equation is exact. Solution is integral(M dx) [treating y constant] + integral(terms of N free from x dy) = C => x^3/3 + x*y^2 = C.'
         }
     ];
 
@@ -424,7 +551,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let filtered = MAKAUT_CURRICULUM;
         if (filterStream === 'COMMON') {
-            filtered = MAKAUT_CURRICULUM.filter(s => s.stream === 'GROUP_A' || s.stream === 'GROUP_B' || s.stream === 'COMMON');
+            filtered = MAKAUT_CURRICULUM.filter(s => s.isFirstYear || s.stream === 'GROUP_A' || s.stream === 'GROUP_B' || s.stream === 'COMMON');
         } else if (filterStream === 'CSE') {
             filtered = MAKAUT_CURRICULUM.filter(s => s.stream === 'CSE' || s.stream === 'CSCS');
         } else if (filterStream !== 'ALL') {
@@ -805,17 +932,46 @@ document.addEventListener('DOMContentLoaded', () => {
     const scopeModal = document.getElementById('scope-modal');
     const btnCloseScopeModal = document.getElementById('btn-close-scope-modal');
     const scopeForm = document.getElementById('scope-form');
+    const btnScopeFirstYear = document.getElementById('btn-scope-first-year');
+    const btnScopeUpperYears = document.getElementById('btn-scope-upper-years');
+    const upperYearsControls = document.getElementById('upper-years-controls');
+
+    let modalYearMode = currentYearMode || 'FIRST_YEAR';
+
+    if (btnScopeFirstYear && btnScopeUpperYears && upperYearsControls) {
+        btnScopeFirstYear.addEventListener('click', () => {
+            modalYearMode = 'FIRST_YEAR';
+            btnScopeFirstYear.classList.add('active');
+            btnScopeUpperYears.classList.remove('active');
+            upperYearsControls.style.display = 'none';
+        });
+
+        btnScopeUpperYears.addEventListener('click', () => {
+            modalYearMode = 'UPPER_YEARS';
+            btnScopeUpperYears.classList.add('active');
+            btnScopeFirstYear.classList.remove('active');
+            upperYearsControls.style.display = 'block';
+        });
+    }
 
     function openScopeModal() {
-        // Highlight active regulation
-        document.querySelectorAll('.regulation-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.getAttribute('data-regulation') === currentRegulation);
-        });
-        // Highlight active stream
+        modalYearMode = currentYearMode;
+        if (btnScopeFirstYear && btnScopeUpperYears && upperYearsControls) {
+            if (currentYearMode === 'FIRST_YEAR') {
+                btnScopeFirstYear.classList.add('active');
+                btnScopeUpperYears.classList.remove('active');
+                upperYearsControls.style.display = 'none';
+            } else {
+                btnScopeUpperYears.classList.add('active');
+                btnScopeFirstYear.classList.remove('active');
+                upperYearsControls.style.display = 'block';
+            }
+        }
+        // Highlight active stream in upper years
         document.querySelectorAll('.stream-option').forEach(btn => {
             btn.classList.toggle('active', btn.getAttribute('data-stream') === currentStream);
         });
-        // Highlight active semester
+        // Highlight active semester in upper years
         document.querySelectorAll('.sem-btn').forEach(btn => {
             btn.classList.toggle('active', parseInt(btn.getAttribute('data-sem'), 10) === currentSem);
         });
@@ -830,15 +986,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Regulation pickers
-    document.querySelectorAll('.regulation-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.regulation-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-        });
-    });
-
-    // Stream pickers
+    // Stream pickers for Upper Years
     document.querySelectorAll('.stream-option').forEach(btn => {
         btn.addEventListener('click', () => {
             document.querySelectorAll('.stream-option').forEach(b => b.classList.remove('active'));
@@ -846,7 +994,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Semester pickers
+    // Semester pickers for Upper Years (Sem 3-8)
     document.querySelectorAll('.sem-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             document.querySelectorAll('.sem-btn').forEach(b => b.classList.remove('active'));
@@ -858,19 +1006,23 @@ document.addEventListener('DOMContentLoaded', () => {
     if (scopeForm) {
         scopeForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const activeRegBtn = document.querySelector('.regulation-btn.active');
-            const activeStreamBtn = document.querySelector('.stream-option.active');
-            const activeSemBtn = document.querySelector('.sem-btn.active');
+            currentYearMode = modalYearMode;
+            localStorage.setItem('campussense_year_mode', currentYearMode);
 
-            if (activeRegBtn) currentRegulation = activeRegBtn.getAttribute('data-regulation') || '2018';
-            if (activeStreamBtn) currentStream = activeStreamBtn.getAttribute('data-stream') || 'CSE';
-            if (activeSemBtn) currentSem = parseInt(activeSemBtn.getAttribute('data-sem'), 10) || 5;
+            if (currentYearMode === 'FIRST_YEAR') {
+                currentStream = 'FIRST_YEAR';
+                currentSem = 1;
+            } else {
+                const activeStreamBtn = document.querySelector('.stream-option.active');
+                const activeSemBtn = document.querySelector('.sem-btn.active');
+                if (activeStreamBtn) currentStream = activeStreamBtn.getAttribute('data-stream') || 'CSE';
+                if (activeSemBtn) currentSem = parseInt(activeSemBtn.getAttribute('data-sem'), 10) || 3;
+            }
 
-            localStorage.setItem('campussense_regulation', currentRegulation);
             localStorage.setItem('campussense_stream', currentStream);
             localStorage.setItem('campussense_semester', currentSem.toString());
             localStorage.setItem('campussense_scope', JSON.stringify({
-                regulation: currentRegulation,
+                yearMode: currentYearMode,
                 stream: currentStream,
                 semester: currentSem
             }));
@@ -939,26 +1091,50 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     // 10. Dashboard Bento: Active Subjects & Circular Progress Rings
     // ==========================================
-    function renderActiveSubjects() {
+    let currentFirstYearCategory = 'ALL';
+
+    function renderActiveSubjects(categoryFilter = currentFirstYearCategory) {
+        currentFirstYearCategory = categoryFilter;
         const grid = document.getElementById('active-subjects-grid');
+        const regNotice = document.getElementById('regulation-notice');
+        const firstYearFilterRow = document.getElementById('first-year-filter-row');
+        const headingEl = document.getElementById('subjects-heading');
         if (!grid) return;
 
-        // Filter subjects matching current scope
-        let matchingSubjects = MAKAUT_CURRICULUM.filter(s => {
-            if (currentStream === 'GROUP_A' || currentStream === 'GROUP_B' || currentStream === 'COMMON') {
-                return (s.stream === currentStream || s.stream === 'GROUP_A' || s.stream === 'COMMON') && s.semester === currentSem;
-            }
-            if (currentStream === 'CSCS') {
-                return (s.stream === 'CSE' || s.stream === 'CSCS') && s.semester === currentSem;
-            }
-            return s.stream === currentStream && s.semester === currentSem;
-        });
+        let matchingSubjects = [];
 
-        // Fallback: If department has no subjects indexed for this semester, show available semester subjects
-        if (matchingSubjects.length === 0) {
-            matchingSubjects = MAKAUT_CURRICULUM.filter(s => s.semester === currentSem);
+        if (currentYearMode === 'FIRST_YEAR') {
+            if (regNotice) regNotice.style.display = 'flex';
+            if (firstYearFilterRow) firstYearFilterRow.style.display = 'flex';
+            if (headingEl) headingEl.textContent = '1st Year Engineering Curriculum (Common Scheme)';
+
+            const allFirstYear = MAKAUT_CURRICULUM.filter(s => s.isFirstYear);
+            if (categoryFilter === 'GROUP_A') {
+                matchingSubjects = allFirstYear.filter(s => s.category === 'GROUP_A');
+            } else if (categoryFilter === 'GROUP_B') {
+                matchingSubjects = allFirstYear.filter(s => s.category === 'GROUP_B');
+            } else if (categoryFilter === 'MATH') {
+                matchingSubjects = allFirstYear.filter(s => s.category === 'MATH');
+            } else {
+                matchingSubjects = allFirstYear;
+            }
+        } else {
+            if (regNotice) regNotice.style.display = 'none';
+            if (firstYearFilterRow) firstYearFilterRow.style.display = 'none';
+            if (headingEl) headingEl.textContent = `${currentStream} Sem ${currentSem} Subjects & Progress`;
+
+            matchingSubjects = MAKAUT_CURRICULUM.filter(s => {
+                if (currentStream === 'CSCS') {
+                    return (s.stream === 'CSE' || s.stream === 'CSCS') && s.semester === currentSem && !s.isFirstYear;
+                }
+                return s.stream === currentStream && s.semester === currentSem && !s.isFirstYear;
+            });
+
             if (matchingSubjects.length === 0) {
-                matchingSubjects = MAKAUT_CURRICULUM.slice(0, 4);
+                matchingSubjects = MAKAUT_CURRICULUM.filter(s => s.semester === currentSem && !s.isFirstYear);
+                if (matchingSubjects.length === 0) {
+                    matchingSubjects = MAKAUT_CURRICULUM.filter(s => !s.isFirstYear);
+                }
             }
         }
 
@@ -976,15 +1152,30 @@ document.addEventListener('DOMContentLoaded', () => {
             const percentage = totalUnits > 0 ? Math.round((completedCount / totalUnits) * 100) : 0;
             const isComplete = percentage === 100;
 
+            const codeDisplay = sub.code + (sub.altCode ? ' / ' + sub.altCode : '');
+            const categoryBadge = sub.isFirstYear 
+                ? `<span class="badge" style="background: rgba(99, 102, 241, 0.15); color: var(--accent-cyan); font-weight: 600; font-size: 0.7rem;">${sub.category === 'GROUP_A' ? 'Group A' : sub.category === 'GROUP_B' ? 'Group B' : sub.category === 'MATH' ? 'Math Core' : 'Common'}</span>`
+                : '';
+
             return `
                 <div class="subject-item-card" data-code="${escapeHtml(sub.code)}">
                     <div>
                         <div class="subject-card-top">
-                            <span class="subject-code-tag">${escapeHtml(sub.code)}</span>
-                            <span class="badge" style="background: rgba(255,255,255,0.06); font-family: var(--font-mono);">${sub.credits} Credits</span>
+                            <span class="subject-code-tag">${escapeHtml(codeDisplay)}</span>
+                            <div style="display: flex; gap: 0.35rem; align-items: center;">
+                                ${categoryBadge}
+                                <span class="badge" style="background: rgba(255,255,255,0.06); font-family: var(--font-mono);">${sub.credits} Credits</span>
+                            </div>
                         </div>
                         <div class="subject-item-title">${escapeHtml(sub.name)}</div>
-                        <div class="subject-meta-text">${escapeHtml(sub.department || 'MAKAUT Curriculum')} • Sem ${sub.semester}</div>
+                        <div class="subject-meta-text">${escapeHtml(sub.department || 'MAKAUT Curriculum')} • ${sub.isFirstYear ? '1st Year Foundation' : 'Sem ' + sub.semester}</div>
+                        ${sub.syllabusUrl ? `
+                            <div style="margin-top: 0.6rem;">
+                                <button type="button" class="btn-subject-syllabus-view" data-title="${escapeHtml(sub.name)} Syllabus" data-url="${escapeHtml(sub.syllabusUrl)}" style="background: rgba(255,255,255,0.04); border: 1px solid var(--card-border); color: var(--text-muted); padding: 0.25rem 0.65rem; border-radius: 6px; font-size: 0.74rem; cursor: pointer; transition: var(--transition-fast);">
+                                    📖 Official Syllabus PDF
+                                </button>
+                            </div>
+                        ` : ''}
                     </div>
 
                     <div class="progress-ring-box">
@@ -1014,36 +1205,67 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Attach card click handlers to launch Subject Hub
         grid.querySelectorAll('.subject-item-card').forEach(card => {
-            card.addEventListener('click', () => {
+            card.addEventListener('click', (e) => {
+                if (e.target.closest('.btn-subject-syllabus-view')) return;
                 const code = card.getAttribute('data-code');
                 openSubjectHub(code);
             });
         });
+
+        // Attach direct syllabus preview triggers on card
+        grid.querySelectorAll('.btn-subject-syllabus-view').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const title = btn.getAttribute('data-title');
+                const url = btn.getAttribute('data-url');
+                openPdfViewer(title, url);
+            });
+        });
     }
+
+    // Wire Category Pills for 1st Year Filter Row
+    document.querySelectorAll('#first-year-filter-row .category-pill').forEach(pill => {
+        pill.addEventListener('click', () => {
+            document.querySelectorAll('#first-year-filter-row .category-pill').forEach(p => p.classList.remove('active'));
+            pill.classList.add('active');
+            const cat = pill.getAttribute('data-category') || 'ALL';
+            renderActiveSubjects(cat);
+        });
+    });
 
     // ==========================================
     // 11. Subject Hub Modal (Checklist, PYQ Archive, Recurring Topics)
     // ==========================================
     let currentHubSubject = null;
+    let currentHubPyqYearFilter = 'ALL';
 
     function openSubjectHub(subjectCode) {
-        let subject = MAKAUT_CURRICULUM.find(s => s.code.toLowerCase() === subjectCode.toLowerCase());
+        let subject = MAKAUT_CURRICULUM.find(s => 
+            s.code.toLowerCase() === subjectCode.toLowerCase() ||
+            (s.altCode && s.altCode.toLowerCase() === subjectCode.toLowerCase())
+        );
         if (!subject) return;
         currentHubSubject = subject;
+        currentHubPyqYearFilter = 'ALL';
+
+        // Reset PYQ year filter pills
+        document.querySelectorAll('#hub-pyq-pills .hub-pyq-pill').forEach(p => {
+            p.classList.toggle('active', p.getAttribute('data-pyq-year') === 'ALL');
+        });
 
         const codeEl = document.getElementById('hub-subject-code');
         const nameEl = document.getElementById('hub-subject-name');
         const streamEl = document.getElementById('hub-subject-stream');
         const creditsEl = document.getElementById('hub-credits-badge');
 
-        if (codeEl) codeEl.textContent = subject.code;
+        if (codeEl) codeEl.textContent = subject.code + (subject.altCode ? ` / ${subject.altCode}` : '');
         if (nameEl) nameEl.textContent = subject.name;
-        if (streamEl) streamEl.textContent = `${subject.department} • Sem ${subject.semester}`;
+        if (streamEl) streamEl.textContent = subject.isFirstYear ? `1st Year Common Scheme` : `${subject.department} • Sem ${subject.semester}`;
         if (creditsEl) creditsEl.textContent = `${subject.credits} Credits`;
 
         // Render Tabs
         renderHubChecklist(subject);
-        renderHubPyqs(subject);
+        renderHubPyqs(subject, 'ALL');
         renderHubClusters(subject);
 
         // Reset to Checklist tab
@@ -1064,21 +1286,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (statNum) statNum.textContent = `${percentage}%`;
 
-        container.innerHTML = units.map(u => {
-            const isChecked = userChecklistState[u.id] === true;
-            return `
-                <div class="unit-checklist-item ${isChecked ? 'completed' : ''}" data-unit-id="${u.id}">
-                    <div class="unit-checkbox-custom">${isChecked ? '✓' : ''}</div>
-                    <div class="unit-item-content">
-                        <div class="unit-item-header">
-                            <span class="unit-item-title">${escapeHtml(u.title)}</span>
-                            <span class="badge" style="background: rgba(255,255,255,0.06); font-family: var(--font-mono); font-size: 0.72rem;">${u.hours} Lecture Hours</span>
-                        </div>
-                        <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">${escapeHtml(u.subtopics)}</div>
+        container.innerHTML = `
+            ${subject.syllabusUrl ? `
+                <div style="margin-bottom: 1rem; padding: 0.75rem 1rem; background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+                    <div style="font-size: 0.85rem; color: var(--text-main);">
+                        📄 <strong>Official Curriculum Syllabus PDF</strong>
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">Verified syllabus with lecture hours, unit outcomes, and textbook references.</div>
                     </div>
+                    <button type="button" class="btn btn-secondary btn-hub-view-syllabus" data-title="${escapeHtml(subject.name)} Official Syllabus" data-url="${escapeHtml(subject.syllabusUrl)}" style="padding: 0.35rem 0.85rem; font-size: 0.8rem;">
+                        View Syllabus PDF 👁
+                    </button>
                 </div>
-            `;
-        }).join('');
+            ` : ''}
+            ${units.map(u => {
+                const isChecked = userChecklistState[u.id] === true;
+                return `
+                    <div class="unit-checklist-item ${isChecked ? 'completed' : ''}" data-unit-id="${u.id}">
+                        <div class="unit-checkbox-custom">${isChecked ? '✓' : ''}</div>
+                        <div class="unit-item-content">
+                            <div class="unit-item-header">
+                                <span class="unit-item-title">${escapeHtml(u.title)}</span>
+                                <span class="badge" style="background: rgba(255,255,255,0.06); font-family: var(--font-mono); font-size: 0.72rem;">${u.hours} Lecture Hours</span>
+                            </div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">${escapeHtml(u.subtopics)}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('')}
+        `;
+
+        // Wire syllabus PDF button
+        const syllabusBtn = container.querySelector('.btn-hub-view-syllabus');
+        if (syllabusBtn) {
+            syllabusBtn.addEventListener('click', () => {
+                const title = syllabusBtn.getAttribute('data-title');
+                const url = syllabusBtn.getAttribute('data-url');
+                openPdfViewer(title, url);
+            });
+        }
 
         // Wire check/uncheck events
         container.querySelectorAll('.unit-checklist-item').forEach(item => {
@@ -1095,13 +1340,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function renderHubPyqs(subject) {
+    function renderHubPyqs(subject, yearFilter = 'ALL') {
         const container = document.getElementById('hub-pyqs-container');
         if (!container) return;
 
-        const pyqs = subject.pyqs || [];
+        let pyqs = subject.pyqs || [];
+        if (yearFilter !== 'ALL') {
+            const yr = parseInt(yearFilter, 10);
+            pyqs = pyqs.filter(p => p.year === yr);
+        }
+
         if (pyqs.length === 0) {
-            container.innerHTML = '<div style="padding: 2.5rem; text-align: center; color: var(--text-muted);">No past question papers uploaded for this subject yet.</div>';
+            container.innerHTML = '<div style="padding: 2.5rem; text-align: center; color: var(--text-muted);">No question papers matching this year for this course code.</div>';
             return;
         }
 
@@ -1115,15 +1365,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="pyq-repo-meta">
                     <span class="pyq-exam-type-pill">${p.type === 'MID_SEM' ? 'Mid-Sem / CA' : 'End-Sem Exam'}</span>
                     <span>•</span>
-                    <span>70 Marks Theory • Verified Paper</span>
+                    <span>70 Marks Theory • Verified Official Paper</span>
                 </div>
                 <div class="pyq-repo-actions">
                     <button class="btn-preview-paper btn-hub-preview" data-title="${escapeHtml(p.title)}" data-url="${escapeHtml(p.fileUrl)}">
                         👁 Preview Paper
                     </button>
-                    <a href="${p.fileUrl}" target="_blank" class="btn-download-paper" style="text-decoration: none;">
+                    <button class="btn-download-paper btn-download-pdf-gate" data-subject="${escapeHtml(subject.code)}" data-paper="${p.year}" data-name="${escapeHtml(p.title)}" data-url="${escapeHtml(p.fileUrl)}">
                         📥 Download PDF
-                    </a>
+                    </button>
                 </div>
             </div>
         `).join('');
@@ -1135,7 +1385,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 openPdfViewer(title, url);
             });
         });
+
+        container.querySelectorAll('.btn-download-pdf-gate').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const subjectCode = btn.getAttribute('data-subject');
+                const paperYear = btn.getAttribute('data-paper');
+                const title = btn.getAttribute('data-name');
+                const fileUrl = btn.getAttribute('data-url');
+
+                if (localStorage.getItem('campussense_logged_in') !== 'true') {
+                    sessionStorage.setItem('pending_download_action', JSON.stringify({ fileUrl, title, subjectCode, paperYear }));
+                    showAuthModal(true, "Please sign in or create an account to download MAKAUT examination papers");
+                    return;
+                }
+                openPdfViewer(title, fileUrl);
+            });
+        });
     }
+
+    // Wire Year Filter Pills inside Subject Hub Modal
+    document.querySelectorAll('#hub-pyq-pills .hub-pyq-pill').forEach(pill => {
+        pill.addEventListener('click', () => {
+            document.querySelectorAll('#hub-pyq-pills .hub-pyq-pill').forEach(p => p.classList.remove('active'));
+            pill.classList.add('active');
+            currentHubPyqYearFilter = pill.getAttribute('data-pyq-year') || 'ALL';
+            if (currentHubSubject) {
+                renderHubPyqs(currentHubSubject, currentHubPyqYearFilter);
+            }
+        });
+    });
 
     function renderHubClusters(subject) {
         const container = document.getElementById('hub-clusters-container');
@@ -1390,12 +1669,30 @@ document.addEventListener('DOMContentLoaded', () => {
         const extractedText = document.getElementById('pdf-extracted-text');
 
         if (titleEl) titleEl.textContent = title || 'MAKAUT Examination Paper';
-        if (downloadBtn) downloadBtn.href = url || '#';
-        if (iframe) iframe.src = url || 'about:blank';
+        if (downloadBtn) {
+            downloadBtn.href = url || '#';
+            downloadBtn.setAttribute('download', (title || 'MAKAUT_Paper').replace(/[^a-zA-Z0-9_-]/g, '_') + '.pdf');
+            downloadBtn.onclick = (e) => {
+                if (localStorage.getItem('campussense_logged_in') !== 'true') {
+                    e.preventDefault();
+                    if (modal) modal.style.display = 'none';
+                    sessionStorage.setItem('pending_download_action', JSON.stringify({ fileUrl: url, title }));
+                    showAuthModal(true, "Please sign in or create an account to download MAKAUT examination papers");
+                }
+            };
+        }
+
+        if (iframe) {
+            let finalUrl = url || 'about:blank';
+            if (finalUrl.indexOf('.pdf') !== -1 && finalUrl.indexOf('#') === -1) {
+                finalUrl += '#toolbar=0';
+            }
+            iframe.src = finalUrl;
+        }
         if (fallbackView) fallbackView.style.display = 'none';
 
         if (extractedText) {
-            extractedText.textContent = `Document Viewer: ${title}\n\nMaulana Abul Kalam Azad University of Technology verified question paper.\nDirect link: ${url}\n\nIf embedded viewing is restricted by your browser, click "Download PDF" above to view directly.`;
+            extractedText.textContent = `Document Viewer: ${title}\n\nMaulana Abul Kalam Azad University of Technology verified academic paper.\nDirect link: ${url}\n\nIf embedded viewing is restricted by your browser, click "Download PDF" above to view directly.`;
         }
 
         if (modal) modal.style.display = 'flex';

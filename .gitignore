@@ -60,3 +60,7 @@ Desktop.ini
 .env
 .env.local
 *.private
+
+# Raw extraction folder
+1st year MAKAUT-CampusSense/
+

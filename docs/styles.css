@@ -2786,3 +2786,275 @@ body {
         right: 0;
     }
 }
+
+/* ====================================================================
+   1ST-YEAR UNIFIED NAVIGATION, REGULATION BANNER & HUBS
+   ==================================================================== */
+
+/* Regulation Notice Alert Card */
+.regulation-alert-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.25rem;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.12), rgba(99, 102, 241, 0.08));
+    border: 1px solid rgba(249, 115, 22, 0.3);
+    border-radius: var(--radius-md);
+    animation: fadeIn 0.3s ease;
+}
+
+.regulation-alert-card .alert-icon {
+    font-size: 1.35rem;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+}
+
+.regulation-alert-card .alert-content {
+    flex: 1;
+}
+
+.regulation-alert-card .alert-title {
+    display: inline-block;
+    font-weight: 700;
+    font-size: 0.88rem;
+    color: var(--accent-flame);
+    margin-right: 0.35rem;
+    font-family: var(--font-heading);
+}
+
+.regulation-alert-card p {
+    display: inline;
+    font-size: 0.84rem;
+    line-height: 1.5;
+    color: var(--text-muted);
+}
+
+:root.light-theme .regulation-alert-card,
+[data-theme="light"] .regulation-alert-card {
+    background: linear-gradient(135deg, rgba(234, 88, 12, 0.08), rgba(79, 70, 229, 0.05));
+    border-color: rgba(234, 88, 12, 0.25);
+}
+
+/* Category Filter Row in Dashboard */
+.category-filter-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+}
+
+.category-filter-row .filter-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.category-pills {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.category-pill {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--card-border);
+    border-radius: 9999px;
+    padding: 0.35rem 0.85rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.category-pill:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-main);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.category-pill.active {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+    color: #ffffff;
+    box-shadow: 0 2px 8px var(--accent-glow);
+}
+
+:root.light-theme .category-pill,
+[data-theme="light"] .category-pill {
+    background: rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.08);
+}
+
+:root.light-theme .category-pill:hover,
+[data-theme="light"] .category-pill:hover {
+    background: rgba(0, 0, 0, 0.08);
+    color: var(--text-main);
+}
+
+:root.light-theme .category-pill.active,
+[data-theme="light"] .category-pill.active {
+    background: var(--accent-primary);
+    color: #ffffff;
+}
+
+/* Primary Year Mode Selector in Scope Modal */
+.primary-year-select-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.85rem;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 600px) {
+    .primary-year-select-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+.primary-year-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    text-align: left;
+    transition: var(--transition-smooth);
+    position: relative;
+    outline: none;
+}
+
+.primary-year-btn:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+}
+
+.primary-year-btn.active {
+    background: rgba(99, 102, 241, 0.12);
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
+}
+
+.year-btn-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.year-btn-content {
+    flex: 1;
+}
+
+.year-btn-title {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.2rem;
+}
+
+.year-btn-sub {
+    display: block;
+    font-size: 0.73rem;
+    color: var(--text-muted);
+    line-height: 1.35;
+}
+
+.year-check-icon {
+    display: none;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--accent-primary);
+}
+
+.primary-year-btn.active .year-check-icon {
+    display: block;
+}
+
+:root.light-theme .primary-year-btn,
+[data-theme="light"] .primary-year-btn {
+    background: #ffffff;
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+:root.light-theme .primary-year-btn:hover,
+[data-theme="light"] .primary-year-btn:hover {
+    background: rgba(241, 245, 249, 0.9);
+}
+
+:root.light-theme .primary-year-btn.active,
+[data-theme="light"] .primary-year-btn.active {
+    background: rgba(79, 70, 229, 0.08);
+    border-color: var(--accent-primary);
+}
+
+/* Hub PYQ Year Filter Row */
+.hub-pyq-filter-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--card-border);
+}
+
+.hub-pyq-filter-row .filter-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.hub-pyq-pills {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+}
+
+.hub-pyq-pill {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-sm);
+    padding: 0.3rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: var(--transition-fast);
+    font-family: var(--font-mono);
+}
+
+.hub-pyq-pill:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-main);
+}
+
+.hub-pyq-pill.active {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+    color: #ffffff;
+}
+
+:root.light-theme .hub-pyq-pill,
+[data-theme="light"] .hub-pyq-pill {
+    background: rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.08);
+}
+
+:root.light-theme .hub-pyq-pill.active,
+[data-theme="light"] .hub-pyq-pill.active {
+    background: var(--accent-primary);
+    color: #ffffff;
+}
+
