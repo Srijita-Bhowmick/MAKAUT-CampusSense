@@ -48,42 +48,34 @@ document.addEventListener('DOMContentLoaded', () => {
         if (/^(https?:|blob:|data:)/.test(relativePath)) {
             return relativePath;
         }
-        const cleanPath = relativePath.replace(/^\.?\//, '');
-        let base = window.location.href;
-        if (window.location.pathname.includes('/MAKAUT-CampusSense/')) {
-            const origin = window.location.origin;
-            base = `${origin}/MAKAUT-CampusSense/`;
-        }
-        try {
-            return new URL(cleanPath, base).href;
-        } catch (e) {
-            return relativePath;
-        }
+        const clean = relativePath.replace(/^\.?\//, '');
+        const base = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '/');
+        return new URL(clean, base).href;
     }
 
     async function downloadPdfFile(fileUrl, preferredName) {
-        const resolvedUrl = resolveAssetPath(fileUrl);
+        const resolved = resolveAssetPath(fileUrl);
         try {
-            const response = await fetch(resolvedUrl);
-            if (!response.ok) throw new Error('Network response was not ok');
-            const blob = await response.blob();
-            const objectUrl = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = objectUrl;
-            link.download = preferredName || resolvedUrl.split('/').pop().split('?')[0] || 'MAKAUT_Resource.pdf';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+            const res = await fetch(resolved);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const blob = await res.blob();
+            const blobUrl = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = blobUrl;
+            a.download = preferredName || resolved.split('/').pop();
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(() => URL.revokeObjectURL(blobUrl), 1500);
         } catch (err) {
-            // Fallback direct link
-            const fallbackLink = document.createElement('a');
-            fallbackLink.href = resolvedUrl;
-            fallbackLink.download = preferredName || '';
-            fallbackLink.target = '_blank';
-            document.body.appendChild(fallbackLink);
-            fallbackLink.click();
-            document.body.removeChild(fallbackLink);
+            console.warn('Blob download failed, using direct anchor fallback:', err);
+            const a = document.createElement('a');
+            a.href = resolved;
+            a.download = preferredName || '';
+            a.target = '_blank';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         }
     }
 
@@ -601,12 +593,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnNavSignIn = document.getElementById('btn-nav-signin');
     const btnNavSignUp = document.getElementById('btn-nav-signup');
     const btnLandingAuth = document.getElementById('btn-landing-auth');
+    const btnNavToLanding = document.getElementById('btn-nav-to-landing');
+    const btnNavToDashboard = document.getElementById('btn-nav-to-dashboard');
 
     function switchView(targetView) {
         if (targetView === 'dashboard') {
             if (landingView) landingView.style.display = 'none';
             if (dashboardView) dashboardView.style.display = 'block';
             if (contextSwitcherBtn) contextSwitcherBtn.style.display = 'flex';
+            if (btnNavToLanding) btnNavToLanding.style.display = 'inline-flex';
+            if (btnNavToDashboard) btnNavToDashboard.style.display = 'none';
             if (btnOpenPanicNav) btnOpenPanicNav.style.display = 'inline-flex';
             if (btnOpenSavedDeck) btnOpenSavedDeck.style.display = 'inline-flex';
             if (btnOpenFeedback) btnOpenFeedback.style.display = 'inline-flex';
@@ -626,20 +622,71 @@ document.addEventListener('DOMContentLoaded', () => {
             if (landingView) landingView.style.display = 'block';
             if (dashboardView) dashboardView.style.display = 'none';
             if (contextSwitcherBtn) contextSwitcherBtn.style.display = 'none';
+            if (btnNavToLanding) btnNavToLanding.style.display = 'none';
+            if (btnNavToDashboard) btnNavToDashboard.style.display = isLoggedIn ? 'inline-flex' : 'none';
             if (btnOpenPanicNav) btnOpenPanicNav.style.display = 'none';
             if (btnOpenSavedDeck) btnOpenSavedDeck.style.display = 'none';
             if (btnOpenFeedback) btnOpenFeedback.style.display = 'none';
-            if (userProfileWrapper) userProfileWrapper.style.display = 'none';
             if (btnOpenAiFab) btnOpenAiFab.style.display = 'none';
             if (landingNavLinks) landingNavLinks.style.display = 'flex';
-            if (btnNavSignIn) btnNavSignIn.style.display = 'inline-flex';
-            if (btnNavSignUp) btnNavSignUp.style.display = 'inline-flex';
+
+            if (isLoggedIn) {
+                if (userProfileWrapper) userProfileWrapper.style.display = 'block';
+                if (btnNavSignIn) btnNavSignIn.style.display = 'none';
+                if (btnNavSignUp) btnNavSignUp.style.display = 'none';
+            } else {
+                if (userProfileWrapper) userProfileWrapper.style.display = 'none';
+                if (btnNavSignIn) btnNavSignIn.style.display = 'inline-flex';
+                if (btnNavSignUp) btnNavSignUp.style.display = 'inline-flex';
+            }
             if (btnLandingAuth) btnLandingAuth.style.display = 'none';
 
             renderLandingCurriculum('ALL');
             renderLandingPyqRepo('ALL', 'ALL');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+    }
+
+    // Bidirectional Navigation Listeners
+    if (btnNavToLanding) {
+        btnNavToLanding.addEventListener('click', (e) => {
+            e.preventDefault();
+            switchView('landing');
+        });
+    }
+
+    if (btnNavToDashboard) {
+        btnNavToDashboard.addEventListener('click', (e) => {
+            e.preventDefault();
+            switchView('dashboard');
+        });
+    }
+
+    // Dashboard Hero Quick Action Tiles Listeners
+    const tileActionSyllabi = document.getElementById('tile-action-syllabi');
+    if (tileActionSyllabi) {
+        tileActionSyllabi.addEventListener('click', () => {
+            const subjectsSection = document.querySelector('.bento-card-subjects');
+            if (subjectsSection) {
+                subjectsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                subjectsSection.classList.add('highlight-pulse');
+                setTimeout(() => subjectsSection.classList.remove('highlight-pulse'), 1500);
+            }
+        });
+    }
+
+    const tileActionPyqs = document.getElementById('tile-action-pyqs');
+    if (tileActionPyqs) {
+        tileActionPyqs.addEventListener('click', () => {
+            const firstSub = (MAKAUT_CURRICULUM && MAKAUT_CURRICULUM.length > 0) ? MAKAUT_CURRICULUM[0].code : null;
+            if (firstSub) {
+                openSubjectHub(firstSub, 'pyqs');
+            } else {
+                switchView('landing');
+                const pyqSec = document.getElementById('landing-pyqs');
+                if (pyqSec) pyqSec.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
     }
 
     // ==========================================
@@ -1367,7 +1414,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentHubSubject = null;
     let currentHubPyqYearFilter = 'ALL';
 
-    function openSubjectHub(subjectCode) {
+    function openSubjectHub(subjectCode, initialTab = 'checklist') {
         let subject = MAKAUT_CURRICULUM.find(s => 
             s.code.toLowerCase() === subjectCode.toLowerCase() ||
             (s.altCode && s.altCode.toLowerCase() === subjectCode.toLowerCase())
@@ -1396,8 +1443,8 @@ document.addEventListener('DOMContentLoaded', () => {
         renderHubPyqs(subject, 'ALL');
         renderHubClusters(subject);
 
-        // Reset to Checklist tab
-        activateHubTab('checklist');
+        // Activate specified initial tab
+        activateHubTab(initialTab);
 
         const hubModal = document.getElementById('subject-hub-modal');
         if (hubModal) hubModal.style.display = 'flex';

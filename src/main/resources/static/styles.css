@@ -289,21 +289,38 @@ body {
     color: var(--text-muted);
 }
 
-.github-pill {
-    text-decoration: none;
-    color: #e2e8f0;
-    font-size: 0.8rem;
+.btn-nav-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.42rem 0.85rem;
+    border-radius: 999px;
+    font-size: 0.82rem;
     font-weight: 600;
-    padding: 0.42rem 0.8rem;
-    border-radius: var(--radius-sm);
-    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--card-border);
+    cursor: pointer;
     transition: var(--transition-fast);
+    text-decoration: none;
 }
 
-.github-pill:hover {
-    background: rgba(255, 255, 255, 0.09);
-    border-color: rgba(255, 255, 255, 0.2);
+.btn-nav-switch:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--accent-primary);
+}
+
+.btn-nav-switch.btn-nav-highlight {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%);
+    border-color: var(--accent-primary);
+    color: #a5b4fc;
+}
+
+.btn-nav-switch.btn-nav-highlight:hover {
+    background: var(--accent-primary);
+    color: #ffffff;
+    box-shadow: 0 0 16px rgba(99, 102, 241, 0.4);
 }
 
 /* 2. Main Layout */
@@ -432,6 +449,116 @@ body {
     color: #e0e7ff;
 }
 
+/* Dashboard Hero Quick Action Tiles */
+.dashboard-quick-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.hero-action-tile {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.5rem 1.75rem;
+    border-radius: 16px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-action-tile.tile-syllabus {
+    border-color: rgba(99, 102, 241, 0.3);
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.09) 0%, rgba(6, 182, 212, 0.05) 100%);
+}
+
+.hero-action-tile.tile-syllabus:hover {
+    border-color: var(--accent-primary);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px -6px rgba(99, 102, 241, 0.25), 0 0 24px rgba(6, 182, 212, 0.15);
+}
+
+.hero-action-tile.tile-pyqs {
+    border-color: rgba(245, 158, 11, 0.3);
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.09) 0%, rgba(239, 68, 68, 0.05) 100%);
+}
+
+.hero-action-tile.tile-pyqs:hover {
+    border-color: #f59e0b;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px -6px rgba(245, 158, 11, 0.25), 0 0 24px rgba(239, 68, 68, 0.15);
+}
+
+.tile-icon-wrapper {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    flex-shrink: 0;
+}
+
+.tile-syllabus .tile-icon-wrapper {
+    background: rgba(99, 102, 241, 0.15);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+.tile-pyqs .tile-icon-wrapper {
+    background: rgba(245, 158, 11, 0.15);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.tile-content {
+    flex: 1;
+}
+
+.tile-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 0.35rem 0;
+    font-family: var(--font-heading);
+}
+
+.tile-subtitle {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0 0 0.6rem 0;
+    line-height: 1.4;
+}
+
+.tile-action-link {
+    font-size: 0.82rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.tile-syllabus .tile-action-link {
+    color: var(--accent-cyan);
+}
+
+.tile-pyqs .tile-action-link {
+    color: #fbbf24;
+}
+
+.highlight-pulse {
+    animation: pulseBorder 1.5s ease-in-out;
+}
+
+@keyframes pulseBorder {
+    0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7); }
+    70% { box-shadow: 0 0 0 12px rgba(99, 102, 241, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+}
+
 /* 3. Bento Grid Layout */
 .bento-container {
     display: grid;
@@ -519,8 +646,9 @@ body {
 /* Card A: Active Subjects Grid */
 .subjects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
     flex: 1;
 }
 
@@ -1600,6 +1728,14 @@ body {
     justify-content: space-between;
     padding-bottom: 0.85rem;
     border-bottom: 1px solid var(--card-border);
+}
+
+.pdf-viewer-actions, .pdf-modal-controls {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    margin-left: auto;
 }
 
 .pdf-file-info {

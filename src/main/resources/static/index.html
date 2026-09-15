@@ -59,6 +59,11 @@
                 <span class="dropdown-chevron">▾</span>
             </button>
 
+            <!-- Bidirectional Nav: Back to Home (Visible on Dashboard) -->
+            <button type="button" class="btn-nav-switch" id="btn-nav-to-landing" style="display: none;" title="Return to Landing Page">
+                ← Back to Home
+            </button>
+
             <!-- Navigation Actions & Controls -->
             <div class="nav-actions">
                 <!-- Theme Toggle Button (Dynamic SVG Sun/Moon) -->
@@ -119,10 +124,10 @@
                     </div>
                 </div>
 
-                <!-- Landing Page Specific CTAs -->
-                <a href="https://github.com/Srijita-Bhowmick/MAKAUT-CampusSense" target="_blank" class="nav-link github-pill" id="github-link" title="View on GitHub">
-                    <span>⭐ GitHub</span>
-                </a>
+                <!-- Bidirectional Nav: Go to Dashboard (Visible when logged in on Landing) -->
+                <button type="button" class="btn-nav-switch btn-nav-highlight" id="btn-nav-to-dashboard" style="display: none;" title="Open Your Dashboard">
+                    Go to Dashboard →
+                </button>
 
                 <!-- Dedicated Top-Right Auth Triggers -->
                 <button class="btn btn-outline" id="btn-nav-signin" title="Sign In">
@@ -157,7 +162,7 @@
 
             <div class="landing-hero-actions">
                 <a href="#landing-curriculum" class="btn btn-primary btn-hero-cta" id="btn-explore-curriculum">
-                    Explore Curriculum ➔
+                    Explore Curriculums and PYQs ➔
                 </a>
                 <button class="btn btn-flame-hero" id="btn-hero-panic-pack">
                     🔥 View 48h Panic Pack
@@ -304,7 +309,7 @@
         <footer class="landing-footer">
             <p><strong>MAKAUT-CampusSense</strong> • Academic Resource Aggregator & Conversational RAG Engine</p>
             <p style="margin-top: 0.35rem; font-size: 0.8rem;">
-                Curated for Maulana Abul Kalam Azad University of Technology affiliated colleges. Maintained by <a href="https://github.com/Srijita-Bhowmick" target="_blank">Srijita Bhowmick</a>.
+                Curated for Maulana Abul Kalam Azad University of Technology affiliated colleges. Maintained by Srijita Bhowmick.
             </p>
         </footer>
     </section>
@@ -339,6 +344,31 @@
             </div>
         </section>
 
+        <!-- Top Hero Quick Action Cards (#dashboard-quick-actions) -->
+        <section class="dashboard-quick-actions" id="dashboard-quick-actions">
+            <div class="hero-action-tile tile-syllabus" id="tile-action-syllabi" role="button" tabindex="0" title="View Syllabi & Interactive Checklists">
+                <div class="tile-icon-wrapper">
+                    <span class="tile-icon">📚</span>
+                </div>
+                <div class="tile-content">
+                    <h3 class="tile-title">Syllabi & Unit Checklists</h3>
+                    <p class="tile-subtitle">Official 2026 curriculum breakdowns & trackers</p>
+                    <span class="tile-action-link">Explore Checklists ➔</span>
+                </div>
+            </div>
+
+            <div class="hero-action-tile tile-pyqs" id="tile-action-pyqs" role="button" tabindex="0" title="View Verified Past Question Papers">
+                <div class="tile-icon-wrapper">
+                    <span class="tile-icon">📄</span>
+                </div>
+                <div class="tile-content">
+                    <h3 class="tile-title">Past Question Papers (PYQs)</h3>
+                    <p class="tile-subtitle">Verified semester exam papers (2020 – 2026)</p>
+                    <span class="tile-action-link">Open PYQ Archive ➔</span>
+                </div>
+            </div>
+        </section>
+
         <!-- Bento Grid Dashboard -->
         <section class="bento-container">
             <!-- Bento Card A: Active Semester Subjects & Checklist Rings -->
@@ -358,8 +388,8 @@
                 <div class="regulation-alert-card" id="regulation-notice" style="display: none;">
                     <div class="alert-icon">⚡</div>
                     <div class="alert-content">
-                        <span class="alert-title">Curriculum & Paper Context:</span>
-                        <p>Your 1st-year syllabus follows the updated 2026 MAKAUT curriculum scheme, while past question papers originate from the 2018 model they were examined under. The foundational physics and math principles remain identical, but keep the syllabus evolution in mind when solving older problems.</p>
+                        <span class="alert-title">Note on Syllabus & Papers:</span>
+                        <p>1st-year courses follow the updated <strong>2026 MAKAUT curriculum</strong>, while past question papers reflect the <strong>2018 model</strong> they were examined under. Core physics and math topics remain identical—check the syllabus for minor unit adjustments.</p>
                     </div>
                 </div>
 
@@ -718,11 +748,11 @@
                     </div>
                 </div>
                 <div class="pdf-viewer-actions">
-                    <button type="button" class="btn btn-secondary" id="btn-pdf-external-download">
-                        ⬇ Download PDF
-                    </button>
-                    <button class="btn btn-secondary" id="btn-pdf-fullscreen">
+                    <button type="button" class="btn btn-secondary" id="btn-pdf-fullscreen" title="Toggle Fullscreen">
                         ⛶ Fullscreen
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="btn-pdf-external-download" title="Download PDF">
+                        ⬇ Download PDF
                     </button>
                     <button class="modal-close-btn" id="btn-close-pdf-modal" title="Close">✕</button>
                 </div>
