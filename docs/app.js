@@ -41,13 +41,64 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 2. State Machine & User Context
+    // 2. Asset Resolution & Robust PDF Download Engine
+    // ==========================================
+    function resolveAssetPath(relativePath) {
+        if (!relativePath) return '';
+        if (/^(https?:|blob:|data:)/.test(relativePath)) {
+            return relativePath;
+        }
+        const cleanPath = relativePath.replace(/^\.?\//, '');
+        let base = window.location.href;
+        if (window.location.pathname.includes('/MAKAUT-CampusSense/')) {
+            const origin = window.location.origin;
+            base = `${origin}/MAKAUT-CampusSense/`;
+        }
+        try {
+            return new URL(cleanPath, base).href;
+        } catch (e) {
+            return relativePath;
+        }
+    }
+
+    async function downloadPdfFile(fileUrl, preferredName) {
+        const resolvedUrl = resolveAssetPath(fileUrl);
+        try {
+            const response = await fetch(resolvedUrl);
+            if (!response.ok) throw new Error('Network response was not ok');
+            const blob = await response.blob();
+            const objectUrl = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = objectUrl;
+            link.download = preferredName || resolvedUrl.split('/').pop().split('?')[0] || 'MAKAUT_Resource.pdf';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+        } catch (err) {
+            // Fallback direct link
+            const fallbackLink = document.createElement('a');
+            fallbackLink.href = resolvedUrl;
+            fallbackLink.download = preferredName || '';
+            fallbackLink.target = '_blank';
+            document.body.appendChild(fallbackLink);
+            fallbackLink.click();
+            document.body.removeChild(fallbackLink);
+        }
+    }
+
+    // ==========================================
+    // 3. State Machine & User Context
     // ==========================================
     let isLoggedIn = localStorage.getItem('campussense_logged_in') === 'true';
     let userIdentifier = localStorage.getItem('campussense_user_id') || ('student-' + Math.random().toString(36).substring(2, 11));
     let userName = localStorage.getItem('campussense_user_name') || 'Student';
     let currentRegulation = localStorage.getItem('campussense_regulation') || '2026';
     let currentYearMode = localStorage.getItem('campussense_year_mode') || 'FIRST_YEAR';
+    if (currentYearMode === 'UPPER_YEARS') {
+        currentYearMode = 'DEPARTMENTAL_YEARS';
+        localStorage.setItem('campussense_year_mode', 'DEPARTMENTAL_YEARS');
+    }
     let currentStream = localStorage.getItem('campussense_stream') || (currentYearMode === 'FIRST_YEAR' ? 'FIRST_YEAR' : 'CSE');
     let currentSem = parseInt(localStorage.getItem('campussense_semester') || (currentYearMode === 'FIRST_YEAR' ? '1' : '5'), 10);
     let userChecklistState = JSON.parse(localStorage.getItem('campussense_checklist_state') || '{}');
@@ -61,6 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'GROUP_A': '1st Year (Group A / Physics)',
         'GROUP_B': '1st Year (Group B / Chemistry)',
         'COMMON': '1st Year Common',
+        'MULTIDISCIPLINARY': '1st Year Multidisciplinary / Mandatory',
         'CSE': 'Computer Science (CSE)',
         'CSCS': 'Cyber Security (CSCS)',
         'IT': 'Information Tech (IT)',
@@ -274,8 +326,56 @@ document.addEventListener('DOMContentLoaded', () => {
                 { id: 2703, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 English (HM-HU201)', fileUrl: 'assets/resources/1st_year/pyq/english/btech-2-sem-english-hmhu201-2023.pdf' }
             ]
         },
+        {
+            code: 'MC-ES201',
+            altCode: 'MC-ES101',
+            name: 'Environmental Science (EVS)',
+            isFirstYear: true,
+            category: 'MULTIDISCIPLINARY',
+            stream: 'MULTIDISCIPLINARY',
+            semester: 1,
+            credits: 0,
+            department: '1st Year (Mandatory Non-Credit Course)',
+            syllabusUrl: 'assets/resources/1st_year/syllabus/EVS.pdf',
+            description: 'Ecosystems, biodiversity conservation, air and water pollution abatement, renewable natural resources, climate treaties, and solid waste management.',
+            units: [
+                { id: 1081, unitNumber: 1, title: 'Unit 1: Ecosystems & Biodiversity Conservation', subtopics: 'Structure and function of ecosystems, energy flow, ecological succession, food chains and webs, biodiversity hotspots, in-situ and ex-situ conservation.', hours: 8 },
+                { id: 1082, unitNumber: 2, title: 'Unit 2: Environmental Pollution (Air, Water, Soil, Noise)', subtopics: 'Causes, effects and control mechanisms of air, water, soil, noise and thermal pollution, ambient air quality standards, photochemical smog, acid rain.', hours: 8 },
+                { id: 1083, unitNumber: 3, title: 'Unit 3: Renewable & Non-Renewable Natural Resources', subtopics: 'Land resources, deforestation, water resources and conflicts, mineral extraction, renewable energy transition: solar, wind, biomass, hydrogen energy.', hours: 6 },
+                { id: 1084, unitNumber: 4, title: 'Unit 4: Environmental Policies, Climate Change & Treaties', subtopics: 'Environment Protection Act 1986, Air and Water Acts, Kyoto Protocol, Montreal Protocol, Paris Climate Agreement, Environmental Impact Assessment (EIA).', hours: 6 },
+                { id: 1085, unitNumber: 5, title: 'Unit 5: Fieldwork, Waste Management & Sustainability', subtopics: 'Municipal solid waste management, e-waste handling, biomedical waste rules, circular economy, UN Sustainable Development Goals (SDGs), field visit reporting.', hours: 6 }
+            ],
+            pyqs: [
+                { id: 2801, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Environmental Science (MC-ES201)', fileUrl: 'assets/resources/1st_year/syllabus/EVS.pdf' },
+                { id: 2802, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Environmental Science (MC-ES201)', fileUrl: 'assets/resources/1st_year/syllabus/EVS.pdf' }
+            ]
+        },
+        {
+            code: 'BS-BIO101',
+            altCode: 'BS-BIO201',
+            name: 'Biology for Engineers',
+            isFirstYear: true,
+            category: 'MULTIDISCIPLINARY',
+            stream: 'MULTIDISCIPLINARY',
+            semester: 1,
+            credits: 3,
+            department: '1st Year (Multidisciplinary Core)',
+            syllabusUrl: 'assets/resources/1st_year/syllabus/Biology.pdf',
+            description: 'Biomolecules, cellular energetics, enzyme kinetics, central dogma of molecular genetics, microbiology, biosensors, and bio-inspired engineering.',
+            units: [
+                { id: 1091, unitNumber: 1, title: 'Unit 1: Biomolecules & Cell Architecture', subtopics: 'Carbohydrates, lipids, nucleic acids, proteins; prokaryotic vs eukaryotic cell architecture, cell organelles, membrane transport mechanisms.', hours: 8 },
+                { id: 1092, unitNumber: 2, title: 'Unit 2: Enzyme Kinetics, Metabolism & Cellular Energetics', subtopics: 'Enzyme classification, active site, Michaelis-Menten kinetics, enzyme inhibition, glycolysis, citric acid cycle, oxidative phosphorylation, ATP synthesis.', hours: 8 },
+                { id: 1093, unitNumber: 3, title: 'Unit 3: Molecular Genetics, DNA Replication & Protein Synthesis', subtopics: 'Central dogma of molecular biology, DNA double-helix replication fidelity, transcription, genetic code, ribosomal translation, recombinant DNA, PCR basics.', hours: 8 },
+                { id: 1094, unitNumber: 4, title: 'Unit 4: Microbiology, Immunology & Biosensors', subtopics: 'Microbial growth kinetics, sterilization techniques, innate and adaptive immunity, antibody-antigen interaction, biosensor architecture and clinical applications.', hours: 8 },
+                { id: 1095, unitNumber: 5, title: 'Unit 5: Bio-inspired Engineering, Bio-materials & Bio-computing', subtopics: 'Biomimetics, lotus effect self-cleaning, gecko adhesion, shark-skin fluid drag reduction, biocompatible polymers, neural computing inspirations, DNA data storage.', hours: 8 }
+            ],
+            pyqs: [
+                { id: 2901, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Biology for Engineers (BS-BIO101)', fileUrl: 'assets/resources/1st_year/syllabus/Biology.pdf' },
+                { id: 2902, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Biology for Engineers (BS-BIO201)', fileUrl: 'assets/resources/1st_year/syllabus/Biology.pdf' }
+            ]
+        },
 
-        // --- Core Engineering (CSE / CSCS - Upper Years) ---
+        // --- Core Engineering (CSE / CSCS - Departmental Years) ---
         {
             code: 'PCC-CS501',
             name: 'Operating Systems',
@@ -704,13 +804,13 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Wire Download buttons (Gated Flow)
+        // Wire Download buttons (Gated Flow with Blob Download Engine)
         grid.querySelectorAll('.btn-download-pdf-gate').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
                 const subjectCode = btn.getAttribute('data-subject');
                 const paperYear = btn.getAttribute('data-paper');
-                const title = btn.getAttribute('data-name');
+                const title = btn.getAttribute('data-name') || `${subjectCode} (${paperYear})`;
                 const fileUrl = btn.getAttribute('data-url') || `https://makautexam.net/pyq/${paperYear}/${subjectCode}.pdf`;
 
                 if (localStorage.getItem('campussense_logged_in') !== 'true') {
@@ -718,7 +818,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     showAuthModal(true, "Please sign in or create an account to download MAKAUT examination papers");
                     return;
                 }
-                openPdfViewer(title, fileUrl);
+                downloadPdfFile(fileUrl, (title || 'MAKAUT_Paper') + '.pdf');
             });
         });
     }
@@ -888,6 +988,18 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('campussense_user_email', userEmail);
         localStorage.setItem('campussense_user_id', userEmail);
 
+        // Record active user metrics and academic context into Clerk unsafeMetadata
+        if (window.Clerk?.user) {
+            window.Clerk.user.update({
+                unsafeMetadata: {
+                    stage: localStorage.getItem('campussense_stage') || localStorage.getItem('campussense_year_mode') || '1st_year',
+                    branch: localStorage.getItem('campussense_branch') || localStorage.getItem('campussense_stream') || 'Common',
+                    semester: localStorage.getItem('campussense_semester') || '1',
+                    lastLoginTimestamp: new Date().toISOString()
+                }
+            }).catch(err => console.warn('[Clerk] Metadata sync skipped:', err));
+        }
+
         if (authModal) authModal.style.display = 'none';
 
         // Prompt Academic Scope Selection Onboarding
@@ -933,45 +1045,45 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnCloseScopeModal = document.getElementById('btn-close-scope-modal');
     const scopeForm = document.getElementById('scope-form');
     const btnScopeFirstYear = document.getElementById('btn-scope-first-year');
-    const btnScopeUpperYears = document.getElementById('btn-scope-upper-years');
-    const upperYearsControls = document.getElementById('upper-years-controls');
+    const btnScopeDepartmentalYears = document.getElementById('btn-scope-departmental-years') || document.getElementById('btn-scope-upper-years');
+    const departmentalYearsControls = document.getElementById('departmental-years-controls') || document.getElementById('upper-years-controls');
 
-    let modalYearMode = currentYearMode || 'FIRST_YEAR';
+    let modalYearMode = (currentYearMode === 'UPPER_YEARS' || currentYearMode === 'DEPARTMENTAL_YEARS') ? 'DEPARTMENTAL_YEARS' : 'FIRST_YEAR';
 
-    if (btnScopeFirstYear && btnScopeUpperYears && upperYearsControls) {
+    if (btnScopeFirstYear && btnScopeDepartmentalYears && departmentalYearsControls) {
         btnScopeFirstYear.addEventListener('click', () => {
             modalYearMode = 'FIRST_YEAR';
             btnScopeFirstYear.classList.add('active');
-            btnScopeUpperYears.classList.remove('active');
-            upperYearsControls.style.display = 'none';
+            btnScopeDepartmentalYears.classList.remove('active');
+            departmentalYearsControls.style.display = 'none';
         });
 
-        btnScopeUpperYears.addEventListener('click', () => {
-            modalYearMode = 'UPPER_YEARS';
-            btnScopeUpperYears.classList.add('active');
+        btnScopeDepartmentalYears.addEventListener('click', () => {
+            modalYearMode = 'DEPARTMENTAL_YEARS';
+            btnScopeDepartmentalYears.classList.add('active');
             btnScopeFirstYear.classList.remove('active');
-            upperYearsControls.style.display = 'block';
+            departmentalYearsControls.style.display = 'block';
         });
     }
 
     function openScopeModal() {
-        modalYearMode = currentYearMode;
-        if (btnScopeFirstYear && btnScopeUpperYears && upperYearsControls) {
-            if (currentYearMode === 'FIRST_YEAR') {
+        modalYearMode = (currentYearMode === 'UPPER_YEARS' || currentYearMode === 'DEPARTMENTAL_YEARS') ? 'DEPARTMENTAL_YEARS' : 'FIRST_YEAR';
+        if (btnScopeFirstYear && btnScopeDepartmentalYears && departmentalYearsControls) {
+            if (modalYearMode === 'FIRST_YEAR') {
                 btnScopeFirstYear.classList.add('active');
-                btnScopeUpperYears.classList.remove('active');
-                upperYearsControls.style.display = 'none';
+                btnScopeDepartmentalYears.classList.remove('active');
+                departmentalYearsControls.style.display = 'none';
             } else {
-                btnScopeUpperYears.classList.add('active');
+                btnScopeDepartmentalYears.classList.add('active');
                 btnScopeFirstYear.classList.remove('active');
-                upperYearsControls.style.display = 'block';
+                departmentalYearsControls.style.display = 'block';
             }
         }
-        // Highlight active stream in upper years
+        // Highlight active stream in departmental years
         document.querySelectorAll('.stream-option').forEach(btn => {
             btn.classList.toggle('active', btn.getAttribute('data-stream') === currentStream);
         });
-        // Highlight active semester in upper years
+        // Highlight active semester in departmental years
         document.querySelectorAll('.sem-btn').forEach(btn => {
             btn.classList.toggle('active', parseInt(btn.getAttribute('data-sem'), 10) === currentSem);
         });
@@ -1008,6 +1120,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             currentYearMode = modalYearMode;
             localStorage.setItem('campussense_year_mode', currentYearMode);
+            localStorage.setItem('campussense_stage', currentYearMode === 'FIRST_YEAR' ? '1st_year' : 'departmental');
 
             if (currentYearMode === 'FIRST_YEAR') {
                 currentStream = 'FIRST_YEAR';
@@ -1020,12 +1133,25 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             localStorage.setItem('campussense_stream', currentStream);
+            localStorage.setItem('campussense_branch', currentStream);
             localStorage.setItem('campussense_semester', currentSem.toString());
             localStorage.setItem('campussense_scope', JSON.stringify({
                 yearMode: currentYearMode,
                 stream: currentStream,
                 semester: currentSem
             }));
+
+            // Sync user metrics to Clerk unsafeMetadata
+            if (window.Clerk?.user) {
+                window.Clerk.user.update({
+                    unsafeMetadata: {
+                        stage: currentYearMode === 'FIRST_YEAR' ? '1st_year' : 'departmental',
+                        branch: currentStream || 'Common',
+                        semester: currentSem.toString(),
+                        lastLoginTimestamp: new Date().toISOString()
+                    }
+                }).catch(err => console.warn('[Clerk] Metadata sync skipped:', err));
+            }
 
             if (scopeModal) scopeModal.style.display = 'none';
 
@@ -1038,7 +1164,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 try {
                     const pending = JSON.parse(pendingActionRaw);
                     sessionStorage.removeItem('pending_download_action');
-                    openPdfViewer(pending.title, pending.fileUrl);
+                    downloadPdfFile(pending.fileUrl, (pending.title || 'MAKAUT_Paper') + '.pdf');
                 } catch (err) {
                     sessionStorage.removeItem('pending_download_action');
                 }
@@ -1115,6 +1241,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 matchingSubjects = allFirstYear.filter(s => s.category === 'GROUP_B');
             } else if (categoryFilter === 'MATH') {
                 matchingSubjects = allFirstYear.filter(s => s.category === 'MATH');
+            } else if (categoryFilter === 'MULTIDISCIPLINARY') {
+                matchingSubjects = allFirstYear.filter(s => s.category === 'MULTIDISCIPLINARY');
             } else {
                 matchingSubjects = allFirstYear;
             }
@@ -1154,7 +1282,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const codeDisplay = sub.code + (sub.altCode ? ' / ' + sub.altCode : '');
             const categoryBadge = sub.isFirstYear 
-                ? `<span class="badge" style="background: rgba(99, 102, 241, 0.15); color: var(--accent-cyan); font-weight: 600; font-size: 0.7rem;">${sub.category === 'GROUP_A' ? 'Group A' : sub.category === 'GROUP_B' ? 'Group B' : sub.category === 'MATH' ? 'Math Core' : 'Common'}</span>`
+                ? `<span class="badge" style="background: rgba(99, 102, 241, 0.15); color: var(--accent-cyan); font-weight: 600; font-size: 0.7rem;">${sub.category === 'GROUP_A' ? 'Group A' : sub.category === 'GROUP_B' ? 'Group B' : sub.category === 'MATH' ? 'Math Core' : sub.category === 'MULTIDISCIPLINARY' ? 'Multidisciplinary' : 'Common'}</span>`
                 : '';
 
             return `
@@ -1399,7 +1527,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     showAuthModal(true, "Please sign in or create an account to download MAKAUT examination papers");
                     return;
                 }
-                openPdfViewer(title, fileUrl);
+                downloadPdfFile(fileUrl, (title || `${subjectCode}_${paperYear}`) + '.pdf');
             });
         });
     }
@@ -1668,22 +1796,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const fallbackView = document.getElementById('pdf-fallback-view');
         const extractedText = document.getElementById('pdf-extracted-text');
 
+        const resolvedUrl = resolveAssetPath(url);
+        const preferredName = (title || 'MAKAUT_Resource').replace(/[^a-zA-Z0-9_-]/g, '_') + '.pdf';
+
         if (titleEl) titleEl.textContent = title || 'MAKAUT Examination Paper';
         if (downloadBtn) {
-            downloadBtn.href = url || '#';
-            downloadBtn.setAttribute('download', (title || 'MAKAUT_Paper').replace(/[^a-zA-Z0-9_-]/g, '_') + '.pdf');
             downloadBtn.onclick = (e) => {
-                if (localStorage.getItem('campussense_logged_in') !== 'true') {
-                    e.preventDefault();
-                    if (modal) modal.style.display = 'none';
-                    sessionStorage.setItem('pending_download_action', JSON.stringify({ fileUrl: url, title }));
-                    showAuthModal(true, "Please sign in or create an account to download MAKAUT examination papers");
-                }
+                e.preventDefault();
+                downloadPdfFile(resolvedUrl, preferredName);
             };
         }
 
         if (iframe) {
-            let finalUrl = url || 'about:blank';
+            let finalUrl = resolvedUrl || 'about:blank';
             if (finalUrl.indexOf('.pdf') !== -1 && finalUrl.indexOf('#') === -1) {
                 finalUrl += '#toolbar=0';
             }
@@ -1692,7 +1817,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (fallbackView) fallbackView.style.display = 'none';
 
         if (extractedText) {
-            extractedText.textContent = `Document Viewer: ${title}\n\nMaulana Abul Kalam Azad University of Technology verified academic paper.\nDirect link: ${url}\n\nIf embedded viewing is restricted by your browser, click "Download PDF" above to view directly.`;
+            extractedText.textContent = `Document Viewer: ${title}\n\nMaulana Abul Kalam Azad University of Technology verified academic paper.\nDirect link: ${resolvedUrl}\n\nIf embedded viewing is restricted by your browser, click "Download PDF" above to view directly.`;
         }
 
         if (modal) modal.style.display = 'flex';
@@ -2087,7 +2212,89 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 18. Initial View Boot
+    // 18. Clerk Authentication & User Tracking Dashboard
+    // ==========================================
+    async function setupClerkAuth() {
+        const clerkPublishableKey = localStorage.getItem('campussense_clerk_key')
+            || window.CLERK_PUBLISHABLE_KEY
+            || (document.querySelector('script[data-clerk-publishable-key]')?.getAttribute('data-clerk-publishable-key'));
+
+        if (window.Clerk) {
+            try {
+                if (!window.Clerk.loaded && typeof window.Clerk.load === 'function') {
+                    const opts = {};
+                    if (clerkPublishableKey && clerkPublishableKey !== 'YOUR_CLERK_PUBLISHABLE_KEY') {
+                        opts.publishableKey = clerkPublishableKey;
+                    }
+                    await window.Clerk.load(opts);
+                }
+
+                if (window.Clerk.user) {
+                    const cu = window.Clerk.user;
+                    userName = cu.fullName || cu.firstName || cu.username || 'Student';
+                    isLoggedIn = true;
+                    localStorage.setItem('campussense_logged_in', 'true');
+                    localStorage.setItem('campussense_user_name', userName);
+                    localStorage.setItem('campussense_user_id', cu.id);
+                    if (cu.primaryEmailAddress?.emailAddress) {
+                        localStorage.setItem('campussense_user_email', cu.primaryEmailAddress.emailAddress);
+                    }
+
+                    try {
+                        await cu.update({
+                            unsafeMetadata: {
+                                stage: localStorage.getItem('campussense_stage') || localStorage.getItem('campussense_year_mode') || '1st_year',
+                                branch: localStorage.getItem('campussense_branch') || localStorage.getItem('campussense_stream') || 'Common',
+                                semester: localStorage.getItem('campussense_semester') || '1',
+                                lastLoginTimestamp: new Date().toISOString()
+                            }
+                        });
+                    } catch (metaErr) {
+                        console.warn('[Clerk] Metadata sync skipped:', metaErr);
+                    }
+
+                    updateContextUI();
+                }
+
+                if (typeof window.Clerk.addListener === 'function') {
+                    window.Clerk.addListener(async (emission) => {
+                        if (emission && emission.user) {
+                            const cu = emission.user;
+                            userName = cu.fullName || cu.firstName || cu.username || 'Student';
+                            isLoggedIn = true;
+                            localStorage.setItem('campussense_logged_in', 'true');
+                            localStorage.setItem('campussense_user_name', userName);
+                            localStorage.setItem('campussense_user_id', cu.id);
+                            if (cu.primaryEmailAddress?.emailAddress) {
+                                localStorage.setItem('campussense_user_email', cu.primaryEmailAddress.emailAddress);
+                            }
+
+                            try {
+                                await cu.update({
+                                    unsafeMetadata: {
+                                        stage: localStorage.getItem('campussense_stage') || localStorage.getItem('campussense_year_mode') || '1st_year',
+                                        branch: localStorage.getItem('campussense_branch') || localStorage.getItem('campussense_stream') || 'Common',
+                                        semester: localStorage.getItem('campussense_semester') || '1',
+                                        lastLoginTimestamp: new Date().toISOString()
+                                    }
+                                });
+                            } catch (e) {
+                                console.warn('[Clerk] Listener metadata sync skipped:', e);
+                            }
+
+                            updateContextUI();
+                        }
+                    });
+                }
+            } catch (err) {
+                console.warn('[Clerk] Initialization warning (safe fallback active):', err);
+            }
+        }
+    }
+    setupClerkAuth();
+
+    // ==========================================
+    // 19. Initial View Boot
     // ==========================================
     if (isLoggedIn) {
         switchView('dashboard');

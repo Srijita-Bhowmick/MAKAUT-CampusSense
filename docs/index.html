@@ -19,6 +19,14 @@
             }
         })();
     </script>
+    <!-- Clerk Authentication & User Tracking SDK -->
+    <script
+      async
+      crossorigin="anonymous"
+      data-clerk-publishable-key="YOUR_CLERK_PUBLISHABLE_KEY"
+      src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"
+      type="text/javascript"
+    ></script>
 </head>
 <body>
     <div class="background-mesh"></div>
@@ -99,6 +107,9 @@
                         <button class="user-dropdown-item" id="btn-menu-switch-scope">
                             <span>🎯</span> Change Stream / Semester
                         </button>
+                        <a href="https://dashboard.clerk.com/" target="_blank" rel="noopener noreferrer" class="user-dropdown-item" id="btn-menu-clerk-analytics">
+                            <span>📊</span> User Analytics
+                        </a>
                         <button class="user-dropdown-item" id="btn-menu-landing-page">
                             <span>🏠</span> Return to Landing Page
                         </button>
@@ -360,6 +371,7 @@
                         <button type="button" class="category-pill" data-category="GROUP_A">Group A (Physics / Electrical)</button>
                         <button type="button" class="category-pill" data-category="GROUP_B">Group B (Chemistry / PPS)</button>
                         <button type="button" class="category-pill" data-category="MATH">Mathematics</button>
+                        <button type="button" class="category-pill" data-category="MULTIDISCIPLINARY">Multidisciplinary / Mandatory</button>
                     </div>
                 </div>
 
@@ -530,14 +542,14 @@
                             <span class="year-btn-icon">🌱</span>
                             <div class="year-btn-content">
                                 <span class="year-btn-title">1st Year (Common Curriculum)</span>
-                                <span class="year-btn-sub">Physics, Chemistry, Maths 1 & 2, BEE, PPS, English</span>
+                                <span class="year-btn-sub">Physics, Chemistry, Mathematics 1 & 2, BEE, PPS, English, Environmental Science (EVS), Biology for Engineers</span>
                             </div>
                             <span class="year-check-icon">✓</span>
                         </button>
-                        <button type="button" class="primary-year-btn" id="btn-scope-upper-years" data-year-mode="UPPER_YEARS">
+                        <button type="button" class="primary-year-btn" id="btn-scope-departmental-years" data-year-mode="DEPARTMENTAL_YEARS">
                             <span class="year-btn-icon">⚡</span>
                             <div class="year-btn-content">
-                                <span class="year-btn-title">Upper Years (Sem 3 – 8)</span>
+                                <span class="year-btn-title">Departmental Years (Sem 3 – 8)</span>
                                 <span class="year-btn-sub">Branch-Specific Engineering Core</span>
                             </div>
                             <span class="year-check-icon">✓</span>
@@ -545,8 +557,8 @@
                     </div>
                 </div>
 
-                <!-- Upper Years Controls (Shown only when Upper Years is active) -->
-                <div id="upper-years-controls" style="display: none;">
+                <!-- Departmental Years Controls (Shown only when Departmental Years is active) -->
+                <div id="departmental-years-controls" style="display: none;">
                     <!-- Department / Engineering Stream Selector -->
                     <div class="form-group">
                         <label class="form-label">Department / Engineering Stream</label>
@@ -706,9 +718,9 @@
                     </div>
                 </div>
                 <div class="pdf-viewer-actions">
-                    <a href="#" target="_blank" class="btn btn-secondary" id="btn-pdf-external-download">
-                        📥 Download PDF
-                    </a>
+                    <button type="button" class="btn btn-secondary" id="btn-pdf-external-download">
+                        ⬇ Download PDF
+                    </button>
                     <button class="btn btn-secondary" id="btn-pdf-fullscreen">
                         ⛶ Fullscreen
                     </button>
