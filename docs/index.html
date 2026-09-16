@@ -208,23 +208,23 @@
                     </button>
                 </div>
 
-                <!-- Card 2: Panic Pack -->
-                <div class="landing-feature-card">
-                    <div class="feature-icon-box flame">🔥</div>
-                    <h3 class="feature-card-title">The 48-Hour Panic Pack</h3>
-                    <p class="feature-card-desc">High-yield algorithm analyzing exam papers to isolate the top 20% most repeated questions with marks distribution and model answers.</p>
-                    <button class="feature-card-cta flame" id="btn-feature-panic">
-                        Access Panic Pack 🔥
-                    </button>
-                </div>
-
-                <!-- Card 3: PYQ Archives -->
+                <!-- Card 2: PYQ Archives (Placed adjacent to Curated Syllabi) -->
                 <div class="landing-feature-card">
                     <div class="feature-icon-box emerald">📑</div>
                     <h3 class="feature-card-title">PYQ Archives</h3>
                     <p class="feature-card-desc">Semester examination papers arranged by stream, year, and group (Group A, B, and C) with instant PDF viewing and downloads.</p>
                     <button class="feature-card-cta emerald" id="btn-feature-pyq">
                         Browse PYQ Repository ➔
+                    </button>
+                </div>
+
+                <!-- Card 3: 48-Hour Panic Pack -->
+                <div class="landing-feature-card">
+                    <div class="feature-icon-box flame">🔥</div>
+                    <h3 class="feature-card-title">The 48-Hour Panic Pack</h3>
+                    <p class="feature-card-desc">High-yield algorithm analyzing exam papers to isolate the top 20% most repeated questions with marks distribution and model answers.</p>
+                    <button class="feature-card-cta flame" id="btn-feature-panic">
+                        Access Panic Pack 🔥
                     </button>
                 </div>
 
@@ -246,37 +246,44 @@
              ========================================================== -->
         <section id="landing-curriculum" class="landing-content-section">
             <div class="landing-section-header">
-                <div class="landing-section-pretitle">ACADEMIC STRUCTURE</div>
-                <h2 class="landing-section-title">Curriculum & Syllabus Trackers</h2>
-                <p class="landing-section-subhead">Explore verified MAKAUT curriculum course codes, credit distribution, and expandable unit-by-unit module checklists with lecture hours.</p>
+                <div class="landing-section-pretitle">OFFICIAL MAKAUT SYLLABUS DIRECTORY</div>
+                <h2 class="landing-section-title">Curriculum & Syllabus Blueprint</h2>
+                <p class="landing-section-subhead">Explore official 2026 AICTE model curriculum blueprints, contact hours, and unit breakdowns for all foundational engineering courses.</p>
             </div>
 
-            <!-- Stream Filter Tabs for Curriculum -->
-            <div class="curriculum-filter-tabs" id="curriculum-stream-filter">
-                <button class="curriculum-tab-btn active" data-curriculum-stream="ALL">All Subjects</button>
-                <button class="curriculum-tab-btn" data-curriculum-stream="COMMON">1st Year Common</button>
-                <button class="curriculum-tab-btn" data-curriculum-stream="CSE">CSE & CSCS</button>
-                <button class="curriculum-tab-btn" data-curriculum-stream="IT">Information Tech</button>
-                <button class="curriculum-tab-btn" data-curriculum-stream="ECE">ECE</button>
+            <!-- Curriculum Stream Selection Tabs -->
+            <div class="curriculum-stream-tabs" id="curriculum-stream-tabs">
+                <button class="curriculum-tab-btn active" data-curriculum-stream="FIRST_YEAR">1st Year (Common)</button>
+                <button class="curriculum-tab-btn" data-curriculum-stream="CSE">CSE</button>
+                <button class="curriculum-tab-btn" data-curriculum-stream="IT">IT</button>
             </div>
 
-            <div class="curriculum-cards-grid" id="curriculum-cards-container">
-                <!-- Rendered dynamically by app.js with expandable Unit 1-5 accordions -->
+            <!-- Regulation Alert Card -->
+            <div class="regulation-alert-card">
+                <span class="reg-icon">ℹ️</span>
+                <div class="reg-text">
+                    <strong>Note on Syllabus & Papers:</strong> 1st-year courses follow the updated <strong>2026 MAKAUT curriculum</strong>, while past question papers reflect the <strong>2018 model</strong> they were examined under. Core physics and chemistry (<code>BS-CH101</code> / <code>BS-CH201</code>) topics remain identical—check the syllabus for minor unit adjustments.
+                </div>
+            </div>
+
+            <!-- Curriculum Subject Grid -->
+            <div class="curriculum-grid" id="landing-curriculum-grid">
+                <!-- Rendered dynamically by app.js -->
             </div>
         </section>
 
         <!-- ==========================================================
-             SECTION 2: PAST EXAMINATION PAPERS (PYQ ARCHIVES)
-             (Strictly examination papers categorized by Year and Exam Type)
+             SECTION 3: PYQ ARCHIVES
+             (Strictly examination papers categorized by Year)
              ========================================================== -->
         <section id="landing-pyqs" class="landing-content-section">
             <div class="landing-section-header" id="landing-panic-drill">
                 <div class="landing-section-pretitle">PAST EXAMINATION REPOSITORY</div>
                 <h2 class="landing-section-title">MAKAUT PYQ Archives</h2>
-                <p class="landing-section-subhead">Semester examination papers categorized by Year and Exam Type. Preview papers instantly or sign in to download full PDFs.</p>
+                <p class="landing-section-subhead">Semester examination papers categorized by Year. Preview papers instantly or sign in to download full PDFs.</p>
             </div>
 
-            <!-- PYQ Filter Bar: Year & Exam Type -->
+            <!-- PYQ Filter Bar: Year -->
             <div class="pyq-repo-filter-bar">
                 <div class="filter-group">
                     <span class="filter-lbl">Year:</span>
@@ -287,14 +294,6 @@
                         <button class="filter-pill" data-pyq-year="2022">2022</button>
                         <button class="filter-pill" data-pyq-year="2021">2021</button>
                         <button class="filter-pill" data-pyq-year="2019">2019</button>
-                    </div>
-                </div>
-                <div class="filter-group">
-                    <span class="filter-lbl">Exam Type:</span>
-                    <div class="filter-pills" id="pyq-type-pills">
-                        <button class="filter-pill active" data-pyq-type="ALL">All Types</button>
-                        <button class="filter-pill" data-pyq-type="END_SEM">End-Sem</button>
-                        <button class="filter-pill" data-pyq-type="MID_SEM">Mid-Sem / CA</button>
                     </div>
                 </div>
             </div>
@@ -359,7 +358,7 @@
                 </div>
                 <div class="tile-content">
                     <h3 class="tile-title">Syllabi & Unit Checklists</h3>
-                    <p class="tile-subtitle">Official 2026 curriculum breakdowns & trackers</p>
+                    <p class="tile-subtitle">Official 2026 curriculum breakdowns & unit blueprints</p>
                     <span class="tile-action-link">Explore Checklists ➔</span>
                 </div>
             </div>
@@ -611,25 +610,15 @@
                                 <span class="stream-name">CSE</span>
                                 <span class="stream-desc">Computer Science & Engineering</span>
                             </button>
-                            <button type="button" class="stream-option" data-stream="CSCS">
-                                <span class="stream-icon">🔒</span>
-                                <span class="stream-name">CSCS</span>
-                                <span class="stream-desc">Cyber Security & Computer Science</span>
-                            </button>
                             <button type="button" class="stream-option" data-stream="IT">
                                 <span class="stream-icon">🌐</span>
                                 <span class="stream-name">IT</span>
-                                <span class="stream-desc">Information Technology</span>
+                                <span class="stream-desc">IT</span>
                             </button>
                             <button type="button" class="stream-option" data-stream="AIML">
                                 <span class="stream-icon">🤖</span>
                                 <span class="stream-name">AIML</span>
                                 <span class="stream-desc">AI & Machine Learning</span>
-                            </button>
-                            <button type="button" class="stream-option" data-stream="ECE">
-                                <span class="stream-icon">📡</span>
-                                <span class="stream-name">ECE</span>
-                                <span class="stream-desc">Electronics & Communication</span>
                             </button>
                         </div>
                     </div>
@@ -667,7 +656,7 @@
                         <span class="stat-pill" id="hub-subject-stream">1st Year Common • Sem 1</span>
                         <span class="badge" id="hub-credits-badge">4 Credits</span>
                     </div>
-                    <h2 class="hub-title" id="hub-subject-name">Mathematics 1A (Calculus & Linear Algebra)</h2>
+                    <h2 class="hub-title" id="hub-subject-name">Mathematics 1A</h2>
                 </div>
                 <div class="hub-progress-stat">
                     <div class="stat-num" id="hub-completion-stat">0%</div>
@@ -679,7 +668,6 @@
             <div class="hub-tabs-row">
                 <button class="hub-tab-btn active" data-hub-tab="checklist">📋 Syllabus Units Checklist</button>
                 <button class="hub-tab-btn" data-hub-tab="pyqs">📑 PYQ Archives</button>
-                <button class="hub-tab-btn" data-hub-tab="clusters">⚡ High-Frequency Topics</button>
             </div>
 
             <!-- Tab 1: Interactive Syllabus Units Checklist -->
@@ -706,13 +694,6 @@
                     </div>
                 </div>
                 <div class="pyq-archive-list" id="hub-pyqs-container">
-                    <!-- Populated dynamically by app.js -->
-                </div>
-            </div>
-
-            <!-- Tab 3: Recurring Topic Clusters -->
-            <div class="hub-tab-content" id="tab-content-clusters" style="display: none;">
-                <div class="topic-frequency-list" id="hub-clusters-container">
                     <!-- Populated dynamically by app.js -->
                 </div>
             </div>
@@ -828,7 +809,7 @@
 
                 <div class="form-group">
                     <label class="form-label">Subject Code (Optional)</label>
-                    <input type="text" id="feedback-subject" class="custom-input" placeholder="e.g. BS-M101, ES-CS101, PCC-CS501">
+                    <input type="text" id="feedback-subject" class="custom-input" placeholder="e.g. BS-M101, ES-CS101, BS-PH101">
                 </div>
 
                 <div class="form-group">

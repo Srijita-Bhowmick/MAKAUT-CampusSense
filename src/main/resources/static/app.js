@@ -107,11 +107,9 @@ document.addEventListener('DOMContentLoaded', () => {
         'GROUP_B': '1st Year (Group B / Chemistry)',
         'COMMON': '1st Year Common',
         'MULTIDISCIPLINARY': '1st Year Multidisciplinary / Mandatory',
-        'CSE': 'Computer Science (CSE)',
-        'CSCS': 'Cyber Security (CSCS)',
-        'IT': 'Information Tech (IT)',
-        'AIML': 'AI & Machine Learning',
-        'ECE': 'Electronics & Comm (ECE)'
+        'CSE': 'CSE',
+        'IT': 'IT',
+        'AIML': 'AI & Machine Learning'
     };
 
     function updateContextUI() {
@@ -138,95 +136,105 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             code: 'BS-PH101',
             altCode: 'BS-PH201',
-            name: 'Physics-I (Optics & Quantum Mechanics)',
+            name: 'Physics',
             isFirstYear: true,
             category: 'GROUP_A',
             stream: 'GROUP_A',
             semester: 1,
-            credits: 4,
+            credits: 3,
+            l_t_p: '3-0-0',
+            contactHours: 36,
             department: '1st Year (Group A)',
             syllabusUrl: 'assets/resources/1st_year/syllabus/Physics.pdf',
-            description: 'Newton\'s rings, Fraunhofer diffraction, Schrödinger wave equation, Ruby lasers, and Maxwell\'s equations.',
+            description: 'Oscillations and waves, wave optics, electromagnetism, quantum physics, solid-state and modern physics.',
             units: [
-                { id: 1021, unitNumber: 1, title: 'Unit 1: Wave Optics & Interference', subtopics: 'Huygens principle, superposition, Young\'s double slit, Newton\'s rings theory, Fresnel & Fraunhofer diffraction.', hours: 10 },
-                { id: 1022, unitNumber: 2, title: 'Unit 2: Lasers & Optical Fibers', subtopics: 'Einstein coefficients, population inversion, He-Ne laser, Ruby laser, numerical aperture, step-index fibers.', hours: 10 },
-                { id: 1023, unitNumber: 3, title: 'Unit 3: Quantum Mechanics', subtopics: 'de Broglie wavelength, Heisenberg uncertainty principle, time-dependent Schrödinger equation, particle in a box.', hours: 10 },
-                { id: 1024, unitNumber: 4, title: 'Unit 4: Electromagnetism & Maxwell Equations', subtopics: 'Gauss, Ampere, Faraday laws, Maxwell equations, displacement current, Poynting vector, wave equation.', hours: 10 }
+                { id: 1021, unitNumber: 1, title: 'Module I: Oscillations and Waves', subtopics: 'Simple harmonic motion, damped and forced oscillations, resonance, wave equation, transverse and longitudinal waves.', hours: 8 },
+                { id: 1022, unitNumber: 2, title: 'Module II: Wave Optics', subtopics: 'Huygens principle, interference of light, Young double slit, Newton rings, thin films, Fraunhofer diffraction, diffraction grating.', hours: 8 },
+                { id: 1023, unitNumber: 3, title: 'Module III: Electromagnetism', subtopics: 'Gradient, divergence and curl, Gauss divergence theorem, Stokes theorem, Gauss law, Ampere law, Faraday law, Maxwell equations.', hours: 8 },
+                { id: 1024, unitNumber: 4, title: 'Module IV: Quantum Physics', subtopics: 'Wave-particle duality, de Broglie hypothesis, Heisenberg uncertainty principle, Schrodinger equation, particle in a box.', hours: 7 },
+                { id: 1025, unitNumber: 5, title: 'Module V: Solid-State and Modern Physics', subtopics: 'Free electron theory of metals, band theory of solids, intrinsic and extrinsic semiconductors, lasers and optical fibers.', hours: 5 }
             ],
             pyqs: [
-                { id: 2101, year: 2026, type: 'END_SEM', title: 'MAKAUT 2026 Physics-I (BS-PH101)', fileUrl: 'assets/resources/1st_year/pyq/physics/btech-1-sem-physics-1-bs-ph101-2026.pdf' },
-                { id: 2102, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Physics-I (BS-PH101)', fileUrl: 'assets/resources/1st_year/pyq/physics/btech-1-sem-physics-1-bs-ph101-2025.pdf' },
-                { id: 2103, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Sem 1 Physics-I (BS-PH101)', fileUrl: 'assets/resources/1st_year/pyq/physics/btech-1-sem-physics-1-bs-ph101-2024.pdf' },
-                { id: 2104, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Sem 2 Physics-I (BS-PH201)', fileUrl: 'assets/resources/1st_year/pyq/physics/btech-2-sem-physics-1-bsph201-2024.pdf' },
-                { id: 2105, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Sem 1 Physics-I (BS-PH101)', fileUrl: 'assets/resources/1st_year/pyq/physics/btech-1-sem-physics-1-bsph101-2023.pdf' },
-                { id: 2106, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Sem 2 Physics-I (BS-PH201)', fileUrl: 'assets/resources/1st_year/pyq/physics/btech-2-sem-physics-1-bsph201-2023.pdf' },
-                { id: 2107, year: 2020, type: 'END_SEM', title: 'MAKAUT 2020 Physics-I (PH-101)', fileUrl: 'assets/resources/1st_year/pyq/physics/btech-1-sem-physics-1-ph-101-2020.pdf' }
+                { id: 2101, year: 2026, type: 'END_SEM', title: 'MAKAUT 2026 Physics (BS-PH101)', fileUrl: 'assets/resources/1st_year/pyq/physics/btech-1-sem-physics-1-bs-ph101-2026.pdf' },
+                { id: 2102, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Physics (BS-PH101)', fileUrl: 'assets/resources/1st_year/pyq/physics/btech-1-sem-physics-1-bs-ph101-2025.pdf' },
+                { id: 2103, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Sem 1 Physics (BS-PH101)', fileUrl: 'assets/resources/1st_year/pyq/physics/btech-1-sem-physics-1-bs-ph101-2024.pdf' },
+                { id: 2104, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Sem 2 Physics (BS-PH201)', fileUrl: 'assets/resources/1st_year/pyq/physics/btech-2-sem-physics-1-bsph201-2024.pdf' },
+                { id: 2105, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Sem 1 Physics (BS-PH101)', fileUrl: 'assets/resources/1st_year/pyq/physics/btech-1-sem-physics-1-bsph101-2023.pdf' },
+                { id: 2106, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Sem 2 Physics (BS-PH201)', fileUrl: 'assets/resources/1st_year/pyq/physics/btech-2-sem-physics-1-bsph201-2023.pdf' },
+                { id: 2107, year: 2020, type: 'END_SEM', title: 'MAKAUT 2020 Physics (PH-101)', fileUrl: 'assets/resources/1st_year/pyq/physics/btech-1-sem-physics-1-ph-101-2020.pdf' }
             ]
         },
         {
             code: 'BS-CH101',
             altCode: 'BS-CH201',
-            name: 'Chemistry-I (Chemical Principles & Spectroscopy)',
+            name: 'Chemistry',
             isFirstYear: true,
             category: 'GROUP_B',
             stream: 'GROUP_B',
             semester: 1,
-            credits: 4,
+            credits: 3,
+            l_t_p: '3-0-0',
+            contactHours: 36,
             department: '1st Year (Group B)',
             syllabusUrl: 'assets/resources/1st_year/syllabus/Chemistry.pdf',
-            description: 'Schrödinger equation for microscopic systems, molecular orbitals of diatomic molecules, UV-Vis and IR spectroscopy, periodic properties, and organic synthesis.',
+            description: 'Atomic and molecular structure, spectroscopy, intermolecular forces, chemical equilibria, periodic properties, stereochemistry and organic synthesis.',
             units: [
-                { id: 1051, unitNumber: 1, title: 'Unit 1: Atomic & Molecular Structure', subtopics: 'Schrödinger equation, particle in a box, molecular orbital theory, homonuclear and heteronuclear diatomic molecules.', hours: 10 },
-                { id: 1052, unitNumber: 2, title: 'Unit 2: Spectroscopic Techniques', subtopics: 'Principles of spectroscopy, selection rules, UV-Vis electronic transitions, Beer-Lambert law, IR rotational-vibrational modes.', hours: 8 },
-                { id: 1053, unitNumber: 3, title: 'Unit 3: Intermolecular Forces & Potential Energy Surfaces', subtopics: 'Ionic, dipolar, and van der Waals interactions, equations of state of real gases, critical phenomena.', hours: 6 },
-                { id: 1054, unitNumber: 4, title: 'Unit 4: Periodic Properties & Thermodynamic Systems', subtopics: 'Effective nuclear charge, ionization energies, electron affinity, electronegativity, polarizability, oxidation states.', hours: 8 },
-                { id: 1055, unitNumber: 5, title: 'Unit 5: Stereochemistry & Organic Reactions', subtopics: 'Isomerism, chirality, enantiomers, diastereomers, nucleophilic substitutions (SN1, SN2), addition and elimination.', hours: 8 }
+                { id: 1051, unitNumber: 1, title: 'Module I: Atomic and Molecular Structure', subtopics: 'Schrodinger equation, particle in a box, MO theory for homonuclear and heteronuclear diatomics, band structure of solids.', hours: 8 },
+                { id: 1052, unitNumber: 2, title: 'Module II: Spectroscopic Techniques and Applications', subtopics: 'Principles of spectroscopy, selection rules, UV-Vis, fluorescence, vibrational and rotational spectroscopy, NMR.', hours: 7 },
+                { id: 1053, unitNumber: 3, title: 'Module III: Intermolecular Forces and Potential Energy Surfaces', subtopics: 'Ionic, dipolar and van der Waals forces, real gases, equations of state, potential energy surfaces of simple molecules.', hours: 4 },
+                { id: 1054, unitNumber: 4, title: 'Module IV: Use of Free Energy in Chemical Equilibria', subtopics: 'Thermodynamic functions: energy, entropy and free energy, cell potentials, Nernst equation and applications, acid-base and oxidation-reduction.', hours: 6 },
+                { id: 1055, unitNumber: 5, title: 'Module V: Periodic Properties', subtopics: 'Effective nuclear charge, penetration, atomic and ionic sizes, ionization energies, electron affinity, electronegativity, polarizability.', hours: 4 },
+                { id: 1056, unitNumber: 6, title: 'Module VI: Stereochemistry and Organic Reactions', subtopics: 'Representations of 3D structures, structural isomers and stereoisomers, chirality, enantiomers, diastereomers, synthesis of Aspirin and Paracetamol.', hours: 7 }
             ],
             pyqs: [
                 { id: 2201, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Chemistry (BS-CH201)', fileUrl: 'assets/resources/1st_year/pyq/chemistry/btech-2-sem-chemistry-bsch201-2025.pdf' },
-                { id: 2202, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Sem 1 Chemistry-I (BS-CH101)', fileUrl: 'assets/resources/1st_year/pyq/chemistry/btech-1-sem-chemistry-1-bs-ch101-2024.pdf' },
-                { id: 2203, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Sem 2 Chemistry-I (BS-CH201)', fileUrl: 'assets/resources/1st_year/pyq/chemistry/btech-2-sem-chemistry-1-bsch201-2024.pdf' },
-                { id: 2204, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Sem 1 Chemistry-I (BS-CH101)', fileUrl: 'assets/resources/1st_year/pyq/chemistry/btech-1-sem-chemistry-1-bsch101-2023.pdf' },
-                { id: 2205, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Sem 2 Chemistry-I (BS-CH201)', fileUrl: 'assets/resources/1st_year/pyq/chemistry/btech-2-sem-chemistry-1-bsch201-2023.pdf' },
-                { id: 2206, year: 2020, type: 'END_SEM', title: 'MAKAUT 2020 Chemistry-I (BS-CH101)', fileUrl: 'assets/resources/1st_year/pyq/chemistry/btech-1-sem-chemistry-1-bs-ch-101-2020.pdf' }
+                { id: 2202, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Sem 1 Chemistry (BS-CH101)', fileUrl: 'assets/resources/1st_year/pyq/chemistry/btech-1-sem-chemistry-1-bs-ch101-2024.pdf' },
+                { id: 2203, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Sem 2 Chemistry (BS-CH201)', fileUrl: 'assets/resources/1st_year/pyq/chemistry/btech-2-sem-chemistry-1-bsch201-2024.pdf' },
+                { id: 2204, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Sem 1 Chemistry (BS-CH101)', fileUrl: 'assets/resources/1st_year/pyq/chemistry/btech-1-sem-chemistry-1-bsch101-2023.pdf' },
+                { id: 2205, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Sem 2 Chemistry (BS-CH201)', fileUrl: 'assets/resources/1st_year/pyq/chemistry/btech-2-sem-chemistry-1-bsch201-2023.pdf' },
+                { id: 2206, year: 2020, type: 'END_SEM', title: 'MAKAUT 2020 Chemistry (BS-CH101)', fileUrl: 'assets/resources/1st_year/pyq/chemistry/btech-1-sem-chemistry-1-bs-ch-101-2020.pdf' }
             ]
         },
         {
             code: 'BS-M101',
             altCode: 'BS-M102',
-            name: 'Mathematics-IA & IB (Calculus & Linear Algebra)',
+            name: 'Mathematics 1A',
             isFirstYear: true,
             category: 'MATH',
             stream: 'GROUP_A',
             semester: 1,
             credits: 4,
+            l_t_p: '3-1-0',
+            contactHours: 40,
             department: '1st Year (Common)',
             syllabusUrl: 'assets/resources/1st_year/syllabus/Maths-1.pdf',
             description: 'Evolutes, definite integrals, multivariable extrema, Cayley-Hamilton theorem, and vector spaces.',
             units: [
                 { id: 1011, unitNumber: 1, title: 'Unit 1: Calculus & Evolutes', subtopics: 'Evolutes, involutes, definite integrals, Beta & Gamma functions, Rolle and Mean Value Theorems.', hours: 10 },
                 { id: 1012, unitNumber: 2, title: 'Unit 2: Multivariable Calculus', subtopics: 'Partial derivatives, directional derivatives, tangent planes, maxima and minima, Lagrange multipliers.', hours: 10 },
-                { id: 1013, unitNumber: 3, title: 'Unit 3: Matrices & Linear Algebra', subtopics: 'Inverse, rank, rank-nullity theorem, Cayley-Hamilton theorem, eigenvalues, eigenvectors, diagonalization.', hours: 11 },
+                { id: 1013, unitNumber: 3, title: 'Unit 3: Matrices & Linear Algebra', subtopics: 'Inverse, rank, rank-nullity theorem, Cayley-Hamilton theorem, eigenvalues, eigenvectors, diagonalization.', hours: 10 },
                 { id: 1014, unitNumber: 4, title: 'Unit 4: Vector Spaces & Linear Transforms', subtopics: 'Vector spaces, linear independence, basis, dimension, linear transformations, kernel, and range.', hours: 10 }
             ],
             pyqs: [
-                { id: 2301, year: 2026, type: 'END_SEM', title: 'MAKAUT 2026 Mathematics-1A (BS-M101)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_1a/btech-1-sem-mathematics-1a-bs-m101-2026.pdf' },
-                { id: 2302, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Mathematics-1A (BS-M101)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_1a/btech-1-sem-mathematics-1a-bs-m101-2025.pdf' },
-                { id: 2303, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Mathematics-1A (BS-M101)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_1a/btech-1-sem-mathematics-1a-bsm101-2023.pdf' },
-                { id: 2304, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Mathematics-1B (BS-M102)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_1b/btech-1-sem-mathematics-1b-bsm102-2023.pdf' },
-                { id: 2305, year: 2020, type: 'END_SEM', title: 'MAKAUT 2020 Mathematics-1A (BS-M101)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_1a/btech-1-sem-mathematics-1a-bsm-101-2020.pdf' },
-                { id: 2306, year: 2020, type: 'END_SEM', title: 'MAKAUT 2020 Mathematics-1B (BS-M102)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_1b/btech-1-sem-mathematics-1b-bs-m-102-2020.pdf' }
+                { id: 2301, year: 2026, type: 'END_SEM', title: 'MAKAUT 2026 Mathematics 1A (BS-M101)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_1a/btech-1-sem-mathematics-1a-bs-m101-2026.pdf' },
+                { id: 2302, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Mathematics 1A (BS-M101)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_1a/btech-1-sem-mathematics-1a-bs-m101-2025.pdf' },
+                { id: 2303, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Mathematics 1A (BS-M101)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_1a/btech-1-sem-mathematics-1a-bsm101-2023.pdf' },
+                { id: 2304, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Mathematics 1B (BS-M102)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_1b/btech-1-sem-mathematics-1b-bsm102-2023.pdf' },
+                { id: 2305, year: 2020, type: 'END_SEM', title: 'MAKAUT 2020 Mathematics 1A (BS-M101)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_1a/btech-1-sem-mathematics-1a-bsm-101-2020.pdf' },
+                { id: 2306, year: 2020, type: 'END_SEM', title: 'MAKAUT 2020 Mathematics 1B (BS-M102)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_1b/btech-1-sem-mathematics-1b-bs-m-102-2020.pdf' }
             ]
         },
         {
             code: 'BS-M201',
             altCode: 'BS-M202',
-            name: 'Mathematics-IIA & IIB (Differential Equations & Complex Variables)',
+            name: 'Mathematics 2A',
             isFirstYear: true,
             category: 'MATH',
             stream: 'GROUP_A',
             semester: 1,
             credits: 4,
+            l_t_p: '3-1-0',
+            contactHours: 40,
             department: '1st Year (Common)',
             syllabusUrl: 'assets/resources/1st_year/syllabus/Maths-2.pdf',
             description: 'First and second order ODEs, series solutions, Bessel and Legendre functions, partial differential equations, and complex contour integration.',
@@ -237,12 +245,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 { id: 1064, unitNumber: 4, title: 'Unit 4: Complex Variables & Contour Integrals', subtopics: 'Cauchy-Riemann equations, analytic functions, Cauchy\'s integral formula, Taylor and Laurent series, residue theorem.', hours: 10 }
             ],
             pyqs: [
-                { id: 2401, year: 2026, type: 'END_SEM', title: 'MAKAUT 2026 Mathematics-2A (BS-M201)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_2a/btech-2-sem-mathematics-2-a-bs-m201-2026.pdf' },
-                { id: 2402, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Mathematics-2A (BS-M201)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_2a/btech-2-sem-mathematics-2a-bsm201-2025.pdf' },
-                { id: 2403, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Mathematics-2B (BS-M202)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_2b/btech-2-sem-mathematics-2b-bsm202-2025.pdf' },
-                { id: 2404, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Mathematics-2A (BS-M201)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_2a/btech-2-sem-mathematics-2a-bsm201-2024.pdf' },
-                { id: 2405, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Mathematics-2A (BS-M201)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_2a/btech-2-sem-mathematics-2a-bsm201-2023.pdf' },
-                { id: 2406, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Mathematics-2B (BS-M202)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_2b/btech-2-sem-mathematics-2-b-bsm202-2023.pdf' }
+                { id: 2401, year: 2026, type: 'END_SEM', title: 'MAKAUT 2026 Mathematics 2A (BS-M201)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_2a/btech-2-sem-mathematics-2-a-bs-m201-2026.pdf' },
+                { id: 2402, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Mathematics 2A (BS-M201)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_2a/btech-2-sem-mathematics-2a-bsm201-2025.pdf' },
+                { id: 2403, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Mathematics 2B (BS-M202)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_2b/btech-2-sem-mathematics-2b-bsm202-2025.pdf' },
+                { id: 2404, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Mathematics 2A (BS-M201)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_2a/btech-2-sem-mathematics-2a-bsm201-2024.pdf' },
+                { id: 2405, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Mathematics 2A (BS-M201)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_2a/btech-2-sem-mathematics-2a-bsm201-2023.pdf' },
+                { id: 2406, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Mathematics 2B (BS-M202)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_2b/btech-2-sem-mathematics-2-b-bsm202-2023.pdf' }
             ]
         },
         {
@@ -254,6 +262,8 @@ document.addEventListener('DOMContentLoaded', () => {
             stream: 'GROUP_A',
             semester: 1,
             credits: 4,
+            l_t_p: '3-1-0',
+            contactHours: 40,
             department: '1st Year (Group A)',
             syllabusUrl: 'assets/resources/1st_year/syllabus/BEE.pdf',
             description: 'Kirchhoff\'s laws, Thévenin\'s & Norton\'s theorems, AC series resonance, single phase transformers, and motors.',
@@ -273,37 +283,41 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             code: 'ES-CS101',
             altCode: 'ES-CS201',
-            name: 'Programming for Problem Solving (C)',
+            name: 'Programming for Problem Solving',
             isFirstYear: true,
             category: 'GROUP_B',
             stream: 'GROUP_B',
             semester: 1,
             credits: 3,
+            l_t_p: '3-0-0',
+            contactHours: 36,
             department: '1st Year (Group B)',
             syllabusUrl: 'assets/resources/1st_year/syllabus/PPS.pdf',
             description: 'Algorithms, conditionals, loops, multidimensional arrays, pointer arithmetic, dynamic allocation, and recursion.',
             units: [
                 { id: 1041, unitNumber: 1, title: 'Unit 1: Introduction to Programming & Flowcharts', subtopics: 'Algorithm, pseudo-code, flowcharts, variables, datatypes, operators, precedence, expressions.', hours: 7 },
                 { id: 1042, unitNumber: 2, title: 'Unit 2: Conditionals & Iterations', subtopics: 'if-else, switch-case, while, do-while, for loops, nested loops, break, continue, return statements.', hours: 7 },
-                { id: 1043, unitNumber: 3, title: 'Unit 3: Arrays & Strings', subtopics: '1D & 2D arrays, matrix multiplication, string manipulation, string.h library functions.', hours: 8 },
-                { id: 1044, unitNumber: 4, title: 'Unit 4: Functions & Recursion', subtopics: 'Call by value vs reference, parameter passing, recursion, Tower of Hanoi, Fibonacci series, scope and lifetime.', hours: 8 },
+                { id: 1043, unitNumber: 3, title: 'Unit 3: Arrays & Strings', subtopics: '1D & 2D arrays, matrix multiplication, string manipulation, string.h library functions.', hours: 7 },
+                { id: 1044, unitNumber: 4, title: 'Unit 4: Functions & Recursion', subtopics: 'Call by value vs reference, parameter passing, recursion, Tower of Hanoi, Fibonacci series, scope and lifetime.', hours: 7 },
                 { id: 1045, unitNumber: 5, title: 'Unit 5: Pointers & Memory Management', subtopics: 'Pointer arithmetic, pointers to pointers, malloc(), calloc(), free(), structures, unions, file I/O operations.', hours: 8 }
             ],
             pyqs: [
-                { id: 2601, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 PPS in C (ES-CS201)', fileUrl: 'assets/resources/1st_year/pyq/pps/btech-2-sem-programming-for-problem-solving-escs201-2025.pdf' },
-                { id: 2602, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 PPS in C (ES-CS201)', fileUrl: 'assets/resources/1st_year/pyq/pps/btech-es-cs-2-sem-programming-for-problem-solving-escs201-2024.pdf' },
-                { id: 2603, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 PPS in C (ES-CS201)', fileUrl: 'assets/resources/1st_year/pyq/pps/btech-2-sem-programming-for-problem-solving-escs201-2023.pdf' }
+                { id: 2601, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Programming for Problem Solving (ES-CS201)', fileUrl: 'assets/resources/1st_year/pyq/pps/btech-2-sem-programming-for-problem-solving-escs201-2025.pdf' },
+                { id: 2602, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Programming for Problem Solving (ES-CS201)', fileUrl: 'assets/resources/1st_year/pyq/pps/btech-es-cs-2-sem-programming-for-problem-solving-escs201-2024.pdf' },
+                { id: 2603, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Programming for Problem Solving (ES-CS201)', fileUrl: 'assets/resources/1st_year/pyq/pps/btech-2-sem-programming-for-problem-solving-escs201-2023.pdf' }
             ]
         },
         {
             code: 'HM-HU101',
             altCode: 'HM-HU201',
-            name: 'English (Professional Communication)',
+            name: 'English',
             isFirstYear: true,
             category: 'COMMON',
             stream: 'COMMON',
             semester: 1,
             credits: 2,
+            l_t_p: '2-0-0',
+            contactHours: 24,
             department: '1st Year (Common)',
             syllabusUrl: 'assets/resources/1st_year/syllabus/English.pdf',
             description: 'Vocabulary building, sentence structures, common errors in writing, technical reporting, and oral communication.',
@@ -312,7 +326,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 { id: 1072, unitNumber: 2, title: 'Unit 2: Sentence Structure & Grammar', subtopics: 'Phrases, clauses, subject-verb agreement, active and passive voice, prepositions, direct and indirect speech.', hours: 5 },
                 { id: 1073, unitNumber: 3, title: 'Unit 3: Common Errors & Mechanics', subtopics: 'Dangling modifiers, run-on sentences, punctuation rules, capitalization, spelling conventions.', hours: 5 },
                 { id: 1074, unitNumber: 4, title: 'Unit 4: Technical Writing & Reports', subtopics: 'Paragraph development, coherence, technical proposals, resume writing, business correspondence.', hours: 5 },
-                { id: 1075, unitNumber: 5, title: 'Unit 5: Oral & Presentation Skills', subtopics: 'Phonetics, pronunciation, group discussions, seminar presentations, interview etiquette.', hours: 5 }
+                { id: 1075, unitNumber: 5, title: 'Unit 5: Oral & Presentation Skills', subtopics: 'Phonetics, pronunciation, group discussions, seminar presentations, interview etiquette.', hours: 4 }
             ],
             pyqs: [
                 { id: 2701, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 English (HM-HU201)', fileUrl: 'assets/resources/1st_year/pyq/english/btech-2-sem-english-hmhu201-2025.pdf' },
@@ -323,7 +337,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             code: 'MC-ES201',
             altCode: 'MC-ES101',
-            name: 'Environmental Science (EVS)',
+            name: 'Environmental Science',
             isFirstYear: true,
             category: 'MULTIDISCIPLINARY',
             stream: 'MULTIDISCIPLINARY',
@@ -366,80 +380,6 @@ document.addEventListener('DOMContentLoaded', () => {
             pyqs: [
                 { id: 2901, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Biology for Engineers (BS-BIO101)', fileUrl: 'assets/resources/1st_year/syllabus/Biology.pdf' },
                 { id: 2902, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Biology for Engineers (BS-BIO201)', fileUrl: 'assets/resources/1st_year/syllabus/Biology.pdf' }
-            ]
-        },
-
-        // --- Core Engineering (CSE / CSCS - Departmental Years) ---
-        {
-            code: 'PCC-CS501',
-            name: 'Operating Systems',
-            isFirstYear: false,
-            stream: 'CSE',
-            semester: 5,
-            credits: 3,
-            department: 'Computer Science (CSE / CSCS)',
-            description: 'Processes, CPU scheduling, Banker\'s deadlock avoidance, semaphores, paging, LRU page replacement, and file systems.',
-            units: [
-                { id: 5011, unitNumber: 1, title: 'Unit 1: OS Fundamentals & System Calls', subtopics: 'OS structures, kernel architecture, monolitihic vs microkernel, system call execution, dual-mode operation.', hours: 6 },
-                { id: 5012, unitNumber: 2, title: 'Unit 2: Process Scheduling & Threads', subtopics: 'PCB, context switching, FCFS, SJF, Priority, Round Robin scheduling algorithms, Gantt charts, multi-threading models.', hours: 10 },
-                { id: 5013, unitNumber: 3, title: 'Unit 3: Process Synchronization & Deadlocks', subtopics: 'Critical section, Peterson solution, semaphores, Producer-Consumer, Readers-Writers, Banker algorithm, Deadlock detection.', hours: 10 },
-                { id: 5014, unitNumber: 4, title: 'Unit 4: Memory Management & Paging', subtopics: 'Paging, page table structures, TLB hardware, segmentation, virtual memory, demand paging, thrashing.', hours: 8 },
-                { id: 5015, unitNumber: 5, title: 'Unit 5: Page Replacement & Storage', subtopics: 'FIFO, LRU, Optimal page replacement, Belady anomaly, disk scheduling: FCFS, SSTF, SCAN, LOOK, RAID architectures.', hours: 8 }
-            ],
-            pyqs: [
-                { id: 3011, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Operating Systems (PCC-CS501)', fileUrl: 'https://makautexam.net/pyq/2024/PCC-CS501.pdf' },
-                { id: 3012, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Operating Systems (PCC-CS501)', fileUrl: 'https://makautexam.net/pyq/2023/PCC-CS501.pdf' },
-                { id: 3013, year: 2022, type: 'END_SEM', title: 'MAKAUT 2022 Operating Systems (PCC-CS501)', fileUrl: 'https://makautexam.net/pyq/2022/PCC-CS501.pdf' },
-                { id: 3014, year: 2021, type: 'END_SEM', title: 'MAKAUT 2021 Operating Systems (PCC-CS501)', fileUrl: 'https://makautexam.net/pyq/2021/PCC-CS501.pdf' },
-                { id: 3015, year: 2019, type: 'MID_SEM', title: 'MAKAUT 2019 Mid-Sem Operating Systems (PCC-CS501)', fileUrl: 'https://makautexam.net/pyq/2019/PCC-CS501-CA.pdf' }
-            ]
-        },
-        {
-            code: 'PCC-CS502',
-            name: 'Database Management Systems',
-            isFirstYear: false,
-            stream: 'CSE',
-            semester: 5,
-            credits: 3,
-            department: 'Computer Science (CSE / CSCS)',
-            description: 'ER modeling, relational algebra, SQL, normal forms (1NF to BCNF), ACID transactions, and 2-phase locking protocol.',
-            units: [
-                { id: 5021, unitNumber: 1, title: 'Unit 1: ER Data Models & Schema Design', subtopics: 'Entity sets, relationships, cardinalities, weak entity sets, Extended ER features, Schema architecture.', hours: 6 },
-                { id: 5022, unitNumber: 2, title: 'Unit 2: Relational Algebra & SQL Queries', subtopics: 'Selection, projection, Cartesian product, joins, division, DDL, DML, aggregate functions, nested subqueries.', hours: 8 },
-                { id: 5023, unitNumber: 3, title: 'Unit 3: Relational Database Normalization', subtopics: 'Functional dependencies, closure, candidate keys, 1NF, 2NF, 3NF, BCNF, lossless join decomposition.', hours: 10 },
-                { id: 5024, unitNumber: 4, title: 'Unit 4: Transactions & Concurrency Control', subtopics: 'ACID properties, serializability, conflict serializability, 2PL (Two-Phase Locking), Deadlock handling in DBMS.', hours: 8 },
-                { id: 5025, unitNumber: 5, title: 'Unit 5: Crash Recovery & Indexing', subtopics: 'Log-based recovery, WAL protocol, checkpoints, B-trees, B+ trees indexing, hashing techniques.', hours: 8 }
-            ],
-            pyqs: [
-                { id: 3021, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 DBMS (PCC-CS502)', fileUrl: 'https://makautexam.net/pyq/2024/PCC-CS502.pdf' },
-                { id: 3022, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 DBMS (PCC-CS502)', fileUrl: 'https://makautexam.net/pyq/2023/PCC-CS502.pdf' },
-                { id: 3023, year: 2022, type: 'END_SEM', title: 'MAKAUT 2022 DBMS (PCC-CS502)', fileUrl: 'https://makautexam.net/pyq/2022/PCC-CS502.pdf' },
-                { id: 3024, year: 2021, type: 'END_SEM', title: 'MAKAUT 2021 DBMS (PCC-CS502)', fileUrl: 'https://makautexam.net/pyq/2021/PCC-CS502.pdf' },
-                { id: 3025, year: 2019, type: 'END_SEM', title: 'MAKAUT 2019 DBMS (PCC-CS502)', fileUrl: 'https://makautexam.net/pyq/2019/PCC-CS502.pdf' }
-            ]
-        },
-        {
-            code: 'PCC-CS503',
-            name: 'Computer Networks',
-            isFirstYear: false,
-            stream: 'CSE',
-            semester: 5,
-            credits: 3,
-            department: 'Computer Science (CSE / CSCS)',
-            description: 'OSI model, TCP/IP stack, sliding window protocols, subnetting, Dijkstra routing, TCP congestion control, and DNS/HTTP.',
-            units: [
-                { id: 5031, unitNumber: 1, title: 'Unit 1: Physical Layer & Network Reference Models', subtopics: 'OSI 7-layer model, TCP/IP model, transmission media, multiplexing, switching, topology comparison.', hours: 6 },
-                { id: 5032, unitNumber: 2, title: 'Unit 2: Data Link Layer & Framing', subtopics: 'Framing, error detection (CRC, parity), Stop-and-Wait ARQ, Go-Back-N, Selective Repeat, CSMA/CD, Ethernet.', hours: 10 },
-                { id: 5033, unitNumber: 3, title: 'Unit 3: Network Layer & IPv4/IPv6 Addressing', subtopics: 'Classful and classless IP addressing, subnetting, CIDR, distance vector routing, link state routing, Dijkstra algorithm.', hours: 10 },
-                { id: 5034, unitNumber: 4, title: 'Unit 4: Transport Layer & TCP Flow Control', subtopics: 'UDP vs TCP, 3-way handshake, sliding window flow control, TCP congestion control (AIMD, slow start), socket API.', hours: 8 },
-                { id: 5035, unitNumber: 5, title: 'Unit 5: Application Layer Protocols & Security', subtopics: 'DNS domain resolution, HTTP/HTTPS, FTP, SMTP, symmetric and asymmetric cryptography, SSL/TLS handshake.', hours: 8 }
-            ],
-            pyqs: [
-                { id: 3031, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Computer Networks (PCC-CS503)', fileUrl: 'https://makautexam.net/pyq/2024/PCC-CS503.pdf' },
-                { id: 3032, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Computer Networks (PCC-CS503)', fileUrl: 'https://makautexam.net/pyq/2023/PCC-CS503.pdf' },
-                { id: 3033, year: 2022, type: 'END_SEM', title: 'MAKAUT 2022 Computer Networks (PCC-CS503)', fileUrl: 'https://makautexam.net/pyq/2022/PCC-CS503.pdf' },
-                { id: 3034, year: 2021, type: 'END_SEM', title: 'MAKAUT 2021 Computer Networks (PCC-CS503)', fileUrl: 'https://makautexam.net/pyq/2021/PCC-CS503.pdf' },
-                { id: 3035, year: 2019, type: 'END_SEM', title: 'MAKAUT 2019 Computer Networks (PCC-CS503)', fileUrl: 'https://makautexam.net/pyq/2019/PCC-CS503.pdf' }
             ]
         }
     ];
@@ -623,39 +563,6 @@ document.addEventListener('DOMContentLoaded', () => {
             modelAnswerSnippet: 'Aspirin: Salicylic acid + acetic anhydride + conc. H2SO4 at 50-60°C -> acetylsalicylic acid + acetic acid. Irreversible COX-1/COX-2 inhibitor. Paracetamol: p-nitrophenol reduced with Fe/HCl to p-aminophenol, then acetylated with acetic anhydride in glacial acetic acid to acetaminophen.'
         },
         {
-            id: 17,
-            subjectCode: 'PCC-CS501',
-            topicName: 'Banker’s Algorithm',
-            questionText: 'Explain Banker Algorithm for Deadlock Avoidance. Given Allocation, Max, and Available matrices, demonstrate how to compute Need matrix and test for Safe Sequence.',
-            marks: 10,
-            frequencyCount: 5,
-            examYears: ['2019', '2021', '2022', '2023', '2024'],
-            groupType: 'Group C',
-            modelAnswerSnippet: '1. Need = Max - Allocation. 2. Work = Available, Finish[i] = false. 3. Find process Pi where Finish[i] == false and Need_i <= Work. 4. Work = Work + Allocation_i, Finish[i] = true. 5. If all Finish[i] == true, system is in Safe State with a Safe Sequence e.g. <P1, P3, P4, P0, P2>.'
-        },
-        {
-            id: 18,
-            subjectCode: 'PCC-CS501',
-            topicName: 'Process Synchronization (Semaphores)',
-            questionText: 'Define Critical Section and the three criteria for a valid solution. Explain how counting semaphores solve the Producer-Consumer bounded buffer problem.',
-            marks: 10,
-            frequencyCount: 5,
-            examYears: ['2018', '2019', '2021', '2022', '2023'],
-            groupType: 'Group C',
-            modelAnswerSnippet: 'Criteria: 1. Mutual Exclusion, 2. Progress, 3. Bounded Waiting. Solution uses mutex = 1, empty = N, full = 0. Producer: wait(empty); wait(mutex); add_item(); signal(mutex); signal(full). Consumer: wait(full); wait(mutex); remove_item(); signal(mutex); signal(empty).'
-        },
-        {
-            id: 19,
-            subjectCode: 'PCC-CS502',
-            topicName: 'Database Normalization (BCNF vs 3NF)',
-            questionText: 'Explain Boyce-Codd Normal Form (BCNF). How does BCNF differ from 3NF? Provide a relational schema that satisfies 3NF but violates BCNF.',
-            marks: 10,
-            frequencyCount: 5,
-            examYears: ['2019', '2020', '2022', '2023', '2024'],
-            groupType: 'Group C',
-            modelAnswerSnippet: '3NF permits non-trivial FD X -> A if X is a superkey OR A is prime attribute. BCNF strictly requires X to be a superkey for every non-trivial FD. Relation R(Student, Subject, Teacher) with FDs {Student, Subject} -> Teacher and Teacher -> Subject is in 3NF but violates BCNF.'
-        },
-        {
             id: 20,
             subjectCode: 'BS-M201',
             topicName: 'Exact Differential Equations',
@@ -790,7 +697,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (filterStream === 'COMMON') {
             filtered = MAKAUT_CURRICULUM.filter(s => s.isFirstYear || s.stream === 'GROUP_A' || s.stream === 'GROUP_B' || s.stream === 'COMMON');
         } else if (filterStream === 'CSE') {
-            filtered = MAKAUT_CURRICULUM.filter(s => s.stream === 'CSE' || s.stream === 'CSCS');
+            filtered = MAKAUT_CURRICULUM.filter(s => s.stream === 'CSE');
         } else if (filterStream !== 'ALL') {
             filtered = MAKAUT_CURRICULUM.filter(s => s.stream === filterStream);
         }
@@ -871,9 +778,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // 6. Landing Page: PYQ Archives Repository
     // ==========================================
     let currentPyqYearFilter = 'ALL';
-    let currentPyqTypeFilter = 'ALL';
 
-    function renderLandingPyqRepo(yearFilter = 'ALL', typeFilter = 'ALL') {
+    function renderLandingPyqRepo(yearFilter = 'ALL') {
         const grid = document.getElementById('landing-pyq-grid');
         if (!grid) return;
 
@@ -897,12 +803,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const yr = parseInt(yearFilter, 10);
             filtered = filtered.filter(p => p.year === yr);
         }
-        if (typeFilter !== 'ALL') {
-            filtered = filtered.filter(p => p.type === typeFilter);
-        }
 
         if (filtered.length === 0) {
-            grid.innerHTML = '<div style="grid-column: 1/-1; padding: 2.5rem; text-align: center; color: var(--text-muted);">No past papers matching this filter combination. Try selecting "All Years".</div>';
+            grid.innerHTML = '<div style="grid-column: 1/-1; padding: 2.5rem; text-align: center; color: var(--text-muted);">No past papers matching this filter. Try selecting "All Papers".</div>';
             return;
         }
 
@@ -915,9 +818,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                     <h4 class="pyq-repo-title">${escapeHtml(p.subjectName)}</h4>
                     <div class="pyq-repo-meta">
-                        <span class="pyq-exam-type-pill">${p.type === 'MID_SEM' ? 'Mid-Sem / CA' : 'End-Sem Exam'}</span>
-                        <span>•</span>
-                        <span>70 Marks Theory • Group A, B, C</span>
+                        <span>70 Marks Theory • Verified Official Paper</span>
                     </div>
                 </div>
 
@@ -966,17 +867,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('#pyq-year-pills .filter-pill').forEach(p => p.classList.remove('active'));
             pill.classList.add('active');
             currentPyqYearFilter = pill.getAttribute('data-pyq-year') || 'ALL';
-            renderLandingPyqRepo(currentPyqYearFilter, currentPyqTypeFilter);
-        });
-    });
-
-    // PYQ Exam Type Pills
-    document.querySelectorAll('#pyq-type-pills .filter-pill').forEach(pill => {
-        pill.addEventListener('click', () => {
-            document.querySelectorAll('#pyq-type-pills .filter-pill').forEach(p => p.classList.remove('active'));
-            pill.classList.add('active');
-            currentPyqTypeFilter = pill.getAttribute('data-pyq-type') || 'ALL';
-            renderLandingPyqRepo(currentPyqYearFilter, currentPyqTypeFilter);
+            renderLandingPyqRepo(currentPyqYearFilter);
         });
     });
 
@@ -1388,12 +1279,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (firstYearFilterRow) firstYearFilterRow.style.display = 'none';
             if (headingEl) headingEl.textContent = `${currentStream} Sem ${currentSem} Subjects & Progress`;
 
-            matchingSubjects = MAKAUT_CURRICULUM.filter(s => {
-                if (currentStream === 'CSCS') {
-                    return (s.stream === 'CSE' || s.stream === 'CSCS') && s.semester === currentSem && !s.isFirstYear;
-                }
-                return s.stream === currentStream && s.semester === currentSem && !s.isFirstYear;
-            });
+            matchingSubjects = MAKAUT_CURRICULUM.filter(s => s.stream === currentStream && s.semester === currentSem && !s.isFirstYear);
 
             if (matchingSubjects.length === 0) {
                 matchingSubjects = MAKAUT_CURRICULUM.filter(s => s.semester === currentSem && !s.isFirstYear);
@@ -1504,11 +1390,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentHubSubject = null;
     let currentHubPyqYearFilter = 'ALL';
 
-    function openSubjectHub(subjectCode, initialTab = 'checklist') {
-        let subject = MAKAUT_CURRICULUM.find(s => 
-            s.code.toLowerCase() === subjectCode.toLowerCase() ||
-            (s.altCode && s.altCode.toLowerCase() === subjectCode.toLowerCase())
-        );
+    function openSubjectHub(subjectCodeOrObj, initialTab = 'checklist') {
+        let subject = null;
+        if (typeof subjectCodeOrObj === 'object' && subjectCodeOrObj !== null) {
+            subject = subjectCodeOrObj;
+        } else if (typeof subjectCodeOrObj === 'string') {
+            subject = MAKAUT_CURRICULUM.find(s => 
+                s.code.toLowerCase() === subjectCodeOrObj.toLowerCase() ||
+                (s.altCode && s.altCode.toLowerCase() === subjectCodeOrObj.toLowerCase()) ||
+                s.name.toLowerCase() === subjectCodeOrObj.toLowerCase()
+            );
+        }
         if (!subject) return;
         currentHubSubject = subject;
         currentHubPyqYearFilter = 'ALL';
@@ -1531,7 +1423,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // Render Tabs
         renderHubChecklist(subject);
         renderHubPyqs(subject, 'ALL');
-        renderHubClusters(subject);
 
         // Activate specified initial tab
         activateHubTab(initialTab);
@@ -1681,60 +1572,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    function renderHubClusters(subject) {
-        const container = document.getElementById('hub-clusters-container');
-        if (!container) return;
-
-        const subjectQuestions = MAKAUT_PANIC_QUESTIONS.filter(q => q.subjectCode.toLowerCase() === subject.code.toLowerCase());
-        if (subjectQuestions.length === 0) {
-            container.innerHTML = '<div style="padding: 2.5rem; text-align: center; color: var(--text-muted);">No recurring topic clusters indexed for this course code yet.</div>';
-            return;
-        }
-
-        container.innerHTML = subjectQuestions.map(q => {
-            const isBookmarked = savedBookmarks.some(b => b.id === q.id);
-            return `
-                <div class="panic-full-card" style="margin-bottom: 1rem;">
-                    <div class="panic-full-top">
-                        <span class="panic-freq-badge">🔥 Seen ${q.frequencyCount} Times</span>
-                        <div class="panic-year-chips">
-                            ${q.examYears.map(y => `<span class="year-chip">${y}</span>`).join('')}
-                        </div>
-                    </div>
-                    <div class="panic-full-question">${escapeHtml(q.questionText)}</div>
-                    <div class="panic-model-answer">
-                        <strong>High-Yield Model Answer / Proof:</strong><br>
-                        ${escapeHtml(q.modelAnswerSnippet)}
-                    </div>
-                    <div class="panic-card-actions">
-                        <button class="btn btn-secondary btn-hub-bookmark" data-id="${q.id}">
-                            ${isBookmarked ? '✓ In Revision Deck' : '🔖 Add to Saved Deck'}
-                        </button>
-                    </div>
-                </div>
-            `;
-        }).join('');
-
-        container.querySelectorAll('.btn-hub-bookmark').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const qId = parseInt(btn.getAttribute('data-id'), 10);
-                const qObj = MAKAUT_PANIC_QUESTIONS.find(item => item.id === qId);
-                if (qObj) {
-                    const idx = savedBookmarks.findIndex(b => b.id === qObj.id);
-                    if (idx >= 0) {
-                        savedBookmarks.splice(idx, 1);
-                        btn.textContent = '🔖 Add to Saved Deck';
-                    } else {
-                        savedBookmarks.push(qObj);
-                        btn.textContent = '✓ In Revision Deck';
-                    }
-                    localStorage.setItem('campussense_saved_deck', JSON.stringify(savedBookmarks));
-                    renderSavedDeckPreview();
-                }
-            });
-        });
-    }
-
     function activateHubTab(tabName) {
         document.querySelectorAll('.hub-tab-btn').forEach(btn => {
             btn.classList.toggle('active', btn.getAttribute('data-hub-tab') === tabName);
@@ -1742,11 +1579,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const tabChecklist = document.getElementById('tab-content-checklist');
         const tabPyqs = document.getElementById('tab-content-pyqs');
-        const tabClusters = document.getElementById('tab-content-clusters');
 
         if (tabChecklist) tabChecklist.style.display = tabName === 'checklist' ? 'block' : 'none';
         if (tabPyqs) tabPyqs.style.display = tabName === 'pyqs' ? 'block' : 'none';
-        if (tabClusters) tabClusters.style.display = tabName === 'clusters' ? 'block' : 'none';
     }
 
     document.querySelectorAll('.hub-tab-btn').forEach(btn => {
@@ -1942,17 +1777,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function renderPdfFallbackContent(title, resolvedUrl, preferredName) {
+    function renderPdfFallbackContent(title, resolvedUrl, preferredName, isIngestion = true) {
         const spinner = document.getElementById('pdf-loading-spinner');
         const iframe = document.getElementById('pdf-viewer-iframe');
         const fallbackView = document.getElementById('pdf-fallback-view');
         const fallbackContent = document.getElementById('pdf-fallback-content');
         const directBtn = document.getElementById('btn-fallback-direct-download');
         const newTabBtn = document.getElementById('btn-fallback-new-tab');
+        const alertTitle = document.querySelector('.pdf-fallback-alert-title');
+        const alertDesc = document.querySelector('.pdf-fallback-alert-desc');
 
         if (spinner) spinner.style.display = 'none';
         if (iframe) iframe.style.display = 'none';
         if (fallbackView) fallbackView.style.display = 'flex';
+
+        if (alertTitle) {
+            alertTitle.innerHTML = isIngestion ? '<span>📋</span> Paper Ingestion in Progress' : '<span>⚠️</span> Embedded Preview Restricted';
+        }
+        if (alertDesc) {
+            alertDesc.textContent = isIngestion
+                ? 'This examination paper or resource is currently being ingested into our local offline repository. You can explore the complete syllabus unit blueprint below or attempt a direct download mirror.'
+                : 'Your browser environment prevented direct inline PDF rendering. You can download the complete document or view the syllabus blueprint below.';
+        }
 
         if (directBtn) {
             directBtn.onclick = (e) => {
@@ -1972,7 +1818,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (subj && subj.units && subj.units.length > 0) {
             checklistHtml = `
                 <div class="pdf-fallback-checklist">
-                    <h4 style="font-size: 1rem; color: var(--primary-accent); margin: 0.5rem 0;">📚 ${escapeHtml(subj.name)} (${escapeHtml(subj.code)}) — Syllabus Unit Checklist</h4>
+                    <h4 style="font-size: 1rem; color: var(--accent-primary); margin: 0.5rem 0;">📚 ${escapeHtml(subj.name)} (${escapeHtml(subj.code)}) — Syllabus Blueprint</h4>
                     ${subj.units.map(u => `
                         <div class="pdf-fallback-unit-item">
                             <div class="pdf-fallback-unit-title">${escapeHtml(u.title)} <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: normal;">• ${u.hours} hrs</span></div>
@@ -2009,9 +1855,26 @@ document.addEventListener('DOMContentLoaded', () => {
         const fallbackView = document.getElementById('pdf-fallback-view');
         const spinner = document.getElementById('pdf-loading-spinner');
 
-        const resolvedUrl = resolveAssetPath(url);
+        let targetUrl = url || '';
+        const subj = findSubjectForUrl(targetUrl, title);
+
+        // Intercept external cloud / S3 links and resolve to local static path if available
+        if (targetUrl.startsWith('http://') || targetUrl.startsWith('https://')) {
+            if (subj) {
+                if (targetUrl.toLowerCase().includes('syllabus') && subj.syllabusUrl) {
+                    targetUrl = subj.syllabusUrl;
+                } else if (subj.pyqs && subj.pyqs.length > 0) {
+                    const localPyq = subj.pyqs.find(p => p.fileUrl && !p.fileUrl.startsWith('http'));
+                    if (localPyq) {
+                        targetUrl = localPyq.fileUrl;
+                    }
+                }
+            }
+        }
+
+        const resolvedUrl = resolveAssetPath(targetUrl);
         const preferredName = (title || 'MAKAUT_Resource').replace(/[^a-zA-Z0-9_-]/g, '_') + '.pdf';
-        currentOpenPdf = { title: title || 'MAKAUT Resource', url: resolvedUrl, rawUrl: url };
+        currentOpenPdf = { title: title || 'MAKAUT Resource', url: resolvedUrl, rawUrl: targetUrl };
 
         if (titleEl) titleEl.textContent = title || 'MAKAUT Examination Paper';
         if (downloadBtn) {
@@ -2022,7 +1885,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (bookmarkBtn) {
-            const isBookmarked = savedBookmarks.some(b => (b.url === resolvedUrl || b.fileUrl === url || b.fileUrl === resolvedUrl));
+            const isBookmarked = savedBookmarks.some(b => (b.url === resolvedUrl || b.fileUrl === targetUrl || b.fileUrl === resolvedUrl));
             bookmarkBtn.textContent = isBookmarked ? '✓ Bookmarked' : '🔖 Bookmark';
             bookmarkBtn.onclick = () => {
                 if (!currentOpenPdf) return;
@@ -2037,7 +1900,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         title: currentOpenPdf.title,
                         url: currentOpenPdf.url,
                         fileUrl: currentOpenPdf.url,
-                        subjectCode: 'PDF Paper',
+                        subjectCode: (subj ? subj.code : 'PDF Paper'),
                         topicName: currentOpenPdf.title,
                         frequencyCount: 1
                     });
@@ -2069,7 +1932,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             iframe.onerror = () => {
                 if (loadTimeout) clearTimeout(loadTimeout);
-                renderPdfFallbackContent(title, resolvedUrl, preferredName);
+                renderPdfFallbackContent(title, resolvedUrl, preferredName, true);
             };
 
             // Safety timeout: reveal iframe or fallback if onload doesn't trigger
@@ -2321,34 +2184,77 @@ document.addEventListener('DOMContentLoaded', () => {
         saveQueryToHistory(q);
         const qLower = q.toLowerCase();
 
-        // Check for academic keyword interception (syllabus, pdf, paper, pyq, notes)
-        const isAcademicQuery = /syllabus|pdf|paper|pyq|notes|curriculum/.test(qLower);
+        // 1. Alias mapping for common student query shorthand
+        const aliases = {
+            'bee': 'ES-EE101',
+            'pps': 'ES-CS101',
+            'c': 'ES-CS101',
+            'programming': 'ES-CS101',
+            'physics': 'BS-PH101',
+            'chemistry': 'BS-CH101',
+            'math': 'BS-M101',
+            'maths': 'BS-M101',
+            'mathematics': 'BS-M101',
+            'maths 1': 'BS-M101',
+            'maths 1a': 'BS-M101',
+            'maths 2': 'BS-M201',
+            'maths 2a': 'BS-M201',
+            'english': 'HM-HU101',
+            'evs': 'MC-ES201',
+            'environmental': 'MC-ES201',
+            'biology': 'BS-BIO101'
+        };
 
-        // Match subject from MAKAUT_CURRICULUM
-        const matchedSubject = MAKAUT_CURRICULUM.find(s => {
-            const codeMatch = s.code.toLowerCase().includes(qLower) || (s.altCode && s.altCode.toLowerCase().includes(qLower));
-            const nameWords = s.name.toLowerCase().split(/[\s,()/-]+/);
-            const nameMatch = nameWords.some(w => w.length > 3 && qLower.includes(w));
-            const cleanCode = s.code.toLowerCase().replace(/[^a-z0-9]/g, '');
-            const queryClean = qLower.replace(/[^a-z0-9]/g, '');
-            return codeMatch || nameMatch || (cleanCode.length > 3 && queryClean.includes(cleanCode));
+        let matchedSubject = null;
+
+        // Check explicit code matches first (e.g. BS-PH101, ES-EE101, BS-M101)
+        matchedSubject = MAKAUT_CURRICULUM.find(s => {
+            const codeClean = s.code.toLowerCase().replace(/[^a-z0-9]/g, '');
+            const altCodeClean = s.altCode ? s.altCode.toLowerCase().replace(/[^a-z0-9]/g, '') : '';
+            const qClean = qLower.replace(/[^a-z0-9]/g, '');
+            return qClean.includes(codeClean) || (altCodeClean && qClean.includes(altCodeClean));
         });
 
-        if (matchedSubject && isAcademicQuery) {
-            if (qLower.includes('syllabus') && matchedSubject.syllabusUrl) {
-                openPdfViewer(`${matchedSubject.code} Official Syllabus`, matchedSubject.syllabusUrl);
+        // Check alias lookup
+        if (!matchedSubject) {
+            for (const [alias, code] of Object.entries(aliases)) {
+                const regex = new RegExp(`\\b${alias}\\b`, 'i');
+                if (regex.test(qLower)) {
+                    matchedSubject = MAKAUT_CURRICULUM.find(s => s.code === code);
+                    if (matchedSubject) break;
+                }
+            }
+        }
+
+        // Check subject name token matching
+        if (!matchedSubject) {
+            matchedSubject = MAKAUT_CURRICULUM.find(s => {
+                const nameWords = s.name.toLowerCase().split(/[\s,()/-]+/);
+                return nameWords.some(w => w.length > 3 && qLower.includes(w));
+            });
+        }
+
+        const isSyllabusIntent = /syllabus|curriculum|blueprint|modules?|units?/.test(qLower);
+        const isPdfIntent = /pdf|document|download/.test(qLower);
+        const isPaperIntent = /paper|pyq|question|exam|previous/.test(qLower);
+
+        if (matchedSubject) {
+            // Direct syllabus preview request (e.g. "Physics syllabus", "Chemistry pdf")
+            if ((isSyllabusIntent || isPdfIntent) && matchedSubject.syllabusUrl) {
+                openPdfViewer(`${matchedSubject.name} Official Syllabus`, matchedSubject.syllabusUrl);
                 return;
             }
-            if ((qLower.includes('paper') || qLower.includes('pyq')) && matchedSubject.pyqs && matchedSubject.pyqs.length > 0) {
-                openSubjectHub(matchedSubject);
-                activateHubTab('pyqs');
+            // Direct past paper request (e.g. "BS-M101 paper", "BEE pyq")
+            if (isPaperIntent && matchedSubject.pyqs && matchedSubject.pyqs.length > 0) {
+                openSubjectHub(matchedSubject, 'pyqs');
                 return;
             }
+            // Direct subject navigation (e.g. "Physics", "Chemistry", "BEE")
             openSubjectHub(matchedSubject);
             return;
         }
 
-        // Open Ask AI Drawer
+        // 2. Natural language question or ungrounded inquiry -> open Ask AI Drawer
         openAiDrawer(q);
     }
 
@@ -2641,17 +2547,17 @@ document.addEventListener('DOMContentLoaded', () => {
             };
         }
 
-        if (lower.includes('banker')) {
+        if (lower.includes('nernst') || lower.includes('chemistry') || lower.includes('spectroscopy')) {
             return {
                 verified: true,
-                response: `**Banker's Algorithm for Deadlock Avoidance (Operating Systems PCC-CS501):**\n\n- **Data Structures:** Available[m], Max[n][m], Allocation[n][m], Need[n][m].\n- **Formula:** Need[i][j] = Max[i][j] - Allocation[i][j].\n- **Safety Algorithm:**\n  1. Let Work = Available and Finish[i] = false for all i.\n  2. Find an i such that Finish[i] == false and Need_i <= Work.\n  3. Work = Work + Allocation_i; Finish[i] = true. Repeat step 2.\n  4. If Finish[i] == true for all i, system is in a Safe State.`,
+                response: `**Nernst Equation & Electrochemical Equilibria (Chemistry BS-CH101):**\n\n- **Formula:** $E_{cell} = E^\\circ_{cell} - \\frac{2.303 RT}{nF} \\log_{10} Q = E^\\circ_{cell} - \\frac{0.0591}{n} \\log_{10} Q$ at 298 K.\n- **Equilibrium Condition:** At equilibrium, $E_{cell} = 0$, leading to $\\Delta G^\\circ = -nFE^\\circ = -RT \\ln K_{eq}$.\n- **Applications:** Calculating electrode reduction potentials, determining solubility products ($K_{sp}$), and measuring solution pH via hydrogen electrodes.\n\n*Featured across MAKAUT examinations (Module IV, 8 Marks).*`,
                 sources: [{
-                    title: 'Operating Systems (PCC-CS501)',
-                    subjectCode: 'PCC-CS501',
-                    year: 2023,
+                    title: 'Chemistry (BS-CH101)',
+                    subjectCode: 'BS-CH101',
+                    year: 2024,
                     group: 'Group C',
-                    questionNumber: 'Q5',
-                    pageUrl: 'https://makautexam.net/syllabus/PCC-CS501.pdf'
+                    questionNumber: 'Q4',
+                    pageUrl: 'assets/resources/1st_year/syllabus/Chemistry.pdf'
                 }]
             };
         }
@@ -2676,11 +2582,11 @@ document.addEventListener('DOMContentLoaded', () => {
             response: `Based on verified MAKAUT curriculum data for **${currentStream} Semester ${currentSem}**, we indexed syllabus modules and past question patterns matching your query. Review the linked verified paper citation below.`,
             sources: [{
                 title: 'MAKAUT Syllabus Archive',
-                subjectCode: currentStream === 'GROUP_A' ? 'BS-M101' : 'PCC-CS501',
+                subjectCode: currentStream === 'GROUP_A' ? 'BS-M101' : 'BS-CH101',
                 year: 2023,
                 group: 'Group B',
                 questionNumber: 'Q2',
-                pageUrl: 'https://makautexam.net/syllabus/PCC-CS501.pdf'
+                pageUrl: 'assets/resources/1st_year/syllabus/Chemistry.pdf'
             }]
         };
     }

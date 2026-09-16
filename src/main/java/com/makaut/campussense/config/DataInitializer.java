@@ -81,7 +81,7 @@ public class DataInitializer implements CommandLineRunner {
                 .stream(StreamType.COMMON)
                 .semester(1)
                 .subjectCode("BS-M101")
-                .subjectName("Mathematics 1A (Calculus & Linear Algebra)")
+                .subjectName("Mathematics 1A")
                 .resourceType(ResourceType.SYLLABUS)
                 .year(2023)
                 .fileUrl("https://makautexam.net/syllabus/BS-M101.pdf")
@@ -91,7 +91,7 @@ public class DataInitializer implements CommandLineRunner {
                         Module 3: Matrices: Inverse and rank of a matrix, rank-nullity theorem; System of linear equations; Symmetric, skew-symmetric and orthogonal matrices; Determinants; Eigenvalues and eigenvectors; Diagonalization of matrices; Cayley-Hamilton Theorem.
                         Module 4: Vector Spaces: Vector Space, linear dependence and independence of vectors, basis, dimension; Linear transformations (maps), range and kernel of a linear map, rank and nullity, Inverse of a linear transformation, rank-nullity theorem.
                         """)
-                .metadata("{\"credits\": 4, \"department\": \"1st Year Common\"}")
+                .metadata("{\"credits\": 4, \"contact_hours\": \"3L:1T:0P\", \"department\": \"1st Year Common\"}")
                 .build());
 
         // BS-PH101
@@ -99,17 +99,18 @@ public class DataInitializer implements CommandLineRunner {
                 .stream(StreamType.COMMON)
                 .semester(1)
                 .subjectCode("BS-PH101")
-                .subjectName("Physics (Optics & Quantum Mechanics)")
+                .subjectName("Physics")
                 .resourceType(ResourceType.SYLLABUS)
                 .year(2023)
                 .fileUrl("https://makautexam.net/syllabus/BS-PH101.pdf")
                 .rawText("""
-                        Module 1: Wave Optics: Huygens principle, superposition of waves, interference of light, Young double slit experiment, Newton rings, thin film interference; Fraunhofer diffraction, single slit, double slit, diffraction grating; Polarization, Brewster law, Malus law.
-                        Module 2: Quantum Mechanics: Blackbody radiation, Planck distribution, photoelectric effect, Compton effect; Wave-particle duality, de Broglie hypothesis, Davisson-Germer experiment; Heisenberg uncertainty principle; Wave function, Born interpretation, expectation values; Time-dependent and time-independent Schrodinger equation; Particle in a 1D box.
-                        Module 3: Lasers & Fiber Optics: Spontaneous and stimulated emission, Einstein A and B coefficients, population inversion, optical pumping; Ruby laser, He-Ne laser; Principle of optical fibers, total internal reflection, numerical aperture, acceptance angle.
-                        Module 4: Electromagnetism: Gauss law in electrostatics and magnetostatics, Ampere law, Faraday law of induction; Maxwell equations in differential and integral forms, displacement current; Electromagnetic wave propagation in vacuum, Poynting vector.
+                        Module 1: Oscillations and Waves: Simple harmonic motion, damped and forced oscillations, resonance, wave equation.
+                        Module 2: Wave Optics: Huygens principle, superposition of waves, interference of light, Young double slit experiment, Newton rings, thin film interference; Fraunhofer diffraction, diffraction grating; Polarization, Brewster law.
+                        Module 3: Electromagnetism: Gauss law, Ampere law, Faraday law of induction; Maxwell equations in differential and integral forms, displacement current; Poynting vector.
+                        Module 4: Quantum Physics: Blackbody radiation, Planck distribution, photoelectric effect, Compton effect; de Broglie hypothesis; Heisenberg uncertainty principle; Wave function, Schrodinger equation; Particle in a 1D box.
+                        Module 5: Solid-State and Modern Physics: Band structure of solids, conductors, semiconductors, insulators, Fermi level; Lasers: Einstein coefficients, population inversion; Optical fibers, numerical aperture.
                         """)
-                .metadata("{\"credits\": 4, \"contact_hours\": \"3L:1T:0P\", \"department\": \"1st Year Common\"}")
+                .metadata("{\"credits\": 3, \"contact_hours\": \"3L:0T:0P\", \"department\": \"1st Year Common\"}")
                 .build());
 
         // BS-CH101
@@ -117,18 +118,19 @@ public class DataInitializer implements CommandLineRunner {
                 .stream(StreamType.COMMON)
                 .semester(1)
                 .subjectCode("BS-CH101")
-                .subjectName("Chemistry-I (Chemical Principles & Spectroscopy)")
+                .subjectName("Chemistry")
                 .resourceType(ResourceType.SYLLABUS)
                 .year(2023)
                 .fileUrl("https://makautexam.net/syllabus/BS-CH101.pdf")
                 .rawText("""
-                        Module 1: Atomic and Molecular Structure: Schrodinger equation, particle in a box; Molecular orbitals of diatomic molecules; Band structure of solids and the role of doping on band structures.
-                        Module 2: Spectroscopic Techniques: Principles of spectroscopy and selection rules; UV-Visible and Fluorescence spectroscopy; Infrared and Raman spectroscopy; Applications of spectroscopy.
-                        Module 3: Intermolecular Forces and Potential Energy Surfaces: Ionic, dipolar and van Der Waals interactions; Equations of state of real gases and critical phenomena; Potential energy surfaces.
-                        Module 4: Periodic Properties and Thermodynamic Systems: Effective nuclear charge, penetration, shielding; Electronic configuration, atomic and ionic sizes, ionization energies, electron affinity, electronegativity; Oxidation states, coordination numbers.
-                        Module 5: Stereochemistry and Organic Reactions: Representations of 3D structures, structural isomers and stereoisomers, configurations, symmetry and chirality; Synthesis of commonly used drug molecules (Aspirin, Paracetamol).
+                        Module 1: Atomic and Molecular Structure: Schrodinger equation, particle in a box; Molecular orbitals of diatomic molecules; Band structure of solids.
+                        Module 2: Spectroscopic Techniques and Applications: Principles of spectroscopy, selection rules; UV-Visible and Fluorescence spectroscopy; Infrared and Raman spectroscopy.
+                        Module 3: Intermolecular Forces and Potential Energy Surfaces: Ionic, dipolar and van der Waals interactions; Equations of state of real gases, critical phenomena; Potential energy surfaces.
+                        Module 4: Use of Free Energy in Chemical Equilibria: Thermodynamic functions: energy, entropy and free energy; Cell potentials, Nernst equation and applications, acid-base and oxidation-reduction equilibria.
+                        Module 5: Periodic Properties: Effective nuclear charge, penetration, shielding; Electronic configuration, atomic and ionic sizes, ionization energies, electron affinity, electronegativity, oxidation states.
+                        Module 6: Stereochemistry and Organic Reactions: Structural isomers, stereoisomers, configurations, symmetry and chirality; Synthesis of commonly used drug molecules (Aspirin, Paracetamol).
                         """)
-                .metadata("{\"credits\": 4, \"contact_hours\": \"3L:1T:0P\", \"department\": \"1st Year Common\"}")
+                .metadata("{\"credits\": 3, \"contact_hours\": \"3L:0T:0P\", \"department\": \"1st Year Common\"}")
                 .build());
 
         // ES-EE101
@@ -173,7 +175,7 @@ public class DataInitializer implements CommandLineRunner {
                 .stream(StreamType.COMMON)
                 .semester(1)
                 .subjectCode("HM-HU101")
-                .subjectName("English & Professional Communication")
+                .subjectName("English")
                 .resourceType(ResourceType.SYLLABUS)
                 .year(2023)
                 .fileUrl("https://makautexam.net/syllabus/HM-HU101.pdf")
@@ -184,7 +186,7 @@ public class DataInitializer implements CommandLineRunner {
                         Module 4: Nature and Style of sensible Writing: Describing, defining, classifying; Providing examples or evidence; Writing introduction and conclusion; Comprehension; Précis Writing; Essay Writing.
                         Module 5: Technical Communication: Formal letters and email correspondence; Curriculum Vitae and Resume writing; Technical report writing.
                         """)
-                .metadata("{\"credits\": 2, \"department\": \"1st Year Common\"}")
+                .metadata("{\"credits\": 2, \"contact_hours\": \"2L:0T:0P\", \"department\": \"1st Year Common\"}")
                 .build());
 
         // 3. Core 2nd/3rd Year Subjects (CSE Core)
@@ -297,18 +299,20 @@ public class DataInitializer implements CommandLineRunner {
         units.add(SyllabusUnit.builder().courseResource(math101).unitNumber(3).unitTitle("Unit 3: Matrices & Linear Algebra").subtopics("Inverse, rank, rank-nullity theorem, Cayley-Hamilton theorem, eigenvalues and eigenvectors").hours(10).build());
         units.add(SyllabusUnit.builder().courseResource(math101).unitNumber(4).unitTitle("Unit 4: Vector Spaces").subtopics("Vector spaces, linear independence, basis, dimension, linear transformations and kernel").hours(8).build());
 
-        // Physics 101
-        units.add(SyllabusUnit.builder().courseResource(physics101).unitNumber(1).unitTitle("Unit 1: Wave Optics").subtopics("Interference, Young double slit, Newton rings, thin film, Fraunhofer diffraction, diffraction grating").hours(10).build());
-        units.add(SyllabusUnit.builder().courseResource(physics101).unitNumber(2).unitTitle("Unit 2: Quantum Mechanics").subtopics("Planck distribution, de Broglie hypothesis, Heisenberg uncertainty, Schrodinger equation, particle in box").hours(10).build());
-        units.add(SyllabusUnit.builder().courseResource(physics101).unitNumber(3).unitTitle("Unit 3: Lasers & Optical Fibers").subtopics("Einstein coefficients, Ruby and He-Ne lasers, optical fibers, numerical aperture").hours(10).build());
-        units.add(SyllabusUnit.builder().courseResource(physics101).unitNumber(4).unitTitle("Unit 4: Electromagnetism").subtopics("Gauss, Ampere, Faraday laws, Maxwell equations, displacement current, Poynting vector").hours(10).build());
+        // Physics 101 (5 Modules, 36 Hours)
+        units.add(SyllabusUnit.builder().courseResource(physics101).unitNumber(1).unitTitle("Module I: Oscillations and Waves").subtopics("Simple harmonic motion, damped and forced oscillations, resonance, wave equation, transverse and longitudinal waves").hours(8).build());
+        units.add(SyllabusUnit.builder().courseResource(physics101).unitNumber(2).unitTitle("Module II: Wave Optics").subtopics("Huygens principle, interference of light, Young double slit, Newton rings, thin films, Fraunhofer diffraction, diffraction grating").hours(8).build());
+        units.add(SyllabusUnit.builder().courseResource(physics101).unitNumber(3).unitTitle("Module III: Electromagnetism").subtopics("Gradient, divergence and curl, Gauss divergence theorem, Stokes theorem, Gauss law, Ampere law, Faraday law, Maxwell equations").hours(8).build());
+        units.add(SyllabusUnit.builder().courseResource(physics101).unitNumber(4).unitTitle("Module IV: Quantum Physics").subtopics("Wave-particle duality, de Broglie hypothesis, Heisenberg uncertainty principle, Schrodinger equation, particle in a box").hours(7).build());
+        units.add(SyllabusUnit.builder().courseResource(physics101).unitNumber(5).unitTitle("Module V: Solid-State and Modern Physics").subtopics("Free electron theory of metals, band theory of solids, intrinsic and extrinsic semiconductors, lasers and optical fibers").hours(5).build());
 
-        // Chemistry 101
-        units.add(SyllabusUnit.builder().courseResource(chemistry101).unitNumber(1).unitTitle("Unit 1: Atomic & Molecular Structure").subtopics("Schrodinger equation, particle in a box, MO theory for diatomics, band structure of solids").hours(8).build());
-        units.add(SyllabusUnit.builder().courseResource(chemistry101).unitNumber(2).unitTitle("Unit 2: Spectroscopic Techniques").subtopics("Principles of spectroscopy, selection rules, UV-Vis, fluorescence, vibrational and rotational spectroscopy").hours(8).build());
-        units.add(SyllabusUnit.builder().courseResource(chemistry101).unitNumber(3).unitTitle("Unit 3: Intermolecular Forces & Potential Surfaces").subtopics("Ionic, dipolar and van der Waals forces, real gases, equations of state, potential energy surfaces").hours(6).build());
-        units.add(SyllabusUnit.builder().courseResource(chemistry101).unitNumber(4).unitTitle("Unit 4: Periodic Properties & Thermodynamics").subtopics("Effective nuclear charge, ionization energies, electron affinity, electronegativity, oxidation states").hours(8).build());
-        units.add(SyllabusUnit.builder().courseResource(chemistry101).unitNumber(5).unitTitle("Unit 5: Stereochemistry & Organic Synthesis").subtopics("Isomerism, chirality, enantiomers, diastereomers, synthesis of Aspirin and Paracetamol").hours(10).build());
+        // Chemistry 101 (6 Modules, 36 Hours)
+        units.add(SyllabusUnit.builder().courseResource(chemistry101).unitNumber(1).unitTitle("Module I: Atomic and Molecular Structure").subtopics("Schrodinger equation, particle in a box, MO theory for homonuclear and heteronuclear diatomics, band structure of solids").hours(8).build());
+        units.add(SyllabusUnit.builder().courseResource(chemistry101).unitNumber(2).unitTitle("Module II: Spectroscopic Techniques and Applications").subtopics("Principles of spectroscopy, selection rules, UV-Vis, fluorescence, vibrational and rotational spectroscopy, NMR").hours(7).build());
+        units.add(SyllabusUnit.builder().courseResource(chemistry101).unitNumber(3).unitTitle("Module III: Intermolecular Forces and Potential Energy Surfaces").subtopics("Ionic, dipolar and van der Waals forces, real gases, equations of state, potential energy surfaces of simple molecules").hours(4).build());
+        units.add(SyllabusUnit.builder().courseResource(chemistry101).unitNumber(4).unitTitle("Module IV: Use of Free Energy in Chemical Equilibria").subtopics("Thermodynamic functions: energy, entropy and free energy, cell potentials, Nernst equation and applications, acid-base and oxidation-reduction").hours(6).build());
+        units.add(SyllabusUnit.builder().courseResource(chemistry101).unitNumber(5).unitTitle("Module V: Periodic Properties").subtopics("Effective nuclear charge, penetration, atomic and ionic sizes, ionization energies, electron affinity, electronegativity, polarizability").hours(4).build());
+        units.add(SyllabusUnit.builder().courseResource(chemistry101).unitNumber(6).unitTitle("Module VI: Stereochemistry and Organic Reactions").subtopics("Representations of 3D structures, structural isomers and stereoisomers, chirality, enantiomers, diastereomers, synthesis of Aspirin and Paracetamol").hours(7).build());
 
         // Electrical 101
         units.add(SyllabusUnit.builder().courseResource(ee101).unitNumber(1).unitTitle("Unit 1: DC Circuits & Theorems").subtopics("Kirchhoff laws, Superposition, Thevenin, Norton, Maximum Power Transfer theorems, Star-Delta").hours(9).build());

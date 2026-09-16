@@ -60,34 +60,36 @@ CREATE TABLE IF NOT EXISTS feedback_submissions (
 -- 6. Seed First-Year Common Academic Resources
 INSERT INTO academic_resources (stream, semester, subject_code, subject_name, resource_type, year, file_url, raw_text, metadata)
 VALUES
-('COMMON', 1, 'BS-M101', 'Mathematics 1A (Calculus & Linear Algebra)', 'SYLLABUS', 2023, 'https://makautexam.net/syllabus/BS-M101.pdf',
+('COMMON', 1, 'BS-M101', 'Mathematics 1A', 'SYLLABUS', 2023, 'https://makautexam.net/syllabus/BS-M101.pdf',
  'Module 1: Calculus - Evolutes, involutes, Rolle theorem, Mean Value Theorems, Taylor and Maclaurin theorems with remainders.
   Module 2: Multivariable Calculus - Partial derivatives, Euler theorem on homogeneous functions, total derivative, maxima and minima of functions of two variables, Lagrange multipliers.
   Module 3: Matrices - Rank of matrix, system of linear equations, symmetric, skew-symmetric, orthogonal matrices, eigenvalues and eigenvectors, Cayley-Hamilton Theorem, diagonalization of matrices.
   Module 4: Vector Spaces - Vector space, linear dependence and independence of vectors, basis, dimension, linear transformations.',
- '{"credits": 4, "department": "1st Year Common"}'),
+ '{"credits": 4, "contact_hours": "3L:1T:0P", "department": "1st Year Common"}'),
 
-('COMMON', 1, 'BS-PH101', 'Physics (Optics & Quantum Mechanics)', 'SYLLABUS', 2023, 'https://makautexam.net/syllabus/BS-PH101.pdf',
- 'Module 1: Wave Optics - Huygens principle, interference, Young double slit, Newton rings, thin film interference, Fraunhofer diffraction, diffraction grating, polarization.
-  Module 2: Quantum Mechanics - Blackbody radiation, Planck law, photoelectric effect, de Broglie hypothesis, Heisenberg uncertainty principle, wave function, Schrodinger equation, particle in a box.
-  Module 3: Lasers - Einstein coefficients, population inversion, Ruby laser, He-Ne laser, optical fibers, numerical aperture.
-  Module 4: Electromagnetism - Gauss law, Ampere law, Faraday law, Maxwell equations in vacuum and dielectric media, Poynting vector.',
- '{"credits": 4, "department": "1st Year Common"}'),
+('COMMON', 1, 'BS-PH101', 'Physics', 'SYLLABUS', 2023, 'https://makautexam.net/syllabus/BS-PH101.pdf',
+ 'Module I: Oscillations and Waves - Simple harmonic motion, damped and forced oscillations, resonance, wave equation.
+  Module II: Wave Optics - Huygens principle, interference, Young double slit, Newton rings, thin film interference, Fraunhofer diffraction, diffraction grating.
+  Module III: Electromagnetism - Gauss law, Ampere law, Faraday law, Maxwell equations, Poynting vector.
+  Module IV: Quantum Physics - De Broglie hypothesis, Heisenberg uncertainty principle, Schrodinger equation, particle in a box.
+  Module V: Solid-State and Modern Physics - Band theory of solids, semiconductors, lasers, optical fibers.',
+ '{"credits": 3, "contact_hours": "3L:0T:0P", "department": "1st Year Common"}'),
 
 ('COMMON', 1, 'ES-EE101', 'Basic Electrical Engineering', 'SYLLABUS', 2023, 'https://makautexam.net/syllabus/ES-EE101.pdf',
  'Module 1: DC Circuits - Kirchhoff laws, mesh and nodal analysis, superposition theorem, Thevenin theorem, Norton theorem, Maximum Power Transfer theorem.
   Module 2: AC Circuits - Representation of sinusoidal waveforms, peak, RMS, average values, phasor representation of R, L, C, series and parallel RLC circuits, resonance.
   Module 3: Transformers - Magnetic materials, BH characteristics, ideal and practical single-phase transformer, equivalent circuit, losses, regulation and efficiency.
   Module 4: Electrical Machines - Generation of rotating magnetic fields, construction and principle of 3-phase induction motor, DC machines, torque-speed characteristics.',
- '{"credits": 4, "department": "1st Year Common"}'),
-
-('COMMON', 1, 'BS-CH101', 'Chemistry-I (Chemical Principles & Spectroscopy)', 'SYLLABUS', 2023, 'https://makautexam.net/syllabus/BS-CH101.pdf',
- 'Module 1: Atomic and Molecular Structure - Schrodinger equation, particle in a box, MO theory, band structure of solids.
-  Module 2: Spectroscopic Techniques - Principles of spectroscopy, selection rules, UV-Visible, Fluorescence, IR and Raman spectroscopy.
-  Module 3: Intermolecular Forces - Real gases, equations of state, potential energy surfaces.
-  Module 4: Periodic Properties - Effective nuclear charge, ionization energies, electron affinity, electronegativity, oxidation states.
-  Module 5: Stereochemistry and Organic Synthesis - Chirality, isomers, synthesis of Aspirin and Paracetamol.',
  '{"credits": 4, "contact_hours": "3L:1T:0P", "department": "1st Year Common"}'),
+
+('COMMON', 1, 'BS-CH101', 'Chemistry', 'SYLLABUS', 2023, 'https://makautexam.net/syllabus/BS-CH101.pdf',
+ 'Module I: Atomic and Molecular Structure - Schrodinger equation, particle in a box, MO theory, band structure of solids.
+  Module II: Spectroscopic Techniques and Applications - Principles of spectroscopy, selection rules, UV-Visible, Fluorescence, IR and Raman spectroscopy, NMR.
+  Module III: Intermolecular Forces and Potential Energy Surfaces - Real gases, equations of state, potential energy surfaces.
+  Module IV: Use of Free Energy in Chemical Equilibria - Free energy, cell potentials, Nernst equation.
+  Module V: Periodic Properties - Effective nuclear charge, ionization energies, electron affinity, electronegativity.
+  Module VI: Stereochemistry and Organic Reactions - Chirality, isomers, synthesis of Aspirin and Paracetamol.',
+ '{"credits": 3, "contact_hours": "3L:0T:0P", "department": "1st Year Common"}'),
 
 ('COMMON', 1, 'ES-CS101', 'Programming for Problem Solving', 'SYLLABUS', 2023, 'https://makautexam.net/syllabus/ES-CS101.pdf',
  'Module 1: Introduction to Programming - Computer architecture, algorithms, flowcharts, compilation, variables, data types, operators.
@@ -97,7 +99,7 @@ VALUES
   Module 5: Pointers & Structures - Pointer arithmetic, pointers and arrays, dynamic memory allocation (malloc, calloc, free), structures, union.',
  '{"credits": 3, "contact_hours": "3L:0T:0P", "department": "1st Year Common"}'),
 
-('COMMON', 1, 'HM-HU101', 'English & Professional Communication', 'SYLLABUS', 2023, 'https://makautexam.net/syllabus/HM-HU101.pdf',
+('COMMON', 1, 'HM-HU101', 'English', 'SYLLABUS', 2023, 'https://makautexam.net/syllabus/HM-HU101.pdf',
  'Module 1: Vocabulary Building - Root words, synonyms, antonyms, prefixes and suffixes, standard abbreviations.
   Module 2: Basic Writing Skills - Sentence structures, punctuation, coherence, paragraph writing, precis writing.
   Module 3: Professional Communication - Formal letter writing, email etiquette, CV and resume design, technical report writing.
