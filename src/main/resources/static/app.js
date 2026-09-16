@@ -853,7 +853,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (localStorage.getItem('campussense_logged_in') !== 'true') {
                     sessionStorage.setItem('pending_download_action', JSON.stringify({ fileUrl, title, subjectCode, paperYear }));
-                    showAuthModal(true, "Please sign in or create an account to download MAKAUT examination papers");
+                    showAuthModal(true, "Please sign in or create an account to download official MAKAUT exam papers.");
                     return;
                 }
                 downloadPdfFile(fileUrl, (title || 'MAKAUT_Paper') + '.pdf');
@@ -1193,6 +1193,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const pending = JSON.parse(pendingActionRaw);
                     sessionStorage.removeItem('pending_download_action');
                     downloadPdfFile(pending.fileUrl, (pending.title || 'MAKAUT_Paper') + '.pdf');
+                    openPdfViewer(pending.title || 'MAKAUT Examination Paper', pending.fileUrl);
                 } catch (err) {
                     sessionStorage.removeItem('pending_download_action');
                 }
@@ -1552,7 +1553,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (localStorage.getItem('campussense_logged_in') !== 'true') {
                     sessionStorage.setItem('pending_download_action', JSON.stringify({ fileUrl, title, subjectCode, paperYear }));
-                    showAuthModal(true, "Please sign in or create an account to download MAKAUT examination papers");
+                    showAuthModal(true, "Please sign in or create an account to download official MAKAUT exam papers.");
                     return;
                 }
                 downloadPdfFile(fileUrl, (title || `${subjectCode}_${paperYear}`) + '.pdf');
@@ -1803,6 +1804,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (directBtn) {
             directBtn.onclick = (e) => {
                 e.preventDefault();
+                if (localStorage.getItem('campussense_logged_in') !== 'true') {
+                    sessionStorage.setItem('pending_download_action', JSON.stringify({ fileUrl: resolvedUrl, title: preferredName }));
+                    showAuthModal(true, "Please sign in or create an account to download official MAKAUT exam papers.");
+                    return;
+                }
                 downloadPdfFile(resolvedUrl, preferredName);
             };
         }
@@ -1880,6 +1886,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (downloadBtn) {
             downloadBtn.onclick = (e) => {
                 e.preventDefault();
+                if (localStorage.getItem('campussense_logged_in') !== 'true') {
+                    sessionStorage.setItem('pending_download_action', JSON.stringify({ fileUrl: resolvedUrl, title: preferredName }));
+                    showAuthModal(true, "Please sign in or create an account to download official MAKAUT exam papers.");
+                    return;
+                }
                 downloadPdfFile(resolvedUrl, preferredName);
             };
         }
@@ -1976,10 +1987,18 @@ document.addEventListener('DOMContentLoaded', () => {
         btnPdfFullscreen.addEventListener('click', () => {
             const card = document.querySelector('.pdf-viewer-card');
             if (card) {
-                if (!document.fullscreenElement) {
-                    if (card.requestFullscreen) card.requestFullscreen();
+                if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                    if (card.requestFullscreen) {
+                        card.requestFullscreen();
+                    } else if (card.webkitRequestFullscreen) {
+                        card.webkitRequestFullscreen();
+                    }
                 } else {
-                    if (document.exitFullscreen) document.exitFullscreen();
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    } else if (document.webkitExitFullscreen) {
+                        document.webkitExitFullscreen();
+                    }
                 }
             }
         });
@@ -2527,7 +2546,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     year: 2023,
                     group: 'Group C',
                     questionNumber: 'Q4',
-                    pageUrl: 'https://makautexam.net/syllabus/ES-EE101.pdf'
+                    pageUrl: 'assets/resources/1st_year/syllabus/ES-EE101.pdf'
                 }]
             };
         }
@@ -2542,7 +2561,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     year: 2023,
                     group: 'Group C',
                     questionNumber: 'Q3',
-                    pageUrl: 'https://makautexam.net/syllabus/BS-PH101.pdf'
+                    pageUrl: 'assets/resources/1st_year/syllabus/Physics.pdf'
                 }]
             };
         }
