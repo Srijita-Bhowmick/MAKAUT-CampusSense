@@ -1736,7 +1736,7 @@ body {
     top: 0;
     z-index: 2147483647; /* Maximum browser stacking context */
     pointer-events: auto;
-    background: var(--bg-secondary, #0f172a);
+    background: var(--card-bg, #0f172a);
 }
 
 .pdf-viewer-card:fullscreen,

@@ -208,7 +208,7 @@
                     </button>
                 </div>
 
-                <!-- Card 2: PYQ Archives (Placed adjacent to Curated Syllabi) -->
+                <!-- Card 2: PYQ Archives (placed directly adjacent to Curated Syllabi) -->
                 <div class="landing-feature-card">
                     <div class="feature-icon-box emerald">📑</div>
                     <h3 class="feature-card-title">PYQ Archives</h3>
@@ -246,34 +246,26 @@
              ========================================================== -->
         <section id="landing-curriculum" class="landing-content-section">
             <div class="landing-section-header">
-                <div class="landing-section-pretitle">OFFICIAL MAKAUT SYLLABUS DIRECTORY</div>
+                <div class="landing-section-pretitle">ACADEMIC STRUCTURE</div>
                 <h2 class="landing-section-title">Curriculum & Syllabus Blueprint</h2>
-                <p class="landing-section-subhead">Explore official 2026 AICTE model curriculum blueprints, contact hours, and unit breakdowns for all foundational engineering courses.</p>
+                <p class="landing-section-subhead">Explore verified MAKAUT curriculum course codes, credit distribution, and expandable unit-by-unit module breakdowns with lecture hours.</p>
             </div>
 
-            <!-- Curriculum Stream Selection Tabs -->
-            <div class="curriculum-stream-tabs" id="curriculum-stream-tabs">
-                <button class="curriculum-tab-btn active" data-curriculum-stream="FIRST_YEAR">1st Year (Common)</button>
+            <!-- Stream Filter Tabs for Curriculum -->
+            <div class="curriculum-filter-tabs" id="curriculum-stream-filter">
+                <button class="curriculum-tab-btn active" data-curriculum-stream="ALL">All Subjects</button>
+                <button class="curriculum-tab-btn" data-curriculum-stream="COMMON">1st Year Common</button>
                 <button class="curriculum-tab-btn" data-curriculum-stream="CSE">CSE</button>
                 <button class="curriculum-tab-btn" data-curriculum-stream="IT">IT</button>
             </div>
 
-            <!-- Regulation Alert Card -->
-            <div class="regulation-alert-card">
-                <span class="reg-icon">ℹ️</span>
-                <div class="reg-text">
-                    <strong>Note on Syllabus & Papers:</strong> 1st-year courses follow the updated <strong>2026 MAKAUT curriculum</strong>, while past question papers reflect the <strong>2018 model</strong> they were examined under. Core physics and chemistry (<code>BS-CH101</code> / <code>BS-CH201</code>) topics remain identical—check the syllabus for minor unit adjustments.
-                </div>
-            </div>
-
-            <!-- Curriculum Subject Grid -->
-            <div class="curriculum-grid" id="landing-curriculum-grid">
-                <!-- Rendered dynamically by app.js -->
+            <div class="curriculum-cards-grid" id="curriculum-cards-container">
+                <!-- Rendered dynamically by app.js with expandable Unit 1-5 accordions -->
             </div>
         </section>
 
         <!-- ==========================================================
-             SECTION 3: PYQ ARCHIVES
+             SECTION 2: PAST EXAMINATION PAPERS (PYQ ARCHIVES)
              (Strictly examination papers categorized by Year)
              ========================================================== -->
         <section id="landing-pyqs" class="landing-content-section">
@@ -289,11 +281,11 @@
                     <span class="filter-lbl">Year:</span>
                     <div class="filter-pills" id="pyq-year-pills">
                         <button class="filter-pill active" data-pyq-year="ALL">All Years</button>
+                        <button class="filter-pill" data-pyq-year="2026">2026</button>
+                        <button class="filter-pill" data-pyq-year="2025">2025</button>
                         <button class="filter-pill" data-pyq-year="2024">2024</button>
                         <button class="filter-pill" data-pyq-year="2023">2023</button>
-                        <button class="filter-pill" data-pyq-year="2022">2022</button>
-                        <button class="filter-pill" data-pyq-year="2021">2021</button>
-                        <button class="filter-pill" data-pyq-year="2019">2019</button>
+                        <button class="filter-pill" data-pyq-year="2020">2020</button>
                     </div>
                 </div>
             </div>
