@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/bookmarks")
 @RequiredArgsConstructor
+@SuppressWarnings("null")
 @Tag(name = "User Bookmarks", description = "Save revision deck questions and academic resources")
 public class BookmarkController {
 

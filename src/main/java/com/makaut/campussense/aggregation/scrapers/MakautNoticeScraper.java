@@ -36,7 +36,6 @@ public class MakautNoticeScraper {
         String url = (targetUrl != null && !targetUrl.isBlank()) ? targetUrl : DEFAULT_NOTICE_URL;
         log.info("Scraping MAKAUT notices from: {}", url);
 
-        List<ScrapedNotice> notices = new ArrayList<>();
         Document doc = Jsoup.connect(url)
                 .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36")
                 .timeout(10000)

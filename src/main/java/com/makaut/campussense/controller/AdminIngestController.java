@@ -1,7 +1,6 @@
 package com.makaut.campussense.controller;
 
 import com.makaut.campussense.aggregation.IngestionService;
-import com.makaut.campussense.aggregation.scrapers.MakautSyllabusScraper;
 import com.makaut.campussense.model.enums.ResourceType;
 import com.makaut.campussense.model.enums.StreamType;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,11 +23,11 @@ import java.net.http.HttpResponse;
 @RestController
 @RequestMapping("/api/v1/admin")
 @RequiredArgsConstructor
+@SuppressWarnings("null")
 @Tag(name = "Admin Ingestion", description = "Endpoints for ingesting PDFs, syllabus documents, and URLs into the vector store")
 public class AdminIngestController {
 
     private final IngestionService ingestionService;
-    private final MakautSyllabusScraper makautSyllabusScraper;
     private final HttpClient httpClient = HttpClient.newHttpClient();
 
     @PostMapping(value = "/ingest/pdf", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

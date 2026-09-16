@@ -21,6 +21,7 @@ import java.util.List;
 @Component
 @Profile("dev")
 @RequiredArgsConstructor
+@SuppressWarnings("null")
 public class DataInitializer implements CommandLineRunner {
 
     private final CollegeRepository collegeRepository;
@@ -30,7 +31,6 @@ public class DataInitializer implements CommandLineRunner {
     private final SyllabusUnitRepository syllabusUnitRepository;
     private final FrequentQuestionRepository frequentQuestionRepository;
     private final UserBookmarkRepository userBookmarkRepository;
-    private final UserSyllabusProgressRepository userSyllabusProgressRepository;
     private final EmbeddingService embeddingService;
     private final TextChunker textChunker;
 
@@ -69,7 +69,7 @@ public class DataInitializer implements CommandLineRunner {
                 .location("Haldia, Purba Medinipur")
                 .build());
 
-        College nsec = collegeRepository.save(College.builder()
+        collegeRepository.save(College.builder()
                 .name("Netaji Subhash Engineering College (NSEC)")
                 .code("108")
                 .location("Garia, Kolkata")

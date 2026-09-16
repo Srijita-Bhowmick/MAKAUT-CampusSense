@@ -36,7 +36,6 @@ public class MakautSyllabusScraper {
         String url = (targetUrl != null && !targetUrl.isBlank()) ? targetUrl : DEFAULT_SYLLABUS_URL;
         log.info("Scraping MAKAUT syllabus links from: {}", url);
 
-        List<ScrapedResourceLink> links = new ArrayList<>();
         Document doc = Jsoup.connect(url)
                 .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36")
                 .timeout(10000)

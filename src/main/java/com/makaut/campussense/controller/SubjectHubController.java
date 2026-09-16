@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
+@SuppressWarnings("null")
 @Tag(name = "Subject Hub & Syllabus Checklist", description = "Subject details, interactive syllabus checklist, PYQ archive, and recurring topics")
 public class SubjectHubController {
 

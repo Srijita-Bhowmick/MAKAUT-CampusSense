@@ -23,6 +23,7 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@SuppressWarnings("null")
 public class IngestionService {
 
     private final PdfBoxParser pdfBoxParser;

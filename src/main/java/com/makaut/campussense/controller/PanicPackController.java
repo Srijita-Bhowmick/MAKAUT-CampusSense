@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/panic-pack")
 @RequiredArgsConstructor
+@SuppressWarnings("null")
 @Tag(name = "Panic Pack", description = "High-yield repeated PYQ questions ranked by occurrence frequency")
 public class PanicPackController {
 

@@ -18,6 +18,7 @@ import java.time.Instant;
 @RestController
 @RequestMapping("/api/v1/feedback")
 @RequiredArgsConstructor
+@SuppressWarnings("null")
 @Tag(name = "Feedback & Reports", description = "Student feedback, broken paper reporting, and missing PYQ requests")
 public class FeedbackController {
 

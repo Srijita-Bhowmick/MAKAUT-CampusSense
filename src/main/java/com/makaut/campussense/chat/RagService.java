@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@SuppressWarnings("null")
 public class RagService {
 
     private final EmbeddingService embeddingService;
