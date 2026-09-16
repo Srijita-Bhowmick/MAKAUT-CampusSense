@@ -81,25 +81,45 @@ VALUES
   Module 4: Electrical Machines - Generation of rotating magnetic fields, construction and principle of 3-phase induction motor, DC machines, torque-speed characteristics.',
  '{"credits": 4, "department": "1st Year Common"}'),
 
+('COMMON', 1, 'BS-CH101', 'Chemistry-I (Chemical Principles & Spectroscopy)', 'SYLLABUS', 2023, 'https://makautexam.net/syllabus/BS-CH101.pdf',
+ 'Module 1: Atomic and Molecular Structure - Schrodinger equation, particle in a box, MO theory, band structure of solids.
+  Module 2: Spectroscopic Techniques - Principles of spectroscopy, selection rules, UV-Visible, Fluorescence, IR and Raman spectroscopy.
+  Module 3: Intermolecular Forces - Real gases, equations of state, potential energy surfaces.
+  Module 4: Periodic Properties - Effective nuclear charge, ionization energies, electron affinity, electronegativity, oxidation states.
+  Module 5: Stereochemistry and Organic Synthesis - Chirality, isomers, synthesis of Aspirin and Paracetamol.',
+ '{"credits": 4, "contact_hours": "3L:1T:0P", "department": "1st Year Common"}'),
+
 ('COMMON', 1, 'ES-CS101', 'Programming for Problem Solving', 'SYLLABUS', 2023, 'https://makautexam.net/syllabus/ES-CS101.pdf',
  'Module 1: Introduction to Programming - Computer architecture, algorithms, flowcharts, compilation, variables, data types, operators.
   Module 2: Control Structures - Conditional branching (if, else-if, switch), iteration and loops (for, while, do-while), break and continue.
   Module 3: Arrays & Strings - 1D and 2D arrays, matrix operations, string handling functions, character arrays.
   Module 4: Functions & Recursion - Parameter passing (call by value, call by reference), scope, storage classes, recursive functions (GCD, Factorial, Tower of Hanoi).
   Module 5: Pointers & Structures - Pointer arithmetic, pointers and arrays, dynamic memory allocation (malloc, calloc, free), structures, union.',
- '{"credits": 4, "department": "1st Year Common"}'),
+ '{"credits": 3, "contact_hours": "3L:0T:0P", "department": "1st Year Common"}'),
 
 ('COMMON', 1, 'HM-HU101', 'English & Professional Communication', 'SYLLABUS', 2023, 'https://makautexam.net/syllabus/HM-HU101.pdf',
  'Module 1: Vocabulary Building - Root words, synonyms, antonyms, prefixes and suffixes, standard abbreviations.
   Module 2: Basic Writing Skills - Sentence structures, punctuation, coherence, paragraph writing, precis writing.
   Module 3: Professional Communication - Formal letter writing, email etiquette, CV and resume design, technical report writing.
   Module 4: Oral Communication - Phonetics, listening comprehension, presentation skills, group discussions.',
- '{"credits": 2, "department": "1st Year Common"}')
+ '{"credits": 2, "contact_hours": "2L:0T:0P", "department": "1st Year Common"}')
 ON CONFLICT DO NOTHING;
 
 -- 7. Seed Panic Pack High-Yield Questions
 INSERT INTO frequent_questions (subject_code, topic_name, question_text, marks, frequency_count, exam_years, group_type, model_answer_snippet)
 VALUES
+('BS-CH101', 'Electrochemistry & Nernst Equation', 'Derive the Nernst equation for single electrode potential and cell EMF. Calculate the EMF of the cell: Zn | Zn2+(0.01M) || Cu2+(0.1M) | Cu at 298 K (Given E°_cell = 1.10 V).', 10, 5, '2019, 2021, 2022, 2023, 2024', 'Group C',
+ 'From Gibbs free energy Delta G = Delta G° + RT ln Q and Delta G = -nFE, we obtain E = E° - (2.303 RT / nF) log Q. At 298 K, E = E° - (0.0591 / n) log([Zn2+]/[Cu2+]) = 1.10 - (0.0591 / 2) log(0.01/0.1) = 1.10 + 0.0295 = 1.1295 V.'),
+
+('BS-CH101', 'Conductometric Titrations', 'Discuss the principle of conductometric titration. Sketch and explain the conductometric titration curves for: (i) Strong acid vs Strong base, and (ii) Weak acid vs Strong base.', 5, 4, '2019, 2021, 2022, 2023', 'Group B',
+ 'Conductance depends on number and mobility of ions. For HCl vs NaOH: Conductance decreases sharply as fast H+ is replaced by slower Na+, reaches minimum at equivalence, then rises steeply due to excess fast OH-. For CH3COOH vs NaOH: Initial decrease, then steady rise due to CH3COONa formation, and sharp rise post-equivalence.'),
+
+('BS-CH101', 'Crystal Field Theory (CFT)', 'Explain the crystal field splitting of d-orbitals in octahedral and tetrahedral complexes with orbital energy diagrams. Calculate CFSE for d5 and d6 octahedral complexes in high-spin and low-spin states.', 10, 5, '2018, 2020, 2022, 2023, 2024', 'Group C',
+ 'Under octahedral field, degeneracy of five d-orbitals is lifted into lower t2g (dxy, dyz, dzx) at -0.4 Delta_o and higher eg (dx2-y2, dz2) at +0.6 Delta_o. In tetrahedral field, splitting is reversed into lower e (-0.6 Delta_t) and higher t2 (+0.4 Delta_t) where Delta_t = (4/9) Delta_o.'),
+
+('BS-CH101', 'Organic Synthesis (Drugs)', 'Outline the chemical synthesis of: (i) Aspirin from salicylic acid, and (ii) Paracetamol from p-nitrophenol. Give reactions, reaction conditions, and their medicinal mechanisms.', 5, 4, '2020, 2022, 2023, 2024', 'Group B',
+ 'Aspirin: Salicylic acid + acetic anhydride in presence of conc. H2SO4 at 50-60°C gives acetylsalicylic acid (aspirin) + acetic acid. Acts as irreversible COX inhibitor. Paracetamol: p-nitrophenol reduced (Fe/HCl) to p-aminophenol, then acetylated with acetic anhydride/glacial acetic acid to give acetaminophen (paracetamol). Acts as antipyretic/analgesic.'),
+
 ('ES-EE101', 'Network Theorems', 'State Thevenin theorem. For a given bridge circuit with 10V DC source, find the Thevenin equivalent voltage (Vth) and Thevenin resistance (Rth) across load terminals AB.', 10, 5, '2019, 2021, 2022, 2023, 2024', 'Group C',
  'Thevenin Theorem: Any linear bilateral DC network across two terminals can be replaced by an equivalent voltage source Vth in series with resistance Rth. Vth is open-circuit voltage across AB. Rth is equivalent resistance looking into AB with independent sources turned off.'),
 

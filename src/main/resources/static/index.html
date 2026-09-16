@@ -332,6 +332,13 @@
                     <button class="search-submit-btn" id="btn-hero-search">
                         Ask AI ⚡
                     </button>
+                    <div class="search-history-dropdown" id="search-history-dropdown" style="display: none;">
+                        <div class="search-history-header">
+                            <span class="search-history-title">Recent Searches</span>
+                            <button type="button" class="btn-clear-history" id="btn-clear-search-history">Clear History</button>
+                        </div>
+                        <div class="search-history-list" id="search-history-list"></div>
+                    </div>
                 </div>
                 <div class="search-quick-tags">
                     <span class="quick-tag-label">Trending Revisions:</span>
@@ -389,7 +396,7 @@
                     <div class="alert-icon">⚡</div>
                     <div class="alert-content">
                         <span class="alert-title">Note on Syllabus & Papers:</span>
-                        <p>1st-year courses follow the updated <strong>2026 MAKAUT curriculum</strong>, while past question papers reflect the <strong>2018 model</strong> they were examined under. Core physics and math topics remain identical—check the syllabus for minor unit adjustments.</p>
+                        <p>1st-year courses follow the updated <strong>2026 MAKAUT curriculum</strong>, while past question papers reflect the <strong>2018 model</strong> they were examined under. Core physics and chemistry (<code>BS-CH101</code> / <code>BS-CH201</code>) topics remain identical—check the syllabus for minor unit adjustments.</p>
                     </div>
                 </div>
 
@@ -445,6 +452,12 @@
 
                 <div class="deck-preview-list" id="deck-preview-list">
                     <!-- Populated dynamically by app.js -->
+                </div>
+
+                <div class="card-footer-action" style="margin-top: 1rem;">
+                    <button class="btn btn-secondary" id="btn-view-all-deck" style="width: 100%;">
+                        📖 Open Full Saved Deck
+                    </button>
                 </div>
             </div>
         </section>
@@ -748,6 +761,9 @@
                     </div>
                 </div>
                 <div class="pdf-viewer-actions">
+                    <button type="button" class="btn btn-secondary" id="btn-pdf-bookmark" title="Bookmark Resource">
+                        🔖 Bookmark
+                    </button>
                     <button type="button" class="btn btn-secondary" id="btn-pdf-fullscreen" title="Toggle Fullscreen">
                         ⛶ Fullscreen
                     </button>
@@ -845,6 +861,11 @@
             <button class="drawer-close-btn" id="btn-close-ai-drawer" title="Close Drawer (Esc)">✕</button>
         </div>
 
+        <div class="drawer-history-row" id="drawer-history-row" style="display: none;">
+            <span class="drawer-history-label">Recent Questions:</span>
+            <div class="drawer-history-pills" id="drawer-history-pills"></div>
+        </div>
+
         <div class="drawer-chat-messages" id="drawer-chat-messages">
             <div class="message assistant welcome">
                 <div class="msg-avatar">🤖</div>
@@ -873,6 +894,24 @@
                     Send ⚡
                 </button>
             </form>
+        </div>
+    </aside>
+
+    <!-- Dedicated Saved Deck Drawer Modal -->
+    <div class="drawer-backdrop" id="saved-deck-backdrop" style="display: none;"></div>
+    <aside class="saved-deck-drawer" id="saved-deck-drawer">
+        <div class="drawer-header">
+            <div class="drawer-title-group">
+                <span class="drawer-icon">🔖</span>
+                <div>
+                    <div class="drawer-title">My Saved Revision Deck</div>
+                    <div class="drawer-subtitle" id="saved-deck-subtitle">Bookmarked High-Yield Questions & Papers</div>
+                </div>
+            </div>
+            <button class="drawer-close-btn" id="btn-close-saved-deck-drawer" title="Close Drawer (Esc)">✕</button>
+        </div>
+        <div class="saved-deck-body" id="saved-deck-body">
+            <!-- Rendered dynamically by app.js -->
         </div>
     </aside>
 

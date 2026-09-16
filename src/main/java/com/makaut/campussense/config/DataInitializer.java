@@ -109,7 +109,26 @@ public class DataInitializer implements CommandLineRunner {
                         Module 3: Lasers & Fiber Optics: Spontaneous and stimulated emission, Einstein A and B coefficients, population inversion, optical pumping; Ruby laser, He-Ne laser; Principle of optical fibers, total internal reflection, numerical aperture, acceptance angle.
                         Module 4: Electromagnetism: Gauss law in electrostatics and magnetostatics, Ampere law, Faraday law of induction; Maxwell equations in differential and integral forms, displacement current; Electromagnetic wave propagation in vacuum, Poynting vector.
                         """)
-                .metadata("{\"credits\": 4, \"department\": \"1st Year Common\"}")
+                .metadata("{\"credits\": 4, \"contact_hours\": \"3L:1T:0P\", \"department\": \"1st Year Common\"}")
+                .build());
+
+        // BS-CH101
+        CourseResource chemistry101 = courseResourceRepository.save(CourseResource.builder()
+                .stream(StreamType.COMMON)
+                .semester(1)
+                .subjectCode("BS-CH101")
+                .subjectName("Chemistry-I (Chemical Principles & Spectroscopy)")
+                .resourceType(ResourceType.SYLLABUS)
+                .year(2023)
+                .fileUrl("https://makautexam.net/syllabus/BS-CH101.pdf")
+                .rawText("""
+                        Module 1: Atomic and Molecular Structure: Schrodinger equation, particle in a box; Molecular orbitals of diatomic molecules; Band structure of solids and the role of doping on band structures.
+                        Module 2: Spectroscopic Techniques: Principles of spectroscopy and selection rules; UV-Visible and Fluorescence spectroscopy; Infrared and Raman spectroscopy; Applications of spectroscopy.
+                        Module 3: Intermolecular Forces and Potential Energy Surfaces: Ionic, dipolar and van Der Waals interactions; Equations of state of real gases and critical phenomena; Potential energy surfaces.
+                        Module 4: Periodic Properties and Thermodynamic Systems: Effective nuclear charge, penetration, shielding; Electronic configuration, atomic and ionic sizes, ionization energies, electron affinity, electronegativity; Oxidation states, coordination numbers.
+                        Module 5: Stereochemistry and Organic Reactions: Representations of 3D structures, structural isomers and stereoisomers, configurations, symmetry and chirality; Synthesis of commonly used drug molecules (Aspirin, Paracetamol).
+                        """)
+                .metadata("{\"credits\": 4, \"contact_hours\": \"3L:1T:0P\", \"department\": \"1st Year Common\"}")
                 .build());
 
         // ES-EE101
@@ -127,7 +146,7 @@ public class DataInitializer implements CommandLineRunner {
                         Module 3: Transformers: Magnetic materials, BH characteristics, ideal and practical transformer, equivalent circuit, losses in transformers, regulation and efficiency; Auto-transformer and three-phase transformer connections.
                         Module 4: Electrical Machines: Generation of rotating magnetic fields, Construction and working of a three-phase induction motor, significance of torque-slip characteristic; Loss components and efficiency, starting and speed control; Single-phase induction motor; Construction and working of synchronous machines and DC machines.
                         """)
-                .metadata("{\"credits\": 4, \"department\": \"1st Year Common\"}")
+                .metadata("{\"credits\": 4, \"contact_hours\": \"3L:1T:0P\", \"department\": \"1st Year Common\"}")
                 .build());
 
         // ES-CS101
@@ -146,7 +165,7 @@ public class DataInitializer implements CommandLineRunner {
                         Module 4: Functions & Recursion: Functions (including using built in libraries), Parameter passing in functions, call by value, Passing arrays to functions: idea of call by reference; Recursion, as a different way of solving problems; Example programs: finding Factorial, Fibonacci series, Ackerman function, Tower of Hanoi.
                         Module 5: Pointers & Structures: Idea of pointers, Defining pointers, Use of Pointers in self-referential structures, notion of linked list (no implementation); Dynamic memory allocation: malloc, calloc, realloc, free; Structures, defining structures and Array of Structures.
                         """)
-                .metadata("{\"credits\": 4, \"department\": \"1st Year Common\"}")
+                .metadata("{\"credits\": 3, \"contact_hours\": \"3L:0T:0P\", \"department\": \"1st Year Common\"}")
                 .build());
 
         // HM-HU101
@@ -281,8 +300,15 @@ public class DataInitializer implements CommandLineRunner {
         // Physics 101
         units.add(SyllabusUnit.builder().courseResource(physics101).unitNumber(1).unitTitle("Unit 1: Wave Optics").subtopics("Interference, Young double slit, Newton rings, thin film, Fraunhofer diffraction, diffraction grating").hours(10).build());
         units.add(SyllabusUnit.builder().courseResource(physics101).unitNumber(2).unitTitle("Unit 2: Quantum Mechanics").subtopics("Planck distribution, de Broglie hypothesis, Heisenberg uncertainty, Schrodinger equation, particle in box").hours(10).build());
-        units.add(SyllabusUnit.builder().courseResource(physics101).unitNumber(3).unitTitle("Unit 3: Lasers & Optical Fibers").subtopics("Einstein coefficients, Ruby and He-Ne lasers, optical fibers, numerical aperture").hours(6).build());
-        units.add(SyllabusUnit.builder().courseResource(physics101).unitNumber(4).unitTitle("Unit 4: Electromagnetism").subtopics("Gauss, Ampere, Faraday laws, Maxwell equations, displacement current, Poynting vector").hours(8).build());
+        units.add(SyllabusUnit.builder().courseResource(physics101).unitNumber(3).unitTitle("Unit 3: Lasers & Optical Fibers").subtopics("Einstein coefficients, Ruby and He-Ne lasers, optical fibers, numerical aperture").hours(10).build());
+        units.add(SyllabusUnit.builder().courseResource(physics101).unitNumber(4).unitTitle("Unit 4: Electromagnetism").subtopics("Gauss, Ampere, Faraday laws, Maxwell equations, displacement current, Poynting vector").hours(10).build());
+
+        // Chemistry 101
+        units.add(SyllabusUnit.builder().courseResource(chemistry101).unitNumber(1).unitTitle("Unit 1: Atomic & Molecular Structure").subtopics("Schrodinger equation, particle in a box, MO theory for diatomics, band structure of solids").hours(8).build());
+        units.add(SyllabusUnit.builder().courseResource(chemistry101).unitNumber(2).unitTitle("Unit 2: Spectroscopic Techniques").subtopics("Principles of spectroscopy, selection rules, UV-Vis, fluorescence, vibrational and rotational spectroscopy").hours(8).build());
+        units.add(SyllabusUnit.builder().courseResource(chemistry101).unitNumber(3).unitTitle("Unit 3: Intermolecular Forces & Potential Surfaces").subtopics("Ionic, dipolar and van der Waals forces, real gases, equations of state, potential energy surfaces").hours(6).build());
+        units.add(SyllabusUnit.builder().courseResource(chemistry101).unitNumber(4).unitTitle("Unit 4: Periodic Properties & Thermodynamics").subtopics("Effective nuclear charge, ionization energies, electron affinity, electronegativity, oxidation states").hours(8).build());
+        units.add(SyllabusUnit.builder().courseResource(chemistry101).unitNumber(5).unitTitle("Unit 5: Stereochemistry & Organic Synthesis").subtopics("Isomerism, chirality, enantiomers, diastereomers, synthesis of Aspirin and Paracetamol").hours(10).build());
 
         // Electrical 101
         units.add(SyllabusUnit.builder().courseResource(ee101).unitNumber(1).unitTitle("Unit 1: DC Circuits & Theorems").subtopics("Kirchhoff laws, Superposition, Thevenin, Norton, Maximum Power Transfer theorems, Star-Delta").hours(9).build());
@@ -321,6 +347,51 @@ public class DataInitializer implements CommandLineRunner {
 
         // 5. Populate Frequent Questions (Panic Pack)
         List<FrequentQuestion> questions = List.of(
+                // Chemistry (BS-CH101)
+                FrequentQuestion.builder()
+                        .subjectCode("BS-CH101")
+                        .topicName("Electrochemistry & Nernst Equation")
+                        .questionText("Derive the Nernst equation for single electrode potential and cell EMF. Calculate the EMF of the cell: Zn | Zn2+(0.01M) || Cu2+(0.1M) | Cu at 298 K (Given E°_cell = 1.10 V).")
+                        .marks(10)
+                        .frequencyCount(5)
+                        .examYears("2019, 2021, 2022, 2023, 2024")
+                        .groupType("Group C")
+                        .modelAnswerSnippet("From Gibbs free energy Delta G = Delta G° + RT ln Q and Delta G = -nFE, we obtain E = E° - (2.303 RT / nF) log Q. At 298 K, E = E° - (0.0591 / n) log([Zn2+]/[Cu2+]) = 1.10 - (0.0591 / 2) log(0.01/0.1) = 1.10 + 0.0295 = 1.1295 V.")
+                        .build(),
+
+                FrequentQuestion.builder()
+                        .subjectCode("BS-CH101")
+                        .topicName("Conductometric Titrations")
+                        .questionText("Discuss the principle of conductometric titration. Sketch and explain the conductometric titration curves for: (i) Strong acid vs Strong base, and (ii) Weak acid vs Strong base.")
+                        .marks(5)
+                        .frequencyCount(4)
+                        .examYears("2019, 2021, 2022, 2023")
+                        .groupType("Group B")
+                        .modelAnswerSnippet("Conductance depends on number and mobility of ions. For HCl vs NaOH: Conductance decreases sharply as fast H+ is replaced by slower Na+, reaches minimum at equivalence, then rises steeply due to excess fast OH-. For CH3COOH vs NaOH: Initial decrease, then steady rise due to CH3COONa formation, and sharp rise post-equivalence.")
+                        .build(),
+
+                FrequentQuestion.builder()
+                        .subjectCode("BS-CH101")
+                        .topicName("Crystal Field Theory (CFT)")
+                        .questionText("Explain the crystal field splitting of d-orbitals in octahedral and tetrahedral complexes with orbital energy diagrams. Calculate CFSE for d5 and d6 octahedral complexes in high-spin and low-spin states.")
+                        .marks(10)
+                        .frequencyCount(5)
+                        .examYears("2018, 2020, 2022, 2023, 2024")
+                        .groupType("Group C")
+                        .modelAnswerSnippet("Under octahedral field, degeneracy of five d-orbitals is lifted into lower t2g (dxy, dyz, dzx) at -0.4 Delta_o and higher eg (dx2-y2, dz2) at +0.6 Delta_o. In tetrahedral field, splitting is reversed into lower e (-0.6 Delta_t) and higher t2 (+0.4 Delta_t) where Delta_t = (4/9) Delta_o.")
+                        .build(),
+
+                FrequentQuestion.builder()
+                        .subjectCode("BS-CH101")
+                        .topicName("Organic Synthesis (Drugs)")
+                        .questionText("Outline the chemical synthesis of: (i) Aspirin from salicylic acid, and (ii) Paracetamol from p-nitrophenol. Give reactions, reaction conditions, and their medicinal mechanisms.")
+                        .marks(5)
+                        .frequencyCount(4)
+                        .examYears("2020, 2022, 2023, 2024")
+                        .groupType("Group B")
+                        .modelAnswerSnippet("Aspirin: Salicylic acid + acetic anhydride in presence of conc. H2SO4 at 50-60°C gives acetylsalicylic acid (aspirin) + acetic acid. Acts as irreversible COX inhibitor. Paracetamol: p-nitrophenol reduced (Fe/HCl) to p-aminophenol, then acetylated with acetic anhydride/glacial acetic acid to give acetaminophen (paracetamol). Acts as antipyretic/analgesic.")
+                        .build(),
+
                 // Electrical
                 FrequentQuestion.builder()
                         .subjectCode("ES-EE101")

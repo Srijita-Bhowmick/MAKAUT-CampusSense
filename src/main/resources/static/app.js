@@ -149,9 +149,9 @@ document.addEventListener('DOMContentLoaded', () => {
             description: 'Newton\'s rings, Fraunhofer diffraction, Schrödinger wave equation, Ruby lasers, and Maxwell\'s equations.',
             units: [
                 { id: 1021, unitNumber: 1, title: 'Unit 1: Wave Optics & Interference', subtopics: 'Huygens principle, superposition, Young\'s double slit, Newton\'s rings theory, Fresnel & Fraunhofer diffraction.', hours: 10 },
-                { id: 1022, unitNumber: 2, title: 'Unit 2: Lasers & Optical Fibers', subtopics: 'Einstein coefficients, population inversion, He-Ne laser, Ruby laser, numerical aperture, step-index fibers.', hours: 8 },
+                { id: 1022, unitNumber: 2, title: 'Unit 2: Lasers & Optical Fibers', subtopics: 'Einstein coefficients, population inversion, He-Ne laser, Ruby laser, numerical aperture, step-index fibers.', hours: 10 },
                 { id: 1023, unitNumber: 3, title: 'Unit 3: Quantum Mechanics', subtopics: 'de Broglie wavelength, Heisenberg uncertainty principle, time-dependent Schrödinger equation, particle in a box.', hours: 10 },
-                { id: 1024, unitNumber: 4, title: 'Unit 4: Electromagnetism & Maxwell Equations', subtopics: 'Gauss, Ampere, Faraday laws, Maxwell equations, displacement current, Poynting vector, wave equation.', hours: 8 }
+                { id: 1024, unitNumber: 4, title: 'Unit 4: Electromagnetism & Maxwell Equations', subtopics: 'Gauss, Ampere, Faraday laws, Maxwell equations, displacement current, Poynting vector, wave equation.', hours: 10 }
             ],
             pyqs: [
                 { id: 2101, year: 2026, type: 'END_SEM', title: 'MAKAUT 2026 Physics-I (BS-PH101)', fileUrl: 'assets/resources/1st_year/pyq/physics/btech-1-sem-physics-1-bs-ph101-2026.pdf' },
@@ -205,9 +205,9 @@ document.addEventListener('DOMContentLoaded', () => {
             description: 'Evolutes, definite integrals, multivariable extrema, Cayley-Hamilton theorem, and vector spaces.',
             units: [
                 { id: 1011, unitNumber: 1, title: 'Unit 1: Calculus & Evolutes', subtopics: 'Evolutes, involutes, definite integrals, Beta & Gamma functions, Rolle and Mean Value Theorems.', hours: 10 },
-                { id: 1012, unitNumber: 2, title: 'Unit 2: Multivariable Calculus', subtopics: 'Partial derivatives, directional derivatives, tangent planes, maxima and minima, Lagrange multipliers.', hours: 8 },
-                { id: 1013, unitNumber: 3, title: 'Unit 3: Matrices & Linear Algebra', subtopics: 'Inverse, rank, rank-nullity theorem, Cayley-Hamilton theorem, eigenvalues, eigenvectors, diagonalization.', hours: 10 },
-                { id: 1014, unitNumber: 4, title: 'Unit 4: Vector Spaces & Linear Transforms', subtopics: 'Vector spaces, linear independence, basis, dimension, linear transformations, kernel, and range.', hours: 8 }
+                { id: 1012, unitNumber: 2, title: 'Unit 2: Multivariable Calculus', subtopics: 'Partial derivatives, directional derivatives, tangent planes, maxima and minima, Lagrange multipliers.', hours: 10 },
+                { id: 1013, unitNumber: 3, title: 'Unit 3: Matrices & Linear Algebra', subtopics: 'Inverse, rank, rank-nullity theorem, Cayley-Hamilton theorem, eigenvalues, eigenvectors, diagonalization.', hours: 11 },
+                { id: 1014, unitNumber: 4, title: 'Unit 4: Vector Spaces & Linear Transforms', subtopics: 'Vector spaces, linear independence, basis, dimension, linear transformations, kernel, and range.', hours: 10 }
             ],
             pyqs: [
                 { id: 2301, year: 2026, type: 'END_SEM', title: 'MAKAUT 2026 Mathematics-1A (BS-M101)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_1a/btech-1-sem-mathematics-1a-bs-m101-2026.pdf' },
@@ -232,9 +232,9 @@ document.addEventListener('DOMContentLoaded', () => {
             description: 'First and second order ODEs, series solutions, Bessel and Legendre functions, partial differential equations, and complex contour integration.',
             units: [
                 { id: 1061, unitNumber: 1, title: 'Unit 1: First and Higher Order ODEs', subtopics: 'Exact ODEs, integrating factors, linear differential equations of higher order with constant coefficients, method of variation of parameters.', hours: 10 },
-                { id: 1062, unitNumber: 2, title: 'Unit 2: Series Solutions & Special Functions', subtopics: 'Power series solutions, Frobenius method, Legendre polynomials, Bessel functions of the first kind.', hours: 8 },
+                { id: 1062, unitNumber: 2, title: 'Unit 2: Series Solutions & Special Functions', subtopics: 'Power series solutions, Frobenius method, Legendre polynomials, Bessel functions of the first kind.', hours: 10 },
                 { id: 1063, unitNumber: 3, title: 'Unit 3: Partial Differential Equations', subtopics: 'First-order linear and non-linear PDEs, Charpit\'s method, separation of variables, wave and heat equations.', hours: 10 },
-                { id: 1064, unitNumber: 4, title: 'Unit 4: Complex Variables & Contour Integrals', subtopics: 'Cauchy-Riemann equations, analytic functions, Cauchy\'s integral formula, Taylor and Laurent series, residue theorem.', hours: 8 }
+                { id: 1064, unitNumber: 4, title: 'Unit 4: Complex Variables & Contour Integrals', subtopics: 'Cauchy-Riemann equations, analytic functions, Cauchy\'s integral formula, Taylor and Laurent series, residue theorem.', hours: 10 }
             ],
             pyqs: [
                 { id: 2401, year: 2026, type: 'END_SEM', title: 'MAKAUT 2026 Mathematics-2A (BS-M201)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_2a/btech-2-sem-mathematics-2-a-bs-m201-2026.pdf' },
@@ -260,8 +260,8 @@ document.addEventListener('DOMContentLoaded', () => {
             units: [
                 { id: 1031, unitNumber: 1, title: 'Unit 1: DC Circuits & Network Theorems', subtopics: 'KVL, KCL, mesh and nodal analysis, Superposition, Thévenin\'s Theorem, Norton\'s Theorem, Maximum Power.', hours: 10 },
                 { id: 1032, unitNumber: 2, title: 'Unit 2: AC Circuits & Phasors', subtopics: 'Sinusoidal alternating quantities, phasor representation, RLC series and parallel circuits, resonance, Q-factor.', hours: 10 },
-                { id: 1033, unitNumber: 3, title: 'Unit 3: Transformers', subtopics: 'Magnetic materials, ideal and practical transformers, equivalent circuit, losses, regulation and efficiency.', hours: 8 },
-                { id: 1034, unitNumber: 4, title: 'Unit 4: Electrical Machines & Installations', subtopics: 'DC machines generation principle, 3-phase induction motor, torque-speed curve, earthing and miniature circuit breakers.', hours: 8 }
+                { id: 1033, unitNumber: 3, title: 'Unit 3: Transformers', subtopics: 'Magnetic materials, ideal and practical transformers, equivalent circuit, losses, regulation and efficiency.', hours: 10 },
+                { id: 1034, unitNumber: 4, title: 'Unit 4: Electrical Machines & Installations', subtopics: 'DC machines generation principle, 3-phase induction motor, torque-speed curve, earthing and miniature circuit breakers.', hours: 10 }
             ],
             pyqs: [
                 { id: 2501, year: 2026, type: 'END_SEM', title: 'MAKAUT 2026 Basic Electrical (ES-EE101)', fileUrl: 'assets/resources/1st_year/pyq/bee/btech-1-sem-basic-electrical-engineering-es-ee101-2026.pdf' },
@@ -278,13 +278,13 @@ document.addEventListener('DOMContentLoaded', () => {
             category: 'GROUP_B',
             stream: 'GROUP_B',
             semester: 1,
-            credits: 4,
+            credits: 3,
             department: '1st Year (Group B)',
             syllabusUrl: 'assets/resources/1st_year/syllabus/PPS.pdf',
             description: 'Algorithms, conditionals, loops, multidimensional arrays, pointer arithmetic, dynamic allocation, and recursion.',
             units: [
-                { id: 1041, unitNumber: 1, title: 'Unit 1: Introduction to Programming & Flowcharts', subtopics: 'Algorithm, pseudo-code, flowcharts, variables, datatypes, operators, precedence, expressions.', hours: 8 },
-                { id: 1042, unitNumber: 2, title: 'Unit 2: Conditionals & Iterations', subtopics: 'if-else, switch-case, while, do-while, for loops, nested loops, break, continue, return statements.', hours: 8 },
+                { id: 1041, unitNumber: 1, title: 'Unit 1: Introduction to Programming & Flowcharts', subtopics: 'Algorithm, pseudo-code, flowcharts, variables, datatypes, operators, precedence, expressions.', hours: 7 },
+                { id: 1042, unitNumber: 2, title: 'Unit 2: Conditionals & Iterations', subtopics: 'if-else, switch-case, while, do-while, for loops, nested loops, break, continue, return statements.', hours: 7 },
                 { id: 1043, unitNumber: 3, title: 'Unit 3: Arrays & Strings', subtopics: '1D & 2D arrays, matrix multiplication, string manipulation, string.h library functions.', hours: 8 },
                 { id: 1044, unitNumber: 4, title: 'Unit 4: Functions & Recursion', subtopics: 'Call by value vs reference, parameter passing, recursion, Tower of Hanoi, Fibonacci series, scope and lifetime.', hours: 8 },
                 { id: 1045, unitNumber: 5, title: 'Unit 5: Pointers & Memory Management', subtopics: 'Pointer arithmetic, pointers to pointers, malloc(), calloc(), free(), structures, unions, file I/O operations.', hours: 8 }
@@ -308,11 +308,11 @@ document.addEventListener('DOMContentLoaded', () => {
             syllabusUrl: 'assets/resources/1st_year/syllabus/English.pdf',
             description: 'Vocabulary building, sentence structures, common errors in writing, technical reporting, and oral communication.',
             units: [
-                { id: 1071, unitNumber: 1, title: 'Unit 1: Vocabulary & Word Formation', subtopics: 'Roots, prefixes, suffixes, synonyms, antonyms, standard abbreviations, technical vocabulary.', hours: 6 },
-                { id: 1072, unitNumber: 2, title: 'Unit 2: Sentence Structure & Grammar', subtopics: 'Phrases, clauses, subject-verb agreement, active and passive voice, prepositions, direct and indirect speech.', hours: 8 },
-                { id: 1073, unitNumber: 3, title: 'Unit 3: Common Errors & Mechanics', subtopics: 'Dangling modifiers, run-on sentences, punctuation rules, capitalization, spelling conventions.', hours: 6 },
-                { id: 1074, unitNumber: 4, title: 'Unit 4: Technical Writing & Reports', subtopics: 'Paragraph development, coherence, technical proposals, resume writing, business correspondence.', hours: 8 },
-                { id: 1075, unitNumber: 5, title: 'Unit 5: Oral & Presentation Skills', subtopics: 'Phonetics, pronunciation, group discussions, seminar presentations, interview etiquette.', hours: 6 }
+                { id: 1071, unitNumber: 1, title: 'Unit 1: Vocabulary & Word Formation', subtopics: 'Roots, prefixes, suffixes, synonyms, antonyms, standard abbreviations, technical vocabulary.', hours: 5 },
+                { id: 1072, unitNumber: 2, title: 'Unit 2: Sentence Structure & Grammar', subtopics: 'Phrases, clauses, subject-verb agreement, active and passive voice, prepositions, direct and indirect speech.', hours: 5 },
+                { id: 1073, unitNumber: 3, title: 'Unit 3: Common Errors & Mechanics', subtopics: 'Dangling modifiers, run-on sentences, punctuation rules, capitalization, spelling conventions.', hours: 5 },
+                { id: 1074, unitNumber: 4, title: 'Unit 4: Technical Writing & Reports', subtopics: 'Paragraph development, coherence, technical proposals, resume writing, business correspondence.', hours: 5 },
+                { id: 1075, unitNumber: 5, title: 'Unit 5: Oral & Presentation Skills', subtopics: 'Phonetics, pronunciation, group discussions, seminar presentations, interview etiquette.', hours: 5 }
             ],
             pyqs: [
                 { id: 2701, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 English (HM-HU201)', fileUrl: 'assets/resources/1st_year/pyq/english/btech-2-sem-english-hmhu201-2025.pdf' },
@@ -444,7 +444,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     ];
 
-    // Verified High-Frequency Panic Pack Questions
+    // Verified High-Frequency Panic Pack Questions (Grounded 5-Year Exam Repeats)
     const MAKAUT_PANIC_QUESTIONS = [
         {
             id: 1,
@@ -460,30 +460,41 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             id: 2,
             subjectCode: 'ES-EE101',
-            topicName: 'Series Resonance',
-            questionText: 'Derive the resonant frequency for an RLC series circuit. Prove that Q-factor = (1/R) * sqrt(L/C) and define bandwidth.',
-            marks: 10,
+            topicName: 'Series Resonance & Q-Factor',
+            questionText: 'Derive the condition for series resonance in an RLC circuit. Show that the resonant frequency is fr = 1 / (2 * pi * sqrt(L * C)). Calculate the Q-factor and bandwidth.',
+            marks: 5,
             frequencyCount: 4,
-            examYears: ['2019', '2020', '2022', '2023'],
-            groupType: 'Group C',
+            examYears: ['2019', '2021', '2022', '2023'],
+            groupType: 'Group B',
             modelAnswerSnippet: 'At resonance, inductive reactance equals capacitive reactance (omega*L = 1/(omega*C)). Hence f0 = 1 / (2*pi*sqrt(L*C)). Impedance is purely resistive (Z = R). Quality factor Q = omega0*L / R = (1/R)*sqrt(L/C). Bandwidth = f0 / Q.'
         },
         {
             id: 3,
-            subjectCode: 'ES-CS101',
-            topicName: 'Pointer Arithmetic & Dynamic Memory',
-            questionText: 'Explain the difference between malloc() and calloc(). Write a C program to dynamically allocate memory for an array of n integers and reverse it using pointers.',
+            subjectCode: 'ES-EE101',
+            topicName: 'Transformer Losses & Maximum Efficiency',
+            questionText: 'Explain the losses occurring in a single-phase transformer. Derive the condition for maximum efficiency and show that it occurs when copper loss equals iron loss.',
             marks: 10,
-            frequencyCount: 5,
-            examYears: ['2019', '2021', '2022', '2023', '2024'],
+            frequencyCount: 4,
+            examYears: ['2018', '2020', '2022', '2023'],
             groupType: 'Group C',
-            modelAnswerSnippet: 'malloc(size) allocates single contiguous uninitialized block. calloc(n, size) allocates n elements initialized to 0. Reversal uses two pointer variables ptrStart and ptrEnd swapping values while ptrStart < ptrEnd.'
+            modelAnswerSnippet: 'Transformer losses: Iron loss Pi (hysteresis + eddy current, constant) and Copper loss Pcu = I2^2 * R02 (variable). Efficiency eta = (V2*I2*cos(phi)) / (V2*I2*cos(phi) + Pi + I2^2*R02). Differentiating with respect to I2 and equating to zero yields I2^2 * R02 = Pi, i.e., Variable Copper Loss = Constant Iron Loss.'
         },
         {
             id: 4,
             subjectCode: 'ES-CS101',
+            topicName: 'Dynamic Memory Allocation',
+            questionText: 'Explain the differences between malloc() and calloc() in C. Write a program to dynamically allocate memory for an array of n integers and calculate their average.',
+            marks: 5,
+            frequencyCount: 5,
+            examYears: ['2018', '2019', '2021', '2022', '2023'],
+            groupType: 'Group B',
+            modelAnswerSnippet: 'malloc(size) allocates a single uninitialized contiguous block of bytes containing garbage values. calloc(n, size) allocates n contiguous blocks of size bytes initialized to zero. Both return (void*) pointer or NULL on failure.'
+        },
+        {
+            id: 5,
+            subjectCode: 'ES-CS101',
             topicName: 'Recursion (Tower of Hanoi)',
-            questionText: 'Write a recursive C function to solve the Tower of Hanoi problem for n disks. Trace the function call tree for n = 3 disks.',
+            questionText: 'Write a recursive C function to solve the Tower of Hanoi problem for n disks. Trace the function call tree and show total moves for n = 3 disks.',
             marks: 10,
             frequencyCount: 4,
             examYears: ['2019', '2021', '2022', '2024'],
@@ -491,7 +502,29 @@ document.addEventListener('DOMContentLoaded', () => {
             modelAnswerSnippet: 'void tower(int n, char src, char dest, char aux) { if(n==1) { printf("Move disk 1 from %c to %c\\n", src, dest); return; } tower(n-1, src, aux, dest); printf("Move disk %d from %c to %c\\n", n, src, dest); tower(n-1, aux, dest, src); } Total moves: 2^n - 1 = 7 for n=3.'
         },
         {
-            id: 5,
+            id: 6,
+            subjectCode: 'ES-CS101',
+            topicName: 'Call by Value vs Reference',
+            questionText: 'Differentiate between call by value and call by reference in C. Write a C function using pointers to swap two integer values without global variables.',
+            marks: 5,
+            frequencyCount: 4,
+            examYears: ['2019', '2020', '2022', '2023'],
+            groupType: 'Group B',
+            modelAnswerSnippet: 'In call by value, copies of arguments are passed; changes inside the function do not affect caller. In call by reference (via pointers in C), addresses are passed so caller values are modified directly: void swap(int *a, int *b) { int temp = *a; *a = *b; *b = temp; }'
+        },
+        {
+            id: 7,
+            subjectCode: 'ES-CS101',
+            topicName: 'Pointer Arithmetic & 2D Arrays',
+            questionText: 'Explain pointer arithmetic in two-dimensional arrays. Show how *(*(arr + i) + j) accesses the element at row i and column j.',
+            marks: 10,
+            frequencyCount: 4,
+            examYears: ['2018', '2020', '2022', '2024'],
+            groupType: 'Group C',
+            modelAnswerSnippet: 'In int arr[M][N], arr is pointer to array of N ints. (arr + i) points to the i-th row. Dereferencing *(arr + i) yields base address of row i. Adding j gives (*(arr + i) + j), pointing to element (i, j). Final dereference *(*(arr + i) + j) yields arr[i][j].'
+        },
+        {
+            id: 8,
             subjectCode: 'BS-M101',
             topicName: 'Cayley-Hamilton Theorem',
             questionText: 'State Cayley-Hamilton Theorem. Verify it for matrix A = [[1, 2], [3, 4]] and hence compute A^-1.',
@@ -499,10 +532,10 @@ document.addEventListener('DOMContentLoaded', () => {
             frequencyCount: 5,
             examYears: ['2018', '2019', '2021', '2022', '2023'],
             groupType: 'Group C',
-            modelAnswerSnippet: 'Every square matrix satisfies its characteristic polynomial: det(A - lambda*I) = 0. Characteristic polynomial: lambda^2 - 5*lambda - 2 = 0. Verify A^2 - 5A - 2I = 0. Multiply by A^-1: A^-1 = (A - 5I)/2.'
+            modelAnswerSnippet: 'Every square matrix satisfies its characteristic equation: det(A - lambda*I) = 0. Characteristic polynomial: lambda^2 - 5*lambda - 2 = 0. Verify A^2 - 5A - 2I = 0. Multiply by A^-1: A^-1 = (A - 5I)/2.'
         },
         {
-            id: 6,
+            id: 9,
             subjectCode: 'BS-PH101',
             topicName: 'Newton\'s Rings',
             questionText: 'Explain the formation of Newton rings in reflected light. Prove that the diameters of dark rings are proportional to square roots of natural numbers.',
@@ -513,7 +546,84 @@ document.addEventListener('DOMContentLoaded', () => {
             modelAnswerSnippet: 'Formed by interference between rays reflected from upper surface of glass plate and lower curved surface of plano-convex lens. Path difference Delta = 2*t + lambda/2. For dark rings: 2t = n*lambda. Since t = r^2 / (2R), Dn^2 = 4*n*lambda*R => Dn directly proportional to sqrt(n).'
         },
         {
-            id: 7,
+            id: 10,
+            subjectCode: 'BS-PH101',
+            topicName: 'Fraunhofer Diffraction (Single Slit)',
+            questionText: 'Derive the intensity distribution of Fraunhofer diffraction at a single slit of width a. Find the conditions for central maximum, secondary maxima, and minima.',
+            marks: 10,
+            frequencyCount: 5,
+            examYears: ['2019', '2021', '2022', '2023', '2024'],
+            groupType: 'Group C',
+            modelAnswerSnippet: 'Resultant amplitude R = A * (sin beta / beta) where beta = (pi * a * sin theta) / lambda. Intensity I = I0 * (sin beta / beta)^2. Central maximum occurs at beta = 0. Minima occur at beta = m*pi (a*sin theta = m*lambda, m != 0). Secondary maxima occur at beta = +-1.43 pi, +-2.46 pi.'
+        },
+        {
+            id: 11,
+            subjectCode: 'BS-PH101',
+            topicName: 'Compton Effect',
+            questionText: 'What is Compton scattering? Derive the expression for Compton shift in wavelength Delta lambda = (h / (m0 * c)) * (1 - cos theta).',
+            marks: 10,
+            frequencyCount: 4,
+            examYears: ['2018', '2020', '2022', '2023'],
+            groupType: 'Group C',
+            modelAnswerSnippet: 'Applying relativistic conservation of energy and momentum between incident photon and stationary electron: E + m0*c^2 = E\' + m*c^2 and p = p\' + p_e. Squaring and eliminating electron parameters yields Delta lambda = lambda\' - lambda = (h / m0*c) * (1 - cos theta).'
+        },
+        {
+            id: 12,
+            subjectCode: 'BS-PH101',
+            topicName: 'Polarization & Brewster\'s Law',
+            questionText: 'State Brewster\'s law of polarization by reflection. Prove that when light is incident at polarizing angle, reflected and refracted rays are mutually perpendicular.',
+            marks: 5,
+            frequencyCount: 4,
+            examYears: ['2020', '2022', '2023', '2024'],
+            groupType: 'Group B',
+            modelAnswerSnippet: 'Brewster\'s Law: mu = tan(ip) = sin(ip)/cos(ip). By Snell\'s Law: mu = sin(ip)/sin(r). Equating gives sin(ip)/cos(ip) = sin(ip)/sin(r) => cos(ip) = sin(r) = cos(90° - r) => ip + r = 90°. Hence reflected and refracted rays are at right angles (180° - 90° = 90°).'
+        },
+        {
+            id: 13,
+            subjectCode: 'BS-CH101',
+            topicName: 'Nernst Equation & Cell EMF',
+            questionText: 'Derive the Nernst equation for single electrode potential and cell EMF. Calculate EMF of Zn | Zn2+(0.01M) || Cu2+(0.1M) | Cu at 298 K (E°_cell = 1.10 V).',
+            marks: 10,
+            frequencyCount: 5,
+            examYears: ['2019', '2021', '2022', '2023', '2024'],
+            groupType: 'Group C',
+            modelAnswerSnippet: 'Delta G = Delta G° + RT ln Q. Since Delta G = -nFE, E = E° - (2.303 RT / nF) log Q. At 298 K: E = 1.10 - (0.0591 / 2) log(0.01 / 0.1) = 1.10 - 0.02955 * (-1) = 1.1295 V.'
+        },
+        {
+            id: 14,
+            subjectCode: 'BS-CH101',
+            topicName: 'Conductometric Titrations',
+            questionText: 'Explain the principle of conductometric titration. Sketch and explain conductometric titration curves for (i) Strong acid vs Strong base, and (ii) Weak acid vs Strong base.',
+            marks: 5,
+            frequencyCount: 4,
+            examYears: ['2019', '2021', '2022', '2023'],
+            groupType: 'Group B',
+            modelAnswerSnippet: 'Conductance depends on ionic concentrations and mobilities. For HCl vs NaOH: Conductance drops sharply as H+ is replaced by Na+, hits minimum at endpoint, then rises steeply from excess fast OH-. For CH3COOH vs NaOH: Initial slight drop, steady increase due to CH3COONa salt formation, then steep rise post-equivalence.'
+        },
+        {
+            id: 15,
+            subjectCode: 'BS-CH101',
+            topicName: 'Crystal Field Theory (CFT)',
+            questionText: 'Explain crystal field splitting of d-orbitals in octahedral and tetrahedral complexes with energy level diagrams. Calculate CFSE for high-spin and low-spin d5 and d6 complexes.',
+            marks: 10,
+            frequencyCount: 5,
+            examYears: ['2018', '2020', '2022', '2023', '2024'],
+            groupType: 'Group C',
+            modelAnswerSnippet: 'Under octahedral field, electrostatic repulsion splits 5 degenerate d-orbitals into lower t2g (dxy, dyz, dzx, -0.4 Delta_o) and higher eg (dx2-y2, dz2, +0.6 Delta_o). In tetrahedral field, splitting reverses into lower e (-0.6 Delta_t) and higher t2 (+0.4 Delta_t) where Delta_t = (4/9) Delta_o.'
+        },
+        {
+            id: 16,
+            subjectCode: 'BS-CH101',
+            topicName: 'Organic Drug Synthesis',
+            questionText: 'Give the chemical synthesis of: (i) Aspirin from salicylic acid, and (ii) Paracetamol from p-nitrophenol with reaction mechanisms and conditions.',
+            marks: 5,
+            frequencyCount: 4,
+            examYears: ['2020', '2022', '2023', '2024'],
+            groupType: 'Group B',
+            modelAnswerSnippet: 'Aspirin: Salicylic acid + acetic anhydride + conc. H2SO4 at 50-60°C -> acetylsalicylic acid + acetic acid. Irreversible COX-1/COX-2 inhibitor. Paracetamol: p-nitrophenol reduced with Fe/HCl to p-aminophenol, then acetylated with acetic anhydride in glacial acetic acid to acetaminophen.'
+        },
+        {
+            id: 17,
             subjectCode: 'PCC-CS501',
             topicName: 'Banker’s Algorithm',
             questionText: 'Explain Banker Algorithm for Deadlock Avoidance. Given Allocation, Max, and Available matrices, demonstrate how to compute Need matrix and test for Safe Sequence.',
@@ -524,7 +634,7 @@ document.addEventListener('DOMContentLoaded', () => {
             modelAnswerSnippet: '1. Need = Max - Allocation. 2. Work = Available, Finish[i] = false. 3. Find process Pi where Finish[i] == false and Need_i <= Work. 4. Work = Work + Allocation_i, Finish[i] = true. 5. If all Finish[i] == true, system is in Safe State with a Safe Sequence e.g. <P1, P3, P4, P0, P2>.'
         },
         {
-            id: 8,
+            id: 18,
             subjectCode: 'PCC-CS501',
             topicName: 'Process Synchronization (Semaphores)',
             questionText: 'Define Critical Section and the three criteria for a valid solution. Explain how counting semaphores solve the Producer-Consumer bounded buffer problem.',
@@ -535,7 +645,7 @@ document.addEventListener('DOMContentLoaded', () => {
             modelAnswerSnippet: 'Criteria: 1. Mutual Exclusion, 2. Progress, 3. Bounded Waiting. Solution uses mutex = 1, empty = N, full = 0. Producer: wait(empty); wait(mutex); add_item(); signal(mutex); signal(full). Consumer: wait(full); wait(mutex); remove_item(); signal(mutex); signal(empty).'
         },
         {
-            id: 9,
+            id: 19,
             subjectCode: 'PCC-CS502',
             topicName: 'Database Normalization (BCNF vs 3NF)',
             questionText: 'Explain Boyce-Codd Normal Form (BCNF). How does BCNF differ from 3NF? Provide a relational schema that satisfies 3NF but violates BCNF.',
@@ -546,29 +656,7 @@ document.addEventListener('DOMContentLoaded', () => {
             modelAnswerSnippet: '3NF permits non-trivial FD X -> A if X is a superkey OR A is prime attribute. BCNF strictly requires X to be a superkey for every non-trivial FD. Relation R(Student, Subject, Teacher) with FDs {Student, Subject} -> Teacher and Teacher -> Subject is in 3NF but violates BCNF.'
         },
         {
-            id: 10,
-            subjectCode: 'PCC-CS503',
-            topicName: 'Subnetting & Dijkstra Routing',
-            questionText: 'Given the network IP 192.168.10.0/24, design 4 subnets. State subnet masks and usable host ranges. Explain Dijkstra Shortest Path algorithm with a 5-node graph.',
-            marks: 10,
-            frequencyCount: 4,
-            examYears: ['2019', '2021', '2022', '2024'],
-            groupType: 'Group C',
-            modelAnswerSnippet: 'To create 4 subnets, borrow 2 bits: Subnet mask is 255.255.255.192 (/26). Subnet 1: 192.168.10.0/26 (Hosts 1-62). Subnet 2: 192.168.10.64/26 (Hosts 65-126). Subnet 3: 192.168.10.128/26. Subnet 4: 192.168.10.192/26. Dijkstra maintains visited set and relaxes unvisited adjacent edge distances iteratively.'
-        },
-        {
-            id: 11,
-            subjectCode: 'BS-CH101',
-            topicName: 'Spectroscopy & Beer-Lambert Law',
-            questionText: 'State Beer-Lambert law of absorption spectrophotometry and write its mathematical form. Explain the origins of UV-visible electronic transitions (sigma->sigma*, pi->pi*, n->pi*).',
-            marks: 10,
-            frequencyCount: 5,
-            examYears: ['2020', '2023', '2024', '2025'],
-            groupType: 'Group C',
-            modelAnswerSnippet: 'Beer-Lambert law: Absorbance A = log(I0/I) = epsilon * c * l, where epsilon is molar absorptivity, c is concentration, and l is path length. Electronic transitions occur when outer electrons absorb UV-Vis photons. Energy order: sigma->sigma* > n->sigma* > pi->pi* > n->pi*.'
-        },
-        {
-            id: 12,
+            id: 20,
             subjectCode: 'BS-M201',
             topicName: 'Exact Differential Equations',
             questionText: 'Define an exact differential equation. State the necessary and sufficient condition for M dx + N dy = 0 to be exact. Solve (x^2 + y^2) dx + 2xy dy = 0.',
@@ -1910,22 +1998,54 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    let currentOpenPdf = null;
+
     function openPdfViewer(title, url) {
         const modal = document.getElementById('pdf-viewer-modal');
         const titleEl = document.getElementById('pdf-modal-title');
         const iframe = document.getElementById('pdf-viewer-iframe');
         const downloadBtn = document.getElementById('btn-pdf-external-download');
+        const bookmarkBtn = document.getElementById('btn-pdf-bookmark');
         const fallbackView = document.getElementById('pdf-fallback-view');
         const spinner = document.getElementById('pdf-loading-spinner');
 
         const resolvedUrl = resolveAssetPath(url);
         const preferredName = (title || 'MAKAUT_Resource').replace(/[^a-zA-Z0-9_-]/g, '_') + '.pdf';
+        currentOpenPdf = { title: title || 'MAKAUT Resource', url: resolvedUrl, rawUrl: url };
 
         if (titleEl) titleEl.textContent = title || 'MAKAUT Examination Paper';
         if (downloadBtn) {
             downloadBtn.onclick = (e) => {
                 e.preventDefault();
                 downloadPdfFile(resolvedUrl, preferredName);
+            };
+        }
+
+        if (bookmarkBtn) {
+            const isBookmarked = savedBookmarks.some(b => (b.url === resolvedUrl || b.fileUrl === url || b.fileUrl === resolvedUrl));
+            bookmarkBtn.textContent = isBookmarked ? '✓ Bookmarked' : '🔖 Bookmark';
+            bookmarkBtn.onclick = () => {
+                if (!currentOpenPdf) return;
+                const existingIdx = savedBookmarks.findIndex(b => (b.url === currentOpenPdf.url || b.fileUrl === currentOpenPdf.rawUrl || b.fileUrl === currentOpenPdf.url));
+                if (existingIdx >= 0) {
+                    savedBookmarks.splice(existingIdx, 1);
+                    bookmarkBtn.textContent = '🔖 Bookmark';
+                } else {
+                    savedBookmarks.push({
+                        id: 'pdf-' + Date.now(),
+                        type: 'PDF',
+                        title: currentOpenPdf.title,
+                        url: currentOpenPdf.url,
+                        fileUrl: currentOpenPdf.url,
+                        subjectCode: 'PDF Paper',
+                        topicName: currentOpenPdf.title,
+                        frequencyCount: 1
+                    });
+                    bookmarkBtn.textContent = '✓ Bookmarked';
+                }
+                localStorage.setItem('campussense_saved_deck', JSON.stringify(savedBookmarks));
+                renderSavedDeckPreview();
+                renderSavedDeckFull();
             };
         }
 
@@ -1984,6 +2104,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (fallbackView) fallbackView.style.display = 'none';
             const spinner = document.getElementById('pdf-loading-spinner');
             if (spinner) spinner.style.display = 'none';
+            currentOpenPdf = null;
         });
     }
 
@@ -2002,7 +2123,237 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 15. AI RAG Slide-Over Drawer
+    // 14. Dedicated Saved Deck Drawer Modal
+    // ==========================================
+    const savedDeckDrawer = document.getElementById('saved-deck-drawer');
+    const savedDeckBackdrop = document.getElementById('saved-deck-backdrop');
+    const btnCloseSavedDeckDrawer = document.getElementById('btn-close-saved-deck-drawer');
+    const btnViewAllDeck = document.getElementById('btn-view-all-deck');
+
+    function openSavedDeckDrawer() {
+        if (savedDeckDrawer) savedDeckDrawer.classList.add('open');
+        if (savedDeckBackdrop) savedDeckBackdrop.style.display = 'block';
+        renderSavedDeckFull();
+    }
+
+    function closeSavedDeckDrawer() {
+        if (savedDeckDrawer) savedDeckDrawer.classList.remove('open');
+        if (savedDeckBackdrop) savedDeckBackdrop.style.display = 'none';
+    }
+
+    if (btnOpenSavedDeck) btnOpenSavedDeck.addEventListener('click', openSavedDeckDrawer);
+    if (btnViewAllDeck) btnViewAllDeck.addEventListener('click', openSavedDeckDrawer);
+    if (btnCloseSavedDeckDrawer) btnCloseSavedDeckDrawer.addEventListener('click', closeSavedDeckDrawer);
+    if (savedDeckBackdrop) savedDeckBackdrop.addEventListener('click', closeSavedDeckDrawer);
+
+    function renderSavedDeckFull() {
+        const body = document.getElementById('saved-deck-body');
+        const subtitle = document.getElementById('saved-deck-subtitle');
+        if (subtitle) {
+            subtitle.textContent = `${savedBookmarks.length} Bookmarked Item${savedBookmarks.length === 1 ? '' : 's'}`;
+        }
+        if (!body) return;
+
+        if (savedBookmarks.length === 0) {
+            body.innerHTML = `
+                <div class="deck-empty-state-card" style="padding: 3rem 1.5rem; text-align: center; color: var(--text-muted);">
+                    <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">🔖</div>
+                    <h4 style="color: var(--text-primary); margin-bottom: 0.5rem; font-size: 1.1rem;">No bookmarked items yet</h4>
+                    <p style="font-size: 0.88rem; line-height: 1.5; max-width: 300px; margin: 0 auto; color: var(--text-secondary);">
+                        Click the bookmark icon on any high-yield PYQ card or open paper in the PDF viewer to save it here.
+                    </p>
+                </div>
+            `;
+            return;
+        }
+
+        body.innerHTML = savedBookmarks.map((item, idx) => {
+            const isPdf = item.type === 'PDF' || item.url || item.fileUrl;
+            return `
+                <div class="saved-deck-item-card" style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.15rem; margin-bottom: 1rem; position: relative;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.5rem;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                            <span class="subject-code-tag" style="font-size: 0.75rem;">${escapeHtml(item.subjectCode || (isPdf ? 'PDF' : 'MAKAUT'))}</span>
+                            ${item.frequencyCount ? `<span class="panic-freq-badge" style="font-size: 0.75rem;">🔥 Seen ${item.frequencyCount}x</span>` : ''}
+                            ${item.marks ? `<span class="panic-marks-badge" style="font-size: 0.75rem;">${item.marks}M</span>` : ''}
+                        </div>
+                        <button class="btn-deck-remove-full" data-index="${idx}" title="Remove from Deck" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.15rem; padding: 0.2rem 0.4rem; line-height: 1;">✕</button>
+                    </div>
+                    <div style="font-weight: 600; color: var(--text-primary); font-size: 0.92rem; line-height: 1.4; margin-bottom: 0.5rem;">
+                        ${escapeHtml(item.questionText || item.title || item.topicName || 'Exam Question')}
+                    </div>
+                    ${item.modelAnswerSnippet ? `
+                        <div class="deck-answer-content" id="deck-answer-${idx}" style="display: none; background: rgba(0,0,0,0.25); border-left: 3px solid var(--primary-accent); padding: 0.75rem; border-radius: 4px; font-size: 0.84rem; color: var(--text-secondary); margin: 0.75rem 0; line-height: 1.5;">
+                            <strong style="color: var(--text-primary);">Model Solution / Key Points:</strong><br>
+                            ${escapeHtml(item.modelAnswerSnippet)}
+                        </div>
+                    ` : ''}
+                    <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap;">
+                        ${item.modelAnswerSnippet ? `
+                            <button class="btn btn-secondary btn-toggle-answer" data-index="${idx}" style="font-size: 0.8rem; padding: 0.35rem 0.75rem;">
+                                👁 View Answer
+                            </button>
+                        ` : ''}
+                        ${(item.fileUrl || item.url) ? `
+                            <button class="btn btn-primary btn-jump-paper" data-url="${escapeHtml(item.url || item.fileUrl)}" data-title="${escapeHtml(item.title || item.topicName || 'Exam Paper')}" style="font-size: 0.8rem; padding: 0.35rem 0.75rem;">
+                                📄 Jump to Paper
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        body.querySelectorAll('.btn-deck-remove-full').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const idx = parseInt(btn.getAttribute('data-index'), 10);
+                savedBookmarks.splice(idx, 1);
+                localStorage.setItem('campussense_saved_deck', JSON.stringify(savedBookmarks));
+                renderSavedDeckPreview();
+                renderSavedDeckFull();
+            });
+        });
+
+        body.querySelectorAll('.btn-toggle-answer').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const idx = btn.getAttribute('data-index');
+                const ansEl = document.getElementById(`deck-answer-${idx}`);
+                if (ansEl) {
+                    const isHidden = ansEl.style.display === 'none';
+                    ansEl.style.display = isHidden ? 'block' : 'none';
+                    btn.textContent = isHidden ? '🙈 Hide Answer' : '👁 View Answer';
+                }
+            });
+        });
+
+        body.querySelectorAll('.btn-jump-paper').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const url = btn.getAttribute('data-url');
+                const title = btn.getAttribute('data-title');
+                if (url) {
+                    closeSavedDeckDrawer();
+                    openPdfViewer(title, url);
+                }
+            });
+        });
+    }
+
+    // ==========================================
+    // 15. Search & Query History State & Interception
+    // ==========================================
+    let queryHistory = JSON.parse(localStorage.getItem('campussense_query_history') || '[]');
+
+    function saveQueryToHistory(q) {
+        if (!q || !q.trim()) return;
+        const clean = q.trim();
+        queryHistory = [clean, ...queryHistory.filter(item => item.toLowerCase() !== clean.toLowerCase())].slice(0, 8);
+        localStorage.setItem('campussense_query_history', JSON.stringify(queryHistory));
+        renderQueryHistoryDropdown();
+        renderDrawerHistoryPills();
+    }
+
+    function renderQueryHistoryDropdown() {
+        const dropdown = document.getElementById('search-history-dropdown');
+        if (!dropdown) return;
+        if (queryHistory.length === 0) {
+            dropdown.style.display = 'none';
+            return;
+        }
+        dropdown.innerHTML = `
+            <div class="search-history-header" style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border-subtle); font-size: 0.72rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">
+                <span>Recent Searches</span>
+                <button id="btn-clear-search-history" style="background: none; border: none; color: var(--accent-flame); cursor: pointer; font-size: 0.72rem;">Clear</button>
+            </div>
+            <div class="search-history-items">
+                ${queryHistory.map(item => `
+                    <div class="history-item" data-query="${escapeHtml(item)}" style="padding: 0.5rem 0.75rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--text-primary); transition: background 0.15s ease;">
+                        <span style="color: var(--text-muted); font-size: 0.8rem;">🕒</span>
+                        <span style="flex: 1; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">${escapeHtml(item)}</span>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+        const clearBtn = document.getElementById('btn-clear-search-history');
+        if (clearBtn) {
+            clearBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                queryHistory = [];
+                localStorage.removeItem('campussense_query_history');
+                dropdown.style.display = 'none';
+                renderDrawerHistoryPills();
+            });
+        }
+        dropdown.querySelectorAll('.history-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const q = item.getAttribute('data-query');
+                dropdown.style.display = 'none';
+                if (heroSearchInput) heroSearchInput.value = q;
+                handleGlobalSearch(q);
+            });
+        });
+    }
+
+    function renderDrawerHistoryPills() {
+        const container = document.getElementById('drawer-history-pills');
+        if (!container) return;
+        if (queryHistory.length === 0) {
+            container.innerHTML = '<span style="font-size: 0.75rem; color: var(--text-muted);">No recent questions</span>';
+            return;
+        }
+        container.innerHTML = queryHistory.slice(0, 5).map(q => `
+            <button class="drawer-history-pill chip-shortcut" data-prompt="${escapeHtml(q)}" style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 999px; padding: 0.25rem 0.75rem; font-size: 0.75rem; color: var(--text-secondary); cursor: pointer; white-space: nowrap;">
+                ${escapeHtml(q)}
+            </button>
+        `).join('');
+        container.querySelectorAll('.chip-shortcut').forEach(pill => {
+            pill.addEventListener('click', () => {
+                const prompt = pill.getAttribute('data-prompt');
+                if (drawerQueryInput) drawerQueryInput.value = prompt;
+                executeAiQuery(prompt);
+            });
+        });
+    }
+
+    function handleGlobalSearch(rawQuery) {
+        if (!rawQuery || !rawQuery.trim()) return;
+        const q = rawQuery.trim();
+        saveQueryToHistory(q);
+        const qLower = q.toLowerCase();
+
+        // Check for academic keyword interception (syllabus, pdf, paper, pyq, notes)
+        const isAcademicQuery = /syllabus|pdf|paper|pyq|notes|curriculum/.test(qLower);
+
+        // Match subject from MAKAUT_CURRICULUM
+        const matchedSubject = MAKAUT_CURRICULUM.find(s => {
+            const codeMatch = s.code.toLowerCase().includes(qLower) || (s.altCode && s.altCode.toLowerCase().includes(qLower));
+            const nameWords = s.name.toLowerCase().split(/[\s,()/-]+/);
+            const nameMatch = nameWords.some(w => w.length > 3 && qLower.includes(w));
+            const cleanCode = s.code.toLowerCase().replace(/[^a-z0-9]/g, '');
+            const queryClean = qLower.replace(/[^a-z0-9]/g, '');
+            return codeMatch || nameMatch || (cleanCode.length > 3 && queryClean.includes(cleanCode));
+        });
+
+        if (matchedSubject && isAcademicQuery) {
+            if (qLower.includes('syllabus') && matchedSubject.syllabusUrl) {
+                openPdfViewer(`${matchedSubject.code} Official Syllabus`, matchedSubject.syllabusUrl);
+                return;
+            }
+            if ((qLower.includes('paper') || qLower.includes('pyq')) && matchedSubject.pyqs && matchedSubject.pyqs.length > 0) {
+                openSubjectHub(matchedSubject);
+                activateHubTab('pyqs');
+                return;
+            }
+            openSubjectHub(matchedSubject);
+            return;
+        }
+
+        // Open Ask AI Drawer
+        openAiDrawer(q);
+    }
+
+    // ==========================================
+    // 16. AI RAG Slide-Over Drawer
     // ==========================================
     const aiDrawer = document.getElementById('ai-slide-drawer');
     const aiDrawerBackdrop = document.getElementById('ai-drawer-backdrop');
@@ -2014,6 +2365,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function openAiDrawer(initialQuery = '') {
         if (aiDrawer) aiDrawer.classList.add('open');
         if (aiDrawerBackdrop) aiDrawerBackdrop.style.display = 'block';
+        renderDrawerHistoryPills();
         if (initialQuery && drawerQueryInput) {
             drawerQueryInput.value = initialQuery;
             executeAiQuery(initialQuery);
@@ -2031,7 +2383,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnCloseAiDrawer) btnCloseAiDrawer.addEventListener('click', closeAiDrawer);
     if (aiDrawerBackdrop) aiDrawerBackdrop.addEventListener('click', closeAiDrawer);
 
-    // Global shortcut Ctrl+K
+    // Global shortcut Ctrl+K & Escape
     window.addEventListener('keydown', (e) => {
         if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
             e.preventDefault();
@@ -2043,33 +2395,64 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (e.key === 'Escape') {
             closeAiDrawer();
+            closeSavedDeckDrawer();
             document.querySelectorAll('.modal-backdrop').forEach(m => m.style.display = 'none');
         }
     });
 
-    // Hero Search Input
+    // Hero Search Input Wiring
     const heroSearchInput = document.getElementById('global-search-input');
     const btnHeroSearch = document.getElementById('btn-hero-search');
+    const searchDropdown = document.getElementById('search-history-dropdown');
 
-    if (btnHeroSearch && heroSearchInput) {
-        const triggerSearch = () => {
-            const val = heroSearchInput.value.trim();
-            if (val) {
-                openAiDrawer(val);
+    if (heroSearchInput) {
+        let debounceTimer = null;
+        heroSearchInput.addEventListener('focus', () => {
+            if (queryHistory.length > 0) {
+                renderQueryHistoryDropdown();
+                if (searchDropdown) searchDropdown.style.display = 'block';
+            }
+        });
+
+        heroSearchInput.addEventListener('input', () => {
+            if (debounceTimer) clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                if (searchDropdown && queryHistory.length > 0 && !heroSearchInput.value.trim()) {
+                    renderQueryHistoryDropdown();
+                    searchDropdown.style.display = 'block';
+                }
+            }, 300);
+        });
+
+        heroSearchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                if (searchDropdown) searchDropdown.style.display = 'none';
+                handleGlobalSearch(heroSearchInput.value);
                 heroSearchInput.value = '';
             }
-        };
-        btnHeroSearch.addEventListener('click', triggerSearch);
-        heroSearchInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') triggerSearch();
         });
     }
+
+    if (btnHeroSearch && heroSearchInput) {
+        btnHeroSearch.addEventListener('click', () => {
+            if (searchDropdown) searchDropdown.style.display = 'none';
+            handleGlobalSearch(heroSearchInput.value);
+            heroSearchInput.value = '';
+        });
+    }
+
+    // Close search dropdown on click outside
+    document.addEventListener('click', (e) => {
+        if (searchDropdown && !searchDropdown.contains(e.target) && e.target !== heroSearchInput) {
+            searchDropdown.style.display = 'none';
+        }
+    });
 
     // Quick chips in search bar
     document.querySelectorAll('.quick-chip').forEach(chip => {
         chip.addEventListener('click', () => {
             const query = chip.getAttribute('data-query');
-            openAiDrawer(query);
+            handleGlobalSearch(query);
         });
     });
 
@@ -2093,21 +2476,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function executeAiQuery(query) {
+        if (!query || !query.trim()) return;
+        saveQueryToHistory(query);
         appendDrawerMessage('user', query);
         if (drawerQueryInput) drawerQueryInput.value = '';
 
-        // Add typing placeholder
+        // Check sessionStorage RAG Cache
+        const ragCacheKey = `campussense_rag_${currentStream}_${currentSem}_${query.trim().toLowerCase()}`;
+        try {
+            const cached = sessionStorage.getItem(ragCacheKey);
+            if (cached) {
+                const parsed = JSON.parse(cached);
+                appendDrawerAssistantResponse(parsed);
+                return;
+            }
+        } catch (_) {}
+
+        // Add typing skeleton placeholder
         const typingEl = document.createElement('div');
-        typingEl.className = 'message assistant';
+        typingEl.className = 'message assistant chat-skeleton-shimmer';
         typingEl.id = 'drawer-typing';
         typingEl.innerHTML = `
             <div class="msg-avatar">🎓</div>
-            <div class="msg-body">
+            <div class="msg-body" style="width: 85%;">
                 <div class="msg-header">
                     <span class="sender-name">MAKAUT CampusSense AI</span>
                     <span class="badge" style="background: rgba(99, 102, 241, 0.2); color: #a5b4fc;">Searching Curriculum Vectors...</span>
                 </div>
-                <div class="msg-text">Evaluating MAKAUT syllabus modules, exam papers, and computing similarity...</div>
+                <div style="height: 12px; width: 92%; background: linear-gradient(90deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.18) 50%, rgba(255,255,255,0.06) 100%); margin: 8px 0; border-radius: 4px; animation: shimmerAnim 1.5s infinite;"></div>
+                <div style="height: 12px; width: 68%; background: linear-gradient(90deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.18) 50%, rgba(255,255,255,0.06) 100%); margin: 8px 0; border-radius: 4px; animation: shimmerAnim 1.5s infinite;"></div>
             </div>
         `;
         if (drawerChatMessages) {
@@ -2135,6 +2532,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (res.ok) {
                 const data = await res.json();
                 typingEl.remove();
+                try { sessionStorage.setItem(ragCacheKey, JSON.stringify(data)); } catch (_) {}
                 appendDrawerAssistantResponse(data);
                 return;
             }
@@ -2142,6 +2540,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (err) {
             typingEl.remove();
             const clientResult = executeClientRAG(query);
+            try { sessionStorage.setItem(ragCacheKey, JSON.stringify(clientResult)); } catch (_) {}
             appendDrawerAssistantResponse(clientResult);
         }
     }
