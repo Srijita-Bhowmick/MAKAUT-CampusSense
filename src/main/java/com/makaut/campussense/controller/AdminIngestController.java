@@ -23,7 +23,6 @@ import java.net.http.HttpResponse;
 @RestController
 @RequestMapping("/api/v1/admin")
 @RequiredArgsConstructor
-@SuppressWarnings("null")
 @Tag(name = "Admin Ingestion", description = "Endpoints for ingesting PDFs, syllabus documents, and URLs into the vector store")
 public class AdminIngestController {
 
