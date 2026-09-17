@@ -3585,6 +3585,12 @@ body {
     gap: 0.5rem;
 }
 
+.chat-history-container {
+    position: relative;
+    display: inline-flex;
+}
+
+.btn-chat-history-toggle,
 .btn-history-toggle {
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid var(--card-border);
@@ -3601,12 +3607,14 @@ body {
     gap: 0.35rem;
 }
 
+.btn-chat-history-toggle:hover,
 .btn-history-toggle:hover {
     background: var(--accent-primary);
     color: #ffffff;
     border-color: var(--accent-primary);
 }
 
+.chat-history-dropdown-menu,
 .history-dropdown-panel {
     position: absolute;
     top: calc(100% + 8px);
@@ -3621,6 +3629,7 @@ body {
     overflow: hidden;
 }
 
+.chat-history-dropdown-header,
 .history-dropdown-header {
     display: flex;
     justify-content: space-between;
@@ -3632,6 +3641,7 @@ body {
     color: var(--text-muted);
 }
 
+.btn-clear-history-text,
 .btn-clear-text {
     background: none;
     border: none;
@@ -3642,10 +3652,12 @@ body {
     padding: 0;
 }
 
+.btn-clear-history-text:hover,
 .btn-clear-text:hover {
     text-decoration: underline;
 }
 
+.chat-history-dropdown-items,
 .history-dropdown-items {
     list-style: none;
     margin: 0;
@@ -3654,6 +3666,7 @@ body {
     overflow-y: auto;
 }
 
+.chat-history-dropdown-items li,
 .history-dropdown-items li {
     padding: 0.55rem 0.85rem;
     font-size: 0.82rem;
@@ -3665,6 +3678,7 @@ body {
     transition: var(--transition-fast);
 }
 
+.chat-history-dropdown-items li:hover,
 .history-dropdown-items li:hover {
     background: rgba(99, 102, 241, 0.12);
 }
@@ -3686,6 +3700,7 @@ body {
     margin-top: 0.5rem;
 }
 
+.btn-chat-paper,
 .btn-paper-open {
     display: inline-flex;
     align-items: center;
@@ -3704,6 +3719,7 @@ body {
     width: 100%;
 }
 
+.btn-chat-paper:hover,
 .btn-paper-open:hover {
     background: var(--accent-primary);
     border-color: var(--accent-primary);
@@ -3712,47 +3728,75 @@ body {
     box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
 }
 
+.highlighted-module-unit {
+    border-color: var(--accent-primary) !important;
+    background: rgba(99, 102, 241, 0.12) !important;
+}
+
+@keyframes unitPulseGlow {
+    0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.6); }
+    70% { box-shadow: 0 0 0 10px rgba(99, 102, 241, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
+}
+
+.module-unit-pulse {
+    animation: unitPulseGlow 1.8s ease-out;
+}
+
 /* Light mode overrides for history dropdown & paper links */
+[data-theme="light"] .chat-history-dropdown-menu,
 [data-theme="light"] .history-dropdown-panel {
     background: #ffffff !important;
     border-color: #cbd5e1 !important;
     box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12) !important;
 }
 
+[data-theme="light"] .chat-history-dropdown-header,
 [data-theme="light"] .history-dropdown-header {
     color: #090d16 !important;
     border-bottom-color: #e2e8f0 !important;
 }
 
+[data-theme="light"] .chat-history-dropdown-items li,
 [data-theme="light"] .history-dropdown-items li {
     color: #090d16 !important;
 }
 
+[data-theme="light"] .chat-history-dropdown-items li:hover,
 [data-theme="light"] .history-dropdown-items li:hover {
     background: #f1f5f9 !important;
 }
 
+[data-theme="light"] .btn-chat-history-toggle,
 [data-theme="light"] .btn-history-toggle {
     background: #f1f5f9 !important;
     border-color: #cbd5e1 !important;
     color: #090d16 !important;
 }
 
+[data-theme="light"] .btn-chat-history-toggle:hover,
 [data-theme="light"] .btn-history-toggle:hover {
     background: #3730a3 !important;
     color: #ffffff !important;
 }
 
+[data-theme="light"] .btn-chat-paper,
 [data-theme="light"] .btn-paper-open {
     background: #eef2ff !important;
     border-color: #6366f1 !important;
     color: #312e81 !important;
 }
 
+[data-theme="light"] .btn-chat-paper:hover,
 [data-theme="light"] .btn-paper-open:hover {
     background: #3730a3 !important;
     border-color: #3730a3 !important;
     color: #ffffff !important;
+}
+
+[data-theme="light"] .highlighted-module-unit {
+    border-color: #3730a3 !important;
+    background: #eef2ff !important;
 }
 
 [data-theme="light"] .chat-pyq-result p {

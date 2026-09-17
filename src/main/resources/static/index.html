@@ -315,13 +315,13 @@
                 <div class="search-bar-wrapper">
                     <span class="search-lens">🔍</span>
                     <input type="text" id="global-search-input" class="hero-search-input"
-                           placeholder="Ask anything (e.g., 'Thevenin theorem questions 2022') or jump to a paper..."
+                           placeholder="Search PYQ papers (e.g., 'English 2025 PYQ'), modules ('Physics module 2'), or syllabus..."
                            autocomplete="off">
                     <div class="shortcut-chip">
                         <kbd>Ctrl</kbd> + <kbd>K</kbd>
                     </div>
                     <button class="search-submit-btn" id="btn-hero-search">
-                        Ask AI ⚡
+                        Search 🔍
                     </button>
                     <div class="search-history-dropdown" id="search-history-dropdown" style="display: none;">
                         <div class="search-history-header">
@@ -833,17 +833,21 @@
                 </div>
             </div>
             <div class="drawer-header-actions">
-                <button id="btn-chat-history" class="btn-history-toggle" type="button">🕒 History ▾</button>
-                <button class="drawer-close-btn" id="btn-close-ai-drawer" title="Close Drawer (Esc)">✕</button>
-                <div id="chat-history-dropdown" class="history-dropdown-panel" style="display: none;">
-                    <div class="history-dropdown-header">
-                        <span>Recent Queries</span>
-                        <button id="btn-clear-chat-history" class="btn-clear-text" type="button">Clear</button>
+                <div class="chat-history-container">
+                    <button id="btn-chat-history" class="btn-chat-history-toggle btn-history-toggle" type="button">
+                        🕒 Search History ▾
+                    </button>
+                    <div id="chat-history-dropdown" class="chat-history-dropdown-menu history-dropdown-panel" style="display: none;">
+                        <div class="chat-history-dropdown-header history-dropdown-header">
+                            <span>Recent Searches</span>
+                            <button id="btn-clear-chat-history" class="btn-clear-history-text btn-clear-text" type="button">Clear</button>
+                        </div>
+                        <ul id="chat-history-dropdown-list" class="chat-history-dropdown-items history-dropdown-items">
+                            <!-- Populated dynamically from localStorage campussense_query_history -->
+                        </ul>
                     </div>
-                    <ul id="chat-history-list" class="history-dropdown-items">
-                        <!-- Populated dynamically from localStorage -->
-                    </ul>
                 </div>
+                <button class="drawer-close-btn" id="btn-close-ai-drawer" title="Close Drawer (Esc)">✕</button>
             </div>
         </div>
 
