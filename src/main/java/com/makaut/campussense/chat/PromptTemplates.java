@@ -17,10 +17,7 @@ public final class PromptTemplates {
                - SGPA (Semester Grade Point Average) = Sum(Credits * Grade Points) / Sum(Credits).
                - YGPA (Yearly Grade Point Average) = (SGPA_odd * C_odd + SGPA_even * C_even) / (C_odd + C_even).
                - DGPA (Degree Grade Point Average): Calculated across 4 years with final year weightage.
-            2. Mandatory Additional Requirements (MAR):
-               - Minimum 100 MAR Activity Points over 4 years (75 points for lateral entry) are mandatory for degree award.
-               - Categories: MOOCs (20 pts), Tech fest (5-10 pts), Tree plantation (10 pts), Blood donation (8 pts), Paper publication (15 pts), Hackathons (10-20 pts).
-            3. MOOCs for B.Tech (Honours):
+            2. MOOCs for B.Tech (Honours):
                - Additional 20 credits required from SWAYAM / NPTEL from approved MAKAUT basket between 3rd to 8th semester.
                - No active backlogs allowed.
 

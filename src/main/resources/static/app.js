@@ -1618,12 +1618,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const btnCloseHubModal = document.getElementById('btn-close-hub-modal');
-    if (btnCloseHubModal) {
-        btnCloseHubModal.addEventListener('click', () => {
-            const hub = document.getElementById('subject-hub-modal');
-            if (hub) hub.style.display = 'none';
-        });
+    const btnBackHubModal = document.getElementById('btn-back-hub-modal');
+    function closeSubjectHub() {
+        const hub = document.getElementById('subject-hub-modal');
+        if (hub) hub.style.display = 'none';
     }
+    if (btnCloseHubModal) btnCloseHubModal.addEventListener('click', closeSubjectHub);
+    if (btnBackHubModal) btnBackHubModal.addEventListener('click', closeSubjectHub);
 
     // ==========================================
     // 12. Dashboard Bento: Panic Pack & Saved Review Deck
@@ -1632,8 +1633,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const previewList = document.getElementById('panic-preview-list');
         if (!previewList) return;
 
-        const top3 = MAKAUT_PANIC_QUESTIONS.slice(0, 3);
-        previewList.innerHTML = top3.map(q => `
+        const top5 = MAKAUT_PANIC_QUESTIONS.slice(0, 5);
+        previewList.innerHTML = top5.map(q => `
             <div class="panic-preview-card" data-id="${q.id}">
                 <div class="panic-card-header-row">
                     <span class="panic-freq-badge">🔥 Seen ${q.frequencyCount} times</span>
@@ -1669,7 +1670,7 @@ document.addEventListener('DOMContentLoaded', () => {
             deckList.innerHTML = `
                 <div class="deck-empty-state">
                     <div style="font-size: 1.5rem; margin-bottom: 0.35rem;">🔖</div>
-                    <div>Your review deck is empty. Bookmark questions from the Panic Pack or Subject Hubs to drill before exams!</div>
+                    <div>Your revision deck is empty. Save questions from the Panic Pack or Subject Hubs to drill before exams!</div>
                 </div>
             `;
             return;
@@ -1737,7 +1738,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                         <div class="panic-card-actions">
                             <button class="btn btn-secondary btn-deck-toggle" data-id="${q.id}">
-                                ${isBookmarked ? '✓ In Revision Deck' : '🔖 Add to Saved Deck'}
+                                ${isBookmarked ? '✓ Saved in Deck' : '🔖 Save to Deck'}
                             </button>
                         </div>
                     </div>
@@ -1752,10 +1753,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         const existingIdx = savedBookmarks.findIndex(b => b.id === qObj.id);
                         if (existingIdx >= 0) {
                             savedBookmarks.splice(existingIdx, 1);
-                            btn.textContent = '🔖 Add to Saved Deck';
+                            btn.textContent = '🔖 Save to Deck';
                         } else {
                             savedBookmarks.push(qObj);
-                            btn.textContent = '✓ In Revision Deck';
+                            btn.textContent = '✓ Saved in Deck';
                         }
                         localStorage.setItem('campussense_saved_deck', JSON.stringify(savedBookmarks));
                         renderSavedDeckPreview();
@@ -1923,13 +1924,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (bookmarkBtn) {
             const isBookmarked = savedBookmarks.some(b => (b.url === resolvedUrl || b.fileUrl === targetUrl || b.fileUrl === resolvedUrl));
-            bookmarkBtn.textContent = isBookmarked ? '✓ Bookmarked' : '🔖 Bookmark';
+            bookmarkBtn.textContent = isBookmarked ? '✓ Saved in Deck' : '🔖 Save to Deck';
+            bookmarkBtn.title = isBookmarked ? 'Remove from Deck' : 'Save to Deck';
             bookmarkBtn.onclick = () => {
                 if (!currentOpenPdf) return;
                 const existingIdx = savedBookmarks.findIndex(b => (b.url === currentOpenPdf.url || b.fileUrl === currentOpenPdf.rawUrl || b.fileUrl === currentOpenPdf.url));
                 if (existingIdx >= 0) {
                     savedBookmarks.splice(existingIdx, 1);
-                    bookmarkBtn.textContent = '🔖 Bookmark';
+                    bookmarkBtn.textContent = '🔖 Save to Deck';
+                    bookmarkBtn.title = 'Save to Deck';
                 } else {
                     savedBookmarks.push({
                         id: 'pdf-' + Date.now(),
@@ -1941,7 +1944,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         topicName: currentOpenPdf.title,
                         frequencyCount: 1
                     });
-                    bookmarkBtn.textContent = '✓ Bookmarked';
+                    bookmarkBtn.textContent = '✓ Saved in Deck';
+                    bookmarkBtn.title = 'Remove from Deck';
                 }
                 localStorage.setItem('campussense_saved_deck', JSON.stringify(savedBookmarks));
                 renderSavedDeckPreview();
@@ -1990,23 +1994,25 @@ document.addEventListener('DOMContentLoaded', () => {
         if (modal) modal.style.display = 'flex';
     }
 
-    const btnClosePdfModal = document.getElementById('btn-close-pdf-modal');
-    if (btnClosePdfModal) {
-        btnClosePdfModal.addEventListener('click', () => {
-            const modal = document.getElementById('pdf-viewer-modal');
-            if (modal) modal.style.display = 'none';
-            const iframe = document.getElementById('pdf-viewer-iframe');
-            if (iframe) {
-                iframe.src = 'about:blank';
-                iframe.style.opacity = '0';
-            }
-            const fallbackView = document.getElementById('pdf-fallback-view');
-            if (fallbackView) fallbackView.style.display = 'none';
-            const spinner = document.getElementById('pdf-loading-spinner');
-            if (spinner) spinner.style.display = 'none';
-            currentOpenPdf = null;
-        });
+    function closePdfViewerModal() {
+        const modal = document.getElementById('pdf-viewer-modal');
+        if (modal) modal.style.display = 'none';
+        const iframe = document.getElementById('pdf-viewer-iframe');
+        if (iframe) {
+            iframe.src = 'about:blank';
+            iframe.style.opacity = '0';
+        }
+        const fallbackView = document.getElementById('pdf-fallback-view');
+        if (fallbackView) fallbackView.style.display = 'none';
+        const spinner = document.getElementById('pdf-loading-spinner');
+        if (spinner) spinner.style.display = 'none';
+        currentOpenPdf = null;
     }
+
+    const btnClosePdfModal = document.getElementById('btn-close-pdf-modal');
+    const btnBackPdfModal = document.getElementById('btn-back-pdf-modal');
+    if (btnClosePdfModal) btnClosePdfModal.addEventListener('click', closePdfViewerModal);
+    if (btnBackPdfModal) btnBackPdfModal.addEventListener('click', closePdfViewerModal);
 
     const btnPdfFullscreen = document.getElementById('btn-pdf-fullscreen');
     if (btnPdfFullscreen) {
@@ -2058,7 +2064,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const body = document.getElementById('saved-deck-body');
         const subtitle = document.getElementById('saved-deck-subtitle');
         if (subtitle) {
-            subtitle.textContent = `${savedBookmarks.length} Bookmarked Item${savedBookmarks.length === 1 ? '' : 's'}`;
+            subtitle.textContent = `${savedBookmarks.length} Saved Item${savedBookmarks.length === 1 ? '' : 's'}`;
         }
         if (!body) return;
 
@@ -2066,9 +2072,9 @@ document.addEventListener('DOMContentLoaded', () => {
             body.innerHTML = `
                 <div class="deck-empty-state-card" style="padding: 3rem 1.5rem; text-align: center; color: var(--text-muted);">
                     <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">🔖</div>
-                    <h4 style="color: var(--text-primary); margin-bottom: 0.5rem; font-size: 1.1rem;">No bookmarked items yet</h4>
+                    <h4 style="color: var(--text-primary); margin-bottom: 0.5rem; font-size: 1.1rem;">No saved items yet</h4>
                     <p style="font-size: 0.88rem; line-height: 1.5; max-width: 300px; margin: 0 auto; color: var(--text-secondary);">
-                        Click the bookmark icon on any high-yield PYQ card or open paper in the PDF viewer to save it here.
+                        Click "Save to Deck" on any high-yield question or open paper in the PDF viewer to save it here.
                     </p>
                 </div>
             `;
@@ -2204,17 +2210,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderDrawerHistoryPills() {
         const container = document.getElementById('drawer-history-pills');
+        const row = document.getElementById('drawer-history-row');
         if (!container) return;
         if (queryHistory.length === 0) {
+            if (row) row.style.display = 'none';
             container.innerHTML = '<span style="font-size: 0.75rem; color: var(--text-muted);">No recent questions</span>';
             return;
         }
-        container.innerHTML = queryHistory.slice(0, 5).map(q => `
-            <button class="drawer-history-pill chip-shortcut" data-prompt="${escapeHtml(q)}" style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 999px; padding: 0.25rem 0.75rem; font-size: 0.75rem; color: var(--text-secondary); cursor: pointer; white-space: nowrap;">
+        if (row) row.style.display = 'flex';
+        container.innerHTML = queryHistory.slice(0, 8).map(q => `
+            <button class="drawer-history-pill chip-shortcut" data-prompt="${escapeHtml(q)}" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 999px; padding: 0.25rem 0.75rem; font-size: 0.75rem; color: var(--text-muted); cursor: pointer; white-space: nowrap; font-weight: 500;">
                 ${escapeHtml(q)}
             </button>
         `).join('');
-        container.querySelectorAll('.chip-shortcut').forEach(pill => {
+        container.querySelectorAll('.chip-shortcut, .drawer-history-pill').forEach(pill => {
             pill.addEventListener('click', () => {
                 const prompt = pill.getAttribute('data-prompt');
                 if (drawerQueryInput) drawerQueryInput.value = prompt;
@@ -2317,23 +2326,44 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
+        const yearMatch = qLower.match(/\b(202[0-6]|201[8-9])\b/);
+        const detectedYear = yearMatch ? parseInt(yearMatch[1], 10) : null;
+        const isAllPapers = /\b(all|every|archive|archives)\b/.test(qLower);
         const isSyllabusIntent = /syllabus|curriculum|blueprint|modules?|units?/.test(qLower);
         const isPdfIntent = /pdf|document|download/.test(qLower);
-        const isPaperIntent = /paper|pyq|question|exam|previous/.test(qLower);
+        const isPaperIntent = /paper|pyq|question|exam|previous|solution/.test(qLower);
 
         if (matchedSubject) {
-            // Direct syllabus preview request (e.g. "Physics syllabus", "Chemistry pdf")
+            // 1. Specific Year PYQ Matching -> Immediately open that exact PDF in viewer modal
+            if (detectedYear && matchedSubject.pyqs && matchedSubject.pyqs.length > 0) {
+                const specificPyq = matchedSubject.pyqs.find(p => p.year === detectedYear) ||
+                                    matchedSubject.pyqs.find(p => String(p.year) === String(detectedYear) || (p.title && p.title.includes(String(detectedYear))));
+                if (specificPyq && specificPyq.fileUrl) {
+                    openPdfViewer(specificPyq.title || `${matchedSubject.name} (${detectedYear}) Paper`, specificPyq.fileUrl);
+                    return;
+                }
+            }
+
+            // 2. All papers request or general paper intent -> Open Subject Hub on PYQ Archive Tab
+            if (isAllPapers || isPaperIntent) {
+                openSubjectHub(matchedSubject, 'pyqs');
+                return;
+            }
+
+            // 3. Direct syllabus preview request
             if ((isSyllabusIntent || isPdfIntent) && matchedSubject.syllabusUrl) {
                 openPdfViewer(`${matchedSubject.name} Official Syllabus`, matchedSubject.syllabusUrl);
                 return;
             }
-            // Direct past paper request (e.g. "BS-M101 paper", "BEE pyq")
-            if (isPaperIntent && matchedSubject.pyqs && matchedSubject.pyqs.length > 0) {
-                openSubjectHub(matchedSubject, 'pyqs');
-                return;
-            }
-            // Direct subject navigation (e.g. "Physics", "Chemistry", "BEE")
+
+            // 4. Direct subject navigation
             openSubjectHub(matchedSubject);
+            return;
+        }
+
+        // Check if query is for "all pyqs" or "all papers" without matching a specific subject
+        if (isAllPapers && isPaperIntent && MAKAUT_CURRICULUM.length > 0) {
+            openSubjectHub(MAKAUT_CURRICULUM[0], 'pyqs');
             return;
         }
 
@@ -2348,7 +2378,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const aiDrawerBackdrop = document.getElementById('ai-drawer-backdrop');
     const btnCloseAiDrawer = document.getElementById('btn-close-ai-drawer');
     const drawerChatForm = document.getElementById('drawer-chat-form');
-    const drawerQueryInput = document.getElementById('drawer-query-input');
+    const drawerQueryInput = document.getElementById('ai-query-input') || document.getElementById('drawer-query-input');
     const drawerChatMessages = document.getElementById('drawer-chat-messages');
 
     function openAiDrawer(initialQuery = '') {
@@ -2453,6 +2483,20 @@ document.addEventListener('DOMContentLoaded', () => {
             executeAiQuery(prompt);
         });
     });
+
+    // Chatbox Keyboard Controls (Enter vs Shift+Enter)
+    if (drawerQueryInput) {
+        drawerQueryInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                const query = drawerQueryInput.value.trim();
+                if (query) {
+                    executeAiQuery(query);
+                }
+            }
+            // Shift + Enter automatically creates a newline in textarea
+        });
+    }
 
     // Chat form submit
     if (drawerChatForm) {
@@ -2600,10 +2644,46 @@ document.addEventListener('DOMContentLoaded', () => {
     function executeClientRAG(query) {
         const lower = query.toLowerCase();
 
-        if (lower.includes('thevenin') || lower.includes('thévenin')) {
+        // 1. Physics
+        if (lower.includes('physics') || lower.includes('optics') || lower.includes('laser') || lower.includes('maxwell') || lower.includes('quantum') || lower.includes('diffraction') || lower.includes('newton') || lower.includes('rings') || lower.includes('ph101') || lower.includes('ph201')) {
             return {
                 verified: true,
-                response: `**Thévenin's Theorem (Basic Electrical ES-EE101):**\n\n- **Statement:** Any linear, bilateral network with DC voltage sources and resistances across two output terminals can be replaced by an equivalent circuit consisting of a single voltage source **Vth** in series with a resistance **Rth**.\n- **Calculation of Vth:** Open-circuit voltage across load terminals AB.\n- **Calculation of Rth:** Deactivate independent sources (short circuit voltage sources, open circuit current sources) and find resistance looking into AB.\n\n*Featured 5 times across MAKAUT examinations (10 Marks, Group C).*`,
+                response: `**Physics (BS-PH101 / BS-PH201) — 5-Module Verified Syllabus & Archive:**\n\n- **Module I: Oscillations & Waves (8 Hours):** Simple harmonic motion, damped and forced oscillations, resonance, wave equation.\n- **Module II: Wave Optics (8 Hours):** Huygens' principle, interference of light, Young's double slit, Newton's rings derivation ($D_n^2 = 4n\\lambda R$), thin films, Fraunhofer diffraction grating.\n- **Module III: Electromagnetism (8 Hours):** Gradient, divergence, curl, Gauss divergence theorem, Stokes' theorem, Maxwell's equations.\n- **Module IV: Quantum Physics (7 Hours):** Wave-particle duality, de Broglie hypothesis, Heisenberg uncertainty principle, Schrödinger time-independent equation, particle in a box.\n- **Module V: Solid-State and Modern Physics (5 Hours):** Free electron theory, band theory of solids, intrinsic & extrinsic semiconductors, lasers, optical fibers.\n\n*Referenced from verified MAKAUT 2026 Curriculum and 7 Semester PYQ Archives (2020-2026).*`,
+                sources: [{
+                    title: 'Physics (BS-PH101 / BS-PH201)',
+                    subjectCode: 'BS-PH101',
+                    year: 2026,
+                    group: 'Group C',
+                    questionNumber: 'Q3',
+                    pageUrl: 'assets/resources/1st_year/syllabus/Physics.pdf'
+                }]
+            };
+        }
+
+        // 2. Mathematics 1 & 2
+        if (lower.includes('math') || lower.includes('calculus') || lower.includes('matrix') || lower.includes('matrices') || lower.includes('ode') || lower.includes('laplace') || lower.includes('fourier') || lower.includes('m101') || lower.includes('m201')) {
+            const isMath2 = lower.includes('math 2') || lower.includes('maths 2') || lower.includes('m201') || lower.includes('laplace') || lower.includes('fourier');
+            return {
+                verified: true,
+                response: isMath2 
+                    ? `**Mathematics 2 (BS-M201) — Academic Module Summary:**\n\n- **Module I: Multivariate Integrals (8 Hours):** Double and triple integrals, change of order, change of variables, volume and surface area.\n- **Module II: Vector Calculus (8 Hours):** Vector functions, gradient, divergence, curl, directional derivatives, Green's, Gauss's divergence, and Stokes' theorems.\n- **Module III: First & Higher Order ODEs (8 Hours):** Exact ODEs, variation of parameters, Cauchy-Euler equations.\n- **Module IV: Series Solutions & Special Functions (6 Hours):** Power series method, Legendre polynomials, Bessel functions.\n- **Module V: Laplace & Fourier Transforms (6 Hours):** Laplace transforms, inverse Laplace, Dirac delta function, Fourier series representations.\n\n*Referenced from verified MAKAUT BS-M201 Examination Papers.*`
+                    : `**Mathematics 1 (BS-M101) — Academic Module Summary:**\n\n- **Module I: Calculus (6 Hours):** Evolutes, involutes, Rolle's theorem, Mean Value theorems, Taylor's and Maclaurin's expansions.\n- **Module II: Multivariable Calculus (8 Hours):** Partial derivatives, Euler's theorem on homogeneous functions, total derivative, maxima and minima with Lagrange multipliers.\n- **Module III: Ordinary Differential Equations (10 Hours):** Exact ODEs, integrating factors, second-order linear differential equations with constant coefficients.\n- **Module IV: Matrices & Linear Algebra (10 Hours):** Rank of matrix, system of linear equations, eigenvalues, eigenvectors, Cayley-Hamilton theorem, orthogonal transformation.\n\n*Referenced from verified MAKAUT 2026 BS-M101 Syllabus and Model Papers.*`,
+                sources: [{
+                    title: isMath2 ? 'Mathematics 2 (BS-M201)' : 'Mathematics 1 (BS-M101)',
+                    subjectCode: isMath2 ? 'BS-M201' : 'BS-M101',
+                    year: 2026,
+                    group: 'Group B',
+                    questionNumber: 'Q2',
+                    pageUrl: isMath2 ? 'assets/resources/1st_year/syllabus/Maths-2.pdf' : 'assets/resources/1st_year/syllabus/Maths-1.pdf'
+                }]
+            };
+        }
+
+        // 3. Electrical (BEE)
+        if (lower.includes('bee') || lower.includes('electrical') || lower.includes('thevenin') || lower.includes('thévenin') || lower.includes('transformer') || lower.includes('op-amp') || lower.includes('ac circuits') || lower.includes('ee101') || lower.includes('resonance')) {
+            return {
+                verified: true,
+                response: `**Basic Electrical Engineering (ES-EE101) — Verified Syllabus & Exam Patterns:**\n\n- **Module I: DC Circuits (8 Hours):** Electrical circuit elements, KCL, KVL, Mesh and Nodal analysis, Thévenin's Theorem ($V_{th}, R_{th}$), Norton's Theorem, Maximum Power Transfer.\n- **Module II: AC Circuits (8 Hours):** Sinusoidal representations, peak/RMS values, phasor representation, series/parallel RLC circuits, series resonance ($f_0 = \\frac{1}{2\\pi\\sqrt{LC}}$), Q-factor.\n- **Module III: Transformers (6 Hours):** Ideal and practical single-phase transformers, equivalent circuits, open and short circuit tests, maximum efficiency condition ($P_{cu} = P_i$).\n- **Module IV: Electrical Machines (8 Hours):** DC generator and motor principles, torque-speed curves, 3-phase induction motors.\n- **Module V: Electrical Installations & Safety (6 Hours):** Switchgear, fuses, MCB, ELCB, earthing schemes, battery types.\n\n*Featured recurring 10-mark questions across MAKAUT semester papers.*`,
                 sources: [{
                     title: 'Basic Electrical Engineering (ES-EE101)',
                     subjectCode: 'ES-EE101',
@@ -2615,25 +2695,75 @@ document.addEventListener('DOMContentLoaded', () => {
             };
         }
 
-        if (lower.includes('newton') || lower.includes('rings')) {
+        // 4. PPS / C Programming
+        if (lower.includes('c programming') || lower.includes('pps') || lower.includes('pointer') || lower.includes('malloc') || lower.includes('calloc') || lower.includes('recursion') || lower.includes('array') || lower.includes('struct') || lower.includes('cs201') || lower.includes('cs101')) {
             return {
                 verified: true,
-                response: `**Newton's Rings Proof (Physics BS-PH101):**\n\n- **Formation:** Formed due to interference between rays reflected from upper surface of glass plate and bottom surface of plano-convex lens.\n- **Path Difference for Dark Rings:** $2t = n\\lambda$.\n- **Ring Diameter Proof:** Since thickness $t = r^2 / (2R)$, substituting gives $D_n^2 = 4n\\lambda R$, proving that dark ring diameters are directly proportional to $\\sqrt{n}$.\n\n*Featured 4 times across MAKAUT examinations (10 Marks, Group C).*`,
+                response: `**Programming for Problem Solving (ES-CS201 / ES-CS101) — Syllabus Topics:**\n\n- **Module I: Intro to Programming & Algorithms (4 Hours):** Flowcharts, pseudocode, source code compilation, memory layout.\n- **Module II: Arithmetic Expressions & Branching (8 Hours):** Operators, precedence, associativity, if-else, switch-case, iterative while/for loops.\n- **Module III: Arrays & Pointers (8 Hours):** 1D/2D arrays, dynamic memory allocation (\`malloc\` vs \`calloc\`), pointer arithmetic, dereferencing.\n- **Module IV: Functions & Recursion (8 Hours):** Function signatures, pass by value vs reference, recursive solutions (Tower of Hanoi, Fibonacci).\n- **Module V: Structures, Unions & File I/O (8 Hours):** Defining structures, array of structures, file handling in C (\`fopen\`, \`fread\`, \`fwrite\`, \`fclose\`).\n- **Module VI: Basic AI Concepts (4 Hours):** Problem formulation, search spaces, AI foundations.\n\n*Referenced from verified MAKAUT 2026 PPS Curriculum.*`,
                 sources: [{
-                    title: 'Physics Wave Optics (BS-PH101)',
-                    subjectCode: 'BS-PH101',
+                    title: 'Programming for Problem Solving (ES-CS201)',
+                    subjectCode: 'ES-CS201',
                     year: 2023,
-                    group: 'Group C',
-                    questionNumber: 'Q3',
-                    pageUrl: 'assets/resources/1st_year/syllabus/Physics.pdf'
+                    group: 'Group B',
+                    questionNumber: 'Q4',
+                    pageUrl: 'assets/resources/1st_year/syllabus/PPS.pdf'
                 }]
             };
         }
 
-        if (lower.includes('nernst') || lower.includes('chemistry') || lower.includes('spectroscopy')) {
+        // 5. English for Communication
+        if (lower.includes('english') || lower.includes('communication') || lower.includes('aec-101') || lower.includes('writing') || lower.includes('hu101') || lower.includes('hu201')) {
             return {
                 verified: true,
-                response: `**Nernst Equation & Electrochemical Equilibria (Chemistry BS-CH101):**\n\n- **Formula:** $E_{cell} = E^\\circ_{cell} - \\frac{2.303 RT}{nF} \\log_{10} Q = E^\\circ_{cell} - \\frac{0.0591}{n} \\log_{10} Q$ at 298 K.\n- **Equilibrium Condition:** At equilibrium, $E_{cell} = 0$, leading to $\\Delta G^\\circ = -nFE^\\circ = -RT \\ln K_{eq}$.\n- **Applications:** Calculating electrode reduction potentials, determining solubility products ($K_{sp}$), and measuring solution pH via hydrogen electrodes.\n\n*Featured across MAKAUT examinations (Module IV, 8 Marks).*`,
+                response: `**English for Communication Skills (26-AEC-101) — 5-Module Syllabus:**\n\n- **Module I: Vocabulary Building (4 Hours):** Word roots, prefixes and suffixes, synonyms, antonyms, technical terminology.\n- **Module II: Basic Writing Skills (6 Hours):** Sentence structures, phrases and clauses, coherence, paragraph unity.\n- **Module III: Identifying Common Errors (6 Hours):** Subject-verb agreement, noun-pronoun agreement, misplaced modifiers, prepositions.\n- **Module IV: Nature and Style of Sensible Writing (6 Hours):** Concise writing, defining, classifying, summarizing, technical reports.\n- **Module V: Oral Communication & Soft Skills (4 Hours):** Active listening, group discussions, technical presentations, interview etiquette.\n\n*Referenced from verified MAKAUT 2026 AEC-101 Curriculum.*`,
+                sources: [{
+                    title: 'English for Communication Skills (26-AEC-101)',
+                    subjectCode: 'AEC-101',
+                    year: 2024,
+                    group: 'Group A',
+                    questionNumber: 'Q1',
+                    pageUrl: 'assets/resources/1st_year/syllabus/English.pdf'
+                }]
+            };
+        }
+
+        // 6. Biology for Engineers
+        if (lower.includes('biology') || lower.includes('bio') || lower.includes('biomolecules') || lower.includes('dna') || lower.includes('protein') || lower.includes('bi201')) {
+            return {
+                verified: true,
+                response: `**Biology for Engineers (26-BS-BI201) — 5-Module Syllabus:**\n\n- **Module I: Introduction to Biology & Cell Architecture (4 Hours):** Prokaryotic and eukaryotic cells, organelles, macromolecular composition.\n- **Module II: Biomolecules & Enzymes (6 Hours):** Carbohydrates, lipids, proteins, nucleic acids, enzyme kinetics, Lock and Key model.\n- **Module III: Genetics & Molecular Biology (6 Hours):** Mendelian genetics, DNA replication, transcription, translation, genetic code.\n- **Module IV: Metabolism & Bio-energetics (6 Hours):** Glycolysis, Krebs cycle, ATP synthesis, photosynthesis.\n- **Module V: Microbiology & Bio-inspired Engineering (4 Hours):** Microbial growth, bioreactors, biosensors, bio-inspired algorithms.\n\n*Referenced from verified MAKAUT 2026 BS-BI201 Curriculum.*`,
+                sources: [{
+                    title: 'Biology for Engineers (26-BS-BI201)',
+                    subjectCode: 'BS-BI201',
+                    year: 2024,
+                    group: 'Group B',
+                    questionNumber: 'Q3',
+                    pageUrl: 'assets/resources/1st_year/syllabus/Biology.pdf'
+                }]
+            };
+        }
+
+        // 7. Environmental Science (EVS)
+        if (lower.includes('evs') || lower.includes('environmental') || lower.includes('pollution') || lower.includes('ecology') || lower.includes('biodiversity') || lower.includes('vac-201') || lower.includes('mc-es201')) {
+            return {
+                verified: true,
+                response: `**Environmental Science (26-VAC-201) — 5-Module Syllabus:**\n\n- **Module I: Environment and Ecosystems (6 Hours):** Structure and function of ecosystems, food chains, energy flow, ecological pyramids.\n- **Module II: Natural Resources (6 Hours):** Water resources, mineral resources, renewable/non-renewable energy sources.\n- **Module III: Environmental Pollution (8 Hours):** Air, water, soil, and noise pollution; solid waste management; greenhouse effect & global warming.\n- **Module IV: Biodiversity and Its Conservation (6 Hours):** Genetic, species, and ecosystem diversity; hotspots of biodiversity; endangered species.\n- **Module V: Environmental Policies & Sustainability (6 Hours):** Environmental Protection Act, disaster management, sustainable green technologies.\n\n*Referenced from verified MAKAUT 2026 VAC-201 Curriculum.*`,
+                sources: [{
+                    title: 'Environmental Science (26-VAC-201)',
+                    subjectCode: 'VAC-201',
+                    year: 2024,
+                    group: 'Group A',
+                    questionNumber: 'Q2',
+                    pageUrl: 'assets/resources/1st_year/syllabus/EVS.pdf'
+                }]
+            };
+        }
+
+        // 8. Chemistry — ONLY when explicitly requested
+        if (lower.includes('chemistry') || lower.includes('electrochemistry') || lower.includes('nernst') || lower.includes('polymer') || lower.includes('spectroscopy') || lower.includes('water hardness') || lower.includes('corrosion') || lower.includes('ch101') || lower.includes('ch201')) {
+            return {
+                verified: true,
+                response: `**Chemistry (BS-CH101 / BS-CH201) — 5-Module Verified Syllabus:**\n\n- **Module I: Atomic and Molecular Structure (8 Hours):** Schrödinger equation, particle in a box, MO diagrams for diatomics, band structure of solids.\n- **Module II: Thermodynamics, Equilibrium & Kinetics (8 Hours):** Free energy, chemical equilibria, reaction kinetics, rate laws, catalysis.\n- **Module III: Electrochemistry and Corrosion (7 Hours):** Nernst equation ($E_{cell} = E^\\circ_{cell} - \\frac{0.0591}{n}\\log Q$), reference electrodes, battery systems, corrosion prevention.\n- **Module IV: Engineering Materials & Water (8 Hours):** Polymers, composites, lubricants, water hardness, EDTA titration, softening processes.\n- **Module V: Instrumental Methods of Analysis (5 Hours):** UV-Vis and IR spectroscopy, conductometry, potentiometry, chromatography.\n\n*Referenced from verified MAKAUT 2026 BS-CH101 Examination Papers.*`,
                 sources: [{
                     title: 'Chemistry (BS-CH101)',
                     subjectCode: 'BS-CH101',
@@ -2645,31 +2775,21 @@ document.addEventListener('DOMContentLoaded', () => {
             };
         }
 
-        if (lower.includes('mar') || lower.includes('activity points')) {
-            return {
-                verified: true,
-                response: `**MAKAUT MAR (Mandatory Additional Requirements - 100 Points):**\n\nEvery student admitted to 4-year B.Tech must earn **100 MAR activity points** (75 points for lateral entry in 3rd sem):\n- **MOOCs Certifications (SWAYAM/NPTEL):** 20 points per completed course.\n- **Tech Fest / Hackathons:** 10–20 points.\n- **Tree Plantation Drive:** 10 points per tree planted with geotagged photo.\n- **Blood Donation Camp:** 8 points per camp.\n- **Debate / Quiz / Cultural Events:** 10 points (20 for State/National).\n- **Paper Publication:** 15 points per paper.`,
-                sources: [{
-                    title: 'MAR Guidelines Document',
-                    subjectCode: 'MAR-100',
-                    year: 2023,
-                    group: 'Regulations',
-                    questionNumber: 'Rule 4.1',
-                    pageUrl: 'assets/resources/1st_year/syllabus/English.pdf'
-                }]
-            };
-        }
+        // 9. Multi-Subject Academic Fallback (Does NOT default to Chemistry!)
+        const fallbackSubj = currentStream === 'GROUP_A'
+            ? MAKAUT_CURRICULUM.find(s => s.code === '26-BS-PH101')
+            : MAKAUT_CURRICULUM.find(s => s.code === '26-BS-M101');
 
         return {
             verified: true,
-            response: `Based on verified MAKAUT curriculum data for **${currentStream} Semester ${currentSem}**, we indexed syllabus modules and past question patterns matching your query. Review the linked verified paper citation below.`,
+            response: `Based on verified MAKAUT 1st-Year curriculum data for **${currentStream} Semester ${currentSem}**, we indexed syllabus modules and examination blueprints matching your query. Explore the subject syllabus units and PYQ archives via the Subject Hub or view the citation below.`,
             sources: [{
-                title: 'MAKAUT Syllabus Archive',
-                subjectCode: currentStream === 'GROUP_A' ? 'BS-M101' : 'BS-CH101',
-                year: 2023,
-                group: 'Group B',
-                questionNumber: 'Q2',
-                pageUrl: 'assets/resources/1st_year/syllabus/Chemistry.pdf'
+                title: fallbackSubj ? `${fallbackSubj.name} (${fallbackSubj.code})` : 'MAKAUT 1st Year Syllabus',
+                subjectCode: fallbackSubj ? fallbackSubj.code : '1ST-YEAR',
+                year: 2024,
+                group: 'Syllabus Blueprint',
+                questionNumber: 'Curriculum',
+                pageUrl: fallbackSubj ? fallbackSubj.syllabusUrl : 'assets/resources/1st_year/syllabus/Physics.pdf'
             }]
         };
     }
@@ -2834,6 +2954,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     setupClerkAuth();
+    function updateHeroDynamicCounters() {
+        const statSubjects = document.getElementById('stat-subjects-count');
+        const statPyqs = document.getElementById('stat-pyqs-count');
+        if (statSubjects) {
+            statSubjects.textContent = MAKAUT_CURRICULUM.length;
+        }
+        if (statPyqs) {
+            const totalPyqs = MAKAUT_CURRICULUM.reduce((acc, s) => acc + (s.pyqs ? s.pyqs.length : 0), 0);
+            statPyqs.textContent = totalPyqs;
+        }
+    }
+    updateHeroDynamicCounters();
 
     // ==========================================
     // 19. Initial View Boot

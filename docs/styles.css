@@ -33,20 +33,21 @@
 }
 
 :root.light-theme, [data-theme="light"] {
-    --bg-main: #f8fafc;
+    --bg-main: #f1f5f9;
     --bg-secondary: #ffffff;
-    --card-bg: rgba(255, 255, 255, 0.9);
-    --card-hover: rgba(241, 245, 249, 0.95);
-    --card-border: rgba(0, 0, 0, 0.08);
-    --card-border-glow: rgba(79, 70, 229, 0.25);
-    --text-main: #0f172a;
-    --text-muted: #475569;
+    --card-bg: #ffffff;
+    --card-hover: #f8fafc;
+    --card-border: #cbd5e1;
+    --card-border-glow: rgba(67, 56, 202, 0.25);
+    --text-main: #0f172a;        /* High-contrast deep slate */
+    --text-muted: #334155;       /* Readable dark slate */
     --text-subtle: #64748b;
-    --accent-primary: #4f46e5;
-    --accent-indigo: #4338ca;
-    --accent-flame: #ea580c;
-    --accent-flame-glow: rgba(234, 88, 12, 0.22);
-    --accent-glow: rgba(79, 70, 229, 0.15);
+    --accent-primary: #4338ca;   /* Deep indigo for buttons */
+    --accent-indigo: #3730a3;
+    --accent-flame: #c2410c;
+    --accent-flame-glow: rgba(194, 65, 12, 0.22);
+    --accent-glow: rgba(67, 56, 202, 0.15);
+    --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
     --accent-cyan: #0284c7;
     --accent-emerald: #059669;
     --accent-purple: #7c3aed;
@@ -59,9 +60,9 @@
     --radius-md: 12px;
     --radius-lg: 16px;
     --radius-xl: 22px;
-    --header-bg: rgba(255, 255, 255, 0.94);
+    --header-bg: rgba(255, 255, 255, 0.96);
     --input-bg: #ffffff;
-    --input-border: rgba(15, 23, 42, 0.15);
+    --input-border: #cbd5e1;
     --modal-bg: #ffffff;
     --surface-glass: rgba(15, 23, 42, 0.04);
 }
@@ -864,7 +865,7 @@ body {
 
 /* Card C: Saved Revision Deck */
 .bento-card-deck {
-    margin-top: 1.5rem;
+    margin-top: 0;
 }
 
 .deck-preview-list {
@@ -2414,7 +2415,8 @@ body {
     gap: 0.55rem;
     font-family: var(--font-heading);
     font-size: 0.88rem;
-    color: var(--text-subtle);
+    font-weight: 700;
+    color: var(--text-main);
 }
 
 .landing-stat-item strong {
@@ -3091,8 +3093,19 @@ body {
 
 :root.light-theme .regulation-alert-card,
 [data-theme="light"] .regulation-alert-card {
-    background: linear-gradient(135deg, rgba(234, 88, 12, 0.08), rgba(79, 70, 229, 0.05));
-    border-color: rgba(234, 88, 12, 0.25);
+    background: #fff7ed;
+    border-color: #fdba74;
+}
+
+:root.light-theme .regulation-alert-card p,
+[data-theme="light"] .regulation-alert-card p {
+    color: #1e293b;
+    font-weight: 500;
+}
+
+:root.light-theme .regulation-alert-card .alert-title,
+[data-theme="light"] .regulation-alert-card .alert-title {
+    color: #c2410c;
 }
 
 /* Category Filter Row in Dashboard */
@@ -3543,6 +3556,286 @@ body {
 .deck-empty-icon {
     font-size: 2.5rem;
     margin-bottom: 0.75rem;
+}
+
+/* ====================================================================
+   Bento Grid Column Layout (Saved Deck directly under Panic Pack)
+   ==================================================================== */
+@media (min-width: 1025px) {
+    .bento-card-subjects {
+        grid-column: 1;
+        grid-row: 1 / span 2;
+    }
+    .bento-card-panic {
+        grid-column: 2;
+        grid-row: 1;
+    }
+    .bento-card-deck {
+        grid-column: 2;
+        grid-row: 2;
+        margin-top: 0;
+    }
+}
+
+/* ====================================================================
+   Modal & Navigation Back Button (.btn-modal-back)
+   ==================================================================== */
+.btn-modal-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--card-border);
+    color: var(--text-main);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.82rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.btn-modal-back:hover {
+    background: var(--accent-primary);
+    color: #ffffff;
+    border-color: var(--accent-primary);
+    transform: translateX(-2px);
+}
+
+:root.light-theme .btn-modal-back,
+[data-theme="light"] .btn-modal-back {
+    background: #e2e8f0;
+    border-color: #cbd5e1;
+    color: #0f172a;
+}
+
+:root.light-theme .btn-modal-back:hover,
+[data-theme="light"] .btn-modal-back:hover {
+    background: #4338ca;
+    color: #ffffff;
+    border-color: #4338ca;
+}
+
+/* ====================================================================
+   Light Mode High-Contrast Overhauls (Crisp Text, Badges, & Checklists)
+   ==================================================================== */
+:root.light-theme .subject-item-card,
+[data-theme="light"] .subject-item-card {
+    background: #ffffff;
+    border-color: #cbd5e1;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+:root.light-theme .subject-item-card:hover,
+[data-theme="light"] .subject-item-card:hover {
+    background: #f8fafc;
+    border-color: #4338ca;
+    box-shadow: 0 10px 24px rgba(67, 56, 202, 0.08);
+}
+
+:root.light-theme .subject-item-title,
+[data-theme="light"] .subject-item-title {
+    color: #0f172a;
+}
+
+:root.light-theme .subject-code-tag,
+[data-theme="light"] .subject-code-tag {
+    background: #f1f5f9;
+    color: #0f172a;
+    border-color: #cbd5e1;
+}
+
+:root.light-theme .subject-meta-text,
+[data-theme="light"] .subject-meta-text {
+    color: #334155;
+    font-weight: 500;
+}
+
+:root.light-theme .circle-bg,
+[data-theme="light"] .circle-bg {
+    stroke: #e2e8f0;
+}
+
+:root.light-theme .percentage,
+[data-theme="light"] .percentage {
+    fill: #0f172a;
+}
+
+:root.light-theme .ring-status-text,
+[data-theme="light"] .ring-status-text {
+    color: #0f172a;
+}
+
+:root.light-theme .ring-units-count,
+[data-theme="light"] .ring-units-count {
+    color: #475569;
+}
+
+:root.light-theme .badge,
+[data-theme="light"] .badge {
+    background: #e2e8f0;
+    color: #0f172a;
+    border-color: #cbd5e1;
+}
+
+:root.light-theme .stat-pill,
+[data-theme="light"] .stat-pill {
+    background: #f1f5f9;
+    color: #334155;
+    border-color: #cbd5e1;
+}
+
+/* Checklist items & checkboxes in Light Mode */
+:root.light-theme .unit-checklist-item,
+[data-theme="light"] .unit-checklist-item {
+    background: #ffffff;
+    border-color: #cbd5e1;
+}
+
+:root.light-theme .unit-checklist-item:hover,
+[data-theme="light"] .unit-checklist-item:hover {
+    background: #f8fafc;
+    border-color: #94a3b8;
+}
+
+:root.light-theme .unit-checklist-item.completed,
+[data-theme="light"] .unit-checklist-item.completed {
+    background: #f0fdf4;
+    border-color: #86efac;
+}
+
+:root.light-theme .unit-checkbox-custom,
+[data-theme="light"] .unit-checkbox-custom {
+    border: 2px solid #94a3b8;
+    background: #ffffff;
+}
+
+:root.light-theme .unit-checklist-item.completed .unit-checkbox-custom,
+[data-theme="light"] .unit-checklist-item.completed .unit-checkbox-custom {
+    background: #059669;
+    border-color: #059669;
+    color: #ffffff;
+}
+
+:root.light-theme .unit-item-title,
+[data-theme="light"] .unit-item-title {
+    color: #0f172a;
+}
+
+:root.light-theme .unit-hours-badge,
+[data-theme="light"] .unit-hours-badge {
+    color: #1e293b;
+    background: #e2e8f0;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+}
+
+:root.light-theme .unit-subtopics-text,
+[data-theme="light"] .unit-subtopics-text {
+    color: #334155;
+}
+
+/* Landing and Dashboard View Contrast Fixes */
+:root.light-theme .landing-hero-title,
+[data-theme="light"] .landing-hero-title {
+    color: #0f172a;
+}
+
+:root.light-theme .landing-hero-subtitle,
+[data-theme="light"] .landing-hero-subtitle {
+    color: #334155;
+}
+
+:root.light-theme .landing-section-title,
+[data-theme="light"] .landing-section-title {
+    color: #0f172a;
+}
+
+:root.light-theme .landing-section-subhead,
+[data-theme="light"] .landing-section-subhead {
+    color: #334155;
+}
+
+:root.light-theme .landing-feature-card,
+[data-theme="light"] .landing-feature-card {
+    background: #ffffff;
+    border-color: #cbd5e1;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+:root.light-theme .feature-card-title,
+[data-theme="light"] .feature-card-title {
+    color: #0f172a;
+}
+
+:root.light-theme .feature-card-desc,
+[data-theme="light"] .feature-card-desc {
+    color: #334155;
+}
+
+:root.light-theme .dashboard-title,
+[data-theme="light"] .dashboard-title {
+    color: #0f172a;
+}
+
+:root.light-theme .dashboard-subhead,
+[data-theme="light"] .dashboard-subhead {
+    color: #334155;
+}
+
+:root.light-theme .card-title,
+[data-theme="light"] .card-title {
+    color: #0f172a;
+}
+
+:root.light-theme .card-subtitle,
+[data-theme="light"] .card-subtitle {
+    color: #334155;
+}
+
+:root.light-theme .hero-action-tile,
+[data-theme="light"] .hero-action-tile {
+    background: #ffffff;
+    border-color: #cbd5e1;
+}
+
+:root.light-theme .tile-title,
+[data-theme="light"] .tile-title {
+    color: #0f172a;
+}
+
+:root.light-theme .tile-desc,
+[data-theme="light"] .tile-desc {
+    color: #334155;
+}
+
+:root.light-theme .panic-preview-card,
+[data-theme="light"] .panic-preview-card {
+    background: #ffffff;
+    border-color: #fdba74;
+}
+
+:root.light-theme .panic-preview-question,
+[data-theme="light"] .panic-preview-question {
+    color: #0f172a;
+}
+
+:root.light-theme .deck-item-card,
+[data-theme="light"] .deck-item-card {
+    background: #ffffff;
+    border-color: #cbd5e1;
+}
+
+:root.light-theme .deck-item-title,
+[data-theme="light"] .deck-item-title {
+    color: #0f172a;
+}
+
+:root.light-theme .deck-empty-state,
+[data-theme="light"] .deck-empty-state {
+    color: #475569;
 }
 
 
