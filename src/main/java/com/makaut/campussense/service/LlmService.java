@@ -137,7 +137,7 @@ public class LlmService {
         }
 
         // Physics Grounded Response
-        if (lowerQuery.contains("physics") || lowerQuery.contains("optics") || lowerQuery.contains("laser") || lowerQuery.contains("maxwell") || lowerQuery.contains("quantum") || lowerQuery.contains("diffraction") || lowerQuery.contains("ph101") || lowerQuery.contains("ph201")) {
+        if (lowerQuery.contains("physics") || lowerQuery.contains("phy") || lowerQuery.contains("optics") || lowerQuery.contains("laser") || lowerQuery.contains("maxwell") || lowerQuery.contains("quantum") || lowerQuery.contains("diffraction") || lowerQuery.contains("ph101") || lowerQuery.contains("ph201")) {
             return """
                     ### Physics (BS-PH101 / BS-PH201) — 5-Module Verified Syllabus & Archive:
                     Based on official MAKAUT curriculum data **[BS-PH101: Physics Syllabus & Examination Archive]**:
@@ -152,7 +152,7 @@ public class LlmService {
         }
 
         // Mathematics 1 & 2 Grounded Response
-        if (lowerQuery.contains("math") || lowerQuery.contains("calculus") || lowerQuery.contains("matrix") || lowerQuery.contains("matrices") || lowerQuery.contains("ode") || lowerQuery.contains("laplace") || lowerQuery.contains("m101") || lowerQuery.contains("m201")) {
+        if (lowerQuery.contains("math") || lowerQuery.contains("m1") || lowerQuery.contains("m2") || lowerQuery.contains("calculus") || lowerQuery.contains("matrix") || lowerQuery.contains("matrices") || lowerQuery.contains("ode") || lowerQuery.contains("laplace") || lowerQuery.contains("m101") || lowerQuery.contains("m201")) {
             return """
                     ### Mathematics 1 & 2 (BS-M101 / BS-M201) — Academic Module Summary:
                     Based on official MAKAUT curriculum data **[BS-M101 / BS-M201 Mathematics]**:
@@ -169,7 +169,7 @@ public class LlmService {
         }
 
         // Basic Electrical Engineering (ES-EE101)
-        if (lowerQuery.contains("bee") || lowerQuery.contains("electrical") || lowerQuery.contains("thevenin") || lowerQuery.contains("transformer") || lowerQuery.contains("ee101") || lowerQuery.contains("ac circuits")) {
+        if (lowerQuery.contains("bee") || lowerQuery.contains("ee") || lowerQuery.contains("electrical") || lowerQuery.contains("thevenin") || lowerQuery.contains("transformer") || lowerQuery.contains("ee101") || lowerQuery.contains("ac circuits")) {
             return """
                     ### Basic Electrical Engineering (ES-EE101) — Academic Module Summary:
                     Based on official MAKAUT curriculum data **[ES-EE101: Basic Electrical Engineering]**:
@@ -184,7 +184,7 @@ public class LlmService {
         }
 
         // Programming for Problem Solving (ES-CS201 / ES-CS101)
-        if (lowerQuery.contains("c programming") || lowerQuery.contains("pps") || lowerQuery.contains("pointer") || lowerQuery.contains("malloc") || lowerQuery.contains("calloc") || lowerQuery.contains("recursion") || lowerQuery.contains("cs201") || lowerQuery.contains("cs101")) {
+        if (lowerQuery.contains("c programming") || lowerQuery.contains("pps") || lowerQuery.contains("pcc") || lowerQuery.contains("pointer") || lowerQuery.contains("malloc") || lowerQuery.contains("calloc") || lowerQuery.contains("recursion") || lowerQuery.contains("cs201") || lowerQuery.contains("cs101")) {
             return """
                     ### Programming for Problem Solving (PPS & AI - ES-CS201):
                     Based on official MAKAUT curriculum data **[ES-CS201 / ES-CS101: Programming for Problem Solving]**:
@@ -200,7 +200,7 @@ public class LlmService {
         }
 
         // Multidisciplinary / Mandatory (English, Biology, EVS)
-        if (lowerQuery.contains("english") || lowerQuery.contains("aec-101") || lowerQuery.contains("communication")) {
+        if (lowerQuery.contains("english") || lowerQuery.contains("eglish") || lowerQuery.contains("eng") || lowerQuery.contains("aec-101") || lowerQuery.contains("communication")) {
             return """
                     ### English for Communication Skills (26-AEC-101):
                     Based on official MAKAUT curriculum **[26-AEC-101]**:
@@ -228,7 +228,7 @@ public class LlmService {
                     """;
         }
 
-        if (lowerQuery.contains("evs") || lowerQuery.contains("environmental") || lowerQuery.contains("vac-201") || lowerQuery.contains("pollution")) {
+        if (lowerQuery.contains("evs") || lowerQuery.contains("environmental") || lowerQuery.contains("vac-201") || lowerQuery.contains("pollution") || lowerQuery.contains("ecosystem")) {
             return """
                     ### Environmental Science (26-VAC-201):
                     Based on official MAKAUT curriculum **[26-VAC-201]**:
@@ -243,7 +243,7 @@ public class LlmService {
         }
 
         // Chemistry only when explicitly queried
-        if (lowerQuery.contains("chemistry") || lowerQuery.contains("electrochemistry") || lowerQuery.contains("nernst") || lowerQuery.contains("polymer") || lowerQuery.contains("ch101") || lowerQuery.contains("ch201")) {
+        if (lowerQuery.contains("chemistry") || lowerQuery.contains("chem") || lowerQuery.contains("electrochemistry") || lowerQuery.contains("nernst") || lowerQuery.contains("polymer") || lowerQuery.contains("ch101") || lowerQuery.contains("ch201")) {
             return """
                     ### Chemistry (BS-CH101 / BS-CH201) — 5-Module Verified Syllabus:
                     Based on official MAKAUT curriculum data **[BS-CH101: Chemistry Syllabus]**:

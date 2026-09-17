@@ -70,6 +70,7 @@ public class RagService {
 
         // 1. Intent Detection
         String userQuery = request.getQuery().trim();
+        String normalizedQuery = normalizeQuery(userQuery);
         boolean isPlacementQuery = isPlacementIntent(userQuery);
 
         StringBuilder contextBuilder = new StringBuilder();
@@ -95,7 +96,7 @@ public class RagService {
 
         // 3. Unstructured Vector Retrieval
         List<ScoredEmbedding> vectorHits = searchSimilarEmbeddings(
-                userQuery,
+                normalizedQuery.isBlank() ? userQuery : normalizedQuery,
                 request.getStream() != null ? request.getStream().name() : null,
                 request.getSemester()
         );
@@ -319,6 +320,24 @@ public class RagService {
         } catch (Exception e) {
             log.error("Failed to record chat history: {}", e.getMessage());
         }
+    }
+
+    private String normalizeQuery(String raw) {
+        if (raw == null) return "";
+        String q = raw.toLowerCase();
+        q = q.replaceAll("\\beglish\\b", "english");
+        q = q.replaceAll("\\beng\\b", "english");
+        q = q.replaceAll("\\bphy\\b", "physics");
+        q = q.replaceAll("\\bchem\\b", "chemistry");
+        q = q.replaceAll("\\bpcc\\b", "programming for problem solving");
+        q = q.replaceAll("\\bpps\\b", "programming for problem solving");
+        q = q.replaceAll("\\bm1\\b", "mathematics 1");
+        q = q.replaceAll("\\bm2\\b", "mathematics 2");
+        q = q.replaceAll("\\bee\\b", "basic electrical engineering");
+        q = q.replaceAll("\\bbee\\b", "basic electrical engineering");
+        q = q.replaceAll("\\bbio\\b", "biology");
+        q = q.replaceAll("\\bevs\\b", "environmental science");
+        return q;
     }
 
     @lombok.Value

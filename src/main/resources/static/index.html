@@ -331,124 +331,121 @@
                         <div class="search-history-list" id="search-history-list"></div>
                     </div>
                 </div>
-                <div class="search-quick-tags">
-                    <span class="quick-tag-label">Trending Revisions:</span>
-                    <button class="quick-chip" data-query="Thévenin's Theorem repeated questions">⚡ Thévenin's Theorem</button>
-                    <button class="quick-chip" data-query="Newton Rings derivation proof">🔬 Newton's Rings</button>
-                    <button class="quick-chip" data-query="malloc vs calloc differences in C">💻 malloc() vs calloc()</button>
-                    <button class="quick-chip" data-query="Euler's theorem on homogeneous functions in Mathematics">📐 Euler's Theorem</button>
-                    <button class="quick-chip" data-query="Nernst Equation and electrochemical cells in Chemistry">⚗️ Nernst Equation</button>
-                </div>
             </div>
         </section>
 
-        <!-- Top Hero Quick Action Cards (#dashboard-quick-actions) -->
-        <section class="dashboard-quick-actions" id="dashboard-quick-actions">
-            <div class="hero-action-tile tile-syllabus" id="tile-action-syllabi" role="button" tabindex="0" title="View Syllabi & Interactive Checklists">
-                <div class="tile-icon-wrapper">
-                    <span class="tile-icon">📚</span>
-                </div>
-                <div class="tile-content">
-                    <h3 class="tile-title">Syllabi & Unit Checklists</h3>
-                    <p class="tile-subtitle">Official 2026 curriculum breakdowns & unit blueprints</p>
-                    <span class="tile-action-link">Explore Checklists ➔</span>
-                </div>
-            </div>
-
-            <div class="hero-action-tile tile-pyqs" id="tile-action-pyqs" role="button" tabindex="0" title="View Verified Past Question Papers">
-                <div class="tile-icon-wrapper">
-                    <span class="tile-icon">📄</span>
-                </div>
-                <div class="tile-content">
-                    <h3 class="tile-title">Past Question Papers (PYQs)</h3>
-                    <p class="tile-subtitle">Verified semester exam papers (2020 – 2026)</p>
-                    <span class="tile-action-link">Open PYQ Archive ➔</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Bento Grid Dashboard -->
+        <!-- Bento Grid Dashboard (2-Column Alignment Matching Handwritten Sketch) -->
         <section class="bento-container">
-            <!-- Bento Card A: Active Semester Subjects & Checklist Rings -->
-            <div class="bento-card bento-card-subjects">
-                <div class="card-header-flex">
-                    <div class="header-titles">
-                        <div class="card-pretitle">SEMESTER CURRICULUM</div>
-                        <h2 class="card-title" id="subjects-heading">Active Subjects & Syllabus Progress</h2>
+            <!-- Left Column -->
+            <div class="bento-col-left">
+                <!-- 1. Syllabus Explorer / Blueprint Summary -->
+                <div class="hero-action-tile tile-syllabus" id="tile-action-syllabi" role="button" tabindex="0" title="View Syllabi & Interactive Checklists">
+                    <div class="tile-icon-wrapper">
+                        <span class="tile-icon">📚</span>
                     </div>
-                    <div class="header-action">
-                        <span class="stat-pill" id="overall-syllabus-progress-pill">0% Completed</span>
-                    </div>
-                </div>
-                <p class="card-subtitle">Click any subject card to launch the <strong>Subject Hub</strong> with interactive checklist, PYQ Archives, and topic clusters.</p>
-
-                <!-- Regulation Notice Banner (Shown on 1st-Year View) -->
-                <div class="regulation-alert-card" id="regulation-notice" style="display: none;">
-                    <div class="alert-icon">⚡</div>
-                    <div class="alert-content">
-                        <span class="alert-title">Note on Syllabus & Papers:</span>
-                        <p>1st-year courses follow the updated <strong>2026 MAKAUT curriculum</strong>, while past question papers reflect the <strong>2018 model</strong> they were examined under. Core physics and chemistry (<code>BS-CH101</code> / <code>BS-CH201</code>) topics remain identical—check the syllabus for minor unit adjustments.</p>
+                    <div class="tile-content">
+                        <h3 class="tile-title">Syllabus Explorer & Unit Checklists</h3>
+                        <p class="tile-subtitle">Official 2026 curriculum breakdowns & unit blueprints</p>
+                        <span class="tile-action-link">Explore Checklists ➔</span>
                     </div>
                 </div>
 
-                <!-- 1st-Year Unified Subject Category Filter Pills -->
-                <div class="category-filter-row" id="first-year-filter-row" style="display: none;">
-                    <span class="filter-label">Filter Stream:</span>
-                    <div class="category-pills">
-                        <button type="button" class="category-pill active" data-category="ALL">All Subjects</button>
-                        <button type="button" class="category-pill" data-category="GROUP_A">Group A (Physics / Electrical)</button>
-                        <button type="button" class="category-pill" data-category="GROUP_B">Group B (Chemistry / PPS)</button>
-                        <button type="button" class="category-pill" data-category="MATH">Mathematics</button>
-                        <button type="button" class="category-pill" data-category="MULTIDISCIPLINARY">Multidisciplinary / Mandatory</button>
+                <!-- 2. 1st Year Curriculum -->
+                <div class="bento-card bento-card-subjects">
+                    <div class="card-header-flex">
+                        <div class="header-titles">
+                            <div class="card-pretitle">SEMESTER CURRICULUM</div>
+                            <h2 class="card-title" id="subjects-heading">Active Subjects & Syllabus Progress</h2>
+                        </div>
+                        <div class="header-action">
+                            <span class="stat-pill" id="overall-syllabus-progress-pill">0% Completed</span>
+                        </div>
                     </div>
-                </div>
+                    <p class="card-subtitle">Click any subject card to launch the <strong>Subject Hub</strong> with interactive checklist, PYQ Archives, and topic clusters.</p>
 
-                <div class="subjects-grid" id="active-subjects-grid">
-                    <!-- Populated dynamically by app.js -->
+                    <!-- Regulation Notice Banner (Shown on 1st-Year View) -->
+                    <div class="regulation-alert-card" id="regulation-notice" style="display: none;">
+                        <div class="alert-icon">⚡</div>
+                        <div class="alert-content">
+                            <span class="alert-title">Note on Syllabus & Papers:</span>
+                            <p>1st-year courses follow the updated <strong>2026 MAKAUT curriculum</strong>, while past question papers reflect the <strong>2018 model</strong> they were examined under. Core physics and chemistry (<code>BS-CH101</code> / <code>BS-CH201</code>) topics remain identical—check the syllabus for minor unit adjustments.</p>
+                        </div>
+                    </div>
+
+                    <!-- 1st-Year Unified Subject Category Filter Pills -->
+                    <div class="category-filter-row" id="first-year-filter-row" style="display: none;">
+                        <span class="filter-label">Filter Stream:</span>
+                        <div class="category-pills">
+                            <button type="button" class="category-pill active" data-category="ALL">All Subjects</button>
+                            <button type="button" class="category-pill" data-category="GROUP_A">Group A (Physics / Electrical)</button>
+                            <button type="button" class="category-pill" data-category="GROUP_B">Group B (Chemistry / PPS)</button>
+                            <button type="button" class="category-pill" data-category="MATH">Mathematics</button>
+                            <button type="button" class="category-pill" data-category="MULTIDISCIPLINARY">Multidisciplinary / Mandatory</button>
+                        </div>
+                    </div>
+
+                    <div class="subjects-grid" id="active-subjects-grid">
+                        <!-- Populated dynamically by app.js -->
+                    </div>
                 </div>
             </div>
 
-            <!-- Bento Card B: The Panic Pack (High-Yield 48h PYQ Analysis) -->
-            <div class="bento-card bento-card-panic">
-                <div class="card-header-flex">
-                    <div class="header-titles">
-                        <div class="card-pretitle flame-pretitle">EXAM IN 48 HOURS?</div>
-                        <h2 class="card-title flame-heading">🔥 The Panic Pack</h2>
+            <!-- Right Column -->
+            <div class="bento-col-right">
+                <!-- 1. PYQ Archive Explorer -->
+                <div class="hero-action-tile tile-pyqs" id="tile-action-pyqs" role="button" tabindex="0" title="View Verified Past Question Papers">
+                    <div class="tile-icon-wrapper">
+                        <span class="tile-icon">📄</span>
                     </div>
-                    <span class="flame-tag">Top 20% Repeated</span>
-                </div>
-                <p class="card-subtitle">Ranked by appearance frequency across MAKAUT semester exams. Guaranteed high yield.</p>
-
-                <div class="panic-pack-preview-list" id="panic-preview-list">
-                    <!-- Populated dynamically by app.js -->
-                </div>
-
-                <div class="card-footer-action">
-                    <button class="btn btn-flame-full" id="btn-enter-panic-mode-cta">
-                        ⚡ Enter Full Panic Mode (All Repeated Questions)
-                    </button>
-                </div>
-            </div>
-
-            <!-- Bento Card C: My Saved Revision Deck -->
-            <div class="bento-card bento-card-deck">
-                <div class="card-header-flex">
-                    <div class="header-titles">
-                        <div class="card-pretitle">OFFLINE REVISION</div>
-                        <h2 class="card-title">🔖 My Saved Deck</h2>
+                    <div class="tile-content">
+                        <h3 class="tile-title">PYQ Archive Explorer</h3>
+                        <p class="tile-subtitle">Verified semester exam papers (2020 – 2026)</p>
+                        <span class="tile-action-link">Open PYQ Archive ➔</span>
                     </div>
-                    <span class="badge deck-count-tag" id="deck-card-counter">0 Cards</span>
-                </div>
-                <p class="card-subtitle">Quick-access revision deck of questions and papers saved for your night-before exam drill.</p>
-
-                <div class="deck-preview-list" id="deck-preview-list">
-                    <!-- Populated dynamically by app.js -->
                 </div>
 
-                <div class="card-footer-action" style="margin-top: 1rem;">
-                    <button class="btn btn-secondary" id="btn-view-all-deck" style="width: 100%;">
-                        📖 Open Full Saved Deck
-                    </button>
+                <!-- 2. The Panic Pack (High-Yield 48h PYQ Analysis) -->
+                <div class="bento-card bento-card-panic">
+                    <div class="card-header-flex">
+                        <div class="header-titles">
+                            <div class="card-pretitle flame-pretitle">EXAM IN 48 HOURS?</div>
+                            <h2 class="card-title flame-heading">🔥 The Panic Pack</h2>
+                        </div>
+                        <span class="flame-tag">Top 20% Repeated</span>
+                    </div>
+                    <p class="card-subtitle">Ranked by appearance frequency across MAKAUT semester exams. Guaranteed high yield.</p>
+
+                    <div class="panic-pack-preview-list" id="panic-preview-list">
+                        <!-- Populated dynamically by app.js -->
+                    </div>
+
+                    <div class="card-footer-action">
+                        <button class="btn btn-flame-full" id="btn-enter-panic-mode-cta">
+                            ⚡ Enter Full Panic Mode (All Repeated Questions)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 3. My Saved Revision Deck -->
+                <div class="bento-card bento-card-deck">
+                    <div class="card-header-flex">
+                        <div class="header-titles">
+                            <div class="card-pretitle">OFFLINE REVISION</div>
+                            <h2 class="card-title">🔖 My Saved Deck</h2>
+                        </div>
+                        <span class="badge deck-count-tag" id="deck-card-counter">0 Cards</span>
+                    </div>
+                    <p class="card-subtitle">Quick-access revision deck of questions and papers saved for your night-before exam drill.</p>
+
+                    <div class="deck-preview-list" id="deck-preview-list">
+                        <!-- Populated dynamically by app.js -->
+                    </div>
+
+                    <div class="card-footer-action" style="margin-top: 1rem;">
+                        <button class="btn btn-secondary" id="btn-view-all-deck" style="width: 100%;">
+                            📖 Open Full Saved Deck
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -835,12 +832,19 @@
                     <div class="drawer-subtitle">Grounded Conversational RAG • Top-K Vector Engine</div>
                 </div>
             </div>
-            <button class="drawer-close-btn" id="btn-close-ai-drawer" title="Close Drawer (Esc)">✕</button>
-        </div>
-
-        <div class="drawer-history-row" id="drawer-history-row" style="display: none;">
-            <span class="drawer-history-label">Recent Questions:</span>
-            <div class="drawer-history-pills" id="drawer-history-pills"></div>
+            <div class="drawer-header-actions">
+                <button id="btn-chat-history" class="btn-history-toggle" type="button">🕒 History ▾</button>
+                <button class="drawer-close-btn" id="btn-close-ai-drawer" title="Close Drawer (Esc)">✕</button>
+                <div id="chat-history-dropdown" class="history-dropdown-panel" style="display: none;">
+                    <div class="history-dropdown-header">
+                        <span>Recent Queries</span>
+                        <button id="btn-clear-chat-history" class="btn-clear-text" type="button">Clear</button>
+                    </div>
+                    <ul id="chat-history-list" class="history-dropdown-items">
+                        <!-- Populated dynamically from localStorage -->
+                    </ul>
+                </div>
+            </div>
         </div>
 
         <div class="drawer-chat-messages" id="drawer-chat-messages">

@@ -397,6 +397,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Verified High-Frequency Panic Pack Questions (Grounded 5-Year Exam Repeats)
     const MAKAUT_PANIC_QUESTIONS = [
+        // 1. BEE: Thévenin's Theorem (10 Marks)
         {
             id: 1,
             subjectCode: 'ES-EE101',
@@ -408,83 +409,7 @@ document.addEventListener('DOMContentLoaded', () => {
             groupType: 'Group C',
             modelAnswerSnippet: '1. Remove load resistor RL. 2. Calculate open-circuit voltage Voc (Vth) across terminals AB using nodal analysis. 3. Deactivate all independent sources (short voltage, open current) to calculate Rth. 4. Equivalent load current: IL = Vth / (Rth + RL).'
         },
-        {
-            id: 2,
-            subjectCode: 'ES-EE101',
-            topicName: 'Series Resonance & Q-Factor',
-            questionText: 'Derive the condition for series resonance in an RLC circuit. Show that the resonant frequency is fr = 1 / (2 * pi * sqrt(L * C)). Calculate the Q-factor and bandwidth.',
-            marks: 5,
-            frequencyCount: 4,
-            examYears: ['2019', '2021', '2022', '2023'],
-            groupType: 'Group B',
-            modelAnswerSnippet: 'At resonance, inductive reactance equals capacitive reactance (omega*L = 1/(omega*C)). Hence f0 = 1 / (2*pi*sqrt(L*C)). Impedance is purely resistive (Z = R). Quality factor Q = omega0*L / R = (1/R)*sqrt(L/C). Bandwidth = f0 / Q.'
-        },
-        {
-            id: 3,
-            subjectCode: 'ES-EE101',
-            topicName: 'Transformer Losses & Maximum Efficiency',
-            questionText: 'Explain the losses occurring in a single-phase transformer. Derive the condition for maximum efficiency and show that it occurs when copper loss equals iron loss.',
-            marks: 10,
-            frequencyCount: 4,
-            examYears: ['2018', '2020', '2022', '2023'],
-            groupType: 'Group C',
-            modelAnswerSnippet: 'Transformer losses: Iron loss Pi (hysteresis + eddy current, constant) and Copper loss Pcu = I2^2 * R02 (variable). Efficiency eta = (V2*I2*cos(phi)) / (V2*I2*cos(phi) + Pi + I2^2*R02). Differentiating with respect to I2 and equating to zero yields I2^2 * R02 = Pi, i.e., Variable Copper Loss = Constant Iron Loss.'
-        },
-        {
-            id: 4,
-            subjectCode: 'ES-CS101',
-            topicName: 'Dynamic Memory Allocation',
-            questionText: 'Explain the differences between malloc() and calloc() in C. Write a program to dynamically allocate memory for an array of n integers and calculate their average.',
-            marks: 5,
-            frequencyCount: 5,
-            examYears: ['2018', '2019', '2021', '2022', '2023'],
-            groupType: 'Group B',
-            modelAnswerSnippet: 'malloc(size) allocates a single uninitialized contiguous block of bytes containing garbage values. calloc(n, size) allocates n contiguous blocks of size bytes initialized to zero. Both return (void*) pointer or NULL on failure.'
-        },
-        {
-            id: 5,
-            subjectCode: 'ES-CS101',
-            topicName: 'Recursion (Tower of Hanoi)',
-            questionText: 'Write a recursive C function to solve the Tower of Hanoi problem for n disks. Trace the function call tree and show total moves for n = 3 disks.',
-            marks: 10,
-            frequencyCount: 4,
-            examYears: ['2019', '2021', '2022', '2024'],
-            groupType: 'Group C',
-            modelAnswerSnippet: 'void tower(int n, char src, char dest, char aux) { if(n==1) { printf("Move disk 1 from %c to %c\\n", src, dest); return; } tower(n-1, src, aux, dest); printf("Move disk %d from %c to %c\\n", n, src, dest); tower(n-1, aux, dest, src); } Total moves: 2^n - 1 = 7 for n=3.'
-        },
-        {
-            id: 6,
-            subjectCode: 'ES-CS101',
-            topicName: 'Call by Value vs Reference',
-            questionText: 'Differentiate between call by value and call by reference in C. Write a C function using pointers to swap two integer values without global variables.',
-            marks: 5,
-            frequencyCount: 4,
-            examYears: ['2019', '2020', '2022', '2023'],
-            groupType: 'Group B',
-            modelAnswerSnippet: 'In call by value, copies of arguments are passed; changes inside the function do not affect caller. In call by reference (via pointers in C), addresses are passed so caller values are modified directly: void swap(int *a, int *b) { int temp = *a; *a = *b; *b = temp; }'
-        },
-        {
-            id: 7,
-            subjectCode: 'ES-CS101',
-            topicName: 'Pointer Arithmetic & 2D Arrays',
-            questionText: 'Explain pointer arithmetic in two-dimensional arrays. Show how *(*(arr + i) + j) accesses the element at row i and column j.',
-            marks: 10,
-            frequencyCount: 4,
-            examYears: ['2018', '2020', '2022', '2024'],
-            groupType: 'Group C',
-            modelAnswerSnippet: 'In int arr[M][N], arr is pointer to array of N ints. (arr + i) points to the i-th row. Dereferencing *(arr + i) yields base address of row i. Adding j gives (*(arr + i) + j), pointing to element (i, j). Final dereference *(*(arr + i) + j) yields arr[i][j].'
-        },
-        {
-            id: 8,
-            subjectCode: 'BS-M101',
-            topicName: 'Cayley-Hamilton Theorem',
-            questionText: 'State Cayley-Hamilton Theorem. Verify it for matrix A = [[1, 2], [3, 4]] and hence compute A^-1.',
-            marks: 10,
-            frequencyCount: 5,
-            examYears: ['2018', '2019', '2021', '2022', '2023'],
-            groupType: 'Group C',
-            modelAnswerSnippet: 'Every square matrix satisfies its characteristic equation: det(A - lambda*I) = 0. Characteristic polynomial: lambda^2 - 5*lambda - 2 = 0. Verify A^2 - 5A - 2I = 0. Multiply by A^-1: A^-1 = (A - 5I)/2.'
-        },
+        // 2. Physics: Newton's Rings (10 Marks)
         {
             id: 9,
             subjectCode: 'BS-PH101',
@@ -496,39 +421,7 @@ document.addEventListener('DOMContentLoaded', () => {
             groupType: 'Group C',
             modelAnswerSnippet: 'Formed by interference between rays reflected from upper surface of glass plate and lower curved surface of plano-convex lens. Path difference Delta = 2*t + lambda/2. For dark rings: 2t = n*lambda. Since t = r^2 / (2R), Dn^2 = 4*n*lambda*R => Dn directly proportional to sqrt(n).'
         },
-        {
-            id: 10,
-            subjectCode: 'BS-PH101',
-            topicName: 'Fraunhofer Diffraction (Single Slit)',
-            questionText: 'Derive the intensity distribution of Fraunhofer diffraction at a single slit of width a. Find the conditions for central maximum, secondary maxima, and minima.',
-            marks: 10,
-            frequencyCount: 5,
-            examYears: ['2019', '2021', '2022', '2023', '2024'],
-            groupType: 'Group C',
-            modelAnswerSnippet: 'Resultant amplitude R = A * (sin beta / beta) where beta = (pi * a * sin theta) / lambda. Intensity I = I0 * (sin beta / beta)^2. Central maximum occurs at beta = 0. Minima occur at beta = m*pi (a*sin theta = m*lambda, m != 0). Secondary maxima occur at beta = +-1.43 pi, +-2.46 pi.'
-        },
-        {
-            id: 11,
-            subjectCode: 'BS-PH101',
-            topicName: 'Compton Effect',
-            questionText: 'What is Compton scattering? Derive the expression for Compton shift in wavelength Delta lambda = (h / (m0 * c)) * (1 - cos theta).',
-            marks: 10,
-            frequencyCount: 4,
-            examYears: ['2018', '2020', '2022', '2023'],
-            groupType: 'Group C',
-            modelAnswerSnippet: 'Applying relativistic conservation of energy and momentum between incident photon and stationary electron: E + m0*c^2 = E\' + m*c^2 and p = p\' + p_e. Squaring and eliminating electron parameters yields Delta lambda = lambda\' - lambda = (h / m0*c) * (1 - cos theta).'
-        },
-        {
-            id: 12,
-            subjectCode: 'BS-PH101',
-            topicName: 'Polarization & Brewster\'s Law',
-            questionText: 'State Brewster\'s law of polarization by reflection. Prove that when light is incident at polarizing angle, reflected and refracted rays are mutually perpendicular.',
-            marks: 5,
-            frequencyCount: 4,
-            examYears: ['2020', '2022', '2023', '2024'],
-            groupType: 'Group B',
-            modelAnswerSnippet: 'Brewster\'s Law: mu = tan(ip) = sin(ip)/cos(ip). By Snell\'s Law: mu = sin(ip)/sin(r). Equating gives sin(ip)/cos(ip) = sin(ip)/sin(r) => cos(ip) = sin(r) = cos(90° - r) => ip + r = 90°. Hence reflected and refracted rays are at right angles (180° - 90° = 90°).'
-        },
+        // 3. Chemistry: Nernst Equation & Cell EMF (10 Marks)
         {
             id: 13,
             subjectCode: 'BS-CH101',
@@ -540,6 +433,127 @@ document.addEventListener('DOMContentLoaded', () => {
             groupType: 'Group C',
             modelAnswerSnippet: 'Delta G = Delta G° + RT ln Q. Since Delta G = -nFE, E = E° - (2.303 RT / nF) log Q. At 298 K: E = 1.10 - (0.0591 / 2) log(0.01 / 0.1) = 1.10 - 0.02955 * (-1) = 1.1295 V.'
         },
+        // 4. Mathematics 1: Cayley-Hamilton Theorem (10 Marks)
+        {
+            id: 8,
+            subjectCode: 'BS-M101',
+            topicName: 'Cayley-Hamilton Theorem',
+            questionText: 'State Cayley-Hamilton Theorem. Verify it for matrix A = [[1, 2], [3, 4]] and hence compute A^-1.',
+            marks: 10,
+            frequencyCount: 5,
+            examYears: ['2018', '2019', '2021', '2022', '2023'],
+            groupType: 'Group C',
+            modelAnswerSnippet: 'Every square matrix satisfies its characteristic equation: det(A - lambda*I) = 0. Characteristic polynomial: lambda^2 - 5*lambda - 2 = 0. Verify A^2 - 5A - 2I = 0. Multiply by A^-1: A^-1 = (A - 5I)/2.'
+        },
+        // 5. PPS: Dynamic Memory Allocation (5 Marks)
+        {
+            id: 4,
+            subjectCode: 'ES-CS101',
+            topicName: 'Dynamic Memory Allocation',
+            questionText: 'Explain the differences between malloc() and calloc() in C. Write a program to dynamically allocate memory for an array of n integers and calculate their average.',
+            marks: 5,
+            frequencyCount: 5,
+            examYears: ['2018', '2019', '2021', '2022', '2023'],
+            groupType: 'Group B',
+            modelAnswerSnippet: 'malloc(size) allocates a single uninitialized contiguous block of bytes containing garbage values. calloc(n, size) allocates n contiguous blocks of size bytes initialized to zero. Both return (void*) pointer or NULL on failure.'
+        },
+        // 6. BEE: Series Resonance & Q-Factor (5 Marks)
+        {
+            id: 2,
+            subjectCode: 'ES-EE101',
+            topicName: 'Series Resonance & Q-Factor',
+            questionText: 'Derive the condition for series resonance in an RLC circuit. Show that the resonant frequency is fr = 1 / (2 * pi * sqrt(L * C)). Calculate the Q-factor and bandwidth.',
+            marks: 5,
+            frequencyCount: 4,
+            examYears: ['2019', '2021', '2022', '2023'],
+            groupType: 'Group B',
+            modelAnswerSnippet: 'At resonance, inductive reactance equals capacitive reactance (omega*L = 1/(omega*C)). Hence f0 = 1 / (2*pi*sqrt(L*C)). Impedance is purely resistive (Z = R). Quality factor Q = omega0*L / R = (1/R)*sqrt(L/C). Bandwidth = f0 / Q.'
+        },
+        // 7. Physics: Fraunhofer Diffraction (10 Marks)
+        {
+            id: 10,
+            subjectCode: 'BS-PH101',
+            topicName: 'Fraunhofer Diffraction (Single Slit)',
+            questionText: 'Derive the intensity distribution of Fraunhofer diffraction at a single slit of width a. Find the conditions for central maximum, secondary maxima, and minima.',
+            marks: 10,
+            frequencyCount: 5,
+            examYears: ['2019', '2021', '2022', '2023', '2024'],
+            groupType: 'Group C',
+            modelAnswerSnippet: 'Resultant amplitude R = A * (sin beta / beta) where beta = (pi * a * sin theta) / lambda. Intensity I = I0 * (sin beta / beta)^2. Central maximum occurs at beta = 0. Minima occur at beta = m*pi (a*sin theta = m*lambda, m != 0). Secondary maxima occur at beta = +-1.43 pi, +-2.46 pi.'
+        },
+        // 8. PPS: Recursion Tower of Hanoi (10 Marks)
+        {
+            id: 5,
+            subjectCode: 'ES-CS101',
+            topicName: 'Recursion (Tower of Hanoi)',
+            questionText: 'Write a recursive C function to solve the Tower of Hanoi problem for n disks. Trace the function call tree and show total moves for n = 3 disks.',
+            marks: 10,
+            frequencyCount: 4,
+            examYears: ['2019', '2021', '2022', '2024'],
+            groupType: 'Group C',
+            modelAnswerSnippet: 'void tower(int n, char src, char dest, char aux) { if(n==1) { printf("Move disk 1 from %c to %c\\n", src, dest); return; } tower(n-1, src, aux, dest); printf("Move disk %d from %c to %c\\n", n, src, dest); tower(n-1, aux, dest, src); } Total moves: 2^n - 1 = 7 for n=3.'
+        },
+        // 9. BEE: Transformer Losses & Maximum Efficiency (10 Marks)
+        {
+            id: 3,
+            subjectCode: 'ES-EE101',
+            topicName: 'Transformer Losses & Maximum Efficiency',
+            questionText: 'Explain the losses occurring in a single-phase transformer. Derive the condition for maximum efficiency and show that it occurs when copper loss equals iron loss.',
+            marks: 10,
+            frequencyCount: 4,
+            examYears: ['2018', '2020', '2022', '2023'],
+            groupType: 'Group C',
+            modelAnswerSnippet: 'Transformer losses: Iron loss Pi (hysteresis + eddy current, constant) and Copper loss Pcu = I2^2 * R02 (variable). Efficiency eta = (V2*I2*cos(phi)) / (V2*I2*cos(phi) + Pi + I2^2*R02). Differentiating with respect to I2 and equating to zero yields I2^2 * R02 = Pi, i.e., Variable Copper Loss = Constant Iron Loss.'
+        },
+        // 10. PPS: Call by Value vs Reference (5 Marks)
+        {
+            id: 6,
+            subjectCode: 'ES-CS101',
+            topicName: 'Call by Value vs Reference',
+            questionText: 'Differentiate between call by value and call by reference in C. Write a C function using pointers to swap two integer values without global variables.',
+            marks: 5,
+            frequencyCount: 4,
+            examYears: ['2019', '2020', '2022', '2023'],
+            groupType: 'Group B',
+            modelAnswerSnippet: 'In call by value, copies of arguments are passed; changes inside the function do not affect caller. In call by reference (via pointers in C), addresses are passed so caller values are modified directly: void swap(int *a, int *b) { int temp = *a; *a = *b; *b = temp; }'
+        },
+        // 11. PPS: Pointer Arithmetic & 2D Arrays (10 Marks)
+        {
+            id: 7,
+            subjectCode: 'ES-CS101',
+            topicName: 'Pointer Arithmetic & 2D Arrays',
+            questionText: 'Explain pointer arithmetic in two-dimensional arrays. Show how *(*(arr + i) + j) accesses the element at row i and column j.',
+            marks: 10,
+            frequencyCount: 4,
+            examYears: ['2018', '2020', '2022', '2024'],
+            groupType: 'Group C',
+            modelAnswerSnippet: 'In int arr[M][N], arr is pointer to array of N ints. (arr + i) points to the i-th row. Dereferencing *(arr + i) yields base address of row i. Adding j gives (*(arr + i) + j), pointing to element (i, j). Final dereference *(*(arr + i) + j) yields arr[i][j].'
+        },
+        // 12. Physics: Compton Effect (10 Marks)
+        {
+            id: 11,
+            subjectCode: 'BS-PH101',
+            topicName: 'Compton Effect',
+            questionText: 'What is Compton scattering? Derive the expression for Compton shift in wavelength Delta lambda = (h / (m0 * c)) * (1 - cos theta).',
+            marks: 10,
+            frequencyCount: 4,
+            examYears: ['2018', '2020', '2022', '2023'],
+            groupType: 'Group C',
+            modelAnswerSnippet: 'Applying relativistic conservation of energy and momentum between incident photon and stationary electron: E + m0*c^2 = E\' + m*c^2 and p = p\' + p_e. Squaring and eliminating electron parameters yields Delta lambda = lambda\' - lambda = (h / m0*c) * (1 - cos theta).'
+        },
+        // 13. Physics: Polarization & Brewster's Law (5 Marks)
+        {
+            id: 12,
+            subjectCode: 'BS-PH101',
+            topicName: 'Polarization & Brewster\'s Law',
+            questionText: 'State Brewster\'s law of polarization by reflection. Prove that when light is incident at polarizing angle, reflected and refracted rays are mutually perpendicular.',
+            marks: 5,
+            frequencyCount: 4,
+            examYears: ['2020', '2022', '2023', '2024'],
+            groupType: 'Group B',
+            modelAnswerSnippet: 'Brewster\'s Law: mu = tan(ip) = sin(ip)/cos(ip). By Snell\'s Law: mu = sin(ip)/sin(r). Equating gives sin(ip)/cos(ip) = sin(ip)/sin(r) => cos(ip) = sin(r) = cos(90° - r) => ip + r = 90°. Hence reflected and refracted rays are at right angles (180° - 90° = 90°).'
+        },
+        // 14. Chemistry: Conductometric Titrations (5 Marks)
         {
             id: 14,
             subjectCode: 'BS-CH101',
@@ -1633,8 +1647,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const previewList = document.getElementById('panic-preview-list');
         if (!previewList) return;
 
-        const top5 = MAKAUT_PANIC_QUESTIONS.slice(0, 5);
-        previewList.innerHTML = top5.map(q => `
+        const top8 = MAKAUT_PANIC_QUESTIONS.slice(0, 8);
+        previewList.innerHTML = top8.map(q => `
             <div class="panic-preview-card" data-id="${q.id}">
                 <div class="panic-card-header-row">
                     <span class="panic-freq-badge">🔥 Seen ${q.frequencyCount} times</span>
@@ -1993,6 +2007,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (modal) modal.style.display = 'flex';
     }
+    window.openPdfViewer = openPdfViewer;
 
     function closePdfViewerModal() {
         const modal = document.getElementById('pdf-viewer-modal');
@@ -2164,7 +2179,7 @@ document.addEventListener('DOMContentLoaded', () => {
         queryHistory = [clean, ...queryHistory.filter(item => item.toLowerCase() !== clean.toLowerCase())].slice(0, 8);
         localStorage.setItem('campussense_query_history', JSON.stringify(queryHistory));
         renderQueryHistoryDropdown();
-        renderDrawerHistoryPills();
+        renderChatHistoryDropdown();
     }
 
     function renderQueryHistoryDropdown() {
@@ -2195,7 +2210,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 queryHistory = [];
                 localStorage.removeItem('campussense_query_history');
                 dropdown.style.display = 'none';
-                renderDrawerHistoryPills();
+                renderChatHistoryDropdown();
             });
         }
         dropdown.querySelectorAll('.history-item').forEach(item => {
@@ -2208,28 +2223,71 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function renderDrawerHistoryPills() {
-        const container = document.getElementById('drawer-history-pills');
-        const row = document.getElementById('drawer-history-row');
-        if (!container) return;
+    function renderChatHistoryDropdown() {
+        const list = document.getElementById('chat-history-list');
+        const dropdown = document.getElementById('chat-history-dropdown');
+        if (!list) return;
         if (queryHistory.length === 0) {
-            if (row) row.style.display = 'none';
-            container.innerHTML = '<span style="font-size: 0.75rem; color: var(--text-muted);">No recent questions</span>';
+            list.innerHTML = '<li style="padding: 0.75rem 1rem; font-size: 0.8rem; color: var(--text-muted); text-align: center;">No recent queries</li>';
             return;
         }
-        if (row) row.style.display = 'flex';
-        container.innerHTML = queryHistory.slice(0, 8).map(q => `
-            <button class="drawer-history-pill chip-shortcut" data-prompt="${escapeHtml(q)}" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 999px; padding: 0.25rem 0.75rem; font-size: 0.75rem; color: var(--text-muted); cursor: pointer; white-space: nowrap; font-weight: 500;">
-                ${escapeHtml(q)}
-            </button>
+        list.innerHTML = queryHistory.slice(0, 8).map(item => `
+            <li class="history-dropdown-item" data-query="${escapeHtml(item)}" style="cursor: pointer;">
+                <span class="history-icon">🕒</span>
+                <span class="history-text">${escapeHtml(item)}</span>
+            </li>
         `).join('');
-        container.querySelectorAll('.chip-shortcut, .drawer-history-pill').forEach(pill => {
-            pill.addEventListener('click', () => {
-                const prompt = pill.getAttribute('data-prompt');
-                if (drawerQueryInput) drawerQueryInput.value = prompt;
-                executeAiQuery(prompt);
+
+        list.querySelectorAll('.history-dropdown-item').forEach(li => {
+            li.addEventListener('click', () => {
+                const q = li.getAttribute('data-query');
+                if (dropdown) dropdown.style.display = 'none';
+                if (drawerQueryInput) {
+                    drawerQueryInput.value = q;
+                }
+                executeAiQuery(q);
             });
         });
+    }
+
+    function setupChatHistoryDropdown() {
+        const btn = document.getElementById('btn-chat-history');
+        const dropdown = document.getElementById('chat-history-dropdown');
+        const clearBtn = document.getElementById('btn-clear-chat-history');
+
+        if (btn && dropdown) {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isOpen = dropdown.style.display === 'block';
+                dropdown.style.display = isOpen ? 'none' : 'block';
+                if (!isOpen) {
+                    renderChatHistoryDropdown();
+                }
+            });
+        }
+
+        if (clearBtn) {
+            clearBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                queryHistory = [];
+                localStorage.removeItem('campussense_query_history');
+                renderChatHistoryDropdown();
+                renderQueryHistoryDropdown();
+            });
+        }
+
+        document.addEventListener('click', (e) => {
+            if (dropdown && dropdown.style.display === 'block') {
+                if (!dropdown.contains(e.target) && (!btn || !btn.contains(e.target))) {
+                    dropdown.style.display = 'none';
+                }
+            }
+        });
+    }
+
+    function renderDrawerHistoryPills() {
+        // Obsoleted in favor of #btn-chat-history dropdown
+        renderChatHistoryDropdown();
     }
 
     function handleGlobalSearch(rawQuery) {
@@ -2642,155 +2700,303 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function executeClientRAG(query) {
-        const lower = query.toLowerCase();
-
-        // 1. Physics
-        if (lower.includes('physics') || lower.includes('optics') || lower.includes('laser') || lower.includes('maxwell') || lower.includes('quantum') || lower.includes('diffraction') || lower.includes('newton') || lower.includes('rings') || lower.includes('ph101') || lower.includes('ph201')) {
+        if (!query || !query.trim()) {
             return {
-                verified: true,
-                response: `**Physics (BS-PH101 / BS-PH201) — 5-Module Verified Syllabus & Archive:**\n\n- **Module I: Oscillations & Waves (8 Hours):** Simple harmonic motion, damped and forced oscillations, resonance, wave equation.\n- **Module II: Wave Optics (8 Hours):** Huygens' principle, interference of light, Young's double slit, Newton's rings derivation ($D_n^2 = 4n\\lambda R$), thin films, Fraunhofer diffraction grating.\n- **Module III: Electromagnetism (8 Hours):** Gradient, divergence, curl, Gauss divergence theorem, Stokes' theorem, Maxwell's equations.\n- **Module IV: Quantum Physics (7 Hours):** Wave-particle duality, de Broglie hypothesis, Heisenberg uncertainty principle, Schrödinger time-independent equation, particle in a box.\n- **Module V: Solid-State and Modern Physics (5 Hours):** Free electron theory, band theory of solids, intrinsic & extrinsic semiconductors, lasers, optical fibers.\n\n*Referenced from verified MAKAUT 2026 Curriculum and 7 Semester PYQ Archives (2020-2026).*`,
-                sources: [{
-                    title: 'Physics (BS-PH101 / BS-PH201)',
-                    subjectCode: 'BS-PH101',
-                    year: 2026,
-                    group: 'Group C',
-                    questionNumber: 'Q3',
-                    pageUrl: 'assets/resources/1st_year/syllabus/Physics.pdf'
-                }]
+                verified: false,
+                response: "I couldn't match your query to any MAKAUT 1st-Year course, PYQ, or syllabus module. Please ask an academic question such as: 'English 2024 PYQ', 'What is in Module 3 of PPS?', or 'Explain Nernst Equation'.",
+                sources: []
             };
         }
 
-        // 2. Mathematics 1 & 2
-        if (lower.includes('math') || lower.includes('calculus') || lower.includes('matrix') || lower.includes('matrices') || lower.includes('ode') || lower.includes('laplace') || lower.includes('fourier') || lower.includes('m101') || lower.includes('m201')) {
-            const isMath2 = lower.includes('math 2') || lower.includes('maths 2') || lower.includes('m201') || lower.includes('laplace') || lower.includes('fourier');
-            return {
-                verified: true,
-                response: isMath2 
-                    ? `**Mathematics 2 (BS-M201) — Academic Module Summary:**\n\n- **Module I: Multivariate Integrals (8 Hours):** Double and triple integrals, change of order, change of variables, volume and surface area.\n- **Module II: Vector Calculus (8 Hours):** Vector functions, gradient, divergence, curl, directional derivatives, Green's, Gauss's divergence, and Stokes' theorems.\n- **Module III: First & Higher Order ODEs (8 Hours):** Exact ODEs, variation of parameters, Cauchy-Euler equations.\n- **Module IV: Series Solutions & Special Functions (6 Hours):** Power series method, Legendre polynomials, Bessel functions.\n- **Module V: Laplace & Fourier Transforms (6 Hours):** Laplace transforms, inverse Laplace, Dirac delta function, Fourier series representations.\n\n*Referenced from verified MAKAUT BS-M201 Examination Papers.*`
-                    : `**Mathematics 1 (BS-M101) — Academic Module Summary:**\n\n- **Module I: Calculus (6 Hours):** Evolutes, involutes, Rolle's theorem, Mean Value theorems, Taylor's and Maclaurin's expansions.\n- **Module II: Multivariable Calculus (8 Hours):** Partial derivatives, Euler's theorem on homogeneous functions, total derivative, maxima and minima with Lagrange multipliers.\n- **Module III: Ordinary Differential Equations (10 Hours):** Exact ODEs, integrating factors, second-order linear differential equations with constant coefficients.\n- **Module IV: Matrices & Linear Algebra (10 Hours):** Rank of matrix, system of linear equations, eigenvalues, eigenvectors, Cayley-Hamilton theorem, orthogonal transformation.\n\n*Referenced from verified MAKAUT 2026 BS-M101 Syllabus and Model Papers.*`,
-                sources: [{
-                    title: isMath2 ? 'Mathematics 2 (BS-M201)' : 'Mathematics 1 (BS-M101)',
-                    subjectCode: isMath2 ? 'BS-M201' : 'BS-M101',
-                    year: 2026,
-                    group: 'Group B',
-                    questionNumber: 'Q2',
-                    pageUrl: isMath2 ? 'assets/resources/1st_year/syllabus/Maths-2.pdf' : 'assets/resources/1st_year/syllabus/Maths-1.pdf'
-                }]
-            };
+        const rawLower = query.toLowerCase().trim();
+
+        // Map typo tolerances & aliases to canonical subject codes
+        let matchedSubject = null;
+        if (/\b(eglish|english|eng|hu101|hu201|aec101|aec-101)\b/i.test(rawLower)) {
+            matchedSubject = MAKAUT_CURRICULUM.find(s => s.code === '26-AEC-101');
+        } else if (/\b(phy|physics|optics|laser|maxwell|ph101|ph201|bs-ph101|bs-ph201)\b/i.test(rawLower)) {
+            matchedSubject = MAKAUT_CURRICULUM.find(s => s.code === '26-BS-PH101');
+        } else if (/\b(chem|chemistry|nernst|ch101|ch201|bs-ch101|bs-ch201|electrochemistry|polymer)\b/i.test(rawLower)) {
+            matchedSubject = MAKAUT_CURRICULUM.find(s => s.code === '26-BS-CH101');
+        } else if (/\b(math 2|maths 2|m2|m201|bs-m201|laplace|fourier|multivariate)\b/i.test(rawLower)) {
+            matchedSubject = MAKAUT_CURRICULUM.find(s => s.code === '26-BS-M201');
+        } else if (/\b(math|maths|m1|m101|bs-m101|calculus|ode|matrix|matrices|cayley)\b/i.test(rawLower)) {
+            matchedSubject = MAKAUT_CURRICULUM.find(s => s.code === '26-BS-M101');
+        } else if (/\b(bee|ee|ee101|es-ee101|electrical|thevenin|thévenin|transformer|resonance)\b/i.test(rawLower)) {
+            matchedSubject = MAKAUT_CURRICULUM.find(s => s.code === '26-ES-EE101');
+        } else if (/\b(pps|pcc|pcc-cs|cs101|cs201|es-cs201|es-cs101|c programming|pointer|pointers|malloc|calloc|recursion)\b/i.test(rawLower)) {
+            matchedSubject = MAKAUT_CURRICULUM.find(s => s.code === '26-ES-CS201');
+        } else if (/\b(bio|biology|bi201|bs-bi201|biomolecules|dna|genetics)\b/i.test(rawLower)) {
+            matchedSubject = MAKAUT_CURRICULUM.find(s => s.code === '26-BS-BI201');
+        } else if (/\b(evs|environmental|ecology|ecosystem|vac201|vac-201|mc-es201|pollution)\b/i.test(rawLower)) {
+            matchedSubject = MAKAUT_CURRICULUM.find(s => s.code === '26-VAC-201');
         }
 
-        // 3. Electrical (BEE)
-        if (lower.includes('bee') || lower.includes('electrical') || lower.includes('thevenin') || lower.includes('thévenin') || lower.includes('transformer') || lower.includes('op-amp') || lower.includes('ac circuits') || lower.includes('ee101') || lower.includes('resonance')) {
+        // =========================================================================
+        // Category A: PYQ & Paper Lookups ([Subject] + [Year(s)] + [PYQ/Paper])
+        // =========================================================================
+        const isPyqLookup = /\b(pyq|pyqs|paper|papers|question paper|question papers|previous year|exam paper)\b/i.test(rawLower) ||
+                            /\b(202[0-6]|2019)\b/.test(rawLower);
+
+        if (matchedSubject && isPyqLookup) {
+            const yearMatches = rawLower.match(/\b(202[0-6]|2019)\b/g);
+            const requestedYears = yearMatches ? Array.from(new Set(yearMatches)) : [];
+
+            let matchedPapers = [];
+            if (matchedSubject.pyqs && matchedSubject.pyqs.length > 0) {
+                if (requestedYears.length > 0) {
+                    matchedPapers = matchedSubject.pyqs.filter(p => requestedYears.includes(String(p.year)));
+                }
+                if (matchedPapers.length === 0) {
+                    matchedPapers = matchedSubject.pyqs;
+                }
+            }
+
+            if (matchedPapers.length > 0) {
+                const buttonsHtml = matchedPapers.map(p => {
+                    const safeTitle = escapeHtml(p.title || `${matchedSubject.name} (${p.year})`);
+                    const safeUrl = escapeHtml(p.fileUrl);
+                    return `        <button class="btn-paper-open" onclick="openPdfViewer('${safeTitle.replace(/'/g, "\\'")}', '${safeUrl}')">📄 Open ${safeTitle} PYQ</button>`;
+                }).join('\n');
+
+                const responseHtml = `<div class="chat-pyq-result">
+  <p>Here are the verified MAKAUT question papers matching your query:</p>
+  <div class="chat-paper-links">
+${buttonsHtml}
+  </div>
+</div>`;
+
+                const citations = matchedPapers.map(p => ({
+                    title: p.title || `${matchedSubject.name} (${p.year})`,
+                    subjectCode: `${matchedSubject.code} [${matchedSubject.name.split(' ')[0]}]`,
+                    year: p.year,
+                    group: p.type || 'End-Sem',
+                    questionNumber: 'PYQ Archive',
+                    pageUrl: p.fileUrl
+                }));
+
+                return {
+                    verified: true,
+                    response: responseHtml,
+                    sources: citations
+                };
+            } else {
+                return {
+                    verified: true,
+                    response: `Verified **${matchedSubject.name} (${matchedSubject.code})** is indexed in the MAKAUT 2026 Curriculum. Question papers for this subject are currently being digitized. You can explore the complete module checklist and contact hours below.`,
+                    sources: [{
+                        title: `${matchedSubject.name} (${matchedSubject.code})`,
+                        subjectCode: `${matchedSubject.code} [${matchedSubject.name.split(' ')[0]}]`,
+                        year: 2026,
+                        group: 'Curriculum',
+                        questionNumber: 'Syllabus',
+                        pageUrl: matchedSubject.syllabusUrl
+                    }]
+                };
+            }
+        }
+
+        // =========================================================================
+        // Category B: Module & Syllabus Breakdown Queries ([Subject] + [Module / Unit / Syllabus])
+        // =========================================================================
+        const isModuleQuery = /\b(mod|module|unit|syllabus|breakdown|topics|chapters|curriculum)\b/i.test(rawLower);
+
+        if (matchedSubject && (isModuleQuery || rawLower.includes('in mod') || rawLower.includes('in module') || rawLower.includes('in unit'))) {
+            let modNum = null;
+            const romanMap = { 'i': 1, 'ii': 2, 'iii': 3, 'iv': 4, 'v': 5, 'vi': 6, 'vii': 7, 'viii': 8 };
+            const modMatch = rawLower.match(/(?:mod|module|unit)\s*([0-9ivx]+)/i);
+            if (modMatch) {
+                const val = modMatch[1].toLowerCase();
+                if (romanMap[val]) {
+                    modNum = romanMap[val];
+                } else {
+                    const parsed = parseInt(val, 10);
+                    if (!isNaN(parsed)) modNum = parsed;
+                }
+            }
+
+            if (modNum && matchedSubject.units && matchedSubject.units.length > 0) {
+                const unit = matchedSubject.units.find(u => u.unitNumber === modNum) || matchedSubject.units[modNum - 1];
+                if (unit) {
+                    const modRoman = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'][unit.unitNumber - 1] || unit.unitNumber;
+                    return {
+                        verified: true,
+                        response: `**${unit.title} (${unit.hours} Hours)**\n\n— ${unit.subtopics}\n\n*Verified from official MAKAUT 2026 Curriculum for ${matchedSubject.name} (${matchedSubject.code}).*`,
+                        sources: [{
+                            title: `${matchedSubject.name} [Module ${modRoman}]`,
+                            subjectCode: `${matchedSubject.code} [Module ${modRoman}]`,
+                            year: 2026,
+                            group: 'Syllabus',
+                            questionNumber: `Module ${modRoman}`,
+                            pageUrl: matchedSubject.syllabusUrl
+                        }]
+                    };
+                }
+            }
+
+            if (matchedSubject.units && matchedSubject.units.length > 0) {
+                const unitsList = matchedSubject.units.map(u => 
+                    `- **${u.title} (${u.hours} Hours):** ${u.subtopics}`
+                ).join('\n');
+
+                return {
+                    verified: true,
+                    response: `**${matchedSubject.name} (${matchedSubject.code}) — Verified Syllabus Breakdown (${matchedSubject.contactHours} Contact Hours, ${matchedSubject.credits} Credits):**\n\n${unitsList}\n\n*Referenced from verified MAKAUT 2026 Curriculum Blueprint.*`,
+                    sources: [{
+                        title: `${matchedSubject.name} (${matchedSubject.code})`,
+                        subjectCode: `${matchedSubject.code} [Syllabus]`,
+                        year: 2026,
+                        group: 'Syllabus',
+                        questionNumber: 'Modules I-' + matchedSubject.units.length,
+                        pageUrl: matchedSubject.syllabusUrl
+                    }]
+                };
+            }
+        }
+
+        // =========================================================================
+        // Category C: Topic & Concept Explanations (High-Yield Exam Concepts)
+        // =========================================================================
+
+        // 1. Thévenin's Theorem (BEE)
+        if (rawLower.includes('thevenin') || rawLower.includes('thévenin')) {
             return {
                 verified: true,
-                response: `**Basic Electrical Engineering (ES-EE101) — Verified Syllabus & Exam Patterns:**\n\n- **Module I: DC Circuits (8 Hours):** Electrical circuit elements, KCL, KVL, Mesh and Nodal analysis, Thévenin's Theorem ($V_{th}, R_{th}$), Norton's Theorem, Maximum Power Transfer.\n- **Module II: AC Circuits (8 Hours):** Sinusoidal representations, peak/RMS values, phasor representation, series/parallel RLC circuits, series resonance ($f_0 = \\frac{1}{2\\pi\\sqrt{LC}}$), Q-factor.\n- **Module III: Transformers (6 Hours):** Ideal and practical single-phase transformers, equivalent circuits, open and short circuit tests, maximum efficiency condition ($P_{cu} = P_i$).\n- **Module IV: Electrical Machines (8 Hours):** DC generator and motor principles, torque-speed curves, 3-phase induction motors.\n- **Module V: Electrical Installations & Safety (6 Hours):** Switchgear, fuses, MCB, ELCB, earthing schemes, battery types.\n\n*Featured recurring 10-mark questions across MAKAUT semester papers.*`,
+                response: `**Thévenin's Theorem — Basic Electrical Engineering (ES-EE101):**\n\n- **Statement:** Any linear, bilateral, two-terminal DC network containing independent sources and resistances can be replaced by an equivalent circuit consisting of a single voltage source $V_{th}$ in series with a resistor $R_{th}$.\n- **Load Current Formula:** $I_L = \\frac{V_{th}}{R_{th} + R_L}$\n- **Procedure:**\n  1. Remove load resistor $R_L$.\n  2. Calculate open-circuit voltage across terminals ($V_{oc} = V_{th}$).\n  3. Deactivate all independent sources (short voltage sources, open current sources) and find internal resistance $R_{th}$.\n- **Exam Weighting:** Group C (10 Marks) — Highly recurring across MAKAUT semester papers (2019, 2021, 2022, 2023, 2024).\n\n*Referenced from verified MAKAUT 2026 Curriculum [ES-EE101 Module I: DC Circuits].*`,
                 sources: [{
-                    title: 'Basic Electrical Engineering (ES-EE101)',
-                    subjectCode: 'ES-EE101',
-                    year: 2023,
+                    title: 'Basic Electrical Engineering [Module I: DC Circuits]',
+                    subjectCode: '26-ES-EE101 [Module I]',
+                    year: 2024,
                     group: 'Group C',
-                    questionNumber: 'Q4',
+                    questionNumber: '10 Marks',
                     pageUrl: 'assets/resources/1st_year/syllabus/ES-EE101.pdf'
                 }]
             };
         }
 
-        // 4. PPS / C Programming
-        if (lower.includes('c programming') || lower.includes('pps') || lower.includes('pointer') || lower.includes('malloc') || lower.includes('calloc') || lower.includes('recursion') || lower.includes('array') || lower.includes('struct') || lower.includes('cs201') || lower.includes('cs101')) {
+        // 2. Newton's Rings (Physics)
+        if (rawLower.includes('newton') && (rawLower.includes('ring') || rawLower.includes('rings') || rawLower.includes('derivation') || rawLower.includes('diameter'))) {
             return {
                 verified: true,
-                response: `**Programming for Problem Solving (ES-CS201 / ES-CS101) — Syllabus Topics:**\n\n- **Module I: Intro to Programming & Algorithms (4 Hours):** Flowcharts, pseudocode, source code compilation, memory layout.\n- **Module II: Arithmetic Expressions & Branching (8 Hours):** Operators, precedence, associativity, if-else, switch-case, iterative while/for loops.\n- **Module III: Arrays & Pointers (8 Hours):** 1D/2D arrays, dynamic memory allocation (\`malloc\` vs \`calloc\`), pointer arithmetic, dereferencing.\n- **Module IV: Functions & Recursion (8 Hours):** Function signatures, pass by value vs reference, recursive solutions (Tower of Hanoi, Fibonacci).\n- **Module V: Structures, Unions & File I/O (8 Hours):** Defining structures, array of structures, file handling in C (\`fopen\`, \`fread\`, \`fwrite\`, \`fclose\`).\n- **Module VI: Basic AI Concepts (4 Hours):** Problem formulation, search spaces, AI foundations.\n\n*Referenced from verified MAKAUT 2026 PPS Curriculum.*`,
+                response: `**Newton's Rings — Physics (BS-PH101 / BS-PH201):**\n\n- **Formation:** Formed by interference between reflected light rays at the upper surface of a glass plate and the curved lower surface of a plano-convex lens enclosing an air film of varying thickness.\n- **Optical Path Difference:** $\\Delta = 2t + \\frac{\\lambda}{2}$ (including Phase reversal upon reflection at rarer-denser boundary).\n- **Dark Ring Condition:** $2t = n\\lambda$. Using lens geometry $t = \\frac{r^2}{2R}$, diameter of the $n$-th dark ring is:\n  $$D_n^2 = 4n\\lambda R \\implies D_n \\propto \\sqrt{n}$$\n- **Exam Weighting:** Group C (10 Marks) — Proving $D_n \\propto \\sqrt{n}$ and determining unknown wavelength $\\lambda$ appears in 2020, 2022, 2023, 2025 examinations.\n\n*Referenced from verified MAKAUT 2026 Curriculum [BS-PH101 Module II: Wave Optics].*`,
                 sources: [{
-                    title: 'Programming for Problem Solving (ES-CS201)',
-                    subjectCode: 'ES-CS201',
-                    year: 2023,
-                    group: 'Group B',
-                    questionNumber: 'Q4',
-                    pageUrl: 'assets/resources/1st_year/syllabus/PPS.pdf'
-                }]
-            };
-        }
-
-        // 5. English for Communication
-        if (lower.includes('english') || lower.includes('communication') || lower.includes('aec-101') || lower.includes('writing') || lower.includes('hu101') || lower.includes('hu201')) {
-            return {
-                verified: true,
-                response: `**English for Communication Skills (26-AEC-101) — 5-Module Syllabus:**\n\n- **Module I: Vocabulary Building (4 Hours):** Word roots, prefixes and suffixes, synonyms, antonyms, technical terminology.\n- **Module II: Basic Writing Skills (6 Hours):** Sentence structures, phrases and clauses, coherence, paragraph unity.\n- **Module III: Identifying Common Errors (6 Hours):** Subject-verb agreement, noun-pronoun agreement, misplaced modifiers, prepositions.\n- **Module IV: Nature and Style of Sensible Writing (6 Hours):** Concise writing, defining, classifying, summarizing, technical reports.\n- **Module V: Oral Communication & Soft Skills (4 Hours):** Active listening, group discussions, technical presentations, interview etiquette.\n\n*Referenced from verified MAKAUT 2026 AEC-101 Curriculum.*`,
-                sources: [{
-                    title: 'English for Communication Skills (26-AEC-101)',
-                    subjectCode: 'AEC-101',
-                    year: 2024,
-                    group: 'Group A',
-                    questionNumber: 'Q1',
-                    pageUrl: 'assets/resources/1st_year/syllabus/English.pdf'
-                }]
-            };
-        }
-
-        // 6. Biology for Engineers
-        if (lower.includes('biology') || lower.includes('bio') || lower.includes('biomolecules') || lower.includes('dna') || lower.includes('protein') || lower.includes('bi201')) {
-            return {
-                verified: true,
-                response: `**Biology for Engineers (26-BS-BI201) — 5-Module Syllabus:**\n\n- **Module I: Introduction to Biology & Cell Architecture (4 Hours):** Prokaryotic and eukaryotic cells, organelles, macromolecular composition.\n- **Module II: Biomolecules & Enzymes (6 Hours):** Carbohydrates, lipids, proteins, nucleic acids, enzyme kinetics, Lock and Key model.\n- **Module III: Genetics & Molecular Biology (6 Hours):** Mendelian genetics, DNA replication, transcription, translation, genetic code.\n- **Module IV: Metabolism & Bio-energetics (6 Hours):** Glycolysis, Krebs cycle, ATP synthesis, photosynthesis.\n- **Module V: Microbiology & Bio-inspired Engineering (4 Hours):** Microbial growth, bioreactors, biosensors, bio-inspired algorithms.\n\n*Referenced from verified MAKAUT 2026 BS-BI201 Curriculum.*`,
-                sources: [{
-                    title: 'Biology for Engineers (26-BS-BI201)',
-                    subjectCode: 'BS-BI201',
-                    year: 2024,
-                    group: 'Group B',
-                    questionNumber: 'Q3',
-                    pageUrl: 'assets/resources/1st_year/syllabus/Biology.pdf'
-                }]
-            };
-        }
-
-        // 7. Environmental Science (EVS)
-        if (lower.includes('evs') || lower.includes('environmental') || lower.includes('pollution') || lower.includes('ecology') || lower.includes('biodiversity') || lower.includes('vac-201') || lower.includes('mc-es201')) {
-            return {
-                verified: true,
-                response: `**Environmental Science (26-VAC-201) — 5-Module Syllabus:**\n\n- **Module I: Environment and Ecosystems (6 Hours):** Structure and function of ecosystems, food chains, energy flow, ecological pyramids.\n- **Module II: Natural Resources (6 Hours):** Water resources, mineral resources, renewable/non-renewable energy sources.\n- **Module III: Environmental Pollution (8 Hours):** Air, water, soil, and noise pollution; solid waste management; greenhouse effect & global warming.\n- **Module IV: Biodiversity and Its Conservation (6 Hours):** Genetic, species, and ecosystem diversity; hotspots of biodiversity; endangered species.\n- **Module V: Environmental Policies & Sustainability (6 Hours):** Environmental Protection Act, disaster management, sustainable green technologies.\n\n*Referenced from verified MAKAUT 2026 VAC-201 Curriculum.*`,
-                sources: [{
-                    title: 'Environmental Science (26-VAC-201)',
-                    subjectCode: 'VAC-201',
-                    year: 2024,
-                    group: 'Group A',
-                    questionNumber: 'Q2',
-                    pageUrl: 'assets/resources/1st_year/syllabus/EVS.pdf'
-                }]
-            };
-        }
-
-        // 8. Chemistry — ONLY when explicitly requested
-        if (lower.includes('chemistry') || lower.includes('electrochemistry') || lower.includes('nernst') || lower.includes('polymer') || lower.includes('spectroscopy') || lower.includes('water hardness') || lower.includes('corrosion') || lower.includes('ch101') || lower.includes('ch201')) {
-            return {
-                verified: true,
-                response: `**Chemistry (BS-CH101 / BS-CH201) — 5-Module Verified Syllabus:**\n\n- **Module I: Atomic and Molecular Structure (8 Hours):** Schrödinger equation, particle in a box, MO diagrams for diatomics, band structure of solids.\n- **Module II: Thermodynamics, Equilibrium & Kinetics (8 Hours):** Free energy, chemical equilibria, reaction kinetics, rate laws, catalysis.\n- **Module III: Electrochemistry and Corrosion (7 Hours):** Nernst equation ($E_{cell} = E^\\circ_{cell} - \\frac{0.0591}{n}\\log Q$), reference electrodes, battery systems, corrosion prevention.\n- **Module IV: Engineering Materials & Water (8 Hours):** Polymers, composites, lubricants, water hardness, EDTA titration, softening processes.\n- **Module V: Instrumental Methods of Analysis (5 Hours):** UV-Vis and IR spectroscopy, conductometry, potentiometry, chromatography.\n\n*Referenced from verified MAKAUT 2026 BS-CH101 Examination Papers.*`,
-                sources: [{
-                    title: 'Chemistry (BS-CH101)',
-                    subjectCode: 'BS-CH101',
-                    year: 2024,
+                    title: 'Physics [Module II: Wave Optics]',
+                    subjectCode: '26-BS-PH101 [Module II]',
+                    year: 2025,
                     group: 'Group C',
-                    questionNumber: 'Q4',
+                    questionNumber: '10 Marks',
+                    pageUrl: 'assets/resources/1st_year/syllabus/Physics.pdf'
+                }]
+            };
+        }
+
+        // 3. Nernst Equation (Chemistry)
+        if (rawLower.includes('nernst') || (rawLower.includes('cell emf') && rawLower.includes('chem'))) {
+            return {
+                verified: true,
+                response: `**Nernst Equation & Cell EMF — Chemistry (BS-CH101 / BS-CH201):**\n\n- **Definition:** The Nernst equation relates the reduction potential of an electrochemical reaction to the standard electrode potential, temperature, and activities (concentrations) of the chemical species.\n- **General Formula:** $E = E^\\circ - \\frac{RT}{nF} \\ln Q$\n- **At Standard Temperature (298 K / 25°C):**\n  $$E_{cell} = E^\\circ_{cell} - \\frac{0.0591}{n} \\log_{10} Q$$\n  where $n$ is the number of electrons transferred and $Q = \\frac{[\\text{Products}]}{[\\text{Reactants}]}$.\n- **Exam Weighting:** Group B (5 Marks) / Group C (10 Marks) — Numericals evaluating single electrode potentials and Daniell cell EMF (2019, 2021, 2023, 2024).\n\n*Referenced from verified MAKAUT 2026 Curriculum [BS-CH101 Module III: Electrochemistry].*`,
+                sources: [{
+                    title: 'Chemistry [Module III: Electrochemistry and Corrosion]',
+                    subjectCode: '26-BS-CH101 [Module III]',
+                    year: 2024,
+                    group: 'Group B',
+                    questionNumber: '5-10 Marks',
                     pageUrl: 'assets/resources/1st_year/syllabus/Chemistry.pdf'
                 }]
             };
         }
 
-        // 9. Multi-Subject Academic Fallback (Does NOT default to Chemistry!)
-        const fallbackSubj = currentStream === 'GROUP_A'
-            ? MAKAUT_CURRICULUM.find(s => s.code === '26-BS-PH101')
-            : MAKAUT_CURRICULUM.find(s => s.code === '26-BS-M101');
+        // 4. Pointers & Dynamic Memory in C (PPS)
+        if (rawLower.includes('pointer') || rawLower.includes('malloc') || rawLower.includes('calloc') || rawLower.includes('dynamic memory')) {
+            return {
+                verified: true,
+                response: `**Pointers & Dynamic Memory Allocation in C — PPS (26-ES-CS201):**\n\n- **Pointers:** A pointer is a variable holding the memory address of another variable. Syntax: \`int *ptr = &val;\`. Dereferencing via \`*ptr\` accesses the value at that address.\n- **Dynamic Memory Functions (\`<stdlib.h>\`):**\n  - \`malloc(size_t size)\`: Allocates uninitialized memory chunk. Returns \`void*\`.\n  - \`calloc(size_t n, size_t size)\`: Allocates memory for $n$ elements initialized to zero.\n  - \`realloc(void *ptr, size_t new_size)\`: Resizes previously allocated block.\n  - \`free(void *ptr)\`: Deallocates memory to prevent memory leaks.\n- **Exam Weighting:** Group B (5 Marks) & Group C (10 Marks) — Differences between \`malloc\` and \`calloc\`, pointer arithmetic, and 2D dynamic arrays.\n\n*Referenced from verified MAKAUT 2026 Curriculum [26-ES-CS201 Module VI: Arrays, Strings and Pointers].*`,
+                sources: [{
+                    title: 'Programming for Problem Solving [Module VI]',
+                    subjectCode: '26-ES-CS201 [Module VI]',
+                    year: 2025,
+                    group: 'Group B/C',
+                    questionNumber: '5-10 Marks',
+                    pageUrl: 'assets/resources/1st_year/syllabus/PPS.pdf'
+                }]
+            };
+        }
 
+        // 5. Ecosystem & Environment (EVS)
+        if (rawLower.includes('ecosystem') || rawLower.includes('food chain') || rawLower.includes('food web') || rawLower.includes('ecological pyramid')) {
+            return {
+                verified: true,
+                response: `**Ecosystems & Energy Flow — Environmental Science (26-VAC-201):**\n\n- **Structure:** Biotic components (Producers, Consumers, Decomposers) interacting with Abiotic components (temperature, soil, sunlight, water).\n- **Energy Flow:** Unidirectional flow governed by Lindeman's 10% Law of Energy Transfer across trophic levels ($T_1 \\rightarrow T_2 \\rightarrow T_3 \\rightarrow T_4$).\n- **Ecological Pyramids:** Pyramids of numbers, biomass, and energy. Pyramid of energy is always upright.\n- **Exam Weighting:** Group B (5 Marks) — Distinction between food chains and food webs, and biomagnification.\n\n*Referenced from verified MAKAUT 2026 Curriculum [26-VAC-201 Module I: The Environment, Ecosystems and Biodiversity].*`,
+                sources: [{
+                    title: 'Environmental Science [Module I: The Environment, Ecosystems and Biodiversity]',
+                    subjectCode: '26-VAC-201 [Module I]',
+                    year: 2026,
+                    group: 'Group B',
+                    questionNumber: '5 Marks',
+                    pageUrl: 'assets/resources/1st_year/syllabus/EVS.pdf'
+                }]
+            };
+        }
+
+        // 6. Series RLC Resonance (BEE)
+        if (rawLower.includes('resonance') || (rawLower.includes('rlc') && rawLower.includes('circuit'))) {
+            return {
+                verified: true,
+                response: `**Series RLC Resonance — Basic Electrical Engineering (ES-EE101):**\n\n- **Resonance Condition:** Occurs when inductive reactance equals capacitive reactance: $X_L = X_C \\implies \\omega L = \\frac{1}{\\omega C}$.\n- **Resonant Frequency:** $f_0 = \\frac{1}{2\\pi\\sqrt{LC}}$\n- **Characteristics:** Total impedance is purely resistive and minimum ($Z = R$), current is maximum ($I_{max} = V/R$), power factor is unity ($\cos\\phi = 1$).\n- **Quality Factor:** $Q = \\frac{\\omega_0 L}{R} = \\frac{1}{\\omega_0 CR} = \\frac{1}{R}\\sqrt{\\frac{L}{C}}$\n- **Exam Weighting:** Group B (5 Marks) / Group C (10 Marks) — High-frequency repeat in 2020, 2022, 2024.\n\n*Referenced from verified MAKAUT 2026 Curriculum [ES-EE101 Module II: AC Circuits].*`,
+                sources: [{
+                    title: 'Basic Electrical Engineering [Module II: AC Circuits]',
+                    subjectCode: '26-ES-EE101 [Module II]',
+                    year: 2024,
+                    group: 'Group B',
+                    questionNumber: '5-10 Marks',
+                    pageUrl: 'assets/resources/1st_year/syllabus/ES-EE101.pdf'
+                }]
+            };
+        }
+
+        // 7. Cayley-Hamilton Theorem (Mathematics 1)
+        if (rawLower.includes('cayley') || (rawLower.includes('hamilton') && rawLower.includes('matrix'))) {
+            return {
+                verified: true,
+                response: `**Cayley-Hamilton Theorem — Mathematics 1 (BS-M101):**\n\n- **Statement:** Every square matrix $A$ satisfies its own characteristic equation: $\\det(A - \\lambda I) = 0$.\n- **Applications:**\n  1. Computing matrix inverse: If $A^2 - 5A + 2I = 0$, then $A^{-1} = \\frac{5I - A}{2}$.\n  2. Computing high matrix powers ($A^4, A^8$) without direct repeated multiplication.\n- **Exam Weighting:** Group C (10 Marks) — Verification for a $2\\times 2$ or $3\\times 3$ matrix and computing $A^{-1}$ (2018, 2019, 2021, 2022, 2023).\n\n*Referenced from verified MAKAUT 2026 Curriculum [BS-M101 Module IV: Matrices & Linear Algebra].*`,
+                sources: [{
+                    title: 'Mathematics 1 [Module IV: Matrices & Linear Algebra]',
+                    subjectCode: '26-BS-M101 [Module IV]',
+                    year: 2023,
+                    group: 'Group C',
+                    questionNumber: '10 Marks',
+                    pageUrl: 'assets/resources/1st_year/syllabus/Maths-1.pdf'
+                }]
+            };
+        }
+
+        // If matched subject exists but no specific branch caught above, return subject's complete syllabus & info
+        if (matchedSubject) {
+            const unitsList = (matchedSubject.units || []).map(u => 
+                `- **${u.title} (${u.hours} Hours):** ${u.subtopics}`
+            ).join('\n');
+
+            return {
+                verified: true,
+                response: `**${matchedSubject.name} (${matchedSubject.code}) — Verified 2026 Curriculum:**\n\n- **Credits:** ${matchedSubject.credits} | **L-T-P:** ${matchedSubject.l_t_p} | **Contact Hours:** ${matchedSubject.contactHours}\n\n${unitsList}\n\n*Cited from official MAKAUT 2026 Curriculum Blueprint.*`,
+                sources: [{
+                    title: `${matchedSubject.name} (${matchedSubject.code})`,
+                    subjectCode: `${matchedSubject.code} [Curriculum]`,
+                    year: 2026,
+                    group: 'Curriculum',
+                    questionNumber: 'Syllabus',
+                    pageUrl: matchedSubject.syllabusUrl
+                }]
+            };
+        }
+
+        // =========================================================================
+        // Category D: Gibberish, Typos & Non-Academic Queries
+        // =========================================================================
         return {
-            verified: true,
-            response: `Based on verified MAKAUT 1st-Year curriculum data for **${currentStream} Semester ${currentSem}**, we indexed syllabus modules and examination blueprints matching your query. Explore the subject syllabus units and PYQ archives via the Subject Hub or view the citation below.`,
-            sources: [{
-                title: fallbackSubj ? `${fallbackSubj.name} (${fallbackSubj.code})` : 'MAKAUT 1st Year Syllabus',
-                subjectCode: fallbackSubj ? fallbackSubj.code : '1ST-YEAR',
-                year: 2024,
-                group: 'Syllabus Blueprint',
-                questionNumber: 'Curriculum',
-                pageUrl: fallbackSubj ? fallbackSubj.syllabusUrl : 'assets/resources/1st_year/syllabus/Physics.pdf'
-            }]
+            verified: false,
+            response: "I couldn't match your query to any MAKAUT 1st-Year course, PYQ, or syllabus module. Please ask an academic question such as: 'English 2024 PYQ', 'What is in Module 3 of PPS?', or 'Explain Nernst Equation'.",
+            sources: []
         };
     }
 
@@ -2865,11 +3071,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function formatMarkdown(text) {
         if (!text) return '';
+        if (text.includes('<div class="chat-pyq-result">')) {
+            const startIdx = text.indexOf('<div class="chat-pyq-result">');
+            const closeMarker = '</div>';
+            const secondClose = text.indexOf(closeMarker, text.indexOf(closeMarker, startIdx) + closeMarker.length);
+            const endIdx = secondClose !== -1 ? secondClose + closeMarker.length : text.length;
+            const before = text.substring(0, startIdx);
+            const pyqHtml = text.substring(startIdx, endIdx);
+            const after = text.substring(endIdx);
+            return (before ? formatMarkdown(before) : '') + pyqHtml + (after ? formatMarkdown(after) : '');
+        }
+
         let escaped = escapeHtml(text);
-        escaped = escaped.replace(/^### (.*$)/gim, '<h4 style="color: #e2e8f0; margin: 0.6rem 0 0.3rem;">$1</h4>');
-        escaped = escaped.replace(/\*\*(.*?)\*\*/g, '<strong style="color: #f1f5f9;">$1</strong>');
+        escaped = escaped.replace(/^### (.*$)/gim, '<h4 class="chat-heading">$1</h4>');
+        escaped = escaped.replace(/\*\*(.*?)\*\*/g, '<strong class="chat-bold">$1</strong>');
         escaped = escaped.replace(/\*(.*?)\*/g, '<em>$1</em>');
-        escaped = escaped.replace(/^- (.*$)/gim, '<div style="display: flex; gap: 0.5rem; margin: 0.25rem 0;"><span>•</span><span>$1</span></div>');
+        escaped = escaped.replace(/^- (.*$)/gim, '<div class="chat-list-item"><span>•</span><span>$1</span></div>');
         return escaped;
     }
 
@@ -2966,6 +3183,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     updateHeroDynamicCounters();
+    setupChatHistoryDropdown();
 
     // ==========================================
     // 19. Initial View Boot
