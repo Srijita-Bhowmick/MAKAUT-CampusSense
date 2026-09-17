@@ -76,117 +76,284 @@ public class DataInitializer implements CommandLineRunner {
                 .build());
 
         // 2. First-Year Common & Core Academic Resources
-        // BS-M101
+        // 2. First-Year Common & Core Academic Resources (Verified 2026 MAKAUT Syllabus - All 9 Subjects)
+        // Mathematics - I (BS-M101 / 26-BS-M101)
         CourseResource math101 = courseResourceRepository.save(CourseResource.builder()
                 .stream(StreamType.COMMON)
                 .semester(1)
                 .subjectCode("BS-M101")
-                .subjectName("Mathematics 1A")
+                .subjectName("Mathematics - I")
                 .resourceType(ResourceType.SYLLABUS)
-                .year(2023)
-                .fileUrl("https://makautexam.net/syllabus/BS-M101.pdf")
+                .year(2026)
+                .fileUrl("assets/resources/1st_year/syllabus/Maths-1.pdf")
                 .rawText("""
-                        Module 1: Calculus: Evolutes and involutes; Evaluation of definite and improper integrals; Beta and Gamma functions; Applications of definite integrals to evaluate surface areas and volumes of revolutions; Rolle theorem, Mean value theorems, Taylor and Maclaurin theorems with remainders.
-                        Module 2: Multivariable Calculus: Limit, continuity and partial derivatives, directional derivatives, total derivative; Tangent plane and normal line; Maxima, minima and saddle points; Method of Lagrange multipliers.
-                        Module 3: Matrices: Inverse and rank of a matrix, rank-nullity theorem; System of linear equations; Symmetric, skew-symmetric and orthogonal matrices; Determinants; Eigenvalues and eigenvectors; Diagonalization of matrices; Cayley-Hamilton Theorem.
-                        Module 4: Vector Spaces: Vector Space, linear dependence and independence of vectors, basis, dimension; Linear transformations (maps), range and kernel of a linear map, rank and nullity, Inverse of a linear transformation, rank-nullity theorem.
+                        Module I: Calculus of a Single Variable: Rolle theorem, Mean Value Theorems, Taylor and Maclaurin theorems with remainders, indeterminate forms, L'Hospital rule, evaluation of definite and improper integrals.
+                        Module II: Calculus of Several Variables: Limit, continuity, partial derivatives, Euler theorem, total derivative, tangent plane, maxima and minima of two variables, Lagrange multipliers.
+                        Module III: Multiple Integrals: Double and triple integrals, change of order of integration, change of variables (Cartesian to polar), evaluation of area, volume, and surface area of revolution.
+                        Module IV: Matrices and Linear Algebra: Rank of matrix, system of linear equations, inverse, eigenvalues and eigenvectors, Cayley-Hamilton theorem, orthogonal transformation, diagonalization.
                         """)
-                .metadata("{\"credits\": 4, \"contact_hours\": \"3L:1T:0P\", \"department\": \"1st Year Common\"}")
+                .metadata("{\"credits\": 3, \"contact_hours\": \"3L:0T:0P\", \"department\": \"1st Year Common\"}")
                 .build());
 
-        // BS-PH101
+        CourseResource math101_2026 = courseResourceRepository.save(CourseResource.builder()
+                .stream(StreamType.COMMON)
+                .semester(1)
+                .subjectCode("26-BS-M101")
+                .subjectName("Mathematics - I")
+                .resourceType(ResourceType.SYLLABUS)
+                .year(2026)
+                .fileUrl("assets/resources/1st_year/syllabus/Maths-1.pdf")
+                .rawText(math101.getRawText())
+                .metadata(math101.getMetadata())
+                .build());
+
+        // Physics (BS-PH101 / 26-BS-PH101)
         CourseResource physics101 = courseResourceRepository.save(CourseResource.builder()
                 .stream(StreamType.COMMON)
                 .semester(1)
                 .subjectCode("BS-PH101")
                 .subjectName("Physics")
                 .resourceType(ResourceType.SYLLABUS)
-                .year(2023)
-                .fileUrl("https://makautexam.net/syllabus/BS-PH101.pdf")
+                .year(2026)
+                .fileUrl("assets/resources/1st_year/syllabus/Physics.pdf")
                 .rawText("""
-                        Module 1: Oscillations and Waves: Simple harmonic motion, damped and forced oscillations, resonance, wave equation.
-                        Module 2: Wave Optics: Huygens principle, superposition of waves, interference of light, Young double slit experiment, Newton rings, thin film interference; Fraunhofer diffraction, diffraction grating; Polarization, Brewster law.
-                        Module 3: Electromagnetism: Gauss law, Ampere law, Faraday law of induction; Maxwell equations in differential and integral forms, displacement current; Poynting vector.
-                        Module 4: Quantum Physics: Blackbody radiation, Planck distribution, photoelectric effect, Compton effect; de Broglie hypothesis; Heisenberg uncertainty principle; Wave function, Schrodinger equation; Particle in a 1D box.
-                        Module 5: Solid-State and Modern Physics: Band structure of solids, conductors, semiconductors, insulators, Fermi level; Lasers: Einstein coefficients, population inversion; Optical fibers, numerical aperture.
+                        Module I: Oscillations and Waves: Simple harmonic motion, damped and forced oscillations, resonance, wave equation.
+                        Module II: Wave Optics: Huygens principle, interference of light, Young double slit, Newton rings, thin film interference, Fraunhofer diffraction, diffraction grating.
+                        Module III: Electromagnetism: Gauss law, Ampere law, Faraday law, Maxwell equations, Poynting vector.
+                        Module IV: Quantum Physics: De Broglie hypothesis, Heisenberg uncertainty principle, Schrodinger equation, particle in a box.
+                        Module V: Solid-State and Modern Physics: Band theory of solids, semiconductors, lasers, optical fibers.
                         """)
                 .metadata("{\"credits\": 3, \"contact_hours\": \"3L:0T:0P\", \"department\": \"1st Year Common\"}")
                 .build());
 
-        // BS-CH101
+        CourseResource physics101_2026 = courseResourceRepository.save(CourseResource.builder()
+                .stream(StreamType.COMMON)
+                .semester(1)
+                .subjectCode("26-BS-PH101")
+                .subjectName("Physics")
+                .resourceType(ResourceType.SYLLABUS)
+                .year(2026)
+                .fileUrl("assets/resources/1st_year/syllabus/Physics.pdf")
+                .rawText(physics101.getRawText())
+                .metadata(physics101.getMetadata())
+                .build());
+
+        // Chemistry (BS-CH101 / 26-BS-CH101)
         CourseResource chemistry101 = courseResourceRepository.save(CourseResource.builder()
                 .stream(StreamType.COMMON)
                 .semester(1)
                 .subjectCode("BS-CH101")
                 .subjectName("Chemistry")
                 .resourceType(ResourceType.SYLLABUS)
-                .year(2023)
-                .fileUrl("https://makautexam.net/syllabus/BS-CH101.pdf")
+                .year(2026)
+                .fileUrl("assets/resources/1st_year/syllabus/Chemistry.pdf")
                 .rawText("""
-                        Module 1: Atomic and Molecular Structure: Schrodinger equation, particle in a box; Molecular orbitals of diatomic molecules; Band structure of solids.
-                        Module 2: Spectroscopic Techniques and Applications: Principles of spectroscopy, selection rules; UV-Visible and Fluorescence spectroscopy; Infrared and Raman spectroscopy.
-                        Module 3: Intermolecular Forces and Potential Energy Surfaces: Ionic, dipolar and van der Waals interactions; Equations of state of real gases, critical phenomena; Potential energy surfaces.
-                        Module 4: Use of Free Energy in Chemical Equilibria: Thermodynamic functions: energy, entropy and free energy; Cell potentials, Nernst equation and applications, acid-base and oxidation-reduction equilibria.
-                        Module 5: Periodic Properties: Effective nuclear charge, penetration, shielding; Electronic configuration, atomic and ionic sizes, ionization energies, electron affinity, electronegativity, oxidation states.
-                        Module 6: Stereochemistry and Organic Reactions: Structural isomers, stereoisomers, configurations, symmetry and chirality; Synthesis of commonly used drug molecules (Aspirin, Paracetamol).
+                        Module I: Atomic and Molecular Structure: Schrodinger equation, particle in a box, MO theory for homonuclear and heteronuclear diatomics, band structure of solids.
+                        Module II: Thermodynamics, Equilibrium and Kinetics: First and second laws of thermodynamics, free energy, chemical equilibria, reaction kinetics, rate laws, catalysis.
+                        Module III: Electrochemistry and Corrosion: Electrode potential, Nernst equation, electrochemical cells, reference electrodes, batteries, corrosion mechanisms and prevention methods.
+                        Module IV: Engineering Materials and Water: Polymers, composites, lubricants, water hardness, softening processes, reverse osmosis, boiler troubles and water specifications.
+                        Module V: Instrumental Methods of Analysis: Principles and applications of UV-Visible spectroscopy, IR spectroscopy, conductometry, potentiometry, and chromatography.
                         """)
                 .metadata("{\"credits\": 3, \"contact_hours\": \"3L:0T:0P\", \"department\": \"1st Year Common\"}")
                 .build());
 
-        // ES-EE101
+        CourseResource chemistry101_2026 = courseResourceRepository.save(CourseResource.builder()
+                .stream(StreamType.COMMON)
+                .semester(1)
+                .subjectCode("26-BS-CH101")
+                .subjectName("Chemistry")
+                .resourceType(ResourceType.SYLLABUS)
+                .year(2026)
+                .fileUrl("assets/resources/1st_year/syllabus/Chemistry.pdf")
+                .rawText(chemistry101.getRawText())
+                .metadata(chemistry101.getMetadata())
+                .build());
+
+        // Basic Electrical and Electronics Engineering (ES-EE101 / 26-ES-EE101)
         CourseResource ee101 = courseResourceRepository.save(CourseResource.builder()
                 .stream(StreamType.COMMON)
                 .semester(1)
                 .subjectCode("ES-EE101")
-                .subjectName("Basic Electrical Engineering")
+                .subjectName("Basic Electrical and Electronics Engineering")
                 .resourceType(ResourceType.SYLLABUS)
-                .year(2023)
-                .fileUrl("https://makautexam.net/syllabus/ES-EE101.pdf")
+                .year(2026)
+                .fileUrl("assets/resources/1st_year/syllabus/BEE.pdf")
                 .rawText("""
-                        Module 1: DC Circuits: Electrical circuit elements (R, L, and C), voltage and current sources, Kirchhoff current and voltage laws, analysis of simple circuits with DC excitation; Superposition, Thevenin and Norton Theorems; Maximum Power Transfer theorem; Star-Delta conversion.
-                        Module 2: AC Circuits: Representation of sinusoidal waveforms, peak and RMS values, phasor representation, real power, reactive power, apparent power, power factor; Analysis of single-phase AC circuits consisting of R, L, C, RL, RC, RLC combinations (series and parallel), series and parallel resonance.
-                        Module 3: Transformers: Magnetic materials, BH characteristics, ideal and practical transformer, equivalent circuit, losses in transformers, regulation and efficiency; Auto-transformer and three-phase transformer connections.
-                        Module 4: Electrical Machines: Generation of rotating magnetic fields, Construction and working of a three-phase induction motor, significance of torque-slip characteristic; Loss components and efficiency, starting and speed control; Single-phase induction motor; Construction and working of synchronous machines and DC machines.
+                        Module I: Basics of Electrical Wiring and Safety: Components of LT switchgear, switch fuse unit (SFU), MCB, ELCB, MCCB, types of wires and cables, earthing and electrical safety.
+                        Module II: Direct-Current Circuits: KVL, KCL, mesh and nodal analysis, Superposition theorem, Thevenin theorem, Norton theorem, Maximum Power Transfer theorem.
+                        Module III: Alternating-Current Circuits: Sinusoidal waveforms, phasor representation, RLC series and parallel circuits, resonance, power factor, 3-phase star and delta connections.
+                        Module IV: Transformers and Rotating Machines: Magnetic materials, single phase transformer construction, EMF equation, equivalent circuit, 3-phase induction motor principle, DC machines.
+                        Module V: Semiconductor Fundamentals and Diode Applications: P-N junction diode, V-I characteristics, Zener diode, half wave and full wave rectifiers, filters, clippers and clampers.
+                        Module VI: Transistors and Operational Amplifiers: BJT operation, configurations (CE, CB, CC), biasing, Op-Amp ideal characteristics, inverting and non-inverting amplifiers, integrator, differentiator.
                         """)
                 .metadata("{\"credits\": 4, \"contact_hours\": \"3L:1T:0P\", \"department\": \"1st Year Common\"}")
                 .build());
 
-        // ES-CS101
+        CourseResource ee101_2026 = courseResourceRepository.save(CourseResource.builder()
+                .stream(StreamType.COMMON)
+                .semester(1)
+                .subjectCode("26-ES-EE101")
+                .subjectName("Basic Electrical and Electronics Engineering")
+                .resourceType(ResourceType.SYLLABUS)
+                .year(2026)
+                .fileUrl("assets/resources/1st_year/syllabus/BEE.pdf")
+                .rawText(ee101.getRawText())
+                .metadata(ee101.getMetadata())
+                .build());
+
+        // Programming for Problem Solving and Introduction to AI (ES-CS101 / 26-ES-CS201)
         CourseResource cs101 = courseResourceRepository.save(CourseResource.builder()
                 .stream(StreamType.COMMON)
                 .semester(1)
                 .subjectCode("ES-CS101")
-                .subjectName("Programming for Problem Solving")
+                .subjectName("Programming for Problem Solving and Introduction to AI")
                 .resourceType(ResourceType.SYLLABUS)
-                .year(2023)
-                .fileUrl("https://makautexam.net/syllabus/ES-CS101.pdf")
+                .year(2026)
+                .fileUrl("assets/resources/1st_year/syllabus/PPS.pdf")
                 .rawText("""
-                        Module 1: Introduction to Programming: Idea of Algorithm: steps to solve logical and numerical problems; Representation of Algorithm: Flowchart/Pseudocode with examples; From algorithms to programs; source code, variables, data types and sizes; Compilation, execution, and debugging.
-                        Module 2: Arithmetic Expressions and Precedence: Conditional Branching and Loops: Writing and evaluation of conditionals and consequent branching; Iteration and loops (for, while, do-while); Nested loops, break and continue statements.
-                        Module 3: Arrays & Strings: Arrays (1-D, 2-D), Number representation and character representation, Strings; Character arrays and manipulation, matrix addition and multiplication.
-                        Module 4: Functions & Recursion: Functions (including using built in libraries), Parameter passing in functions, call by value, Passing arrays to functions: idea of call by reference; Recursion, as a different way of solving problems; Example programs: finding Factorial, Fibonacci series, Ackerman function, Tower of Hanoi.
-                        Module 5: Pointers & Structures: Idea of pointers, Defining pointers, Use of Pointers in self-referential structures, notion of linked list (no implementation); Dynamic memory allocation: malloc, calloc, realloc, free; Structures, defining structures and Array of Structures.
+                        Module I: Introduction to Computer: Block diagram of digital computer, memory organization, CPU, system software, application software, operating system basics.
+                        Module II: Generation of Computers: Evolution of computer hardware and software generations, classification of computing devices, von Neumann architecture.
+                        Module III: Problem Solving and Computational Thinking: Algorithm design, pseudo-code, flowcharts, decomposition, pattern recognition, abstraction, error classification.
+                        Module IV: Fundamentals of C: Constants, variables, data types, arithmetic operators, expressions, operator precedence, conditional statements (if-else, switch), loops (for, while, do-while).
+                        Module V: Functions and Program Structure: Function declaration, definition, parameter passing (call by value, call by reference), recursion, scope and storage classes.
+                        Module VI: Arrays, Strings and Pointers: 1D and 2D arrays, string operations, pointer concepts, pointer arithmetic, dynamic memory allocation (malloc, calloc, free).
+                        Module VII: Structures, Files and Algorithm Efficiency: Structures, unions, file I/O operations (fopen, fclose, fprintf, fscanf), introduction to time and space complexity, Big-O notation.
+                        Module VIII: Introduction to Artificial Intelligence: What is AI, history and foundations, Turing test, intelligent agents, search algorithms, overview of machine learning and natural language processing.
                         """)
                 .metadata("{\"credits\": 3, \"contact_hours\": \"3L:0T:0P\", \"department\": \"1st Year Common\"}")
                 .build());
 
-        // HM-HU101
+        CourseResource cs101_2026 = courseResourceRepository.save(CourseResource.builder()
+                .stream(StreamType.COMMON)
+                .semester(1)
+                .subjectCode("26-ES-CS201")
+                .subjectName("Programming for Problem Solving and Introduction to AI")
+                .resourceType(ResourceType.SYLLABUS)
+                .year(2026)
+                .fileUrl("assets/resources/1st_year/syllabus/PPS.pdf")
+                .rawText(cs101.getRawText())
+                .metadata(cs101.getMetadata())
+                .build());
+
+        // English for Communication Skills (HM-HU101 / 26-AEC-101)
         CourseResource english101 = courseResourceRepository.save(CourseResource.builder()
                 .stream(StreamType.COMMON)
                 .semester(1)
                 .subjectCode("HM-HU101")
-                .subjectName("English")
+                .subjectName("English for Communication Skills")
                 .resourceType(ResourceType.SYLLABUS)
-                .year(2023)
-                .fileUrl("https://makautexam.net/syllabus/HM-HU101.pdf")
+                .year(2026)
+                .fileUrl("assets/resources/1st_year/syllabus/English.pdf")
                 .rawText("""
-                        Module 1: Vocabulary Building: The concept of Word Formation; Root words from foreign languages and their use in English; Acquaintance with prefixes and suffixes; Synonyms, antonyms, and standard abbreviations.
-                        Module 2: Basic Writing Skills: Sentence Structures; Use of phrases and clauses in sentences; Importance of proper punctuation; Creating coherence; Organizing principles of paragraphs in documents; Techniques for writing precisely.
-                        Module 3: Identifying Common Errors in Writing: Subject-verb agreement; Noun-pronoun agreement; Misplaced modifiers; Articles; Prepositions; Redundancies; Clichés.
-                        Module 4: Nature and Style of sensible Writing: Describing, defining, classifying; Providing examples or evidence; Writing introduction and conclusion; Comprehension; Précis Writing; Essay Writing.
-                        Module 5: Technical Communication: Formal letters and email correspondence; Curriculum Vitae and Resume writing; Technical report writing.
+                        Module I: The Grammar and Vocabulary of Technical English: Word formation, technical terminology, sentence structures, concord, modal verbs, passive voice, and common grammatical pitfalls.
+                        Module II: Reading and Comprehension: Techniques of skimming, scanning, critical reading, interpreting technical texts, and précis writing.
+                        Module III: Technical Writing: Paragraph cohesion, formal letters, email etiquette, technical reports, proposals, and resume / CV preparation.
+                        Module IV: Listening, Speaking and Employability: Phonetics, oral presentations, active listening, group discussions, and technical interview skills.
                         """)
                 .metadata("{\"credits\": 2, \"contact_hours\": \"2L:0T:0P\", \"department\": \"1st Year Common\"}")
+                .build());
+
+        CourseResource english101_2026 = courseResourceRepository.save(CourseResource.builder()
+                .stream(StreamType.COMMON)
+                .semester(1)
+                .subjectCode("26-AEC-101")
+                .subjectName("English for Communication Skills")
+                .resourceType(ResourceType.SYLLABUS)
+                .year(2026)
+                .fileUrl("assets/resources/1st_year/syllabus/English.pdf")
+                .rawText(english101.getRawText())
+                .metadata(english101.getMetadata())
+                .build());
+
+        // Mathematics - II (BS-M201 / 26-BS-M201)
+        CourseResource math201 = courseResourceRepository.save(CourseResource.builder()
+                .stream(StreamType.COMMON)
+                .semester(2)
+                .subjectCode("BS-M201")
+                .subjectName("Mathematics - II")
+                .resourceType(ResourceType.SYLLABUS)
+                .year(2026)
+                .fileUrl("assets/resources/1st_year/syllabus/Maths-2.pdf")
+                .rawText("""
+                        Module I: Ordinary Differential Equations: First order ODEs, exact equations, higher order linear differential equations with constant coefficients, method of variation of parameters, Cauchy-Euler equations.
+                        Module II: Laplace Transform: Definition, existence, properties of Laplace transform, inverse Laplace, shifting theorems, convolution theorem, solution of ODEs using Laplace transform.
+                        Module III: Vector Calculus: Scalar and vector fields, gradient, directional derivative, divergence, curl, line, surface and volume integrals, Green, Gauss divergence, and Stokes theorems.
+                        Module IV: Complex Variables and Fourier Series: Analytic functions, Cauchy-Riemann equations, Cauchy integral theorem, Taylor and Laurent series, periodic functions, Fourier series expansion.
+                        """)
+                .metadata("{\"credits\": 3, \"contact_hours\": \"3L:0T:0P\", \"department\": \"1st Year Common\"}")
+                .build());
+
+        CourseResource math201_2026 = courseResourceRepository.save(CourseResource.builder()
+                .stream(StreamType.COMMON)
+                .semester(2)
+                .subjectCode("26-BS-M201")
+                .subjectName("Mathematics - II")
+                .resourceType(ResourceType.SYLLABUS)
+                .year(2026)
+                .fileUrl("assets/resources/1st_year/syllabus/Maths-2.pdf")
+                .rawText(math201.getRawText())
+                .metadata(math201.getMetadata())
+                .build());
+
+        // Biology for Engineers (BS-BIO201 / 26-BS-BI201)
+        CourseResource bio201 = courseResourceRepository.save(CourseResource.builder()
+                .stream(StreamType.COMMON)
+                .semester(1)
+                .subjectCode("BS-BIO201")
+                .subjectName("Biology for Engineers")
+                .resourceType(ResourceType.SYLLABUS)
+                .year(2026)
+                .fileUrl("assets/resources/1st_year/syllabus/Biology.pdf")
+                .rawText("""
+                        Module I: The Cell and the Molecules of Life: Cellular architecture, prokaryotic vs eukaryotic cells, structure and function of proteins, carbohydrates, lipids, nucleic acids, and enzymes.
+                        Module II: Genetics and the Flow of Information: Mendelian genetics, structure of DNA, central dogma: replication, transcription, translation, and genetic code.
+                        Module III: Biomaterials, Biomechanics and Bio-inspired Design: Properties of biomaterials, biocompatibility, biomechanical principles, bio-inspired engineering designs, and biomimetics.
+                        Module IV: Biotechnology, Biosensors and Applications: Recombinant DNA technology, PCR, biosensors, bio-imaging, bio-computing, environmental and industrial biotechnology.
+                        """)
+                .metadata("{\"credits\": 2, \"contact_hours\": \"2L:0T:0P\", \"department\": \"1st Year Common\"}")
+                .build());
+
+        CourseResource bio201_2026 = courseResourceRepository.save(CourseResource.builder()
+                .stream(StreamType.COMMON)
+                .semester(1)
+                .subjectCode("26-BS-BI201")
+                .subjectName("Biology for Engineers")
+                .resourceType(ResourceType.SYLLABUS)
+                .year(2026)
+                .fileUrl("assets/resources/1st_year/syllabus/Biology.pdf")
+                .rawText(bio201.getRawText())
+                .metadata(bio201.getMetadata())
+                .build());
+
+        // Environmental Science (MC-ES201 / 26-VAC-201)
+        CourseResource evs201 = courseResourceRepository.save(CourseResource.builder()
+                .stream(StreamType.COMMON)
+                .semester(1)
+                .subjectCode("MC-ES201")
+                .subjectName("Environmental Science")
+                .resourceType(ResourceType.SYLLABUS)
+                .year(2026)
+                .fileUrl("assets/resources/1st_year/syllabus/EVS.pdf")
+                .rawText("""
+                        Module I: The Environment, Ecosystems and Biodiversity: Ecosystem structure and function, energy flow, food webs, ecological succession, biodiversity hotspots, threats, and conservation.
+                        Module II: Environmental Pollution and the Global Challenges: Air, water, soil, noise, thermal pollution, climate change, greenhouse effect, ozone depletion, acid rain, municipal and electronic waste.
+                        Module III: India's Sustainability Policy and Legal Framework: Environment Protection Act 1986, Air and Water Acts, National Green Tribunal (NGT), EIA, international treaties (Kyoto, Paris, Montreal).
+                        Module IV: Mission LiFE and Behavioural Change: Concept of Mission LiFE (Lifestyle for Environment), individual actions, circular economy, resource conservation, sustainable consumption.
+                        Module V: The Seven Themes of Mission LiFE, and Practice: Energy saving, water saving, reducing single-use plastic, sustainable food systems, waste reduction, healthy lifestyles, e-waste adoption.
+                        """)
+                .metadata("{\"credits\": 3, \"contact_hours\": \"3L:0T:0P\", \"department\": \"1st Year Common\"}")
+                .build());
+
+        CourseResource evs201_2026 = courseResourceRepository.save(CourseResource.builder()
+                .stream(StreamType.COMMON)
+                .semester(1)
+                .subjectCode("26-VAC-201")
+                .subjectName("Environmental Science")
+                .resourceType(ResourceType.SYLLABUS)
+                .year(2026)
+                .fileUrl("assets/resources/1st_year/syllabus/EVS.pdf")
+                .rawText(evs201.getRawText())
+                .metadata(evs201.getMetadata())
                 .build());
 
         // 3. Core 2nd/3rd Year Subjects (CSE Core)
@@ -291,46 +458,80 @@ public class DataInitializer implements CommandLineRunner {
                 .metadata("{\"required_credits\": 20, \"platform\": \"SWAYAM/NPTEL\"}")
                 .build());
 
-        // 4. Populate Syllabus Units for Interactive Checklists
+        // 4. Populate Syllabus Units for Interactive Checklists (Verified 2026 MAKAUT Syllabus)
         List<SyllabusUnit> units = new ArrayList<>();
-        // Math 101
-        units.add(SyllabusUnit.builder().courseResource(math101).unitNumber(1).unitTitle("Unit 1: Calculus & Evolutes").subtopics("Evolutes, involutes, definite integrals, Beta/Gamma functions, Rolle and Mean Value Theorems").hours(10).build());
-        units.add(SyllabusUnit.builder().courseResource(math101).unitNumber(2).unitTitle("Unit 2: Multivariable Calculus").subtopics("Partial derivatives, directional derivatives, maxima and minima, Lagrange multipliers").hours(8).build());
-        units.add(SyllabusUnit.builder().courseResource(math101).unitNumber(3).unitTitle("Unit 3: Matrices & Linear Algebra").subtopics("Inverse, rank, rank-nullity theorem, Cayley-Hamilton theorem, eigenvalues and eigenvectors").hours(10).build());
-        units.add(SyllabusUnit.builder().courseResource(math101).unitNumber(4).unitTitle("Unit 4: Vector Spaces").subtopics("Vector spaces, linear independence, basis, dimension, linear transformations and kernel").hours(8).build());
 
-        // Physics 101 (5 Modules, 36 Hours)
-        units.add(SyllabusUnit.builder().courseResource(physics101).unitNumber(1).unitTitle("Module I: Oscillations and Waves").subtopics("Simple harmonic motion, damped and forced oscillations, resonance, wave equation, transverse and longitudinal waves").hours(8).build());
-        units.add(SyllabusUnit.builder().courseResource(physics101).unitNumber(2).unitTitle("Module II: Wave Optics").subtopics("Huygens principle, interference of light, Young double slit, Newton rings, thin films, Fraunhofer diffraction, diffraction grating").hours(8).build());
-        units.add(SyllabusUnit.builder().courseResource(physics101).unitNumber(3).unitTitle("Module III: Electromagnetism").subtopics("Gradient, divergence and curl, Gauss divergence theorem, Stokes theorem, Gauss law, Ampere law, Faraday law, Maxwell equations").hours(8).build());
-        units.add(SyllabusUnit.builder().courseResource(physics101).unitNumber(4).unitTitle("Module IV: Quantum Physics").subtopics("Wave-particle duality, de Broglie hypothesis, Heisenberg uncertainty principle, Schrodinger equation, particle in a box").hours(7).build());
-        units.add(SyllabusUnit.builder().courseResource(physics101).unitNumber(5).unitTitle("Module V: Solid-State and Modern Physics").subtopics("Free electron theory of metals, band theory of solids, intrinsic and extrinsic semiconductors, lasers and optical fibers").hours(5).build());
+        for (CourseResource res : List.of(math101, math101_2026)) {
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(1).unitTitle("Module I: Calculus of a Single Variable").subtopics("Rolle theorem, Mean Value Theorems, Taylor and Maclaurin theorems with remainders, indeterminate forms, L'Hospital rule, evaluation of definite and improper integrals").hours(9).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(2).unitTitle("Module II: Calculus of Several Variables").subtopics("Limit, continuity, partial derivatives, Euler theorem, total derivative, tangent plane, maxima and minima of two variables, Lagrange multipliers").hours(9).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(3).unitTitle("Module III: Multiple Integrals").subtopics("Double and triple integrals, change of order of integration, change of variables (Cartesian to polar), evaluation of area, volume, and surface area of revolution").hours(8).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(4).unitTitle("Module IV: Matrices and Linear Algebra").subtopics("Rank of matrix, system of linear equations, inverse, eigenvalues and eigenvectors, Cayley-Hamilton theorem, orthogonal transformation, diagonalization").hours(10).build());
+        }
 
-        // Chemistry 101 (6 Modules, 36 Hours)
-        units.add(SyllabusUnit.builder().courseResource(chemistry101).unitNumber(1).unitTitle("Module I: Atomic and Molecular Structure").subtopics("Schrodinger equation, particle in a box, MO theory for homonuclear and heteronuclear diatomics, band structure of solids").hours(8).build());
-        units.add(SyllabusUnit.builder().courseResource(chemistry101).unitNumber(2).unitTitle("Module II: Spectroscopic Techniques and Applications").subtopics("Principles of spectroscopy, selection rules, UV-Vis, fluorescence, vibrational and rotational spectroscopy, NMR").hours(7).build());
-        units.add(SyllabusUnit.builder().courseResource(chemistry101).unitNumber(3).unitTitle("Module III: Intermolecular Forces and Potential Energy Surfaces").subtopics("Ionic, dipolar and van der Waals forces, real gases, equations of state, potential energy surfaces of simple molecules").hours(4).build());
-        units.add(SyllabusUnit.builder().courseResource(chemistry101).unitNumber(4).unitTitle("Module IV: Use of Free Energy in Chemical Equilibria").subtopics("Thermodynamic functions: energy, entropy and free energy, cell potentials, Nernst equation and applications, acid-base and oxidation-reduction").hours(6).build());
-        units.add(SyllabusUnit.builder().courseResource(chemistry101).unitNumber(5).unitTitle("Module V: Periodic Properties").subtopics("Effective nuclear charge, penetration, atomic and ionic sizes, ionization energies, electron affinity, electronegativity, polarizability").hours(4).build());
-        units.add(SyllabusUnit.builder().courseResource(chemistry101).unitNumber(6).unitTitle("Module VI: Stereochemistry and Organic Reactions").subtopics("Representations of 3D structures, structural isomers and stereoisomers, chirality, enantiomers, diastereomers, synthesis of Aspirin and Paracetamol").hours(7).build());
+        for (CourseResource res : List.of(physics101, physics101_2026)) {
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(1).unitTitle("Module I: Oscillations and Waves").subtopics("Simple harmonic motion, damped and forced oscillations, resonance, wave equation, transverse and longitudinal waves").hours(8).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(2).unitTitle("Module II: Wave Optics").subtopics("Huygens principle, superposition of waves, interference of light, Young double slit, Newton rings, thin films, Fraunhofer diffraction, diffraction grating").hours(8).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(3).unitTitle("Module III: Electromagnetism").subtopics("Gradient, divergence and curl, Gauss divergence theorem, Stokes theorem, Gauss law, Ampere law, Faraday law, Maxwell equations").hours(8).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(4).unitTitle("Module IV: Quantum Physics").subtopics("Wave-particle duality, de Broglie hypothesis, Heisenberg uncertainty principle, Schrodinger equation, particle in a box").hours(7).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(5).unitTitle("Module V: Solid-State and Modern Physics").subtopics("Free electron theory of metals, band theory of solids, intrinsic and extrinsic semiconductors, lasers and optical fibers").hours(5).build());
+        }
 
-        // Electrical 101
-        units.add(SyllabusUnit.builder().courseResource(ee101).unitNumber(1).unitTitle("Unit 1: DC Circuits & Theorems").subtopics("Kirchhoff laws, Superposition, Thevenin, Norton, Maximum Power Transfer theorems, Star-Delta").hours(9).build());
-        units.add(SyllabusUnit.builder().courseResource(ee101).unitNumber(2).unitTitle("Unit 2: AC Circuits & Resonance").subtopics("Sinusoidal waveforms, phasor representation, series/parallel RLC circuits, series resonance, Q-factor").hours(9).build());
-        units.add(SyllabusUnit.builder().courseResource(ee101).unitNumber(3).unitTitle("Unit 3: Transformers").subtopics("BH characteristics, ideal and practical transformer, equivalent circuit, losses, efficiency").hours(8).build());
-        units.add(SyllabusUnit.builder().courseResource(ee101).unitNumber(4).unitTitle("Unit 4: Electrical Machines").subtopics("Rotating magnetic fields, 3-phase induction motor, torque-slip curve, DC machines").hours(8).build());
+        for (CourseResource res : List.of(chemistry101, chemistry101_2026)) {
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(1).unitTitle("Module I: Atomic and Molecular Structure").subtopics("Schrodinger equation, particle in a box, MO theory for homonuclear and heteronuclear diatomics, band structure of solids").hours(8).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(2).unitTitle("Module II: Thermodynamics, Equilibrium and Kinetics").subtopics("First and second laws of thermodynamics, free energy, chemical equilibria, reaction kinetics, rate laws, catalysis").hours(8).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(3).unitTitle("Module III: Electrochemistry and Corrosion").subtopics("Electrode potential, Nernst equation, electrochemical cells, reference electrodes, batteries, corrosion mechanisms and prevention methods").hours(7).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(4).unitTitle("Module IV: Engineering Materials and Water").subtopics("Polymers, composites, lubricants, water hardness, softening processes, reverse osmosis, boiler troubles and water specifications").hours(8).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(5).unitTitle("Module V: Instrumental Methods of Analysis").subtopics("Principles and applications of UV-Visible spectroscopy, IR spectroscopy, conductometry, potentiometry, and chromatography").hours(5).build());
+        }
 
-        // Programming 101
-        units.add(SyllabusUnit.builder().courseResource(cs101).unitNumber(1).unitTitle("Unit 1: Intro to C & Algorithms").subtopics("Flowcharts, pseudocode, compilation, data types, arithmetic operators").hours(6).build());
-        units.add(SyllabusUnit.builder().courseResource(cs101).unitNumber(2).unitTitle("Unit 2: Conditionals & Loops").subtopics("if-else, switch, for, while, do-while, nested loops, break, continue").hours(6).build());
-        units.add(SyllabusUnit.builder().courseResource(cs101).unitNumber(3).unitTitle("Unit 3: Arrays & Strings").subtopics("1D and 2D arrays, matrix multiplication, character strings, string library functions").hours(8).build());
-        units.add(SyllabusUnit.builder().courseResource(cs101).unitNumber(4).unitTitle("Unit 4: Functions & Recursion").subtopics("Call by value, call by reference, recursive functions: Factorial, Fibonacci, Tower of Hanoi").hours(8).build());
-        units.add(SyllabusUnit.builder().courseResource(cs101).unitNumber(5).unitTitle("Unit 5: Pointers & Dynamic Memory").subtopics("Pointers, pointer arithmetic, malloc, calloc, free, structures and unions").hours(8).build());
+        for (CourseResource res : List.of(ee101, ee101_2026)) {
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(1).unitTitle("Module I: Basics of Electrical Wiring and Safety").subtopics("Components of LT switchgear, switch fuse unit (SFU), MCB, ELCB, MCCB, types of wires and cables, earthing and electrical safety").hours(3).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(2).unitTitle("Module II: Direct-Current Circuits").subtopics("KVL, KCL, mesh and nodal analysis, Superposition theorem, Thevenin theorem, Norton theorem, Maximum Power Transfer theorem").hours(9).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(3).unitTitle("Module III: Alternating-Current Circuits").subtopics("Sinusoidal waveforms, phasor representation, RLC series and parallel circuits, resonance, power factor, 3-phase star and delta connections").hours(8).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(4).unitTitle("Module IV: Transformers and Rotating Machines").subtopics("Magnetic materials, single phase transformer construction, EMF equation, equivalent circuit, 3-phase induction motor principle, DC machines").hours(6).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(5).unitTitle("Module V: Semiconductor Fundamentals and Diode Applications").subtopics("P-N junction diode, V-I characteristics, Zener diode, half wave and full wave rectifiers, filters, clippers and clampers").hours(7).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(6).unitTitle("Module VI: Transistors and Operational Amplifiers").subtopics("BJT operation, configurations (CE, CB, CC), biasing, Op-Amp ideal characteristics, inverting and non-inverting amplifiers, integrator, differentiator").hours(11).build());
+        }
 
-        // English 101
-        units.add(SyllabusUnit.builder().courseResource(english101).unitNumber(1).unitTitle("Unit 1: Vocabulary Building").subtopics("Word formation, prefixes, suffixes, root words, synonyms and antonyms").hours(6).build());
-        units.add(SyllabusUnit.builder().courseResource(english101).unitNumber(2).unitTitle("Unit 2: Writing & Paragraph Coherence").subtopics("Sentence structures, punctuation, coherence, précis writing, essay drafting").hours(6).build());
-        units.add(SyllabusUnit.builder().courseResource(english101).unitNumber(3).unitTitle("Unit 3: Professional Communication").subtopics("Technical reports, formal letters, email etiquette, CV and resume design").hours(8).build());
+        for (CourseResource res : List.of(cs101, cs101_2026)) {
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(1).unitTitle("Module I: Introduction to Computer").subtopics("Block diagram of digital computer, memory organization, CPU, system software, application software, operating system basics").hours(4).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(2).unitTitle("Module II: Generation of Computers").subtopics("Evolution of computer hardware and software generations, classification of computing devices, von Neumann architecture").hours(2).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(3).unitTitle("Module III: Problem Solving and Computational Thinking").subtopics("Algorithm design, pseudo-code, flowcharts, decomposition, pattern recognition, abstraction, error classification").hours(4).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(4).unitTitle("Module IV: Fundamentals of C").subtopics("Constants, variables, data types, arithmetic operators, expressions, operator precedence, conditional statements (if-else, switch), loops (for, while, do-while)").hours(5).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(5).unitTitle("Module V: Functions and Program Structure").subtopics("Function declaration, definition, parameter passing (call by value, call by reference), recursion, scope and storage classes").hours(5).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(6).unitTitle("Module VI: Arrays, Strings and Pointers").subtopics("1D and 2D arrays, string operations, pointer concepts, pointer arithmetic, dynamic memory allocation (malloc, calloc, free)").hours(6).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(7).unitTitle("Module VII: Structures, Files and Algorithm Efficiency").subtopics("Structures, unions, file I/O operations (fopen, fclose, fprintf, fscanf), introduction to time and space complexity, Big-O notation").hours(4).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(8).unitTitle("Module VIII: Introduction to Artificial Intelligence").subtopics("What is AI, history and foundations, Turing test, intelligent agents, search algorithms, overview of machine learning and natural language processing").hours(6).build());
+        }
+
+        for (CourseResource res : List.of(english101, english101_2026)) {
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(1).unitTitle("Module I: The Grammar and Vocabulary of Technical English").subtopics("Word formation, technical terminology, sentence structures, concord, modal verbs, passive voice, and common grammatical pitfalls").hours(6).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(2).unitTitle("Module II: Reading and Comprehension").subtopics("Techniques of skimming, scanning, critical reading, interpreting technical texts, and précis writing").hours(6).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(3).unitTitle("Module III: Technical Writing").subtopics("Paragraph cohesion, formal letters, email etiquette, technical reports, proposals, and resume / CV preparation").hours(8).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(4).unitTitle("Module IV: Listening, Speaking and Employability").subtopics("Phonetics, oral presentations, active listening, group discussions, and technical interview skills").hours(6).build());
+        }
+
+        for (CourseResource res : List.of(math201, math201_2026)) {
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(1).unitTitle("Module I: Ordinary Differential Equations").subtopics("First order ODEs, exact equations, higher order linear differential equations with constant coefficients, method of variation of parameters, Cauchy-Euler equations").hours(9).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(2).unitTitle("Module II: Laplace Transform").subtopics("Definition, existence, properties of Laplace transform, inverse Laplace, shifting theorems, convolution theorem, solution of ODEs using Laplace transform").hours(9).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(3).unitTitle("Module III: Vector Calculus").subtopics("Scalar and vector fields, gradient, directional derivative, divergence, curl, line, surface and volume integrals, Green, Gauss divergence, and Stokes theorems").hours(9).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(4).unitTitle("Module IV: Complex Variables and Fourier Series").subtopics("Analytic functions, Cauchy-Riemann equations, Cauchy integral theorem, Taylor and Laurent series, periodic functions, Fourier series expansion").hours(9).build());
+        }
+
+        for (CourseResource res : List.of(bio201, bio201_2026)) {
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(1).unitTitle("Module I: The Cell and the Molecules of Life").subtopics("Cellular architecture, prokaryotic vs eukaryotic cells, structure and function of proteins, carbohydrates, lipids, nucleic acids, and enzymes").hours(7).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(2).unitTitle("Module II: Genetics and the Flow of Information").subtopics("Mendelian genetics, structure of DNA, central dogma: replication, transcription, translation, and genetic code").hours(6).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(3).unitTitle("Module III: Biomaterials, Biomechanics and Bio-inspired Design").subtopics("Properties of biomaterials, biocompatibility, biomechanical principles, bio-inspired engineering designs, and biomimetics").hours(7).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(4).unitTitle("Module IV: Biotechnology, Biosensors and Applications").subtopics("Recombinant DNA technology, PCR, biosensors, bio-imaging, bio-computing, environmental and industrial biotechnology").hours(6).build());
+        }
+
+        for (CourseResource res : List.of(evs201, evs201_2026)) {
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(1).unitTitle("Module I: The Environment, Ecosystems and Biodiversity").subtopics("Ecosystem structure and function, energy flow, food webs, ecological succession, biodiversity hotspots, threats, and conservation").hours(9).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(2).unitTitle("Module II: Environmental Pollution and the Global Challenges").subtopics("Air, water, soil, noise, thermal pollution, climate change, greenhouse effect, ozone depletion, acid rain, municipal and electronic waste").hours(8).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(3).unitTitle("Module III: India's Sustainability Policy and Legal Framework").subtopics("Environment Protection Act 1986, Air and Water Acts, National Green Tribunal (NGT), EIA, international treaties (Kyoto, Paris, Montreal)").hours(8).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(4).unitTitle("Module IV: Mission LiFE and Behavioural Change").subtopics("Concept of Mission LiFE (Lifestyle for Environment), individual actions, circular economy, resource conservation, sustainable consumption").hours(8).build());
+            units.add(SyllabusUnit.builder().courseResource(res).unitNumber(5).unitTitle("Module V: The Seven Themes of Mission LiFE, and Practice").subtopics("Energy saving, water saving, reducing single-use plastic, sustainable food systems, waste reduction, healthy lifestyles, e-waste adoption").hours(9).build());
+        }
 
         // OS PCC-CS501
         units.add(SyllabusUnit.builder().courseResource(osSyllabus).unitNumber(1).unitTitle("Unit 1: OS Concepts & Structures").subtopics("Generations, OS types, system calls, Monolithic vs Microkernel architecture").hours(5).build());

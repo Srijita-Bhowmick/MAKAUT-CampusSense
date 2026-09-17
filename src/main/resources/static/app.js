@@ -132,10 +132,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // 3. Verified Curriculum & PYQ Master Dataset
     // ==========================================
     const MAKAUT_CURRICULUM = [
-        // --- 1st Year Common Scheme (All 7 Foundational Subjects) ---
+        // --- 1st Year Common Scheme (All 9 Folders / 9 Subjects) ---
+        // 1. Physics (26-BS-PH101 / 26-BS-PH201)
         {
-            code: 'BS-PH101',
-            altCode: 'BS-PH201',
+            code: '26-BS-PH101',
+            altCode: '26-BS-PH201',
+            legacyCode: 'BS-PH101',
             name: 'Physics',
             isFirstYear: true,
             category: 'GROUP_A',
@@ -144,15 +146,15 @@ document.addEventListener('DOMContentLoaded', () => {
             credits: 3,
             l_t_p: '3-0-0',
             contactHours: 36,
-            department: '1st Year (Group A)',
+            department: '1st Year',
             syllabusUrl: 'assets/resources/1st_year/syllabus/Physics.pdf',
             description: 'Oscillations and waves, wave optics, electromagnetism, quantum physics, solid-state and modern physics.',
             units: [
-                { id: 1021, unitNumber: 1, title: 'Module I: Oscillations and Waves', subtopics: 'Simple harmonic motion, damped and forced oscillations, resonance, wave equation, transverse and longitudinal waves.', hours: 8 },
-                { id: 1022, unitNumber: 2, title: 'Module II: Wave Optics', subtopics: 'Huygens principle, interference of light, Young double slit, Newton rings, thin films, Fraunhofer diffraction, diffraction grating.', hours: 8 },
-                { id: 1023, unitNumber: 3, title: 'Module III: Electromagnetism', subtopics: 'Gradient, divergence and curl, Gauss divergence theorem, Stokes theorem, Gauss law, Ampere law, Faraday law, Maxwell equations.', hours: 8 },
-                { id: 1024, unitNumber: 4, title: 'Module IV: Quantum Physics', subtopics: 'Wave-particle duality, de Broglie hypothesis, Heisenberg uncertainty principle, Schrodinger equation, particle in a box.', hours: 7 },
-                { id: 1025, unitNumber: 5, title: 'Module V: Solid-State and Modern Physics', subtopics: 'Free electron theory of metals, band theory of solids, intrinsic and extrinsic semiconductors, lasers and optical fibers.', hours: 5 }
+                { id: 1011, unitNumber: 1, title: 'Module I: Oscillations and Waves', subtopics: 'Simple harmonic motion, damped and forced oscillations, resonance, wave equation, transverse and longitudinal waves.', hours: 8 },
+                { id: 1012, unitNumber: 2, title: 'Module II: Wave Optics', subtopics: 'Huygens principle, interference of light, Young double slit, Newton rings, thin films, Fraunhofer diffraction, diffraction grating.', hours: 8 },
+                { id: 1013, unitNumber: 3, title: 'Module III: Electromagnetism', subtopics: 'Gradient, divergence and curl, Gauss divergence theorem, Stokes theorem, Gauss law, Ampere law, Faraday law, Maxwell equations.', hours: 8 },
+                { id: 1014, unitNumber: 4, title: 'Module IV: Quantum Physics', subtopics: 'Wave-particle duality, de Broglie hypothesis, Heisenberg uncertainty principle, Schrodinger equation, particle in a box.', hours: 7 },
+                { id: 1015, unitNumber: 5, title: 'Module V: Solid-State and Modern Physics', subtopics: 'Free electron theory of metals, band theory of solids, intrinsic and extrinsic semiconductors, lasers and optical fibers.', hours: 5 }
             ],
             pyqs: [
                 { id: 2101, year: 2026, type: 'END_SEM', title: 'MAKAUT 2026 Physics (BS-PH101)', fileUrl: 'assets/resources/1st_year/pyq/physics/btech-1-sem-physics-1-bs-ph101-2026.pdf' },
@@ -164,9 +166,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 { id: 2107, year: 2020, type: 'END_SEM', title: 'MAKAUT 2020 Physics (PH-101)', fileUrl: 'assets/resources/1st_year/pyq/physics/btech-1-sem-physics-1-ph-101-2020.pdf' }
             ]
         },
+        // 2. Chemistry (26-BS-CH101 / 26-BS-CH201)
         {
-            code: 'BS-CH101',
-            altCode: 'BS-CH201',
+            code: '26-BS-CH101',
+            altCode: '26-BS-CH201',
+            legacyCode: 'BS-CH101',
             name: 'Chemistry',
             isFirstYear: true,
             category: 'GROUP_B',
@@ -175,16 +179,15 @@ document.addEventListener('DOMContentLoaded', () => {
             credits: 3,
             l_t_p: '3-0-0',
             contactHours: 36,
-            department: '1st Year (Group B)',
+            department: '1st Year',
             syllabusUrl: 'assets/resources/1st_year/syllabus/Chemistry.pdf',
-            description: 'Atomic and molecular structure, spectroscopy, intermolecular forces, chemical equilibria, periodic properties, stereochemistry and organic synthesis.',
+            description: 'Atomic and molecular structure, thermodynamics, equilibrium and kinetics, electrochemistry and corrosion, engineering materials and water, instrumental methods of analysis.',
             units: [
-                { id: 1051, unitNumber: 1, title: 'Module I: Atomic and Molecular Structure', subtopics: 'Schrodinger equation, particle in a box, MO theory for homonuclear and heteronuclear diatomics, band structure of solids.', hours: 8 },
-                { id: 1052, unitNumber: 2, title: 'Module II: Spectroscopic Techniques and Applications', subtopics: 'Principles of spectroscopy, selection rules, UV-Vis, fluorescence, vibrational and rotational spectroscopy, NMR.', hours: 7 },
-                { id: 1053, unitNumber: 3, title: 'Module III: Intermolecular Forces and Potential Energy Surfaces', subtopics: 'Ionic, dipolar and van der Waals forces, real gases, equations of state, potential energy surfaces of simple molecules.', hours: 4 },
-                { id: 1054, unitNumber: 4, title: 'Module IV: Use of Free Energy in Chemical Equilibria', subtopics: 'Thermodynamic functions: energy, entropy and free energy, cell potentials, Nernst equation and applications, acid-base and oxidation-reduction.', hours: 6 },
-                { id: 1055, unitNumber: 5, title: 'Module V: Periodic Properties', subtopics: 'Effective nuclear charge, penetration, atomic and ionic sizes, ionization energies, electron affinity, electronegativity, polarizability.', hours: 4 },
-                { id: 1056, unitNumber: 6, title: 'Module VI: Stereochemistry and Organic Reactions', subtopics: 'Representations of 3D structures, structural isomers and stereoisomers, chirality, enantiomers, diastereomers, synthesis of Aspirin and Paracetamol.', hours: 7 }
+                { id: 1021, unitNumber: 1, title: 'Module I: Atomic and Molecular Structure', subtopics: 'Schrodinger equation, particle in a box, MO theory for homonuclear and heteronuclear diatomics, band structure of solids.', hours: 8 },
+                { id: 1022, unitNumber: 2, title: 'Module II: Thermodynamics, Equilibrium and Kinetics', subtopics: 'First and second laws of thermodynamics, free energy, chemical equilibria, reaction kinetics, rate laws, catalysis.', hours: 8 },
+                { id: 1023, unitNumber: 3, title: 'Module III: Electrochemistry and Corrosion', subtopics: 'Electrode potential, Nernst equation, electrochemical cells, reference electrodes, batteries, corrosion mechanisms and prevention methods.', hours: 7 },
+                { id: 1024, unitNumber: 4, title: 'Module IV: Engineering Materials and Water', subtopics: 'Polymers, composites, lubricants, water hardness, softening processes, reverse osmosis, boiler troubles and water specifications.', hours: 8 },
+                { id: 1025, unitNumber: 5, title: 'Module V: Instrumental Methods of Analysis', subtopics: 'Principles and applications of UV-Visible spectroscopy, IR spectroscopy, conductometry, potentiometry, and chromatography.', hours: 5 }
             ],
             pyqs: [
                 { id: 2201, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Chemistry (BS-CH201)', fileUrl: 'assets/resources/1st_year/pyq/chemistry/btech-2-sem-chemistry-bsch201-2025.pdf' },
@@ -195,25 +198,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 { id: 2206, year: 2020, type: 'END_SEM', title: 'MAKAUT 2020 Chemistry (BS-CH101)', fileUrl: 'assets/resources/1st_year/pyq/chemistry/btech-1-sem-chemistry-1-bs-ch-101-2020.pdf' }
             ]
         },
+        // 3. Mathematics - I (26-BS-M101)
         {
-            code: 'BS-M101',
-            altCode: 'BS-M102',
-            name: 'Mathematics 1A',
+            code: '26-BS-M101',
+            legacyCode: 'BS-M101',
+            name: 'Mathematics - I',
             isFirstYear: true,
             category: 'MATH',
             stream: 'GROUP_A',
             semester: 1,
-            credits: 4,
-            l_t_p: '3-1-0',
-            contactHours: 40,
-            department: '1st Year (Common)',
+            credits: 3,
+            l_t_p: '3-0-0',
+            contactHours: 36,
+            department: '1st Year',
             syllabusUrl: 'assets/resources/1st_year/syllabus/Maths-1.pdf',
-            description: 'Evolutes, definite integrals, multivariable extrema, Cayley-Hamilton theorem, and vector spaces.',
+            description: 'Calculus of a single variable, calculus of several variables, multiple integrals, and matrices with linear algebra.',
             units: [
-                { id: 1011, unitNumber: 1, title: 'Unit 1: Calculus & Evolutes', subtopics: 'Evolutes, involutes, definite integrals, Beta & Gamma functions, Rolle and Mean Value Theorems.', hours: 10 },
-                { id: 1012, unitNumber: 2, title: 'Unit 2: Multivariable Calculus', subtopics: 'Partial derivatives, directional derivatives, tangent planes, maxima and minima, Lagrange multipliers.', hours: 10 },
-                { id: 1013, unitNumber: 3, title: 'Unit 3: Matrices & Linear Algebra', subtopics: 'Inverse, rank, rank-nullity theorem, Cayley-Hamilton theorem, eigenvalues, eigenvectors, diagonalization.', hours: 10 },
-                { id: 1014, unitNumber: 4, title: 'Unit 4: Vector Spaces & Linear Transforms', subtopics: 'Vector spaces, linear independence, basis, dimension, linear transformations, kernel, and range.', hours: 10 }
+                { id: 1031, unitNumber: 1, title: 'Module I: Calculus of a Single Variable', subtopics: 'Rolle theorem, Mean Value Theorems, Taylor and Maclaurin theorems with remainders, indeterminate forms, L\'Hospital rule, evaluation of definite and improper integrals.', hours: 9 },
+                { id: 1032, unitNumber: 2, title: 'Module II: Calculus of Several Variables', subtopics: 'Limit, continuity, partial derivatives, Euler theorem, total derivative, tangent plane, maxima and minima of two variables, Lagrange multipliers.', hours: 9 },
+                { id: 1033, unitNumber: 3, title: 'Module III: Multiple Integrals', subtopics: 'Double and triple integrals, change of order of integration, change of variables (Cartesian to polar), evaluation of area, volume, and surface area of revolution.', hours: 8 },
+                { id: 1034, unitNumber: 4, title: 'Module IV: Matrices and Linear Algebra', subtopics: 'Rank of matrix, system of linear equations, inverse, eigenvalues and eigenvectors, Cayley-Hamilton theorem, orthogonal transformation, diagonalization.', hours: 10 }
             ],
             pyqs: [
                 { id: 2301, year: 2026, type: 'END_SEM', title: 'MAKAUT 2026 Mathematics 1A (BS-M101)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_1a/btech-1-sem-mathematics-1a-bs-m101-2026.pdf' },
@@ -224,25 +228,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 { id: 2306, year: 2020, type: 'END_SEM', title: 'MAKAUT 2020 Mathematics 1B (BS-M102)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_1b/btech-1-sem-mathematics-1b-bs-m-102-2020.pdf' }
             ]
         },
+        // 4. Mathematics - II (26-BS-M201)
         {
-            code: 'BS-M201',
-            altCode: 'BS-M202',
-            name: 'Mathematics 2A',
+            code: '26-BS-M201',
+            legacyCode: 'BS-M201',
+            name: 'Mathematics - II',
             isFirstYear: true,
             category: 'MATH',
-            stream: 'GROUP_A',
-            semester: 1,
-            credits: 4,
-            l_t_p: '3-1-0',
-            contactHours: 40,
-            department: '1st Year (Common)',
+            stream: 'GROUP_B',
+            semester: 2,
+            credits: 3,
+            l_t_p: '3-0-0',
+            contactHours: 36,
+            department: '1st Year',
             syllabusUrl: 'assets/resources/1st_year/syllabus/Maths-2.pdf',
-            description: 'First and second order ODEs, series solutions, Bessel and Legendre functions, partial differential equations, and complex contour integration.',
+            description: 'Ordinary differential equations, Laplace transform, vector calculus, complex variables and Fourier series.',
             units: [
-                { id: 1061, unitNumber: 1, title: 'Unit 1: First and Higher Order ODEs', subtopics: 'Exact ODEs, integrating factors, linear differential equations of higher order with constant coefficients, method of variation of parameters.', hours: 10 },
-                { id: 1062, unitNumber: 2, title: 'Unit 2: Series Solutions & Special Functions', subtopics: 'Power series solutions, Frobenius method, Legendre polynomials, Bessel functions of the first kind.', hours: 10 },
-                { id: 1063, unitNumber: 3, title: 'Unit 3: Partial Differential Equations', subtopics: 'First-order linear and non-linear PDEs, Charpit\'s method, separation of variables, wave and heat equations.', hours: 10 },
-                { id: 1064, unitNumber: 4, title: 'Unit 4: Complex Variables & Contour Integrals', subtopics: 'Cauchy-Riemann equations, analytic functions, Cauchy\'s integral formula, Taylor and Laurent series, residue theorem.', hours: 10 }
+                { id: 1041, unitNumber: 1, title: 'Module I: Ordinary Differential Equations', subtopics: 'First order ODEs, exact equations, higher order linear differential equations with constant coefficients, method of variation of parameters, Cauchy-Euler equations.', hours: 9 },
+                { id: 1042, unitNumber: 2, title: 'Module II: Laplace Transform', subtopics: 'Definition, existence, properties of Laplace transform, inverse Laplace, shifting theorems, convolution theorem, solution of ODEs using Laplace transform.', hours: 9 },
+                { id: 1043, unitNumber: 3, title: 'Module III: Vector Calculus', subtopics: 'Scalar and vector fields, gradient, directional derivative, divergence, curl, line, surface and volume integrals, Green, Gauss divergence, and Stokes theorems.', hours: 9 },
+                { id: 1044, unitNumber: 4, title: 'Module IV: Complex Variables and Fourier Series', subtopics: 'Analytic functions, Cauchy-Riemann equations, Cauchy integral theorem, Taylor and Laurent series, periodic functions, Fourier series expansion.', hours: 9 }
             ],
             pyqs: [
                 { id: 2401, year: 2026, type: 'END_SEM', title: 'MAKAUT 2026 Mathematics 2A (BS-M201)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_2a/btech-2-sem-mathematics-2-a-bs-m201-2026.pdf' },
@@ -253,25 +258,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 { id: 2406, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Mathematics 2B (BS-M202)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_2b/btech-2-sem-mathematics-2-b-bsm202-2023.pdf' }
             ]
         },
+        // 5. Basic Electrical and Electronics Engineering (26-ES-EE101)
         {
-            code: 'ES-EE101',
-            altCode: 'ES-EE201',
-            name: 'Basic Electrical Engineering',
+            code: '26-ES-EE101',
+            legacyCode: 'ES-EE101',
+            name: 'Basic Electrical and Electronics Engineering',
             isFirstYear: true,
             category: 'GROUP_A',
             stream: 'GROUP_A',
             semester: 1,
             credits: 4,
             l_t_p: '3-1-0',
-            contactHours: 40,
-            department: '1st Year (Group A)',
+            contactHours: 44,
+            department: '1st Year',
             syllabusUrl: 'assets/resources/1st_year/syllabus/BEE.pdf',
-            description: 'Kirchhoff\'s laws, Thévenin\'s & Norton\'s theorems, AC series resonance, single phase transformers, and motors.',
+            description: 'Basics of electrical wiring, DC circuits, AC circuits, transformers and rotating machines, semiconductors and diodes, transistors and op-amps.',
             units: [
-                { id: 1031, unitNumber: 1, title: 'Unit 1: DC Circuits & Network Theorems', subtopics: 'KVL, KCL, mesh and nodal analysis, Superposition, Thévenin\'s Theorem, Norton\'s Theorem, Maximum Power.', hours: 10 },
-                { id: 1032, unitNumber: 2, title: 'Unit 2: AC Circuits & Phasors', subtopics: 'Sinusoidal alternating quantities, phasor representation, RLC series and parallel circuits, resonance, Q-factor.', hours: 10 },
-                { id: 1033, unitNumber: 3, title: 'Unit 3: Transformers', subtopics: 'Magnetic materials, ideal and practical transformers, equivalent circuit, losses, regulation and efficiency.', hours: 10 },
-                { id: 1034, unitNumber: 4, title: 'Unit 4: Electrical Machines & Installations', subtopics: 'DC machines generation principle, 3-phase induction motor, torque-speed curve, earthing and miniature circuit breakers.', hours: 10 }
+                { id: 1051, unitNumber: 1, title: 'Module I: Basics of Electrical Wiring and Safety', subtopics: 'Components of LT switchgear, switch fuse unit (SFU), MCB, ELCB, MCCB, types of wires and cables, earthing and electrical safety.', hours: 3 },
+                { id: 1052, unitNumber: 2, title: 'Module II: Direct-Current Circuits', subtopics: 'KVL, KCL, mesh and nodal analysis, Superposition theorem, Thevenin theorem, Norton theorem, Maximum Power Transfer theorem.', hours: 9 },
+                { id: 1053, unitNumber: 3, title: 'Module III: Alternating-Current Circuits', subtopics: 'Sinusoidal waveforms, phasor representation, RLC series and parallel circuits, resonance, power factor, 3-phase star and delta connections.', hours: 8 },
+                { id: 1054, unitNumber: 4, title: 'Module IV: Transformers and Rotating Machines', subtopics: 'Magnetic materials, single phase transformer construction, EMF equation, equivalent circuit, 3-phase induction motor principle, DC machines.', hours: 6 },
+                { id: 1055, unitNumber: 5, title: 'Module V: Semiconductor Fundamentals and Diode Applications', subtopics: 'P-N junction diode, V-I characteristics, Zener diode, half wave and full wave rectifiers, filters, clippers and clampers.', hours: 7 },
+                { id: 1056, unitNumber: 6, title: 'Module VI: Transistors and Operational Amplifiers', subtopics: 'BJT operation, configurations (CE, CB, CC), biasing, Op-Amp ideal characteristics, inverting and non-inverting amplifiers, integrator, differentiator.', hours: 11 }
             ],
             pyqs: [
                 { id: 2501, year: 2026, type: 'END_SEM', title: 'MAKAUT 2026 Basic Electrical (ES-EE101)', fileUrl: 'assets/resources/1st_year/pyq/bee/btech-1-sem-basic-electrical-engineering-es-ee101-2026.pdf' },
@@ -280,53 +288,49 @@ document.addEventListener('DOMContentLoaded', () => {
                 { id: 2504, year: 2020, type: 'END_SEM', title: 'MAKAUT 2020 Basic Electrical (ES-EE-101)', fileUrl: 'assets/resources/1st_year/pyq/bee/btech-1-sem-basic-electrical-engineering-es-ee-101-2020.pdf' }
             ]
         },
+        // 6. Biology for Engineers (26-BS-BI201)
         {
-            code: 'ES-CS101',
-            altCode: 'ES-CS201',
-            name: 'Programming for Problem Solving',
+            code: '26-BS-BI201',
+            legacyCode: 'BS-BIO201',
+            name: 'Biology for Engineers',
+            isFirstYear: true,
+            category: 'MULTIDISCIPLINARY',
+            stream: 'MULTIDISCIPLINARY',
+            semester: 1,
+            credits: 2,
+            l_t_p: '2-0-0',
+            contactHours: 26,
+            department: '1st Year',
+            syllabusUrl: 'assets/resources/1st_year/syllabus/Biology.pdf',
+            description: 'The cell and molecules of life, genetics and flow of information, biomaterials and biomechanics, biotechnology and biosensors.',
+            units: [
+                { id: 1061, unitNumber: 1, title: 'Module I: The Cell and the Molecules of Life', subtopics: 'Cellular architecture, prokaryotic vs eukaryotic cells, structure and function of proteins, carbohydrates, lipids, nucleic acids, and enzymes.', hours: 7 },
+                { id: 1062, unitNumber: 2, title: 'Module II: Genetics and the Flow of Information', subtopics: 'Mendelian genetics, structure of DNA, central dogma: replication, transcription, translation, and genetic code.', hours: 6 },
+                { id: 1063, unitNumber: 3, title: 'Module III: Biomaterials, Biomechanics and Bio-inspired Design', subtopics: 'Properties of biomaterials, biocompatibility, biomechanical principles, bio-inspired engineering designs, and biomimetics.', hours: 7 },
+                { id: 1064, unitNumber: 4, title: 'Module IV: Biotechnology, Biosensors and Applications', subtopics: 'Recombinant DNA technology, PCR, biosensors, bio-imaging, bio-computing, environmental and industrial biotechnology.', hours: 6 }
+            ],
+            pyqs: []
+        },
+        // 7. English for Communication Skills (26-AEC-101)
+        {
+            code: '26-AEC-101',
+            legacyCode: 'HM-HU101',
+            name: 'English for Communication Skills',
             isFirstYear: true,
             category: 'GROUP_B',
             stream: 'GROUP_B',
             semester: 1,
-            credits: 3,
-            l_t_p: '3-0-0',
-            contactHours: 36,
-            department: '1st Year (Group B)',
-            syllabusUrl: 'assets/resources/1st_year/syllabus/PPS.pdf',
-            description: 'Algorithms, conditionals, loops, multidimensional arrays, pointer arithmetic, dynamic allocation, and recursion.',
-            units: [
-                { id: 1041, unitNumber: 1, title: 'Unit 1: Introduction to Programming & Flowcharts', subtopics: 'Algorithm, pseudo-code, flowcharts, variables, datatypes, operators, precedence, expressions.', hours: 7 },
-                { id: 1042, unitNumber: 2, title: 'Unit 2: Conditionals & Iterations', subtopics: 'if-else, switch-case, while, do-while, for loops, nested loops, break, continue, return statements.', hours: 7 },
-                { id: 1043, unitNumber: 3, title: 'Unit 3: Arrays & Strings', subtopics: '1D & 2D arrays, matrix multiplication, string manipulation, string.h library functions.', hours: 7 },
-                { id: 1044, unitNumber: 4, title: 'Unit 4: Functions & Recursion', subtopics: 'Call by value vs reference, parameter passing, recursion, Tower of Hanoi, Fibonacci series, scope and lifetime.', hours: 7 },
-                { id: 1045, unitNumber: 5, title: 'Unit 5: Pointers & Memory Management', subtopics: 'Pointer arithmetic, pointers to pointers, malloc(), calloc(), free(), structures, unions, file I/O operations.', hours: 8 }
-            ],
-            pyqs: [
-                { id: 2601, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Programming for Problem Solving (ES-CS201)', fileUrl: 'assets/resources/1st_year/pyq/pps/btech-2-sem-programming-for-problem-solving-escs201-2025.pdf' },
-                { id: 2602, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Programming for Problem Solving (ES-CS201)', fileUrl: 'assets/resources/1st_year/pyq/pps/btech-es-cs-2-sem-programming-for-problem-solving-escs201-2024.pdf' },
-                { id: 2603, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Programming for Problem Solving (ES-CS201)', fileUrl: 'assets/resources/1st_year/pyq/pps/btech-2-sem-programming-for-problem-solving-escs201-2023.pdf' }
-            ]
-        },
-        {
-            code: 'HM-HU101',
-            altCode: 'HM-HU201',
-            name: 'English',
-            isFirstYear: true,
-            category: 'COMMON',
-            stream: 'COMMON',
-            semester: 1,
             credits: 2,
             l_t_p: '2-0-0',
-            contactHours: 24,
-            department: '1st Year (Common)',
+            contactHours: 26,
+            department: '1st Year',
             syllabusUrl: 'assets/resources/1st_year/syllabus/English.pdf',
-            description: 'Vocabulary building, sentence structures, common errors in writing, technical reporting, and oral communication.',
+            description: 'Grammar and vocabulary of technical English, reading comprehension, technical writing, listening, speaking and employability.',
             units: [
-                { id: 1071, unitNumber: 1, title: 'Unit 1: Vocabulary & Word Formation', subtopics: 'Roots, prefixes, suffixes, synonyms, antonyms, standard abbreviations, technical vocabulary.', hours: 5 },
-                { id: 1072, unitNumber: 2, title: 'Unit 2: Sentence Structure & Grammar', subtopics: 'Phrases, clauses, subject-verb agreement, active and passive voice, prepositions, direct and indirect speech.', hours: 5 },
-                { id: 1073, unitNumber: 3, title: 'Unit 3: Common Errors & Mechanics', subtopics: 'Dangling modifiers, run-on sentences, punctuation rules, capitalization, spelling conventions.', hours: 5 },
-                { id: 1074, unitNumber: 4, title: 'Unit 4: Technical Writing & Reports', subtopics: 'Paragraph development, coherence, technical proposals, resume writing, business correspondence.', hours: 5 },
-                { id: 1075, unitNumber: 5, title: 'Unit 5: Oral & Presentation Skills', subtopics: 'Phonetics, pronunciation, group discussions, seminar presentations, interview etiquette.', hours: 4 }
+                { id: 1071, unitNumber: 1, title: 'Module I: The Grammar and Vocabulary of Technical English', subtopics: 'Word formation, technical terminology, sentence structures, concord, modal verbs, passive voice, and common grammatical pitfalls.', hours: 6 },
+                { id: 1072, unitNumber: 2, title: 'Module II: Reading and Comprehension', subtopics: 'Techniques of skimming, scanning, critical reading, interpreting technical texts, and précis writing.', hours: 6 },
+                { id: 1073, unitNumber: 3, title: 'Module III: Technical Writing', subtopics: 'Paragraph cohesion, formal letters, email etiquette, technical reports, proposals, and resume / CV preparation.', hours: 8 },
+                { id: 1074, unitNumber: 4, title: 'Module IV: Listening, Speaking and Employability', subtopics: 'Phonetics, oral presentations, active listening, group discussions, and technical interview skills.', hours: 6 }
             ],
             pyqs: [
                 { id: 2701, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 English (HM-HU201)', fileUrl: 'assets/resources/1st_year/pyq/english/btech-2-sem-english-hmhu201-2025.pdf' },
@@ -334,52 +338,59 @@ document.addEventListener('DOMContentLoaded', () => {
                 { id: 2703, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 English (HM-HU201)', fileUrl: 'assets/resources/1st_year/pyq/english/btech-2-sem-english-hmhu201-2023.pdf' }
             ]
         },
+        // 8. Environmental Science (26-VAC-201)
         {
-            code: 'MC-ES201',
-            altCode: 'MC-ES101',
+            code: '26-VAC-201',
+            legacyCode: 'MC-ES201',
             name: 'Environmental Science',
             isFirstYear: true,
             category: 'MULTIDISCIPLINARY',
             stream: 'MULTIDISCIPLINARY',
             semester: 1,
-            credits: 0,
-            department: '1st Year (Mandatory Non-Credit Course)',
+            credits: 3,
+            l_t_p: '3-0-0',
+            contactHours: 42,
+            department: '1st Year',
             syllabusUrl: 'assets/resources/1st_year/syllabus/EVS.pdf',
-            description: 'Ecosystems, biodiversity conservation, air and water pollution abatement, renewable natural resources, climate treaties, and solid waste management.',
+            description: 'The environment and ecosystems, environmental pollution, sustainability policy, Mission LiFE and behavioral change, seven themes of Mission LiFE.',
             units: [
-                { id: 1081, unitNumber: 1, title: 'Unit 1: Ecosystems & Biodiversity Conservation', subtopics: 'Structure and function of ecosystems, energy flow, ecological succession, food chains and webs, biodiversity hotspots, in-situ and ex-situ conservation.', hours: 8 },
-                { id: 1082, unitNumber: 2, title: 'Unit 2: Environmental Pollution (Air, Water, Soil, Noise)', subtopics: 'Causes, effects and control mechanisms of air, water, soil, noise and thermal pollution, ambient air quality standards, photochemical smog, acid rain.', hours: 8 },
-                { id: 1083, unitNumber: 3, title: 'Unit 3: Renewable & Non-Renewable Natural Resources', subtopics: 'Land resources, deforestation, water resources and conflicts, mineral extraction, renewable energy transition: solar, wind, biomass, hydrogen energy.', hours: 6 },
-                { id: 1084, unitNumber: 4, title: 'Unit 4: Environmental Policies, Climate Change & Treaties', subtopics: 'Environment Protection Act 1986, Air and Water Acts, Kyoto Protocol, Montreal Protocol, Paris Climate Agreement, Environmental Impact Assessment (EIA).', hours: 6 },
-                { id: 1085, unitNumber: 5, title: 'Unit 5: Fieldwork, Waste Management & Sustainability', subtopics: 'Municipal solid waste management, e-waste handling, biomedical waste rules, circular economy, UN Sustainable Development Goals (SDGs), field visit reporting.', hours: 6 }
+                { id: 1081, unitNumber: 1, title: 'Module I: The Environment, Ecosystems and Biodiversity', subtopics: 'Ecosystem structure and function, energy flow, food webs, ecological succession, biodiversity hotspots, threats, and conservation.', hours: 9 },
+                { id: 1082, unitNumber: 2, title: 'Module II: Environmental Pollution and the Global Challenges', subtopics: 'Air, water, soil, noise, thermal pollution, climate change, greenhouse effect, ozone depletion, acid rain, municipal and electronic waste.', hours: 8 },
+                { id: 1083, unitNumber: 3, title: 'Module III: India\'s Sustainability Policy and Legal Framework', subtopics: 'Environment Protection Act 1986, Air and Water Acts, National Green Tribunal (NGT), EIA, international treaties (Kyoto, Paris, Montreal).', hours: 8 },
+                { id: 1084, unitNumber: 4, title: 'Module IV: Mission LiFE and Behavioural Change', subtopics: 'Concept of Mission LiFE (Lifestyle for Environment), individual actions, circular economy, resource conservation, sustainable consumption.', hours: 8 },
+                { id: 1085, unitNumber: 5, title: 'Module V: The Seven Themes of Mission LiFE, and Practice', subtopics: 'Energy saving, water saving, reducing single-use plastic, sustainable food systems, waste reduction, healthy lifestyles, e-waste adoption.', hours: 9 }
             ],
-            pyqs: [
-                { id: 2801, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Environmental Science (MC-ES201)', fileUrl: 'assets/resources/1st_year/syllabus/EVS.pdf' },
-                { id: 2802, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Environmental Science (MC-ES201)', fileUrl: 'assets/resources/1st_year/syllabus/EVS.pdf' }
-            ]
+            pyqs: []
         },
+        // 9. Programming for Problem Solving and Introduction to AI (26-ES-CS201)
         {
-            code: 'BS-BIO101',
-            altCode: 'BS-BIO201',
-            name: 'Biology for Engineers',
+            code: '26-ES-CS201',
+            legacyCode: 'ES-CS101',
+            name: 'Programming for Problem Solving and Introduction to AI',
             isFirstYear: true,
-            category: 'MULTIDISCIPLINARY',
-            stream: 'MULTIDISCIPLINARY',
+            category: 'GROUP_B',
+            stream: 'GROUP_B',
             semester: 1,
             credits: 3,
-            department: '1st Year (Multidisciplinary Core)',
-            syllabusUrl: 'assets/resources/1st_year/syllabus/Biology.pdf',
-            description: 'Biomolecules, cellular energetics, enzyme kinetics, central dogma of molecular genetics, microbiology, biosensors, and bio-inspired engineering.',
+            l_t_p: '3-0-0',
+            contactHours: 36,
+            department: '1st Year',
+            syllabusUrl: 'assets/resources/1st_year/syllabus/PPS.pdf',
+            description: 'Computer fundamentals, generations, computational thinking, C programming, functions, arrays, pointers, structures, file handling, and introduction to AI.',
             units: [
-                { id: 1091, unitNumber: 1, title: 'Unit 1: Biomolecules & Cell Architecture', subtopics: 'Carbohydrates, lipids, nucleic acids, proteins; prokaryotic vs eukaryotic cell architecture, cell organelles, membrane transport mechanisms.', hours: 8 },
-                { id: 1092, unitNumber: 2, title: 'Unit 2: Enzyme Kinetics, Metabolism & Cellular Energetics', subtopics: 'Enzyme classification, active site, Michaelis-Menten kinetics, enzyme inhibition, glycolysis, citric acid cycle, oxidative phosphorylation, ATP synthesis.', hours: 8 },
-                { id: 1093, unitNumber: 3, title: 'Unit 3: Molecular Genetics, DNA Replication & Protein Synthesis', subtopics: 'Central dogma of molecular biology, DNA double-helix replication fidelity, transcription, genetic code, ribosomal translation, recombinant DNA, PCR basics.', hours: 8 },
-                { id: 1094, unitNumber: 4, title: 'Unit 4: Microbiology, Immunology & Biosensors', subtopics: 'Microbial growth kinetics, sterilization techniques, innate and adaptive immunity, antibody-antigen interaction, biosensor architecture and clinical applications.', hours: 8 },
-                { id: 1095, unitNumber: 5, title: 'Unit 5: Bio-inspired Engineering, Bio-materials & Bio-computing', subtopics: 'Biomimetics, lotus effect self-cleaning, gecko adhesion, shark-skin fluid drag reduction, biocompatible polymers, neural computing inspirations, DNA data storage.', hours: 8 }
+                { id: 1091, unitNumber: 1, title: 'Module I: Introduction to Computer', subtopics: 'Block diagram of digital computer, memory organization, CPU, system software, application software, operating system basics.', hours: 4 },
+                { id: 1092, unitNumber: 2, title: 'Module II: Generation of Computers', subtopics: 'Evolution of computer hardware and software generations, classification of computing devices, von Neumann architecture.', hours: 2 },
+                { id: 1093, unitNumber: 3, title: 'Module III: Problem Solving and Computational Thinking', subtopics: 'Algorithm design, pseudo-code, flowcharts, decomposition, pattern recognition, abstraction, error classification.', hours: 4 },
+                { id: 1094, unitNumber: 4, title: 'Module IV: Fundamentals of C', subtopics: 'Constants, variables, data types, arithmetic operators, expressions, operator precedence, conditional statements (if-else, switch), loops (for, while, do-while).', hours: 5 },
+                { id: 1095, unitNumber: 5, title: 'Module V: Functions and Program Structure', subtopics: 'Function declaration, definition, parameter passing (call by value, call by reference), recursion, scope and storage classes.', hours: 5 },
+                { id: 1096, unitNumber: 6, title: 'Module VI: Arrays, Strings and Pointers', subtopics: '1D and 2D arrays, string operations, pointer concepts, pointer arithmetic, dynamic memory allocation (malloc, calloc, free).', hours: 6 },
+                { id: 1097, unitNumber: 7, title: 'Module VII: Structures, Files and Algorithm Efficiency', subtopics: 'Structures, unions, file I/O operations (fopen, fclose, fprintf, fscanf), introduction to time and space complexity, Big-O notation.', hours: 4 },
+                { id: 1098, unitNumber: 8, title: 'Module VIII: Introduction to Artificial Intelligence', subtopics: 'What is AI, history and foundations, Turing test, intelligent agents, search algorithms, overview of machine learning and natural language processing.', hours: 6 }
             ],
             pyqs: [
-                { id: 2901, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Biology for Engineers (BS-BIO101)', fileUrl: 'assets/resources/1st_year/syllabus/Biology.pdf' },
-                { id: 2902, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Biology for Engineers (BS-BIO201)', fileUrl: 'assets/resources/1st_year/syllabus/Biology.pdf' }
+                { id: 2601, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Programming for Problem Solving (ES-CS201)', fileUrl: 'assets/resources/1st_year/pyq/pps/btech-2-sem-programming-for-problem-solving-escs201-2025.pdf' },
+                { id: 2602, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Programming for Problem Solving (ES-CS201)', fileUrl: 'assets/resources/1st_year/pyq/pps/btech-es-cs-2-sem-programming-for-problem-solving-escs201-2024.pdf' },
+                { id: 2603, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Programming for Problem Solving (ES-CS201)', fileUrl: 'assets/resources/1st_year/pyq/pps/btech-2-sem-programming-for-problem-solving-escs201-2023.pdf' }
             ]
         }
     ];
@@ -849,7 +860,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const subjectCode = btn.getAttribute('data-subject');
                 const paperYear = btn.getAttribute('data-paper');
                 const title = btn.getAttribute('data-name') || `${subjectCode} (${paperYear})`;
-                const fileUrl = btn.getAttribute('data-url') || `https://makautexam.net/pyq/${paperYear}/${subjectCode}.pdf`;
+                const fileUrl = btn.getAttribute('data-url') || '';
 
                 if (localStorage.getItem('campussense_logged_in') !== 'true') {
                     sessionStorage.setItem('pending_download_action', JSON.stringify({ fileUrl, title, subjectCode, paperYear }));
@@ -1265,9 +1276,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const allFirstYear = MAKAUT_CURRICULUM.filter(s => s.isFirstYear);
             if (categoryFilter === 'GROUP_A') {
-                matchingSubjects = allFirstYear.filter(s => s.category === 'GROUP_A');
+                matchingSubjects = allFirstYear.filter(s => s.category === 'GROUP_A' || s.stream === 'GROUP_A');
             } else if (categoryFilter === 'GROUP_B') {
-                matchingSubjects = allFirstYear.filter(s => s.category === 'GROUP_B');
+                matchingSubjects = allFirstYear.filter(s => s.category === 'GROUP_B' || s.stream === 'GROUP_B');
             } else if (categoryFilter === 'MATH') {
                 matchingSubjects = allFirstYear.filter(s => s.category === 'MATH');
             } else if (categoryFilter === 'MULTIDISCIPLINARY') {
@@ -1399,6 +1410,7 @@ document.addEventListener('DOMContentLoaded', () => {
             subject = MAKAUT_CURRICULUM.find(s => 
                 s.code.toLowerCase() === subjectCodeOrObj.toLowerCase() ||
                 (s.altCode && s.altCode.toLowerCase() === subjectCodeOrObj.toLowerCase()) ||
+                (s.legacyCode && s.legacyCode.toLowerCase() === subjectCodeOrObj.toLowerCase()) ||
                 s.name.toLowerCase() === subjectCodeOrObj.toLowerCase()
             );
         }
@@ -1502,6 +1514,19 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!container) return;
 
         let pyqs = subject.pyqs || [];
+        if (pyqs.length === 0 && yearFilter === 'ALL') {
+            container.innerHTML = `
+                <div class="pyq-empty-status-card" style="padding: 2.5rem 1.5rem; text-align: center; background: rgba(255,255,255,0.03); border: 1px solid var(--border-subtle, rgba(255,255,255,0.08)); border-radius: var(--radius-md, 8px); margin: 1rem 0;">
+                    <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">📂</div>
+                    <h4 style="color: var(--text-primary, #f8fafc); margin-bottom: 0.5rem; font-size: 1.05rem; font-weight: 600;">Official Paper Ingestion in Progress — Papers currently being digitized</h4>
+                    <p style="color: var(--text-muted, #94a3b8); font-size: 0.88rem; max-width: 440px; margin: 0 auto; line-height: 1.5;">
+                        Official semester examination papers for ${escapeHtml(subject.name)} are currently undergoing high-resolution digitizing and verification. Complete archives will be available shortly.
+                    </p>
+                </div>
+            `;
+            return;
+        }
+
         if (yearFilter !== 'ALL') {
             const yr = parseInt(yearFilter, 10);
             pyqs = pyqs.filter(p => p.year === yr);
@@ -1769,6 +1794,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (s.syllabusUrl && lowerUrl.includes(s.syllabusUrl.toLowerCase())) return true;
             if (lowerUrl.includes(s.code.toLowerCase()) || lowerTitle.includes(s.code.toLowerCase())) return true;
             if (s.altCode && (lowerUrl.includes(s.altCode.toLowerCase()) || lowerTitle.includes(s.altCode.toLowerCase()))) return true;
+            if (s.legacyCode && (lowerUrl.includes(s.legacyCode.toLowerCase()) || lowerTitle.includes(s.legacyCode.toLowerCase()))) return true;
             if (s.syllabusUrl) {
                 const base = s.syllabusUrl.split('/').pop().toLowerCase();
                 if (lowerUrl.includes(base)) return true;
@@ -2205,33 +2231,71 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 1. Alias mapping for common student query shorthand
         const aliases = {
-            'bee': 'ES-EE101',
-            'pps': 'ES-CS101',
-            'c': 'ES-CS101',
-            'programming': 'ES-CS101',
-            'physics': 'BS-PH101',
-            'chemistry': 'BS-CH101',
-            'math': 'BS-M101',
-            'maths': 'BS-M101',
-            'mathematics': 'BS-M101',
-            'maths 1': 'BS-M101',
-            'maths 1a': 'BS-M101',
-            'maths 2': 'BS-M201',
-            'maths 2a': 'BS-M201',
-            'english': 'HM-HU101',
-            'evs': 'MC-ES201',
-            'environmental': 'MC-ES201',
-            'biology': 'BS-BIO101'
+            'bee': '26-ES-EE101',
+            'basic electrical': '26-ES-EE101',
+            'basic electrical and electronics engineering': '26-ES-EE101',
+            'electrical': '26-ES-EE101',
+            'es-ee101': '26-ES-EE101',
+            'pps': '26-ES-CS201',
+            'c': '26-ES-CS201',
+            'programming': '26-ES-CS201',
+            'programming for problem solving': '26-ES-CS201',
+            'es-cs101': '26-ES-CS201',
+            'es-cs201': '26-ES-CS201',
+            'physics': '26-BS-PH101',
+            'bs-ph101': '26-BS-PH101',
+            'bs-ph201': '26-BS-PH101',
+            'chemistry': '26-BS-CH101',
+            'bs-ch101': '26-BS-CH101',
+            'bs-ch201': '26-BS-CH101',
+            'math': '26-BS-M101',
+            'maths': '26-BS-M101',
+            'mathematics': '26-BS-M101',
+            'math 1': '26-BS-M101',
+            'maths 1': '26-BS-M101',
+            'mathematics 1': '26-BS-M101',
+            'mathematics - i': '26-BS-M101',
+            'bs-m101': '26-BS-M101',
+            'maths 1a': '26-BS-M101',
+            'math 1a': '26-BS-M101',
+            'maths 1b': '26-BS-M101',
+            'math 1b': '26-BS-M101',
+            'math 2': '26-BS-M201',
+            'maths 2': '26-BS-M201',
+            'mathematics 2': '26-BS-M201',
+            'mathematics - ii': '26-BS-M201',
+            'bs-m201': '26-BS-M201',
+            'maths 2a': '26-BS-M201',
+            'math 2a': '26-BS-M201',
+            'maths 2b': '26-BS-M201',
+            'math 2b': '26-BS-M201',
+            'english': '26-AEC-101',
+            'english for communication skills': '26-AEC-101',
+            'hm-hu101': '26-AEC-101',
+            'hm-hu201': '26-AEC-101',
+            'evs': '26-VAC-201',
+            'environmental': '26-VAC-201',
+            'environmental science': '26-VAC-201',
+            'mc-es201': '26-VAC-201',
+            'mc-101': '26-VAC-201',
+            'biology': '26-BS-BI201',
+            'biology for engineers': '26-BS-BI201',
+            'bs-bio201': '26-BS-BI201',
+            'bs-bi201': '26-BS-BI201',
+            'bio': '26-BS-BI201'
         };
 
         let matchedSubject = null;
 
-        // Check explicit code matches first (e.g. BS-PH101, ES-EE101, BS-M101)
+        // Check explicit code matches first (e.g. 26-BS-PH101, BS-PH101, 26-BS-M101)
         matchedSubject = MAKAUT_CURRICULUM.find(s => {
             const codeClean = s.code.toLowerCase().replace(/[^a-z0-9]/g, '');
             const altCodeClean = s.altCode ? s.altCode.toLowerCase().replace(/[^a-z0-9]/g, '') : '';
+            const legacyClean = s.legacyCode ? s.legacyCode.toLowerCase().replace(/[^a-z0-9]/g, '') : '';
             const qClean = qLower.replace(/[^a-z0-9]/g, '');
-            return qClean.includes(codeClean) || (altCodeClean && qClean.includes(altCodeClean));
+            return qClean.includes(codeClean) || 
+                   (altCodeClean && qClean.includes(altCodeClean)) ||
+                   (legacyClean && qClean.includes(legacyClean));
         });
 
         // Check alias lookup
@@ -2239,7 +2303,7 @@ document.addEventListener('DOMContentLoaded', () => {
             for (const [alias, code] of Object.entries(aliases)) {
                 const regex = new RegExp(`\\b${alias}\\b`, 'i');
                 if (regex.test(qLower)) {
-                    matchedSubject = MAKAUT_CURRICULUM.find(s => s.code === code);
+                    matchedSubject = MAKAUT_CURRICULUM.find(s => s.code === code || s.legacyCode === code);
                     if (matchedSubject) break;
                 }
             }
@@ -2591,7 +2655,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     year: 2023,
                     group: 'Regulations',
                     questionNumber: 'Rule 4.1',
-                    pageUrl: 'https://makautexam.net/notices/MAR_Guidelines.pdf'
+                    pageUrl: 'assets/resources/1st_year/syllabus/English.pdf'
                 }]
             };
         }

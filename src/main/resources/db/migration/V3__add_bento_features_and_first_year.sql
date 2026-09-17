@@ -57,17 +57,24 @@ CREATE TABLE IF NOT EXISTS feedback_submissions (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- 6. Seed First-Year Common Academic Resources
+-- 6. Seed First-Year Common Academic Resources (Verified 2026 MAKAUT Syllabus - All 9 Subjects)
 INSERT INTO academic_resources (stream, semester, subject_code, subject_name, resource_type, year, file_url, raw_text, metadata)
 VALUES
-('COMMON', 1, 'BS-M101', 'Mathematics 1A', 'SYLLABUS', 2023, 'https://makautexam.net/syllabus/BS-M101.pdf',
- 'Module 1: Calculus - Evolutes, involutes, Rolle theorem, Mean Value Theorems, Taylor and Maclaurin theorems with remainders.
-  Module 2: Multivariable Calculus - Partial derivatives, Euler theorem on homogeneous functions, total derivative, maxima and minima of functions of two variables, Lagrange multipliers.
-  Module 3: Matrices - Rank of matrix, system of linear equations, symmetric, skew-symmetric, orthogonal matrices, eigenvalues and eigenvectors, Cayley-Hamilton Theorem, diagonalization of matrices.
-  Module 4: Vector Spaces - Vector space, linear dependence and independence of vectors, basis, dimension, linear transformations.',
- '{"credits": 4, "contact_hours": "3L:1T:0P", "department": "1st Year Common"}'),
+('COMMON', 1, 'BS-M101', 'Mathematics - I', 'SYLLABUS', 2026, 'assets/resources/1st_year/syllabus/Maths-1.pdf',
+ 'Module I: Calculus of a Single Variable - Rolle theorem, Mean Value Theorems, Taylor and Maclaurin expansions, indeterminate forms, definite and improper integrals.
+  Module II: Calculus of Several Variables - Partial derivatives, Euler theorem, total derivative, maxima and minima, Lagrange multipliers.
+  Module III: Multiple Integrals - Double and triple integrals, change of order, polar coordinates, area and volume.
+  Module IV: Matrices and Linear Algebra - Rank, linear equations, eigenvalues and eigenvectors, Cayley-Hamilton theorem, diagonalization.',
+ '{"credits": 3, "contact_hours": "3L:0T:0P", "department": "1st Year Common"}'),
 
-('COMMON', 1, 'BS-PH101', 'Physics', 'SYLLABUS', 2023, 'https://makautexam.net/syllabus/BS-PH101.pdf',
+('COMMON', 1, '26-BS-M101', 'Mathematics - I', 'SYLLABUS', 2026, 'assets/resources/1st_year/syllabus/Maths-1.pdf',
+ 'Module I: Calculus of a Single Variable - Rolle theorem, Mean Value Theorems, Taylor and Maclaurin expansions, indeterminate forms, definite and improper integrals.
+  Module II: Calculus of Several Variables - Partial derivatives, Euler theorem, total derivative, maxima and minima, Lagrange multipliers.
+  Module III: Multiple Integrals - Double and triple integrals, change of order, polar coordinates, area and volume.
+  Module IV: Matrices and Linear Algebra - Rank, linear equations, eigenvalues and eigenvectors, Cayley-Hamilton theorem, diagonalization.',
+ '{"credits": 3, "contact_hours": "3L:0T:0P", "department": "1st Year Common"}'),
+
+('COMMON', 1, 'BS-PH101', 'Physics', 'SYLLABUS', 2026, 'assets/resources/1st_year/syllabus/Physics.pdf',
  'Module I: Oscillations and Waves - Simple harmonic motion, damped and forced oscillations, resonance, wave equation.
   Module II: Wave Optics - Huygens principle, interference, Young double slit, Newton rings, thin film interference, Fraunhofer diffraction, diffraction grating.
   Module III: Electromagnetism - Gauss law, Ampere law, Faraday law, Maxwell equations, Poynting vector.
@@ -75,36 +82,127 @@ VALUES
   Module V: Solid-State and Modern Physics - Band theory of solids, semiconductors, lasers, optical fibers.',
  '{"credits": 3, "contact_hours": "3L:0T:0P", "department": "1st Year Common"}'),
 
-('COMMON', 1, 'ES-EE101', 'Basic Electrical Engineering', 'SYLLABUS', 2023, 'https://makautexam.net/syllabus/ES-EE101.pdf',
- 'Module 1: DC Circuits - Kirchhoff laws, mesh and nodal analysis, superposition theorem, Thevenin theorem, Norton theorem, Maximum Power Transfer theorem.
-  Module 2: AC Circuits - Representation of sinusoidal waveforms, peak, RMS, average values, phasor representation of R, L, C, series and parallel RLC circuits, resonance.
-  Module 3: Transformers - Magnetic materials, BH characteristics, ideal and practical single-phase transformer, equivalent circuit, losses, regulation and efficiency.
-  Module 4: Electrical Machines - Generation of rotating magnetic fields, construction and principle of 3-phase induction motor, DC machines, torque-speed characteristics.',
+('COMMON', 1, '26-BS-PH101', 'Physics', 'SYLLABUS', 2026, 'assets/resources/1st_year/syllabus/Physics.pdf',
+ 'Module I: Oscillations and Waves - Simple harmonic motion, damped and forced oscillations, resonance, wave equation.
+  Module II: Wave Optics - Huygens principle, interference, Young double slit, Newton rings, thin film interference, Fraunhofer diffraction, diffraction grating.
+  Module III: Electromagnetism - Gauss law, Ampere law, Faraday law, Maxwell equations, Poynting vector.
+  Module IV: Quantum Physics - De Broglie hypothesis, Heisenberg uncertainty principle, Schrodinger equation, particle in a box.
+  Module V: Solid-State and Modern Physics - Band theory of solids, semiconductors, lasers, optical fibers.',
+ '{"credits": 3, "contact_hours": "3L:0T:0P", "department": "1st Year Common"}'),
+
+('COMMON', 1, 'ES-EE101', 'Basic Electrical and Electronics Engineering', 'SYLLABUS', 2026, 'assets/resources/1st_year/syllabus/BEE.pdf',
+ 'Module I: Basics of Electrical Wiring and Safety - LT switchgear, MCB, ELCB, cables, earthing.
+  Module II: Direct-Current Circuits - KVL, KCL, mesh and nodal analysis, Thevenin and Norton theorems.
+  Module III: Alternating-Current Circuits - Phasor representation, RLC resonance, power factor.
+  Module IV: Transformers and Rotating Machines - Single phase transformer, 3-phase induction motor.
+  Module V: Semiconductor Fundamentals and Diode Applications - PN diode, rectifiers, filters.
+  Module VI: Transistors and Operational Amplifiers - BJT, Op-Amp inverting and non-inverting.',
  '{"credits": 4, "contact_hours": "3L:1T:0P", "department": "1st Year Common"}'),
 
-('COMMON', 1, 'BS-CH101', 'Chemistry', 'SYLLABUS', 2023, 'https://makautexam.net/syllabus/BS-CH101.pdf',
- 'Module I: Atomic and Molecular Structure - Schrodinger equation, particle in a box, MO theory, band structure of solids.
-  Module II: Spectroscopic Techniques and Applications - Principles of spectroscopy, selection rules, UV-Visible, Fluorescence, IR and Raman spectroscopy, NMR.
-  Module III: Intermolecular Forces and Potential Energy Surfaces - Real gases, equations of state, potential energy surfaces.
-  Module IV: Use of Free Energy in Chemical Equilibria - Free energy, cell potentials, Nernst equation.
-  Module V: Periodic Properties - Effective nuclear charge, ionization energies, electron affinity, electronegativity.
-  Module VI: Stereochemistry and Organic Reactions - Chirality, isomers, synthesis of Aspirin and Paracetamol.',
+('COMMON', 1, '26-ES-EE101', 'Basic Electrical and Electronics Engineering', 'SYLLABUS', 2026, 'assets/resources/1st_year/syllabus/BEE.pdf',
+ 'Module I: Basics of Electrical Wiring and Safety - LT switchgear, MCB, ELCB, cables, earthing.
+  Module II: Direct-Current Circuits - KVL, KCL, mesh and nodal analysis, Thevenin and Norton theorems.
+  Module III: Alternating-Current Circuits - Phasor representation, RLC resonance, power factor.
+  Module IV: Transformers and Rotating Machines - Single phase transformer, 3-phase induction motor.
+  Module V: Semiconductor Fundamentals and Diode Applications - PN diode, rectifiers, filters.
+  Module VI: Transistors and Operational Amplifiers - BJT, Op-Amp inverting and non-inverting.',
+ '{"credits": 4, "contact_hours": "3L:1T:0P", "department": "1st Year Common"}'),
+
+('COMMON', 1, 'BS-CH101', 'Chemistry', 'SYLLABUS', 2026, 'assets/resources/1st_year/syllabus/Chemistry.pdf',
+ 'Module I: Atomic and Molecular Structure - Schrodinger equation, particle in a box, MO theory.
+  Module II: Thermodynamics, Equilibrium and Kinetics - Free energy, equilibria, reaction kinetics.
+  Module III: Electrochemistry and Corrosion - Nernst equation, corrosion mechanisms and prevention.
+  Module IV: Engineering Materials and Water - Polymers, composites, water softening.
+  Module V: Instrumental Methods of Analysis - UV-Vis, IR, conductometry, potentiometry.',
  '{"credits": 3, "contact_hours": "3L:0T:0P", "department": "1st Year Common"}'),
 
-('COMMON', 1, 'ES-CS101', 'Programming for Problem Solving', 'SYLLABUS', 2023, 'https://makautexam.net/syllabus/ES-CS101.pdf',
- 'Module 1: Introduction to Programming - Computer architecture, algorithms, flowcharts, compilation, variables, data types, operators.
-  Module 2: Control Structures - Conditional branching (if, else-if, switch), iteration and loops (for, while, do-while), break and continue.
-  Module 3: Arrays & Strings - 1D and 2D arrays, matrix operations, string handling functions, character arrays.
-  Module 4: Functions & Recursion - Parameter passing (call by value, call by reference), scope, storage classes, recursive functions (GCD, Factorial, Tower of Hanoi).
-  Module 5: Pointers & Structures - Pointer arithmetic, pointers and arrays, dynamic memory allocation (malloc, calloc, free), structures, union.',
+('COMMON', 1, '26-BS-CH101', 'Chemistry', 'SYLLABUS', 2026, 'assets/resources/1st_year/syllabus/Chemistry.pdf',
+ 'Module I: Atomic and Molecular Structure - Schrodinger equation, particle in a box, MO theory.
+  Module II: Thermodynamics, Equilibrium and Kinetics - Free energy, equilibria, reaction kinetics.
+  Module III: Electrochemistry and Corrosion - Nernst equation, corrosion mechanisms and prevention.
+  Module IV: Engineering Materials and Water - Polymers, composites, water softening.
+  Module V: Instrumental Methods of Analysis - UV-Vis, IR, conductometry, potentiometry.',
  '{"credits": 3, "contact_hours": "3L:0T:0P", "department": "1st Year Common"}'),
 
-('COMMON', 1, 'HM-HU101', 'English', 'SYLLABUS', 2023, 'https://makautexam.net/syllabus/HM-HU101.pdf',
- 'Module 1: Vocabulary Building - Root words, synonyms, antonyms, prefixes and suffixes, standard abbreviations.
-  Module 2: Basic Writing Skills - Sentence structures, punctuation, coherence, paragraph writing, precis writing.
-  Module 3: Professional Communication - Formal letter writing, email etiquette, CV and resume design, technical report writing.
-  Module 4: Oral Communication - Phonetics, listening comprehension, presentation skills, group discussions.',
- '{"credits": 2, "contact_hours": "2L:0T:0P", "department": "1st Year Common"}')
+('COMMON', 1, 'ES-CS101', 'Programming for Problem Solving and Introduction to AI', 'SYLLABUS', 2026, 'assets/resources/1st_year/syllabus/PPS.pdf',
+ 'Module I: Introduction to Computer - Memory, CPU, OS.
+  Module II: Generation of Computers - Generations, von Neumann architecture.
+  Module III: Problem Solving and Computational Thinking - Algorithms, flowcharts.
+  Module IV: Fundamentals of C - Variables, operators, control flow.
+  Module V: Functions and Program Structure - Functions, recursion.
+  Module VI: Arrays, Strings and Pointers - Arrays, pointers, dynamic memory.
+  Module VII: Structures, Files and Algorithm Efficiency - Structures, files, complexity.
+  Module VIII: Introduction to Artificial Intelligence - AI foundations, agents, search, ML basics.',
+ '{"credits": 3, "contact_hours": "3L:0T:0P", "department": "1st Year Common"}'),
+
+('COMMON', 1, '26-ES-CS201', 'Programming for Problem Solving and Introduction to AI', 'SYLLABUS', 2026, 'assets/resources/1st_year/syllabus/PPS.pdf',
+ 'Module I: Introduction to Computer - Memory, CPU, OS.
+  Module II: Generation of Computers - Generations, von Neumann architecture.
+  Module III: Problem Solving and Computational Thinking - Algorithms, flowcharts.
+  Module IV: Fundamentals of C - Variables, operators, control flow.
+  Module V: Functions and Program Structure - Functions, recursion.
+  Module VI: Arrays, Strings and Pointers - Arrays, pointers, dynamic memory.
+  Module VII: Structures, Files and Algorithm Efficiency - Structures, files, complexity.
+  Module VIII: Introduction to Artificial Intelligence - AI foundations, agents, search, ML basics.',
+ '{"credits": 3, "contact_hours": "3L:0T:0P", "department": "1st Year Common"}'),
+
+('COMMON', 1, 'HM-HU101', 'English for Communication Skills', 'SYLLABUS', 2026, 'assets/resources/1st_year/syllabus/English.pdf',
+ 'Module I: The Grammar and Vocabulary of Technical English - Word formation, technical vocabulary.
+  Module II: Reading and Comprehension - Skimming, scanning, critical reading.
+  Module III: Technical Writing - Cohesion, formal letters, reports, CV.
+  Module IV: Listening, Speaking and Employability - Phonetics, presentations, GD, interviews.',
+ '{"credits": 2, "contact_hours": "2L:0T:0P", "department": "1st Year Common"}'),
+
+('COMMON', 1, '26-AEC-101', 'English for Communication Skills', 'SYLLABUS', 2026, 'assets/resources/1st_year/syllabus/English.pdf',
+ 'Module I: The Grammar and Vocabulary of Technical English - Word formation, technical vocabulary.
+  Module II: Reading and Comprehension - Skimming, scanning, critical reading.
+  Module III: Technical Writing - Cohesion, formal letters, reports, CV.
+  Module IV: Listening, Speaking and Employability - Phonetics, presentations, GD, interviews.',
+ '{"credits": 2, "contact_hours": "2L:0T:0P", "department": "1st Year Common"}'),
+
+('COMMON', 1, 'BS-BIO201', 'Biology for Engineers', 'SYLLABUS', 2026, 'assets/resources/1st_year/syllabus/Biology.pdf',
+ 'Module I: The Cell and the Molecules of Life - Biomolecules, enzymes, cell structure.
+  Module II: Genetics and the Flow of Information - Mendelian genetics, central dogma.
+  Module III: Biomaterials, Biomechanics and Bio-inspired Design - Biomaterials, biomechanics.
+  Module IV: Biotechnology, Biosensors and Applications - rDNA, biosensors, bio-computing.',
+ '{"credits": 2, "contact_hours": "2L:0T:0P", "department": "1st Year Common"}'),
+
+('COMMON', 1, '26-BS-BI201', 'Biology for Engineers', 'SYLLABUS', 2026, 'assets/resources/1st_year/syllabus/Biology.pdf',
+ 'Module I: The Cell and the Molecules of Life - Biomolecules, enzymes, cell structure.
+  Module II: Genetics and the Flow of Information - Mendelian genetics, central dogma.
+  Module III: Biomaterials, Biomechanics and Bio-inspired Design - Biomaterials, biomechanics.
+  Module IV: Biotechnology, Biosensors and Applications - rDNA, biosensors, bio-computing.',
+ '{"credits": 2, "contact_hours": "2L:0T:0P", "department": "1st Year Common"}'),
+
+('COMMON', 1, 'MC-ES201', 'Environmental Science', 'SYLLABUS', 2026, 'assets/resources/1st_year/syllabus/EVS.pdf',
+ 'Module I: The Environment, Ecosystems and Biodiversity - Ecosystems, biodiversity conservation.
+  Module II: Environmental Pollution and the Global Challenges - Pollution, climate change, waste.
+  Module III: India\'s Sustainability Policy and Legal Framework - EPA 1986, NGT, treaties.
+  Module IV: Mission LiFE and Behavioural Change - Lifestyle for Environment, circular economy.
+  Module V: The Seven Themes of Mission LiFE, and Practice - Energy, water, plastic, e-waste.',
+ '{"credits": 3, "contact_hours": "3L:0T:0P", "department": "1st Year Common"}'),
+
+('COMMON', 1, '26-VAC-201', 'Environmental Science', 'SYLLABUS', 2026, 'assets/resources/1st_year/syllabus/EVS.pdf',
+ 'Module I: The Environment, Ecosystems and Biodiversity - Ecosystems, biodiversity conservation.
+  Module II: Environmental Pollution and the Global Challenges - Pollution, climate change, waste.
+  Module III: India\'s Sustainability Policy and Legal Framework - EPA 1986, NGT, treaties.
+  Module IV: Mission LiFE and Behavioural Change - Lifestyle for Environment, circular economy.
+  Module V: The Seven Themes of Mission LiFE, and Practice - Energy, water, plastic, e-waste.',
+ '{"credits": 3, "contact_hours": "3L:0T:0P", "department": "1st Year Common"}'),
+
+('COMMON', 2, 'BS-M201', 'Mathematics - II', 'SYLLABUS', 2026, 'assets/resources/1st_year/syllabus/Maths-2.pdf',
+ 'Module I: Ordinary Differential Equations - ODEs, variation of parameters.
+  Module II: Laplace Transform - Laplace transform, inverse Laplace, ODE solution.
+  Module III: Vector Calculus - Gradient, divergence, curl, Stokes theorem.
+  Module IV: Complex Variables and Fourier Series - Analytic functions, Fourier series.',
+ '{"credits": 3, "contact_hours": "3L:0T:0P", "department": "1st Year Common"}'),
+
+('COMMON', 2, '26-BS-M201', 'Mathematics - II', 'SYLLABUS', 2026, 'assets/resources/1st_year/syllabus/Maths-2.pdf',
+ 'Module I: Ordinary Differential Equations - ODEs, variation of parameters.
+  Module II: Laplace Transform - Laplace transform, inverse Laplace, ODE solution.
+  Module III: Vector Calculus - Gradient, divergence, curl, Stokes theorem.
+  Module IV: Complex Variables and Fourier Series - Analytic functions, Fourier series.',
+ '{"credits": 3, "contact_hours": "3L:0T:0P", "department": "1st Year Common"}')
 ON CONFLICT DO NOTHING;
 
 -- 7. Seed Panic Pack High-Yield Questions

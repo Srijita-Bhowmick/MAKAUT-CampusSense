@@ -43,7 +43,21 @@ public class SubjectHubController {
             @PathVariable String subjectCode,
             @RequestParam(required = false) String userIdentifier) {
 
-        List<CourseResource> resources = courseResourceRepository.findBySubjectCodeIgnoreCase(subjectCode.trim());
+        String searchCode = subjectCode.trim();
+        List<CourseResource> resources = courseResourceRepository.findBySubjectCodeIgnoreCase(searchCode);
+        if (resources.isEmpty()) {
+            String alt = searchCode.startsWith("26-") ? searchCode.substring(3) : "26-" + searchCode;
+            resources = courseResourceRepository.findBySubjectCodeIgnoreCase(alt);
+            if (resources.isEmpty()) {
+                if (searchCode.equalsIgnoreCase("26-BS-BI201") || searchCode.equalsIgnoreCase("BS-BIO201")) {
+                    resources = courseResourceRepository.findBySubjectCodeIgnoreCase(searchCode.equalsIgnoreCase("26-BS-BI201") ? "BS-BIO201" : "26-BS-BI201");
+                } else if (searchCode.equalsIgnoreCase("26-AEC-101") || searchCode.equalsIgnoreCase("HM-HU101")) {
+                    resources = courseResourceRepository.findBySubjectCodeIgnoreCase(searchCode.equalsIgnoreCase("26-AEC-101") ? "HM-HU101" : "26-AEC-101");
+                } else if (searchCode.equalsIgnoreCase("26-VAC-201") || searchCode.equalsIgnoreCase("MC-ES201")) {
+                    resources = courseResourceRepository.findBySubjectCodeIgnoreCase(searchCode.equalsIgnoreCase("26-VAC-201") ? "MC-ES201" : "26-VAC-201");
+                }
+            }
+        }
         if (resources.isEmpty()) {
             throw new ResourceNotFoundException("No resources found for subject code: " + subjectCode);
         }
@@ -54,9 +68,12 @@ public class SubjectHubController {
                 .orElse(resources.get(0));
 
         // Units
-        List<SyllabusUnit> units = syllabusUnitRepository.findByCourseResource_SubjectCodeIgnoreCaseOrderByUnitNumberAsc(subjectCode.trim());
+        List<SyllabusUnit> units = syllabusUnitRepository.findByCourseResource_SubjectCodeIgnoreCaseOrderByUnitNumberAsc(searchCode);
         if (units.isEmpty() && syllabusRes.getId() != null) {
             units = syllabusUnitRepository.findByCourseResourceIdOrderByUnitNumberAsc(syllabusRes.getId());
+        }
+        if (units.isEmpty() && syllabusRes.getSubjectCode() != null) {
+            units = syllabusUnitRepository.findByCourseResource_SubjectCodeIgnoreCaseOrderByUnitNumberAsc(syllabusRes.getSubjectCode());
         }
 
         // Check user progress
@@ -100,7 +117,14 @@ public class SubjectHubController {
                 .collect(Collectors.toList());
 
         // Recurring questions / topics
-        List<FrequentQuestion> frequentQuestions = frequentQuestionRepository.findBySubjectCodeIgnoreCaseOrderByFrequencyCountDesc(subjectCode.trim());
+        List<FrequentQuestion> frequentQuestions = frequentQuestionRepository.findBySubjectCodeIgnoreCaseOrderByFrequencyCountDesc(searchCode);
+        if (frequentQuestions.isEmpty() && syllabusRes.getSubjectCode() != null) {
+            frequentQuestions = frequentQuestionRepository.findBySubjectCodeIgnoreCaseOrderByFrequencyCountDesc(syllabusRes.getSubjectCode());
+        }
+        if (frequentQuestions.isEmpty()) {
+            String alt = searchCode.startsWith("26-") ? searchCode.substring(3) : "26-" + searchCode;
+            frequentQuestions = frequentQuestionRepository.findBySubjectCodeIgnoreCaseOrderByFrequencyCountDesc(alt);
+        }
         List<TopicFrequencyDto> recurringTopics = frequentQuestions.stream()
                 .map(fq -> TopicFrequencyDto.builder()
                         .topicName(fq.getTopicName())
@@ -111,7 +135,7 @@ public class SubjectHubController {
                 .collect(Collectors.toList());
 
         SubjectHubDto hub = SubjectHubDto.builder()
-                .subjectCode(syllabusRes.getSubjectCode())
+                .subjectCode(searchCode)
                 .subjectName(syllabusRes.getSubjectName())
                 .stream(syllabusRes.getStream().name())
                 .semester(syllabusRes.getSemester())
