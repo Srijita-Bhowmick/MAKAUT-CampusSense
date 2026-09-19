@@ -2105,29 +2105,29 @@ body {
 }
 
 /* ====================================================================
-   ANTIGRAVITY-STYLE SIDE-BY-SIDE CHAT & DASHBOARD WORKSPACE
+   Phase 2: True Side-by-Side Split-Pane Chat Workspace (Antigravity IDE Style)
    ==================================================================== */
-.main-app-viewport,
-.app-viewport-container {
+.dashboard-split-layout,
+.dashboard-workspace-wrapper {
   display: flex;
   width: 100%;
-  min-height: 100vh;
+  min-height: calc(100vh - 70px);
   position: relative;
   overflow-x: hidden;
 }
 
-.dashboard-main-canvas,
-#dashboard-view {
-  flex: 1;
+.dashboard-main-pane,
+.dashboard-main-canvas {
+  flex: 1 1 100%;
   min-width: 0;
-  transition: flex 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* When Chat AI is opened by user */
-.chat-workspace-active .dashboard-main-canvas,
-.chat-workspace-active #dashboard-view,
-body.chat-docked-active .dashboard-main-canvas,
-body.chat-docked-active #dashboard-view {
+/* When Chat AI is toggled open by the user */
+.split-chat-active .dashboard-main-pane,
+.split-chat-active .dashboard-main-canvas,
+.chat-workspace-active .dashboard-main-pane,
+.chat-workspace-active .dashboard-main-canvas {
   flex: 1 1 calc(100% - 460px);
   max-width: calc(100% - 460px);
 }
@@ -2135,33 +2135,31 @@ body.chat-docked-active #dashboard-view {
 #ai-slide-drawer,
 .ai-slide-drawer {
   width: 460px;
-  min-width: 360px;
+  min-width: 320px;
   max-width: 650px;
-  height: 100vh;
+  height: calc(100vh - 70px);
   position: sticky;
-  top: 0;
+  top: 70px;
   right: 0;
   border-left: 1px solid var(--card-border);
   background: var(--bg-secondary);
-  display: none; /* Hidden by default until toggled */
+  display: none; /* Hidden by default until user clicks 'Ask AI' */
   flex-direction: column;
   z-index: 1000;
-  box-shadow: -6px 0 24px rgba(0, 0, 0, 0.15);
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
 }
 
+.split-chat-active #ai-slide-drawer,
+.split-chat-active .ai-slide-drawer,
 .chat-workspace-active #ai-slide-drawer,
-.chat-workspace-active .ai-slide-drawer,
-body.chat-docked-active #ai-slide-drawer,
-body.chat-docked-active .ai-slide-drawer {
+.chat-workspace-active .ai-slide-drawer {
   display: flex !important;
 }
 
-.floating-partition-arrow,
-.floating-dock-arrow {
+.floating-partition-arrow {
   position: absolute;
   left: -16px;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 40px;
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -2177,46 +2175,43 @@ body.chat-docked-active .ai-slide-drawer {
   transition: transform 0.2s ease, background 0.2s ease;
 }
 
-.floating-partition-arrow:hover,
-.floating-dock-arrow:hover {
-  transform: translateY(-50%) scale(1.1);
+.floating-partition-arrow:hover {
+  transform: scale(1.1);
   background: var(--accent-flame);
 }
 
-.arrow-glyph,
-.dock-arrow-icon {
+#dock-arrow-glyph,
+.arrow-glyph {
   font-size: 0.75rem;
   line-height: 1;
   display: inline-block;
-  margin-left: 2px;
+  color: #ffffff !important;
 }
 
 #ai-drawer-backdrop {
   display: none !important;
 }
 
-.chat-workspace-active #btn-open-ai-fab,
-body.chat-docked-active #btn-open-ai-fab,
-.chat-workspace-active #btn-open-ai-drawer,
-body.chat-docked-active #btn-open-ai-drawer {
+.split-chat-active #btn-open-ai-fab,
+.chat-workspace-active #btn-open-ai-fab {
   display: none !important;
 }
 
 @media (max-width: 768px) {
-  .chat-workspace-active .dashboard-main-canvas,
-  body.chat-docked-active #dashboard-view {
+  .split-chat-active .dashboard-main-pane,
+  .chat-workspace-active .dashboard-main-pane {
     display: none !important;
     width: 100% !important;
   }
   #ai-slide-drawer {
     width: 100% !important;
     max-width: 100% !important;
+    top: 60px;
+    height: calc(100vh - 60px);
   }
-  .floating-partition-arrow,
-  .floating-dock-arrow {
+  .floating-partition-arrow {
     left: 12px;
     top: 16px;
-    transform: none;
   }
 }
 
@@ -4548,7 +4543,7 @@ body.chat-docked-active #btn-open-ai-drawer {
 }
 
 /* ====================================================================
-   Phase 5: High-Contrast Light Mode Overhaul (Dark Font on Light Background)
+   Phase 3: High-Contrast Light Mode Fixes (No Broken Text)
    ==================================================================== */
 [data-theme="light"] {
   --bg-main: #f8fafc;
@@ -4556,12 +4551,11 @@ body.chat-docked-active #btn-open-ai-drawer {
   --card-bg: #ffffff;
   --card-hover: #f1f5f9;
   --card-border: #cbd5e1;
-  --text-main: #090d16;        /* Deep saturated dark slate */
-  --text-muted: #1e293b;       /* Readable dark slate */
-  --text-subtle: #475569;      /* Crisp secondary text */
-  --accent-primary: #3730a3;   /* High-contrast deep indigo */
+  --text-main: #090d16;        /* Deep dark slate */
+  --text-muted: #1e293b;       /* Crisp dark tone */
+  --text-subtle: #475569;      /* Readable secondary text */
+  --accent-primary: #3730a3;
   --accent-flame: #c2410c;
-  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 /* Strict dark text enforcement in Light Mode */
@@ -4613,7 +4607,38 @@ body.chat-docked-active #btn-open-ai-drawer {
   background: #ffffff !important;
 }
 
-/* Theme-Scoped Modal Contrast Protection (Ensure Dark Modals Retain White Text) */
+/* Preserve White Text for Buttons and Accents in Light Mode */
+[data-theme="light"] .btn-primary,
+[data-theme="light"] .btn-primary *,
+[data-theme="light"] .btn-flame-hero,
+[data-theme="light"] .btn-flame-hero *,
+[data-theme="light"] .btn-flame,
+[data-theme="light"] .btn-flame *,
+[data-theme="light"] .btn-hero-cta,
+[data-theme="light"] .btn-hero-cta *,
+[data-theme="light"] .floating-partition-arrow,
+[data-theme="light"] .floating-partition-arrow *,
+[data-theme="light"] #dock-arrow-glyph,
+[data-theme="light"] .message.user,
+[data-theme="light"] .message.user *,
+[data-theme="light"] .chat-bubble-user,
+[data-theme="light"] .chat-bubble-user *,
+[data-theme="light"] .primary-year-btn.active,
+[data-theme="light"] .primary-year-btn.active * {
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .brand-title .accent-text {
+  color: var(--accent-primary) !important;
+}
+
+/* Modals & Overlays Z-Index & Contrast Protection (Fix Dark Text Inversion) */
+:root .modal-backdrop,
+[data-theme="light"] .modal-backdrop,
+[data-theme="dark"] .modal-backdrop {
+  z-index: 99999 !important;
+}
+
 :root .modal-card,
 [data-theme="dark"] .modal-card,
 [data-theme="light"] .modal-card,
@@ -4635,6 +4660,7 @@ body.chat-docked-active #btn-open-ai-drawer {
 [data-theme="light"] .modal-card p,
 [data-theme="light"] .modal-card span:not(.badge):not(.year-btn-icon):not(.stream-icon),
 [data-theme="light"] .modal-card label,
+[data-theme="light"] .modal-card .form-label,
 [data-theme="light"] .modal-card .modal-title,
 [data-theme="light"] .modal-card .modal-subtitle,
 [data-theme="light"] .modal-card .year-btn-title,
@@ -4647,6 +4673,11 @@ body.chat-docked-active #btn-open-ai-drawer {
 [data-theme="light"] .modal-card .panic-question-card,
 [data-theme="light"] .modal-card .panic-full-q-text {
   color: #f8fafc !important;
+}
+
+[data-theme="light"] #scope-modal .year-btn-sub,
+[data-theme="light"] #scope-modal .stream-desc {
+  color: #cbd5e1 !important;
 }
 
 [data-theme="light"] .modal-card input,

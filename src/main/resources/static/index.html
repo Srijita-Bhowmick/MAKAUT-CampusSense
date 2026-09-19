@@ -298,10 +298,10 @@
     </section>
 
     <!-- ====================================================================
-         VIEW B: BENTO GRID DASHBOARD & ANTIGRAVITY DOCKED CHAT WORKSPACE
+         VIEW B: BENTO GRID DASHBOARD & SPLIT-PANE CHAT WORKSPACE
          ==================================================================== -->
-    <div class="main-app-viewport" id="main-viewport-container">
-        <main class="main-layout dashboard-main-canvas" id="dashboard-view" style="display: none;">
+    <div class="dashboard-split-layout dashboard-workspace-wrapper" id="dashboard-workspace" style="display: none;">
+        <main class="main-layout dashboard-main-pane" id="dashboard-view">
         <!-- Hero Search Section -->
         <section class="hero-search-section">
             <div class="search-hero-container">
@@ -446,8 +446,8 @@
 
         <!-- Side-by-Side Docked Chat Panel -->
         <aside class="ai-slide-drawer" id="ai-slide-drawer">
-            <button id="btn-chat-dock-collapse" class="floating-partition-arrow" type="button" title="Toggle Chat Panel">
-                <span class="arrow-glyph">▶</span>
+            <button id="btn-chat-dock-collapse" class="floating-partition-arrow" type="button" title="Collapse / Expand Chat Panel">
+                <span id="dock-arrow-glyph" class="arrow-glyph">◀</span>
             </button>
             <div class="drawer-header">
                 <div class="drawer-title-group">

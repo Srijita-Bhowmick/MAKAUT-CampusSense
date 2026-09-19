@@ -619,8 +619,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnNavToDashboard = document.getElementById('btn-nav-to-dashboard');
 
     function switchView(targetView) {
+        const dashboardWorkspace = document.getElementById('dashboard-workspace') || document.getElementById('main-viewport-container');
         if (targetView === 'dashboard') {
             if (landingView) landingView.style.display = 'none';
+            if (dashboardWorkspace) dashboardWorkspace.style.display = 'flex';
             if (dashboardView) dashboardView.style.display = 'block';
             if (contextSwitcherBtn) contextSwitcherBtn.style.display = 'flex';
             if (btnNavToLanding) btnNavToLanding.style.display = 'inline-flex';
@@ -642,6 +644,7 @@ document.addEventListener('DOMContentLoaded', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
             if (landingView) landingView.style.display = 'block';
+            if (dashboardWorkspace) dashboardWorkspace.style.display = 'none';
             if (dashboardView) dashboardView.style.display = 'none';
             if (contextSwitcherBtn) contextSwitcherBtn.style.display = 'none';
             if (btnNavToLanding) btnNavToLanding.style.display = 'none';
@@ -2498,18 +2501,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const aiDrawerBackdrop = document.getElementById('ai-drawer-backdrop');
     const btnCloseAiDrawer = document.getElementById('btn-close-ai-drawer');
     const btnChatDockCollapse = document.getElementById('btn-chat-dock-collapse');
-    const mainViewportContainer = document.getElementById('main-viewport-container');
+    const dockArrowGlyph = document.getElementById('dock-arrow-glyph');
+    const dashboardWorkspace = document.getElementById('dashboard-workspace') || document.getElementById('main-viewport-container');
     const drawerChatForm = document.getElementById('drawer-chat-form');
     const drawerQueryInput = document.getElementById('ai-query-input') || document.getElementById('drawer-query-input');
     const drawerChatMessages = document.getElementById('drawer-chat-messages');
 
     function openAiDrawer(initialQuery = '') {
+        document.body.classList.add('split-chat-active');
         document.body.classList.add('chat-workspace-active');
-        document.body.classList.add('chat-docked-active');
-        if (mainViewportContainer) mainViewportContainer.classList.add('chat-workspace-active');
+        if (dashboardWorkspace) {
+            dashboardWorkspace.classList.add('split-chat-active');
+            dashboardWorkspace.classList.add('chat-workspace-active');
+        }
         if (aiDrawer) aiDrawer.classList.add('open');
-        const arrowGlyph = btnChatDockCollapse ? (btnChatDockCollapse.querySelector('.arrow-glyph') || btnChatDockCollapse.querySelector('.dock-arrow-icon')) : null;
-        if (arrowGlyph) arrowGlyph.textContent = '▶';
+        const arrowGlyph = dockArrowGlyph || (btnChatDockCollapse ? (btnChatDockCollapse.querySelector('#dock-arrow-glyph') || btnChatDockCollapse.querySelector('.arrow-glyph')) : null);
+        if (arrowGlyph) arrowGlyph.textContent = '◀';
         renderChatHistoryDropdown();
         if (initialQuery && drawerQueryInput) {
             drawerQueryInput.value = initialQuery;
@@ -2520,16 +2527,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function closeAiDrawer() {
+        document.body.classList.remove('split-chat-active');
         document.body.classList.remove('chat-workspace-active');
-        document.body.classList.remove('chat-docked-active');
-        if (mainViewportContainer) mainViewportContainer.classList.remove('chat-workspace-active');
+        if (dashboardWorkspace) {
+            dashboardWorkspace.classList.remove('split-chat-active');
+            dashboardWorkspace.classList.remove('chat-workspace-active');
+        }
         if (aiDrawer) aiDrawer.classList.remove('open');
-        const arrowGlyph = btnChatDockCollapse ? (btnChatDockCollapse.querySelector('.arrow-glyph') || btnChatDockCollapse.querySelector('.dock-arrow-icon')) : null;
-        if (arrowGlyph) arrowGlyph.textContent = '◀';
+        const arrowGlyph = dockArrowGlyph || (btnChatDockCollapse ? (btnChatDockCollapse.querySelector('#dock-arrow-glyph') || btnChatDockCollapse.querySelector('.arrow-glyph')) : null);
+        if (arrowGlyph) arrowGlyph.textContent = '▶';
     }
 
     function toggleAiDrawer() {
-        if (document.body.classList.contains('chat-workspace-active') || document.body.classList.contains('chat-docked-active')) {
+        if (document.body.classList.contains('split-chat-active') || (dashboardWorkspace && dashboardWorkspace.classList.contains('split-chat-active'))) {
             closeAiDrawer();
         } else {
             openAiDrawer();
@@ -2545,7 +2555,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('keydown', (e) => {
         if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
             e.preventDefault();
-            if (document.body.classList.contains('chat-workspace-active') || document.body.classList.contains('chat-docked-active')) {
+            if (document.body.classList.contains('split-chat-active') || document.body.classList.contains('chat-workspace-active')) {
                 closeAiDrawer();
             } else {
                 openAiDrawer();
@@ -2555,7 +2565,6 @@ document.addEventListener('DOMContentLoaded', () => {
             closeAiDrawer();
             closeSavedDeckDrawer();
             document.querySelectorAll('.modal-backdrop').forEach(m => m.style.display = 'none');
-        }
     });
 
     // Hero Search Input Wiring
