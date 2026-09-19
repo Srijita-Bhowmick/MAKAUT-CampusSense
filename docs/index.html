@@ -446,8 +446,9 @@
 
         <!-- Side-by-Side Docked Chat Panel -->
         <aside class="ai-slide-drawer" id="ai-slide-drawer">
+            <div id="drawer-resize-handle" class="drawer-resize-handle" title="Drag to resize panel"></div>
             <button id="btn-chat-dock-collapse" class="floating-partition-arrow" type="button" title="Collapse / Expand Chat Panel">
-                <span id="dock-arrow-glyph" class="arrow-glyph">◀</span>
+                <span id="dock-arrow-glyph" class="arrow-glyph drawer-resize-icon">◄ ►</span>
             </button>
             <div class="drawer-header">
                 <div class="drawer-title-group">
@@ -458,6 +459,7 @@
                     </div>
                 </div>
                 <div class="drawer-header-actions">
+                    <span class="drawer-resize-icon" title="Adjustable Panel Width (◄ ►)">◄ ►</span>
                     <div class="chat-history-container">
                         <button id="btn-chat-history" class="btn-chat-history-toggle" type="button">🕒 History ▾</button>
                         <div id="chat-history-dropdown" class="chat-history-dropdown-menu history-dropdown-panel" style="display: none;">
@@ -492,7 +494,7 @@
             <div class="drawer-chat-input-area">
                 <form id="drawer-chat-form" class="drawer-input-form">
                     <textarea id="ai-query-input" rows="2" class="drawer-textarea"
-                              placeholder="Ask a MAKAUT academic query (e.g., 'solve group B of chemistry 2024' or 'what is in Module 2 of Physics?')"></textarea>
+                              placeholder="Ask a MAKAUT academic query..."></textarea>
                     <button type="submit" class="btn btn-primary drawer-send-btn" id="btn-drawer-send">
                         Send ⚡
                     </button>

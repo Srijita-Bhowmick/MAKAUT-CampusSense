@@ -888,27 +888,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
 
                 <div class="pyq-repo-actions">
-                    <button type="button" class="btn-preview-paper" data-title="${escapeHtml(p.title)}" data-url="${escapeHtml(p.fileUrl)}">
+                    <button type="button" class="btn-preview-paper btn-preview-pdf" data-subject="${escapeHtml(p.subjectCode)}" data-paper="${p.year}" data-title="${escapeHtml(p.title)}" data-url="${escapeHtml(p.fileUrl)}">
                         👁 Preview Paper
                     </button>
-                    <button type="button" class="btn-download-paper btn-download-pdf-gate" data-subject="${escapeHtml(p.subjectCode)}" data-paper="${p.year}" data-name="${escapeHtml(p.title)}" data-url="${escapeHtml(p.fileUrl)}">
+                    <button type="button" class="btn-download-paper btn-download-pdf btn-download-pdf-gate" data-subject="${escapeHtml(p.subjectCode)}" data-paper="${p.year}" data-name="${escapeHtml(p.title)}" data-url="${escapeHtml(p.fileUrl)}">
                         📥 Download PDF
                     </button>
                 </div>
             </div>
         `).join('');
 
-        // Wire Preview buttons
-        grid.querySelectorAll('.btn-preview-paper').forEach(btn => {
-            btn.addEventListener('click', () => {
+        // Wire Preview buttons (Gated Flow)
+        grid.querySelectorAll('.btn-preview-paper, .btn-preview-pdf').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
                 const title = btn.getAttribute('data-title');
                 const url = btn.getAttribute('data-url');
+                const subjectCode = btn.getAttribute('data-subject') || '';
+                const paperYear = btn.getAttribute('data-paper') || '';
+
+                if (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
+                    sessionStorage.setItem('pending_download_action', JSON.stringify({ action: 'preview', fileUrl: url, title, subjectCode, paperYear }));
+                    showAuthModal(true, "Please sign in or create an account to preview or download official MAKAUT exam papers.");
+                    return;
+                }
                 openPdfViewer(title, url);
             });
         });
 
         // Wire Download buttons (Gated Flow with Blob Download Engine)
-        grid.querySelectorAll('.btn-download-pdf-gate').forEach(btn => {
+        grid.querySelectorAll('.btn-download-paper, .btn-download-pdf, .btn-download-pdf-gate').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
                 const subjectCode = btn.getAttribute('data-subject');
@@ -916,9 +925,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const title = btn.getAttribute('data-name') || `${subjectCode} (${paperYear})`;
                 const fileUrl = btn.getAttribute('data-url') || '';
 
-                if (localStorage.getItem('campussense_logged_in') !== 'true') {
-                    sessionStorage.setItem('pending_download_action', JSON.stringify({ fileUrl, title, subjectCode, paperYear }));
-                    showAuthModal(true, "Please sign in or create an account to download official MAKAUT exam papers.");
+                if (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
+                    sessionStorage.setItem('pending_download_action', JSON.stringify({ action: 'download', fileUrl, title, subjectCode, paperYear }));
+                    showAuthModal(true, "Please sign in or create an account to preview or download official MAKAUT exam papers.");
                     return;
                 }
                 downloadPdfFile(fileUrl, (title || 'MAKAUT_Paper') + '.pdf');
@@ -1318,14 +1327,18 @@ document.addEventListener('DOMContentLoaded', () => {
             // Transition to Dashboard
             switchView('dashboard');
 
-            // Action Preservation: Check if user triggered a download before auth
+            // Action Preservation: Check if user triggered a preview or download before auth
             const pendingActionRaw = sessionStorage.getItem('pending_download_action');
             if (pendingActionRaw) {
                 try {
                     const pending = JSON.parse(pendingActionRaw);
                     sessionStorage.removeItem('pending_download_action');
-                    downloadPdfFile(pending.fileUrl, (pending.title || 'MAKAUT_Paper') + '.pdf');
-                    openPdfViewer(pending.title || 'MAKAUT Examination Paper', pending.fileUrl);
+                    if (pending.action === 'preview') {
+                        openPdfViewer(pending.title || 'MAKAUT Examination Paper', pending.fileUrl);
+                    } else {
+                        downloadPdfFile(pending.fileUrl, (pending.title || 'MAKAUT_Paper') + '.pdf');
+                        openPdfViewer(pending.title || 'MAKAUT Examination Paper', pending.fileUrl);
+                    }
                 } catch (err) {
                     sessionStorage.removeItem('pending_download_action');
                 }
@@ -1681,25 +1694,34 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span>70 Marks Theory • Verified Official Paper</span>
                 </div>
                 <div class="pyq-repo-actions">
-                    <button class="btn-preview-paper btn-hub-preview" data-title="${escapeHtml(p.title)}" data-url="${escapeHtml(p.fileUrl)}">
+                    <button type="button" class="btn-preview-paper btn-preview-pdf btn-hub-preview" data-subject="${escapeHtml(subject.code)}" data-paper="${p.year}" data-title="${escapeHtml(p.title)}" data-url="${escapeHtml(p.fileUrl)}">
                         👁 Preview Paper
                     </button>
-                    <button class="btn-download-paper btn-download-pdf-gate" data-subject="${escapeHtml(subject.code)}" data-paper="${p.year}" data-name="${escapeHtml(p.title)}" data-url="${escapeHtml(p.fileUrl)}">
+                    <button type="button" class="btn-download-paper btn-download-pdf btn-download-pdf-gate" data-subject="${escapeHtml(subject.code)}" data-paper="${p.year}" data-name="${escapeHtml(p.title)}" data-url="${escapeHtml(p.fileUrl)}">
                         📥 Download PDF
                     </button>
                 </div>
             </div>
         `).join('');
 
-        container.querySelectorAll('.btn-hub-preview').forEach(btn => {
-            btn.addEventListener('click', () => {
+        container.querySelectorAll('.btn-hub-preview, .btn-preview-paper, .btn-preview-pdf').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
                 const title = btn.getAttribute('data-title');
                 const url = btn.getAttribute('data-url');
+                const subjectCode = btn.getAttribute('data-subject') || '';
+                const paperYear = btn.getAttribute('data-paper') || '';
+
+                if (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
+                    sessionStorage.setItem('pending_download_action', JSON.stringify({ action: 'preview', fileUrl: url, title, subjectCode, paperYear }));
+                    showAuthModal(true, "Please sign in or create an account to preview or download official MAKAUT exam papers.");
+                    return;
+                }
                 openPdfViewer(title, url);
             });
         });
 
-        container.querySelectorAll('.btn-download-pdf-gate').forEach(btn => {
+        container.querySelectorAll('.btn-download-pdf-gate, .btn-download-paper, .btn-download-pdf').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
                 const subjectCode = btn.getAttribute('data-subject');
@@ -1707,9 +1729,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const title = btn.getAttribute('data-name');
                 const fileUrl = btn.getAttribute('data-url');
 
-                if (localStorage.getItem('campussense_logged_in') !== 'true') {
-                    sessionStorage.setItem('pending_download_action', JSON.stringify({ fileUrl, title, subjectCode, paperYear }));
-                    showAuthModal(true, "Please sign in or create an account to download official MAKAUT exam papers.");
+                if (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
+                    sessionStorage.setItem('pending_download_action', JSON.stringify({ action: 'download', fileUrl, title, subjectCode, paperYear }));
+                    showAuthModal(true, "Please sign in or create an account to preview or download official MAKAUT exam papers.");
                     return;
                 }
                 downloadPdfFile(fileUrl, (title || `${subjectCode}_${paperYear}`) + '.pdf');
@@ -2020,6 +2042,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const spinner = document.getElementById('pdf-loading-spinner');
 
         let targetUrl = url || '';
+
+        // Security Gate: Protect PYQ examination papers from unauthenticated preview
+        const isPyq = (targetUrl && targetUrl.toLowerCase().includes('pyq')) ||
+                      (title && title.toLowerCase().includes('pyq')) ||
+                      (title && /\b(2020|2023|2024|2025|2026)\b/.test(title));
+        if (isPyq && !isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
+            sessionStorage.setItem('pending_download_action', JSON.stringify({ action: 'preview', fileUrl: targetUrl, title }));
+            showAuthModal(true, "Please sign in or create an account to preview or download official MAKAUT exam papers.");
+            return;
+        }
+
         const subj = findSubjectForUrl(targetUrl, title);
 
         // Intercept external cloud / S3 links and resolve to local static path if available
@@ -2619,8 +2652,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (aiDrawer) aiDrawer.classList.add('open');
         const arrowGlyph = dockArrowGlyph || (btnChatDockCollapse ? (btnChatDockCollapse.querySelector('#dock-arrow-glyph') || btnChatDockCollapse.querySelector('.arrow-glyph')) : null);
-        if (arrowGlyph) arrowGlyph.textContent = '◀';
+        if (arrowGlyph) arrowGlyph.textContent = '◄ ►';
         renderChatHistoryDropdown();
+        if (drawerQueryInput) {
+            drawerQueryInput.placeholder = "Ask a MAKAUT academic query...";
+        }
         if (initialQuery && drawerQueryInput) {
             drawerQueryInput.value = initialQuery;
             executeAiQuery(initialQuery);
@@ -2638,7 +2674,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (aiDrawer) aiDrawer.classList.remove('open');
         const arrowGlyph = dockArrowGlyph || (btnChatDockCollapse ? (btnChatDockCollapse.querySelector('#dock-arrow-glyph') || btnChatDockCollapse.querySelector('.arrow-glyph')) : null);
-        if (arrowGlyph) arrowGlyph.textContent = '▶';
+        if (arrowGlyph) arrowGlyph.textContent = '◄ ►';
     }
 
     function toggleAiDrawer() {
@@ -3823,36 +3859,42 @@ document.addEventListener('DOMContentLoaded', () => {
     function setupDrawerResize() {
         const resizeHandle = document.getElementById('drawer-resize-handle');
         const drawer = document.getElementById('ai-slide-drawer');
-        if (!resizeHandle || !drawer) return;
+        if (!drawer) return;
 
-        let isResizing = false;
-        let startX = 0;
-        let startWidth = 460;
+        if (drawerQueryInput) {
+            drawerQueryInput.placeholder = "Ask a MAKAUT academic query...";
+        }
 
-        resizeHandle.addEventListener('mousedown', (e) => {
-            isResizing = true;
-            startX = e.clientX;
-            startWidth = drawer.getBoundingClientRect().width;
-            resizeHandle.classList.add('resizing');
-            document.body.style.cursor = 'ew-resize';
-            document.body.style.userSelect = 'none';
-        });
+        if (resizeHandle) {
+            let isResizing = false;
+            let startX = 0;
+            let startWidth = 460;
 
-        window.addEventListener('mousemove', (e) => {
-            if (!isResizing) return;
-            const deltaX = startX - e.clientX;
-            const newWidth = Math.min(Math.max(startWidth + deltaX, 340), 820);
-            drawer.style.width = `${newWidth}px`;
-        });
+            resizeHandle.addEventListener('mousedown', (e) => {
+                isResizing = true;
+                startX = e.clientX;
+                startWidth = drawer.getBoundingClientRect().width;
+                resizeHandle.classList.add('resizing');
+                document.body.style.cursor = 'ew-resize';
+                document.body.style.userSelect = 'none';
+            });
 
-        window.addEventListener('mouseup', () => {
-            if (isResizing) {
-                isResizing = false;
-                resizeHandle.classList.remove('resizing');
-                document.body.style.cursor = '';
-                document.body.style.userSelect = '';
-            }
-        });
+            window.addEventListener('mousemove', (e) => {
+                if (!isResizing) return;
+                const deltaX = startX - e.clientX;
+                const newWidth = Math.min(Math.max(startWidth + deltaX, 340), 800);
+                drawer.style.width = `${newWidth}px`;
+            });
+
+            window.addEventListener('mouseup', () => {
+                if (isResizing) {
+                    isResizing = false;
+                    resizeHandle.classList.remove('resizing');
+                    document.body.style.cursor = '';
+                    document.body.style.userSelect = '';
+                }
+            });
+        }
     }
 
     setupClerkAuth();
