@@ -67,76 +67,66 @@
     --surface-glass: rgba(15, 23, 42, 0.04);
 }
 
-/* Theme-Scoped Modal Contrast (Fix Dark Text Inversion) */
-:root .modal-card,
+/* Theme-Scoped Modal Contrast (Dark Theme) */
 [data-theme="dark"] .modal-card,
-.modal-card,
-.onboarding-card,
-.subject-hub-card,
-.panic-mode-card,
-.auth-modal-card,
-.feedback-modal-card {
+[data-theme="dark"] .onboarding-card,
+[data-theme="dark"] .subject-hub-card,
+[data-theme="dark"] .panic-mode-card,
+[data-theme="dark"] .auth-modal-card,
+[data-theme="dark"] .feedback-modal-card {
     background: #0f172a !important;
     border: 1px solid rgba(255, 255, 255, 0.12) !important;
     color: #f8fafc !important;
 }
 
-:root .modal-title,
 [data-theme="dark"] .modal-title,
-.modal-title,
-:root #scope-modal h2,
 [data-theme="dark"] #scope-modal h2,
-#scope-modal h2,
-.subject-modal-title,
-.hub-title,
-.panic-title,
-.feedback-modal-title,
-.pyq-modal-title {
+[data-theme="dark"] .subject-modal-title,
+[data-theme="dark"] .hub-title,
+[data-theme="dark"] .panic-title,
+[data-theme="dark"] .feedback-modal-title,
+[data-theme="dark"] .pyq-modal-title {
     color: #f8fafc !important;
 }
 
-:root .modal-subtitle,
 [data-theme="dark"] .modal-subtitle,
-.modal-subtitle,
-:root #scope-modal .modal-subtitle,
 [data-theme="dark"] #scope-modal .modal-subtitle,
-#scope-modal .modal-subtitle,
-.subject-modal-subtitle,
-.panic-subhead,
-.hub-subject-stream {
+[data-theme="dark"] .subject-modal-subtitle,
+[data-theme="dark"] .panic-subhead,
+[data-theme="dark"] .hub-subject-stream {
     color: #e2e8f0 !important;
 }
 
-#scope-modal .primary-year-btn,
-#scope-modal .stream-option,
-#scope-modal .sem-btn {
+[data-theme="dark"] #scope-modal .primary-year-btn,
+[data-theme="dark"] #scope-modal .stream-option,
+[data-theme="dark"] #scope-modal .sem-btn {
     background: #1e293b !important;
     border: 1px solid #334155 !important;
     color: #f8fafc !important;
 }
 
-#scope-modal .year-btn-title,
-#scope-modal .stream-name {
+[data-theme="dark"] #scope-modal .year-btn-title,
+[data-theme="dark"] #scope-modal .stream-name {
     color: #f8fafc !important;
     font-weight: 700 !important;
 }
 
-#scope-modal .year-btn-sub,
-#scope-modal .stream-desc {
+[data-theme="dark"] #scope-modal .year-btn-sub,
+[data-theme="dark"] #scope-modal .stream-desc {
     color: #cbd5e1 !important;
 }
 
-#scope-modal .form-label {
+[data-theme="dark"] #scope-modal .form-label {
     color: #f8fafc !important;
 }
 
-.subject-hub-card .unit-item-title,
-.subject-hub-card .unit-subtopics-text,
-.subject-hub-card .checklist-instructions,
-.subject-hub-card p,
-.panic-mode-card p,
-.panic-mode-card .panic-question-card,
-.panic-mode-card .panic-full-q-text {
+[data-theme="dark"] .subject-hub-card .unit-item-title,
+[data-theme="dark"] .subject-hub-card .unit-subtopics-text,
+[data-theme="dark"] .subject-hub-card .checklist-instructions,
+[data-theme="dark"] .subject-hub-card p,
+[data-theme="dark"] .panic-mode-card p,
+[data-theme="dark"] .panic-mode-card .panic-question-card,
+[data-theme="dark"] .panic-mode-card .panic-full-q-text {
     color: #f8fafc !important;
 }
 
@@ -4607,101 +4597,362 @@ body {
   gap: 4px !important;
 }
 
-/* ====================================================================
-   Phase 3: Bulletproof Light Mode Contrast Overhaul (Fix All Washed-Out UI)
-   ==================================================================== */
-[data-theme="light"] {
-  --bg-main: #f1f5f9;
-  --bg-secondary: #ffffff;
-  --card-bg: #ffffff;
-  --card-hover: #f8fafc;
-  --card-border: #cbd5e1;
-  --text-main: #090d16;        /* Deep saturated dark slate */
-  --text-muted: #1e293b;       /* Crisp dark tone */
-  --text-subtle: #334155;      /* High contrast secondary text */
-  --accent-primary: #3730a3;
-  --accent-flame: #c2410c;
-  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
+/* ==========================================================================
+   UNIVERSAL LIGHT MODE OVERRIDES FOR SEARCH, CHAT & WRITING BARS
+   ========================================================================== */
+
+[data-theme="light"], .light-theme {
+  --bg-main: #f1f5f9 !important;
+  --bg-secondary: #ffffff !important;
+  --card-bg: #ffffff !important;
+  --card-hover: #f8fafc !important;
+  --card-border: #cbd5e1 !important;
+  --text-main: #090d16 !important;        
+  --text-muted: #1e293b !important;       
+  --text-subtle: #475569 !important;      
+  --accent-primary: #3730a3 !important;   
+  --accent-flame: #c2410c !important;
+  --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* 1. Force Light Background on ALL Search & Query Bars */
+[data-theme="light"] .search-bar-container,
+.light-theme .search-bar-container,
+[data-theme="light"] .hero-search-wrapper,
+.light-theme .hero-search-wrapper,
+[data-theme="light"] .global-search-bar,
+.light-theme .global-search-bar,
+[data-theme="light"] .search-input-wrapper,
+.light-theme .search-input-wrapper,
+[data-theme="light"] .search-bar-wrapper,
+.light-theme .search-bar-wrapper,
+[data-theme="light"] .search-hero-container,
+.light-theme .search-hero-container,
+[data-theme="light"] .hero-search-section,
+.light-theme .hero-search-section,
+[data-theme="light"] .chat-input-container,
+.light-theme .chat-input-container,
+[data-theme="light"] .chat-input-wrapper,
+.light-theme .chat-input-wrapper,
+[data-theme="light"] .ai-chat-input-area,
+.light-theme .ai-chat-input-area,
+[data-theme="light"] .drawer-chat-input-area,
+.light-theme .drawer-chat-input-area,
+[data-theme="light"] input[type="text"],
+.light-theme input[type="text"],
+[data-theme="light"] input[type="search"],
+.light-theme input[type="search"],
+[data-theme="light"] textarea,
+.light-theme textarea,
+[data-theme="light"] select,
+.light-theme select {
+  background: #ffffff !important;
+  color: #090d16 !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04) !important;
+}
+
+[data-theme="light"] .search-bar-wrapper:focus-within,
+.light-theme .search-bar-wrapper:focus-within {
+  background: #ffffff !important;
+  border-color: var(--accent-primary) !important;
+  box-shadow: 0 0 20px rgba(55, 48, 163, 0.2), 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-theme="light"] .hero-search-input,
+.light-theme .hero-search-input,
+[data-theme="light"] #global-search-input,
+.light-theme #global-search-input {
+  background: transparent !important;
+  color: #090d16 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+[data-theme="light"] .shortcut-chip kbd,
+.light-theme .shortcut-chip kbd {
+  background: #f1f5f9 !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #475569 !important;
+}
+
+[data-theme="light"] .search-lens,
+.light-theme .search-lens {
+  color: #475569 !important;
+}
+
+[data-theme="light"] input::placeholder,
+.light-theme input::placeholder,
+[data-theme="light"] textarea::placeholder,
+.light-theme textarea::placeholder {
+  color: #64748b !important;
+}
+
+/* 2. Force Light Background on Dropdowns & History Panels */
+[data-theme="light"] .search-history-dropdown,
+.light-theme .search-history-dropdown,
+[data-theme="light"] #search-history-dropdown,
+.light-theme #search-history-dropdown,
+[data-theme="light"] .search-history-dropdown-menu,
+.light-theme .search-history-dropdown-menu,
+[data-theme="light"] .chat-history-dropdown-menu,
+.light-theme .chat-history-dropdown-menu,
+[data-theme="light"] #chat-history-dropdown,
+.light-theme #chat-history-dropdown,
+[data-theme="light"] .history-dropdown-panel,
+.light-theme .history-dropdown-panel,
+[data-theme="light"] .chat-history-dropdown,
+.light-theme .chat-history-dropdown {
+  background: #ffffff !important;
+  color: #090d16 !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-theme="light"] .search-history-item:hover,
+.light-theme .search-history-item:hover,
+[data-theme="light"] .history-dropdown-item:hover,
+.light-theme .history-dropdown-item:hover,
+[data-theme="light"] .chat-history-item:hover,
+.light-theme .chat-history-item:hover {
+  background: #f1f5f9 !important;
+  color: #090d16 !important;
+}
+
+[data-theme="light"] .search-history-title,
+.light-theme .search-history-title,
+[data-theme="light"] .search-history-header,
+.light-theme .search-history-header,
+[data-theme="light"] .chat-history-dropdown-header,
+.light-theme .chat-history-dropdown-header {
+  color: #090d16 !important;
+}
+
+[data-theme="light"] .btn-clear-history,
+.light-theme .btn-clear-history,
+[data-theme="light"] .btn-clear-text,
+.light-theme .btn-clear-text {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .search-history-item,
+.light-theme .search-history-item,
+[data-theme="light"] .chat-history-dropdown-items li,
+.light-theme .chat-history-dropdown-items li {
+  color: #090d16 !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+}
+
+/* 3. Force Light Background on Chat Drawer & Floating Panels */
+[data-theme="light"] #ai-slide-drawer,
+.light-theme #ai-slide-drawer,
+[data-theme="light"] .ai-slide-drawer,
+.light-theme .ai-slide-drawer,
+[data-theme="light"] .chat-workspace-panel,
+.light-theme .chat-workspace-panel,
+[data-theme="light"] .chat-bubble-ai,
+.light-theme .chat-bubble-ai {
+  background: #ffffff !important;
+  color: #090d16 !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+[data-theme="light"] .drawer-header,
+.light-theme .drawer-header {
+  background: #ffffff !important;
+  border-bottom: 1px solid #cbd5e1 !important;
+  color: #090d16 !important;
+}
+
+[data-theme="light"] .drawer-title,
+.light-theme .drawer-title,
+[data-theme="light"] .sender-name,
+.light-theme .sender-name {
+  color: #090d16 !important;
+}
+
+[data-theme="light"] .drawer-subtitle,
+.light-theme .drawer-subtitle,
+[data-theme="light"] .drawer-close-btn,
+.light-theme .drawer-close-btn {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .drawer-chat-messages,
+.light-theme .drawer-chat-messages {
+  background: #f8fafc !important;
+}
+
+[data-theme="light"] .drawer-textarea,
+.light-theme .drawer-textarea,
+[data-theme="light"] #ai-query-input,
+.light-theme #ai-query-input {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #090d16 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+[data-theme="light"] .drawer-textarea:focus,
+.light-theme .drawer-textarea:focus {
+  border-color: var(--accent-primary) !important;
+}
+
+[data-theme="light"] .chip-shortcut,
+.light-theme .chip-shortcut {
+  background: #f1f5f9 !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #334155 !important;
+}
+
+[data-theme="light"] .chip-shortcut:hover,
+.light-theme .chip-shortcut:hover {
+  background: #e2e8f0 !important;
+  color: #090d16 !important;
+}
+
+[data-theme="light"] .msg-body,
+.light-theme .msg-body,
+[data-theme="light"] .chat-bubble-ai,
+.light-theme .chat-bubble-ai {
+  background: #f1f5f9 !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #090d16 !important;
+}
+
+[data-theme="light"] .message.assistant .msg-body,
+.light-theme .message.assistant .msg-body {
+  background: #f1f5f9 !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #090d16 !important;
+}
+
+[data-theme="light"] .message.user .msg-body,
+.light-theme .message.user .msg-body {
+  background: #e0e7ff !important;
+  border: 1px solid #c7d2fe !important;
+  color: #1e1b4b !important;
+}
+
+[data-theme="light"] .msg-avatar,
+.light-theme .msg-avatar {
+  background: #e2e8f0 !important;
+  color: #090d16 !important;
 }
 
 /* Force dark text across all elements in Light Mode */
 [data-theme="light"] body,
+.light-theme body,
 [data-theme="light"] p,
+.light-theme p,
 [data-theme="light"] span,
+.light-theme span,
 [data-theme="light"] h1,
+.light-theme h1,
 [data-theme="light"] h2,
+.light-theme h2,
 [data-theme="light"] h3,
+.light-theme h3,
 [data-theme="light"] h4,
-[data-theme="light"] input,
-[data-theme="light"] textarea,
-[data-theme="light"] select,
+.light-theme h4,
 [data-theme="light"] .subject-item-title,
+.light-theme .subject-item-title,
 [data-theme="light"] .unit-title,
+.light-theme .unit-title,
 [data-theme="light"] .pyq-paper-title,
-[data-theme="light"] .chat-bubble-ai,
+.light-theme .pyq-paper-title,
 [data-theme="light"] .regulation-alert-card p,
+.light-theme .regulation-alert-card p,
 [data-theme="light"] .landing-hero-title,
-[data-theme="light"] .landing-section-title {
+.light-theme .landing-hero-title,
+[data-theme="light"] .landing-section-title,
+.light-theme .landing-section-title {
   color: #090d16 !important;
 }
 
 [data-theme="light"] .bento-card,
+.light-theme .bento-card,
 [data-theme="light"] .bento-card-subjects,
+.light-theme .bento-card-subjects,
 [data-theme="light"] .bento-card-pyq,
+.light-theme .bento-card-pyq,
 [data-theme="light"] .hero-action-tile,
+.light-theme .hero-action-tile,
 [data-theme="light"] .curriculum-card,
+.light-theme .curriculum-card,
 [data-theme="light"] .pyq-repo-card,
+.light-theme .pyq-repo-card,
 [data-theme="light"] .pyq-archive-card,
+.light-theme .pyq-archive-card,
 [data-theme="light"] .saved-deck-card,
-[data-theme="light"] .chat-bubble-ai,
-[data-theme="light"] .search-history-dropdown,
-[data-theme="light"] #search-history-dropdown,
-[data-theme="light"] .search-history-dropdown-menu,
-[data-theme="light"] .chat-history-dropdown-menu,
-[data-theme="light"] #chat-history-dropdown,
+.light-theme .saved-deck-card,
 [data-theme="light"] .modal-content,
+.light-theme .modal-content,
 [data-theme="light"] .modal-card,
+.light-theme .modal-card,
 [data-theme="light"] .onboarding-card,
+.light-theme .onboarding-card,
 [data-theme="light"] .subject-hub-card,
+.light-theme .subject-hub-card,
 [data-theme="light"] .panic-mode-card,
+.light-theme .panic-mode-card,
 [data-theme="light"] .auth-modal-card,
-[data-theme="light"] .feedback-modal-card {
+.light-theme .auth-modal-card,
+[data-theme="light"] .feedback-modal-card,
+.light-theme .feedback-modal-card {
   background: #ffffff !important;
   border: 1px solid #cbd5e1 !important;
   color: #090d16 !important;
 }
 
-[data-theme="light"] input::placeholder,
-[data-theme="light"] textarea::placeholder {
-  color: #64748b !important;
-}
-
 /* Modal text and form contrast in Light Mode */
 [data-theme="light"] .modal-card h1,
+.light-theme .modal-card h1,
 [data-theme="light"] .modal-card h2,
+.light-theme .modal-card h2,
 [data-theme="light"] .modal-card h3,
+.light-theme .modal-card h3,
 [data-theme="light"] .modal-card h4,
+.light-theme .modal-card h4,
 [data-theme="light"] .modal-card p,
+.light-theme .modal-card p,
 [data-theme="light"] .modal-card span:not(.badge):not(.year-btn-icon):not(.stream-icon),
+.light-theme .modal-card span:not(.badge):not(.year-btn-icon):not(.stream-icon),
 [data-theme="light"] .modal-card label,
+.light-theme .modal-card label,
 [data-theme="light"] .modal-card .form-label,
+.light-theme .modal-card .form-label,
 [data-theme="light"] .modal-card .modal-title,
+.light-theme .modal-card .modal-title,
 [data-theme="light"] .modal-card .modal-subtitle,
+.light-theme .modal-card .modal-subtitle,
 [data-theme="light"] .modal-card .year-btn-title,
+.light-theme .modal-card .year-btn-title,
 [data-theme="light"] .modal-card .year-btn-sub,
+.light-theme .modal-card .year-btn-sub,
 [data-theme="light"] .modal-card .stream-name,
+.light-theme .modal-card .stream-name,
 [data-theme="light"] .modal-card .stream-desc,
+.light-theme .modal-card .stream-desc,
 [data-theme="light"] .modal-card .unit-item-title,
+.light-theme .modal-card .unit-item-title,
 [data-theme="light"] .modal-card .unit-subtopics-text,
+.light-theme .modal-card .unit-subtopics-text,
 [data-theme="light"] .modal-card .checklist-instructions,
+.light-theme .modal-card .checklist-instructions,
 [data-theme="light"] .modal-card .panic-question-card,
-[data-theme="light"] .modal-card .panic-full-q-text {
+.light-theme .modal-card .panic-question-card,
+[data-theme="light"] .modal-card .panic-full-q-text,
+.light-theme .modal-card .panic-full-q-text {
   color: #090d16 !important;
 }
 
 [data-theme="light"] .modal-card input,
+.light-theme .modal-card input,
 [data-theme="light"] .modal-card textarea,
-[data-theme="light"] .modal-card select {
+.light-theme .modal-card textarea,
+[data-theme="light"] .modal-card select,
+.light-theme .modal-card select {
   background: #ffffff !important;
   color: #090d16 !important;
   border: 1px solid #cbd5e1 !important;
@@ -4709,53 +4960,88 @@ body {
 
 /* High-contrast light mode badges and pills */
 [data-theme="light"] .badge,
+.light-theme .badge,
 [data-theme="light"] .credit-badge,
+.light-theme .credit-badge,
 [data-theme="light"] .unit-hours-badge,
+.light-theme .unit-hours-badge,
 [data-theme="light"] .contact-hours-badge,
+.light-theme .contact-hours-badge,
 [data-theme="light"] .stat-pill,
-[data-theme="light"] .subject-code-tag {
+.light-theme .stat-pill,
+[data-theme="light"] .subject-code-tag,
+.light-theme .subject-code-tag {
   background: #e2e8f0 !important;
   color: #0f172a !important;
   border: 1px solid #94a3b8 !important;
 }
 
-[data-theme="light"] .unit-checkbox-custom {
+[data-theme="light"] .unit-checkbox-custom,
+.light-theme .unit-checkbox-custom {
   border: 2px solid #475569 !important;
   background: #ffffff !important;
 }
 
 /* Preserve crisp white text for high-contrast action buttons and user bubbles */
 [data-theme="light"] .btn-primary,
+.light-theme .btn-primary,
 [data-theme="light"] .btn-primary *,
+.light-theme .btn-primary *,
 [data-theme="light"] .btn-flame-hero,
+.light-theme .btn-flame-hero,
 [data-theme="light"] .btn-flame-hero *,
+.light-theme .btn-flame-hero *,
 [data-theme="light"] .btn-hero-cta,
+.light-theme .btn-hero-cta,
 [data-theme="light"] .btn-hero-cta *,
+.light-theme .btn-hero-cta *,
 [data-theme="light"] .btn-flame,
+.light-theme .btn-flame,
 [data-theme="light"] .btn-flame *,
+.light-theme .btn-flame *,
 [data-theme="light"] .floating-partition-arrow,
+.light-theme .floating-partition-arrow,
 [data-theme="light"] .floating-partition-arrow *,
+.light-theme .floating-partition-arrow *,
 [data-theme="light"] #dock-arrow-glyph,
+.light-theme #dock-arrow-glyph,
 [data-theme="light"] .drawer-send-btn,
+.light-theme .drawer-send-btn,
 [data-theme="light"] .drawer-send-btn *,
+.light-theme .drawer-send-btn *,
 [data-theme="light"] .message.user,
+.light-theme .message.user,
 [data-theme="light"] .message.user *,
+.light-theme .message.user *,
 [data-theme="light"] .chat-bubble-user,
+.light-theme .chat-bubble-user,
 [data-theme="light"] .chat-bubble-user *,
+.light-theme .chat-bubble-user *,
 [data-theme="light"] .filter-pill.active,
+.light-theme .filter-pill.active,
 [data-theme="light"] .filter-pill.active *,
+.light-theme .filter-pill.active *,
 [data-theme="light"] .curriculum-tab-btn.active,
+.light-theme .curriculum-tab-btn.active,
 [data-theme="light"] .curriculum-tab-btn.active *,
+.light-theme .curriculum-tab-btn.active *,
 [data-theme="light"] .landing-filter-btn.active,
+.light-theme .landing-filter-btn.active,
 [data-theme="light"] .landing-filter-btn.active *,
+.light-theme .landing-filter-btn.active *,
 [data-theme="light"] .pyq-year-filter-btn.active,
+.light-theme .pyq-year-filter-btn.active,
 [data-theme="light"] .pyq-year-filter-btn.active *,
+.light-theme .pyq-year-filter-btn.active *,
 [data-theme="light"] .primary-year-btn.active,
-[data-theme="light"] .primary-year-btn.active * {
+.light-theme .primary-year-btn.active,
+[data-theme="light"] .primary-year-btn.active *,
+.light-theme .primary-year-btn.active * {
   color: #ffffff !important;
 }
 
-[data-theme="light"] .brand-title .accent-text {
+[data-theme="light"] .brand-title .accent-text,
+.light-theme .brand-title .accent-text {
   color: var(--accent-primary) !important;
 }
 
