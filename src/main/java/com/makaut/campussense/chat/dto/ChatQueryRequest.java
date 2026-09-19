@@ -8,12 +8,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.UUID;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Schema(description = "User query payload for MAKAUT CampusSense conversational RAG")
 public class ChatQueryRequest {
 

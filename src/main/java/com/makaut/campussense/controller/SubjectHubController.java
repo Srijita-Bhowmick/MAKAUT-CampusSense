@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
 import java.util.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.stream.Collectors;
 
 @RestController
@@ -258,6 +259,7 @@ public class SubjectHubController {
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class ProgressToggleRequest {
         private String userIdentifier;
         private Long unitId;

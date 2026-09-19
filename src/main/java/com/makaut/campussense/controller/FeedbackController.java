@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @RestController
 @RequestMapping("/api/v1/feedback")
 @RequiredArgsConstructor
@@ -52,6 +54,7 @@ public class FeedbackController {
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class FeedbackRequest {
         private String userIdentifier;
         private String category;

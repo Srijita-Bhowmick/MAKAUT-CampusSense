@@ -18,6 +18,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Slf4j
 @RestController
@@ -102,6 +103,7 @@ public class AdminIngestController {
     }
 
     @Data
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class TextIngestPayload {
         private String text;
         private StreamType stream;
@@ -114,6 +116,7 @@ public class AdminIngestController {
     }
 
     @Data
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class UrlIngestPayload {
         private String url;
         private StreamType stream;

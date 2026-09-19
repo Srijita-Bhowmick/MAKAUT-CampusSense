@@ -1330,9 +1330,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const isComplete = percentage === 100;
 
             const codeDisplay = sub.code + (sub.altCode ? ' / ' + sub.altCode : '');
-            const categoryBadge = sub.isFirstYear 
-                ? `<span class="badge" style="background: rgba(99, 102, 241, 0.15); color: var(--accent-cyan); font-weight: 600; font-size: 0.7rem;">${sub.category === 'GROUP_A' ? 'Group A' : sub.category === 'GROUP_B' ? 'Group B' : sub.category === 'MATH' ? 'Math Core' : sub.category === 'MULTIDISCIPLINARY' ? 'Multidisciplinary' : 'Common'}</span>`
-                : '';
 
             return `
                 <div class="subject-item-card" data-code="${escapeHtml(sub.code)}">
@@ -1340,8 +1337,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="subject-card-top">
                             <span class="subject-code-tag">${escapeHtml(codeDisplay)}</span>
                             <div style="display: flex; gap: 0.35rem; align-items: center;">
-                                ${categoryBadge}
-                                <span class="badge" style="background: rgba(255,255,255,0.06); font-family: var(--font-mono);">${sub.credits} Credits</span>
+                                <span class="badge credit-badge" style="background: rgba(255,255,255,0.06); font-family: var(--font-mono);">${sub.credits} Credits</span>
                             </div>
                         </div>
                         <div class="subject-item-title">${escapeHtml(sub.name)}</div>
@@ -2183,69 +2179,92 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 15. Search & Query History State & Interception
+    // 15. Decoupled Search History & Chat History State
     // ==========================================
-    let queryHistory = JSON.parse(localStorage.getItem('campussense_query_history') || '[]');
+    let searchbarHistory = JSON.parse(localStorage.getItem('campussense_searchbar_history') || '[]');
+    let chatHistory = JSON.parse(localStorage.getItem('campussense_chat_history') || '[]');
+    let searchHistoryActiveIndex = -1;
 
-    function saveQueryToHistory(q) {
+    function saveSearchbarHistory(q) {
         if (!q || !q.trim()) return;
         const clean = q.trim();
-        queryHistory = [clean, ...queryHistory.filter(item => item.toLowerCase() !== clean.toLowerCase())].slice(0, 8);
-        localStorage.setItem('campussense_query_history', JSON.stringify(queryHistory));
-        renderQueryHistoryDropdown();
-        renderChatHistoryDropdown();
+        searchbarHistory = [clean, ...searchbarHistory.filter(item => item.toLowerCase() !== clean.toLowerCase())].slice(0, 10);
+        localStorage.setItem('campussense_searchbar_history', JSON.stringify(searchbarHistory));
+        renderSearchbarHistoryDropdown();
     }
 
-    function renderQueryHistoryDropdown() {
+    function renderSearchbarHistoryDropdown() {
         const dropdown = document.getElementById('search-history-dropdown');
-        if (!dropdown) return;
-        if (queryHistory.length === 0) {
+        const list = document.getElementById('search-history-list');
+        if (!dropdown || !list) return;
+        if (searchbarHistory.length === 0) {
             dropdown.style.display = 'none';
+            searchHistoryActiveIndex = -1;
             return;
         }
-        dropdown.innerHTML = `
-            <div class="search-history-header" style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border-subtle); font-size: 0.72rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">
-                <span>Recent Searches</span>
-                <button id="btn-clear-search-history" style="background: none; border: none; color: var(--accent-flame); cursor: pointer; font-size: 0.72rem;">Clear</button>
-            </div>
-            <div class="search-history-items">
-                ${queryHistory.map(item => `
-                    <div class="history-item" data-query="${escapeHtml(item)}" style="padding: 0.5rem 0.75rem; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--text-primary); transition: background 0.15s ease;">
-                        <span style="color: var(--text-muted); font-size: 0.8rem;">🕒</span>
-                        <span style="flex: 1; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">${escapeHtml(item)}</span>
-                    </div>
-                `).join('')}
-            </div>
-        `;
-        const clearBtn = document.getElementById('btn-clear-search-history');
-        if (clearBtn) {
-            clearBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                queryHistory = [];
-                localStorage.removeItem('campussense_query_history');
+        list.innerHTML = searchbarHistory.map((item, idx) => `
+            <li class="search-history-item ${idx === searchHistoryActiveIndex ? 'active' : ''}" data-index="${idx}" data-query="${escapeHtml(item)}">
+                <span class="history-item-text">🕒 ${escapeHtml(item)}</span>
+                <button type="button" class="btn-delete-history-item" title="Remove query" onclick="removeSearchHistoryItem(event, ${idx})">✕</button>
+            </li>
+        `).join('');
+
+        list.querySelectorAll('.search-history-item').forEach(li => {
+            li.addEventListener('click', (e) => {
+                if (e.target.closest('.btn-delete-history-item')) return;
+                const q = li.getAttribute('data-query');
                 dropdown.style.display = 'none';
-                renderChatHistoryDropdown();
-            });
-        }
-        dropdown.querySelectorAll('.history-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const q = item.getAttribute('data-query');
-                dropdown.style.display = 'none';
+                searchHistoryActiveIndex = -1;
                 if (heroSearchInput) heroSearchInput.value = q;
                 handleGlobalSearch(q);
             });
         });
     }
 
+    window.removeSearchHistoryItem = function(event, idx) {
+        if (event) {
+            event.stopPropagation();
+            event.preventDefault();
+        }
+        if (idx >= 0 && idx < searchbarHistory.length) {
+            searchbarHistory.splice(idx, 1);
+            localStorage.setItem('campussense_searchbar_history', JSON.stringify(searchbarHistory));
+            if (searchHistoryActiveIndex >= searchbarHistory.length) {
+                searchHistoryActiveIndex = searchbarHistory.length - 1;
+            }
+            renderSearchbarHistoryDropdown();
+        }
+    };
+
+    const clearSearchHistoryBtn = document.getElementById('btn-clear-search-history');
+    if (clearSearchHistoryBtn) {
+        clearSearchHistoryBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            searchbarHistory = [];
+            localStorage.removeItem('campussense_searchbar_history');
+            const dropdown = document.getElementById('search-history-dropdown');
+            if (dropdown) dropdown.style.display = 'none';
+            searchHistoryActiveIndex = -1;
+        });
+    }
+
+    function saveChatHistory(q) {
+        if (!q || !q.trim()) return;
+        const clean = q.trim();
+        chatHistory = [clean, ...chatHistory.filter(item => item.toLowerCase() !== clean.toLowerCase())].slice(0, 10);
+        localStorage.setItem('campussense_chat_history', JSON.stringify(chatHistory));
+        renderChatHistoryDropdown();
+    }
+
     function renderChatHistoryDropdown() {
-        const list = document.getElementById('chat-history-dropdown-list') || document.getElementById('chat-history-list');
+        const list = document.getElementById('chat-history-dropdown-list');
         const dropdown = document.getElementById('chat-history-dropdown');
         if (!list) return;
-        if (queryHistory.length === 0) {
-            list.innerHTML = '<li style="padding: 0.75rem 1rem; font-size: 0.8rem; color: var(--text-muted); text-align: center;">No recent queries</li>';
+        if (chatHistory.length === 0) {
+            list.innerHTML = '<li style="padding: 0.75rem 1rem; font-size: 0.8rem; color: var(--text-muted); text-align: center;">No past prompts</li>';
             return;
         }
-        list.innerHTML = queryHistory.slice(0, 10).map(item => `
+        list.innerHTML = chatHistory.map(item => `
             <li class="history-dropdown-item" data-query="${escapeHtml(item)}" style="cursor: pointer;">
                 <span class="history-icon">🕒</span>
                 <span class="history-text">${escapeHtml(item)}</span>
@@ -2283,10 +2302,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (clearBtn) {
             clearBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                queryHistory = [];
-                localStorage.removeItem('campussense_query_history');
+                chatHistory = [];
+                localStorage.removeItem('campussense_chat_history');
                 renderChatHistoryDropdown();
-                renderQueryHistoryDropdown();
             });
         }
 
@@ -2307,7 +2325,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function handleGlobalSearch(rawQuery) {
         if (!rawQuery || !rawQuery.trim()) return;
         const q = rawQuery.trim();
-        saveQueryToHistory(q);
+        saveSearchbarHistory(q);
         const qLower = q.toLowerCase();
 
         // 1. Strict Architectural Separation: Academic problem-solving queries route directly to Ask AI
@@ -2527,8 +2545,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (heroSearchInput) {
         let debounceTimer = null;
         heroSearchInput.addEventListener('focus', () => {
-            if (queryHistory.length > 0) {
-                renderQueryHistoryDropdown();
+            if (searchbarHistory.length > 0) {
+                renderSearchbarHistoryDropdown();
                 if (searchDropdown) searchDropdown.style.display = 'block';
             }
         });
@@ -2536,18 +2554,48 @@ document.addEventListener('DOMContentLoaded', () => {
         heroSearchInput.addEventListener('input', () => {
             if (debounceTimer) clearTimeout(debounceTimer);
             debounceTimer = setTimeout(() => {
-                if (searchDropdown && queryHistory.length > 0 && !heroSearchInput.value.trim()) {
-                    renderQueryHistoryDropdown();
+                if (searchDropdown && searchbarHistory.length > 0 && !heroSearchInput.value.trim()) {
+                    renderSearchbarHistoryDropdown();
                     searchDropdown.style.display = 'block';
                 }
-            }, 300);
+            }, 250);
         });
 
         heroSearchInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
+            const isDropdownOpen = searchDropdown && searchDropdown.style.display === 'block';
+
+            if (e.key === 'ArrowDown') {
+                if (isDropdownOpen && searchbarHistory.length > 0) {
+                    e.preventDefault();
+                    searchHistoryActiveIndex = (searchHistoryActiveIndex + 1) % searchbarHistory.length;
+                    renderSearchbarHistoryDropdown();
+                    const activeItem = searchDropdown.querySelector(`.search-history-item[data-index="${searchHistoryActiveIndex}"]`);
+                    if (activeItem) activeItem.scrollIntoView({ block: 'nearest' });
+                }
+            } else if (e.key === 'ArrowUp') {
+                if (isDropdownOpen && searchbarHistory.length > 0) {
+                    e.preventDefault();
+                    searchHistoryActiveIndex = searchHistoryActiveIndex <= 0 ? searchbarHistory.length - 1 : searchHistoryActiveIndex - 1;
+                    renderSearchbarHistoryDropdown();
+                    const activeItem = searchDropdown.querySelector(`.search-history-item[data-index="${searchHistoryActiveIndex}"]`);
+                    if (activeItem) activeItem.scrollIntoView({ block: 'nearest' });
+                }
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                let queryToExecute = heroSearchInput.value.trim();
+                if (isDropdownOpen && searchHistoryActiveIndex >= 0 && searchHistoryActiveIndex < searchbarHistory.length) {
+                    queryToExecute = searchbarHistory[searchHistoryActiveIndex];
+                    heroSearchInput.value = queryToExecute;
+                }
                 if (searchDropdown) searchDropdown.style.display = 'none';
-                handleGlobalSearch(heroSearchInput.value);
-                heroSearchInput.value = '';
+                searchHistoryActiveIndex = -1;
+                if (queryToExecute) {
+                    handleGlobalSearch(queryToExecute);
+                    heroSearchInput.value = '';
+                }
+            } else if (e.key === 'Escape') {
+                if (searchDropdown) searchDropdown.style.display = 'none';
+                searchHistoryActiveIndex = -1;
             }
         });
     }
@@ -2555,15 +2603,20 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnHeroSearch && heroSearchInput) {
         btnHeroSearch.addEventListener('click', () => {
             if (searchDropdown) searchDropdown.style.display = 'none';
-            handleGlobalSearch(heroSearchInput.value);
-            heroSearchInput.value = '';
+            searchHistoryActiveIndex = -1;
+            const q = heroSearchInput.value.trim();
+            if (q) {
+                handleGlobalSearch(q);
+                heroSearchInput.value = '';
+            }
         });
     }
 
     // Close search dropdown on click outside
     document.addEventListener('click', (e) => {
-        if (searchDropdown && !searchDropdown.contains(e.target) && e.target !== heroSearchInput) {
+        if (searchDropdown && !e.target.closest('.search-bar-wrapper')) {
             searchDropdown.style.display = 'none';
+            searchHistoryActiveIndex = -1;
         }
     });
 
@@ -2610,7 +2663,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function executeAiQuery(query) {
         if (!query || !query.trim()) return;
-        saveQueryToHistory(query);
+        saveChatHistory(query);
         appendDrawerMessage('user', query);
         if (drawerQueryInput) drawerQueryInput.value = '';
 
@@ -3541,10 +3594,63 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     // 18. Clerk Authentication & User Tracking Dashboard
     // ==========================================
+    function setupClerkKeyModal() {
+        const btnOpen = document.getElementById('btn-menu-clerk-config');
+        const modal = document.getElementById('clerk-config-modal');
+        const btnClose = document.getElementById('btn-close-clerk-modal');
+        const btnCancel = document.getElementById('btn-cancel-clerk-modal');
+        const btnSave = document.getElementById('btn-save-clerk-key');
+        const inputKey = document.getElementById('input-clerk-key');
+
+        if (btnOpen && modal) {
+            btnOpen.addEventListener('click', () => {
+                const userDropdown = document.getElementById('user-dropdown-menu');
+                if (userDropdown) userDropdown.style.display = 'none';
+                if (inputKey) inputKey.value = localStorage.getItem('campussense_clerk_key') || '';
+                modal.style.display = 'flex';
+            });
+        }
+
+        function closeModal() {
+            if (modal) modal.style.display = 'none';
+        }
+
+        if (btnClose) btnClose.addEventListener('click', closeModal);
+        if (btnCancel) btnCancel.addEventListener('click', closeModal);
+
+        if (btnSave && inputKey) {
+            btnSave.addEventListener('click', () => {
+                const key = inputKey.value.trim();
+                if (key) {
+                    localStorage.setItem('campussense_clerk_key', key);
+                } else {
+                    localStorage.removeItem('campussense_clerk_key');
+                }
+                closeModal();
+                setupClerkAuth();
+            });
+        }
+    }
+
     async function setupClerkAuth() {
-        const clerkPublishableKey = localStorage.getItem('campussense_clerk_key')
-            || window.CLERK_PUBLISHABLE_KEY
-            || (document.querySelector('script[data-clerk-publishable-key]')?.getAttribute('data-clerk-publishable-key'));
+        let clerkPublishableKey = localStorage.getItem('campussense_clerk_key')
+            || window.CLERK_PUBLISHABLE_KEY;
+
+        if (!clerkPublishableKey) {
+            try {
+                const cfgRes = await fetch('/api/v1/config/clerk');
+                if (cfgRes.ok) {
+                    const cfgData = await cfgRes.json();
+                    if (cfgData && cfgData.publishableKey) {
+                        clerkPublishableKey = cfgData.publishableKey;
+                    }
+                }
+            } catch (_) {}
+        }
+
+        if (!clerkPublishableKey) {
+            clerkPublishableKey = (document.querySelector('script[data-clerk-publishable-key]')?.getAttribute('data-clerk-publishable-key'));
+        }
 
         if (window.Clerk) {
             try {
@@ -3552,8 +3658,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     const opts = {};
                     if (clerkPublishableKey && clerkPublishableKey !== 'YOUR_CLERK_PUBLISHABLE_KEY') {
                         opts.publishableKey = clerkPublishableKey;
+                        await window.Clerk.load(opts);
                     }
-                    await window.Clerk.load(opts);
                 }
 
                 if (window.Clerk.user) {
@@ -3618,7 +3724,46 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
+
+    function setupDrawerResize() {
+        const resizeHandle = document.getElementById('drawer-resize-handle');
+        const drawer = document.getElementById('ai-slide-drawer');
+        if (!resizeHandle || !drawer) return;
+
+        let isResizing = false;
+        let startX = 0;
+        let startWidth = 460;
+
+        resizeHandle.addEventListener('mousedown', (e) => {
+            isResizing = true;
+            startX = e.clientX;
+            startWidth = drawer.getBoundingClientRect().width;
+            resizeHandle.classList.add('resizing');
+            document.body.style.cursor = 'ew-resize';
+            document.body.style.userSelect = 'none';
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isResizing) return;
+            const deltaX = startX - e.clientX;
+            const newWidth = Math.min(Math.max(startWidth + deltaX, 340), 820);
+            drawer.style.width = `${newWidth}px`;
+        });
+
+        window.addEventListener('mouseup', () => {
+            if (isResizing) {
+                isResizing = false;
+                resizeHandle.classList.remove('resizing');
+                document.body.style.cursor = '';
+                document.body.style.userSelect = '';
+            }
+        });
+    }
+
     setupClerkAuth();
+    setupClerkKeyModal();
+    setupDrawerResize();
+
     function updateHeroDynamicCounters() {
         const statSubjects = document.getElementById('stat-subjects-count');
         const statPyqs = document.getElementById('stat-pyqs-count');

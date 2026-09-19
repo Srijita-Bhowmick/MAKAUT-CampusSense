@@ -22,6 +22,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @RestController
 @RequestMapping("/api/v1/bookmarks")
@@ -135,6 +136,7 @@ public class BookmarkController {
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class BookmarkToggleRequest {
         private String userIdentifier;
         private Long questionId;

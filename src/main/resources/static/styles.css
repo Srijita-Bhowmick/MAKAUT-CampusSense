@@ -39,15 +39,15 @@
     --card-hover: #f1f5f9;
     --card-border: #cbd5e1;
     --card-border-glow: rgba(55, 48, 163, 0.25);
-    --text-main: #090d16;        /* True deep black-slate */
-    --text-muted: #1e293b;       /* Crisp dark slate (no faded grey) */
-    --text-subtle: #334155;      /* Clearly legible secondary text */
-    --accent-primary: #3730a3;   /* Deep indigo */
+    --text-main: #090d16;        /* Deep saturated dark slate */
+    --text-muted: #1e293b;       /* Readable dark slate */
+    --text-subtle: #475569;      /* Clear secondary text */
+    --accent-primary: #3730a3;   /* High-contrast deep indigo */
     --accent-indigo: #3730a3;
     --accent-flame: #c2410c;     /* Deep contrast flame */
     --accent-flame-glow: rgba(194, 65, 12, 0.22);
     --accent-glow: rgba(55, 48, 163, 0.15);
-    --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+    --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
     --accent-cyan: #0284c7;
     --accent-emerald: #059669;
     --accent-purple: #7c3aed;
@@ -67,7 +67,7 @@
     --surface-glass: rgba(15, 23, 42, 0.04);
 }
 
-/* Light mode specific element text enforcement */
+/* Explicit dark text enforcement in Light Mode */
 [data-theme="light"] body,
 [data-theme="light"] p,
 [data-theme="light"] span,
@@ -75,14 +75,28 @@
 [data-theme="light"] h2,
 [data-theme="light"] h3,
 [data-theme="light"] h4,
+[data-theme="light"] input,
+[data-theme="light"] textarea,
 [data-theme="light"] .subject-item-title,
 [data-theme="light"] .unit-title,
-[data-theme="light"] .regulation-alert-card p,
-[data-theme="light"] .chat-bubble-ai {
+[data-theme="light"] .pyq-paper-title,
+[data-theme="light"] .chat-bubble-ai,
+[data-theme="light"] .regulation-alert-card p {
   color: #090d16 !important;
 }
 
+/* High-contrast cards, borders, and badges */
+[data-theme="light"] .bento-card,
+[data-theme="light"] .pyq-archive-card,
+[data-theme="light"] .saved-deck-card,
+[data-theme="light"] .chat-bubble-ai {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+}
+
 [data-theme="light"] .badge,
+[data-theme="light"] .credit-badge,
 [data-theme="light"] .unit-hours-badge {
   background: #e2e8f0 !important;
   color: #0f172a !important;
@@ -92,6 +106,21 @@
 [data-theme="light"] .unit-checkbox-custom {
   border: 2px solid #475569 !important;
   background: #ffffff !important;
+}
+
+/* Single-Line formatting for Units Progress and Credit Badges */
+.progress-label, .units-completed-text {
+  white-space: nowrap !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+
+.credit-badge, .subject-credits, .card-credit-pill {
+  white-space: nowrap !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
 }
 
 * {
@@ -1951,30 +1980,54 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.55);
-    backdrop-filter: blur(4px);
-    z-index: 80;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+    z-index: 999990;
     animation: fadeIn 0.2s ease-out;
 }
 
-.ai-slide-drawer {
+.ai-slide-drawer,
+#ai-slide-drawer {
     position: fixed;
-    top: 0;
-    right: -520px;
-    width: 500px;
-    max-width: 90vw;
-    height: 100vh;
-    background: #090e1d;
-    border-left: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: -16px 0 48px rgba(0, 0, 0, 0.65);
-    z-index: 90;
+    top: 16px;
+    right: 16px;
+    bottom: 16px;
+    width: 460px;
+    min-width: 340px;
+    max-width: 820px;
+    resize: horizontal;
+    overflow: hidden;
+    border-radius: 16px;
+    border: 1px solid var(--card-border);
+    background: var(--bg-secondary);
+    box-shadow: -8px 0 32px rgba(0, 0, 0, 0.28);
+    z-index: 999999;
     display: flex;
     flex-direction: column;
-    transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateX(calc(100% + 32px));
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
 }
 
-.ai-slide-drawer.open {
-    right: 0;
+.ai-slide-drawer.open,
+#ai-slide-drawer.open {
+    transform: translateX(0);
+}
+
+.drawer-resize-handle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 8px;
+    height: 100%;
+    cursor: ew-resize;
+    z-index: 100;
+    background: transparent;
+    transition: background 0.2s ease;
+}
+
+.drawer-resize-handle:hover,
+.drawer-resize-handle.resizing {
+    background: var(--accent-primary, #6366f1);
 }
 
 .drawer-header {
@@ -3405,9 +3458,36 @@ body {
     transition: var(--transition-fast);
 }
 
-.search-history-item:hover {
-    background: rgba(255, 255, 255, 0.06);
+.search-history-item:hover,
+.search-history-item.active {
+    background: rgba(99, 102, 241, 0.15);
     color: var(--accent-primary, #6366f1);
+}
+
+.search-history-item .history-item-text {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: left;
+}
+
+.btn-delete-history-item {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+    line-height: 1;
+    margin-left: 8px;
+    transition: var(--transition-fast);
+}
+
+.btn-delete-history-item:hover {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.18);
 }
 
 /* ====================================================================
@@ -3801,6 +3881,32 @@ body {
 
 [data-theme="light"] .chat-pyq-result p {
     color: #090d16 !important;
+}
+
+[data-theme="light"] .search-history-dropdown {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12) !important;
+}
+
+[data-theme="light"] .search-history-item {
+    color: #090d16 !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+}
+
+[data-theme="light"] .search-history-item:hover,
+[data-theme="light"] .search-history-item.active {
+    background: #f1f5f9 !important;
+    color: #3730a3 !important;
+}
+
+[data-theme="light"] .btn-delete-history-item {
+    color: #64748b !important;
+}
+
+[data-theme="light"] .btn-delete-history-item:hover {
+    color: #ef4444 !important;
+    background: rgba(239, 68, 68, 0.15) !important;
 }
 
 [data-theme="light"] .ai-slide-drawer {

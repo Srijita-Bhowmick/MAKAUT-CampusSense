@@ -29,3 +29,8 @@ springdoc:
     path: /swagger-ui.html
     tags-sorter: alpha
     operations-sorter: method
+
+clerk:
+  publishable-key: ${CLERK_PUBLISHABLE_KEY:}
+  secret-key: ${CLERK_SECRET_KEY:}
+
