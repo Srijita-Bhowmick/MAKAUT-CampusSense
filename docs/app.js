@@ -948,6 +948,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnFeatureAi = document.getElementById('btn-feature-ai');
     if (btnFeatureAi) {
         btnFeatureAi.addEventListener('click', () => {
+            switchView('dashboard');
             openAiDrawer();
         });
     }
@@ -2495,13 +2496,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const aiDrawer = document.getElementById('ai-slide-drawer');
     const aiDrawerBackdrop = document.getElementById('ai-drawer-backdrop');
     const btnCloseAiDrawer = document.getElementById('btn-close-ai-drawer');
+    const btnChatDockCollapse = document.getElementById('btn-chat-dock-collapse');
+    const mainViewportContainer = document.getElementById('main-viewport-container');
     const drawerChatForm = document.getElementById('drawer-chat-form');
     const drawerQueryInput = document.getElementById('ai-query-input') || document.getElementById('drawer-query-input');
     const drawerChatMessages = document.getElementById('drawer-chat-messages');
 
     function openAiDrawer(initialQuery = '') {
+        if (mainViewportContainer) mainViewportContainer.classList.add('chat-docked-open');
+        document.body.classList.add('chat-docked-open');
         if (aiDrawer) aiDrawer.classList.add('open');
-        if (aiDrawerBackdrop) aiDrawerBackdrop.style.display = 'block';
         renderDrawerHistoryPills();
         if (initialQuery && drawerQueryInput) {
             drawerQueryInput.value = initialQuery;
@@ -2512,10 +2516,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function closeAiDrawer() {
+        if (mainViewportContainer) mainViewportContainer.classList.remove('chat-docked-open');
+        document.body.classList.remove('chat-docked-open');
         if (aiDrawer) aiDrawer.classList.remove('open');
-        if (aiDrawerBackdrop) aiDrawerBackdrop.style.display = 'none';
     }
 
+    if (btnChatDockCollapse) btnChatDockCollapse.addEventListener('click', closeAiDrawer);
     if (btnOpenAiFab) btnOpenAiFab.addEventListener('click', () => openAiDrawer());
     if (btnCloseAiDrawer) btnCloseAiDrawer.addEventListener('click', closeAiDrawer);
     if (aiDrawerBackdrop) aiDrawerBackdrop.addEventListener('click', closeAiDrawer);
@@ -3594,47 +3600,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     // 18. Clerk Authentication & User Tracking Dashboard
     // ==========================================
-    function setupClerkKeyModal() {
-        const btnOpen = document.getElementById('btn-menu-clerk-config');
-        const modal = document.getElementById('clerk-config-modal');
-        const btnClose = document.getElementById('btn-close-clerk-modal');
-        const btnCancel = document.getElementById('btn-cancel-clerk-modal');
-        const btnSave = document.getElementById('btn-save-clerk-key');
-        const inputKey = document.getElementById('input-clerk-key');
-
-        if (btnOpen && modal) {
-            btnOpen.addEventListener('click', () => {
-                const userDropdown = document.getElementById('user-dropdown-menu');
-                if (userDropdown) userDropdown.style.display = 'none';
-                if (inputKey) inputKey.value = localStorage.getItem('campussense_clerk_key') || '';
-                modal.style.display = 'flex';
-            });
-        }
-
-        function closeModal() {
-            if (modal) modal.style.display = 'none';
-        }
-
-        if (btnClose) btnClose.addEventListener('click', closeModal);
-        if (btnCancel) btnCancel.addEventListener('click', closeModal);
-
-        if (btnSave && inputKey) {
-            btnSave.addEventListener('click', () => {
-                const key = inputKey.value.trim();
-                if (key) {
-                    localStorage.setItem('campussense_clerk_key', key);
-                } else {
-                    localStorage.removeItem('campussense_clerk_key');
-                }
-                closeModal();
-                setupClerkAuth();
-            });
-        }
-    }
-
     async function setupClerkAuth() {
-        let clerkPublishableKey = localStorage.getItem('campussense_clerk_key')
-            || window.CLERK_PUBLISHABLE_KEY;
+        let clerkPublishableKey = window.CLERK_PUBLISHABLE_KEY;
 
         if (!clerkPublishableKey) {
             try {
@@ -3761,7 +3728,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     setupClerkAuth();
-    setupClerkKeyModal();
     setupDrawerResize();
 
     function updateHeroDynamicCounters() {

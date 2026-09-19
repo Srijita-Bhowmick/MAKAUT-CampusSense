@@ -1986,48 +1986,107 @@ body {
     animation: fadeIn 0.2s ease-out;
 }
 
+/* ====================================================================
+   SIDE-BY-SIDE CHAT AI & DASHBOARD DOCKED LAYOUT
+   ==================================================================== */
+.main-app-container {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow-x: hidden;
+}
+
+.dashboard-main-content {
+    flex: 1;
+    min-width: 0;
+    transition: flex 0.3s ease, margin 0.3s ease;
+}
+
+/* When Chat AI is opened by user */
+.chat-docked-open .dashboard-main-content {
+    flex: 1 1 calc(100% - 460px);
+    max-width: calc(100% - 460px);
+}
+
 .ai-slide-drawer,
 #ai-slide-drawer {
-    position: fixed;
-    top: 16px;
-    right: 16px;
-    bottom: 16px;
     width: 460px;
-    min-width: 340px;
-    max-width: 820px;
-    resize: horizontal;
-    overflow: hidden;
-    border-radius: 16px;
-    border: 1px solid var(--card-border);
-    background: var(--bg-secondary);
-    box-shadow: -8px 0 32px rgba(0, 0, 0, 0.28);
-    z-index: 999999;
-    display: flex;
-    flex-direction: column;
-    transform: translateX(calc(100% + 32px));
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
-}
-
-.ai-slide-drawer.open,
-#ai-slide-drawer.open {
-    transform: translateX(0);
-}
-
-.drawer-resize-handle {
-    position: absolute;
+    min-width: 360px;
+    max-width: 600px;
+    height: 100vh;
+    position: sticky;
     top: 0;
-    left: 0;
-    width: 8px;
-    height: 100%;
-    cursor: ew-resize;
-    z-index: 100;
-    background: transparent;
-    transition: background 0.2s ease;
+    right: 0;
+    border-left: 1px solid var(--card-border);
+    background: var(--bg-secondary);
+    display: none; /* Only shown when opened by user */
+    flex-direction: column;
+    z-index: 1000;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+    flex-shrink: 0;
 }
 
-.drawer-resize-handle:hover,
-.drawer-resize-handle.resizing {
-    background: var(--accent-primary, #6366f1);
+.chat-docked-open #ai-slide-drawer {
+    display: flex !important;
+}
+
+.floating-dock-arrow {
+    position: absolute;
+    left: -16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--accent-primary);
+    color: #ffffff;
+    border: 2px solid var(--bg-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1001;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.floating-dock-arrow:hover {
+    transform: translateY(-50%) scale(1.1);
+    background: var(--accent-flame);
+}
+
+.dock-arrow-icon {
+    font-size: 0.75rem;
+    line-height: 1;
+    display: inline-block;
+    margin-left: 2px;
+}
+
+#ai-drawer-backdrop {
+    display: none !important;
+}
+
+@media (max-width: 768px) {
+    .chat-docked-open .dashboard-main-content {
+        display: none;
+    }
+    #ai-slide-drawer {
+        width: 100% !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+    .floating-dock-arrow {
+        left: 12px;
+        top: 16px;
+        transform: none;
+    }
 }
 
 .drawer-header {
@@ -3883,9 +3942,21 @@ body {
     color: #090d16 !important;
 }
 
+[data-theme="light"] #global-search-input {
+    background: #ffffff !important;
+    color: #090d16 !important;
+    border: 1px solid #cbd5e1 !important;
+}
+
+[data-theme="light"] #global-search-input::placeholder {
+    color: #64748b !important;
+}
+
+[data-theme="light"] #search-history-dropdown,
 [data-theme="light"] .search-history-dropdown {
     background: #ffffff !important;
     border: 1px solid #cbd5e1 !important;
+    color: #090d16 !important;
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12) !important;
 }
 
@@ -3897,7 +3968,7 @@ body {
 [data-theme="light"] .search-history-item:hover,
 [data-theme="light"] .search-history-item.active {
     background: #f1f5f9 !important;
-    color: #3730a3 !important;
+    color: #090d16 !important;
 }
 
 [data-theme="light"] .btn-delete-history-item {
@@ -3909,15 +3980,16 @@ body {
     background: rgba(239, 68, 68, 0.15) !important;
 }
 
-[data-theme="light"] .ai-slide-drawer {
+[data-theme="light"] .ai-slide-drawer,
+[data-theme="light"] #ai-slide-drawer {
     background: #ffffff !important;
-    border-left-color: #cbd5e1 !important;
-    box-shadow: -16px 0 48px rgba(0, 0, 0, 0.15) !important;
+    border-left: 1px solid #cbd5e1 !important;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.08) !important;
 }
 
 [data-theme="light"] .drawer-header {
     background: #f8fafc !important;
-    border-bottom-color: #e2e8f0 !important;
+    border-bottom: 1px solid #cbd5e1 !important;
 }
 
 [data-theme="light"] .drawer-title {
@@ -3932,30 +4004,45 @@ body {
     color: #1e293b !important;
 }
 
-[data-theme="light"] .msg-body {
+[data-theme="light"] .message.assistant .msg-body,
+[data-theme="light"] .chat-bubble-ai {
     background: #f1f5f9 !important;
-    border-color: #cbd5e1 !important;
+    border: 1px solid #cbd5e1 !important;
     color: #090d16 !important;
 }
 
-[data-theme="light"] .message.user .msg-body {
-    background: #e0e7ff !important;
-    border-color: #a5b4fc !important;
-    color: #1e1b4b !important;
-}
-
-[data-theme="light"] .msg-header .sender-name {
+[data-theme="light"] .message.assistant .msg-body *,
+[data-theme="light"] .chat-bubble-ai * {
     color: #090d16 !important;
 }
 
-[data-theme="light"] .msg-text,
-[data-theme="light"] .msg-text * {
-    color: #090d16 !important;
+[data-theme="light"] .message.user .msg-body,
+[data-theme="light"] .chat-bubble-user {
+    background: #3730a3 !important;
+    border: none !important;
+    color: #ffffff !important;
 }
 
-[data-theme="light"] .citation-pill {
+[data-theme="light"] .message.user .msg-body *,
+[data-theme="light"] .chat-bubble-user * {
+    color: #ffffff !important;
+}
+
+[data-theme="light"] #ai-query-input {
+    background: #ffffff !important;
+    color: #090d16 !important;
+    border: 1px solid #cbd5e1 !important;
+}
+
+[data-theme="light"] #ai-query-input::placeholder {
+    color: #64748b !important;
+}
+
+[data-theme="light"] .citation-pill,
+[data-theme="light"] .msg-sources .badge,
+[data-theme="light"] .verified-badge {
     background: #e2e8f0 !important;
-    border-color: #94a3b8 !important;
+    border: 1px solid #94a3b8 !important;
     color: #0f172a !important;
 }
 
@@ -4248,5 +4335,70 @@ body {
     color: #090d16 !important;
 }
 
+/* ====================================================================
+   Component-Specific High-Contrast Light Mode Enforcements
+   ==================================================================== */
+[data-theme="light"] .bento-card-pyq,
+[data-theme="light"] .pyq-archive-card,
+[data-theme="light"] .pyq-modal-card {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+}
 
+[data-theme="light"] .bento-card-pyq .card-title,
+[data-theme="light"] .pyq-modal-title,
+[data-theme="light"] .pyq-paper-title {
+    color: #090d16 !important;
+}
 
+[data-theme="light"] .bento-card-pyq .card-subtitle,
+[data-theme="light"] .pyq-paper-meta,
+[data-theme="light"] .pyq-paper-item span {
+    color: #1e293b !important;
+}
+
+[data-theme="light"] .pyq-year-filter-btn,
+[data-theme="light"] .pyq-year-pill,
+[data-theme="light"] .pyq-paper-item,
+[data-theme="light"] .paper-list-item {
+    background: #f8fafc !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #090d16 !important;
+}
+
+[data-theme="light"] #saved-deck-drawer,
+[data-theme="light"] .saved-deck-drawer,
+[data-theme="light"] .saved-deck-card,
+[data-theme="light"] .deck-item-card {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #090d16 !important;
+}
+
+[data-theme="light"] .deck-item-title,
+[data-theme="light"] .saved-deck-title,
+[data-theme="light"] .saved-deck-item-title {
+    color: #090d16 !important;
+}
+
+[data-theme="light"] .deck-item-answer,
+[data-theme="light"] .saved-deck-answer,
+[data-theme="light"] .saved-deck-item-text,
+[data-theme="light"] .deck-item-text {
+    color: #1e293b !important;
+}
+
+[data-theme="light"] .unit-checkbox-custom {
+    border: 2px solid #475569 !important;
+    background: #ffffff !important;
+}
+
+[data-theme="light"] .badge,
+[data-theme="light"] .credit-badge,
+[data-theme="light"] .card-credit-pill,
+[data-theme="light"] .unit-hours-badge,
+[data-theme="light"] .hour-pill {
+    background: #e2e8f0 !important;
+    color: #0f172a !important;
+    border: 1px solid #94a3b8 !important;
+}

@@ -107,9 +107,6 @@
                         <button class="user-dropdown-item" id="btn-menu-switch-scope">
                             <span>🎯</span> Change Stream / Semester
                         </button>
-                        <button class="user-dropdown-item" id="btn-menu-clerk-config">
-                            <span>🔑</span> Clerk Auth Settings
-                        </button>
                         <button class="user-dropdown-item" id="btn-menu-landing-page">
                             <span>🏠</span> Return to Landing Page
                         </button>
@@ -301,9 +298,10 @@
     </section>
 
     <!-- ====================================================================
-         VIEW B: BENTO GRID DASHBOARD (Active When Authenticated)
+         VIEW B: BENTO GRID DASHBOARD & SIDE-BY-SIDE CHAT AI WORKSPACE
          ==================================================================== -->
-    <main class="main-layout" id="dashboard-view" style="display: none;">
+    <div class="main-app-container" id="main-viewport-container">
+        <main class="main-layout dashboard-main-content" id="dashboard-view" style="display: none;">
         <!-- Hero Search Section -->
         <section class="hero-search-section">
             <div class="search-hero-container">
@@ -445,6 +443,65 @@
             </div>
         </section>
     </main>
+
+        <!-- Side-by-Side Chat Dock -->
+        <aside class="ai-slide-drawer" id="ai-slide-drawer">
+            <button id="btn-chat-dock-collapse" class="floating-dock-arrow" type="button" title="Toggle Chat Panel">
+                <span class="dock-arrow-icon">▶</span>
+            </button>
+            <div class="drawer-header">
+                <div class="drawer-title-group">
+                    <span class="drawer-icon">🤖</span>
+                    <div>
+                        <div class="drawer-title">MAKAUT CampusSense AI</div>
+                        <div class="drawer-subtitle">Grounded Conversational RAG • Top-K Vector Engine</div>
+                    </div>
+                </div>
+                <div class="drawer-header-actions">
+                    <div class="chat-history-container">
+                        <button id="btn-chat-history" class="btn-chat-history-toggle btn-history-toggle" type="button">
+                            🕒 History ▾
+                        </button>
+                        <div id="chat-history-dropdown" class="chat-history-dropdown-menu history-dropdown-panel" style="display: none;">
+                            <div class="chat-history-dropdown-header history-dropdown-header">
+                                <span>Past Prompts</span>
+                                <button id="btn-clear-chat-history" class="btn-clear-history-text btn-clear-text" type="button">Clear All</button>
+                            </div>
+                            <ul id="chat-history-dropdown-list" class="chat-history-dropdown-items history-dropdown-items">
+                                <!-- Populated dynamically from localStorage campussense_chat_history -->
+                            </ul>
+                        </div>
+                    </div>
+                    <button class="drawer-close-btn" id="btn-close-ai-drawer" title="Close Drawer (Esc)">✕</button>
+                </div>
+            </div>
+
+            <div class="drawer-chat-messages" id="drawer-chat-messages">
+                <div class="message assistant welcome">
+                    <div class="msg-avatar">🤖</div>
+                    <div class="msg-body">
+                        <div class="msg-header">
+                            <span class="sender-name">MAKAUT CampusSense AI</span>
+                            <span class="badge verified-badge">Grounded</span>
+                        </div>
+                        <div class="msg-text">
+                            Welcome to MAKAUT CampusSense! Ask me anything about your <strong>syllabi modules</strong>, <strong>PYQ Archives</strong>, or <strong>academic preparation</strong>.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="drawer-chat-input-area">
+                <form id="drawer-chat-form" class="drawer-input-form">
+                    <textarea id="ai-query-input" rows="2" class="drawer-textarea"
+                              placeholder="Ask a MAKAUT academic query (e.g., 'solve group B of chemistry 2024' or 'what is in Module 2 of Physics?')"></textarea>
+                    <button type="submit" class="btn btn-primary drawer-send-btn" id="btn-drawer-send">
+                        Send ⚡
+                    </button>
+                </form>
+            </div>
+        </aside>
+    </div>
 
     <!-- ====================================================================
          MODALS & OVERLAYS
@@ -811,62 +868,7 @@
         </div>
     </div>
 
-    <!-- AI RAG Slide-Over Drawer -->
-    <div class="drawer-backdrop" id="ai-drawer-backdrop" style="display: none;"></div>
-    <aside class="ai-slide-drawer" id="ai-slide-drawer">
-        <div class="drawer-resize-handle" id="drawer-resize-handle" title="Drag to resize panel"></div>
-        <div class="drawer-header">
-            <div class="drawer-title-group">
-                <span class="drawer-icon">🤖</span>
-                <div>
-                    <div class="drawer-title">MAKAUT CampusSense AI</div>
-                    <div class="drawer-subtitle">Grounded Conversational RAG • Top-K Vector Engine</div>
-                </div>
-            </div>
-            <div class="drawer-header-actions">
-                <div class="chat-history-container">
-                    <button id="btn-chat-history" class="btn-chat-history-toggle btn-history-toggle" type="button">
-                        🕒 History ▾
-                    </button>
-                    <div id="chat-history-dropdown" class="chat-history-dropdown-menu history-dropdown-panel" style="display: none;">
-                        <div class="chat-history-dropdown-header history-dropdown-header">
-                            <span>Past Prompts</span>
-                            <button id="btn-clear-chat-history" class="btn-clear-history-text btn-clear-text" type="button">Clear All</button>
-                        </div>
-                        <ul id="chat-history-dropdown-list" class="chat-history-dropdown-items history-dropdown-items">
-                            <!-- Populated dynamically from localStorage campussense_chat_history -->
-                        </ul>
-                    </div>
-                </div>
-                <button class="drawer-close-btn" id="btn-close-ai-drawer" title="Close Drawer (Esc)">✕</button>
-            </div>
-        </div>
 
-        <div class="drawer-chat-messages" id="drawer-chat-messages">
-            <div class="message assistant welcome">
-                <div class="msg-avatar">🤖</div>
-                <div class="msg-body">
-                    <div class="msg-header">
-                        <span class="sender-name">MAKAUT CampusSense AI</span>
-                        <span class="badge verified-badge">Grounded</span>
-                    </div>
-                    <div class="msg-text">
-                        Welcome to MAKAUT CampusSense! Ask me anything about your <strong>syllabi modules</strong>, <strong>PYQ Archives</strong>, or <strong>academic preparation</strong>.
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="drawer-chat-input-area">
-            <form id="drawer-chat-form" class="drawer-input-form">
-                <textarea id="ai-query-input" rows="2" class="drawer-textarea"
-                          placeholder="Ask a MAKAUT academic query (e.g., 'solve group B of chemistry 2024' or 'what is in Module 2 of Physics?')"></textarea>
-                <button type="submit" class="btn btn-primary drawer-send-btn" id="btn-drawer-send">
-                    Send ⚡
-                </button>
-            </form>
-        </div>
-    </aside>
 
     <!-- Dedicated Saved Deck Drawer Modal -->
     <div class="drawer-backdrop" id="saved-deck-backdrop" style="display: none;"></div>
@@ -885,32 +887,6 @@
             <!-- Rendered dynamically by app.js -->
         </div>
     </aside>
-
-    <!-- Clerk Auth Settings Modal -->
-    <div class="modal-backdrop" id="clerk-config-modal" style="display: none;">
-        <div class="modal-card" style="max-width: 480px;">
-            <div class="modal-header">
-                <div>
-                    <h2 class="modal-title">Clerk Authentication Settings</h2>
-                    <p class="modal-subtitle">Configure your Clerk Publishable Key (<code>pk_test_...</code>)</p>
-                </div>
-                <button class="modal-close-btn" id="btn-close-clerk-modal" title="Close">✕</button>
-            </div>
-            <div class="modal-body" style="padding: 1.25rem;">
-                <div class="form-group" style="margin-bottom: 1rem;">
-                    <label class="form-label" for="input-clerk-key">Clerk Publishable Key</label>
-                    <input type="text" id="input-clerk-key" class="custom-input" placeholder="pk_test_..." style="width: 100%; padding: 0.6rem 0.8rem; border-radius: 8px; border: 1px solid var(--card-border); background: var(--input-bg); color: var(--text-main);">
-                    <small style="display: block; margin-top: 0.5rem; color: var(--text-muted); font-size: 0.78rem;">
-                        Key is stored in your browser's local storage and used for student login and profile tracking.
-                    </small>
-                </div>
-                <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1rem;">
-                    <button type="button" class="btn btn-secondary" id="btn-cancel-clerk-modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="btn-save-clerk-key">Save Key</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Persistent Floating Action Button (FAB) for AI Drawer (Visible on Dashboard) -->
     <button class="ai-fab-btn" id="btn-open-ai-fab" style="display: none;" title="Ask MAKAUT AI (Ctrl + K)">
