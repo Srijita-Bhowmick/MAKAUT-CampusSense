@@ -2503,8 +2503,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const drawerChatMessages = document.getElementById('drawer-chat-messages');
 
     function openAiDrawer(initialQuery = '') {
-        if (mainViewportContainer) mainViewportContainer.classList.add('chat-docked-open');
-        document.body.classList.add('chat-docked-open');
+        document.body.classList.add('chat-docked-active');
         if (aiDrawer) aiDrawer.classList.add('open');
         renderDrawerHistoryPills();
         if (initialQuery && drawerQueryInput) {
@@ -2516,8 +2515,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function closeAiDrawer() {
-        if (mainViewportContainer) mainViewportContainer.classList.remove('chat-docked-open');
-        document.body.classList.remove('chat-docked-open');
+        document.body.classList.remove('chat-docked-active');
         if (aiDrawer) aiDrawer.classList.remove('open');
     }
 
@@ -2530,7 +2528,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('keydown', (e) => {
         if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
             e.preventDefault();
-            if (aiDrawer && aiDrawer.classList.contains('open')) {
+            if (document.body.classList.contains('chat-docked-active')) {
                 closeAiDrawer();
             } else {
                 openAiDrawer();

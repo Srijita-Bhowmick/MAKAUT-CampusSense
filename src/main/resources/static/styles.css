@@ -67,22 +67,140 @@
     --surface-glass: rgba(15, 23, 42, 0.04);
 }
 
-/* Explicit dark text enforcement in Light Mode */
-[data-theme="light"] body,
-[data-theme="light"] p,
-[data-theme="light"] span,
-[data-theme="light"] h1,
-[data-theme="light"] h2,
-[data-theme="light"] h3,
-[data-theme="light"] h4,
-[data-theme="light"] input,
-[data-theme="light"] textarea,
-[data-theme="light"] .subject-item-title,
-[data-theme="light"] .unit-title,
-[data-theme="light"] .pyq-paper-title,
-[data-theme="light"] .chat-bubble-ai,
-[data-theme="light"] .regulation-alert-card p {
-  color: #090d16 !important;
+/* Theme-Scoped Modal Contrast (Fix Dark Text Inversion) */
+:root .modal-card,
+[data-theme="dark"] .modal-card,
+.modal-card,
+.onboarding-card,
+.subject-hub-card,
+.panic-mode-card,
+.auth-modal-card,
+.feedback-modal-card {
+    background: #0f172a !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    color: #f8fafc !important;
+}
+
+:root .modal-title,
+[data-theme="dark"] .modal-title,
+.modal-title,
+:root #scope-modal h2,
+[data-theme="dark"] #scope-modal h2,
+#scope-modal h2,
+.subject-modal-title,
+.hub-title,
+.panic-title,
+.feedback-modal-title,
+.pyq-modal-title {
+    color: #f8fafc !important;
+}
+
+:root .modal-subtitle,
+[data-theme="dark"] .modal-subtitle,
+.modal-subtitle,
+:root #scope-modal .modal-subtitle,
+[data-theme="dark"] #scope-modal .modal-subtitle,
+#scope-modal .modal-subtitle,
+.subject-modal-subtitle,
+.panic-subhead,
+.hub-subject-stream {
+    color: #e2e8f0 !important;
+}
+
+#scope-modal .primary-year-btn,
+#scope-modal .stream-option,
+#scope-modal .sem-btn {
+    background: #1e293b !important;
+    border: 1px solid #334155 !important;
+    color: #f8fafc !important;
+}
+
+#scope-modal .year-btn-title,
+#scope-modal .stream-name {
+    color: #f8fafc !important;
+    font-weight: 700 !important;
+}
+
+#scope-modal .year-btn-sub,
+#scope-modal .stream-desc {
+    color: #cbd5e1 !important;
+}
+
+#scope-modal .form-label {
+    color: #f8fafc !important;
+}
+
+.subject-hub-card .unit-item-title,
+.subject-hub-card .unit-subtopics-text,
+.subject-hub-card .checklist-instructions,
+.subject-hub-card p,
+.panic-mode-card p,
+.panic-mode-card .panic-question-card,
+.panic-mode-card .panic-full-q-text {
+    color: #f8fafc !important;
+}
+
+/* Light Mode modal overrides */
+[data-theme="light"] .modal-card,
+[data-theme="light"] .subject-hub-card,
+[data-theme="light"] .panic-mode-card,
+[data-theme="light"] .auth-modal-card,
+[data-theme="light"] .feedback-modal-card,
+[data-theme="light"] .onboarding-card {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #090d16 !important;
+}
+
+[data-theme="light"] .modal-title,
+[data-theme="light"] #scope-modal h2,
+[data-theme="light"] .subject-modal-title,
+[data-theme="light"] .hub-title,
+[data-theme="light"] .panic-title,
+[data-theme="light"] .feedback-modal-title,
+[data-theme="light"] .pyq-modal-title {
+    color: #090d16 !important;
+}
+
+[data-theme="light"] .modal-subtitle,
+[data-theme="light"] #scope-modal .modal-subtitle,
+[data-theme="light"] .subject-modal-subtitle,
+[data-theme="light"] .panic-subhead,
+[data-theme="light"] .hub-subject-stream {
+    color: #1e293b !important;
+}
+
+[data-theme="light"] #scope-modal .primary-year-btn,
+[data-theme="light"] #scope-modal .stream-option,
+[data-theme="light"] #scope-modal .sem-btn {
+    background: #f8fafc !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #090d16 !important;
+}
+
+[data-theme="light"] #scope-modal .year-btn-title,
+[data-theme="light"] #scope-modal .stream-name {
+    color: #090d16 !important;
+    font-weight: 700 !important;
+}
+
+[data-theme="light"] #scope-modal .year-btn-sub,
+[data-theme="light"] #scope-modal .stream-desc {
+    color: #475569 !important;
+}
+
+[data-theme="light"] #scope-modal .form-label {
+    color: #090d16 !important;
+}
+
+[data-theme="light"] .subject-hub-card .unit-item-title,
+[data-theme="light"] .subject-hub-card .unit-subtopics-text,
+[data-theme="light"] .subject-hub-card .checklist-instructions,
+[data-theme="light"] .subject-hub-card p,
+[data-theme="light"] .panic-mode-card p,
+[data-theme="light"] .panic-mode-card .panic-question-card,
+[data-theme="light"] .panic-mode-card .panic-full-q-text {
+    color: #090d16 !important;
 }
 
 /* High-contrast cards, borders, and badges */
@@ -1987,49 +2105,51 @@ body {
 }
 
 /* ====================================================================
-   SIDE-BY-SIDE CHAT AI & DASHBOARD DOCKED LAYOUT
+   ANTIGRAVITY-STYLE DOCKED CHAT & DASHBOARD WORKSPACE
    ==================================================================== */
-.main-app-container {
+.app-viewport-container {
     display: flex;
-    width: 100%;
-    min-height: 100vh;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
     position: relative;
-    overflow-x: hidden;
 }
 
-.dashboard-main-content {
+#dashboard-view {
     flex: 1;
-    min-width: 0;
-    transition: flex 0.3s ease, margin 0.3s ease;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
 }
 
-/* When Chat AI is opened by user */
-.chat-docked-open .dashboard-main-content {
-    flex: 1 1 calc(100% - 460px);
-    max-width: calc(100% - 460px);
+/* When Chat is open: shrink dashboard smoothly without squishing */
+body.chat-docked-active #dashboard-view {
+    width: calc(100% - 440px) !important;
+    flex: none !important;
 }
 
 .ai-slide-drawer,
 #ai-slide-drawer {
-    width: 460px;
-    min-width: 360px;
-    max-width: 600px;
+    width: 440px;
     height: 100vh;
-    position: sticky;
+    position: fixed;
     top: 0;
     right: 0;
-    border-left: 1px solid var(--card-border);
+    bottom: 0;
     background: var(--bg-secondary);
-    display: none; /* Only shown when opened by user */
+    border-left: 1px solid var(--card-border);
+    box-shadow: -6px 0 24px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+    display: flex;
     flex-direction: column;
-    z-index: 1000;
-    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
-    flex-shrink: 0;
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.chat-docked-open #ai-slide-drawer {
-    display: flex !important;
+body.chat-docked-active #ai-slide-drawer {
+    transform: translateX(0) !important;
 }
 
 .floating-dock-arrow {
@@ -2047,8 +2167,8 @@ body {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    z-index: 1001;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 10001;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.25);
     transition: transform 0.2s ease, background 0.2s ease;
 }
 
@@ -2068,19 +2188,18 @@ body {
     display: none !important;
 }
 
+body.chat-docked-active #btn-open-ai-fab,
+body.chat-docked-active #btn-open-ai-drawer {
+    display: none !important;
+}
+
 @media (max-width: 768px) {
-    .chat-docked-open .dashboard-main-content {
-        display: none;
+    body.chat-docked-active #dashboard-view {
+        display: none !important;
+        width: 100% !important;
     }
     #ai-slide-drawer {
         width: 100% !important;
-        min-width: 100% !important;
-        max-width: 100% !important;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
     }
     .floating-dock-arrow {
         left: 12px;
