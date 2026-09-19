@@ -245,13 +245,13 @@
 
             <!-- Stream Filter Tabs for Curriculum -->
             <div class="curriculum-filter-tabs" id="curriculum-stream-filter">
-                <button class="curriculum-tab-btn active" data-curriculum-stream="ALL">All Subjects</button>
-                <button class="curriculum-tab-btn" data-curriculum-stream="COMMON">1st Year Common</button>
-                <button class="curriculum-tab-btn" data-curriculum-stream="CSE">CSE</button>
-                <button class="curriculum-tab-btn" data-curriculum-stream="IT">IT</button>
+                <button class="curriculum-tab-btn landing-filter-btn active" data-curriculum-stream="ALL" data-stream="all">All Subjects</button>
+                <button class="curriculum-tab-btn landing-filter-btn" data-curriculum-stream="COMMON" data-stream="common">1st Year Common</button>
+                <button class="curriculum-tab-btn landing-filter-btn" data-curriculum-stream="CSE" data-stream="cse">CSE</button>
+                <button class="curriculum-tab-btn landing-filter-btn" data-curriculum-stream="IT" data-stream="it">IT</button>
             </div>
 
-            <div class="curriculum-cards-grid" id="curriculum-cards-container">
+            <div class="curriculum-cards-grid" id="landing-curriculum-grid">
                 <!-- Rendered dynamically by app.js with expandable Unit 1-5 accordions -->
             </div>
         </section>
@@ -272,12 +272,12 @@
                 <div class="filter-group">
                     <span class="filter-lbl">Year:</span>
                     <div class="filter-pills" id="pyq-year-pills">
-                        <button class="filter-pill active" data-pyq-year="ALL">All Years</button>
-                        <button class="filter-pill" data-pyq-year="2026">2026</button>
-                        <button class="filter-pill" data-pyq-year="2025">2025</button>
-                        <button class="filter-pill" data-pyq-year="2024">2024</button>
-                        <button class="filter-pill" data-pyq-year="2023">2023</button>
-                        <button class="filter-pill" data-pyq-year="2020">2020</button>
+                        <button class="filter-pill pyq-year-filter-btn active" data-pyq-year="ALL" data-year="all-years">All Years</button>
+                        <button class="filter-pill pyq-year-filter-btn" data-pyq-year="2026" data-year="2026">2026</button>
+                        <button class="filter-pill pyq-year-filter-btn" data-pyq-year="2025" data-year="2025">2025</button>
+                        <button class="filter-pill pyq-year-filter-btn" data-pyq-year="2024" data-year="2024">2024</button>
+                        <button class="filter-pill pyq-year-filter-btn" data-pyq-year="2023" data-year="2023">2023</button>
+                        <button class="filter-pill pyq-year-filter-btn" data-pyq-year="2020" data-year="2020">2020</button>
                     </div>
                 </div>
             </div>

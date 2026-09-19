@@ -666,16 +666,26 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             if (btnLandingAuth) btnLandingAuth.style.display = 'none';
 
-            renderLandingCurriculum('ALL');
-            renderLandingPyqRepo('ALL', 'ALL');
+            renderLandingCurriculumCards('all');
+            renderLandingPyqCatalog('all-years');
+            bindLandingFilterButtons();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+    }
+
+    function showLandingView() {
+        switchView('landing');
+    }
+
+    function showDashboardView() {
+        switchView('dashboard');
     }
 
     // Bidirectional Navigation Listeners
     if (btnNavToLanding) {
         btnNavToLanding.addEventListener('click', (e) => {
             e.preventDefault();
+            window.location.hash = '#landing';
             switchView('landing');
         });
     }
@@ -683,6 +693,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnNavToDashboard) {
         btnNavToDashboard.addEventListener('click', (e) => {
             e.preventDefault();
+            window.location.hash = '#dashboard';
             switchView('dashboard');
         });
     }
@@ -717,17 +728,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     // 5. Landing Page: Curriculum Explorer with Expandable Units
     // ==========================================
-    function renderLandingCurriculum(filterStream = 'ALL') {
-        const container = document.getElementById('curriculum-cards-container');
+    function renderLandingCurriculumCards(stream = 'all') {
+        const container = document.getElementById('landing-curriculum-grid') || document.getElementById('curriculum-cards-container');
         if (!container) return;
 
+        const sLower = (stream || 'all').toLowerCase();
         let filtered = MAKAUT_CURRICULUM;
-        if (filterStream === 'COMMON') {
+        if (sLower === 'common' || sLower === '1st-year-common') {
             filtered = MAKAUT_CURRICULUM.filter(s => s.isFirstYear || s.stream === 'GROUP_A' || s.stream === 'GROUP_B' || s.stream === 'COMMON');
-        } else if (filterStream === 'CSE') {
-            filtered = MAKAUT_CURRICULUM.filter(s => s.stream === 'CSE');
-        } else if (filterStream !== 'ALL') {
-            filtered = MAKAUT_CURRICULUM.filter(s => s.stream === filterStream);
+        } else if (sLower === 'cse') {
+            filtered = MAKAUT_CURRICULUM.filter(s => s.stream === 'CSE' || s.code.includes('CS') || s.code.includes('PH') || s.code.includes('M1') || s.code.includes('M2') || s.code.includes('EE'));
+        } else if (sLower === 'it') {
+            filtered = MAKAUT_CURRICULUM.filter(s => s.stream === 'IT' || s.code.includes('CS') || s.code.includes('CH') || s.code.includes('M1') || s.code.includes('M2') || s.code.includes('EE'));
+        } else if (sLower !== 'all' && sLower !== 'all subjects') {
+            filtered = MAKAUT_CURRICULUM.filter(s => (s.stream && s.stream.toLowerCase() === sLower) || (s.department && s.department.toLowerCase().includes(sLower)));
+            if (filtered.length === 0) filtered = MAKAUT_CURRICULUM;
         }
 
         container.innerHTML = filtered.map(sub => {
@@ -737,10 +752,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div>
                         <div class="curriculum-card-header">
                             <span class="landing-subject-code">${escapeHtml(sub.code)}</span>
-                            <span class="badge credit-badge" style="background: rgba(255,255,255,0.06); font-family: var(--font-mono);">${sub.credits} credits</span>
+                            <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
+                                <span class="badge credit-badge" style="background: rgba(255,255,255,0.06); font-family: var(--font-mono);">${sub.credits} credits</span>
+                                <span class="badge contact-hours-badge" style="background: rgba(255,255,255,0.05); font-family: var(--font-mono);">${sub.contactHours || 40} Contact Hours</span>
+                            </div>
                         </div>
                         <h3 class="curriculum-card-title">${escapeHtml(sub.name)}</h3>
                         <div class="curriculum-card-meta">${escapeHtml(sub.department)} • Semester ${sub.semester}</div>
+
+                        ${sub.syllabusUrl ? `
+                        <div style="margin: 0.5rem 0 0.85rem;">
+                            <button type="button" class="btn-curriculum-syllabus-pdf" data-title="${escapeHtml(sub.name)} Official Syllabus" data-url="${escapeHtml(sub.syllabusUrl)}">
+                                <span>📖</span> Official Syllabus PDF
+                            </button>
+                        </div>
+                        ` : ''}
 
                         <div class="curriculum-units-accordion">
                             ${units.map(u => `
@@ -761,7 +787,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
 
                     <div class="curriculum-card-action">
-                        <button class="btn-curriculum-track" data-code="${escapeHtml(sub.code)}">
+                        <button type="button" class="btn-curriculum-track" data-code="${escapeHtml(sub.code)}">
                             Track Checklist in Dashboard ➔
                         </button>
                     </div>
@@ -778,11 +804,22 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
+        // Wire Official Syllabus PDF button
+        container.querySelectorAll('.btn-curriculum-syllabus-pdf').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const title = btn.getAttribute('data-title');
+                const url = btn.getAttribute('data-url');
+                openPdfViewer(title, url);
+            });
+        });
+
         // Wire "Track Checklist in Dashboard" CTA
         container.querySelectorAll('.btn-curriculum-track').forEach(btn => {
             btn.addEventListener('click', () => {
                 const code = btn.getAttribute('data-code');
                 if (isLoggedIn) {
+                    window.location.hash = '#dashboard';
                     switchView('dashboard');
                     openSubjectHub(code);
                 } else {
@@ -792,22 +829,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Stream filter tabs for Curriculum Explorer
-    document.querySelectorAll('#curriculum-stream-filter .curriculum-tab-btn').forEach(tab => {
-        tab.addEventListener('click', () => {
-            document.querySelectorAll('#curriculum-stream-filter .curriculum-tab-btn').forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            const stream = tab.getAttribute('data-curriculum-stream') || 'ALL';
-            renderLandingCurriculum(stream);
-        });
-    });
+    function renderLandingCurriculum(filterStream = 'ALL') {
+        renderLandingCurriculumCards(filterStream);
+    }
 
     // ==========================================
     // 6. Landing Page: PYQ Archives Repository
     // ==========================================
     let currentPyqYearFilter = 'ALL';
 
-    function renderLandingPyqRepo(yearFilter = 'ALL') {
+    function renderLandingPyqCatalog(year = 'all-years') {
         const grid = document.getElementById('landing-pyq-grid');
         if (!grid) return;
 
@@ -827,13 +858,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         let filtered = allPapers;
-        if (yearFilter !== 'ALL') {
-            const yr = parseInt(yearFilter, 10);
-            filtered = filtered.filter(p => p.year === yr);
+        const yStr = (year || 'all-years').toString().toLowerCase();
+        if (yStr !== 'all-years' && yStr !== 'all' && yStr !== 'all years') {
+            const yr = parseInt(yStr, 10);
+            if (!isNaN(yr)) {
+                filtered = allPapers.filter(p => p.year === yr);
+            }
         }
 
         if (filtered.length === 0) {
-            grid.innerHTML = '<div style="grid-column: 1/-1; padding: 2.5rem; text-align: center; color: var(--text-muted);">No past papers matching this filter. Try selecting "All Papers".</div>';
+            grid.innerHTML = '<div style="grid-column: 1/-1; padding: 2.5rem; text-align: center; color: var(--text-muted);">No past papers matching this filter. Try selecting "All Years".</div>';
             return;
         }
 
@@ -842,19 +876,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div>
                     <div class="pyq-repo-card-top">
                         <span class="pyq-paper-code">${escapeHtml(p.subjectCode)}</span>
-                        <span class="pyq-year-tag">${p.year}</span>
+                        <div style="display: flex; align-items: center; gap: 0.35rem;">
+                            <span class="badge" style="background: rgba(99, 102, 241, 0.15); color: var(--accent-primary); font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">${p.type === 'MID_SEM' ? 'Mid Sem' : 'End Sem Exam'}</span>
+                            <span class="pyq-year-tag">${p.year}</span>
+                        </div>
                     </div>
-                    <h4 class="pyq-repo-title">${escapeHtml(p.subjectName)}</h4>
+                    <h4 class="pyq-repo-title">${escapeHtml(p.title || p.subjectName)}</h4>
                     <div class="pyq-repo-meta">
-                        <span>70 Marks Theory • Verified Official Paper</span>
+                        <span>${escapeHtml(p.subjectName)} • 70 Marks Theory • Verified Official Paper</span>
                     </div>
                 </div>
 
                 <div class="pyq-repo-actions">
-                    <button class="btn-preview-paper" data-title="${escapeHtml(p.title)}" data-url="${escapeHtml(p.fileUrl)}">
+                    <button type="button" class="btn-preview-paper" data-title="${escapeHtml(p.title)}" data-url="${escapeHtml(p.fileUrl)}">
                         👁 Preview Paper
                     </button>
-                    <button class="btn-download-paper btn-download-pdf-gate" data-subject="${escapeHtml(p.subjectCode)}" data-paper="${p.year}" data-name="${escapeHtml(p.title)}" data-url="${escapeHtml(p.fileUrl)}">
+                    <button type="button" class="btn-download-paper btn-download-pdf-gate" data-subject="${escapeHtml(p.subjectCode)}" data-paper="${p.year}" data-name="${escapeHtml(p.title)}" data-url="${escapeHtml(p.fileUrl)}">
                         📥 Download PDF
                     </button>
                 </div>
@@ -889,15 +926,81 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // PYQ Year Pills
-    document.querySelectorAll('#pyq-year-pills .filter-pill').forEach(pill => {
-        pill.addEventListener('click', () => {
-            document.querySelectorAll('#pyq-year-pills .filter-pill').forEach(p => p.classList.remove('active'));
-            pill.classList.add('active');
-            currentPyqYearFilter = pill.getAttribute('data-pyq-year') || 'ALL';
-            renderLandingPyqRepo(currentPyqYearFilter);
+    function renderLandingPyqRepo(yearFilter = 'ALL') {
+        renderLandingPyqCatalog(yearFilter);
+    }
+
+    // Wire All Landing Filter Buttons & PYQ Year Filters
+    function bindLandingFilterButtons() {
+        // 1. Curriculum Stream Filter Buttons
+        document.querySelectorAll('.landing-filter-btn').forEach(btn => {
+            btn.onclick = (e) => {
+                e.preventDefault();
+                document.querySelectorAll('.landing-filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const stream = btn.getAttribute('data-stream') || 'all';
+                renderLandingCurriculumCards(stream);
+            };
         });
-    });
+        document.querySelectorAll('#curriculum-stream-filter .curriculum-tab-btn').forEach(tab => {
+            if (!tab.classList.contains('landing-filter-btn')) {
+                tab.onclick = (e) => {
+                    e.preventDefault();
+                    document.querySelectorAll('#curriculum-stream-filter .curriculum-tab-btn').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    const stream = tab.getAttribute('data-curriculum-stream') || 'ALL';
+                    renderLandingCurriculumCards(stream);
+                };
+            }
+        });
+
+        // 2. PYQ Archive Year Filter Buttons
+        document.querySelectorAll('.pyq-year-filter-btn').forEach(btn => {
+            btn.onclick = (e) => {
+                e.preventDefault();
+                document.querySelectorAll('.pyq-year-filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const year = btn.getAttribute('data-year') || 'all-years';
+                renderLandingPyqCatalog(year);
+            };
+        });
+        document.querySelectorAll('#pyq-year-pills .filter-pill').forEach(pill => {
+            if (!pill.classList.contains('pyq-year-filter-btn')) {
+                pill.onclick = (e) => {
+                    e.preventDefault();
+                    document.querySelectorAll('#pyq-year-pills .filter-pill').forEach(p => p.classList.remove('active'));
+                    pill.classList.add('active');
+                    currentPyqYearFilter = pill.getAttribute('data-pyq-year') || 'ALL';
+                    renderLandingPyqCatalog(currentPyqYearFilter);
+                };
+            }
+        });
+    }
+
+    function initLandingPage() {
+        showLandingView();
+        renderLandingCurriculumCards('all');
+        renderLandingPyqCatalog('all-years');
+        bindLandingFilterButtons();
+    }
+
+    function handleRouting() {
+        const hash = window.location.hash || '#landing';
+        if (hash.includes('landing') || hash === '#' || hash === '') {
+            showLandingView();
+            renderLandingCurriculumCards('all');
+            renderLandingPyqCatalog('all-years');
+            bindLandingFilterButtons();
+            if (hash && hash.startsWith('#landing-')) {
+                const target = document.querySelector(hash);
+                if (target) {
+                    setTimeout(() => target.scrollIntoView({ behavior: 'smooth' }), 60);
+                }
+            }
+        } else {
+            showDashboardView();
+        }
+    }
 
     // ==========================================
     // 7. Hero & Bento Feature Grid CTA Triggers
@@ -2565,6 +2668,7 @@ document.addEventListener('DOMContentLoaded', () => {
             closeAiDrawer();
             closeSavedDeckDrawer();
             document.querySelectorAll('.modal-backdrop').forEach(m => m.style.display = 'none');
+        }
     });
 
     // Hero Search Input Wiring
@@ -3769,11 +3873,22 @@ document.addEventListener('DOMContentLoaded', () => {
     setupChatHistoryDropdown();
 
     // ==========================================
-    // 19. Initial View Boot
+    // 19. Initial View Boot & Routing Setup
     // ==========================================
-    if (isLoggedIn) {
-        switchView('dashboard');
-    } else {
-        switchView('landing');
+    window.handleRouting = handleRouting;
+    window.initLandingPage = initLandingPage;
+    window.showLandingView = showLandingView;
+    window.showDashboardView = showDashboardView;
+    window.renderLandingCurriculumCards = renderLandingCurriculumCards;
+    window.renderLandingPyqCatalog = renderLandingPyqCatalog;
+    window.bindLandingFilterButtons = bindLandingFilterButtons;
+
+    window.addEventListener('hashchange', handleRouting);
+    handleRouting();
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+    if (typeof window.handleRouting === 'function') {
+        window.handleRouting();
     }
 });

@@ -2846,7 +2846,8 @@ body {
     margin-bottom: 2.25rem;
 }
 
-.curriculum-tab-btn {
+.curriculum-tab-btn,
+.landing-filter-btn {
     background: var(--surface-glass);
     border: 1px solid var(--card-border);
     color: var(--text-muted);
@@ -2859,12 +2860,14 @@ body {
     transition: var(--transition-fast);
 }
 
-.curriculum-tab-btn:hover {
+.curriculum-tab-btn:hover,
+.landing-filter-btn:hover {
     background: rgba(255, 255, 255, 0.08);
     color: var(--text-main);
 }
 
-.curriculum-tab-btn.active {
+.curriculum-tab-btn.active,
+.landing-filter-btn.active {
     background: var(--accent-primary);
     color: #fff;
     border-color: var(--accent-primary);
@@ -3006,6 +3009,29 @@ body {
     border-color: var(--accent-primary);
 }
 
+.btn-curriculum-syllabus-pdf {
+    background: rgba(99, 102, 241, 0.12);
+    border: 1px solid rgba(99, 102, 241, 0.35);
+    color: var(--accent-primary);
+    padding: 0.4rem 0.85rem;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: var(--transition-fast);
+}
+
+.btn-curriculum-syllabus-pdf:hover {
+    background: var(--accent-primary);
+    color: #ffffff;
+    border-color: var(--accent-primary);
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+}
+
 /* ==========================================================
    Section 2: Past Examination Papers (PYQ Archives)
    ========================================================== */
@@ -3042,7 +3068,8 @@ body {
     gap: 0.4rem;
 }
 
-.filter-pill {
+.filter-pill,
+.pyq-year-filter-btn {
     background: var(--surface-glass);
     border: 1px solid var(--card-border);
     color: var(--text-muted);
@@ -3055,12 +3082,14 @@ body {
     transition: var(--transition-fast);
 }
 
-.filter-pill:hover {
+.filter-pill:hover,
+.pyq-year-filter-btn:hover {
     background: rgba(255, 255, 255, 0.08);
     color: var(--text-main);
 }
 
-.filter-pill.active {
+.filter-pill.active,
+.pyq-year-filter-btn.active {
     background: var(--accent-emerald);
     color: #fff;
     border-color: var(--accent-emerald);
