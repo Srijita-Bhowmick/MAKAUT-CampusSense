@@ -2120,7 +2120,7 @@ body {
 .dashboard-main-canvas {
   flex: 1 1 100%;
   min-width: 0;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: flex 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* When Chat AI is toggled open by the user */
@@ -4551,11 +4551,12 @@ body {
   --card-bg: #ffffff;
   --card-hover: #f1f5f9;
   --card-border: #cbd5e1;
-  --text-main: #090d16;        /* Deep dark slate */
+  --text-main: #090d16;        /* Deep saturated dark slate */
   --text-muted: #1e293b;       /* Crisp dark tone */
   --text-subtle: #475569;      /* Readable secondary text */
   --accent-primary: #3730a3;
   --accent-flame: #c2410c;
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 /* Strict dark text enforcement in Light Mode */
