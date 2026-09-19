@@ -2652,7 +2652,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (aiDrawer) aiDrawer.classList.add('open');
         const arrowGlyph = dockArrowGlyph || (btnChatDockCollapse ? (btnChatDockCollapse.querySelector('#dock-arrow-glyph') || btnChatDockCollapse.querySelector('.arrow-glyph')) : null);
-        if (arrowGlyph) arrowGlyph.textContent = '◄ ►';
+        if (arrowGlyph) arrowGlyph.textContent = '▶';
+        if (btnChatDockCollapse) btnChatDockCollapse.title = "Collapse Side-by-Side Chat Workspace";
+
+        // Dynamically scale main dashboard pane side-by-side with drawer
+        const drawerW = parseInt(document.documentElement.style.getPropertyValue('--chat-drawer-width')) || (aiDrawer ? aiDrawer.getBoundingClientRect().width : 460);
+        const mainPane = document.querySelector('.dashboard-main-pane');
+        if (mainPane) {
+            mainPane.style.flex = `1 1 calc(100% - ${drawerW + 24}px)`;
+            mainPane.style.maxWidth = `calc(100% - ${drawerW + 24}px)`;
+        }
+
         renderChatHistoryDropdown();
         if (drawerQueryInput) {
             drawerQueryInput.placeholder = "Ask a MAKAUT academic query...";
@@ -2673,8 +2683,14 @@ document.addEventListener('DOMContentLoaded', () => {
             dashboardWorkspace.classList.remove('chat-workspace-active');
         }
         if (aiDrawer) aiDrawer.classList.remove('open');
+        const mainPane = document.querySelector('.dashboard-main-pane');
+        if (mainPane) {
+            mainPane.style.flex = '1 1 100%';
+            mainPane.style.maxWidth = '100%';
+        }
         const arrowGlyph = dockArrowGlyph || (btnChatDockCollapse ? (btnChatDockCollapse.querySelector('#dock-arrow-glyph') || btnChatDockCollapse.querySelector('.arrow-glyph')) : null);
-        if (arrowGlyph) arrowGlyph.textContent = '◄ ►';
+        if (arrowGlyph) arrowGlyph.textContent = '◀';
+        if (btnChatDockCollapse) btnChatDockCollapse.title = "Expand Side-by-Side Chat Workspace";
     }
 
     function toggleAiDrawer() {
@@ -3859,22 +3875,34 @@ document.addEventListener('DOMContentLoaded', () => {
     function setupDrawerResize() {
         const resizeHandle = document.getElementById('drawer-resize-handle');
         const drawer = document.getElementById('ai-slide-drawer');
+        const mainPane = document.querySelector('.dashboard-main-pane');
         if (!drawer) return;
 
         if (drawerQueryInput) {
             drawerQueryInput.placeholder = "Ask a MAKAUT academic query...";
         }
 
-        if (resizeHandle) {
-            let isResizing = false;
-            let startX = 0;
-            let startWidth = 460;
+        let isResizing = false;
+        let startX = 0;
+        let startWidth = 460;
 
+        function applyWidth(newWidth) {
+            const boundedWidth = Math.min(Math.max(newWidth, 320), Math.min(window.innerWidth * 0.75, 850));
+            document.documentElement.style.setProperty('--chat-drawer-width', `${boundedWidth}px`);
+            drawer.style.width = `${boundedWidth}px`;
+            if (mainPane && (document.body.classList.contains('split-chat-active') || document.body.classList.contains('chat-workspace-active') || drawer.classList.contains('open'))) {
+                mainPane.style.flex = `1 1 calc(100% - ${boundedWidth + 24}px)`;
+                mainPane.style.maxWidth = `calc(100% - ${boundedWidth + 24}px)`;
+            }
+        }
+
+        if (resizeHandle) {
             resizeHandle.addEventListener('mousedown', (e) => {
                 isResizing = true;
                 startX = e.clientX;
                 startWidth = drawer.getBoundingClientRect().width;
                 resizeHandle.classList.add('resizing');
+                document.body.classList.add('is-drawer-resizing');
                 document.body.style.cursor = 'ew-resize';
                 document.body.style.userSelect = 'none';
             });
@@ -3882,18 +3910,31 @@ document.addEventListener('DOMContentLoaded', () => {
             window.addEventListener('mousemove', (e) => {
                 if (!isResizing) return;
                 const deltaX = startX - e.clientX;
-                const newWidth = Math.min(Math.max(startWidth + deltaX, 340), 800);
-                drawer.style.width = `${newWidth}px`;
+                applyWidth(startWidth + deltaX);
             });
 
             window.addEventListener('mouseup', () => {
                 if (isResizing) {
                     isResizing = false;
                     resizeHandle.classList.remove('resizing');
+                    document.body.classList.remove('is-drawer-resizing');
                     document.body.style.cursor = '';
                     document.body.style.userSelect = '';
                 }
             });
+        }
+
+        if (window.ResizeObserver) {
+            const ro = new ResizeObserver(entries => {
+                if (isResizing) return;
+                for (let entry of entries) {
+                    const cr = entry.contentRect;
+                    if (cr.width > 0 && Math.abs(cr.width - startWidth) > 3) {
+                        applyWidth(cr.width);
+                    }
+                }
+            });
+            ro.observe(drawer);
         }
     }
 
