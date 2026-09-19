@@ -734,7 +734,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div>
                         <div class="curriculum-card-header">
                             <span class="landing-subject-code">${escapeHtml(sub.code)}</span>
-                            <span class="badge" style="background: rgba(255,255,255,0.06); font-family: var(--font-mono);">${sub.credits} Credits</span>
+                            <span class="badge credit-badge" style="background: rgba(255,255,255,0.06); font-family: var(--font-mono);">${sub.credits} credits</span>
                         </div>
                         <h3 class="curriculum-card-title">${escapeHtml(sub.name)}</h3>
                         <div class="curriculum-card-meta">${escapeHtml(sub.department)} • Semester ${sub.semester}</div>
@@ -1338,7 +1338,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="subject-card-top">
                             <span class="subject-code-tag">${escapeHtml(codeDisplay)}</span>
                             <div style="display: flex; gap: 0.35rem; align-items: center;">
-                                <span class="badge credit-badge" style="background: rgba(255,255,255,0.06); font-family: var(--font-mono);">${sub.credits} Credits</span>
+                                <span class="badge credit-badge" style="background: rgba(255,255,255,0.06); font-family: var(--font-mono);">${sub.credits} credits</span>
                             </div>
                         </div>
                         <div class="subject-item-title">${escapeHtml(sub.name)}</div>
@@ -1442,7 +1442,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (codeEl) codeEl.textContent = subject.code + (subject.altCode ? ` / ${subject.altCode}` : '');
         if (nameEl) nameEl.textContent = subject.name;
         if (streamEl) streamEl.textContent = subject.isFirstYear ? `1st Year Common Scheme` : `${subject.department} • Sem ${subject.semester}`;
-        if (creditsEl) creditsEl.textContent = `${subject.credits} Credits`;
+        if (creditsEl) creditsEl.textContent = `${subject.credits} credits`;
 
         // Render Tabs
         renderHubChecklist(subject, targetModNum);
@@ -2204,20 +2204,21 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         list.innerHTML = searchbarHistory.map((item, idx) => `
-            <li class="search-history-item ${idx === searchHistoryActiveIndex ? 'active' : ''}" data-index="${idx}" data-query="${escapeHtml(item)}">
-                <span class="history-item-text">🕒 ${escapeHtml(item)}</span>
-                <button type="button" class="btn-delete-history-item" title="Remove query" onclick="removeSearchHistoryItem(event, ${idx})">✕</button>
+            <li class="search-history-item ${idx === searchHistoryActiveIndex ? 'active' : ''}" data-index="${idx}">
+                <span class="history-item-text">${escapeHtml(item)}</span>
+                <button type="button" class="btn-delete-history-item" title="Remove search" onclick="removeSearchHistoryItem(event, ${idx})">✕</button>
             </li>
         `).join('');
 
         list.querySelectorAll('.search-history-item').forEach(li => {
             li.addEventListener('click', (e) => {
                 if (e.target.closest('.btn-delete-history-item')) return;
-                const q = li.getAttribute('data-query');
+                const idx = parseInt(li.getAttribute('data-index'), 10);
+                const q = searchbarHistory[idx];
                 dropdown.style.display = 'none';
                 searchHistoryActiveIndex = -1;
-                if (heroSearchInput) heroSearchInput.value = q;
-                handleGlobalSearch(q);
+                if (heroSearchInput && q) heroSearchInput.value = q;
+                if (q) handleGlobalSearch(q);
             });
         });
     }
@@ -2503,9 +2504,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const drawerChatMessages = document.getElementById('drawer-chat-messages');
 
     function openAiDrawer(initialQuery = '') {
+        document.body.classList.add('chat-workspace-active');
         document.body.classList.add('chat-docked-active');
+        if (mainViewportContainer) mainViewportContainer.classList.add('chat-workspace-active');
         if (aiDrawer) aiDrawer.classList.add('open');
-        renderDrawerHistoryPills();
+        const arrowGlyph = btnChatDockCollapse ? (btnChatDockCollapse.querySelector('.arrow-glyph') || btnChatDockCollapse.querySelector('.dock-arrow-icon')) : null;
+        if (arrowGlyph) arrowGlyph.textContent = '▶';
+        renderChatHistoryDropdown();
         if (initialQuery && drawerQueryInput) {
             drawerQueryInput.value = initialQuery;
             executeAiQuery(initialQuery);
@@ -2515,11 +2520,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function closeAiDrawer() {
+        document.body.classList.remove('chat-workspace-active');
         document.body.classList.remove('chat-docked-active');
+        if (mainViewportContainer) mainViewportContainer.classList.remove('chat-workspace-active');
         if (aiDrawer) aiDrawer.classList.remove('open');
+        const arrowGlyph = btnChatDockCollapse ? (btnChatDockCollapse.querySelector('.arrow-glyph') || btnChatDockCollapse.querySelector('.dock-arrow-icon')) : null;
+        if (arrowGlyph) arrowGlyph.textContent = '◀';
     }
 
-    if (btnChatDockCollapse) btnChatDockCollapse.addEventListener('click', closeAiDrawer);
+    function toggleAiDrawer() {
+        if (document.body.classList.contains('chat-workspace-active') || document.body.classList.contains('chat-docked-active')) {
+            closeAiDrawer();
+        } else {
+            openAiDrawer();
+        }
+    }
+
+    if (btnChatDockCollapse) btnChatDockCollapse.addEventListener('click', toggleAiDrawer);
     if (btnOpenAiFab) btnOpenAiFab.addEventListener('click', () => openAiDrawer());
     if (btnCloseAiDrawer) btnCloseAiDrawer.addEventListener('click', closeAiDrawer);
     if (aiDrawerBackdrop) aiDrawerBackdrop.addEventListener('click', closeAiDrawer);
@@ -2528,7 +2545,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('keydown', (e) => {
         if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
             e.preventDefault();
-            if (document.body.classList.contains('chat-docked-active')) {
+            if (document.body.classList.contains('chat-workspace-active') || document.body.classList.contains('chat-docked-active')) {
                 closeAiDrawer();
             } else {
                 openAiDrawer();

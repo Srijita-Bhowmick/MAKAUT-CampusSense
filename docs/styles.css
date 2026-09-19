@@ -2105,107 +2105,119 @@ body {
 }
 
 /* ====================================================================
-   ANTIGRAVITY-STYLE DOCKED CHAT & DASHBOARD WORKSPACE
+   ANTIGRAVITY-STYLE SIDE-BY-SIDE CHAT & DASHBOARD WORKSPACE
    ==================================================================== */
+.main-app-viewport,
 .app-viewport-container {
-    display: flex;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    position: relative;
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
 }
 
+.dashboard-main-canvas,
 #dashboard-view {
-    flex: 1;
-    height: 100vh;
-    overflow-y: auto;
-    overflow-x: hidden;
-    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    width: 100%;
+  flex: 1;
+  min-width: 0;
+  transition: flex 0.3s ease;
 }
 
-/* When Chat is open: shrink dashboard smoothly without squishing */
+/* When Chat AI is opened by user */
+.chat-workspace-active .dashboard-main-canvas,
+.chat-workspace-active #dashboard-view,
+body.chat-docked-active .dashboard-main-canvas,
 body.chat-docked-active #dashboard-view {
-    width: calc(100% - 440px) !important;
-    flex: none !important;
+  flex: 1 1 calc(100% - 460px);
+  max-width: calc(100% - 460px);
 }
 
-.ai-slide-drawer,
-#ai-slide-drawer {
-    width: 440px;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    background: var(--bg-secondary);
-    border-left: 1px solid var(--card-border);
-    box-shadow: -6px 0 24px rgba(0, 0, 0, 0.3);
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    transform: translateX(100%);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+#ai-slide-drawer,
+.ai-slide-drawer {
+  width: 460px;
+  min-width: 360px;
+  max-width: 650px;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  right: 0;
+  border-left: 1px solid var(--card-border);
+  background: var(--bg-secondary);
+  display: none; /* Hidden by default until toggled */
+  flex-direction: column;
+  z-index: 1000;
+  box-shadow: -6px 0 24px rgba(0, 0, 0, 0.15);
 }
 
-body.chat-docked-active #ai-slide-drawer {
-    transform: translateX(0) !important;
+.chat-workspace-active #ai-slide-drawer,
+.chat-workspace-active .ai-slide-drawer,
+body.chat-docked-active #ai-slide-drawer,
+body.chat-docked-active .ai-slide-drawer {
+  display: flex !important;
 }
 
+.floating-partition-arrow,
 .floating-dock-arrow {
-    position: absolute;
-    left: -16px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: var(--accent-primary);
-    color: #ffffff;
-    border: 2px solid var(--bg-secondary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 10001;
-    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.25);
-    transition: transform 0.2s ease, background 0.2s ease;
+  position: absolute;
+  left: -16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  color: #ffffff;
+  border: 2px solid var(--bg-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1001;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, background 0.2s ease;
 }
 
+.floating-partition-arrow:hover,
 .floating-dock-arrow:hover {
-    transform: translateY(-50%) scale(1.1);
-    background: var(--accent-flame);
+  transform: translateY(-50%) scale(1.1);
+  background: var(--accent-flame);
 }
 
+.arrow-glyph,
 .dock-arrow-icon {
-    font-size: 0.75rem;
-    line-height: 1;
-    display: inline-block;
-    margin-left: 2px;
+  font-size: 0.75rem;
+  line-height: 1;
+  display: inline-block;
+  margin-left: 2px;
 }
 
 #ai-drawer-backdrop {
-    display: none !important;
+  display: none !important;
 }
 
+.chat-workspace-active #btn-open-ai-fab,
 body.chat-docked-active #btn-open-ai-fab,
+.chat-workspace-active #btn-open-ai-drawer,
 body.chat-docked-active #btn-open-ai-drawer {
-    display: none !important;
+  display: none !important;
 }
 
 @media (max-width: 768px) {
-    body.chat-docked-active #dashboard-view {
-        display: none !important;
-        width: 100% !important;
-    }
-    #ai-slide-drawer {
-        width: 100% !important;
-    }
-    .floating-dock-arrow {
-        left: 12px;
-        top: 16px;
-        transform: none;
-    }
+  .chat-workspace-active .dashboard-main-canvas,
+  body.chat-docked-active #dashboard-view {
+    display: none !important;
+    width: 100% !important;
+  }
+  #ai-slide-drawer {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .floating-partition-arrow,
+  .floating-dock-arrow {
+    left: 12px;
+    top: 16px;
+    transform: none;
+  }
 }
 
 .drawer-header {
@@ -4521,3 +4533,127 @@ body.chat-docked-active #btn-open-ai-drawer {
     color: #0f172a !important;
     border: 1px solid #94a3b8 !important;
 }
+
+/* ====================================================================
+   Phase 2: Bento Dashboard Card Typography & Single-Line Enforcement
+   ==================================================================== */
+.progress-label,
+.units-completed-text,
+.credit-badge,
+.subject-credits {
+  white-space: nowrap !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+
+/* ====================================================================
+   Phase 5: High-Contrast Light Mode Overhaul (Dark Font on Light Background)
+   ==================================================================== */
+[data-theme="light"] {
+  --bg-main: #f8fafc;
+  --bg-secondary: #ffffff;
+  --card-bg: #ffffff;
+  --card-hover: #f1f5f9;
+  --card-border: #cbd5e1;
+  --text-main: #090d16;        /* Deep saturated dark slate */
+  --text-muted: #1e293b;       /* Readable dark slate */
+  --text-subtle: #475569;      /* Crisp secondary text */
+  --accent-primary: #3730a3;   /* High-contrast deep indigo */
+  --accent-flame: #c2410c;
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* Strict dark text enforcement in Light Mode */
+[data-theme="light"] body,
+[data-theme="light"] p,
+[data-theme="light"] span,
+[data-theme="light"] h1,
+[data-theme="light"] h2,
+[data-theme="light"] h3,
+[data-theme="light"] h4,
+[data-theme="light"] input,
+[data-theme="light"] textarea,
+[data-theme="light"] .subject-item-title,
+[data-theme="light"] .unit-title,
+[data-theme="light"] .pyq-paper-title,
+[data-theme="light"] .chat-bubble-ai,
+[data-theme="light"] .regulation-alert-card p {
+  color: #090d16 !important;
+}
+
+/* High-contrast light mode cards, borders, and badges */
+[data-theme="light"] .bento-card,
+[data-theme="light"] .bento-card-subjects,
+[data-theme="light"] .bento-card-pyq,
+[data-theme="light"] .hero-action-tile,
+[data-theme="light"] .pyq-archive-card,
+[data-theme="light"] .saved-deck-card,
+[data-theme="light"] .chat-bubble-ai,
+[data-theme="light"] .search-history-dropdown,
+[data-theme="light"] #search-history-dropdown,
+[data-theme="light"] .search-history-dropdown-menu,
+[data-theme="light"] .chat-history-dropdown-menu,
+[data-theme="light"] #chat-history-dropdown {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-theme="light"] .badge,
+[data-theme="light"] .credit-badge,
+[data-theme="light"] .unit-hours-badge {
+  background: #e2e8f0 !important;
+  color: #0f172a !important;
+  border: 1px solid #94a3b8 !important;
+}
+
+[data-theme="light"] .unit-checkbox-custom {
+  border: 2px solid #475569 !important;
+  background: #ffffff !important;
+}
+
+/* Theme-Scoped Modal Contrast Protection (Ensure Dark Modals Retain White Text) */
+:root .modal-card,
+[data-theme="dark"] .modal-card,
+[data-theme="light"] .modal-card,
+.modal-card,
+.onboarding-card,
+.subject-hub-card,
+.panic-mode-card,
+.auth-modal-card,
+.feedback-modal-card {
+  background: #0f172a !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #f8fafc !important;
+}
+
+[data-theme="light"] .modal-card h1,
+[data-theme="light"] .modal-card h2,
+[data-theme="light"] .modal-card h3,
+[data-theme="light"] .modal-card h4,
+[data-theme="light"] .modal-card p,
+[data-theme="light"] .modal-card span:not(.badge):not(.year-btn-icon):not(.stream-icon),
+[data-theme="light"] .modal-card label,
+[data-theme="light"] .modal-card .modal-title,
+[data-theme="light"] .modal-card .modal-subtitle,
+[data-theme="light"] .modal-card .year-btn-title,
+[data-theme="light"] .modal-card .year-btn-sub,
+[data-theme="light"] .modal-card .stream-name,
+[data-theme="light"] .modal-card .stream-desc,
+[data-theme="light"] .modal-card .unit-item-title,
+[data-theme="light"] .modal-card .unit-subtopics-text,
+[data-theme="light"] .modal-card .checklist-instructions,
+[data-theme="light"] .modal-card .panic-question-card,
+[data-theme="light"] .modal-card .panic-full-q-text {
+  color: #f8fafc !important;
+}
+
+[data-theme="light"] .modal-card input,
+[data-theme="light"] .modal-card textarea,
+[data-theme="light"] .modal-card select {
+  background: #1e293b !important;
+  color: #f8fafc !important;
+  border: 1px solid #334155 !important;
+}
+

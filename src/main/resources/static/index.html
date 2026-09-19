@@ -300,8 +300,8 @@
     <!-- ====================================================================
          VIEW B: BENTO GRID DASHBOARD & ANTIGRAVITY DOCKED CHAT WORKSPACE
          ==================================================================== -->
-    <div class="app-viewport-container" id="main-viewport-container">
-        <main class="main-layout" id="dashboard-view" style="display: none;">
+    <div class="main-app-viewport" id="main-viewport-container">
+        <main class="main-layout dashboard-main-canvas" id="dashboard-view" style="display: none;">
         <!-- Hero Search Section -->
         <section class="hero-search-section">
             <div class="search-hero-container">
@@ -444,10 +444,10 @@
         </section>
     </main>
 
-        <!-- Side-by-Side Chat Dock -->
+        <!-- Side-by-Side Docked Chat Panel -->
         <aside class="ai-slide-drawer" id="ai-slide-drawer">
-            <button id="btn-chat-dock-collapse" class="floating-dock-arrow" type="button" title="Toggle Chat Panel">
-                <span class="dock-arrow-icon">▶</span>
+            <button id="btn-chat-dock-collapse" class="floating-partition-arrow" type="button" title="Toggle Chat Panel">
+                <span class="arrow-glyph">▶</span>
             </button>
             <div class="drawer-header">
                 <div class="drawer-title-group">
@@ -459,9 +459,7 @@
                 </div>
                 <div class="drawer-header-actions">
                     <div class="chat-history-container">
-                        <button id="btn-chat-history" class="btn-chat-history-toggle btn-history-toggle" type="button">
-                            🕒 History ▾
-                        </button>
+                        <button id="btn-chat-history" class="btn-chat-history-toggle" type="button">🕒 History ▾</button>
                         <div id="chat-history-dropdown" class="chat-history-dropdown-menu history-dropdown-panel" style="display: none;">
                             <div class="chat-history-dropdown-header history-dropdown-header">
                                 <span>Past Prompts</span>
@@ -690,7 +688,7 @@
                     <div class="hub-meta-row">
                         <span class="badge" id="hub-subject-code">BS-M101</span>
                         <span class="stat-pill" id="hub-subject-stream">1st Year Common • Sem 1</span>
-                        <span class="badge" id="hub-credits-badge">4 Credits</span>
+                        <span class="badge credit-badge" id="hub-credits-badge">4 credits</span>
                     </div>
                     <h2 class="hub-title" id="hub-subject-name">Mathematics 1A</h2>
                 </div>
