@@ -20,13 +20,7 @@
         })();
     </script>
     <!-- Clerk Authentication & User Tracking SDK -->
-    <script
-      async
-      crossorigin="anonymous"
-      data-clerk-publishable-key="YOUR_CLERK_PUBLISHABLE_KEY"
-      src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"
-      type="text/javascript"
-    ></script>
+    <script async crossorigin="anonymous" data-clerk-publishable-key="YOUR_CLERK_PUBLISHABLE_KEY" src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js" type="text/javascript"></script>
 </head>
 <body>
     <div class="background-mesh"></div>
@@ -519,6 +513,9 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Clerk Sign-In Mounting Container -->
+            <div id="clerk-sign-in"></div>
 
             <!-- Status / Notification Message Area -->
             <div id="auth-status-message" class="auth-status-msg" style="display: none;"></div>

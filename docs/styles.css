@@ -1413,6 +1413,20 @@ body {
   border: 1px solid #cbd5e1 !important;
 }
 
+[data-theme="light"] .cl-card,
+[data-theme="light"] .cl-internal-b3fm6y,
+[data-theme="light"] .cl-rootBox {
+  background-color: #ffffff !important;
+  color: #090d16 !important;
+}
+
+[data-theme="light"] .cl-socialButtonsBlockButton,
+[data-theme="light"] .cl-formFieldInput {
+  background-color: #ffffff !important;
+  color: #090d16 !important;
+  border-color: #cbd5e1 !important;
+}
+
 .auth-footer {
     margin-top: 1.5rem;
     font-size: 0.72rem;

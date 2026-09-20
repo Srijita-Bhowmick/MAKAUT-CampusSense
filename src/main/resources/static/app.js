@@ -56,9 +56,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function downloadPdfFile(fileUrl, preferredName) {
-        if (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
+        if ((!window.Clerk?.user) && (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true')) {
             const resolved = resolveAssetPath(fileUrl);
             sessionStorage.setItem('pending_download_action', JSON.stringify({ action: 'download', fileUrl: resolved, title: preferredName }));
+            if (window.Clerk && typeof window.Clerk.openSignIn === 'function') {
+                window.Clerk.openSignIn({
+                    appearance: {
+                        elements: {
+                            rootBox: "mx-auto",
+                            card: "shadow-2xl rounded-2xl border border-slate-200 bg-white text-slate-900"
+                        }
+                    }
+                });
+                return;
+            }
             showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
             return;
         }
@@ -893,12 +904,24 @@ document.addEventListener('DOMContentLoaded', () => {
         container.querySelectorAll('.btn-curriculum-syllabus-pdf').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
-                if (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
+                const title = btn.getAttribute('data-title');
+                const url = btn.getAttribute('data-url');
+                if ((!window.Clerk?.user) && (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true')) {
+                    sessionStorage.setItem('pending_download_action', JSON.stringify({ action: 'preview', fileUrl: url, title }));
+                    if (window.Clerk && typeof window.Clerk.openSignIn === 'function') {
+                        window.Clerk.openSignIn({
+                            appearance: {
+                                elements: {
+                                    rootBox: "mx-auto",
+                                    card: "shadow-2xl rounded-2xl border border-slate-200 bg-white text-slate-900"
+                                }
+                            }
+                        });
+                        return;
+                    }
                     showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
                     return;
                 }
-                const title = btn.getAttribute('data-title');
-                const url = btn.getAttribute('data-url');
                 openPdfViewer(title, url);
             });
         });
@@ -907,11 +930,22 @@ document.addEventListener('DOMContentLoaded', () => {
         container.querySelectorAll('.btn-curriculum-track').forEach(btn => {
             btn.addEventListener('click', () => {
                 const code = btn.getAttribute('data-code');
-                if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
+                if (window.Clerk?.user || isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
                     window.location.hash = '#dashboard';
                     switchView('dashboard');
                     openSubjectHub(code);
                 } else {
+                    if (window.Clerk && typeof window.Clerk.openSignIn === 'function') {
+                        window.Clerk.openSignIn({
+                            appearance: {
+                                elements: {
+                                    rootBox: "mx-auto",
+                                    card: "shadow-2xl rounded-2xl border border-slate-200 bg-white text-slate-900"
+                                }
+                            }
+                        });
+                        return;
+                    }
                     showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
                 }
             });
@@ -996,8 +1030,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 const subjectCode = btn.getAttribute('data-subject') || '';
                 const paperYear = btn.getAttribute('data-paper') || '';
 
-                if (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
+                if ((!window.Clerk?.user) && (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true')) {
                     sessionStorage.setItem('pending_download_action', JSON.stringify({ action: 'preview', fileUrl: url, title, subjectCode, paperYear }));
+                    if (window.Clerk && typeof window.Clerk.openSignIn === 'function') {
+                        window.Clerk.openSignIn({
+                            appearance: {
+                                elements: {
+                                    rootBox: "mx-auto",
+                                    card: "shadow-2xl rounded-2xl border border-slate-200 bg-white text-slate-900"
+                                }
+                            }
+                        });
+                        return;
+                    }
                     showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
                     return;
                 }
@@ -1014,8 +1059,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 const title = btn.getAttribute('data-name') || `${subjectCode} (${paperYear})`;
                 const fileUrl = btn.getAttribute('data-url') || '';
 
-                if (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
+                if ((!window.Clerk?.user) && (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true')) {
                     sessionStorage.setItem('pending_download_action', JSON.stringify({ action: 'download', fileUrl, title, subjectCode, paperYear }));
+                    if (window.Clerk && typeof window.Clerk.openSignIn === 'function') {
+                        window.Clerk.openSignIn({
+                            appearance: {
+                                elements: {
+                                    rootBox: "mx-auto",
+                                    card: "shadow-2xl rounded-2xl border border-slate-200 bg-white text-slate-900"
+                                }
+                            }
+                        });
+                        return;
+                    }
                     showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
                     return;
                 }
@@ -1220,6 +1276,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function showAuthModal(isGate = false, message = '') {
+        if (window.Clerk && typeof window.Clerk.openSignIn === 'function' && !window.Clerk.user) {
+            try {
+                window.Clerk.openSignIn({
+                    appearance: {
+                        elements: {
+                            rootBox: "mx-auto",
+                            card: "shadow-2xl rounded-2xl border border-slate-200 bg-white text-slate-900"
+                        }
+                    }
+                });
+                return;
+            } catch (e) {
+                console.warn('[Clerk] openSignIn fallback to modal:', e);
+            }
+        }
+
         if (authGateBanner) {
             authGateBanner.style.display = isGate ? 'flex' : 'none';
         }
@@ -4027,6 +4099,52 @@ document.addEventListener('DOMContentLoaded', () => {
         return escaped;
     }
 
+    function updateUIAfterLogin(user) {
+        if (!user) return;
+        userName = user.fullName || user.firstName || user.username || 'Student';
+        isLoggedIn = true;
+        window.isLoggedIn = true;
+        const userEmail = user.primaryEmailAddress?.emailAddress || `${userName.toLowerCase().replace(/\s+/g, '')}@makaut.edu.in`;
+
+        localStorage.setItem('campussense_logged_in', 'true');
+        localStorage.setItem('campussense_user_name', userName);
+        localStorage.setItem('campussense_user_id', user.id || userEmail);
+        localStorage.setItem('campussense_user_email', userEmail);
+        sessionStorage.setItem('campussense_session_token', 'cs_clerk_' + (user.id || Date.now()));
+
+        if (typeof user.update === 'function') {
+            user.update({
+                unsafeMetadata: {
+                    stage: localStorage.getItem('campussense_stage') || localStorage.getItem('campussense_year_mode') || '1st_year',
+                    branch: localStorage.getItem('campussense_branch') || localStorage.getItem('campussense_stream') || 'Common',
+                    semester: localStorage.getItem('campussense_semester') || '1',
+                    lastLoginTimestamp: new Date().toISOString()
+                }
+            }).catch(err => console.warn('[Clerk] Metadata sync skipped:', err));
+        }
+
+        if (authModal) authModal.style.display = 'none';
+        updateContextUI();
+
+        // Action Preservation: Check if user triggered a preview or download before auth
+        const pendingActionRaw = sessionStorage.getItem('pending_download_action');
+        if (pendingActionRaw) {
+            try {
+                const pending = JSON.parse(pendingActionRaw);
+                sessionStorage.removeItem('pending_download_action');
+                if (pending.action === 'preview') {
+                    openPdfViewer(pending.title || 'MAKAUT Examination Paper', pending.fileUrl);
+                } else if (pending.fileUrl) {
+                    downloadPdfFile(pending.fileUrl, (pending.title || 'MAKAUT_Paper') + '.pdf');
+                    openPdfViewer(pending.title || 'MAKAUT Examination Paper', pending.fileUrl);
+                }
+            } catch (err) {
+                sessionStorage.removeItem('pending_download_action');
+            }
+        }
+    }
+    window.updateUIAfterLogin = updateUIAfterLogin;
+
     // ==========================================
     // 18. Clerk Authentication & User Tracking Dashboard
     // ==========================================
@@ -4055,66 +4173,45 @@ document.addEventListener('DOMContentLoaded', () => {
                     const opts = {};
                     if (clerkPublishableKey && clerkPublishableKey !== 'YOUR_CLERK_PUBLISHABLE_KEY') {
                         opts.publishableKey = clerkPublishableKey;
-                        await window.Clerk.load(opts);
                     }
+                    await window.Clerk.load(opts);
                 }
 
-                if (window.Clerk.user) {
-                    const cu = window.Clerk.user;
-                    userName = cu.fullName || cu.firstName || cu.username || 'Student';
-                    isLoggedIn = true;
-                    localStorage.setItem('campussense_logged_in', 'true');
-                    localStorage.setItem('campussense_user_name', userName);
-                    localStorage.setItem('campussense_user_id', cu.id);
-                    if (cu.primaryEmailAddress?.emailAddress) {
-                        localStorage.setItem('campussense_user_email', cu.primaryEmailAddress.emailAddress);
-                    }
-
-                    try {
-                        await cu.update({
-                            unsafeMetadata: {
-                                stage: localStorage.getItem('campussense_stage') || localStorage.getItem('campussense_year_mode') || '1st_year',
-                                branch: localStorage.getItem('campussense_branch') || localStorage.getItem('campussense_stream') || 'Common',
-                                semester: localStorage.getItem('campussense_semester') || '1',
-                                lastLoginTimestamp: new Date().toISOString()
-                            }
-                        });
-                    } catch (metaErr) {
-                        console.warn('[Clerk] Metadata sync skipped:', metaErr);
-                    }
-
-                    updateContextUI();
+                const user = window.Clerk.user;
+                if (user) {
+                    window.isLoggedIn = true;
+                    updateUIAfterLogin(user);
+                } else {
+                    window.isLoggedIn = localStorage.getItem('campussense_logged_in') === 'true';
                 }
 
                 if (typeof window.Clerk.addListener === 'function') {
                     window.Clerk.addListener(async (emission) => {
                         if (emission && emission.user) {
-                            const cu = emission.user;
-                            userName = cu.fullName || cu.firstName || cu.username || 'Student';
-                            isLoggedIn = true;
-                            localStorage.setItem('campussense_logged_in', 'true');
-                            localStorage.setItem('campussense_user_name', userName);
-                            localStorage.setItem('campussense_user_id', cu.id);
-                            if (cu.primaryEmailAddress?.emailAddress) {
-                                localStorage.setItem('campussense_user_email', cu.primaryEmailAddress.emailAddress);
-                            }
-
-                            try {
-                                await cu.update({
-                                    unsafeMetadata: {
-                                        stage: localStorage.getItem('campussense_stage') || localStorage.getItem('campussense_year_mode') || '1st_year',
-                                        branch: localStorage.getItem('campussense_branch') || localStorage.getItem('campussense_stream') || 'Common',
-                                        semester: localStorage.getItem('campussense_semester') || '1',
-                                        lastLoginTimestamp: new Date().toISOString()
-                                    }
-                                });
-                            } catch (e) {
-                                console.warn('[Clerk] Listener metadata sync skipped:', e);
-                            }
-
+                            window.isLoggedIn = true;
+                            updateUIAfterLogin(emission.user);
+                        } else if (emission && emission.user === null) {
+                            window.isLoggedIn = false;
+                            isLoggedIn = false;
+                            localStorage.removeItem('campussense_logged_in');
                             updateContextUI();
                         }
                     });
+                }
+
+                // Mount Clerk sign-in container inside #clerk-sign-in if present
+                const clerkContainer = document.getElementById('clerk-sign-in');
+                if (clerkContainer && typeof window.Clerk.mountSignIn === 'function' && !window.Clerk.user) {
+                    try {
+                        window.Clerk.mountSignIn(clerkContainer, {
+                            appearance: {
+                                elements: {
+                                    rootBox: "mx-auto",
+                                    card: "shadow-2xl rounded-2xl border border-slate-200 bg-white text-slate-900"
+                                }
+                            }
+                        });
+                    } catch (_) {}
                 }
             } catch (err) {
                 console.warn('[Clerk] Initialization warning (safe fallback active):', err);
@@ -4221,7 +4318,23 @@ document.addEventListener('DOMContentLoaded', () => {
     handleRouting();
 });
 
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
+    if (window.Clerk && typeof window.Clerk.load === 'function') {
+        try {
+            await window.Clerk.load();
+            const user = window.Clerk.user;
+            if (user) {
+                window.isLoggedIn = true;
+                if (typeof window.updateUIAfterLogin === 'function') {
+                    window.updateUIAfterLogin(user);
+                }
+            } else {
+                window.isLoggedIn = false;
+            }
+        } catch (e) {
+            console.warn('[Clerk] DOMContentLoaded initialization warning:', e);
+        }
+    }
     if (typeof window.handleRouting === 'function') {
         window.handleRouting();
     }
