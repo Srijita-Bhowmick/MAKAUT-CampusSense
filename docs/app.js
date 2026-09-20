@@ -58,19 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function downloadPdfFile(fileUrl, preferredName) {
         if ((!window.Clerk?.user) && (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true')) {
             const resolved = resolveAssetPath(fileUrl);
-            sessionStorage.setItem('pending_download_action', JSON.stringify({ action: 'download', fileUrl: resolved, title: preferredName }));
-            if (window.Clerk && typeof window.Clerk.openSignIn === 'function') {
-                window.Clerk.openSignIn({
-                    appearance: {
-                        elements: {
-                            rootBox: "mx-auto",
-                            card: "shadow-2xl rounded-2xl border border-slate-200 bg-white text-slate-900"
-                        }
-                    }
-                });
-                return;
-            }
-            showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
+            triggerRealClerkAuth({ action: 'download', fileUrl: resolved, title: preferredName });
             return;
         }
         const resolved = resolveAssetPath(fileUrl);
@@ -201,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 contextTextEl.textContent = `${streamLabel} • Sem ${currentSem} ▾`;
             }
         }
-        const userDisplayEl = document.getElementById('user-display-name');
+        const userDisplayEl = document.getElementById('user-profile-name') || document.getElementById('user-display-name');
         if (userDisplayEl) {
             userDisplayEl.textContent = userName;
         }
@@ -907,19 +895,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const title = btn.getAttribute('data-title');
                 const url = btn.getAttribute('data-url');
                 if ((!window.Clerk?.user) && (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true')) {
-                    sessionStorage.setItem('pending_download_action', JSON.stringify({ action: 'preview', fileUrl: url, title }));
-                    if (window.Clerk && typeof window.Clerk.openSignIn === 'function') {
-                        window.Clerk.openSignIn({
-                            appearance: {
-                                elements: {
-                                    rootBox: "mx-auto",
-                                    card: "shadow-2xl rounded-2xl border border-slate-200 bg-white text-slate-900"
-                                }
-                            }
-                        });
-                        return;
-                    }
-                    showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
+                    triggerRealClerkAuth({ action: 'preview', fileUrl: url, title });
                     return;
                 }
                 openPdfViewer(title, url);
@@ -935,18 +911,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     switchView('dashboard');
                     openSubjectHub(code);
                 } else {
-                    if (window.Clerk && typeof window.Clerk.openSignIn === 'function') {
-                        window.Clerk.openSignIn({
-                            appearance: {
-                                elements: {
-                                    rootBox: "mx-auto",
-                                    card: "shadow-2xl rounded-2xl border border-slate-200 bg-white text-slate-900"
-                                }
-                            }
-                        });
-                        return;
-                    }
-                    showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
+                    triggerRealClerkAuth();
                 }
             });
         });
@@ -1021,7 +986,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `).join('');
 
-        // Wire Preview buttons (Gated Flow)
+        // Wire Preview buttons (Gated Flow with Real Clerk SDK)
         grid.querySelectorAll('.btn-preview-paper, .btn-preview-pdf').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -1031,26 +996,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 const paperYear = btn.getAttribute('data-paper') || '';
 
                 if ((!window.Clerk?.user) && (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true')) {
-                    sessionStorage.setItem('pending_download_action', JSON.stringify({ action: 'preview', fileUrl: url, title, subjectCode, paperYear }));
-                    if (window.Clerk && typeof window.Clerk.openSignIn === 'function') {
-                        window.Clerk.openSignIn({
-                            appearance: {
-                                elements: {
-                                    rootBox: "mx-auto",
-                                    card: "shadow-2xl rounded-2xl border border-slate-200 bg-white text-slate-900"
-                                }
-                            }
-                        });
-                        return;
-                    }
-                    showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
+                    triggerRealClerkAuth({ action: 'preview', fileUrl: url, title, subjectCode, paperYear });
                     return;
                 }
                 openPdfViewer(title, url);
             });
         });
 
-        // Wire Download buttons (Gated Flow with Blob Download Engine)
+        // Wire Download buttons (Gated Flow with Real Clerk SDK)
         grid.querySelectorAll('.btn-download-paper, .btn-download-pdf, .btn-download-pdf-gate').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -1060,19 +1013,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const fileUrl = btn.getAttribute('data-url') || '';
 
                 if ((!window.Clerk?.user) && (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true')) {
-                    sessionStorage.setItem('pending_download_action', JSON.stringify({ action: 'download', fileUrl, title, subjectCode, paperYear }));
-                    if (window.Clerk && typeof window.Clerk.openSignIn === 'function') {
-                        window.Clerk.openSignIn({
-                            appearance: {
-                                elements: {
-                                    rootBox: "mx-auto",
-                                    card: "shadow-2xl rounded-2xl border border-slate-200 bg-white text-slate-900"
-                                }
-                            }
-                        });
-                        return;
-                    }
-                    showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
+                    triggerRealClerkAuth({ action: 'download', fileUrl, title, subjectCode, paperYear });
                     return;
                 }
                 downloadPdfFile(fileUrl, (title || 'MAKAUT_Paper') + '.pdf');
@@ -1238,203 +1179,107 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 8. Auth Modal (Secure Dual Auth: Email + OTP & Google Sign-In)
+    // 8. Real Clerk Native Authentication
     // ==========================================
     const authModal = document.getElementById('auth-modal');
     const authGateBanner = document.getElementById('auth-gate-banner');
     const authGateMsg = document.getElementById('auth-gate-message');
     const btnCloseAuthModal = document.getElementById('btn-close-auth-modal');
-    const btnAuthGoogle = document.getElementById('btn-auth-google');
-    const authStatusMessage = document.getElementById('auth-status-message');
-    const authOtpForm = document.getElementById('auth-otp-form');
-    const authStepEmail = document.getElementById('auth-step-email');
-    const authStepOtp = document.getElementById('auth-step-otp');
-    const authEmailInput = document.getElementById('auth-email-input');
-    const authOtpInput = document.getElementById('auth-otp-input');
-    const btnSendOtp = document.getElementById('btn-send-otp');
-    const btnVerifyOtp = document.getElementById('btn-verify-otp');
-    const btnChangeEmail = document.getElementById('btn-change-email');
-    const btnResendOtp = document.getElementById('btn-resend-otp');
-    const authSentEmail = document.getElementById('auth-sent-email');
+    const clerkAuthContainer = document.getElementById('clerk-auth-container');
 
-    let generatedOtp = null;
-    let authPendingEmail = '';
-
-    function showAuthStatus(message, type = 'info') {
-        if (!authStatusMessage) return;
-        authStatusMessage.textContent = message;
-        authStatusMessage.className = `auth-status-msg ${type}`;
-        authStatusMessage.style.display = 'block';
-    }
-
-    function clearAuthStatus() {
-        if (authStatusMessage) {
-            authStatusMessage.textContent = '';
-            authStatusMessage.className = 'auth-status-msg';
-            authStatusMessage.style.display = 'none';
+    async function triggerRealClerkAuth(pendingAction = null) {
+        if (pendingAction) {
+            sessionStorage.setItem('pending_download_action', JSON.stringify(pendingAction));
         }
-    }
 
-    function showAuthModal(isGate = false, message = '') {
-        if (window.Clerk && typeof window.Clerk.openSignIn === 'function' && !window.Clerk.user) {
+        if (!window.Clerk) {
+            console.error("Clerk is not loaded yet.");
+            if (authModal) authModal.style.display = 'flex';
+            return;
+        }
+
+        // Opens Clerk's hosted/embedded sign-in modal which handles real Email OTP, Google, and Name collection
+        if (typeof window.Clerk.openSignIn === 'function') {
             try {
                 window.Clerk.openSignIn({
                     appearance: {
                         elements: {
-                            rootBox: "mx-auto",
-                            card: "shadow-2xl rounded-2xl border border-slate-200 bg-white text-slate-900"
+                            rootBox: "mx-auto shadow-2xl",
+                            card: "bg-white text-slate-900 rounded-2xl border border-slate-200"
                         }
-                    }
+                    },
+                    afterSignInUrl: window.location.href,
+                    afterSignUpUrl: window.location.href
                 });
                 return;
-            } catch (e) {
-                console.warn('[Clerk] openSignIn fallback to modal:', e);
+            } catch (err) {
+                console.warn('[Clerk] openSignIn delegation error:', err);
             }
         }
 
+        // If openSignIn is not available or user opened embedded modal, mount directly inside #clerk-auth-container
+        if (clerkAuthContainer && typeof window.Clerk.mountSignIn === 'function') {
+            if (authModal) authModal.style.display = 'flex';
+            try {
+                window.Clerk.mountSignIn(clerkAuthContainer, {
+                    appearance: {
+                        elements: {
+                            rootBox: "mx-auto shadow-2xl",
+                            card: "bg-white text-slate-900 rounded-2xl border border-slate-200"
+                        }
+                    },
+                    afterSignInUrl: window.location.href,
+                    afterSignUpUrl: window.location.href
+                });
+            } catch (e) {
+                console.warn('[Clerk] mountSignIn error:', e);
+            }
+        } else if (authModal) {
+            authModal.style.display = 'flex';
+        }
+    }
+    window.triggerRealClerkAuth = triggerRealClerkAuth;
+
+    function showAuthModal(isGate = false, message = '') {
         if (authGateBanner) {
             authGateBanner.style.display = isGate ? 'flex' : 'none';
         }
         if (authGateMsg) {
             authGateMsg.textContent = message || "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.";
         }
-        clearAuthStatus();
-        if (authStepEmail) authStepEmail.style.display = 'block';
-        if (authStepOtp) authStepOtp.style.display = 'none';
-        if (authOtpInput) authOtpInput.value = '';
-
-        if (authModal) authModal.style.display = 'flex';
-        setTimeout(() => {
-            if (authEmailInput) authEmailInput.focus();
-        }, 50);
-    }
-
-    function isValidEmail(email) {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    }
-
-    function handleSendOtp() {
-        const emailVal = authEmailInput ? authEmailInput.value.trim() : '';
-        if (!emailVal || !isValidEmail(emailVal)) {
-            showAuthStatus("Please enter a valid email address.", "error");
-            if (authEmailInput) authEmailInput.focus();
-            return;
-        }
-
-        authPendingEmail = emailVal;
-        generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
-        sessionStorage.setItem('campussense_auth_otp', generatedOtp);
-        sessionStorage.setItem('campussense_auth_email', authPendingEmail);
-
-        // Simulate or call backend endpoint /api/auth/send-otp
-        try {
-            fetch('/api/auth/send-otp', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: authPendingEmail, otp: generatedOtp })
-            }).catch(() => {});
-        } catch (_) {}
-
-        // Transition modal view to show the OTP input field
-        if (authStepEmail) authStepEmail.style.display = 'none';
-        if (authStepOtp) authStepOtp.style.display = 'block';
-        if (authSentEmail) authSentEmail.textContent = authPendingEmail;
-        if (authOtpInput) {
-            authOtpInput.value = '';
-            setTimeout(() => authOtpInput.focus(), 50);
-        }
-
-        // Display success notification
-        showAuthStatus(`Verification code sent to your email! (Demo OTP: ${generatedOtp})`, "success");
-    }
-
-    function handleVerifyOtp() {
-        const enteredOtp = authOtpInput ? authOtpInput.value.trim() : '';
-        const activeOtp = generatedOtp || sessionStorage.getItem('campussense_auth_otp') || '123456';
-
-        if (!enteredOtp || enteredOtp.length !== 6 || !/^\d{6}$/.test(enteredOtp)) {
-            showAuthStatus("Please enter a valid 6-digit verification code.", "error");
-            if (authOtpInput) authOtpInput.focus();
-            return;
-        }
-
-        if (enteredOtp !== activeOtp && enteredOtp !== '123456') {
-            showAuthStatus("Invalid verification code. Please check and try again.", "error");
-            if (authOtpInput) authOtpInput.focus();
-            return;
-        }
-
-        const email = authPendingEmail || sessionStorage.getItem('campussense_auth_email') || 'student@makaut.edu';
-        const baseName = email.split('@')[0];
-        const formattedName = baseName.charAt(0).toUpperCase() + baseName.slice(1);
-
-        completeAuthentication(formattedName, email);
-    }
-
-    function completeAuthentication(name, email) {
-        isLoggedIn = true;
-        userName = name || 'Student';
-        const userEmail = email || `${userName.toLowerCase().replace(/\s+/g, '')}@makaut.edu.in`;
-
-        localStorage.setItem('campussense_logged_in', 'true');
-        localStorage.setItem('campussense_user_name', userName);
-        localStorage.setItem('campussense_user_email', userEmail);
-        localStorage.setItem('campussense_user_id', userEmail);
-        sessionStorage.setItem('campussense_session_token', 'cs_token_' + Date.now());
-
-        // Record active user metrics and academic context into Clerk unsafeMetadata
-        if (window.Clerk?.user) {
-            window.Clerk.user.update({
-                unsafeMetadata: {
-                    stage: localStorage.getItem('campussense_stage') || localStorage.getItem('campussense_year_mode') || '1st_year',
-                    branch: localStorage.getItem('campussense_branch') || localStorage.getItem('campussense_stream') || 'Common',
-                    semester: localStorage.getItem('campussense_semester') || '1',
-                    lastLoginTimestamp: new Date().toISOString()
-                }
-            }).catch(err => console.warn('[Clerk] Metadata sync skipped:', err));
-        }
-
-        if (authModal) authModal.style.display = 'none';
-        updateContextUI();
-
-        // Resume any pending actions (like downloading a PYQ PDF or exploring the syllabus)
-        const pendingActionRaw = sessionStorage.getItem('pending_download_action');
-        if (pendingActionRaw) {
-            try {
-                const pending = JSON.parse(pendingActionRaw);
-                sessionStorage.removeItem('pending_download_action');
-                if (pending.action === 'preview') {
-                    openPdfViewer(pending.title || 'MAKAUT Examination Paper', pending.fileUrl);
-                } else if (pending.fileUrl) {
-                    downloadPdfFile(pending.fileUrl, (pending.title || 'MAKAUT_Paper') + '.pdf');
-                    openPdfViewer(pending.title || 'MAKAUT Examination Paper', pending.fileUrl);
-                }
-            } catch (err) {
-                sessionStorage.removeItem('pending_download_action');
-            }
-        } else {
-            // Prompt Academic Scope Selection Onboarding if no pending action
-            openScopeModal();
-        }
+        triggerRealClerkAuth();
     }
 
     if (btnNavSignIn) {
         btnNavSignIn.addEventListener('click', () => {
-            showAuthModal(false);
+            triggerRealClerkAuth();
         });
     }
 
     if (btnNavSignUp) {
         btnNavSignUp.addEventListener('click', () => {
-            showAuthModal(false);
+            triggerRealClerkAuth();
         });
     }
 
     if (btnLandingAuth) {
         btnLandingAuth.addEventListener('click', () => {
-            showAuthModal(false);
+            triggerRealClerkAuth();
         });
     }
+
+    const authTriggerBtn = document.getElementById('auth-trigger-btn');
+    if (authTriggerBtn) {
+        authTriggerBtn.addEventListener('click', () => {
+            triggerRealClerkAuth();
+        });
+    }
+
+    document.querySelectorAll('.auth-trigger-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            triggerRealClerkAuth();
+        });
+    });
 
     if (btnCloseAuthModal) {
         btnCloseAuthModal.addEventListener('click', () => {
@@ -1442,55 +1287,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    if (btnSendOtp) {
-        btnSendOtp.addEventListener('click', (e) => {
-            e.preventDefault();
-            handleSendOtp();
-        });
-    }
-
-    if (btnVerifyOtp) {
-        btnVerifyOtp.addEventListener('click', (e) => {
-            e.preventDefault();
-            handleVerifyOtp();
-        });
-    }
-
-    if (btnChangeEmail) {
-        btnChangeEmail.addEventListener('click', () => {
-            if (authStepOtp) authStepOtp.style.display = 'none';
-            if (authStepEmail) authStepEmail.style.display = 'block';
-            clearAuthStatus();
-            if (authEmailInput) authEmailInput.focus();
-        });
-    }
-
-    if (btnResendOtp) {
-        btnResendOtp.addEventListener('click', () => {
-            generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
-            sessionStorage.setItem('campussense_auth_otp', generatedOtp);
-            showAuthStatus(`New verification code sent! (Demo OTP: ${generatedOtp})`, "success");
-            if (authOtpInput) {
-                authOtpInput.value = '';
-                authOtpInput.focus();
-            }
-        });
-    }
-
-    if (authOtpForm) {
-        authOtpForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            if (authStepEmail && authStepEmail.style.display !== 'none') {
-                handleSendOtp();
-            } else {
-                handleVerifyOtp();
-            }
-        });
-    }
-
-    if (btnAuthGoogle) {
-        btnAuthGoogle.addEventListener('click', () => {
-            completeAuthentication('Srijita Bhowmick', 'srijitabhowmick42@gmail.com');
+    function completeAuthentication(name, email) {
+        updateUIAfterLogin({
+            fullName: name,
+            primaryEmailAddress: { emailAddress: email }
         });
     }
 
@@ -2037,9 +1837,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const subjectCode = btn.getAttribute('data-subject') || '';
                 const paperYear = btn.getAttribute('data-paper') || '';
 
-                if (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
-                    sessionStorage.setItem('pending_download_action', JSON.stringify({ action: 'preview', fileUrl: url, title, subjectCode, paperYear }));
-                    showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
+                if ((!window.Clerk?.user) && (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true')) {
+                    triggerRealClerkAuth({ action: 'preview', fileUrl: url, title, subjectCode, paperYear });
                     return;
                 }
                 openPdfViewer(title, url);
@@ -2054,9 +1853,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const title = btn.getAttribute('data-name');
                 const fileUrl = btn.getAttribute('data-url');
 
-                if (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
-                    sessionStorage.setItem('pending_download_action', JSON.stringify({ action: 'download', fileUrl, title, subjectCode, paperYear }));
-                    showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
+                if ((!window.Clerk?.user) && (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true')) {
+                    triggerRealClerkAuth({ action: 'download', fileUrl, title, subjectCode, paperYear });
                     return;
                 }
                 downloadPdfFile(fileUrl, (title || `${subjectCode}_${paperYear}`) + '.pdf');
@@ -4180,6 +3978,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const user = window.Clerk.user;
                 if (user) {
                     window.isLoggedIn = true;
+                    const userNameSpan = document.getElementById('user-profile-name') || document.getElementById('user-display-name');
+                    if (userNameSpan) {
+                        userNameSpan.textContent = user.fullName || (user.primaryEmailAddress ? user.primaryEmailAddress.emailAddress : 'Student');
+                    }
                     updateUIAfterLogin(user);
                 } else {
                     window.isLoggedIn = localStorage.getItem('campussense_logged_in') === 'true';
@@ -4189,6 +3991,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.Clerk.addListener(async (emission) => {
                         if (emission && emission.user) {
                             window.isLoggedIn = true;
+                            const userNameSpan = document.getElementById('user-profile-name') || document.getElementById('user-display-name');
+                            if (userNameSpan) {
+                                userNameSpan.textContent = emission.user.fullName || (emission.user.primaryEmailAddress ? emission.user.primaryEmailAddress.emailAddress : 'Student');
+                            }
                             updateUIAfterLogin(emission.user);
                         } else if (emission && emission.user === null) {
                             window.isLoggedIn = false;
@@ -4199,17 +4005,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 }
 
-                // Mount Clerk sign-in container inside #clerk-sign-in if present
-                const clerkContainer = document.getElementById('clerk-sign-in');
+                // Mount Clerk sign-in container inside #clerk-auth-container if present
+                const clerkContainer = document.getElementById('clerk-auth-container') || document.getElementById('clerk-sign-in');
                 if (clerkContainer && typeof window.Clerk.mountSignIn === 'function' && !window.Clerk.user) {
                     try {
                         window.Clerk.mountSignIn(clerkContainer, {
                             appearance: {
                                 elements: {
-                                    rootBox: "mx-auto",
-                                    card: "shadow-2xl rounded-2xl border border-slate-200 bg-white text-slate-900"
+                                    rootBox: "mx-auto shadow-2xl",
+                                    card: "bg-white text-slate-900 rounded-2xl border border-slate-200"
                                 }
-                            }
+                            },
+                            afterSignInUrl: window.location.href,
+                            afterSignUpUrl: window.location.href
                         });
                     } catch (_) {}
                 }

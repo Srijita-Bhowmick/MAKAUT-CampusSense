@@ -94,7 +94,7 @@
                 <div class="user-profile-menu-wrapper" id="user-profile-wrapper" style="display: none;">
                     <div class="user-profile-pill" id="user-profile-pill" title="Click to view profile menu" style="cursor: pointer;">
                         <span class="user-avatar" id="user-avatar-icon">👤</span>
-                        <span class="user-name" id="user-display-name">Student</span>
+                        <span class="user-name" id="user-profile-name">Student</span>
                         <span style="font-size: 0.65rem; opacity: 0.7;">▾</span>
                     </div>
                     <div class="user-dropdown-menu" id="user-dropdown-menu">
@@ -514,54 +514,8 @@
                 </div>
             </div>
 
-            <!-- Clerk Sign-In Mounting Container -->
-            <div id="clerk-sign-in"></div>
-
-            <!-- Status / Notification Message Area -->
-            <div id="auth-status-message" class="auth-status-msg" style="display: none;"></div>
-
-            <!-- Primary Option: Email + OTP -->
-            <form id="auth-otp-form" class="auth-form-panel">
-                <!-- Step 1: Email Input -->
-                <div class="auth-step" id="auth-step-email">
-                    <div class="form-group auth-input-group" style="margin-bottom: 1rem; text-align: left;">
-                        <label class="form-label" for="auth-email-input">Email Address</label>
-                        <input type="email" id="auth-email-input" class="custom-input" placeholder="Enter your institutional or personal email..." required autocomplete="email">
-                    </div>
-                    <button type="button" class="btn btn-primary" id="btn-send-otp" style="width: 100%; padding: 0.85rem; font-weight: 700;">
-                        Send Verification Code
-                    </button>
-                </div>
-
-                <!-- Step 2: 6-Digit OTP Input (Hidden until OTP sent) -->
-                <div class="auth-step" id="auth-step-otp" style="display: none;">
-                    <div class="form-group auth-input-group" style="margin-bottom: 0.75rem; text-align: left;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
-                            <label class="form-label" for="auth-otp-input" style="margin-bottom: 0;">6-Digit Verification Code</label>
-                            <button type="button" class="btn-change-email" id="btn-change-email" style="background: none; border: none; color: var(--accent-primary); font-size: 0.78rem; cursor: pointer; text-decoration: underline;">Change Email</button>
-                        </div>
-                        <input type="text" id="auth-otp-input" class="custom-input otp-code-input" placeholder="Enter 6-digit verification code..." maxlength="6" inputmode="numeric" pattern="[0-9]{6}">
-                        <div class="otp-hint" style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.4rem;">Code sent to <span id="auth-sent-email" style="font-weight: 600; color: var(--text-primary);"></span>.</div>
-                    </div>
-                    <button type="button" class="btn btn-primary" id="btn-verify-otp" style="width: 100%; padding: 0.85rem; font-weight: 700;">
-                        Verify & Sign In
-                    </button>
-                    <div style="text-align: center; margin-top: 0.65rem;">
-                        <button type="button" class="btn-resend-otp" id="btn-resend-otp" style="background: none; border: none; color: var(--text-muted); font-size: 0.8rem; cursor: pointer;">Didn't receive code? Resend Code</button>
-                    </div>
-                </div>
-            </form>
-
-            <div class="auth-divider">
-                <span>OR</span>
-            </div>
-
-            <!-- Secondary Option: Google Sign-In -->
-            <div class="auth-actions">
-                <button type="button" class="btn-google-auth" id="btn-auth-google">
-                    <span>🌐</span> Continue with Google
-                </button>
-            </div>
+            <!-- Real Clerk Native Mounting Container -->
+            <div id="clerk-auth-container" class="clerk-mount-wrapper"></div>
 
             <div class="auth-footer" style="margin-top: 1.25rem;">
                 <button type="button" class="btn" id="btn-close-auth-modal" style="background: transparent; color: var(--text-muted); font-size: 0.8rem; border: none; cursor: pointer;">

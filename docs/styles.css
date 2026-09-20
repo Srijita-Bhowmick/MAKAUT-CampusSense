@@ -1413,13 +1413,21 @@ body {
   border: 1px solid #cbd5e1 !important;
 }
 
+.clerk-mount-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 320px;
+}
+
 [data-theme="light"] .cl-card,
-[data-theme="light"] .cl-internal-b3fm6y,
 [data-theme="light"] .cl-rootBox {
   background-color: #ffffff !important;
   color: #090d16 !important;
 }
 
+[data-theme="light"] .cl-internal-b3fm6y,
 [data-theme="light"] .cl-socialButtonsBlockButton,
 [data-theme="light"] .cl-formFieldInput {
   background-color: #ffffff !important;
