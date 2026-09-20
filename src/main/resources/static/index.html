@@ -192,9 +192,11 @@
             <div class="landing-features-grid">
                 <!-- Card 1: Syllabus Checklist -->
                 <div class="landing-feature-card">
-                    <div class="feature-icon-box">📋</div>
-                    <h3 class="feature-card-title">Curated Syllabi & Unit Checklists</h3>
-                    <p class="feature-card-desc">Complete syllabus units with module hours, exact topic breakdowns, and interactive checklist rings to track your exam readiness.</p>
+                    <div class="feature-card-content">
+                        <div class="feature-icon-box">📋</div>
+                        <h3 class="feature-card-title">Curated Syllabi & Unit Checklists</h3>
+                        <p class="feature-card-desc">Complete syllabus units with module hours, exact topic breakdowns, and interactive checklist rings to track your exam readiness.</p>
+                    </div>
                     <button class="feature-card-cta" id="btn-feature-syllabus">
                         Explore Syllabus Checklist ➔
                     </button>
@@ -202,9 +204,11 @@
 
                 <!-- Card 2: PYQ Archives (placed directly adjacent to Curated Syllabi) -->
                 <div class="landing-feature-card">
-                    <div class="feature-icon-box emerald">📑</div>
-                    <h3 class="feature-card-title">PYQ Archives</h3>
-                    <p class="feature-card-desc">Semester examination papers arranged by stream, year, and group (Group A, B, and C) with instant PDF viewing and downloads.</p>
+                    <div class="feature-card-content">
+                        <div class="feature-icon-box emerald">📑</div>
+                        <h3 class="feature-card-title">PYQ Archives</h3>
+                        <p class="feature-card-desc">Semester examination papers arranged by stream, year, and group (Group A, B, and C) with instant PDF viewing and downloads.</p>
+                    </div>
                     <button class="feature-card-cta emerald" id="btn-feature-pyq">
                         Browse PYQ Repository ➔
                     </button>
@@ -212,19 +216,23 @@
 
                 <!-- Card 3: 48-Hour Panic Pack -->
                 <div class="landing-feature-card">
-                    <div class="feature-icon-box flame">🔥</div>
-                    <h3 class="feature-card-title">The 48-Hour Panic Pack</h3>
-                    <p class="feature-card-desc">High-yield algorithm analyzing exam papers to isolate the top 20% most repeated questions with marks distribution and model answers.</p>
+                    <div class="feature-card-content">
+                        <div class="feature-icon-box flame">🔥</div>
+                        <h3 class="feature-card-title">The 48-Hour Panic Pack</h3>
+                        <p class="feature-card-desc">High-yield algorithm analyzing exam papers to isolate the top 20% most repeated questions with marks distribution and model answers.</p>
+                    </div>
                     <button class="feature-card-cta flame" id="btn-feature-panic">
                         Access Panic Pack 🔥
                     </button>
                 </div>
 
-                <!-- Card 4: AI Assistant (Span 2) -->
-                <div class="landing-feature-card span-2">
-                    <div class="feature-icon-box cyan">🤖</div>
-                    <h3 class="feature-card-title">Grounded Conversational AI Assistant</h3>
-                    <p class="feature-card-desc">Need a clarification right before your exam? Ask our university-grounded AI engine. Every response cites exact syllabus modules and exam paper years.</p>
+                <!-- Card 4: AI Assistant -->
+                <div class="landing-feature-card">
+                    <div class="feature-card-content">
+                        <div class="feature-icon-box cyan">🤖</div>
+                        <h3 class="feature-card-title">Grounded Conversational AI Assistant</h3>
+                        <p class="feature-card-desc">Need a clarification right before your exam? Ask our university-grounded AI engine. Every response cites exact syllabus modules and exam paper years.</p>
+                    </div>
                     <button class="feature-card-cta cyan" id="btn-feature-ai">
                         Launch AI Assistant 🤖
                     </button>
@@ -447,9 +455,6 @@
         <!-- Side-by-Side Docked Chat Panel -->
         <aside class="ai-slide-drawer" id="ai-slide-drawer">
             <div id="drawer-resize-handle" class="drawer-resize-handle" title="Drag to resize panel"></div>
-            <button id="btn-chat-dock-collapse" class="floating-partition-arrow" type="button" title="Collapse / Expand Chat Workspace">
-                <span id="dock-arrow-glyph" class="arrow-glyph">▶</span>
-            </button>
             <div class="drawer-header">
                 <div class="drawer-title-group">
                     <span class="drawer-icon">🤖</span>
@@ -521,7 +526,7 @@
             <div class="auth-gate-alert" id="auth-gate-banner" style="display: none;">
                 <span style="font-size: 1.25rem;">🔒</span>
                 <div>
-                    <strong id="auth-gate-message">Please sign in or create an account to access this resource</strong>
+                    <strong id="auth-gate-message">Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.</strong>
                     <div style="font-size: 0.78rem; opacity: 0.9; margin-top: 0.15rem;">
                         Instant access to syllabus checklists, PYQ Archives, and 48-Hour Panic Packs.
                     </div>

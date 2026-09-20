@@ -2111,7 +2111,7 @@ body.is-drawer-resizing .ai-slide-drawer {
 }
 
 /* ====================================================================
-   Phase 2: True Side-by-Side Split-Pane Chat Workspace (Antigravity IDE Style)
+   Phase 4: Professional Side-by-Side Dashboard Workspace (Split-Pane)
    ==================================================================== */
 .dashboard-split-layout,
 .dashboard-workspace-wrapper {
@@ -2119,42 +2119,43 @@ body.is-drawer-resizing .ai-slide-drawer {
   width: 100%;
   min-height: calc(100vh - 70px);
   position: relative;
+  background: var(--bg-main);
   overflow-x: hidden;
 }
 
 .dashboard-main-pane,
 .dashboard-main-canvas {
-  flex: 1 1 100%;
+  flex: 1;
   min-width: 0;
-  transition: flex 0.3s cubic-bezier(0.4, 0, 0.2, 1), max-width 0.3s ease;
+  padding: 24px;
+  margin: 0;
+  width: auto;
+  max-width: 100%;
+  transition: max-width 0.3s ease, flex 0.3s ease;
 }
 
-/* When Chat AI is opened by user: scale main pane side-by-side with zero overlap */
 .split-chat-active .dashboard-main-pane,
 .split-chat-active .dashboard-main-canvas,
 .chat-workspace-active .dashboard-main-pane,
 .chat-workspace-active .dashboard-main-canvas {
-  flex: 1 1 calc(100% - var(--chat-drawer-width, 460px)) !important;
-  max-width: calc(100% - var(--chat-drawer-width, 460px)) !important;
+  flex: 0 0 calc(100% - 460px);
+  max-width: calc(100% - 460px);
 }
 
-/* Side-by-Side Docked Chat Panel (Never an overlay) */
 #ai-slide-drawer,
 .ai-slide-drawer {
-  width: var(--chat-drawer-width, 460px);
-  min-width: 340px;
-  max-width: 650px;
+  width: 460px;
+  flex: 0 0 460px;
   height: calc(100vh - 70px);
   position: sticky;
   top: 70px;
   right: 0;
-  flex-shrink: 0;
-  border-left: 1px solid var(--card-border);
   background: var(--bg-secondary);
-  display: none; /* Hidden by default */
+  border-left: 1px solid var(--card-border);
+  display: none;
   flex-direction: column;
   z-index: 1000;
-  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.12);
   overflow: hidden;
 }
 
@@ -2183,40 +2184,6 @@ body.is-drawer-resizing .ai-slide-drawer {
   opacity: 0.5;
 }
 
-.floating-partition-arrow {
-  position: absolute;
-  left: -18px;
-  top: 24px;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--accent-primary);
-  color: #ffffff;
-  border: 2px solid var(--bg-secondary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 1001;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
-  transition: transform 0.2s ease, background 0.2s ease;
-}
-
-.floating-partition-arrow:hover {
-  transform: scale(1.12);
-  background: var(--accent-flame);
-}
-
-#dock-arrow-glyph,
-.arrow-glyph {
-  font-size: 0.68rem;
-  line-height: 1;
-  display: inline-block;
-  color: #ffffff !important;
-  font-weight: 800;
-  letter-spacing: 1px;
-}
-
 #ai-drawer-backdrop {
   display: none !important;
 }
@@ -2227,8 +2194,14 @@ body.is-drawer-resizing .ai-slide-drawer {
 }
 
 @media (max-width: 768px) {
+  .split-chat-active .dashboard-main-pane,
+  .chat-workspace-active .dashboard-main-pane {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
   #ai-slide-drawer,
   .ai-slide-drawer {
+    position: fixed;
     top: 8px;
     right: 8px;
     bottom: 8px;
@@ -2237,10 +2210,6 @@ body.is-drawer-resizing .ai-slide-drawer {
     min-width: 0 !important;
     max-width: 100% !important;
     border-radius: 12px;
-  }
-  .floating-partition-arrow {
-    left: 12px;
-    top: 16px;
   }
 }
 
@@ -2731,16 +2700,23 @@ body.is-drawer-resizing .ai-slide-drawer {
 
 .landing-features-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-    margin-bottom: 5rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto 5rem auto;
 }
 
 .landing-feature-card {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
-    border-radius: var(--radius-xl);
-    padding: 2rem 1.75rem;
+    border-radius: 16px;
+    padding: 32px;
+    height: 280px; /* Exact uniform height for all 4 boxes */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: var(--card-shadow);
     transition: var(--transition-smooth);
     position: relative;
     overflow: hidden;
@@ -2752,8 +2728,13 @@ body.is-drawer-resizing .ai-slide-drawer {
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
 }
 
-.landing-feature-card.span-2 {
-    grid-column: span 2;
+.landing-feature-card .feature-card-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.landing-feature-card .feature-card-cta {
+    align-self: flex-start;
 }
 
 .feature-icon-box {
@@ -3314,8 +3295,9 @@ body.is-drawer-resizing .ai-slide-drawer {
     .landing-features-grid {
         grid-template-columns: 1fr;
     }
-    .landing-feature-card.span-2 {
-        grid-column: span 1;
+    .landing-feature-card {
+        height: auto;
+        min-height: 280px;
     }
 }
 
@@ -5002,12 +4984,6 @@ body.is-drawer-resizing .ai-slide-drawer {
 .light-theme .btn-flame,
 [data-theme="light"] .btn-flame *,
 .light-theme .btn-flame *,
-[data-theme="light"] .floating-partition-arrow,
-.light-theme .floating-partition-arrow,
-[data-theme="light"] .floating-partition-arrow *,
-.light-theme .floating-partition-arrow *,
-[data-theme="light"] #dock-arrow-glyph,
-.light-theme #dock-arrow-glyph,
 [data-theme="light"] .drawer-send-btn,
 .light-theme .drawer-send-btn,
 [data-theme="light"] .drawer-send-btn *,

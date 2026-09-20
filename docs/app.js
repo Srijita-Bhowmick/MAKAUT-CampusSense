@@ -56,6 +56,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function downloadPdfFile(fileUrl, preferredName) {
+        if (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
+            const resolved = resolveAssetPath(fileUrl);
+            sessionStorage.setItem('pending_download_action', JSON.stringify({ action: 'download', fileUrl: resolved, title: preferredName }));
+            showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
+            return;
+        }
         const resolved = resolveAssetPath(fileUrl);
         try {
             const res = await fetch(resolved);
@@ -808,6 +814,10 @@ document.addEventListener('DOMContentLoaded', () => {
         container.querySelectorAll('.btn-curriculum-syllabus-pdf').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
+                if (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
+                    showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
+                    return;
+                }
                 const title = btn.getAttribute('data-title');
                 const url = btn.getAttribute('data-url');
                 openPdfViewer(title, url);
@@ -818,12 +828,12 @@ document.addEventListener('DOMContentLoaded', () => {
         container.querySelectorAll('.btn-curriculum-track').forEach(btn => {
             btn.addEventListener('click', () => {
                 const code = btn.getAttribute('data-code');
-                if (isLoggedIn) {
+                if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
                     window.location.hash = '#dashboard';
                     switchView('dashboard');
                     openSubjectHub(code);
                 } else {
-                    showAuthModal(true, "Sign in to track your syllabus progress in the interactive dashboard");
+                    showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
                 }
             });
         });
@@ -909,7 +919,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
                     sessionStorage.setItem('pending_download_action', JSON.stringify({ action: 'preview', fileUrl: url, title, subjectCode, paperYear }));
-                    showAuthModal(true, "Please sign in or create an account to preview or download official MAKAUT exam papers.");
+                    showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
                     return;
                 }
                 openPdfViewer(title, url);
@@ -927,7 +937,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
                     sessionStorage.setItem('pending_download_action', JSON.stringify({ action: 'download', fileUrl, title, subjectCode, paperYear }));
-                    showAuthModal(true, "Please sign in or create an account to preview or download official MAKAUT exam papers.");
+                    showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
                     return;
                 }
                 downloadPdfFile(fileUrl, (title || 'MAKAUT_Paper') + '.pdf');
@@ -1017,12 +1027,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Hero Panic Pack Button
     const btnHeroPanicPack = document.getElementById('btn-hero-panic-pack');
     if (btnHeroPanicPack) {
-        btnHeroPanicPack.addEventListener('click', () => {
-            if (isLoggedIn) {
+        btnHeroPanicPack.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
                 switchView('dashboard');
                 openFullPanicMode();
             } else {
-                showAuthModal(true, "Sign in to access the 48-Hour Exam Panic Pack");
+                showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
             }
         });
     }
@@ -1030,41 +1041,52 @@ document.addEventListener('DOMContentLoaded', () => {
     // Feature Card CTAs
     const btnFeatureSyllabus = document.getElementById('btn-feature-syllabus');
     if (btnFeatureSyllabus) {
-        btnFeatureSyllabus.addEventListener('click', () => {
-            if (isLoggedIn) {
+        btnFeatureSyllabus.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
                 switchView('dashboard');
             } else {
-                const el = document.getElementById('landing-curriculum');
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
+                showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
             }
         });
     }
 
     const btnFeaturePanic = document.getElementById('btn-feature-panic');
     if (btnFeaturePanic) {
-        btnFeaturePanic.addEventListener('click', () => {
-            if (isLoggedIn) {
+        btnFeaturePanic.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
                 switchView('dashboard');
                 openFullPanicMode();
             } else {
-                showAuthModal(true, "Sign in to access the 48-Hour Exam Panic Pack");
+                showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
             }
         });
     }
 
     const btnFeaturePyq = document.getElementById('btn-feature-pyq');
     if (btnFeaturePyq) {
-        btnFeaturePyq.addEventListener('click', () => {
-            const el = document.getElementById('landing-pyqs');
-            if (el) el.scrollIntoView({ behavior: 'smooth' });
+        btnFeaturePyq.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
+                const el = document.getElementById('landing-pyqs');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
+            }
         });
     }
 
     const btnFeatureAi = document.getElementById('btn-feature-ai');
     if (btnFeatureAi) {
-        btnFeatureAi.addEventListener('click', () => {
-            switchView('dashboard');
-            openAiDrawer();
+        btnFeatureAi.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
+                switchView('dashboard');
+                openAiDrawer();
+            } else {
+                showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
+            }
         });
     }
 
@@ -1097,8 +1119,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (authGateBanner) {
             authGateBanner.style.display = isGate ? 'flex' : 'none';
         }
-        if (authGateMsg && message) {
-            authGateMsg.textContent = message;
+        if (authGateMsg) {
+            authGateMsg.textContent = message || "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.";
         }
         if (authModal) authModal.style.display = 'flex';
     }
@@ -1714,7 +1736,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
                     sessionStorage.setItem('pending_download_action', JSON.stringify({ action: 'preview', fileUrl: url, title, subjectCode, paperYear }));
-                    showAuthModal(true, "Please sign in or create an account to preview or download official MAKAUT exam papers.");
+                    showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
                     return;
                 }
                 openPdfViewer(title, url);
@@ -1731,7 +1753,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
                     sessionStorage.setItem('pending_download_action', JSON.stringify({ action: 'download', fileUrl, title, subjectCode, paperYear }));
-                    showAuthModal(true, "Please sign in or create an account to preview or download official MAKAUT exam papers.");
+                    showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
                     return;
                 }
                 downloadPdfFile(fileUrl, (title || `${subjectCode}_${paperYear}`) + '.pdf');
@@ -1854,6 +1876,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // 13. Full Panic Mode Modal
     // ==========================================
     function openFullPanicMode() {
+        if (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
+            showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
+            return;
+        }
         const container = document.getElementById('panic-questions-container');
         const filterSelect = document.getElementById('panic-subject-filter');
         if (!container) return;
@@ -1984,9 +2010,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (directBtn) {
             directBtn.onclick = (e) => {
                 e.preventDefault();
-                if (localStorage.getItem('campussense_logged_in') !== 'true') {
+                if (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
                     sessionStorage.setItem('pending_download_action', JSON.stringify({ fileUrl: resolvedUrl, title: preferredName }));
-                    showAuthModal(true, "Please sign in or create an account to download official MAKAUT exam papers.");
+                    showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
                     return;
                 }
                 downloadPdfFile(resolvedUrl, preferredName);
@@ -2043,13 +2069,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let targetUrl = url || '';
 
-        // Security Gate: Protect PYQ examination papers from unauthenticated preview
-        const isPyq = (targetUrl && targetUrl.toLowerCase().includes('pyq')) ||
-                      (title && title.toLowerCase().includes('pyq')) ||
-                      (title && /\b(2020|2023|2024|2025|2026)\b/.test(title));
-        if (isPyq && !isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
+        // Security Gate: Protect all academic archives and previews behind authentication gate
+        if (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
             sessionStorage.setItem('pending_download_action', JSON.stringify({ action: 'preview', fileUrl: targetUrl, title }));
-            showAuthModal(true, "Please sign in or create an account to preview or download official MAKAUT exam papers.");
+            showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
             return;
         }
 
@@ -2077,9 +2100,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (downloadBtn) {
             downloadBtn.onclick = (e) => {
                 e.preventDefault();
-                if (localStorage.getItem('campussense_logged_in') !== 'true') {
+                if (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
                     sessionStorage.setItem('pending_download_action', JSON.stringify({ fileUrl: resolvedUrl, title: preferredName }));
-                    showAuthModal(true, "Please sign in or create an account to download official MAKAUT exam papers.");
+                    showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
                     return;
                 }
                 downloadPdfFile(resolvedUrl, preferredName);
@@ -2631,19 +2654,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 16. AI RAG Slide-Over Drawer
+    // 16. AI RAG Slide-Over Drawer (Side-by-Side Split Workspace)
     // ==========================================
     const aiDrawer = document.getElementById('ai-slide-drawer');
     const aiDrawerBackdrop = document.getElementById('ai-drawer-backdrop');
     const btnCloseAiDrawer = document.getElementById('btn-close-ai-drawer');
-    const btnChatDockCollapse = document.getElementById('btn-chat-dock-collapse');
-    const dockArrowGlyph = document.getElementById('dock-arrow-glyph');
     const dashboardWorkspace = document.getElementById('dashboard-workspace') || document.getElementById('main-viewport-container');
     const drawerChatForm = document.getElementById('drawer-chat-form');
     const drawerQueryInput = document.getElementById('ai-query-input') || document.getElementById('drawer-query-input');
     const drawerChatMessages = document.getElementById('drawer-chat-messages');
 
     function openAiDrawer(initialQuery = '') {
+        if (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
+            showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
+            return;
+        }
         document.body.classList.add('split-chat-active');
         document.body.classList.add('chat-workspace-active');
         if (dashboardWorkspace) {
@@ -2651,16 +2676,12 @@ document.addEventListener('DOMContentLoaded', () => {
             dashboardWorkspace.classList.add('chat-workspace-active');
         }
         if (aiDrawer) aiDrawer.classList.add('open');
-        const arrowGlyph = dockArrowGlyph || (btnChatDockCollapse ? (btnChatDockCollapse.querySelector('#dock-arrow-glyph') || btnChatDockCollapse.querySelector('.arrow-glyph')) : null);
-        if (arrowGlyph) arrowGlyph.textContent = '▶';
-        if (btnChatDockCollapse) btnChatDockCollapse.title = "Collapse Side-by-Side Chat Workspace";
 
         // Dynamically scale main dashboard pane side-by-side with drawer
-        const drawerW = parseInt(document.documentElement.style.getPropertyValue('--chat-drawer-width')) || 460;
         const mainPane = document.querySelector('.dashboard-main-pane');
         if (mainPane) {
-            mainPane.style.flex = `1 1 calc(100% - ${drawerW}px)`;
-            mainPane.style.maxWidth = `calc(100% - ${drawerW}px)`;
+            mainPane.style.flex = '0 0 calc(100% - 460px)';
+            mainPane.style.maxWidth = 'calc(100% - 460px)';
         }
 
         renderChatHistoryDropdown();
@@ -2685,12 +2706,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (aiDrawer) aiDrawer.classList.remove('open');
         const mainPane = document.querySelector('.dashboard-main-pane');
         if (mainPane) {
-            mainPane.style.flex = '1 1 100%';
+            mainPane.style.flex = '1';
             mainPane.style.maxWidth = '100%';
         }
-        const arrowGlyph = dockArrowGlyph || (btnChatDockCollapse ? (btnChatDockCollapse.querySelector('#dock-arrow-glyph') || btnChatDockCollapse.querySelector('.arrow-glyph')) : null);
-        if (arrowGlyph) arrowGlyph.textContent = '◀';
-        if (btnChatDockCollapse) btnChatDockCollapse.title = "Expand Side-by-Side Chat Workspace";
     }
 
     function toggleAiDrawer() {
@@ -2701,7 +2719,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    if (btnChatDockCollapse) btnChatDockCollapse.addEventListener('click', toggleAiDrawer);
     if (btnOpenAiFab) btnOpenAiFab.addEventListener('click', () => openAiDrawer());
     if (btnCloseAiDrawer) btnCloseAiDrawer.addEventListener('click', closeAiDrawer);
     if (aiDrawerBackdrop) aiDrawerBackdrop.addEventListener('click', closeAiDrawer);
