@@ -56,9 +56,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function downloadPdfFile(fileUrl, preferredName) {
-        if ((!window.Clerk?.user) && (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true')) {
+        if (!window.Clerk?.user) {
             const resolved = resolveAssetPath(fileUrl);
-            triggerRealClerkAuth({ action: 'download', fileUrl: resolved, title: preferredName });
+            window.triggerNativeClerkAuth({ action: 'download', fileUrl: resolved, title: preferredName });
             return;
         }
         const resolved = resolveAssetPath(fileUrl);
@@ -894,8 +894,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.preventDefault();
                 const title = btn.getAttribute('data-title');
                 const url = btn.getAttribute('data-url');
-                if ((!window.Clerk?.user) && (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true')) {
-                    triggerRealClerkAuth({ action: 'preview', fileUrl: url, title });
+                if (!window.Clerk?.user) {
+                    window.triggerNativeClerkAuth({ action: 'preview', fileUrl: url, title });
                     return;
                 }
                 openPdfViewer(title, url);
@@ -911,7 +911,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     switchView('dashboard');
                     openSubjectHub(code);
                 } else {
-                    triggerRealClerkAuth();
+                    window.triggerNativeClerkAuth();
                 }
             });
         });
@@ -995,8 +995,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const subjectCode = btn.getAttribute('data-subject') || '';
                 const paperYear = btn.getAttribute('data-paper') || '';
 
-                if ((!window.Clerk?.user) && (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true')) {
-                    triggerRealClerkAuth({ action: 'preview', fileUrl: url, title, subjectCode, paperYear });
+                if (!window.Clerk?.user) {
+                    window.triggerNativeClerkAuth({ action: 'preview', fileUrl: url, title, subjectCode, paperYear });
                     return;
                 }
                 openPdfViewer(title, url);
@@ -1012,8 +1012,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const title = btn.getAttribute('data-name') || `${subjectCode} (${paperYear})`;
                 const fileUrl = btn.getAttribute('data-url') || '';
 
-                if ((!window.Clerk?.user) && (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true')) {
-                    triggerRealClerkAuth({ action: 'download', fileUrl, title, subjectCode, paperYear });
+                if (!window.Clerk?.user) {
+                    window.triggerNativeClerkAuth({ action: 'download', fileUrl, title, subjectCode, paperYear });
                     return;
                 }
                 downloadPdfFile(fileUrl, (title || 'MAKAUT_Paper') + '.pdf');
@@ -1181,111 +1181,63 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     // 8. Real Clerk Native Authentication
     // ==========================================
-    const authModal = document.getElementById('auth-modal');
-    const authGateBanner = document.getElementById('auth-gate-banner');
-    const authGateMsg = document.getElementById('auth-gate-message');
-    const btnCloseAuthModal = document.getElementById('btn-close-auth-modal');
-    const clerkAuthContainer = document.getElementById('clerk-auth-container');
-
-    async function triggerRealClerkAuth(pendingAction = null) {
+    window.triggerNativeClerkAuth = function(pendingAction = null) {
         if (pendingAction) {
             sessionStorage.setItem('pending_download_action', JSON.stringify(pendingAction));
         }
-
-        if (!window.Clerk) {
-            console.error("Clerk is not loaded yet.");
-            if (authModal) authModal.style.display = 'flex';
-            return;
+        if (window.Clerk && typeof window.Clerk.openSignIn === 'function') {
+            window.Clerk.openSignIn({
+                appearance: {
+                    elements: {
+                        rootBox: "mx-auto shadow-2xl",
+                        card: "bg-white text-slate-900 rounded-2xl border border-slate-200"
+                    }
+                },
+                afterSignInUrl: window.location.href,
+                afterSignUpUrl: window.location.href
+            });
+        } else {
+            console.error("Clerk SDK is not loaded yet.");
         }
-
-        // Opens Clerk's hosted/embedded sign-in modal which handles real Email OTP, Google, and Name collection
-        if (typeof window.Clerk.openSignIn === 'function') {
-            try {
-                window.Clerk.openSignIn({
-                    appearance: {
-                        elements: {
-                            rootBox: "mx-auto shadow-2xl",
-                            card: "bg-white text-slate-900 rounded-2xl border border-slate-200"
-                        }
-                    },
-                    afterSignInUrl: window.location.href,
-                    afterSignUpUrl: window.location.href
-                });
-                return;
-            } catch (err) {
-                console.warn('[Clerk] openSignIn delegation error:', err);
-            }
-        }
-
-        // If openSignIn is not available or user opened embedded modal, mount directly inside #clerk-auth-container
-        if (clerkAuthContainer && typeof window.Clerk.mountSignIn === 'function') {
-            if (authModal) authModal.style.display = 'flex';
-            try {
-                window.Clerk.mountSignIn(clerkAuthContainer, {
-                    appearance: {
-                        elements: {
-                            rootBox: "mx-auto shadow-2xl",
-                            card: "bg-white text-slate-900 rounded-2xl border border-slate-200"
-                        }
-                    },
-                    afterSignInUrl: window.location.href,
-                    afterSignUpUrl: window.location.href
-                });
-            } catch (e) {
-                console.warn('[Clerk] mountSignIn error:', e);
-            }
-        } else if (authModal) {
-            authModal.style.display = 'flex';
-        }
-    }
-    window.triggerRealClerkAuth = triggerRealClerkAuth;
+    };
+    window.triggerRealClerkAuth = window.triggerNativeClerkAuth;
+    const triggerNativeClerkAuth = window.triggerNativeClerkAuth;
+    const triggerRealClerkAuth = window.triggerNativeClerkAuth;
 
     function showAuthModal(isGate = false, message = '') {
-        if (authGateBanner) {
-            authGateBanner.style.display = isGate ? 'flex' : 'none';
-        }
-        if (authGateMsg) {
-            authGateMsg.textContent = message || "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.";
-        }
-        triggerRealClerkAuth();
+        window.triggerNativeClerkAuth();
     }
 
     if (btnNavSignIn) {
         btnNavSignIn.addEventListener('click', () => {
-            triggerRealClerkAuth();
+            window.triggerNativeClerkAuth();
         });
     }
 
     if (btnNavSignUp) {
         btnNavSignUp.addEventListener('click', () => {
-            triggerRealClerkAuth();
+            window.triggerNativeClerkAuth();
         });
     }
 
     if (btnLandingAuth) {
         btnLandingAuth.addEventListener('click', () => {
-            triggerRealClerkAuth();
+            window.triggerNativeClerkAuth();
         });
     }
 
     const authTriggerBtn = document.getElementById('auth-trigger-btn');
     if (authTriggerBtn) {
         authTriggerBtn.addEventListener('click', () => {
-            triggerRealClerkAuth();
+            window.triggerNativeClerkAuth();
         });
     }
 
     document.querySelectorAll('.auth-trigger-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-            triggerRealClerkAuth();
+            window.triggerNativeClerkAuth();
         });
     });
-
-    if (btnCloseAuthModal) {
-        btnCloseAuthModal.addEventListener('click', () => {
-            if (authModal) authModal.style.display = 'none';
-        });
-    }
 
     function completeAuthentication(name, email) {
         updateUIAfterLogin({
@@ -1837,8 +1789,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const subjectCode = btn.getAttribute('data-subject') || '';
                 const paperYear = btn.getAttribute('data-paper') || '';
 
-                if ((!window.Clerk?.user) && (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true')) {
-                    triggerRealClerkAuth({ action: 'preview', fileUrl: url, title, subjectCode, paperYear });
+                if (!window.Clerk?.user) {
+                    window.triggerNativeClerkAuth({ action: 'preview', fileUrl: url, title, subjectCode, paperYear });
                     return;
                 }
                 openPdfViewer(title, url);
@@ -1853,8 +1805,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const title = btn.getAttribute('data-name');
                 const fileUrl = btn.getAttribute('data-url');
 
-                if ((!window.Clerk?.user) && (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true')) {
-                    triggerRealClerkAuth({ action: 'download', fileUrl, title, subjectCode, paperYear });
+                if (!window.Clerk?.user) {
+                    window.triggerNativeClerkAuth({ action: 'download', fileUrl, title, subjectCode, paperYear });
                     return;
                 }
                 downloadPdfFile(fileUrl, (title || `${subjectCode}_${paperYear}`) + '.pdf');
@@ -3921,7 +3873,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }).catch(err => console.warn('[Clerk] Metadata sync skipped:', err));
         }
 
-        if (authModal) authModal.style.display = 'none';
         updateContextUI();
 
         // Action Preservation: Check if user triggered a preview or download before auth
@@ -4003,23 +3954,6 @@ document.addEventListener('DOMContentLoaded', () => {
                             updateContextUI();
                         }
                     });
-                }
-
-                // Mount Clerk sign-in container inside #clerk-auth-container if present
-                const clerkContainer = document.getElementById('clerk-auth-container') || document.getElementById('clerk-sign-in');
-                if (clerkContainer && typeof window.Clerk.mountSignIn === 'function' && !window.Clerk.user) {
-                    try {
-                        window.Clerk.mountSignIn(clerkContainer, {
-                            appearance: {
-                                elements: {
-                                    rootBox: "mx-auto shadow-2xl",
-                                    card: "bg-white text-slate-900 rounded-2xl border border-slate-200"
-                                }
-                            },
-                            afterSignInUrl: window.location.href,
-                            afterSignUpUrl: window.location.href
-                        });
-                    } catch (_) {}
                 }
             } catch (err) {
                 console.warn('[Clerk] Initialization warning (safe fallback active):', err);

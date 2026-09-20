@@ -116,13 +116,13 @@
                 </button>
 
                 <!-- Dedicated Top-Right Auth Triggers -->
-                <button class="btn btn-outline" id="btn-nav-signin" title="Sign In">
+                <button class="btn btn-outline" id="btn-nav-signin" title="Sign In" onclick="if(window.triggerNativeClerkAuth)window.triggerNativeClerkAuth();">
                     Sign In
                 </button>
-                <button class="btn btn-primary" id="btn-nav-signup" title="Create Account">
+                <button class="btn btn-primary" id="btn-nav-signup" title="Create Account" onclick="if(window.triggerNativeClerkAuth)window.triggerNativeClerkAuth();">
                     Sign Up
                 </button>
-                <button class="btn btn-primary" id="btn-landing-auth" style="display: none;" title="Sign In or Create Account">
+                <button class="btn btn-primary" id="btn-landing-auth" style="display: none;" title="Sign In or Create Account" onclick="if(window.triggerNativeClerkAuth)window.triggerNativeClerkAuth();">
                     Sign In / Sign Up
                 </button>
             </div>
@@ -492,38 +492,6 @@
          MODALS & OVERLAYS
          ==================================================================== -->
 
-    <!-- Auth Modal (Secure Dual Authentication: Email + OTP & Google Sign-In) -->
-    <div class="modal-backdrop" id="auth-modal" style="display: none;">
-        <div class="modal-card auth-modal-card">
-            <div class="auth-header">
-                <div class="brand-logo large-logo" style="margin: 0 auto 0.75rem;">
-                    <span class="logo-icon">🎓</span>
-                </div>
-                <h2 class="auth-title">Sign In to MAKAUT CampusSense</h2>
-                <p class="auth-subhead">Access verified syllabi, PYQ archives, and AI tools.</p>
-            </div>
-
-            <!-- Dynamic Gate Banner (Visible when triggered by PDF download or Panic Pack intercept) -->
-            <div class="auth-gate-alert" id="auth-gate-banner" style="display: none;">
-                <span style="font-size: 1.25rem;">🔒</span>
-                <div>
-                    <strong id="auth-gate-message">Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.</strong>
-                    <div style="font-size: 0.78rem; opacity: 0.9; margin-top: 0.15rem;">
-                        Instant access to syllabus checklists, PYQ Archives, and 48-Hour Panic Packs.
-                    </div>
-                </div>
-            </div>
-
-            <!-- Real Clerk Native Mounting Container -->
-            <div id="clerk-auth-container" class="clerk-mount-wrapper"></div>
-
-            <div class="auth-footer" style="margin-top: 1.25rem;">
-                <button type="button" class="btn" id="btn-close-auth-modal" style="background: transparent; color: var(--text-muted); font-size: 0.8rem; border: none; cursor: pointer;">
-                    ✕ Close
-                </button>
-            </div>
-        </div>
-    </div>
 
     <!-- Academic Scope Onboarding Modal (#scope-modal) -->
     <div class="modal-backdrop" id="scope-modal" style="display: none;">
