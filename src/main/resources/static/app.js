@@ -112,19 +112,82 @@ document.addEventListener('DOMContentLoaded', () => {
         'GROUP_A': '1st Year (Group A / Physics)',
         'GROUP_B': '1st Year (Group B / Chemistry)',
         'COMMON': '1st Year Common',
-        'MULTIDISCIPLINARY': '1st Year Multidisciplinary / Mandatory',
-        'CSE': 'CSE',
-        'IT': 'IT',
+        'MULTIDISCIPLINARY': '1st Year Multidisciplinary',
+        'CSE': 'Computer Science & Engineering',
+        'IT': 'Information Technology',
+        'ECE': 'Electronics & Communication Engineering',
+        'EE': 'Electrical Engineering',
+        'ME': 'Mechanical Engineering',
+        'CE': 'Civil Engineering',
         'AIML': 'AI & Machine Learning'
+    };
+
+    // 4-Year Departmental Architecture across Streams (CSE & IT data arrays strictly purged and kept empty)
+    const DEPARTMENT_STREAMS = {
+        'CSE': {
+            code: 'CSE',
+            name: 'Computer Science & Engineering',
+            years: [1, 2, 3, 4],
+            semesters: [1, 2, 3, 4, 5, 6, 7, 8],
+            courses: [],
+            modules: [],
+            pyqs: []
+        },
+        'IT': {
+            code: 'IT',
+            name: 'Information Technology',
+            years: [1, 2, 3, 4],
+            semesters: [1, 2, 3, 4, 5, 6, 7, 8],
+            courses: [],
+            modules: [],
+            pyqs: []
+        },
+        'ECE': {
+            code: 'ECE',
+            name: 'Electronics & Communication Engineering',
+            years: [1, 2, 3, 4],
+            semesters: [1, 2, 3, 4, 5, 6, 7, 8],
+            courses: [],
+            modules: [],
+            pyqs: []
+        },
+        'EE': {
+            code: 'EE',
+            name: 'Electrical Engineering',
+            years: [1, 2, 3, 4],
+            semesters: [1, 2, 3, 4, 5, 6, 7, 8],
+            courses: [],
+            modules: [],
+            pyqs: []
+        },
+        'ME': {
+            code: 'ME',
+            name: 'Mechanical Engineering',
+            years: [1, 2, 3, 4],
+            semesters: [1, 2, 3, 4, 5, 6, 7, 8],
+            courses: [],
+            modules: [],
+            pyqs: []
+        },
+        'CE': {
+            code: 'CE',
+            name: 'Civil Engineering',
+            years: [1, 2, 3, 4],
+            semesters: [1, 2, 3, 4, 5, 6, 7, 8],
+            courses: [],
+            modules: [],
+            pyqs: []
+        }
     };
 
     function updateContextUI() {
         const contextTextEl = document.getElementById('current-context-text');
         if (contextTextEl) {
             if (currentYearMode === 'FIRST_YEAR') {
-                contextTextEl.textContent = '1st Year • Common Curriculum ▾';
+                contextTextEl.textContent = '1st Year Common • Sem 1 & 2 ▾';
             } else {
-                contextTextEl.textContent = `${currentStream} • Sem ${currentSem} ▾`;
+                const streamLabel = currentStream || 'CSE';
+                contextTextEl.textContent = `${streamLabel} • Sem ${currentSem} ▾`;
             }
         }
         const userDisplayEl = document.getElementById('user-display-name');
@@ -739,16 +802,32 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!container) return;
 
         const sLower = (stream || 'all').toLowerCase();
+        
+        // If CSE, IT, or any departmental stream is selected, display empty ingestion placeholder
+        if (sLower === 'cse' || sLower === 'it' || sLower === 'ece' || sLower === 'ee' || sLower === 'me' || sLower === 'ce' || sLower === 'aiml') {
+            container.innerHTML = `
+                <div class="empty-stream-notice">
+                    <h3>Stream Syllabus & PYQ Archive Awaiting Ingestion</h3>
+                    <p>Curated 4-year curriculum and semester examination papers for this branch will be available soon.</p>
+                </div>
+            `;
+            return;
+        }
+
         let filtered = MAKAUT_CURRICULUM;
         if (sLower === 'common' || sLower === '1st-year-common') {
             filtered = MAKAUT_CURRICULUM.filter(s => s.isFirstYear || s.stream === 'GROUP_A' || s.stream === 'GROUP_B' || s.stream === 'COMMON');
-        } else if (sLower === 'cse') {
-            filtered = MAKAUT_CURRICULUM.filter(s => s.stream === 'CSE' || s.code.includes('CS') || s.code.includes('PH') || s.code.includes('M1') || s.code.includes('M2') || s.code.includes('EE'));
-        } else if (sLower === 'it') {
-            filtered = MAKAUT_CURRICULUM.filter(s => s.stream === 'IT' || s.code.includes('CS') || s.code.includes('CH') || s.code.includes('M1') || s.code.includes('M2') || s.code.includes('EE'));
         } else if (sLower !== 'all' && sLower !== 'all subjects') {
             filtered = MAKAUT_CURRICULUM.filter(s => (s.stream && s.stream.toLowerCase() === sLower) || (s.department && s.department.toLowerCase().includes(sLower)));
-            if (filtered.length === 0) filtered = MAKAUT_CURRICULUM;
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-stream-notice">
+                        <h3>Stream Syllabus & PYQ Archive Awaiting Ingestion</h3>
+                        <p>Curated 4-year curriculum and semester examination papers for this branch will be available soon.</p>
+                    </div>
+                `;
+                return;
+            }
         }
 
         container.innerHTML = filtered.map(sub => {
@@ -1320,7 +1399,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const activeStreamBtn = document.querySelector('.stream-option.active');
                 const activeSemBtn = document.querySelector('.sem-btn.active');
                 if (activeStreamBtn) currentStream = activeStreamBtn.getAttribute('data-stream') || 'CSE';
-                if (activeSemBtn) currentSem = parseInt(activeSemBtn.getAttribute('data-sem'), 10) || 3;
+                if (activeSemBtn) {
+                    const semVal = parseInt(activeSemBtn.getAttribute('data-sem'), 10);
+                    currentSem = isNaN(semVal) ? 3 : semVal;
+                } else {
+                    currentSem = 3;
+                }
             }
 
             localStorage.setItem('campussense_stream', currentStream);
@@ -1345,6 +1429,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (scopeModal) scopeModal.style.display = 'none';
+
+            // Refresh UI context and dashboard active subjects
+            updateContextUI();
+            renderActiveSubjects();
 
             // Transition to Dashboard
             switchView('dashboard');
@@ -1445,15 +1533,29 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             if (regNotice) regNotice.style.display = 'none';
             if (firstYearFilterRow) firstYearFilterRow.style.display = 'none';
-            if (headingEl) headingEl.textContent = `${currentStream} Sem ${currentSem} Subjects & Progress`;
+            if (headingEl) headingEl.textContent = `${currentStream} • Sem ${currentSem} Subjects & Progress`;
 
-            matchingSubjects = MAKAUT_CURRICULUM.filter(s => s.stream === currentStream && s.semester === currentSem && !s.isFirstYear);
+            const branchData = DEPARTMENT_STREAMS[currentStream] || { courses: [], modules: [], pyqs: [] };
+            matchingSubjects = (branchData.courses || []).filter(s => s.semester === currentSem);
 
             if (matchingSubjects.length === 0) {
-                matchingSubjects = MAKAUT_CURRICULUM.filter(s => s.semester === currentSem && !s.isFirstYear);
-                if (matchingSubjects.length === 0) {
-                    matchingSubjects = MAKAUT_CURRICULUM.filter(s => !s.isFirstYear);
+                grid.innerHTML = `
+                    <div class="empty-stream-notice">
+                        <h3>Stream Syllabus & PYQ Archive Awaiting Ingestion</h3>
+                        <p>Curated 4-year curriculum and semester examination papers for this branch will be available soon.</p>
+                    </div>
+                `;
+                const progressPill = document.getElementById('overall-syllabus-progress-pill');
+                if (progressPill) {
+                    progressPill.textContent = 'Awaiting Syllabus Ingestion (0 Units)';
                 }
+                const bentoSubCount = document.getElementById('bento-subject-count');
+                if (bentoSubCount) bentoSubCount.textContent = '0 Subjects';
+                const bentoProgress = document.getElementById('bento-progress-percent');
+                if (bentoProgress) bentoProgress.textContent = '0%';
+                const ringProgress = document.getElementById('bento-ring-progress');
+                if (ringProgress) ringProgress.style.strokeDasharray = '0 100';
+                return;
             }
         }
 
@@ -1559,12 +1661,27 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof subjectCodeOrObj === 'object' && subjectCodeOrObj !== null) {
             subject = subjectCodeOrObj;
         } else if (typeof subjectCodeOrObj === 'string') {
+            const scLower = subjectCodeOrObj.toLowerCase();
             subject = MAKAUT_CURRICULUM.find(s => 
-                s.code.toLowerCase() === subjectCodeOrObj.toLowerCase() ||
-                (s.altCode && s.altCode.toLowerCase() === subjectCodeOrObj.toLowerCase()) ||
-                (s.legacyCode && s.legacyCode.toLowerCase() === subjectCodeOrObj.toLowerCase()) ||
-                s.name.toLowerCase() === subjectCodeOrObj.toLowerCase()
+                s.code.toLowerCase() === scLower ||
+                (s.altCode && s.altCode.toLowerCase() === scLower) ||
+                (s.legacyCode && s.legacyCode.toLowerCase() === scLower) ||
+                s.name.toLowerCase() === scLower
             );
+            if (!subject && typeof DEPARTMENT_STREAMS !== 'undefined') {
+                for (const strKey of Object.keys(DEPARTMENT_STREAMS)) {
+                    const found = (DEPARTMENT_STREAMS[strKey].courses || []).find(s =>
+                        s.code.toLowerCase() === scLower ||
+                        (s.altCode && s.altCode.toLowerCase() === scLower) ||
+                        (s.legacyCode && s.legacyCode.toLowerCase() === scLower) ||
+                        s.name.toLowerCase() === scLower
+                    );
+                    if (found) {
+                        subject = found;
+                        break;
+                    }
+                }
+            }
         }
         if (!subject) return;
         currentHubSubject = subject;

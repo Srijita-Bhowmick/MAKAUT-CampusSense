@@ -2890,6 +2890,54 @@ body.is-drawer-resizing .ai-slide-drawer {
     gap: 1.5rem;
 }
 
+.empty-stream-notice {
+    grid-column: 1 / -1;
+    width: 100%;
+    padding: 3.5rem 2rem;
+    text-align: center;
+    background: var(--card-bg);
+    border: 1px dashed var(--card-border);
+    border-radius: 16px;
+    margin: 1rem auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--card-shadow);
+}
+
+.empty-stream-notice h3 {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.6rem;
+}
+
+.empty-stream-notice p {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    max-width: 540px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+[data-theme="light"] .empty-stream-notice,
+.light-theme .empty-stream-notice {
+    background: #ffffff;
+    border-color: #cbd5e1;
+}
+
+[data-theme="light"] .empty-stream-notice h3,
+.light-theme .empty-stream-notice h3 {
+    color: #0f172a;
+}
+
+[data-theme="light"] .empty-stream-notice p,
+.light-theme .empty-stream-notice p {
+    color: #475569;
+}
+
 .curriculum-card {
     background: var(--card-bg);
     border: 1px solid var(--card-border);

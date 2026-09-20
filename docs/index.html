@@ -257,6 +257,8 @@
                 <button class="curriculum-tab-btn landing-filter-btn" data-curriculum-stream="COMMON" data-stream="common">1st Year Common</button>
                 <button class="curriculum-tab-btn landing-filter-btn" data-curriculum-stream="CSE" data-stream="cse">CSE</button>
                 <button class="curriculum-tab-btn landing-filter-btn" data-curriculum-stream="IT" data-stream="it">IT</button>
+                <button class="curriculum-tab-btn landing-filter-btn" data-curriculum-stream="ECE" data-stream="ece">ECE</button>
+                <button class="curriculum-tab-btn landing-filter-btn" data-curriculum-stream="EE" data-stream="ee">EE</button>
             </div>
 
             <div class="curriculum-cards-grid" id="landing-curriculum-grid">
@@ -622,21 +624,21 @@
             <form id="scope-form" class="onboarding-form">
                 <!-- 1. Primary Year Level Selector -->
                 <div class="form-group">
-                    <label class="form-label">Academic Stage</label>
+                    <label class="form-label">Academic Stage & Program</label>
                     <div class="primary-year-select-row" id="primary-year-select-row">
                         <button type="button" class="primary-year-btn active" id="btn-scope-first-year" data-year-mode="FIRST_YEAR">
                             <span class="year-btn-icon">🌱</span>
                             <div class="year-btn-content">
-                                <span class="year-btn-title">1st Year (Common Curriculum)</span>
-                                <span class="year-btn-sub">Physics, Chemistry, Mathematics 1 & 2, BEE, PPS, English, Environmental Science (EVS), Biology for Engineers</span>
+                                <span class="year-btn-title">1st Year Common Curriculum</span>
+                                <span class="year-btn-sub">Physics, Chemistry, Mathematics 1 & 2, BEE, PPS, English, EVS, Biology</span>
                             </div>
                             <span class="year-check-icon">✓</span>
                         </button>
                         <button type="button" class="primary-year-btn" id="btn-scope-departmental-years" data-year-mode="DEPARTMENTAL_YEARS">
                             <span class="year-btn-icon">⚡</span>
                             <div class="year-btn-content">
-                                <span class="year-btn-title">Departmental Years (Sem 3 – 8)</span>
-                                <span class="year-btn-sub">Branch-Specific Engineering Core</span>
+                                <span class="year-btn-title">4-Year Degree Architecture (Semesters 1 – 8)</span>
+                                <span class="year-btn-sub">Branch-Specific Departmental Core & Advanced Electives</span>
                             </div>
                             <span class="year-check-icon">✓</span>
                         </button>
@@ -659,13 +661,35 @@
                                 <span class="stream-name">IT</span>
                                 <span class="stream-desc">Information Technology</span>
                             </button>
+                            <button type="button" class="stream-option" data-stream="ECE">
+                                <span class="stream-icon">📡</span>
+                                <span class="stream-name">ECE</span>
+                                <span class="stream-desc">Electronics & Communication</span>
+                            </button>
+                            <button type="button" class="stream-option" data-stream="EE">
+                                <span class="stream-icon">⚡</span>
+                                <span class="stream-name">EE</span>
+                                <span class="stream-desc">Electrical Engineering</span>
+                            </button>
+                            <button type="button" class="stream-option" data-stream="ME">
+                                <span class="stream-icon">⚙️</span>
+                                <span class="stream-name">ME</span>
+                                <span class="stream-desc">Mechanical Engineering</span>
+                            </button>
+                            <button type="button" class="stream-option" data-stream="CE">
+                                <span class="stream-icon">🏗️</span>
+                                <span class="stream-name">CE</span>
+                                <span class="stream-desc">Civil Engineering</span>
+                            </button>
                         </div>
                     </div>
 
-                    <!-- Semester Selector (Sem 3 through Sem 8) -->
+                    <!-- Semester Selector (Sem 1 through Sem 8 across all 4 Years) -->
                     <div class="form-group">
-                        <label class="form-label">Current Semester</label>
+                        <label class="form-label">Current Semester (Years 1 to 4 • Semesters 1 to 8)</label>
                         <div class="sem-pills-selector" id="sem-picker-row">
+                            <button type="button" class="sem-btn" data-sem="1">Sem 1</button>
+                            <button type="button" class="sem-btn" data-sem="2">Sem 2</button>
                             <button type="button" class="sem-btn active" data-sem="3">Sem 3</button>
                             <button type="button" class="sem-btn" data-sem="4">Sem 4</button>
                             <button type="button" class="sem-btn" data-sem="5">Sem 5</button>
