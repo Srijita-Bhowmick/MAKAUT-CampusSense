@@ -2665,14 +2665,69 @@ body.is-drawer-resizing .ai-slide-drawer {
     filter: brightness(1.1);
 }
 
-.landing-stats-bar {
+.landing-stats-bar,
+.landing-highlights-row {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
-    gap: 2.25rem;
-    padding-top: 1.85rem;
-    border-top: 1px solid var(--card-border);
+    flex-wrap: nowrap;
+    gap: 1.25rem;
+    padding-top: 2rem;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1140px;
+    overflow-x: auto;
+}
+
+.highlight-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.65rem 1.15rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--card-border);
+    border-radius: 9999px;
+    font-family: var(--font-heading);
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--text-primary, #f8fafc);
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: default;
+}
+
+.highlight-pill:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent-primary);
+    background: rgba(99, 102, 241, 0.08);
+    box-shadow: 0 6px 16px rgba(99, 102, 241, 0.2);
+}
+
+@media (max-width: 900px) {
+    .landing-highlights-row {
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+    .highlight-pill {
+        font-size: 0.78rem;
+        padding: 0.5rem 0.85rem;
+    }
+}
+
+[data-theme="light"] .highlight-pill,
+.light-theme .highlight-pill {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #0f172a !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+}
+
+[data-theme="light"] .highlight-pill:hover,
+.light-theme .highlight-pill:hover {
+    border-color: var(--accent-primary) !important;
+    background: #f8fafc !important;
+    box-shadow: 0 6px 16px rgba(79, 70, 229, 0.15) !important;
 }
 
 .landing-stat-item {
@@ -5253,7 +5308,9 @@ body.is-drawer-resizing .ai-slide-drawer {
 .stream-card, 
 .stream-option,
 .academic-stage-card, 
-.primary-year-btn, 
+.semester-btn,
+.sem-btn,
+.primary-year-btn,
 .landing-feature-card,
 .subject-item-card {
   transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), 
@@ -5266,11 +5323,14 @@ body.is-drawer-resizing .ai-slide-drawer {
 .stream-card:hover, 
 .stream-option:hover,
 .academic-stage-card:hover, 
+.semester-btn:hover,
+.sem-btn:hover,
 .primary-year-btn:hover,
-.landing-feature-card:hover {
-  transform: translateY(-4px) scale(1.015) !important;
+.landing-feature-card:hover,
+.subject-item-card:hover {
+  transform: translateY(-4px) scale(1.02) !important;
   border-color: var(--accent-primary) !important;
-  box-shadow: 0 12px 28px -6px rgba(55, 48, 163, 0.28) !important;
+  box-shadow: 0 12px 28px -6px rgba(55, 48, 163, 0.3) !important;
   background-color: var(--card-hover) !important;
 }
 
@@ -5278,15 +5338,20 @@ body.is-drawer-resizing .ai-slide-drawer {
 .stream-card.active,
 .stream-option.active,
 .academic-stage-card.selected, 
+.semester-btn.active,
+.sem-btn.active,
 .primary-year-btn.active,
 .stream-card:active, 
 .stream-option:active,
 .academic-stage-card:active,
+.semester-btn:active,
+.sem-btn:active,
 .primary-year-btn:active {
   transform: translateY(-2px) scale(1.01) !important;
   border-color: var(--accent-primary) !important;
-  background: rgba(55, 48, 163, 0.08) !important;
-  box-shadow: 0 14px 32px -4px rgba(55, 48, 163, 0.38) !important;
+  background: rgba(55, 48, 163, 0.12) !important;
+  box-shadow: 0 14px 32px -4px rgba(55, 48, 163, 0.4) !important;
 }
+
 
 
