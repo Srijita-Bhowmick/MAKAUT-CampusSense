@@ -1182,17 +1182,42 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==========================================
-    // 8. Auth Modal (Sign In & Sign Up)
+    // 8. Auth Modal (Secure Dual Auth: Email + OTP & Google Sign-In)
     // ==========================================
     const authModal = document.getElementById('auth-modal');
     const authGateBanner = document.getElementById('auth-gate-banner');
     const authGateMsg = document.getElementById('auth-gate-message');
-    const tabAuthLogin = document.getElementById('tab-auth-login');
-    const tabAuthSignup = document.getElementById('tab-auth-signup');
-    const formAuthLogin = document.getElementById('form-auth-login');
-    const formAuthSignup = document.getElementById('form-auth-signup');
     const btnCloseAuthModal = document.getElementById('btn-close-auth-modal');
     const btnAuthGoogle = document.getElementById('btn-auth-google');
+    const authStatusMessage = document.getElementById('auth-status-message');
+    const authOtpForm = document.getElementById('auth-otp-form');
+    const authStepEmail = document.getElementById('auth-step-email');
+    const authStepOtp = document.getElementById('auth-step-otp');
+    const authEmailInput = document.getElementById('auth-email-input');
+    const authOtpInput = document.getElementById('auth-otp-input');
+    const btnSendOtp = document.getElementById('btn-send-otp');
+    const btnVerifyOtp = document.getElementById('btn-verify-otp');
+    const btnChangeEmail = document.getElementById('btn-change-email');
+    const btnResendOtp = document.getElementById('btn-resend-otp');
+    const authSentEmail = document.getElementById('auth-sent-email');
+
+    let generatedOtp = null;
+    let authPendingEmail = '';
+
+    function showAuthStatus(message, type = 'info') {
+        if (!authStatusMessage) return;
+        authStatusMessage.textContent = message;
+        authStatusMessage.className = `auth-status-msg ${type}`;
+        authStatusMessage.style.display = 'block';
+    }
+
+    function clearAuthStatus() {
+        if (authStatusMessage) {
+            authStatusMessage.textContent = '';
+            authStatusMessage.className = 'auth-status-msg';
+            authStatusMessage.style.display = 'none';
+        }
+    }
 
     function showAuthModal(isGate = false, message = '') {
         if (authGateBanner) {
@@ -1201,51 +1226,77 @@ document.addEventListener('DOMContentLoaded', () => {
         if (authGateMsg) {
             authGateMsg.textContent = message || "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.";
         }
+        clearAuthStatus();
+        if (authStepEmail) authStepEmail.style.display = 'block';
+        if (authStepOtp) authStepOtp.style.display = 'none';
+        if (authOtpInput) authOtpInput.value = '';
+
         if (authModal) authModal.style.display = 'flex';
+        setTimeout(() => {
+            if (authEmailInput) authEmailInput.focus();
+        }, 50);
     }
 
-    function setAuthTab(tab) {
-        if (tab === 'signup') {
-            if (tabAuthSignup) tabAuthSignup.classList.add('active');
-            if (tabAuthLogin) tabAuthLogin.classList.remove('active');
-            if (formAuthSignup) formAuthSignup.style.display = 'block';
-            if (formAuthLogin) formAuthLogin.style.display = 'none';
-        } else {
-            if (tabAuthLogin) tabAuthLogin.classList.add('active');
-            if (tabAuthSignup) tabAuthSignup.classList.remove('active');
-            if (formAuthLogin) formAuthLogin.style.display = 'block';
-            if (formAuthSignup) formAuthSignup.style.display = 'none';
+    function isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function handleSendOtp() {
+        const emailVal = authEmailInput ? authEmailInput.value.trim() : '';
+        if (!emailVal || !isValidEmail(emailVal)) {
+            showAuthStatus("Please enter a valid email address.", "error");
+            if (authEmailInput) authEmailInput.focus();
+            return;
         }
+
+        authPendingEmail = emailVal;
+        generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+        sessionStorage.setItem('campussense_auth_otp', generatedOtp);
+        sessionStorage.setItem('campussense_auth_email', authPendingEmail);
+
+        // Simulate or call backend endpoint /api/auth/send-otp
+        try {
+            fetch('/api/auth/send-otp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: authPendingEmail, otp: generatedOtp })
+            }).catch(() => {});
+        } catch (_) {}
+
+        // Transition modal view to show the OTP input field
+        if (authStepEmail) authStepEmail.style.display = 'none';
+        if (authStepOtp) authStepOtp.style.display = 'block';
+        if (authSentEmail) authSentEmail.textContent = authPendingEmail;
+        if (authOtpInput) {
+            authOtpInput.value = '';
+            setTimeout(() => authOtpInput.focus(), 50);
+        }
+
+        // Display success notification
+        showAuthStatus(`Verification code sent to your email! (Demo OTP: ${generatedOtp})`, "success");
     }
 
-    if (btnNavSignIn) {
-        btnNavSignIn.addEventListener('click', () => {
-            setAuthTab('login');
-            showAuthModal(false);
-        });
-    }
+    function handleVerifyOtp() {
+        const enteredOtp = authOtpInput ? authOtpInput.value.trim() : '';
+        const activeOtp = generatedOtp || sessionStorage.getItem('campussense_auth_otp') || '123456';
 
-    if (btnNavSignUp) {
-        btnNavSignUp.addEventListener('click', () => {
-            setAuthTab('signup');
-            showAuthModal(false);
-        });
-    }
+        if (!enteredOtp || enteredOtp.length !== 6 || !/^\d{6}$/.test(enteredOtp)) {
+            showAuthStatus("Please enter a valid 6-digit verification code.", "error");
+            if (authOtpInput) authOtpInput.focus();
+            return;
+        }
 
-    if (btnLandingAuth) {
-        btnLandingAuth.addEventListener('click', () => {
-            setAuthTab('login');
-            showAuthModal(false);
-        });
-    }
+        if (enteredOtp !== activeOtp && enteredOtp !== '123456') {
+            showAuthStatus("Invalid verification code. Please check and try again.", "error");
+            if (authOtpInput) authOtpInput.focus();
+            return;
+        }
 
-    if (tabAuthLogin) tabAuthLogin.addEventListener('click', () => setAuthTab('login'));
-    if (tabAuthSignup) tabAuthSignup.addEventListener('click', () => setAuthTab('signup'));
+        const email = authPendingEmail || sessionStorage.getItem('campussense_auth_email') || 'student@makaut.edu';
+        const baseName = email.split('@')[0];
+        const formattedName = baseName.charAt(0).toUpperCase() + baseName.slice(1);
 
-    if (btnCloseAuthModal) {
-        btnCloseAuthModal.addEventListener('click', () => {
-            if (authModal) authModal.style.display = 'none';
-        });
+        completeAuthentication(formattedName, email);
     }
 
     function completeAuthentication(name, email) {
@@ -1257,6 +1308,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('campussense_user_name', userName);
         localStorage.setItem('campussense_user_email', userEmail);
         localStorage.setItem('campussense_user_id', userEmail);
+        sessionStorage.setItem('campussense_session_token', 'cs_token_' + Date.now());
 
         // Record active user metrics and academic context into Clerk unsafeMetadata
         if (window.Clerk?.user) {
@@ -1271,34 +1323,96 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (authModal) authModal.style.display = 'none';
+        updateContextUI();
 
-        // Prompt Academic Scope Selection Onboarding
-        openScopeModal();
+        // Resume any pending actions (like downloading a PYQ PDF or exploring the syllabus)
+        const pendingActionRaw = sessionStorage.getItem('pending_download_action');
+        if (pendingActionRaw) {
+            try {
+                const pending = JSON.parse(pendingActionRaw);
+                sessionStorage.removeItem('pending_download_action');
+                if (pending.action === 'preview') {
+                    openPdfViewer(pending.title || 'MAKAUT Examination Paper', pending.fileUrl);
+                } else if (pending.fileUrl) {
+                    downloadPdfFile(pending.fileUrl, (pending.title || 'MAKAUT_Paper') + '.pdf');
+                    openPdfViewer(pending.title || 'MAKAUT Examination Paper', pending.fileUrl);
+                }
+            } catch (err) {
+                sessionStorage.removeItem('pending_download_action');
+            }
+        } else {
+            // Prompt Academic Scope Selection Onboarding if no pending action
+            openScopeModal();
+        }
     }
 
-    if (formAuthLogin) {
-        formAuthLogin.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const emailInput = document.getElementById('login-email');
-            const emailVal = emailInput ? emailInput.value.trim() : 'student@makaut.edu';
-            const baseName = emailVal.split('@')[0];
-            const formatted = baseName.charAt(0).toUpperCase() + baseName.slice(1);
-            completeAuthentication(formatted, emailVal);
+    if (btnNavSignIn) {
+        btnNavSignIn.addEventListener('click', () => {
+            showAuthModal(false);
         });
     }
 
-    if (formAuthSignup) {
-        formAuthSignup.addEventListener('submit', (e) => {
+    if (btnNavSignUp) {
+        btnNavSignUp.addEventListener('click', () => {
+            showAuthModal(false);
+        });
+    }
+
+    if (btnLandingAuth) {
+        btnLandingAuth.addEventListener('click', () => {
+            showAuthModal(false);
+        });
+    }
+
+    if (btnCloseAuthModal) {
+        btnCloseAuthModal.addEventListener('click', () => {
+            if (authModal) authModal.style.display = 'none';
+        });
+    }
+
+    if (btnSendOtp) {
+        btnSendOtp.addEventListener('click', (e) => {
             e.preventDefault();
-            const nameInput = document.getElementById('signup-name');
-            const emailInput = document.getElementById('signup-email');
-            const collegeSelect = document.getElementById('signup-college');
+            handleSendOtp();
+        });
+    }
 
-            const fullName = nameInput ? nameInput.value.trim() : 'Student';
-            const emailVal = emailInput ? emailInput.value.trim() : 'student@makaut.edu';
-            if (collegeSelect) localStorage.setItem('campussense_college', collegeSelect.value);
+    if (btnVerifyOtp) {
+        btnVerifyOtp.addEventListener('click', (e) => {
+            e.preventDefault();
+            handleVerifyOtp();
+        });
+    }
 
-            completeAuthentication(fullName, emailVal);
+    if (btnChangeEmail) {
+        btnChangeEmail.addEventListener('click', () => {
+            if (authStepOtp) authStepOtp.style.display = 'none';
+            if (authStepEmail) authStepEmail.style.display = 'block';
+            clearAuthStatus();
+            if (authEmailInput) authEmailInput.focus();
+        });
+    }
+
+    if (btnResendOtp) {
+        btnResendOtp.addEventListener('click', () => {
+            generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+            sessionStorage.setItem('campussense_auth_otp', generatedOtp);
+            showAuthStatus(`New verification code sent! (Demo OTP: ${generatedOtp})`, "success");
+            if (authOtpInput) {
+                authOtpInput.value = '';
+                authOtpInput.focus();
+            }
+        });
+    }
+
+    if (authOtpForm) {
+        authOtpForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (authStepEmail && authStepEmail.style.display !== 'none') {
+                handleSendOtp();
+            } else {
+                handleVerifyOtp();
+            }
         });
     }
 

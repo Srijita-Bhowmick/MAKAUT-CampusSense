@@ -498,16 +498,15 @@
          MODALS & OVERLAYS
          ==================================================================== -->
 
-    <!-- Auth Modal (Sign In / Create Account, Zero Guest Option) -->
+    <!-- Auth Modal (Secure Dual Authentication: Email + OTP & Google Sign-In) -->
     <div class="modal-backdrop" id="auth-modal" style="display: none;">
         <div class="modal-card auth-modal-card">
             <div class="auth-header">
                 <div class="brand-logo large-logo" style="margin: 0 auto 0.75rem;">
                     <span class="logo-icon">🎓</span>
                 </div>
-                <span class="badge auth-badge">MAKAUT Student Academic Engine</span>
-                <h2 class="auth-title">Welcome to MAKAUT CampusSense</h2>
-                <p class="auth-subhead">Curated syllabi, subject-wise PYQs, and exam-ready revisions for MAKAUT students</p>
+                <h2 class="auth-title">Sign In to MAKAUT CampusSense</h2>
+                <p class="auth-subhead">Access verified syllabi, PYQ archives, and AI tools.</p>
             </div>
 
             <!-- Dynamic Gate Banner (Visible when triggered by PDF download or Panic Pack intercept) -->
@@ -521,70 +520,49 @@
                 </div>
             </div>
 
-            <!-- Auth Mode Tabs (Sign In vs Create Account) -->
-            <div class="auth-tabs-row">
-                <button type="button" class="auth-tab-btn active" id="tab-auth-login">Sign In</button>
-                <button type="button" class="auth-tab-btn" id="tab-auth-signup">Create Account</button>
-            </div>
+            <!-- Status / Notification Message Area -->
+            <div id="auth-status-message" class="auth-status-msg" style="display: none;"></div>
 
-            <!-- Panel 1: Sign In -->
-            <form id="form-auth-login" class="auth-form-panel">
-                <div class="form-group" style="margin-bottom: 0.85rem;">
-                    <label class="form-label">Student Email or Roll Number</label>
-                    <input type="text" id="login-email" class="custom-input" placeholder="e.g. roll@college.edu.in" required>
+            <!-- Primary Option: Email + OTP -->
+            <form id="auth-otp-form" class="auth-form-panel">
+                <!-- Step 1: Email Input -->
+                <div class="auth-step" id="auth-step-email">
+                    <div class="form-group auth-input-group" style="margin-bottom: 1rem; text-align: left;">
+                        <label class="form-label" for="auth-email-input">Email Address</label>
+                        <input type="email" id="auth-email-input" class="custom-input" placeholder="Enter your institutional or personal email..." required autocomplete="email">
+                    </div>
+                    <button type="button" class="btn btn-primary" id="btn-send-otp" style="width: 100%; padding: 0.85rem; font-weight: 700;">
+                        Send Verification Code
+                    </button>
                 </div>
-                <div class="form-group" style="margin-bottom: 1.2rem;">
-                    <label class="form-label">Password</label>
-                    <input type="password" id="login-password" class="custom-input" placeholder="••••••••" required>
-                </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.85rem;">
-                    Sign In to CampusSense ➔
-                </button>
-            </form>
 
-            <!-- Panel 2: Create Account -->
-            <form id="form-auth-signup" class="auth-form-panel" style="display: none;">
-                <div class="form-group" style="margin-bottom: 0.85rem;">
-                    <label class="form-label">Full Name</label>
-                    <input type="text" id="signup-name" class="custom-input" placeholder="e.g. Srijita Bhowmick" required>
+                <!-- Step 2: 6-Digit OTP Input (Hidden until OTP sent) -->
+                <div class="auth-step" id="auth-step-otp" style="display: none;">
+                    <div class="form-group auth-input-group" style="margin-bottom: 0.75rem; text-align: left;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                            <label class="form-label" for="auth-otp-input" style="margin-bottom: 0;">6-Digit Verification Code</label>
+                            <button type="button" class="btn-change-email" id="btn-change-email" style="background: none; border: none; color: var(--accent-primary); font-size: 0.78rem; cursor: pointer; text-decoration: underline;">Change Email</button>
+                        </div>
+                        <input type="text" id="auth-otp-input" class="custom-input otp-code-input" placeholder="Enter 6-digit verification code..." maxlength="6" inputmode="numeric" pattern="[0-9]{6}">
+                        <div class="otp-hint" style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.4rem;">Code sent to <span id="auth-sent-email" style="font-weight: 600; color: var(--text-primary);"></span>.</div>
+                    </div>
+                    <button type="button" class="btn btn-primary" id="btn-verify-otp" style="width: 100%; padding: 0.85rem; font-weight: 700;">
+                        Verify & Sign In
+                    </button>
+                    <div style="text-align: center; margin-top: 0.65rem;">
+                        <button type="button" class="btn-resend-otp" id="btn-resend-otp" style="background: none; border: none; color: var(--text-muted); font-size: 0.8rem; cursor: pointer;">Didn't receive code? Resend Code</button>
+                    </div>
                 </div>
-                <div class="form-group" style="margin-bottom: 0.85rem;">
-                    <label class="form-label">College</label>
-                    <select id="signup-college" class="custom-select" required>
-                        <option value="TMSL">Techno Main Salt Lake (TMSL)</option>
-                        <option value="Heritage">Heritage Institute of Technology (HITK)</option>
-                        <option value="IEM">Institute of Engineering & Management (IEM)</option>
-                        <option value="HIT">Haldia Institute of Technology (HIT)</option>
-                        <option value="MAKAUT_MAIN">MAKAUT In-House (Haringhata Main Campus)</option>
-                        <option value="OTHER">Other MAKAUT Affiliated College</option>
-                    </select>
-                </div>
-                <div class="form-group" style="margin-bottom: 0.85rem;">
-                    <label class="form-label">Email or University Roll Number</label>
-                    <input type="text" id="signup-email" class="custom-input" placeholder="e.g. student@iemcal.com" required>
-                </div>
-                <div class="form-group" style="margin-bottom: 1.2rem;">
-                    <label class="form-label">Create Password</label>
-                    <input type="password" id="signup-password" class="custom-input" placeholder="••••••••" required>
-                </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.85rem;">
-                    Create Student Account ➔
-                </button>
             </form>
 
             <div class="auth-divider">
-                <span>or</span>
+                <span>OR</span>
             </div>
 
+            <!-- Secondary Option: Google Sign-In -->
             <div class="auth-actions">
-                <button type="button" class="btn-google" id="btn-auth-google">
-                    <svg class="google-icon" viewBox="0 0 24 24" width="20" height="20">
-                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-                    </svg>
-                    Continue with Student Google Account
+                <button type="button" class="btn-google-auth" id="btn-auth-google">
+                    <span>🌐</span> Continue with Google
                 </button>
             </div>
 
