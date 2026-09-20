@@ -2,42 +2,33 @@
 // Maintained by Srijita Bhowmick (srijitabhowmick42@gmail.com)
 
 // Defensive global Clerk native trigger accessible immediately
-window.triggerNativeClerkAuth = async function(pendingAction = null) {
+window.triggerNativeClerkAuth = function(pendingAction = null) {
   if (pendingAction) {
     try { sessionStorage.setItem('pending_download_action', JSON.stringify(pendingAction)); } catch (e) {}
   }
-  
-  if (window.Clerk) {
-    try {
-      if (!window.Clerk.loaded && typeof window.Clerk.load === 'function') { await window.Clerk.load(); }
-      if (typeof window.Clerk.openSignIn === 'function') {
-        window.Clerk.openSignIn({
-          appearance: {
-            elements: {
-              rootBox: "mx-auto shadow-2xl",
-              card: "bg-white text-slate-900 rounded-2xl border border-slate-200"
-            }
-          },
-          afterSignInUrl: window.location.href,
-          afterSignUpUrl: window.location.href
-        });
-        return;
-      }
-    } catch (err) {
-      console.warn("Clerk error:", err);
-    }
-  }
-  
-  // Graceful retry or direct redirect fallback instead of browser alert
-  setTimeout(() => {
+  try {
     if (window.Clerk && typeof window.Clerk.openSignIn === 'function') {
-      window.Clerk.openSignIn();
+      window.Clerk.openSignIn({
+        appearance: {
+          elements: {
+            rootBox: "mx-auto shadow-2xl",
+            card: "bg-white text-slate-900 rounded-2xl border border-slate-200"
+          }
+        },
+        afterSignInUrl: window.location.href,
+        afterSignUpUrl: window.location.href
+      });
+      return;
     }
-  }, 400);
+  } catch (err) {
+    console.warn("Clerk popup failed:", err);
+  }
+  // Fallback alert if Clerk fails to load
+  alert("Authentication window is loading. Please check your network connection or publishable key.");
 };
 window.triggerRealClerkAuth = window.triggerNativeClerkAuth;
 
-document.addEventListener('DOMContentLoaded', () => {
+(() => {
     // ==========================================
     // 1. Theme Engine (Dark & Light Mode with Dynamic SVG Sun/Moon)
     // ==========================================
@@ -1217,38 +1208,29 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     // 8. Real Clerk Native Authentication
     // ==========================================
-    window.triggerNativeClerkAuth = async function(pendingAction = null) {
+    window.triggerNativeClerkAuth = function(pendingAction = null) {
       if (pendingAction) {
         try { sessionStorage.setItem('pending_download_action', JSON.stringify(pendingAction)); } catch (e) {}
       }
-      
-      if (window.Clerk) {
-        try {
-          if (!window.Clerk.loaded && typeof window.Clerk.load === 'function') { await window.Clerk.load(); }
-          if (typeof window.Clerk.openSignIn === 'function') {
-            window.Clerk.openSignIn({
-              appearance: {
-                elements: {
-                  rootBox: "mx-auto shadow-2xl",
-                  card: "bg-white text-slate-900 rounded-2xl border border-slate-200"
-                }
-              },
-              afterSignInUrl: window.location.href,
-              afterSignUpUrl: window.location.href
-            });
-            return;
-          }
-        } catch (err) {
-          console.warn("Clerk error:", err);
-        }
-      }
-      
-      // Graceful retry or direct redirect fallback instead of browser alert
-      setTimeout(() => {
+      try {
         if (window.Clerk && typeof window.Clerk.openSignIn === 'function') {
-          window.Clerk.openSignIn();
+          window.Clerk.openSignIn({
+            appearance: {
+              elements: {
+                rootBox: "mx-auto shadow-2xl",
+                card: "bg-white text-slate-900 rounded-2xl border border-slate-200"
+              }
+            },
+            afterSignInUrl: window.location.href,
+            afterSignUpUrl: window.location.href
+          });
+          return;
         }
-      }, 400);
+      } catch (err) {
+        console.warn("Clerk popup failed:", err);
+      }
+      // Fallback alert if Clerk fails to load
+      alert("Authentication window is loading. Please check your network connection or publishable key.");
     };
     window.triggerRealClerkAuth = window.triggerNativeClerkAuth;
     const triggerNativeClerkAuth = window.triggerNativeClerkAuth;
@@ -4086,9 +4068,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    setupClerkAuth();
-    setupDrawerResize();
-
     function updateHeroDynamicCounters() {
         const statSubjects = document.getElementById('stat-subjects-count');
         const statPyqs = document.getElementById('stat-pyqs-count');
@@ -4100,23 +4079,608 @@ document.addEventListener('DOMContentLoaded', () => {
             statPyqs.textContent = totalPyqs;
         }
     }
-    updateHeroDynamicCounters();
-    setupChatHistoryDropdown();
 
     // ==========================================
-    // 19. Initial View Boot & Routing Setup
+    // 19. Bulletproof Initialization & Safe Global Event Binding
     // ==========================================
-    window.handleRouting = handleRouting;
-    window.initLandingPage = initLandingPage;
-    window.showLandingView = showLandingView;
-    window.showDashboardView = showDashboardView;
-    window.renderLandingCurriculumCards = renderLandingCurriculumCards;
-    window.renderLandingPyqCatalog = renderLandingPyqCatalog;
-    window.bindLandingFilterButtons = bindLandingFilterButtons;
+    let isAppInitialized = false;
+    function initializeApp() {
+        if (isAppInitialized) return;
+        isAppInitialized = true;
 
-    window.addEventListener('hashchange', handleRouting);
-    handleRouting();
-});
+        try {
+            applyTheme(currentTheme);
+        } catch (e) {
+            console.warn("[App] Theme init error prevented:", e);
+        }
+
+        try {
+            updateContextUI();
+        } catch (e) {
+            console.warn("[App] Context UI init error prevented:", e);
+        }
+
+        try {
+            setupClerkAuth();
+        } catch (e) {
+            console.warn("[App] Clerk auth init error prevented:", e);
+        }
+
+        try {
+            setupDrawerResize();
+        } catch (e) {
+            console.warn("[App] Drawer resize init error prevented:", e);
+        }
+
+        try {
+            updateHeroDynamicCounters();
+        } catch (e) {
+            console.warn("[App] Dynamic counters init error prevented:", e);
+        }
+
+        try {
+            setupChatHistoryDropdown();
+        } catch (e) {
+            console.warn("[App] Chat history init error prevented:", e);
+        }
+
+        window.handleRouting = handleRouting;
+        window.initLandingPage = initLandingPage;
+        window.showLandingView = showLandingView;
+        window.showDashboardView = showDashboardView;
+        window.renderLandingCurriculumCards = renderLandingCurriculumCards;
+        window.renderLandingPyqCatalog = renderLandingPyqCatalog;
+        window.bindLandingFilterButtons = bindLandingFilterButtons;
+
+        try {
+            handleRouting();
+        } catch (e) {
+            console.warn("[App] Initial routing error prevented:", e);
+        }
+    }
+
+    let areEventsBound = false;
+    function bindGlobalEventListeners() {
+        if (areEventsBound) return;
+        areEventsBound = true;
+
+        try {
+            // Theme toggle
+            const themeToggleBtn = document.getElementById('btn-theme-toggle');
+            if (themeToggleBtn) {
+                themeToggleBtn.onclick = (e) => {
+                    e.preventDefault();
+                    const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                    applyTheme(nextTheme);
+                };
+            }
+        } catch (err) {
+            console.warn("[Events] Theme toggle binding error:", err);
+        }
+
+        try {
+            // Navigation & Quick Action Tiles
+            const btnNavToLanding = document.getElementById('btn-nav-to-landing');
+            if (btnNavToLanding) {
+                btnNavToLanding.onclick = (e) => {
+                    e.preventDefault();
+                    window.location.hash = '#landing';
+                    switchView('landing');
+                };
+            }
+
+            const btnNavToDashboard = document.getElementById('btn-nav-to-dashboard');
+            if (btnNavToDashboard) {
+                btnNavToDashboard.onclick = (e) => {
+                    e.preventDefault();
+                    window.location.hash = '#dashboard';
+                    switchView('dashboard');
+                };
+            }
+
+            const btnBrandHome = document.getElementById('btn-brand-home');
+            if (btnBrandHome) {
+                btnBrandHome.onclick = () => {
+                    if (isLoggedIn) {
+                        switchView('dashboard');
+                    } else {
+                        switchView('landing');
+                    }
+                };
+            }
+
+            const tileActionSyllabi = document.getElementById('tile-action-syllabi');
+            if (tileActionSyllabi) {
+                tileActionSyllabi.onclick = () => {
+                    const subjectsSection = document.querySelector('.bento-card-subjects');
+                    if (subjectsSection) {
+                        subjectsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        subjectsSection.classList.add('highlight-pulse');
+                        setTimeout(() => subjectsSection.classList.remove('highlight-pulse'), 1500);
+                    }
+                };
+            }
+
+            const tileActionPyqs = document.getElementById('tile-action-pyqs');
+            if (tileActionPyqs) {
+                tileActionPyqs.onclick = () => {
+                    const firstSub = (MAKAUT_CURRICULUM && MAKAUT_CURRICULUM.length > 0) ? MAKAUT_CURRICULUM[0].code : null;
+                    if (firstSub) {
+                        openSubjectHub(firstSub, 'pyqs');
+                    } else {
+                        switchView('landing');
+                        const pyqSec = document.getElementById('landing-pyqs');
+                        if (pyqSec) pyqSec.scrollIntoView({ behavior: 'smooth' });
+                    }
+                };
+            }
+        } catch (err) {
+            console.warn("[Events] Navigation binding error:", err);
+        }
+
+        try {
+            // Hero & Feature CTAs
+            const btnHeroPanicPack = document.getElementById('btn-hero-panic-pack');
+            if (btnHeroPanicPack) {
+                btnHeroPanicPack.onclick = (e) => {
+                    e.preventDefault();
+                    if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
+                        switchView('dashboard');
+                        openFullPanicMode();
+                    } else {
+                        window.triggerNativeClerkAuth();
+                    }
+                };
+            }
+
+            const btnFeatureSyllabus = document.getElementById('btn-feature-syllabus');
+            if (btnFeatureSyllabus) {
+                btnFeatureSyllabus.onclick = (e) => {
+                    e.preventDefault();
+                    if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
+                        switchView('dashboard');
+                    } else {
+                        window.triggerNativeClerkAuth();
+                    }
+                };
+            }
+
+            const btnFeaturePanic = document.getElementById('btn-feature-panic');
+            if (btnFeaturePanic) {
+                btnFeaturePanic.onclick = (e) => {
+                    e.preventDefault();
+                    if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
+                        switchView('dashboard');
+                        openFullPanicMode();
+                    } else {
+                        window.triggerNativeClerkAuth();
+                    }
+                };
+            }
+
+            const btnFeaturePyq = document.getElementById('btn-feature-pyq');
+            if (btnFeaturePyq) {
+                btnFeaturePyq.onclick = (e) => {
+                    e.preventDefault();
+                    if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
+                        const el = document.getElementById('landing-pyqs');
+                        if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    } else {
+                        window.triggerNativeClerkAuth();
+                    }
+                };
+            }
+
+            const btnFeatureAi = document.getElementById('btn-feature-ai');
+            if (btnFeatureAi) {
+                btnFeatureAi.onclick = (e) => {
+                    e.preventDefault();
+                    if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
+                        switchView('dashboard');
+                        openAiDrawer();
+                    } else {
+                        window.triggerNativeClerkAuth();
+                    }
+                };
+            }
+        } catch (err) {
+            console.warn("[Events] Feature CTAs binding error:", err);
+        }
+
+        try {
+            // Real Clerk Native Authentication Triggers & Highlight Boxes
+            document.querySelectorAll('.highlight-pill').forEach(pill => {
+                if (pill) {
+                    pill.style.cursor = 'pointer';
+                    pill.onclick = () => window.triggerNativeClerkAuth();
+                }
+            });
+
+            const btnNavSignIn = document.getElementById('btn-nav-signin');
+            if (btnNavSignIn) {
+                btnNavSignIn.onclick = () => window.triggerNativeClerkAuth();
+            }
+
+            const btnNavSignUp = document.getElementById('btn-nav-signup');
+            if (btnNavSignUp) {
+                btnNavSignUp.onclick = () => window.triggerNativeClerkAuth();
+            }
+
+            const btnLandingAuth = document.getElementById('btn-landing-auth');
+            if (btnLandingAuth) {
+                btnLandingAuth.onclick = () => window.triggerNativeClerkAuth();
+            }
+
+            const authTriggerBtn = document.getElementById('auth-trigger-btn');
+            if (authTriggerBtn) {
+                authTriggerBtn.onclick = () => window.triggerNativeClerkAuth();
+            }
+
+            document.querySelectorAll('.auth-trigger-btn').forEach(btn => {
+                if (btn) {
+                    btn.onclick = () => window.triggerNativeClerkAuth();
+                }
+            });
+        } catch (err) {
+            console.warn("[Events] Auth triggers binding error:", err);
+        }
+
+        try {
+            // Academic Scope Modal Controls
+            const btnScopeFirstYear = document.getElementById('btn-scope-first-year');
+            const btnScopeDepartmentalYears = document.getElementById('btn-scope-departmental-years') || document.getElementById('btn-scope-upper-years');
+            const departmentalYearsControls = document.getElementById('departmental-years-controls') || document.getElementById('upper-years-controls');
+
+            if (btnScopeFirstYear && btnScopeDepartmentalYears && departmentalYearsControls) {
+                btnScopeFirstYear.onclick = () => {
+                    modalYearMode = 'FIRST_YEAR';
+                    btnScopeFirstYear.classList.add('active');
+                    btnScopeDepartmentalYears.classList.remove('active');
+                    departmentalYearsControls.style.display = 'none';
+                };
+
+                btnScopeDepartmentalYears.onclick = () => {
+                    modalYearMode = 'DEPARTMENTAL_YEARS';
+                    btnScopeDepartmentalYears.classList.add('active');
+                    btnScopeFirstYear.classList.remove('active');
+                    departmentalYearsControls.style.display = 'block';
+                };
+            }
+
+            const contextSwitcherBtn = document.getElementById('btn-context-switcher');
+            if (contextSwitcherBtn) contextSwitcherBtn.onclick = openScopeModal;
+
+            const btnCloseScopeModal = document.getElementById('btn-close-scope-modal');
+            if (btnCloseScopeModal) {
+                btnCloseScopeModal.onclick = () => {
+                    const scopeModal = document.getElementById('scope-modal');
+                    if (scopeModal) scopeModal.style.display = 'none';
+                };
+            }
+
+            document.querySelectorAll('.stream-option').forEach(btn => {
+                if (btn) {
+                    btn.onclick = () => {
+                        document.querySelectorAll('.stream-option').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                    };
+                }
+            });
+
+            document.querySelectorAll('.sem-btn').forEach(btn => {
+                if (btn) {
+                    btn.onclick = () => {
+                        document.querySelectorAll('.sem-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                    };
+                }
+            });
+
+            const scopeForm = document.getElementById('scope-form');
+            if (scopeForm) {
+                scopeForm.onsubmit = (e) => {
+                    e.preventDefault();
+                    currentYearMode = modalYearMode;
+                    localStorage.setItem('campussense_year_mode', currentYearMode);
+                    localStorage.setItem('campussense_stage', currentYearMode === 'FIRST_YEAR' ? '1st_year' : 'departmental');
+
+                    if (currentYearMode === 'FIRST_YEAR') {
+                        currentStream = 'FIRST_YEAR';
+                        currentSem = 1;
+                    } else {
+                        const activeStreamBtn = document.querySelector('.stream-option.active');
+                        const activeSemBtn = document.querySelector('.sem-btn.active');
+                        if (activeStreamBtn) currentStream = activeStreamBtn.getAttribute('data-stream') || 'CSE';
+                        if (activeSemBtn) {
+                            const semVal = parseInt(activeSemBtn.getAttribute('data-sem'), 10);
+                            currentSem = isNaN(semVal) ? 3 : semVal;
+                        } else {
+                            currentSem = 3;
+                        }
+                    }
+
+                    localStorage.setItem('campussense_stream', currentStream);
+                    localStorage.setItem('campussense_branch', currentStream);
+                    localStorage.setItem('campussense_semester', currentSem.toString());
+                    localStorage.setItem('campussense_scope', JSON.stringify({
+                        yearMode: currentYearMode,
+                        stream: currentStream,
+                        semester: currentSem
+                    }));
+
+                    if (window.Clerk?.user) {
+                        window.Clerk.user.update({
+                            unsafeMetadata: {
+                                stage: currentYearMode === 'FIRST_YEAR' ? '1st_year' : 'departmental',
+                                branch: currentStream || 'Common',
+                                semester: currentSem.toString(),
+                                lastLoginTimestamp: new Date().toISOString()
+                            }
+                        }).catch(err => console.warn('[Clerk] Metadata sync skipped:', err));
+                    }
+
+                    const scopeModal = document.getElementById('scope-modal');
+                    if (scopeModal) scopeModal.style.display = 'none';
+
+                    updateContextUI();
+                    renderActiveSubjects();
+                    switchView('dashboard');
+
+                    const pendingActionRaw = sessionStorage.getItem('pending_download_action');
+                    if (pendingActionRaw) {
+                        try {
+                            const pending = JSON.parse(pendingActionRaw);
+                            sessionStorage.removeItem('pending_download_action');
+                            if (pending.action === 'preview') {
+                                openPdfViewer(pending.title || 'MAKAUT Examination Paper', pending.fileUrl);
+                            } else {
+                                downloadPdfFile(pending.fileUrl, (pending.title || 'MAKAUT_Paper') + '.pdf');
+                                openPdfViewer(pending.title || 'MAKAUT Examination Paper', pending.fileUrl);
+                            }
+                        } catch (err) {
+                            sessionStorage.removeItem('pending_download_action');
+                        }
+                    }
+                };
+            }
+        } catch (err) {
+            console.warn("[Events] Scope modal binding error:", err);
+        }
+
+        try {
+            // User Profile Dropdown Menu in Dashboard
+            const userProfilePill = document.getElementById('user-profile-pill');
+            const userDropdownMenu = document.getElementById('user-dropdown-menu');
+            const btnMenuSwitchScope = document.getElementById('btn-menu-switch-scope');
+            const btnMenuLandingPage = document.getElementById('btn-menu-landing-page');
+            const btnMenuSignOut = document.getElementById('btn-menu-sign-out');
+
+            if (userProfilePill && userDropdownMenu) {
+                userProfilePill.onclick = (e) => {
+                    e.stopPropagation();
+                    const isVisible = userDropdownMenu.style.display === 'flex';
+                    userDropdownMenu.style.display = isVisible ? 'none' : 'flex';
+                };
+
+                document.addEventListener('click', () => {
+                    if (userDropdownMenu) userDropdownMenu.style.display = 'none';
+                });
+            }
+
+            if (btnMenuSwitchScope) {
+                btnMenuSwitchScope.onclick = () => {
+                    if (userDropdownMenu) userDropdownMenu.style.display = 'none';
+                    openScopeModal();
+                };
+            }
+
+            if (btnMenuLandingPage) {
+                btnMenuLandingPage.onclick = () => {
+                    if (userDropdownMenu) userDropdownMenu.style.display = 'none';
+                    switchView('landing');
+                };
+            }
+
+            if (btnMenuSignOut) {
+                btnMenuSignOut.onclick = () => {
+                    if (userDropdownMenu) userDropdownMenu.style.display = 'none';
+                    isLoggedIn = false;
+                    localStorage.removeItem('campussense_logged_in');
+                    switchView('landing');
+                };
+            }
+        } catch (err) {
+            console.warn("[Events] Profile dropdown binding error:", err);
+        }
+
+        try {
+            // Subject Hub & Panic Mode
+            const btnCloseHubModal = document.getElementById('btn-close-hub-modal');
+            const btnBackHubModal = document.getElementById('btn-back-hub-modal');
+            if (btnCloseHubModal) btnCloseHubModal.onclick = closeSubjectHub;
+            if (btnBackHubModal) btnBackHubModal.onclick = closeSubjectHub;
+
+            const btnOpenPanicNav = document.getElementById('btn-open-panic-mode');
+            if (btnOpenPanicNav) btnOpenPanicNav.onclick = openFullPanicMode;
+            const btnEnterPanicCta = document.getElementById('btn-enter-panic-mode-cta');
+            if (btnEnterPanicCta) btnEnterPanicCta.onclick = openFullPanicMode;
+
+            const btnClosePanicModal = document.getElementById('btn-close-panic-modal');
+            if (btnClosePanicModal) {
+                btnClosePanicModal.onclick = () => {
+                    const modal = document.getElementById('panic-mode-modal');
+                    if (modal) modal.style.display = 'none';
+                };
+            }
+        } catch (err) {
+            console.warn("[Events] Hub/Panic modal binding error:", err);
+        }
+
+        try {
+            // PDF Viewer Modal
+            const btnClosePdfModal = document.getElementById('btn-close-pdf-modal');
+            const btnBackPdfModal = document.getElementById('btn-back-pdf-modal');
+            if (btnClosePdfModal) btnClosePdfModal.onclick = closePdfViewerModal;
+            if (btnBackPdfModal) btnBackPdfModal.onclick = closePdfViewerModal;
+
+            const btnPdfFullscreen = document.getElementById('btn-pdf-fullscreen');
+            if (btnPdfFullscreen) {
+                btnPdfFullscreen.onclick = () => {
+                    const card = document.querySelector('.pdf-viewer-card');
+                    if (card) {
+                        if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                            if (card.requestFullscreen) card.requestFullscreen();
+                            else if (card.webkitRequestFullscreen) card.webkitRequestFullscreen();
+                        } else {
+                            if (document.exitFullscreen) document.exitFullscreen();
+                            else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+                        }
+                    }
+                };
+            }
+        } catch (err) {
+            console.warn("[Events] PDF viewer modal binding error:", err);
+        }
+
+        try {
+            // Saved Deck Drawer
+            const btnOpenSavedDeck = document.getElementById('btn-open-saved-deck');
+            const btnViewAllDeck = document.getElementById('btn-view-all-deck');
+            const btnCloseSavedDeckDrawer = document.getElementById('btn-close-saved-deck-drawer');
+            const savedDeckBackdrop = document.getElementById('saved-deck-backdrop');
+
+            if (btnOpenSavedDeck) btnOpenSavedDeck.onclick = openSavedDeckDrawer;
+            if (btnViewAllDeck) btnViewAllDeck.onclick = openSavedDeckDrawer;
+            if (btnCloseSavedDeckDrawer) btnCloseSavedDeckDrawer.onclick = closeSavedDeckDrawer;
+            if (savedDeckBackdrop) savedDeckBackdrop.onclick = closeSavedDeckDrawer;
+        } catch (err) {
+            console.warn("[Events] Saved Deck drawer binding error:", err);
+        }
+
+        try {
+            // AI Drawer & Keyboard shortcuts
+            const btnOpenAiFab = document.getElementById('btn-open-ai-fab');
+            const btnCloseAiDrawer = document.getElementById('btn-close-ai-drawer');
+            const aiDrawerBackdrop = document.getElementById('ai-drawer-backdrop');
+
+            if (btnOpenAiFab) btnOpenAiFab.onclick = () => openAiDrawer();
+            if (btnCloseAiDrawer) btnCloseAiDrawer.onclick = closeAiDrawer;
+            if (aiDrawerBackdrop) aiDrawerBackdrop.onclick = closeAiDrawer;
+
+            window.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+                    e.preventDefault();
+                    if (document.body.classList.contains('split-chat-active') || document.body.classList.contains('chat-workspace-active')) {
+                        closeAiDrawer();
+                    } else {
+                        openAiDrawer();
+                    }
+                }
+                if (e.key === 'Escape') {
+                    closeAiDrawer();
+                    closeSavedDeckDrawer();
+                    document.querySelectorAll('.modal-backdrop').forEach(m => m.style.display = 'none');
+                }
+            });
+        } catch (err) {
+            console.warn("[Events] AI Drawer & shortcut binding error:", err);
+        }
+
+        try {
+            // Feedback Modal
+            const btnOpenFeedbackNav = document.getElementById('btn-open-feedback');
+            const feedbackModal = document.getElementById('feedback-modal');
+            const btnCloseFeedbackModal = document.getElementById('btn-close-feedback-modal');
+            const feedbackForm = document.getElementById('feedback-form');
+            const feedbackResult = document.getElementById('feedback-result-msg');
+
+            if (btnOpenFeedbackNav) {
+                btnOpenFeedbackNav.onclick = () => {
+                    if (feedbackModal) feedbackModal.style.display = 'flex';
+                    if (feedbackResult) feedbackResult.style.display = 'none';
+                };
+            }
+
+            if (btnCloseFeedbackModal) {
+                btnCloseFeedbackModal.onclick = () => {
+                    if (feedbackModal) feedbackModal.style.display = 'none';
+                };
+            }
+
+            if (feedbackForm) {
+                feedbackForm.onsubmit = async (e) => {
+                    e.preventDefault();
+                    const categoryEl = document.getElementById('feedback-category');
+                    const subjectEl = document.getElementById('feedback-subject');
+                    const messageEl = document.getElementById('feedback-message');
+                    const category = categoryEl ? categoryEl.value : 'General';
+                    const subject = subjectEl ? subjectEl.value : '';
+                    const message = messageEl ? messageEl.value : '';
+
+                    try {
+                        const res = await fetch('/api/v1/feedback', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                userIdentifier: userIdentifier,
+                                category: category,
+                                subject: subject,
+                                message: message,
+                                timestamp: new Date().toISOString()
+                            })
+                        });
+                        if (feedbackResult) {
+                            feedbackResult.style.display = 'block';
+                            feedbackResult.className = 'result-box success';
+                            feedbackResult.textContent = 'Feedback submitted successfully! Thank you for helping improve CampusSense.';
+                        }
+                        feedbackForm.reset();
+                        setTimeout(() => {
+                            if (feedbackModal) feedbackModal.style.display = 'none';
+                            if (feedbackResult) feedbackResult.style.display = 'none';
+                        }, 2000);
+                    } catch (err) {
+                        if (feedbackResult) {
+                            feedbackResult.style.display = 'block';
+                            feedbackResult.className = 'result-box error';
+                            feedbackResult.textContent = 'Failed to send feedback. Please try again.';
+                        }
+                    }
+                };
+            }
+        } catch (err) {
+            console.warn("[Events] Feedback modal binding error:", err);
+        }
+
+        try {
+            window.addEventListener('hashchange', handleRouting);
+        } catch (err) {
+            console.warn("[Events] Hashchange listener error:", err);
+        }
+    }
+
+    window.initializeApp = initializeApp;
+    window.bindGlobalEventListeners = bindGlobalEventListeners;
+
+    // Bulletproof initialization wrapper with try-catch as strictly required
+    document.addEventListener('DOMContentLoaded', () => {
+      try {
+        initializeApp();
+        bindGlobalEventListeners();
+      } catch (err) {
+        console.error("Critical initialization error prevented:", err);
+      }
+    });
+
+    if (document.readyState === 'interactive' || document.readyState === 'complete') {
+      try {
+        initializeApp();
+        bindGlobalEventListeners();
+      } catch (err) {
+        console.error("Critical initialization error prevented:", err);
+      }
+    }
+})();
 
 window.addEventListener('DOMContentLoaded', async () => {
     if (window.Clerk && typeof window.Clerk.load === 'function') {
