@@ -2656,11 +2656,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (btnChatDockCollapse) btnChatDockCollapse.title = "Collapse Side-by-Side Chat Workspace";
 
         // Dynamically scale main dashboard pane side-by-side with drawer
-        const drawerW = parseInt(document.documentElement.style.getPropertyValue('--chat-drawer-width')) || (aiDrawer ? aiDrawer.getBoundingClientRect().width : 460);
+        const drawerW = parseInt(document.documentElement.style.getPropertyValue('--chat-drawer-width')) || 460;
         const mainPane = document.querySelector('.dashboard-main-pane');
         if (mainPane) {
-            mainPane.style.flex = `1 1 calc(100% - ${drawerW + 24}px)`;
-            mainPane.style.maxWidth = `calc(100% - ${drawerW + 24}px)`;
+            mainPane.style.flex = `1 1 calc(100% - ${drawerW}px)`;
+            mainPane.style.maxWidth = `calc(100% - ${drawerW}px)`;
         }
 
         renderChatHistoryDropdown();
@@ -3887,12 +3887,12 @@ document.addEventListener('DOMContentLoaded', () => {
         let startWidth = 460;
 
         function applyWidth(newWidth) {
-            const boundedWidth = Math.min(Math.max(newWidth, 320), Math.min(window.innerWidth * 0.75, 850));
+            const boundedWidth = Math.min(Math.max(newWidth, 340), Math.min(window.innerWidth * 0.65, 650));
             document.documentElement.style.setProperty('--chat-drawer-width', `${boundedWidth}px`);
             drawer.style.width = `${boundedWidth}px`;
             if (mainPane && (document.body.classList.contains('split-chat-active') || document.body.classList.contains('chat-workspace-active') || drawer.classList.contains('open'))) {
-                mainPane.style.flex = `1 1 calc(100% - ${boundedWidth + 24}px)`;
-                mainPane.style.maxWidth = `calc(100% - ${boundedWidth + 24}px)`;
+                mainPane.style.flex = `1 1 calc(100% - ${boundedWidth}px)`;
+                mainPane.style.maxWidth = `calc(100% - ${boundedWidth}px)`;
             }
         }
 

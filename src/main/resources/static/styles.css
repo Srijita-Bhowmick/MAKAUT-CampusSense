@@ -2126,38 +2126,36 @@ body.is-drawer-resizing .ai-slide-drawer {
 .dashboard-main-canvas {
   flex: 1 1 100%;
   min-width: 0;
-  transition: flex 0.2s cubic-bezier(0.4, 0, 0.2, 1), max-width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: flex 0.3s cubic-bezier(0.4, 0, 0.2, 1), max-width 0.3s ease;
 }
 
-/* When Chat AI is toggled open by the user: adjust dashboard and drawer side-by-side */
+/* When Chat AI is opened by user: scale main pane side-by-side with zero overlap */
 .split-chat-active .dashboard-main-pane,
 .split-chat-active .dashboard-main-canvas,
 .chat-workspace-active .dashboard-main-pane,
 .chat-workspace-active .dashboard-main-canvas {
-  flex: 1 1 calc(100% - var(--chat-drawer-width, 460px) - 24px);
-  max-width: calc(100% - var(--chat-drawer-width, 460px) - 24px);
+  flex: 1 1 calc(100% - var(--chat-drawer-width, 460px)) !important;
+  max-width: calc(100% - var(--chat-drawer-width, 460px)) !important;
 }
 
+/* Side-by-Side Docked Chat Panel (Never an overlay) */
 #ai-slide-drawer,
 .ai-slide-drawer {
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  bottom: 16px;
   width: var(--chat-drawer-width, 460px);
-  min-width: 320px;
-  max-width: 850px;
-  resize: horizontal; /* User-adjustable width */
-  overflow: hidden;
-  border-radius: 16px;
-  border: 1px solid var(--card-border);
+  min-width: 340px;
+  max-width: 650px;
+  height: calc(100vh - 70px);
+  position: sticky;
+  top: 70px;
+  right: 0;
+  flex-shrink: 0;
+  border-left: 1px solid var(--card-border);
   background: var(--bg-secondary);
-  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.28);
-  z-index: 999999;
-  display: flex;
+  display: none; /* Hidden by default */
   flex-direction: column;
-  transform: translateX(calc(100% + 40px));
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
 .split-chat-active #ai-slide-drawer,
@@ -2165,7 +2163,7 @@ body.is-drawer-resizing .ai-slide-drawer {
 .chat-workspace-active #ai-slide-drawer,
 .chat-workspace-active .ai-slide-drawer,
 #ai-slide-drawer.open {
-  transform: translateX(0) !important;
+  display: flex !important;
 }
 
 .drawer-resize-handle {
@@ -2185,21 +2183,10 @@ body.is-drawer-resizing .ai-slide-drawer {
   opacity: 0.5;
 }
 
-.drawer-resize-icon {
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 1px;
-  cursor: ew-resize;
-  user-select: none;
-  padding: 0.2rem 0.45rem;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.08);
-}
-
 .floating-partition-arrow {
   position: absolute;
   left: -18px;
-  top: 36px;
+  top: 24px;
   width: 36px;
   height: 36px;
   border-radius: 50%;
