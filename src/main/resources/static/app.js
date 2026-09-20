@@ -4,18 +4,12 @@
 // Defensive global Clerk native trigger accessible immediately
 window.triggerNativeClerkAuth = async function(pendingAction = null) {
   if (pendingAction) {
-    try {
-      sessionStorage.setItem('pending_download_action', JSON.stringify(pendingAction));
-    } catch (e) {
-      console.error("Storage error:", e);
-    }
+    try { sessionStorage.setItem('pending_download_action', JSON.stringify(pendingAction)); } catch (e) {}
   }
   
-  try {
-    if (window.Clerk) {
-      if (!window.Clerk.loaded && typeof window.Clerk.load === 'function') {
-        await window.Clerk.load();
-      }
+  if (window.Clerk) {
+    try {
+      if (!window.Clerk.loaded && typeof window.Clerk.load === 'function') { await window.Clerk.load(); }
       if (typeof window.Clerk.openSignIn === 'function') {
         window.Clerk.openSignIn({
           appearance: {
@@ -29,13 +23,17 @@ window.triggerNativeClerkAuth = async function(pendingAction = null) {
         });
         return;
       }
+    } catch (err) {
+      console.warn("Clerk error:", err);
     }
-  } catch (err) {
-    console.warn("Clerk popup modal fallback triggered:", err);
   }
   
-  // Fallback alert if Clerk fails to load
-  alert("Authentication gateway loading or unavailable. Please check your internet connection or Clerk publishable key.");
+  // Graceful retry or direct redirect fallback instead of browser alert
+  setTimeout(() => {
+    if (window.Clerk && typeof window.Clerk.openSignIn === 'function') {
+      window.Clerk.openSignIn();
+    }
+  }, 400);
 };
 window.triggerRealClerkAuth = window.triggerNativeClerkAuth;
 
@@ -1221,18 +1219,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     window.triggerNativeClerkAuth = async function(pendingAction = null) {
       if (pendingAction) {
-        try {
-          sessionStorage.setItem('pending_download_action', JSON.stringify(pendingAction));
-        } catch (e) {
-          console.error("Storage error:", e);
-        }
+        try { sessionStorage.setItem('pending_download_action', JSON.stringify(pendingAction)); } catch (e) {}
       }
       
-      try {
-        if (window.Clerk) {
-          if (!window.Clerk.loaded && typeof window.Clerk.load === 'function') {
-            await window.Clerk.load();
-          }
+      if (window.Clerk) {
+        try {
+          if (!window.Clerk.loaded && typeof window.Clerk.load === 'function') { await window.Clerk.load(); }
           if (typeof window.Clerk.openSignIn === 'function') {
             window.Clerk.openSignIn({
               appearance: {
@@ -1246,13 +1238,17 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             return;
           }
+        } catch (err) {
+          console.warn("Clerk error:", err);
         }
-      } catch (err) {
-        console.warn("Clerk popup modal fallback triggered:", err);
       }
       
-      // Fallback alert if Clerk fails to load
-      alert("Authentication gateway loading or unavailable. Please check your internet connection or Clerk publishable key.");
+      // Graceful retry or direct redirect fallback instead of browser alert
+      setTimeout(() => {
+        if (window.Clerk && typeof window.Clerk.openSignIn === 'function') {
+          window.Clerk.openSignIn();
+        }
+      }, 400);
     };
     window.triggerRealClerkAuth = window.triggerNativeClerkAuth;
     const triggerNativeClerkAuth = window.triggerNativeClerkAuth;
@@ -1261,6 +1257,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function showAuthModal(isGate = false, message = '') {
         window.triggerNativeClerkAuth();
     }
+
+    // Wire landing highlight boxes to Clerk Sign-Up / Sign-In
+    document.querySelectorAll('.highlight-pill').forEach(pill => {
+        pill.style.cursor = 'pointer';
+        pill.addEventListener('click', () => {
+            window.triggerNativeClerkAuth();
+        });
+    });
 
     if (btnNavSignIn) {
         btnNavSignIn.addEventListener('click', () => {
