@@ -1,6 +1,44 @@
 // MAKAUT-CampusSense — End-to-End Academic Engine & Conversational RAG
 // Maintained by Srijita Bhowmick (srijitabhowmick42@gmail.com)
 
+// Defensive global Clerk native trigger accessible immediately
+window.triggerNativeClerkAuth = async function(pendingAction = null) {
+  if (pendingAction) {
+    try {
+      sessionStorage.setItem('pending_download_action', JSON.stringify(pendingAction));
+    } catch (e) {
+      console.error("Storage error:", e);
+    }
+  }
+  
+  try {
+    if (window.Clerk) {
+      if (!window.Clerk.loaded && typeof window.Clerk.load === 'function') {
+        await window.Clerk.load();
+      }
+      if (typeof window.Clerk.openSignIn === 'function') {
+        window.Clerk.openSignIn({
+          appearance: {
+            elements: {
+              rootBox: "mx-auto shadow-2xl",
+              card: "bg-white text-slate-900 rounded-2xl border border-slate-200"
+            }
+          },
+          afterSignInUrl: window.location.href,
+          afterSignUpUrl: window.location.href
+        });
+        return;
+      }
+    }
+  } catch (err) {
+    console.warn("Clerk popup modal fallback triggered:", err);
+  }
+  
+  // Fallback alert if Clerk fails to load
+  alert("Authentication gateway loading or unavailable. Please check your internet connection or Clerk publishable key.");
+};
+window.triggerRealClerkAuth = window.triggerNativeClerkAuth;
+
 document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     // 1. Theme Engine (Dark & Light Mode with Dynamic SVG Sun/Moon)
@@ -1181,24 +1219,40 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     // 8. Real Clerk Native Authentication
     // ==========================================
-    window.triggerNativeClerkAuth = function(pendingAction = null) {
-        if (pendingAction) {
-            sessionStorage.setItem('pending_download_action', JSON.stringify(pendingAction));
+    window.triggerNativeClerkAuth = async function(pendingAction = null) {
+      if (pendingAction) {
+        try {
+          sessionStorage.setItem('pending_download_action', JSON.stringify(pendingAction));
+        } catch (e) {
+          console.error("Storage error:", e);
         }
-        if (window.Clerk && typeof window.Clerk.openSignIn === 'function') {
+      }
+      
+      try {
+        if (window.Clerk) {
+          if (!window.Clerk.loaded && typeof window.Clerk.load === 'function') {
+            await window.Clerk.load();
+          }
+          if (typeof window.Clerk.openSignIn === 'function') {
             window.Clerk.openSignIn({
-                appearance: {
-                    elements: {
-                        rootBox: "mx-auto shadow-2xl",
-                        card: "bg-white text-slate-900 rounded-2xl border border-slate-200"
-                    }
-                },
-                afterSignInUrl: window.location.href,
-                afterSignUpUrl: window.location.href
+              appearance: {
+                elements: {
+                  rootBox: "mx-auto shadow-2xl",
+                  card: "bg-white text-slate-900 rounded-2xl border border-slate-200"
+                }
+              },
+              afterSignInUrl: window.location.href,
+              afterSignUpUrl: window.location.href
             });
-        } else {
-            console.error("Clerk SDK is not loaded yet.");
+            return;
+          }
         }
+      } catch (err) {
+        console.warn("Clerk popup modal fallback triggered:", err);
+      }
+      
+      // Fallback alert if Clerk fails to load
+      alert("Authentication gateway loading or unavailable. Please check your internet connection or Clerk publishable key.");
     };
     window.triggerRealClerkAuth = window.triggerNativeClerkAuth;
     const triggerNativeClerkAuth = window.triggerNativeClerkAuth;
