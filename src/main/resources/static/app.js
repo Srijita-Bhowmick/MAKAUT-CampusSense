@@ -2794,11 +2794,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (aiDrawer) aiDrawer.classList.add('open');
 
-        // Dynamically scale main dashboard pane side-by-side with drawer
+        // Ensure main dashboard pane adds padding to avoid overlapping with fixed drawer
         const mainPane = document.querySelector('.dashboard-main-pane');
         if (mainPane) {
-            mainPane.style.flex = '0 0 calc(100% - 460px)';
-            mainPane.style.maxWidth = 'calc(100% - 460px)';
+            mainPane.style.flex = '1';
+            mainPane.style.maxWidth = '100%';
+            mainPane.style.paddingRight = '480px';
         }
 
         renderChatHistoryDropdown();
@@ -2825,6 +2826,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (mainPane) {
             mainPane.style.flex = '1';
             mainPane.style.maxWidth = '100%';
+            mainPane.style.paddingRight = '';
         }
     }
 
@@ -4025,8 +4027,9 @@ document.addEventListener('DOMContentLoaded', () => {
             document.documentElement.style.setProperty('--chat-drawer-width', `${boundedWidth}px`);
             drawer.style.width = `${boundedWidth}px`;
             if (mainPane && (document.body.classList.contains('split-chat-active') || document.body.classList.contains('chat-workspace-active') || drawer.classList.contains('open'))) {
-                mainPane.style.flex = `1 1 calc(100% - ${boundedWidth}px)`;
-                mainPane.style.maxWidth = `calc(100% - ${boundedWidth}px)`;
+                mainPane.style.flex = '1';
+                mainPane.style.maxWidth = '100%';
+                mainPane.style.paddingRight = `${boundedWidth + 20}px`;
             }
         }
 
