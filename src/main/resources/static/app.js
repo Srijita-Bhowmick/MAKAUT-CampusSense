@@ -28,12 +28,9 @@ window.triggerNativeClerkAuth = async function(pendingAction = null, mode = 'sig
 
       if (authFn) {
         authFn({
-          appearance: {
-            elements: {
-              rootBox: "mx-auto shadow-2xl",
-              card: "bg-white text-slate-900 rounded-2xl border border-slate-200"
-            }
-          },
+          fallbackRedirectUrl: window.location.href,
+          signUpFallbackRedirectUrl: window.location.href,
+          signInFallbackRedirectUrl: window.location.href,
           afterSignInUrl: window.location.href,
           afterSignUpUrl: window.location.href
         });
@@ -9623,7 +9620,7 @@ window.onClerkLoaded = function() {
 })();
 
 window.addEventListener('DOMContentLoaded', async () => {
-    if (window.Clerk && typeof window.Clerk.load === 'function') {
+    if (window.Clerk && !window.Clerk.loaded && typeof window.Clerk.load === 'function') {
         try {
             await window.Clerk.load();
             const user = window.Clerk.user;
