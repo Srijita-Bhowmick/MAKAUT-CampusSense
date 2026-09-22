@@ -337,6 +337,17 @@ public class RagService {
         q = q.replaceAll("\\bbee\\b", "basic electrical engineering");
         q = q.replaceAll("\\bbio\\b", "biology");
         q = q.replaceAll("\\bevs\\b", "environmental science");
+        q = q.replaceAll("\\bdsa\\b", "data structure and algorithms");
+        q = q.replaceAll("\\bflat\\b", "formal language and automata theory");
+        q = q.replaceAll("\\btoc\\b", "formal language and automata theory");
+        q = q.replaceAll("\\bdaa\\b", "design and analysis of algorithms");
+        q = q.replaceAll("\\bco\\b", "computer organisation");
+        q = q.replaceAll("\\bca\\b", "computer architecture");
+        q = q.replaceAll("\\bos\\b", "operating systems");
+        q = q.replaceAll("\\bdbms\\b", "database management systems");
+        q = q.replaceAll("\\bcn\\b", "computer networks");
+        q = q.replaceAll("\\bse\\b", "software engineering");
+        q = q.replaceAll("\\bai\\b", "artificial intelligence");
         return q;
     }
 

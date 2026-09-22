@@ -458,6 +458,184 @@ public class DataInitializer implements CommandLineRunner {
                 .metadata("{\"required_credits\": 20, \"platform\": \"SWAYAM/NPTEL\"}")
                 .build());
 
+        // Official MAKAUT 4-Year CSE Curriculum Scheme (Semesters 3-8 per CSE20.pdf)
+        CourseResource dsaSyllabus = courseResourceRepository.save(CourseResource.builder()
+                .stream(StreamType.CSE)
+                .semester(3)
+                .subjectCode("PCC-CS301")
+                .subjectName("Data Structure & Algorithms")
+                .resourceType(ResourceType.SYLLABUS)
+                .year(2025)
+                .fileUrl("CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf")
+                .rawText("""
+                        Module 1: Linear Data Structures, Stacks & Queues: Arrays, sparse matrices, stack operations, infix to postfix, circular queue, priority queue.
+                        Module 2: Linked Lists: Singly linked, circular, doubly linked list, polynomial representation and addition.
+                        Module 3: Trees: Binary trees, tree traversals, Binary Search Tree (BST), AVL trees, rotations, B-Trees.
+                        Module 4: Graphs: Representation, BFS, DFS, topological sorting, minimum spanning trees (Prim's, Kruskal's), shortest path (Dijkstra's).
+                        Module 5: Searching, Sorting & Hashing: Linear/Binary search, Quick Sort, Merge Sort, Heap Sort, hash functions, collision resolution.
+                        """)
+                .metadata("{\"credits\": 3, \"l_t_p\": \"3-0-0\", \"department\": \"Computer Science & Engineering\"}")
+                .build());
+
+        CourseResource adeSyllabus = courseResourceRepository.save(CourseResource.builder()
+                .stream(StreamType.CSE)
+                .semester(3)
+                .subjectCode("ESC 301")
+                .subjectName("Analog and Digital Electronics")
+                .resourceType(ResourceType.SYLLABUS)
+                .year(2025)
+                .fileUrl("CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf")
+                .rawText("""
+                        Module 1: Analog Electronics & Operational Amplifiers: BJT characteristics, biasing, Op-Amp inverting/non-inverting amplifiers, active filters.
+                        Module 2: Combinational Logic Circuits: Boolean algebra, De Morgan's laws, Karnaugh maps (K-map), multiplexers, decoders, adders.
+                        Module 3: Sequential Logic & Flip-Flops: SR, JK, D, T flip-flops, master-slave JK, shift registers, synchronous/asynchronous counters.
+                        Module 4: Data Converters & Semiconductor Memories: D/A converters (R-2R ladder), A/D converters, RAM, ROM, PLA, PAL.
+                        """)
+                .metadata("{\"credits\": 3, \"l_t_p\": \"3-0-0\", \"department\": \"Computer Science & Engineering\"}")
+                .build());
+
+        CourseResource coSyllabus = courseResourceRepository.save(CourseResource.builder()
+                .stream(StreamType.CSE)
+                .semester(3)
+                .subjectCode("PCC-CS302")
+                .subjectName("Computer Organisation")
+                .resourceType(ResourceType.SYLLABUS)
+                .year(2025)
+                .fileUrl("CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf")
+                .rawText("""
+                        Module 1: Basic Computer Organization & Buses: Functional units, bus structures, instruction formats, addressing modes.
+                        Module 2: CPU & Control Unit: ALU design, instruction cycles, hardwired vs microprogrammed control unit.
+                        Module 3: Computer Arithmetic: Fixed and floating point arithmetic, Booth's multiplication algorithm, restoring/non-restoring division, IEEE 754 standard.
+                        Module 4: Memory Hierarchy & Cache: Memory hierarchy, cache memory mapping (direct, associative, set-associative), virtual memory, TLB.
+                        Module 5: I/O Organization: Programmed I/O, interrupt-driven I/O, Direct Memory Access (DMA) controller.
+                        """)
+                .metadata("{\"credits\": 3, \"l_t_p\": \"3-0-0\", \"department\": \"Computer Science & Engineering\"}")
+                .build());
+
+        CourseResource discreteMathSyllabus = courseResourceRepository.save(CourseResource.builder()
+                .stream(StreamType.CSE)
+                .semester(4)
+                .subjectCode("PCC-CS401")
+                .subjectName("Discrete Mathematics")
+                .resourceType(ResourceType.SYLLABUS)
+                .year(2025)
+                .fileUrl("CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf")
+                .rawText("""
+                        Module 1: Sets, Relations & Functions: Sets, relations, equivalence relations, partial orderings, lattices, mathematical induction, pigeonhole principle.
+                        Module 2: Propositional & Predicate Logic: Connectives, truth tables, tautologies, normal forms (DNF, CNF), quantifiers, rules of inference.
+                        Module 3: Combinatorics & Recurrence Relations: Permutations, combinations, inclusion-exclusion, generating functions, recurrence relations.
+                        Module 4: Algebraic Structures: Semigroups, monoids, groups, subgroups, Lagrange's theorem, rings, fields.
+                        Module 5: Graph Theory: Graphs, paths, Eulerian and Hamiltonian circuits, planar graphs, graph coloring, trees, spanning trees.
+                        """)
+                .metadata("{\"credits\": 4, \"l_t_p\": \"3-1-0\", \"department\": \"Computer Science & Engineering\"}")
+                .build());
+
+        CourseResource compArchSyllabus = courseResourceRepository.save(CourseResource.builder()
+                .stream(StreamType.CSE)
+                .semester(4)
+                .subjectCode("PCC-CS402")
+                .subjectName("Computer Architecture")
+                .resourceType(ResourceType.SYLLABUS)
+                .year(2025)
+                .fileUrl("CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf")
+                .rawText("""
+                        Module 1: Performance Principles & Pipelining: Amdahl's law, instruction pipelining, pipeline hazards (structural, data, control), branch prediction.
+                        Module 2: Instruction-Level Parallelism: Dynamic scheduling, Tomasulo's algorithm, hardware speculation, superscalar and VLIW processors.
+                        Module 3: Memory Hierarchy: Advanced cache optimizations, non-blocking caches, multi-level caches, virtual memory.
+                        Module 4: Multiprocessors: Symmetric multiprocessors (SMP), cache coherence protocols (MESI, MOESI), snooping vs directory protocols.
+                        """)
+                .metadata("{\"credits\": 3, \"l_t_p\": \"3-0-0\", \"department\": \"Computer Science & Engineering\"}")
+                .build());
+
+        CourseResource flatSyllabus = courseResourceRepository.save(CourseResource.builder()
+                .stream(StreamType.CSE)
+                .semester(4)
+                .subjectCode("PCC-CS403")
+                .subjectName("Formal Language & Automata Theory")
+                .resourceType(ResourceType.SYLLABUS)
+                .year(2025)
+                .fileUrl("CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf")
+                .rawText("""
+                        Module 1: Finite Automata: DFA, NFA, epsilon-NFA, DFA minimization, regular expressions, pumping lemma for regular languages.
+                        Module 2: Context-Free Grammars: CFG, derivation trees, ambiguity, Chomsky Normal Form (CNF), Greibach Normal Form (GNF), pumping lemma for CFLs.
+                        Module 3: Pushdown Automata: PDA definition, acceptance by final state and empty stack, equivalence of PDA and CFG.
+                        Module 4: Turing Machines: TM model, Church-Turing thesis, halting problem, undecidability, Post Correspondence Problem (PCP).
+                        """)
+                .metadata("{\"credits\": 3, \"l_t_p\": \"3-0-0\", \"department\": \"Computer Science & Engineering\"}")
+                .build());
+
+        CourseResource daaSyllabus = courseResourceRepository.save(CourseResource.builder()
+                .stream(StreamType.CSE)
+                .semester(4)
+                .subjectCode("PCC-CS404")
+                .subjectName("Design & Analysis of Algorithms")
+                .resourceType(ResourceType.SYLLABUS)
+                .year(2025)
+                .fileUrl("CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf")
+                .rawText("""
+                        Module 1: Algorithm Analysis: Asymptotic notations, recurrence relations, Master Theorem.
+                        Module 2: Divide & Conquer: Merge Sort, Quick Sort, Strassen's matrix multiplication, order statistics.
+                        Module 3: Greedy Algorithms: Fractional Knapsack, Huffman coding, job sequencing with deadlines, Prim's and Kruskal's algorithms.
+                        Module 4: Dynamic Programming: Matrix chain multiplication, Longest Common Subsequence (LCS), 0/1 Knapsack, Bellman-Ford, Floyd-Warshall.
+                        Module 5: Backtracking & Branch and Bound: N-Queens problem, Graph coloring, Hamiltonian cycle, TSP.
+                        Module 6: NP-Completeness: Classes P, NP, NP-Complete, NP-Hard, Cook's theorem, polynomial-time reductions.
+                        """)
+                .metadata("{\"credits\": 3, \"l_t_p\": \"3-0-0\", \"department\": \"Computer Science & Engineering\"}")
+                .build());
+
+        CourseResource compilerSyllabus = courseResourceRepository.save(CourseResource.builder()
+                .stream(StreamType.CSE)
+                .semester(5)
+                .subjectCode("PCC-CS501")
+                .subjectName("Compiler Design")
+                .resourceType(ResourceType.SYLLABUS)
+                .year(2025)
+                .fileUrl("CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf")
+                .rawText("""
+                        Module 1: Lexical Analysis: Compiler phases, role of lexical analyzer, tokens, patterns, regular expressions to DFA, Lex/Flex.
+                        Module 2: Syntax Analysis: Context-free grammars, top-down parsing (Recursive Descent, LL(1)), bottom-up parsing (Shift-Reduce, LR(0), SLR(1), LR(1), LALR(1)), Yacc/Bison.
+                        Module 3: Syntax-Directed Translation: SDD, synthesized and inherited attributes, dependency graphs, S-attributed and L-attributed definitions.
+                        Module 4: Intermediate Code Generation: Three-address code, quadruples, triples, translation of expressions and control structures.
+                        Module 5: Code Optimization & Generation: Basic blocks and flow graphs, common subexpression elimination, loop optimization, peephole optimization.
+                        """)
+                .metadata("{\"credits\": 3, \"l_t_p\": \"3-0-0\", \"department\": \"Computer Science & Engineering\"}")
+                .build());
+
+        CourseResource aiSyllabus = courseResourceRepository.save(CourseResource.builder()
+                .stream(StreamType.CSE)
+                .semester(5)
+                .subjectCode("PEC-IT501B")
+                .subjectName("Artificial Intelligence")
+                .resourceType(ResourceType.SYLLABUS)
+                .year(2025)
+                .fileUrl("CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf")
+                .rawText("""
+                        Module 1: Intelligent Agents & Search: Foundations of AI, agent architecture, uninformed search (BFS, DFS), informed heuristic search (Greedy Best-First, A* search, admissibility).
+                        Module 2: Adversarial Search: Minimax algorithm, Alpha-Beta pruning, evaluation functions in games.
+                        Module 3: Knowledge Representation & Logic: Propositional logic, First-Order Predicate Logic (FOPL), forward/backward chaining, resolution refutation principle.
+                        Module 4: Probabilistic Reasoning & Machine Learning: Uncertainty handling, Bayes theorem, Bayesian networks, supervised and unsupervised learning.
+                        """)
+                .metadata("{\"credits\": 3, \"l_t_p\": \"3-0-0\", \"department\": \"Computer Science & Engineering\"}")
+                .build());
+
+        CourseResource cnSyllabus = courseResourceRepository.save(CourseResource.builder()
+                .stream(StreamType.CSE)
+                .semester(6)
+                .subjectCode("PCC-CS602")
+                .subjectName("Computer Networks")
+                .resourceType(ResourceType.SYLLABUS)
+                .year(2025)
+                .fileUrl("CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf")
+                .rawText("""
+                        Module 1: Physical Layer & Network Topologies: OSI 7-layer and TCP/IP protocol models, transmission media, circuit and packet switching.
+                        Module 2: Data Link Layer: Framing, error control (CRC, Hamming codes), flow control (Stop-and-Wait, Go-Back-N, Selective Repeat), CSMA/CD, Ethernet.
+                        Module 3: Network Layer: IPv4 addressing, subnetting, CIDR, NAT, ARP, routing algorithms (Distance Vector, Link State - Dijkstra, OSPF, BGP).
+                        Module 4: Transport Layer: UDP, TCP three-way handshake, flow control, TCP congestion control (slow start, AIMD), socket programming.
+                        Module 5: Application Layer & Security: DNS, HTTP, HTTPS, FTP, SMTP, symmetric and asymmetric cryptography, firewalls.
+                        """)
+                .metadata("{\"credits\": 3, \"l_t_p\": \"3-0-0\", \"department\": \"Computer Science & Engineering\"}")
+                .build());
+
         // 4. Populate Syllabus Units for Interactive Checklists (Verified 2026 MAKAUT Syllabus)
         List<SyllabusUnit> units = new ArrayList<>();
 
@@ -547,6 +725,73 @@ public class DataInitializer implements CommandLineRunner {
         units.add(SyllabusUnit.builder().courseResource(dbmsSyllabus).unitNumber(3).unitTitle("Unit 3: SQL & Relational Design").subtopics("Functional dependencies, Normalization: 1NF, 2NF, 3NF, BCNF, lossless join").hours(8).build());
         units.add(SyllabusUnit.builder().courseResource(dbmsSyllabus).unitNumber(4).unitTitle("Unit 4: Concurrency & Transactions").subtopics("ACID properties, serializability, two-phase locking (2PL), deadlock resolution").hours(8).build());
         units.add(SyllabusUnit.builder().courseResource(dbmsSyllabus).unitNumber(5).unitTitle("Unit 5: Indexing & Storage").subtopics("File organization, B-Trees, B+ Trees indexing, hashing").hours(6).build());
+
+        // CSE Sem 3: Data Structure & Algorithms (PCC-CS301)
+        units.add(SyllabusUnit.builder().courseResource(dsaSyllabus).unitNumber(1).unitTitle("Unit 1: Linear Data Structures, Stacks & Queues").subtopics("Arrays, sparse matrices, stack operations, infix to postfix, circular queue, priority queue").hours(8).build());
+        units.add(SyllabusUnit.builder().courseResource(dsaSyllabus).unitNumber(2).unitTitle("Unit 2: Linked Lists").subtopics("Singly linked, circular, doubly linked list, polynomial representation and addition").hours(6).build());
+        units.add(SyllabusUnit.builder().courseResource(dsaSyllabus).unitNumber(3).unitTitle("Unit 3: Trees & Binary Search Trees").subtopics("Binary trees, tree traversals, Binary Search Tree (BST), AVL trees, rotations, B-Trees").hours(10).build());
+        units.add(SyllabusUnit.builder().courseResource(dsaSyllabus).unitNumber(4).unitTitle("Unit 4: Graphs & Shortest Paths").subtopics("Representation, BFS, DFS, topological sorting, minimum spanning trees (Prim's, Kruskal's), shortest path (Dijkstra's)").hours(8).build());
+        units.add(SyllabusUnit.builder().courseResource(dsaSyllabus).unitNumber(5).unitTitle("Unit 5: Searching, Sorting & Hashing").subtopics("Linear/Binary search, Quick Sort, Merge Sort, Heap Sort, hash functions, collision resolution").hours(8).build());
+
+        // CSE Sem 3: Analog and Digital Electronics (ESC 301)
+        units.add(SyllabusUnit.builder().courseResource(adeSyllabus).unitNumber(1).unitTitle("Unit 1: Analog Electronics & Op-Amps").subtopics("BJT characteristics, biasing, Op-Amp inverting/non-inverting amplifiers, active filters").hours(9).build());
+        units.add(SyllabusUnit.builder().courseResource(adeSyllabus).unitNumber(2).unitTitle("Unit 2: Combinational Logic Circuits").subtopics("Boolean algebra, De Morgan's laws, Karnaugh maps (K-map), multiplexers, decoders, adders").hours(9).build());
+        units.add(SyllabusUnit.builder().courseResource(adeSyllabus).unitNumber(3).unitTitle("Unit 3: Sequential Logic & Flip-Flops").subtopics("SR, JK, D, T flip-flops, master-slave JK, shift registers, synchronous/asynchronous counters").hours(10).build());
+        units.add(SyllabusUnit.builder().courseResource(adeSyllabus).unitNumber(4).unitTitle("Unit 4: Data Converters & Memories").subtopics("D/A converters (R-2R ladder), A/D converters, RAM, ROM, PLA, PAL").hours(8).build());
+
+        // CSE Sem 3: Computer Organisation (PCC-CS302)
+        units.add(SyllabusUnit.builder().courseResource(coSyllabus).unitNumber(1).unitTitle("Unit 1: Basic Computer Organization & Buses").subtopics("Functional units, bus structures, instruction formats, addressing modes").hours(6).build());
+        units.add(SyllabusUnit.builder().courseResource(coSyllabus).unitNumber(2).unitTitle("Unit 2: CPU & Control Unit Design").subtopics("ALU design, instruction cycles, hardwired vs microprogrammed control unit").hours(8).build());
+        units.add(SyllabusUnit.builder().courseResource(coSyllabus).unitNumber(3).unitTitle("Unit 3: Computer Arithmetic").subtopics("Fixed and floating point arithmetic, Booth's multiplication algorithm, restoring/non-restoring division, IEEE 754 standard").hours(8).build());
+        units.add(SyllabusUnit.builder().courseResource(coSyllabus).unitNumber(4).unitTitle("Unit 4: Memory Hierarchy & Cache").subtopics("Memory hierarchy, cache memory mapping (direct, associative, set-associative), virtual memory, TLB").hours(8).build());
+        units.add(SyllabusUnit.builder().courseResource(coSyllabus).unitNumber(5).unitTitle("Unit 5: I/O Organization & DMA").subtopics("Programmed I/O, interrupt-driven I/O, Direct Memory Access (DMA) controller").hours(6).build());
+
+        // CSE Sem 4: Discrete Mathematics (PCC-CS401)
+        units.add(SyllabusUnit.builder().courseResource(discreteMathSyllabus).unitNumber(1).unitTitle("Unit 1: Sets, Relations & Functions").subtopics("Sets, relations, equivalence relations, partial orderings, lattices, mathematical induction, pigeonhole principle").hours(10).build());
+        units.add(SyllabusUnit.builder().courseResource(discreteMathSyllabus).unitNumber(2).unitTitle("Unit 2: Propositional & Predicate Logic").subtopics("Connectives, truth tables, tautologies, normal forms (DNF, CNF), quantifiers, rules of inference").hours(10).build());
+        units.add(SyllabusUnit.builder().courseResource(discreteMathSyllabus).unitNumber(3).unitTitle("Unit 3: Combinatorics & Recurrences").subtopics("Permutations, combinations, inclusion-exclusion, generating functions, recurrence relations").hours(8).build());
+        units.add(SyllabusUnit.builder().courseResource(discreteMathSyllabus).unitNumber(4).unitTitle("Unit 4: Algebraic Structures").subtopics("Semigroups, monoids, groups, subgroups, Lagrange's theorem, rings, fields").hours(8).build());
+        units.add(SyllabusUnit.builder().courseResource(discreteMathSyllabus).unitNumber(5).unitTitle("Unit 5: Graph Theory").subtopics("Graphs, paths, Eulerian and Hamiltonian circuits, planar graphs, graph coloring, trees, spanning trees").hours(10).build());
+
+        // CSE Sem 4: Computer Architecture (PCC-CS402)
+        units.add(SyllabusUnit.builder().courseResource(compArchSyllabus).unitNumber(1).unitTitle("Unit 1: Performance & Pipelining").subtopics("Amdahl's law, instruction pipelining, pipeline hazards (structural, data, control), branch prediction").hours(10).build());
+        units.add(SyllabusUnit.builder().courseResource(compArchSyllabus).unitNumber(2).unitTitle("Unit 2: Instruction-Level Parallelism").subtopics("Dynamic scheduling, Tomasulo's algorithm, hardware speculation, superscalar and VLIW processors").hours(10).build());
+        units.add(SyllabusUnit.builder().courseResource(compArchSyllabus).unitNumber(3).unitTitle("Unit 3: Memory Hierarchy").subtopics("Advanced cache optimizations, non-blocking caches, multi-level caches, virtual memory").hours(8).build());
+        units.add(SyllabusUnit.builder().courseResource(compArchSyllabus).unitNumber(4).unitTitle("Unit 4: Multiprocessors & Cache Coherence").subtopics("Symmetric multiprocessors (SMP), cache coherence protocols (MESI, MOESI), snooping vs directory protocols").hours(8).build());
+
+        // CSE Sem 4: Formal Language & Automata Theory (PCC-CS403)
+        units.add(SyllabusUnit.builder().courseResource(flatSyllabus).unitNumber(1).unitTitle("Unit 1: Finite Automata & Regular Languages").subtopics("DFA, NFA, epsilon-NFA, DFA minimization, regular expressions, pumping lemma for regular languages").hours(10).build());
+        units.add(SyllabusUnit.builder().courseResource(flatSyllabus).unitNumber(2).unitTitle("Unit 2: Context-Free Grammars").subtopics("CFG, derivation trees, ambiguity, Chomsky Normal Form (CNF), Greibach Normal Form (GNF), pumping lemma for CFLs").hours(10).build());
+        units.add(SyllabusUnit.builder().courseResource(flatSyllabus).unitNumber(3).unitTitle("Unit 3: Pushdown Automata").subtopics("PDA definition, acceptance by final state and empty stack, equivalence of PDA and CFG").hours(8).build());
+        units.add(SyllabusUnit.builder().courseResource(flatSyllabus).unitNumber(4).unitTitle("Unit 4: Turing Machines & Undecidability").subtopics("TM model, Church-Turing thesis, halting problem, undecidability, Post Correspondence Problem (PCP)").hours(8).build());
+
+        // CSE Sem 4: Design & Analysis of Algorithms (PCC-CS404)
+        units.add(SyllabusUnit.builder().courseResource(daaSyllabus).unitNumber(1).unitTitle("Unit 1: Algorithm Analysis").subtopics("Asymptotic notations, recurrence relations, Master Theorem").hours(6).build());
+        units.add(SyllabusUnit.builder().courseResource(daaSyllabus).unitNumber(2).unitTitle("Unit 2: Divide & Conquer").subtopics("Merge Sort, Quick Sort, Strassen's matrix multiplication, order statistics").hours(6).build());
+        units.add(SyllabusUnit.builder().courseResource(daaSyllabus).unitNumber(3).unitTitle("Unit 3: Greedy Algorithms").subtopics("Fractional Knapsack, Huffman coding, job sequencing with deadlines, Prim's and Kruskal's algorithms").hours(8).build());
+        units.add(SyllabusUnit.builder().courseResource(daaSyllabus).unitNumber(4).unitTitle("Unit 4: Dynamic Programming").subtopics("Matrix chain multiplication, Longest Common Subsequence (LCS), 0/1 Knapsack, Bellman-Ford, Floyd-Warshall").hours(8).build());
+        units.add(SyllabusUnit.builder().courseResource(daaSyllabus).unitNumber(5).unitTitle("Unit 5: Backtracking & Branch and Bound").subtopics("N-Queens problem, Graph coloring, Hamiltonian cycle, TSP").hours(6).build());
+        units.add(SyllabusUnit.builder().courseResource(daaSyllabus).unitNumber(6).unitTitle("Unit 6: NP-Completeness").subtopics("Classes P, NP, NP-Complete, NP-Hard, Cook's theorem, polynomial-time reductions").hours(4).build());
+
+        // CSE Sem 5: Compiler Design (PCC-CS501)
+        units.add(SyllabusUnit.builder().courseResource(compilerSyllabus).unitNumber(1).unitTitle("Unit 1: Lexical Analysis").subtopics("Compiler phases, role of lexical analyzer, tokens, patterns, regular expressions to DFA, Lex/Flex").hours(6).build());
+        units.add(SyllabusUnit.builder().courseResource(compilerSyllabus).unitNumber(2).unitTitle("Unit 2: Syntax Analysis & Parsing").subtopics("Context-free grammars, top-down parsing (Recursive Descent, LL(1)), bottom-up parsing (Shift-Reduce, LR(0), SLR(1), LR(1), LALR(1)), Yacc/Bison").hours(10).build());
+        units.add(SyllabusUnit.builder().courseResource(compilerSyllabus).unitNumber(3).unitTitle("Unit 3: Syntax-Directed Translation").subtopics("SDD, synthesized and inherited attributes, dependency graphs, S-attributed and L-attributed definitions").hours(6).build());
+        units.add(SyllabusUnit.builder().courseResource(compilerSyllabus).unitNumber(4).unitTitle("Unit 4: Intermediate Code Generation").subtopics("Three-address code, quadruples, triples, translation of expressions and control structures").hours(8).build());
+        units.add(SyllabusUnit.builder().courseResource(compilerSyllabus).unitNumber(5).unitTitle("Unit 5: Code Optimization & Generation").subtopics("Basic blocks and flow graphs, common subexpression elimination, loop optimization, peephole optimization").hours(6).build());
+
+        // CSE Sem 5: Artificial Intelligence (PEC-IT501B)
+        units.add(SyllabusUnit.builder().courseResource(aiSyllabus).unitNumber(1).unitTitle("Unit 1: Intelligent Agents & Heuristic Search").subtopics("Foundations of AI, agent architecture, uninformed search (BFS, DFS), informed heuristic search (Greedy Best-First, A* search, admissibility)").hours(10).build());
+        units.add(SyllabusUnit.builder().courseResource(aiSyllabus).unitNumber(2).unitTitle("Unit 2: Adversarial Search & Games").subtopics("Minimax algorithm, Alpha-Beta pruning, evaluation functions in games").hours(8).build());
+        units.add(SyllabusUnit.builder().courseResource(aiSyllabus).unitNumber(3).unitTitle("Unit 3: Knowledge Representation & Logic").subtopics("Propositional logic, First-Order Predicate Logic (FOPL), forward/backward chaining, resolution refutation principle").hours(10).build());
+        units.add(SyllabusUnit.builder().courseResource(aiSyllabus).unitNumber(4).unitTitle("Unit 4: Probabilistic Reasoning & Machine Learning").subtopics("Uncertainty handling, Bayes theorem, Bayesian networks, supervised and unsupervised learning").hours(8).build());
+
+        // CSE Sem 6: Computer Networks (PCC-CS602)
+        units.add(SyllabusUnit.builder().courseResource(cnSyllabus).unitNumber(1).unitTitle("Unit 1: Physical Layer & Network Topologies").subtopics("OSI 7-layer and TCP/IP protocol models, transmission media, circuit and packet switching").hours(6).build());
+        units.add(SyllabusUnit.builder().courseResource(cnSyllabus).unitNumber(2).unitTitle("Unit 2: Data Link Layer & MAC").subtopics("Framing, error control (CRC, Hamming codes), flow control (Stop-and-Wait, Go-Back-N, Selective Repeat), CSMA/CD, Ethernet").hours(10).build());
+        units.add(SyllabusUnit.builder().courseResource(cnSyllabus).unitNumber(3).unitTitle("Unit 3: Network Layer & Routing").subtopics("IPv4 addressing, subnetting, CIDR, NAT, ARP, routing algorithms (Distance Vector, Link State - Dijkstra, OSPF, BGP)").hours(10).build());
+        units.add(SyllabusUnit.builder().courseResource(cnSyllabus).unitNumber(4).unitTitle("Unit 4: Transport Layer Protocols").subtopics("UDP, TCP three-way handshake, flow control, TCP congestion control (slow start, AIMD), socket programming").hours(8).build());
+        units.add(SyllabusUnit.builder().courseResource(cnSyllabus).unitNumber(5).unitTitle("Unit 5: Application Layer Protocols & Security").subtopics("DNS, HTTP, HTTPS, FTP, SMTP, symmetric and asymmetric cryptography, firewalls").hours(6).build());
 
         syllabusUnitRepository.saveAll(units);
 
@@ -795,7 +1040,10 @@ public class DataInitializer implements CommandLineRunner {
         }
 
         // 7. Document Embeddings (Vectors for semantic search across all subjects)
-        List<CourseResource> allResources = List.of(math101, physics101, ee101, cs101, english101, osSyllabus, osPyq2022, dbmsSyllabus, marGuide, moocsGuide);
+        List<CourseResource> allResources = List.of(
+                math101, physics101, ee101, cs101, english101, osSyllabus, osPyq2022, dbmsSyllabus, marGuide, moocsGuide,
+                dsaSyllabus, adeSyllabus, coSyllabus, discreteMathSyllabus, compArchSyllabus, flatSyllabus, daaSyllabus, compilerSyllabus, aiSyllabus, cnSyllabus
+        );
         List<DocumentEmbedding> embeddings = new ArrayList<>();
 
         for (CourseResource cr : allResources) {

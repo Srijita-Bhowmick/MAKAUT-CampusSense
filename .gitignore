@@ -57,6 +57,7 @@ Desktop.ini
 .DS_Store
 
 # Environment and secrets
+.env*
 .env
 .env.local
 *.private
@@ -65,5 +66,6 @@ application-prod.yml
 
 # Raw extraction folder
 1st year MAKAUT-CampusSense/
+/CSE(3rd to 8th sem)/
 
 
