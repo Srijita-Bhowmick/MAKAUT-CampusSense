@@ -3,31 +3,62 @@
 window.CLERK_PUBLISHABLE_KEY = "pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk";
 
 // Defensive global Clerk native trigger accessible immediately
-window.triggerNativeClerkAuth = function(pendingAction = null) {
+window.triggerNativeClerkAuth = async function(pendingAction = null, mode = 'signIn') {
   if (pendingAction) {
     try { sessionStorage.setItem('pending_download_action', JSON.stringify(pendingAction)); } catch (e) {}
   }
   try {
-    if (window.Clerk && typeof window.Clerk.openSignIn === 'function') {
-      window.Clerk.openSignIn({
-        appearance: {
-          elements: {
-            rootBox: "mx-auto shadow-2xl",
-            card: "bg-white text-slate-900 rounded-2xl border border-slate-200"
-          }
-        },
-        afterSignInUrl: window.location.href,
-        afterSignUpUrl: window.location.href
-      });
-      return;
+    // Gracefully wait up to 3 seconds if Clerk script is still in-flight
+    if (!window.Clerk) {
+      let attempts = 0;
+      while (!window.Clerk && attempts < 30) {
+        await new Promise(r => setTimeout(r, 100));
+        attempts++;
+      }
+    }
+    if (window.Clerk) {
+      if (!window.Clerk.loaded && typeof window.Clerk.load === 'function') {
+        await window.Clerk.load({
+          publishableKey: window.CLERK_PUBLISHABLE_KEY || 'pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk'
+        });
+      }
+      const authFn = (mode === 'signUp' && typeof window.Clerk.openSignUp === 'function')
+        ? window.Clerk.openSignUp.bind(window.Clerk)
+        : (typeof window.Clerk.openSignIn === 'function' ? window.Clerk.openSignIn.bind(window.Clerk) : null);
+
+      if (authFn) {
+        authFn({
+          appearance: {
+            elements: {
+              rootBox: "mx-auto shadow-2xl",
+              card: "bg-white text-slate-900 rounded-2xl border border-slate-200"
+            }
+          },
+          afterSignInUrl: window.location.href,
+          afterSignUpUrl: window.location.href
+        });
+        return;
+      }
     }
   } catch (err) {
-    console.warn("Clerk popup failed:", err);
+    console.warn("[Clerk] Auth modal error:", err);
   }
-  // Fallback alert if Clerk fails to load
-  alert("Authentication window is loading. Please check your network connection or publishable key.");
+  console.warn("[Clerk] Authentication modal could not open. Please verify network connection or publishable key.");
+};
+window.triggerNativeClerkSignUp = function() {
+  window.triggerNativeClerkAuth(null, 'signUp');
 };
 window.triggerRealClerkAuth = window.triggerNativeClerkAuth;
+
+window.onClerkLoaded = function() {
+  if (typeof window.setupClerkAuthInternal === 'function') {
+    window.setupClerkAuthInternal();
+  } else if (window.Clerk && !window.Clerk.loaded && typeof window.Clerk.load === 'function') {
+    window.Clerk.load({
+      publishableKey: window.CLERK_PUBLISHABLE_KEY || 'pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk'
+    }).catch(err => console.warn('[Clerk] Auto-load warning:', err));
+  }
+};
 
 (() => {
     // ==========================================
@@ -6039,31 +6070,6 @@ window.triggerRealClerkAuth = window.triggerNativeClerkAuth;
     // ==========================================
     // 8. Real Clerk Native Authentication
     // ==========================================
-    window.triggerNativeClerkAuth = function(pendingAction = null) {
-      if (pendingAction) {
-        try { sessionStorage.setItem('pending_download_action', JSON.stringify(pendingAction)); } catch (e) {}
-      }
-      try {
-        if (window.Clerk && typeof window.Clerk.openSignIn === 'function') {
-          window.Clerk.openSignIn({
-            appearance: {
-              elements: {
-                rootBox: "mx-auto shadow-2xl",
-                card: "bg-white text-slate-900 rounded-2xl border border-slate-200"
-              }
-            },
-            afterSignInUrl: window.location.href,
-            afterSignUpUrl: window.location.href
-          });
-          return;
-        }
-      } catch (err) {
-        console.warn("Clerk popup failed:", err);
-      }
-      // Fallback alert if Clerk fails to load
-      alert("Authentication window is loading. Please check your network connection or publishable key.");
-    };
-    window.triggerRealClerkAuth = window.triggerNativeClerkAuth;
     const triggerNativeClerkAuth = window.triggerNativeClerkAuth;
     const triggerRealClerkAuth = window.triggerNativeClerkAuth;
 
@@ -6081,13 +6087,13 @@ window.triggerRealClerkAuth = window.triggerNativeClerkAuth;
 
     if (btnNavSignIn) {
         btnNavSignIn.addEventListener('click', () => {
-            window.triggerNativeClerkAuth();
+            window.triggerNativeClerkAuth(null, 'signIn');
         });
     }
 
     if (btnNavSignUp) {
         btnNavSignUp.addEventListener('click', () => {
-            window.triggerNativeClerkAuth();
+            window.triggerNativeClerkAuth(null, 'signUp');
         });
     }
 
@@ -6301,6 +6307,9 @@ window.triggerRealClerkAuth = window.triggerNativeClerkAuth;
     if (btnMenuSignOut) {
         btnMenuSignOut.addEventListener('click', () => {
             if (userDropdownMenu) userDropdownMenu.style.display = 'none';
+            if (window.Clerk && typeof window.Clerk.signOut === 'function') {
+                window.Clerk.signOut().catch(e => console.warn('[Clerk] Sign out warning:', e));
+            }
             isLoggedIn = false;
             localStorage.removeItem('campussense_logged_in');
             switchView('landing');
@@ -8851,29 +8860,18 @@ window.triggerRealClerkAuth = window.triggerNativeClerkAuth;
     // 18. Clerk Authentication & User Tracking Dashboard
     // ==========================================
     async function setupClerkAuth() {
-        let clerkPublishableKey = window.CLERK_PUBLISHABLE_KEY;
-
-        if (!clerkPublishableKey) {
-            try {
-                const cfgRes = await fetch('/api/v1/config/clerk');
-                if (cfgRes.ok) {
-                    const cfgData = await cfgRes.json();
-                    if (cfgData && cfgData.publishableKey) {
-                        clerkPublishableKey = cfgData.publishableKey;
-                    }
-                }
-            } catch (_) {}
-        }
+        let clerkPublishableKey = window.CLERK_PUBLISHABLE_KEY || 'pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk';
 
         if (!clerkPublishableKey) {
             clerkPublishableKey = (document.querySelector('script[data-clerk-publishable-key]')?.getAttribute('data-clerk-publishable-key'));
         }
 
-        if (window.Clerk) {
+        const initClerkInstance = async () => {
+            if (!window.Clerk) return false;
             try {
                 if (!window.Clerk.loaded && typeof window.Clerk.load === 'function') {
                     const opts = {};
-                    if (clerkPublishableKey && clerkPublishableKey !== 'YOUR_CLERK_PUBLISHABLE_KEY') {
+                    if (clerkPublishableKey) {
                         opts.publishableKey = clerkPublishableKey;
                     }
                     await window.Clerk.load(opts);
@@ -8882,6 +8880,8 @@ window.triggerRealClerkAuth = window.triggerNativeClerkAuth;
                 const user = window.Clerk.user;
                 if (user) {
                     window.isLoggedIn = true;
+                    isLoggedIn = true;
+                    localStorage.setItem('campussense_logged_in', 'true');
                     const userNameSpan = document.getElementById('user-profile-name') || document.getElementById('user-display-name');
                     if (userNameSpan) {
                         userNameSpan.textContent = user.fullName || (user.primaryEmailAddress ? user.primaryEmailAddress.emailAddress : 'Student');
@@ -8889,12 +8889,15 @@ window.triggerRealClerkAuth = window.triggerNativeClerkAuth;
                     updateUIAfterLogin(user);
                 } else {
                     window.isLoggedIn = localStorage.getItem('campussense_logged_in') === 'true';
+                    isLoggedIn = window.isLoggedIn;
                 }
 
                 if (typeof window.Clerk.addListener === 'function') {
                     window.Clerk.addListener(async (emission) => {
                         if (emission && emission.user) {
                             window.isLoggedIn = true;
+                            isLoggedIn = true;
+                            localStorage.setItem('campussense_logged_in', 'true');
                             const userNameSpan = document.getElementById('user-profile-name') || document.getElementById('user-display-name');
                             if (userNameSpan) {
                                 userNameSpan.textContent = emission.user.fullName || (emission.user.primaryEmailAddress ? emission.user.primaryEmailAddress.emailAddress : 'Student');
@@ -8908,9 +8911,28 @@ window.triggerRealClerkAuth = window.triggerNativeClerkAuth;
                         }
                     });
                 }
+                return true;
             } catch (err) {
                 console.warn('[Clerk] Initialization warning (safe fallback active):', err);
+                return false;
             }
+        };
+
+        window.setupClerkAuthInternal = initClerkInstance;
+
+        if (window.Clerk) {
+            await initClerkInstance();
+        } else {
+            let attempts = 0;
+            const pollInterval = setInterval(async () => {
+                attempts++;
+                if (window.Clerk) {
+                    clearInterval(pollInterval);
+                    await initClerkInstance();
+                } else if (attempts >= 100) {
+                    clearInterval(pollInterval);
+                }
+            }, 100);
         }
     }
 
@@ -9213,12 +9235,12 @@ window.triggerRealClerkAuth = window.triggerNativeClerkAuth;
 
             const btnNavSignIn = document.getElementById('btn-nav-signin');
             if (btnNavSignIn) {
-                btnNavSignIn.onclick = () => window.triggerNativeClerkAuth();
+                btnNavSignIn.onclick = () => window.triggerNativeClerkAuth(null, 'signIn');
             }
 
             const btnNavSignUp = document.getElementById('btn-nav-signup');
             if (btnNavSignUp) {
-                btnNavSignUp.onclick = () => window.triggerNativeClerkAuth();
+                btnNavSignUp.onclick = () => window.triggerNativeClerkAuth(null, 'signUp');
             }
 
             const btnLandingAuth = document.getElementById('btn-landing-auth');
@@ -9399,6 +9421,9 @@ window.triggerRealClerkAuth = window.triggerNativeClerkAuth;
             if (btnMenuSignOut) {
                 btnMenuSignOut.onclick = () => {
                     if (userDropdownMenu) userDropdownMenu.style.display = 'none';
+                    if (window.Clerk && typeof window.Clerk.signOut === 'function') {
+                        window.Clerk.signOut().catch(e => console.warn('[Clerk] Sign out warning:', e));
+                    }
                     isLoggedIn = false;
                     localStorage.removeItem('campussense_logged_in');
                     switchView('landing');
