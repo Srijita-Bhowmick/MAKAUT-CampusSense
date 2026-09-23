@@ -66,6 +66,15 @@
   });
 })();
 
+function lockBodyScroll(lock) {
+  if (lock) {
+    document.body.classList.add('modal-open');
+  } else {
+    document.body.classList.remove('modal-open');
+  }
+}
+window.lockBodyScroll = lockBodyScroll;
+
 function safeBind(selector, event, handler) {
   try {
     document.querySelectorAll(selector).forEach(el => {
@@ -3192,14 +3201,20 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
         if (typeof bindAcademicSetupOptions === 'function') {
             bindAcademicSetupOptions();
         }
-        if (scopeModal) scopeModal.style.display = 'flex';
+        if (scopeModal) {
+            scopeModal.style.display = 'flex';
+            lockBodyScroll(true);
+        }
     }
 
     if (contextSwitcherBtn) contextSwitcherBtn.addEventListener('click', openScopeModal);
 
     if (btnCloseScopeModal) {
         btnCloseScopeModal.addEventListener('click', () => {
-            if (scopeModal) scopeModal.style.display = 'none';
+            if (scopeModal) {
+                scopeModal.style.display = 'none';
+                lockBodyScroll(false);
+            }
         });
     }
 
@@ -3279,6 +3294,36 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
     // ==========================================
     let currentFirstYearCategory = 'ALL';
 
+    function getQualifiedDashboardSubjects(semester, streamKey = 'CSE') {
+        const stream = (typeof DEPARTMENT_STREAMS !== 'undefined' && DEPARTMENT_STREAMS[streamKey]) || null;
+        const courses = stream && stream.courses ? stream.courses : (typeof OFFICIAL_CSE_COURSES !== 'undefined' ? OFFICIAL_CSE_COURSES : []);
+        const courseList = Array.isArray(courses) ? courses : Object.values(courses);
+
+        return courseList.filter(course => {
+            // Check semester match
+            if (String(course.semester) !== String(semester)) return false;
+
+            // Filter out practicals/labs/workshops/projects
+            const titleLower = (course.title || course.name || '').toLowerCase();
+            const code = (course.code || '').trim();
+            if (
+                titleLower.includes('lab') ||
+                titleLower.includes('laboratory') ||
+                titleLower.includes('workshop') ||
+                titleLower.includes('project') ||
+                titleLower.includes('internship') ||
+                /9[1-4]$/.test(code) || // Matches practical course codes ending in 91, 92, 93, 94
+                /8[1-9]$/.test(code)    // Matches project course codes like 781, 881
+            ) {
+                return false;
+            }
+
+            // Must have at least 1 verified PYQ PDF provided
+            return Array.isArray(course.pyqs) && course.pyqs.length > 0;
+        });
+    }
+    window.getQualifiedDashboardSubjects = getQualifiedDashboardSubjects;
+
     function renderActiveSubjects(categoryFilter = currentFirstYearCategory) {
         currentFirstYearCategory = categoryFilter;
         const grid = document.getElementById('active-subjects-grid');
@@ -3310,10 +3355,9 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
             if (regNotice) regNotice.style.display = 'none';
             if (firstYearFilterRow) firstYearFilterRow.style.display = 'none';
             const streamTitle = (currentStream === 'IT' || currentStream === 'CSE' || !currentStream) ? 'CSE' : currentStream;
-            if (headingEl) headingEl.textContent = `${streamTitle} • Sem ${currentSem} Subjects & Progress`;
 
-            const branchData = DEPARTMENT_STREAMS['CSE'] || { courses: [], modules: [], pyqs: [] };
-            matchingSubjects = ((branchData.courses && branchData.courses.length > 0) ? branchData.courses : OFFICIAL_CSE_COURSES).filter(s => s.semester === currentSem);
+            matchingSubjects = getQualifiedDashboardSubjects(currentSem, 'CSE');
+            if (headingEl) headingEl.textContent = `${streamTitle} • Sem ${currentSem} (${matchingSubjects.length} Verified Theory Subjects)`;
 
             if (matchingSubjects.length === 0) {
                 grid.innerHTML = `
@@ -3422,7 +3466,15 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
         const overallPercentage = totalUnitsAll > 0 ? Math.round((completedUnitsAll / totalUnitsAll) * 100) : 0;
         const progressPill = document.getElementById('overall-syllabus-progress-pill');
         if (progressPill) {
-            progressPill.textContent = `${overallPercentage}% Completed (${completedUnitsAll}/${totalUnitsAll} Units)`;
+            if (isCseUpperYears) {
+                progressPill.textContent = `${matchingSubjects.length} Theory Subjects with Verified PYQs (${totalUnitsAll} Exam Papers Available)`;
+            } else {
+                progressPill.textContent = `${overallPercentage}% Completed (${completedUnitsAll}/${totalUnitsAll} Units)`;
+            }
+        }
+        const bentoSubCount = document.getElementById('bento-subject-count');
+        if (bentoSubCount) {
+            bentoSubCount.textContent = `${matchingSubjects.length} Subjects`;
         }
 
         // Attach card click handlers to launch Subject Hub directly to that subject's PYQs
@@ -3457,6 +3509,8 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
         // Also render dedicated dashboard syllabus container if present
         renderDashboardSyllabus();
     }
+    window.renderActiveSubjects = renderActiveSubjects;
+    window.renderDashboardSubjects = renderActiveSubjects;
 
     function renderDashboardSyllabus() {
         const profile = (typeof loadStoredProfile === 'function') ? loadStoredProfile() : JSON.parse(localStorage.getItem('campussense_academic_profile') || '{}');
@@ -3582,7 +3636,10 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
         activateHubTab(initialTab);
 
         const hubModal = document.getElementById('subject-hub-modal');
-        if (hubModal) hubModal.style.display = 'flex';
+        if (hubModal) {
+            hubModal.style.display = 'flex';
+            lockBodyScroll(true);
+        }
 
         // Auto-scroll target module into view with pulse animation if specified
         if (targetModNum) {
@@ -3814,7 +3871,10 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
     const btnBackHubModal = document.getElementById('btn-back-hub-modal');
     function closeSubjectHub() {
         const hub = document.getElementById('subject-hub-modal');
-        if (hub) hub.style.display = 'none';
+        if (hub) {
+            hub.style.display = 'none';
+            lockBodyScroll(false);
+        }
     }
     if (btnCloseHubModal) btnCloseHubModal.addEventListener('click', closeSubjectHub);
     if (btnBackHubModal) btnBackHubModal.addEventListener('click', closeSubjectHub);
@@ -4203,13 +4263,19 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
             iframe.src = finalUrl;
         }
 
-        if (modal) modal.style.display = 'flex';
+        if (modal) {
+            modal.style.display = 'flex';
+            lockBodyScroll(true);
+        }
     }
     window.openPdfViewer = openPdfViewer;
 
     function closePdfViewerModal() {
         const modal = document.getElementById('pdf-viewer-modal');
-        if (modal) modal.style.display = 'none';
+        if (modal) {
+            modal.style.display = 'none';
+            lockBodyScroll(false);
+        }
         const iframe = document.getElementById('pdf-viewer-iframe');
         if (iframe) {
             iframe.src = 'about:blank';

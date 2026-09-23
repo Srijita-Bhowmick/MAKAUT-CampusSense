@@ -39,7 +39,78 @@ function runAudit() {
     console.log("✅ PASSED: Official CSE20.pdf present in both static/ and docs/.");
   }
 
-  // 4. Verify 100% SHA-256 Parity
+  // 4. Verify Scrollbar Stability & Modal Scroll Lock in styles.css and app.js
+  const stylesCssPath = path.join(__dirname, '../src/main/resources/static/styles.css');
+  const stylesCssContent = fs.readFileSync(stylesCssPath, 'utf8');
+
+  if (!stylesCssContent.includes('scrollbar-gutter: stable') || !stylesCssContent.includes('body.modal-open')) {
+    console.error("❌ FAILURE: Scrollbar stability or modal-open styles missing in styles.css!");
+    passed = false;
+  } else {
+    console.log("✅ PASSED: Scrollbar stability and modal lock styles verified in styles.css.");
+  }
+
+  if (!appJsContent.includes('lockBodyScroll(true)') || !appJsContent.includes('lockBodyScroll(false)')) {
+    console.error("❌ FAILURE: lockBodyScroll missing from modal handlers in app.js!");
+    passed = false;
+  } else {
+    console.log("✅ PASSED: Modal scroll lock guard active in app.js.");
+  }
+
+  // 5. Verify Zero Practicals/Labs and Zero Non-PYQ Subjects in Dashboard Stream View
+  const match = appJsContent.match(/const OFFICIAL_CSE_COURSES = (\[[\s\S]*?\]);\s*const OFFICIAL_CSE_MODULES/);
+  if (!match) {
+    console.error("❌ FAILURE: Could not locate OFFICIAL_CSE_COURSES in app.js!");
+    passed = false;
+  } else {
+    const courses = JSON.parse(match[1]);
+    const mockWindow = {};
+    const evalEnv = { DEPARTMENT_STREAMS: { CSE: { courses } }, OFFICIAL_CSE_COURSES: courses, window: mockWindow };
+    
+    // Extract getQualifiedDashboardSubjects definition
+    const funcMatch = appJsContent.match(/function getQualifiedDashboardSubjects\(semester, streamKey = 'CSE'\) \{[\s\S]*?\n    \}/);
+    if (!funcMatch) {
+      console.error("❌ FAILURE: getQualifiedDashboardSubjects not found in app.js!");
+      passed = false;
+    } else {
+      const getQualifiedDashboardSubjects = new Function('DEPARTMENT_STREAMS', 'OFFICIAL_CSE_COURSES', `
+        ${funcMatch[0]}
+        return getQualifiedDashboardSubjects;
+      `)(evalEnv.DEPARTMENT_STREAMS, evalEnv.OFFICIAL_CSE_COURSES);
+
+      let foundInvalidSubject = false;
+      for (let sem = 3; sem <= 8; sem++) {
+        const qualified = getQualifiedDashboardSubjects(sem, 'CSE');
+        qualified.forEach(sub => {
+          const title = (sub.title || sub.name || '').toLowerCase();
+          const code = (sub.code || '').trim();
+          const isPractical = title.includes('lab') ||
+                              title.includes('laboratory') ||
+                              title.includes('workshop') ||
+                              title.includes('project') ||
+                              title.includes('internship') ||
+                              /9[1-4]$/.test(code) ||
+                              /8[1-9]$/.test(code);
+          if (isPractical) {
+            console.error(`❌ FAILURE: Found practical/lab subject in Sem ${sem} dashboard: ${sub.code} - ${sub.title || sub.name}`);
+            foundInvalidSubject = true;
+          }
+          if (!Array.isArray(sub.pyqs) || sub.pyqs.length === 0) {
+            console.error(`❌ FAILURE: Found subject with 0 PYQs in Sem ${sem} dashboard: ${sub.code} - ${sub.title || sub.name}`);
+            foundInvalidSubject = true;
+          }
+        });
+      }
+
+      if (foundInvalidSubject) {
+        passed = false;
+      } else {
+        console.log("✅ PASSED: Zero practicals/labs and zero non-PYQ subjects in dashboard qualified subjects.");
+      }
+    }
+  }
+
+  // 6. Verify 100% SHA-256 Parity across all files
   function getFiles(dir) {
     let results = [];
     const list = fs.readdirSync(dir);

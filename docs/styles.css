@@ -299,15 +299,52 @@ button, .btn, .pill, .interactive-card, .academic-option, .subject-card, .sem-pi
   box-shadow: 0 0 14px rgba(79, 70, 229, 0.3) !important;
 }
 
+/* --- SCROLLBAR STABILITY & OVERSCROLL CONTAINMENT --- */
+html {
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
+  scroll-behavior: auto !important; /* Disable conflicting smooth-scroll loops causing jitter */
+}
+
 body {
-    background-color: var(--bg-main);
-    color: var(--text-main);
-    font-family: var(--font-body);
-    line-height: 1.6;
-    min-height: 100vh;
-    overflow-x: hidden;
-    position: relative;
-    transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  overscroll-behavior-y: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
+/* Stabilize custom webkit scrollbar to prevent thumb collapse */
+::-webkit-scrollbar {
+  width: 9px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.7);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.45);
+  border-radius: 6px;
+  border: 2px solid rgba(15, 23, 42, 0.7);
+  min-height: 48px !important; /* Prevents scrollbar thumb shrinking to zero and skipping */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 102, 241, 0.75);
+}
+
+/* Modals and internal scroll containers */
+.modal-body, .subject-hub-modal-content, .drawer-content, .pdf-preview-container, .modal-scroll-body {
+  overscroll-behavior: contain !important; /* Keeps wheel events from bubbling wildly to the body */
 }
 
 /* Background Ambient Lighting */
