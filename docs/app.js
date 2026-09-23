@@ -1,61 +1,63 @@
 // MAKAUT-CampusSense — End-to-End Academic Engine & Conversational RAG
 // Maintained by Srijita Bhowmick (srijitabhowmick42@gmail.com)
 // --- INDEPENDENT GLOBAL CONTROLLER ---
-(function initGlobalThemeEngine() {
-  try {
-    const savedTheme = localStorage.getItem('theme') || localStorage.getItem('campussense_theme') || 'dark';
-    document.documentElement.setAttribute('data-theme', savedTheme);
-    if (savedTheme === 'light') {
+(function initTheme() {
+  const saved = localStorage.getItem('campussense_theme') || localStorage.getItem('theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', saved);
+  if (saved === 'light') {
+    document.documentElement.classList.add('light-theme');
+  } else {
+    document.documentElement.classList.remove('light-theme');
+  }
+
+  function updateThemeIcons(theme) {
+    const sun = document.getElementById('theme-toggle-sun');
+    const moon = document.getElementById('theme-toggle-moon');
+    if (sun && moon) {
+      sun.style.display = theme === 'light' ? 'block' : 'none';
+      moon.style.display = theme === 'light' ? 'none' : 'block';
+    }
+  }
+
+  window.toggleTheme = function(e) {
+    if (e) {
+      if (typeof e.preventDefault === 'function') e.preventDefault();
+      if (typeof e.stopPropagation === 'function') e.stopPropagation();
+    }
+    const current = document.documentElement.getAttribute('data-theme') || 'dark';
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    if (next === 'light') {
       document.documentElement.classList.add('light-theme');
     } else {
       document.documentElement.classList.remove('light-theme');
     }
+    localStorage.setItem('campussense_theme', next);
+    try { localStorage.setItem('theme', next); } catch (err) {}
+    updateThemeIcons(next);
+    return next;
+  };
 
-    function applyTheme(theme) {
-      document.documentElement.setAttribute('data-theme', theme);
-      if (theme === 'light') {
-        document.documentElement.classList.add('light-theme');
-      } else {
-        document.documentElement.classList.remove('light-theme');
-      }
-      try {
-        localStorage.setItem('theme', theme);
-        localStorage.setItem('campussense_theme', theme);
-      } catch (e) {}
-
-      const sun = document.getElementById('theme-toggle-sun');
-      const moon = document.getElementById('theme-toggle-moon');
-      if (sun && moon) {
-        sun.style.display = theme === 'light' ? 'block' : 'none';
-        moon.style.display = theme === 'light' ? 'none' : 'block';
-      }
-    }
-
-    window.applyTheme = applyTheme;
-    window.toggleTheme = function() {
-      const current = document.documentElement.getAttribute('data-theme') || 'dark';
-      const next = current === 'dark' ? 'light' : 'dark';
-      applyTheme(next);
-      return next;
-    };
-
-    // Attach listener defensively via document delegation
-    document.addEventListener('click', function(e) {
-      const btn = e.target && e.target.closest && e.target.closest('#btn-theme-toggle, #theme-toggle, .theme-toggle-btn, .theme-switch, [data-action="toggle-theme"]');
-      if (btn) {
-        if (e.preventDefault) e.preventDefault();
-        window.toggleTheme();
-      }
-    });
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => applyTheme(savedTheme));
+  window.applyTheme = function(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    if (theme === 'light') {
+      document.documentElement.classList.add('light-theme');
     } else {
-      applyTheme(savedTheme);
+      document.documentElement.classList.remove('light-theme');
     }
-  } catch (err) {
-    console.warn("Theme initialization warning:", err);
-  }
+    localStorage.setItem('campussense_theme', theme);
+    try { localStorage.setItem('theme', theme); } catch (err) {}
+    updateThemeIcons(theme);
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('theme-toggle') || document.getElementById('btn-theme-toggle');
+    if (btn) {
+      btn.onclick = window.toggleTheme;
+    }
+    const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+    updateThemeIcons(cur);
+  });
 })();
 
 function safeBind(selector, event, handler) {
@@ -295,6 +297,30 @@ window.onClerkLoaded = function() {
 
     localStorage.setItem('campussense_user_id', userIdentifier);
     localStorage.setItem('campussense_year_mode', currentYearMode);
+
+    function getActiveAcademicSubject(preferredSem = null) {
+        try {
+            const stored = localStorage.getItem('campussense_academic_profile');
+            let stream = currentStream || 'CSE';
+            let sem = preferredSem || currentSem || 3;
+            let yearMode = currentYearMode;
+            if (stored) {
+                const prof = JSON.parse(stored);
+                if (prof.stream) stream = prof.stream;
+                if (prof.semester) sem = parseInt(prof.semester, 10);
+                if (prof.yearMode) yearMode = prof.yearMode;
+            }
+            if (stream === 'CSE' && (yearMode !== 'FIRST_YEAR' || sem >= 3)) {
+                const cseCourses = (typeof DEPARTMENT_STREAMS !== 'undefined' && DEPARTMENT_STREAMS['CSE'] && DEPARTMENT_STREAMS['CSE'].courses) ||
+                                  (typeof OFFICIAL_CSE_COURSES !== 'undefined' ? OFFICIAL_CSE_COURSES : []);
+                const semCourses = cseCourses.filter(c => c.semester === sem);
+                if (semCourses.length > 0) return semCourses[0];
+                if (cseCourses.length > 0) return cseCourses[0];
+            }
+        } catch (e) {}
+        return (typeof MAKAUT_CURRICULUM !== 'undefined' && MAKAUT_CURRICULUM.length > 0) ? MAKAUT_CURRICULUM[0] : null;
+    }
+    window.getActiveAcademicSubject = getActiveAcademicSubject;
 
     const STREAM_LABELS = {
         'FIRST_YEAR': '1st Year Common Scheme',
@@ -2521,6 +2547,10 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
     const tileActionSyllabi = document.getElementById('tile-action-syllabi');
     if (tileActionSyllabi) {
         tileActionSyllabi.addEventListener('click', () => {
+            if (currentStream === 'CSE' && currentYearMode !== 'FIRST_YEAR') {
+                openPdfViewer('CSE Syllabus (3rd to 8th sem)', 'CSE(3rd to 8th sem)/CSE20.pdf');
+                return;
+            }
             const subjectsSection = document.querySelector('.bento-card-subjects');
             if (subjectsSection) {
                 subjectsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -2533,9 +2563,9 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
     const tileActionPyqs = document.getElementById('tile-action-pyqs');
     if (tileActionPyqs) {
         tileActionPyqs.addEventListener('click', () => {
-            const firstSub = (MAKAUT_CURRICULUM && MAKAUT_CURRICULUM.length > 0) ? MAKAUT_CURRICULUM[0].code : null;
-            if (firstSub) {
-                openSubjectHub(firstSub, 'pyqs');
+            const targetSub = getActiveAcademicSubject();
+            if (targetSub) {
+                openSubjectHub(targetSub, 'pyqs');
             } else {
                 switchView('landing');
                 const pyqSec = document.getElementById('landing-pyqs');
@@ -3051,8 +3081,8 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
     if (btnScopeFirstYear && btnScopeDepartmentalYears && departmentalYearsControls) {
         btnScopeFirstYear.addEventListener('click', () => {
             modalYearMode = 'FIRST_YEAR';
-            btnScopeFirstYear.classList.add('active');
-            btnScopeDepartmentalYears.classList.remove('active');
+            btnScopeFirstYear.classList.add('active', 'selected');
+            btnScopeDepartmentalYears.classList.remove('active', 'selected');
             departmentalYearsControls.style.display = 'none';
             const streamInput = document.getElementById('select-stream');
             if (streamInput) streamInput.value = 'FIRST_YEAR';
@@ -3062,11 +3092,11 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
 
         btnScopeDepartmentalYears.addEventListener('click', () => {
             modalYearMode = 'DEPARTMENTAL_YEARS';
-            btnScopeDepartmentalYears.classList.add('active');
-            btnScopeFirstYear.classList.remove('active');
+            btnScopeDepartmentalYears.classList.add('active', 'selected');
+            btnScopeFirstYear.classList.remove('active', 'selected');
             departmentalYearsControls.style.display = 'block';
-            const activeStreamBtn = document.querySelector('.stream-option.active');
-            const activeSemBtn = document.querySelector('.sem-btn.active');
+            const activeStreamBtn = document.querySelector('.stream-option.active, .stream-option.selected');
+            const activeSemBtn = document.querySelector('.sem-btn.active, .sem-btn.selected');
             const streamInput = document.getElementById('select-stream');
             if (streamInput) streamInput.value = activeStreamBtn?.getAttribute('data-stream') || 'CSE';
             const semInput = document.getElementById('select-semester');
@@ -3078,22 +3108,26 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
         modalYearMode = (currentYearMode === 'UPPER_YEARS' || currentYearMode === 'DEPARTMENTAL_YEARS') ? 'DEPARTMENTAL_YEARS' : 'FIRST_YEAR';
         if (btnScopeFirstYear && btnScopeDepartmentalYears && departmentalYearsControls) {
             if (modalYearMode === 'FIRST_YEAR') {
-                btnScopeFirstYear.classList.add('active');
-                btnScopeDepartmentalYears.classList.remove('active');
+                btnScopeFirstYear.classList.add('active', 'selected');
+                btnScopeDepartmentalYears.classList.remove('active', 'selected');
                 departmentalYearsControls.style.display = 'none';
             } else {
-                btnScopeDepartmentalYears.classList.add('active');
-                btnScopeFirstYear.classList.remove('active');
+                btnScopeDepartmentalYears.classList.add('active', 'selected');
+                btnScopeFirstYear.classList.remove('active', 'selected');
                 departmentalYearsControls.style.display = 'block';
             }
         }
         // Highlight active stream in departmental years
         document.querySelectorAll('.stream-option').forEach(btn => {
-            btn.classList.toggle('active', btn.getAttribute('data-stream') === currentStream);
+            const isMatch = btn.getAttribute('data-stream') === currentStream;
+            btn.classList.toggle('active', isMatch);
+            btn.classList.toggle('selected', isMatch);
         });
         // Highlight active semester in departmental years
         document.querySelectorAll('.sem-btn').forEach(btn => {
-            btn.classList.toggle('active', parseInt(btn.getAttribute('data-sem'), 10) === currentSem);
+            const isMatch = parseInt(btn.getAttribute('data-sem'), 10) === currentSem;
+            btn.classList.toggle('active', isMatch);
+            btn.classList.toggle('selected', isMatch);
         });
         if (scopeModal) scopeModal.style.display = 'flex';
     }
@@ -3109,8 +3143,8 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
     // Stream pickers for Upper Years
     document.querySelectorAll('.stream-option').forEach(btn => {
         btn.addEventListener('click', () => {
-            document.querySelectorAll('.stream-option').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+            document.querySelectorAll('.stream-option').forEach(b => b.classList.remove('active', 'selected'));
+            btn.classList.add('active', 'selected');
             const streamInput = document.getElementById('select-stream');
             if (streamInput) streamInput.value = btn.getAttribute('data-stream') || 'CSE';
         });
@@ -3119,8 +3153,8 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
     // Semester pickers for Upper Years (Sem 3-8)
     document.querySelectorAll('.sem-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-            document.querySelectorAll('.sem-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+            document.querySelectorAll('.sem-btn').forEach(b => b.classList.remove('active', 'selected'));
+            btn.classList.add('active', 'selected');
             const semInput = document.getElementById('select-semester');
             if (semInput) semInput.value = btn.getAttribute('data-sem') || '3';
         });
@@ -3215,7 +3249,7 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
             if (headingEl) headingEl.textContent = `${currentStream} • Sem ${currentSem} Subjects & Progress`;
 
             const branchData = DEPARTMENT_STREAMS[currentStream] || { courses: [], modules: [], pyqs: [] };
-            matchingSubjects = (branchData.courses || []).filter(s => s.semester === currentSem);
+            matchingSubjects = ((branchData.courses && branchData.courses.length > 0) ? branchData.courses : OFFICIAL_CSE_COURSES).filter(s => s.semester === currentSem);
 
             if (matchingSubjects.length === 0) {
                 grid.innerHTML = `
@@ -3240,8 +3274,27 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
 
         let totalUnitsAll = 0;
         let completedUnitsAll = 0;
+        const isCseUpperYears = (currentStream === 'CSE' && currentYearMode !== 'FIRST_YEAR');
 
-        grid.innerHTML = matchingSubjects.map(sub => {
+        const masterCardHtml = isCseUpperYears ? `
+            <div class="curriculum-card single-master-card" style="grid-column: 1 / -1; margin-bottom: 1.25rem; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-md); padding: 1.25rem; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+                    <span class="subject-code-tag" style="color: var(--accent-primary); font-weight: 700;">MAKAUT-CSE-3-8-SEM</span>
+                    <span class="badge credit-badge" style="background: rgba(255,255,255,0.06); font-family: var(--font-mono);">Sem 3–8 Official</span>
+                </div>
+                <h3 style="font-size: 1.2rem; font-weight: 700; margin: 0 0 0.35rem; color: var(--text-main);">CSE Syllabus (3rd to 8th sem)</h3>
+                <p style="margin: 0 0 0.85rem; color: var(--text-muted); font-size: 0.88rem; line-height: 1.5;">
+                    Complete official 80+ page MAKAUT syllabus covering 3rd to 8th semester.
+                </p>
+                <div>
+                    <button type="button" class="btn btn-primary btn-preview-pdf" data-pdf="CSE(3rd to 8th sem)/CSE20.pdf" data-title="CSE Syllabus (3rd to 8th sem)" data-url="CSE(3rd to 8th%20sem)/CSE20.pdf" style="padding: 0.5rem 1.15rem; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
+                        📖 Official Syllabus PDF
+                    </button>
+                </div>
+            </div>
+        ` : '';
+
+        const subjectCardsHtml = matchingSubjects.map(sub => {
             const units = sub.units || [];
             const totalUnits = units.length;
             totalUnitsAll += totalUnits;
@@ -3253,9 +3306,10 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
             const isComplete = percentage === 100;
 
             const codeDisplay = sub.code + (sub.altCode ? ' / ' + sub.altCode : '');
+            const pyqsCount = (sub.pyqs || []).length;
 
             return `
-                <div class="subject-item-card" data-code="${escapeHtml(sub.code)}">
+                <div class="subject-item-card" data-code="${escapeHtml(sub.code)}" style="cursor: pointer;">
                     <div>
                         <div class="subject-card-top">
                             <span class="subject-code-tag">${escapeHtml(codeDisplay)}</span>
@@ -3265,11 +3319,16 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
                         </div>
                         <div class="subject-item-title">${escapeHtml(sub.name)}</div>
                         <div class="subject-meta-text">${escapeHtml(sub.department || 'MAKAUT Curriculum')} • ${sub.isFirstYear ? '1st Year Foundation' : 'Sem ' + sub.semester}</div>
-                        ${sub.syllabusUrl ? `
+                        ${!isCseUpperYears && sub.syllabusUrl ? `
                             <div style="margin-top: 0.6rem;">
                                 <button type="button" class="btn-subject-syllabus-view" data-title="${escapeHtml(sub.name)} Syllabus" data-url="${escapeHtml(sub.syllabusUrl)}" style="background: rgba(255,255,255,0.04); border: 1px solid var(--card-border); color: var(--text-muted); padding: 0.25rem 0.65rem; border-radius: 6px; font-size: 0.74rem; cursor: pointer; transition: var(--transition-fast);">
                                     📖 Official Syllabus PDF
                                 </button>
+                            </div>
+                        ` : ''}
+                        ${isCseUpperYears ? `
+                            <div style="margin-top: 0.65rem; font-size: 0.8rem; color: var(--accent-cyan); display: inline-flex; align-items: center; gap: 5px; font-weight: 600;">
+                                <span>📑 ${pyqsCount} Verified PYQ Paper${pyqsCount === 1 ? '' : 's'} Available ➔</span>
                             </div>
                         ` : ''}
                     </div>
@@ -3279,18 +3338,20 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
                             <path class="circle-bg"
                                   d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
                             <path class="circle progress-stroke ${isComplete ? 'complete' : ''}"
-                                  stroke-dasharray="${percentage}, 100"
+                                  stroke-dasharray="${isCseUpperYears ? '100, 100' : (percentage + ', 100')}"
                                   d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                            <text x="18" y="20.35" class="percentage">${percentage}%</text>
+                            <text x="18" y="20.35" class="percentage">${isCseUpperYears ? pyqsCount : percentage + '%'}</text>
                         </svg>
                         <div class="ring-labels">
-                            <div class="ring-status-text">${completedCount}/${totalUnits} Units Mastered</div>
-                            <div class="ring-units-count">Click to open Subject Hub ↗</div>
+                            <div class="ring-status-text">${isCseUpperYears ? (pyqsCount + ' Exam Papers') : (completedCount + '/' + totalUnits + ' Units Mastered')}</div>
+                            <div class="ring-units-count">Open Subject PYQs ↗</div>
                         </div>
                     </div>
                 </div>
             `;
         }).join('');
+
+        grid.innerHTML = masterCardHtml + subjectCardsHtml;
 
         // Update overall progress pill in heading
         const overallPercentage = totalUnitsAll > 0 ? Math.round((completedUnitsAll / totalUnitsAll) * 100) : 0;
@@ -3299,16 +3360,26 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
             progressPill.textContent = `${overallPercentage}% Completed (${completedUnitsAll}/${totalUnitsAll} Units)`;
         }
 
-        // Attach card click handlers to launch Subject Hub
+        // Attach card click handlers to launch Subject Hub directly to that subject's PYQs
         grid.querySelectorAll('.subject-item-card').forEach(card => {
             card.addEventListener('click', (e) => {
-                if (e.target.closest('.btn-subject-syllabus-view')) return;
+                if (e.target.closest('.btn-subject-syllabus-view') || e.target.closest('.btn-preview-pdf')) return;
                 const code = card.getAttribute('data-code');
-                openSubjectHub(code);
+                openSubjectHub(code, 'pyqs');
             });
         });
 
-        // Attach direct syllabus preview triggers on card
+        // Attach master syllabus / preview buttons
+        grid.querySelectorAll('.btn-preview-pdf').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const pdf = btn.getAttribute('data-pdf') || btn.getAttribute('data-url') || 'CSE(3rd to 8th sem)/CSE20.pdf';
+                const title = btn.getAttribute('data-title') || 'CSE Syllabus (3rd to 8th sem)';
+                openPdfViewer(title, pdf);
+            });
+        });
+
+        // Attach direct syllabus preview triggers on card (1st year foundation)
         grid.querySelectorAll('.btn-subject-syllabus-view').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -3339,29 +3410,53 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
         let subject = null;
         if (typeof subjectCodeOrObj === 'object' && subjectCodeOrObj !== null) {
             subject = subjectCodeOrObj;
-        } else if (typeof subjectCodeOrObj === 'string') {
-            const scLower = subjectCodeOrObj.toLowerCase();
-            subject = MAKAUT_CURRICULUM.find(s => 
-                s.code.toLowerCase() === scLower ||
-                (s.altCode && s.altCode.toLowerCase() === scLower) ||
-                (s.legacyCode && s.legacyCode.toLowerCase() === scLower) ||
-                s.name.toLowerCase() === scLower
-            );
-            if (!subject && typeof DEPARTMENT_STREAMS !== 'undefined') {
+        } else if (typeof subjectCodeOrObj === 'string' && subjectCodeOrObj.trim().length > 0) {
+            const scLower = subjectCodeOrObj.trim().toLowerCase();
+            const scNorm = scLower.replace(/[\s\-_]/g, '');
+
+            // 1. Departmental Streams (e.g. CSE)
+            if (typeof DEPARTMENT_STREAMS !== 'undefined') {
                 for (const strKey of Object.keys(DEPARTMENT_STREAMS)) {
-                    const found = (DEPARTMENT_STREAMS[strKey].courses || []).find(s =>
-                        s.code.toLowerCase() === scLower ||
-                        (s.altCode && s.altCode.toLowerCase() === scLower) ||
-                        (s.legacyCode && s.legacyCode.toLowerCase() === scLower) ||
-                        s.name.toLowerCase() === scLower
-                    );
+                    const found = (DEPARTMENT_STREAMS[strKey].courses || []).find(s => {
+                        const sCodeNorm = (s.code || '').replace(/[\s\-_]/g, '').toLowerCase();
+                        const sAltNorm = (s.altCode || '').replace(/[\s\-_]/g, '').toLowerCase();
+                        const sLegacyNorm = (s.legacyCode || '').replace(/[\s\-_]/g, '').toLowerCase();
+                        return sCodeNorm === scNorm || sAltNorm === scNorm || sLegacyNorm === scNorm ||
+                               (s.name && s.name.toLowerCase() === scLower);
+                    });
                     if (found) {
                         subject = found;
                         break;
                     }
                 }
             }
+
+            // 2. OFFICIAL_CSE_COURSES
+            if (!subject && typeof OFFICIAL_CSE_COURSES !== 'undefined') {
+                subject = OFFICIAL_CSE_COURSES.find(s => {
+                    const sCodeNorm = (s.code || '').replace(/[\s\-_]/g, '').toLowerCase();
+                    const sAltNorm = (s.altCode || '').replace(/[\s\-_]/g, '').toLowerCase();
+                    return sCodeNorm === scNorm || sAltNorm === scNorm || (s.name && s.name.toLowerCase() === scLower);
+                });
+            }
+
+            // 3. MAKAUT_CURRICULUM
+            if (!subject && typeof MAKAUT_CURRICULUM !== 'undefined') {
+                subject = MAKAUT_CURRICULUM.find(s => {
+                    const sCodeNorm = (s.code || '').replace(/[\s\-_]/g, '').toLowerCase();
+                    const sAltNorm = (s.altCode || '').replace(/[\s\-_]/g, '').toLowerCase();
+                    const sLegacyNorm = (s.legacyCode || '').replace(/[\s\-_]/g, '').toLowerCase();
+                    return sCodeNorm === scNorm || sAltNorm === scNorm || sLegacyNorm === scNorm ||
+                           (s.name && s.name.toLowerCase() === scLower);
+                });
+            }
         }
+
+        // If no subject resolved, dynamically resolve based on active academic profile (never default to Physics!)
+        if (!subject) {
+            subject = getActiveAcademicSubject();
+        }
+
         if (!subject) return;
         currentHubSubject = subject;
         currentHubPyqYearFilter = 'ALL';
@@ -3409,6 +3504,37 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
         const container = document.getElementById('hub-units-container');
         const statNum = document.getElementById('hub-completion-stat');
         if (!container) return;
+
+        // For CSE (Sem 3-8), render exclusively the single master syllabus card
+        if ((subject.stream === 'CSE' || currentStream === 'CSE') && (!subject.isFirstYear && (subject.semester >= 3 || currentSem >= 3))) {
+            container.innerHTML = `
+                <div class="curriculum-card single-master-card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 1rem;">
+                    <div class="curriculum-card-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; flex-wrap: wrap; gap: 0.5rem;">
+                        <span class="subject-code-tag" style="font-weight: 700; color: var(--accent-primary);">MAKAUT-CSE-3-8-SEM</span>
+                        <span class="badge credit-badge" style="background: rgba(255,255,255,0.06); font-family: var(--font-mono); font-size: 0.75rem;">Sem 3–8 Complete Curriculum</span>
+                    </div>
+                    <h3 class="curriculum-card-title" style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-main);">CSE Syllabus (3rd to 8th sem)</h3>
+                    <div class="curriculum-card-meta" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.85rem;">Computer Science & Engineering • Semesters 3 to 8</div>
+                    <p style="margin: 0 0 1.25rem; color: var(--text-muted); font-size: 0.9rem; line-height: 1.6;">
+                        Complete official 80+ page MAKAUT syllabus covering 3rd to 8th semester.
+                    </p>
+                    <div>
+                        <button type="button" class="btn btn-primary btn-preview-pdf" data-pdf="CSE(3rd to 8th sem)/CSE20.pdf" data-title="CSE Syllabus (3rd to 8th sem)" data-url="CSE(3rd to 8th%20sem)/CSE20.pdf" style="padding: 0.55rem 1.15rem; font-size: 0.88rem; font-weight: 600; cursor: pointer;">
+                            📖 Official Syllabus PDF
+                        </button>
+                    </div>
+                </div>
+            `;
+            const previewBtn = container.querySelector('.btn-preview-pdf');
+            if (previewBtn) {
+                previewBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openPdfViewer('CSE Syllabus (3rd to 8th sem)', 'CSE(3rd to 8th sem)/CSE20.pdf');
+                });
+            }
+            if (statNum) statNum.textContent = '100%';
+            return;
+        }
 
         const units = subject.units || [];
         const completedCount = units.filter(u => userChecklistState[u.id] === true).length;
@@ -4455,9 +4581,12 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
         }
 
         // Check if query is general "all pyqs" or "all papers" without matching a specific subject
-        if (isAllPapers && MAKAUT_CURRICULUM.length > 0) {
-            openSubjectHub(MAKAUT_CURRICULUM[0], 'pyqs');
-            return;
+        if (isAllPapers) {
+            const dynSub = getActiveAcademicSubject();
+            if (dynSub) {
+                openSubjectHub(dynSub, 'pyqs');
+                return;
+            }
         }
 
         // If not a recognized navigation lookup, route to Ask AI Drawer
@@ -5969,19 +6098,7 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
         if (areEventsBound) return;
         areEventsBound = true;
 
-        try {
-            // Theme toggle
-            const themeToggleBtn = document.getElementById('btn-theme-toggle');
-            if (themeToggleBtn) {
-                themeToggleBtn.onclick = (e) => {
-                    e.preventDefault();
-                    const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
-                    applyTheme(nextTheme);
-                };
-            }
-        } catch (err) {
-            console.warn("[Events] Theme toggle binding error:", err);
-        }
+        // Theme toggle is handled once globally by initTheme()
 
         try {
             // Navigation & Quick Action Tiles
@@ -6014,6 +6131,10 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
             const tileActionSyllabi = document.getElementById('tile-action-syllabi');
             if (tileActionSyllabi) {
                 tileActionSyllabi.onclick = () => {
+                    if (currentStream === 'CSE' && currentYearMode !== 'FIRST_YEAR') {
+                        openPdfViewer('CSE Syllabus (3rd to 8th sem)', 'CSE(3rd to 8th sem)/CSE20.pdf');
+                        return;
+                    }
                     const subjectsSection = document.querySelector('.bento-card-subjects');
                     if (subjectsSection) {
                         subjectsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -6026,9 +6147,9 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
             const tileActionPyqs = document.getElementById('tile-action-pyqs');
             if (tileActionPyqs) {
                 tileActionPyqs.onclick = () => {
-                    const firstSub = (MAKAUT_CURRICULUM && MAKAUT_CURRICULUM.length > 0) ? MAKAUT_CURRICULUM[0].code : null;
-                    if (firstSub) {
-                        openSubjectHub(firstSub, 'pyqs');
+                    const targetSub = getActiveAcademicSubject();
+                    if (targetSub) {
+                        openSubjectHub(targetSub, 'pyqs');
                     } else {
                         switchView('landing');
                         const pyqSec = document.getElementById('landing-pyqs');
@@ -6167,16 +6288,26 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
             if (btnScopeFirstYear && btnScopeDepartmentalYears && departmentalYearsControls) {
                 btnScopeFirstYear.onclick = () => {
                     modalYearMode = 'FIRST_YEAR';
-                    btnScopeFirstYear.classList.add('active');
-                    btnScopeDepartmentalYears.classList.remove('active');
+                    btnScopeFirstYear.classList.add('active', 'selected');
+                    btnScopeDepartmentalYears.classList.remove('active', 'selected');
                     departmentalYearsControls.style.display = 'none';
+                    const streamInput = document.getElementById('select-stream');
+                    if (streamInput) streamInput.value = 'FIRST_YEAR';
+                    const semInput = document.getElementById('select-semester');
+                    if (semInput) semInput.value = '1';
                 };
 
                 btnScopeDepartmentalYears.onclick = () => {
                     modalYearMode = 'DEPARTMENTAL_YEARS';
-                    btnScopeDepartmentalYears.classList.add('active');
-                    btnScopeFirstYear.classList.remove('active');
+                    btnScopeDepartmentalYears.classList.add('active', 'selected');
+                    btnScopeFirstYear.classList.remove('active', 'selected');
                     departmentalYearsControls.style.display = 'block';
+                    const activeStreamBtn = document.querySelector('.stream-option.active, .stream-option.selected');
+                    const activeSemBtn = document.querySelector('.sem-btn.active, .sem-btn.selected');
+                    const streamInput = document.getElementById('select-stream');
+                    if (streamInput) streamInput.value = activeStreamBtn?.getAttribute('data-stream') || 'CSE';
+                    const semInput = document.getElementById('select-semester');
+                    if (semInput) semInput.value = activeSemBtn?.getAttribute('data-sem') || '3';
                 };
             }
 
@@ -6194,8 +6325,10 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
             document.querySelectorAll('.stream-option').forEach(btn => {
                 if (btn) {
                     btn.onclick = () => {
-                        document.querySelectorAll('.stream-option').forEach(b => b.classList.remove('active'));
-                        btn.classList.add('active');
+                        document.querySelectorAll('.stream-option').forEach(b => b.classList.remove('active', 'selected'));
+                        btn.classList.add('active', 'selected');
+                        const streamInput = document.getElementById('select-stream');
+                        if (streamInput) streamInput.value = btn.getAttribute('data-stream') || 'CSE';
                     };
                 }
             });
@@ -6203,8 +6336,10 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
             document.querySelectorAll('.sem-btn').forEach(btn => {
                 if (btn) {
                     btn.onclick = () => {
-                        document.querySelectorAll('.sem-btn').forEach(b => b.classList.remove('active'));
-                        btn.classList.add('active');
+                        document.querySelectorAll('.sem-btn').forEach(b => b.classList.remove('active', 'selected'));
+                        btn.classList.add('active', 'selected');
+                        const semInput = document.getElementById('select-semester');
+                        if (semInput) semInput.value = btn.getAttribute('data-sem') || '3';
                     };
                 }
             });

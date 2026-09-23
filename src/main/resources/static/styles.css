@@ -235,6 +235,66 @@
     box-sizing: border-box;
 }
 
+/* Touch Optimization & Tap Glitches Elimination */
+button, .btn, .pill, .interactive-card, .academic-option, .hub-tab-btn {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+/* Academic Section Selection Magnification & Highlighting */
+.academic-option, .stream-pill, .sem-pill,
+.stream-option, .sem-btn, .primary-year-btn, .academic-stage-card, .stream-card, .semester-btn {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+.academic-option:hover, .stream-pill:hover, .sem-pill:hover,
+.stream-option:hover, .sem-btn:hover, .primary-year-btn:hover, .academic-stage-card:hover, .stream-card:hover, .semester-btn:hover {
+    transform: translateY(-2px);
+}
+
+.academic-option.selected, .academic-option.active,
+.stream-pill.selected, .stream-pill.active,
+.sem-pill.selected, .sem-pill.active,
+.stream-option.selected, .stream-option.active,
+.sem-btn.selected, .sem-btn.active,
+.primary-year-btn.selected, .primary-year-btn.active,
+.academic-stage-card.selected, .academic-stage-card.active,
+.stream-card.selected, .stream-card.active,
+.semester-btn.selected, .semester-btn.active {
+    transform: scale(1.06) !important;
+    border-color: #6366f1 !important;
+    background: rgba(99, 102, 241, 0.15) !important;
+    box-shadow: 0 0 16px rgba(99, 102, 241, 0.35) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+[data-theme="light"] .academic-option.selected,
+[data-theme="light"] .academic-option.active,
+[data-theme="light"] .stream-pill.selected,
+[data-theme="light"] .stream-pill.active,
+[data-theme="light"] .sem-pill.selected,
+[data-theme="light"] .sem-pill.active,
+[data-theme="light"] .stream-option.selected,
+[data-theme="light"] .stream-option.active,
+[data-theme="light"] .sem-btn.selected,
+[data-theme="light"] .sem-btn.active,
+[data-theme="light"] .primary-year-btn.selected,
+[data-theme="light"] .primary-year-btn.active,
+[data-theme="light"] .academic-stage-card.selected,
+[data-theme="light"] .academic-stage-card.active,
+[data-theme="light"] .stream-card.selected,
+[data-theme="light"] .stream-card.active,
+[data-theme="light"] .semester-btn.selected,
+[data-theme="light"] .semester-btn.active {
+    background: #e0e7ff !important;
+    border-color: #4f46e5 !important;
+    color: #1e1b4b !important;
+    box-shadow: 0 0 12px rgba(79, 70, 229, 0.25) !important;
+}
+
 body {
     background-color: var(--bg-main);
     color: var(--text-main);

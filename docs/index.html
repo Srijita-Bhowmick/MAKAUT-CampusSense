@@ -63,7 +63,7 @@
             <!-- Navigation Actions & Controls -->
             <div class="nav-actions">
                 <!-- Theme Toggle Button (Dynamic SVG Sun/Moon) -->
-                <button class="theme-toggle-btn" id="btn-theme-toggle" title="Toggle Light / Dark Mode" onclick="toggleTheme()">
+                <button class="theme-toggle-btn" id="theme-toggle" title="Toggle Light / Dark Mode">
                     <svg id="theme-toggle-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none; width: 20px; height: 20px;">
                         <circle cx="12" cy="12" r="5"></circle>
                         <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -519,7 +519,7 @@
                 <div class="form-group">
                     <label class="form-label">Academic Stage & Program</label>
                     <div class="primary-year-select-row" id="primary-year-select-row">
-                        <button type="button" class="primary-year-btn academic-stage-card active" id="btn-scope-first-year" data-year-mode="FIRST_YEAR">
+                        <button type="button" class="primary-year-btn academic-stage-card academic-option active" id="btn-scope-first-year" data-year-mode="FIRST_YEAR">
                             <span class="year-btn-icon">🌱</span>
                             <div class="year-btn-content">
                                 <span class="year-btn-title">1st Year Common Curriculum</span>
@@ -527,7 +527,7 @@
                             </div>
                             <span class="year-check-icon">✓</span>
                         </button>
-                        <button type="button" class="primary-year-btn academic-stage-card" id="btn-scope-departmental-years" data-year-mode="DEPARTMENTAL_YEARS">
+                        <button type="button" class="primary-year-btn academic-stage-card academic-option" id="btn-scope-departmental-years" data-year-mode="DEPARTMENTAL_YEARS">
                             <span class="year-btn-icon">⚡</span>
                             <div class="year-btn-content">
                                 <span class="year-btn-title">Departmental Years (Semesters 3 – 8)</span>
@@ -544,12 +544,12 @@
                     <div class="form-group">
                         <label class="form-label">Department / Engineering Stream</label>
                         <div class="stream-select-grid" id="stream-picker-grid">
-                            <button type="button" class="stream-option stream-card active" data-stream="CSE">
+                            <button type="button" class="stream-option stream-card stream-pill academic-option active" data-stream="CSE">
                                 <span class="stream-icon">💻</span>
                                 <span class="stream-name">CSE</span>
                                 <span class="stream-desc">Computer Science & Engineering</span>
                             </button>
-                            <button type="button" class="stream-option stream-card" data-stream="IT">
+                            <button type="button" class="stream-option stream-card stream-pill academic-option" data-stream="IT">
                                 <span class="stream-icon">🌐</span>
                                 <span class="stream-name">IT</span>
                                 <span class="stream-desc">Information Technology</span>
@@ -561,12 +561,12 @@
                     <div class="form-group">
                         <label class="form-label">Current Semester (Semesters 3 to 8)</label>
                         <div class="sem-pills-selector" id="sem-picker-row">
-                            <button type="button" class="sem-btn semester-btn active" data-sem="3">Sem 3</button>
-                            <button type="button" class="sem-btn semester-btn" data-sem="4">Sem 4</button>
-                            <button type="button" class="sem-btn semester-btn" data-sem="5">Sem 5</button>
-                            <button type="button" class="sem-btn semester-btn" data-sem="6">Sem 6</button>
-                            <button type="button" class="sem-btn semester-btn" data-sem="7">Sem 7</button>
-                            <button type="button" class="sem-btn semester-btn" data-sem="8">Sem 8</button>
+                            <button type="button" class="sem-btn semester-btn sem-pill academic-option active" data-sem="3">Sem 3</button>
+                            <button type="button" class="sem-btn semester-btn sem-pill academic-option" data-sem="4">Sem 4</button>
+                            <button type="button" class="sem-btn semester-btn sem-pill academic-option" data-sem="5">Sem 5</button>
+                            <button type="button" class="sem-btn semester-btn sem-pill academic-option" data-sem="6">Sem 6</button>
+                            <button type="button" class="sem-btn semester-btn sem-pill academic-option" data-sem="7">Sem 7</button>
+                            <button type="button" class="sem-btn semester-btn sem-pill academic-option" data-sem="8">Sem 8</button>
                         </div>
                     </div>
                 </div>
