@@ -3453,7 +3453,40 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
                 openPdfViewer(title, url);
             });
         });
+
+        // Also render dedicated dashboard syllabus container if present
+        renderDashboardSyllabus();
     }
+
+    function renderDashboardSyllabus() {
+        const profile = (typeof loadStoredProfile === 'function') ? loadStoredProfile() : JSON.parse(localStorage.getItem('campussense_academic_profile') || '{}');
+        const isCse = (profile.stream === 'CSE' || currentStream === 'CSE');
+        const sem = parseInt(profile.semester || currentSem, 10);
+        const syllabusContainer = document.getElementById('dashboard-syllabus-list') || document.querySelector('.dashboard-syllabus-container');
+        if (syllabusContainer) {
+            if (isCse && sem >= 3) {
+                syllabusContainer.innerHTML = `
+                    <div class="bento-card master-syllabus-card" style="grid-column: 1 / -1;">
+                        <div class="card-header">
+                            <span class="badge">Official 4-Year Scheme</span>
+                            <span class="credits">Semesters 3 to 8</span>
+                        </div>
+                        <h3>CSE Syllabus (3rd to 8th sem)</h3>
+                        <p>Complete official 80+ page MAKAUT syllabus covering all courses, practical labs, and departmental electives for B.Tech Computer Science & Engineering.</p>
+                        <div class="card-actions" style="margin-top: 1.25rem;">
+                            <button class="btn btn-primary" onclick="previewPdfFile('CSE(3rd to 8th sem)/CSE20.pdf', 'CSE Syllabus (3rd to 8th sem)')">
+                                📖 Official Syllabus PDF
+                            </button>
+                            <button class="btn btn-secondary" onclick="downloadPdfFile('CSE(3rd to 8th sem)/CSE20.pdf', 'CSE20.pdf')">
+                                ⬇ Download PDF
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+    }
+    window.renderDashboardSyllabus = renderDashboardSyllabus;
 
     // Wire Category Pills for 1st Year Filter Row
     document.querySelectorAll('#first-year-filter-row .category-pill').forEach(pill => {
