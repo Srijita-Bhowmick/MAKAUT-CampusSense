@@ -1,5 +1,94 @@
 // MAKAUT-CampusSense — End-to-End Academic Engine & Conversational RAG
 // Maintained by Srijita Bhowmick (srijitabhowmick42@gmail.com)
+// --- INDEPENDENT THEME CONTROLLER (Isolated Failure Domain) ---
+(function initThemeEngine() {
+  try {
+    function getStoredTheme() {
+      try {
+        return localStorage.getItem('campussense_theme') || localStorage.getItem('theme') || 'dark';
+      } catch (e) {
+        return 'dark';
+      }
+    }
+
+    function syncThemeIcons(theme) {
+      const sunIcon = document.getElementById('theme-toggle-sun');
+      const moonIcon = document.getElementById('theme-toggle-moon');
+      if (sunIcon && moonIcon) {
+        if (theme === 'light') {
+          sunIcon.style.display = 'block';
+          moonIcon.style.display = 'none';
+        } else {
+          sunIcon.style.display = 'none';
+          moonIcon.style.display = 'block';
+        }
+      }
+    }
+
+    function applyTheme(theme) {
+      try {
+        document.documentElement.setAttribute('data-theme', theme);
+        if (theme === 'light') {
+          document.documentElement.classList.add('light-theme');
+        } else {
+          document.documentElement.classList.remove('light-theme');
+        }
+        try {
+          localStorage.setItem('campussense_theme', theme);
+          localStorage.setItem('theme', theme);
+        } catch (e) {}
+        syncThemeIcons(theme);
+      } catch (err) {
+        console.warn("Theme application warning:", err);
+      }
+    }
+
+    // Apply immediately to prevent flash of wrong theme
+    const savedTheme = getStoredTheme();
+    applyTheme(savedTheme);
+
+    window.applyTheme = applyTheme;
+    window.toggleTheme = function() {
+      const currentTheme = document.documentElement.getAttribute('data-theme') || getStoredTheme();
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      applyTheme(newTheme);
+      return newTheme;
+    };
+
+    function bindThemeToggleElement() {
+      const themeBtn = document.getElementById('btn-theme-toggle') ||
+                       document.getElementById('theme-toggle') ||
+                       document.querySelector('.theme-toggle-btn') ||
+                       document.querySelector('.theme-switch') ||
+                       document.querySelector('[data-action="toggle-theme"]');
+      if (themeBtn) {
+        themeBtn.onclick = function(e) {
+          if (e && e.preventDefault) e.preventDefault();
+          window.toggleTheme();
+        };
+      }
+      syncThemeIcons(document.documentElement.getAttribute('data-theme') || 'dark');
+    }
+
+    // Attach listener defensively via document delegation
+    document.addEventListener('click', function(e) {
+      const btn = e.target && e.target.closest && e.target.closest('#btn-theme-toggle, #theme-toggle, .theme-toggle-btn, .theme-switch, [data-action="toggle-theme"]');
+      if (btn) {
+        if (e.preventDefault) e.preventDefault();
+        window.toggleTheme();
+      }
+    });
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', bindThemeToggleElement);
+    } else {
+      bindThemeToggleElement();
+    }
+  } catch (err) {
+    console.warn("Theme toggle initialization warning:", err);
+  }
+})();
+
 window.CLERK_PUBLISHABLE_KEY = "pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk";
 
 // Defensive global Clerk native trigger accessible immediately
@@ -59,41 +148,14 @@ window.onClerkLoaded = function() {
 
 (() => {
     // ==========================================
-    // 1. Theme Engine (Dark & Light Mode with Dynamic SVG Sun/Moon)
+    // 1. Theme Engine Integration (Delegated to Isolated Controller)
     // ==========================================
-    let currentTheme = localStorage.getItem('campussense_theme') || 'dark';
-    const themeToggleBtn = document.getElementById('btn-theme-toggle');
-    const sunIcon = document.getElementById('theme-toggle-sun');
-    const moonIcon = document.getElementById('theme-toggle-moon');
-
+    let currentTheme = document.documentElement.getAttribute('data-theme') || localStorage.getItem('campussense_theme') || 'dark';
     function applyTheme(theme) {
         currentTheme = theme;
-        document.documentElement.setAttribute('data-theme', theme);
-        if (theme === 'light') {
-            document.documentElement.classList.add('light-theme');
-        } else {
-            document.documentElement.classList.remove('light-theme');
+        if (typeof window.applyTheme === 'function') {
+            window.applyTheme(theme);
         }
-        localStorage.setItem('campussense_theme', theme);
-
-        if (sunIcon && moonIcon) {
-            if (theme === 'light') {
-                sunIcon.style.display = 'block';
-                moonIcon.style.display = 'none';
-            } else {
-                sunIcon.style.display = 'none';
-                moonIcon.style.display = 'block';
-            }
-        }
-    }
-    applyTheme(currentTheme);
-
-    if (themeToggleBtn) {
-        themeToggleBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            applyTheme(nextTheme);
-        });
     }
 
     // ==========================================
@@ -5668,6 +5730,7 @@ window.onClerkLoaded = function() {
     // 5. Landing Page: Curriculum Explorer with Expandable Units
     // ==========================================
     function renderLandingCurriculumCards(stream = 'all') {
+      try {
         const container = document.getElementById('landing-curriculum-grid') || document.getElementById('curriculum-cards-container');
         if (!container) return;
 
@@ -5787,6 +5850,9 @@ window.onClerkLoaded = function() {
                 }
             });
         });
+      } catch (err) {
+        console.error("Error in curriculumCards:", err);
+      }
     }
 
     function renderLandingCurriculum(filterStream = 'ALL') {
@@ -5799,6 +5865,7 @@ window.onClerkLoaded = function() {
     let currentPyqYearFilter = 'ALL';
 
     function renderLandingPyqCatalog(year = 'all-years') {
+      try {
         const grid = document.getElementById('landing-pyq-grid');
         if (!grid) return;
 
@@ -5905,6 +5972,9 @@ window.onClerkLoaded = function() {
                 downloadPdfFile(fileUrl, (title || 'MAKAUT_Paper') + '.pdf');
             });
         });
+      } catch (err) {
+        console.error("Error in pyqCatalog:", err);
+      }
     }
 
     function renderLandingPyqRepo(yearFilter = 'ALL') {
@@ -9599,20 +9669,45 @@ window.onClerkLoaded = function() {
     window.initializeApp = initializeApp;
     window.bindGlobalEventListeners = bindGlobalEventListeners;
 
+    function safeExecute(fnName, fn) {
+      try {
+        if (typeof fn === 'function') {
+          fn();
+        }
+      } catch (err) {
+        console.error(`Error in ${fnName}:`, err);
+      }
+    }
+    window.safeExecute = safeExecute;
+
+    function bindInteractiveButtons() {
+      if (typeof bindGlobalEventListeners === 'function') {
+        try { bindGlobalEventListeners(); } catch (e) { console.error("Error in bindGlobalEventListeners:", e); }
+      }
+      if (typeof bindLandingFilterButtons === 'function') {
+        try { bindLandingFilterButtons(); } catch (e) { console.error("Error in bindLandingFilterButtons:", e); }
+      }
+    }
+    window.bindInteractiveButtons = bindInteractiveButtons;
+
     // Bulletproof initialization wrapper with try-catch as strictly required
     document.addEventListener('DOMContentLoaded', () => {
+      safeExecute('curriculumCards', () => renderLandingCurriculumCards('all'));
+      safeExecute('pyqCatalog', () => renderLandingPyqCatalog('all-years'));
+      safeExecute('bindButtons', bindInteractiveButtons);
       try {
         initializeApp();
-        bindGlobalEventListeners();
       } catch (err) {
         console.error("Critical initialization error prevented:", err);
       }
     });
 
     if (document.readyState === 'interactive' || document.readyState === 'complete') {
+      safeExecute('curriculumCards', () => renderLandingCurriculumCards('all'));
+      safeExecute('pyqCatalog', () => renderLandingPyqCatalog('all-years'));
+      safeExecute('bindButtons', bindInteractiveButtons);
       try {
         initializeApp();
-        bindGlobalEventListeners();
       } catch (err) {
         console.error("Critical initialization error prevented:", err);
       }
