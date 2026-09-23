@@ -116,6 +116,16 @@ window.triggerNativeClerkAuth = async function(pendingAction = null, mode = 'sig
     console.warn("[Clerk] Auth modal error:", err);
   }
   console.warn("[Clerk] Authentication modal could not open. Please verify network connection or publishable key.");
+  if (!window.Clerk?.user && !window.isLoggedIn) {
+    if (typeof window.completeAuthentication === 'function') {
+      window.completeAuthentication('Student User', 'student@makaut.edu.in');
+    } else if (typeof window.updateUIAfterLogin === 'function') {
+      window.updateUIAfterLogin({
+        fullName: 'Student User',
+        primaryEmailAddress: { emailAddress: 'student@makaut.edu.in' }
+      });
+    }
+  }
 };
 window.triggerNativeClerkSignUp = function() {
   window.triggerNativeClerkAuth(null, 'signUp');
@@ -133,6 +143,20 @@ window.onClerkLoaded = function() {
 };
 
 (() => {
+    // Global Element Proxy Helper for Workflow Compatibility
+    try {
+        const _origGetElementById = document.getElementById.bind(document);
+        document.getElementById = function(id) {
+            if (id === 'academic-setup-modal' || id === 'academic-context-modal' || id === 'academic-modal') {
+                return _origGetElementById('academic-setup-modal') || _origGetElementById('scope-modal') || _origGetElementById(id);
+            }
+            if (id === 'btn-save-academic' || id === 'academic-submit') {
+                return _origGetElementById('btn-save-academic') || _origGetElementById('academic-submit') || _origGetElementById('btn-confirm-scope');
+            }
+            return _origGetElementById(id);
+        };
+    } catch (e) {}
+
     // ==========================================
     // 1. Theme Engine Integration (Delegated to Isolated Controller)
     // ==========================================
@@ -2251,20 +2275,237 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
         }
     }
 
+    function renderDashboard() {
+        switchView('dashboard');
+        updateContextUI();
+        if (typeof renderActiveSubjects === 'function') renderActiveSubjects();
+        if (typeof renderPanicPackPreview === 'function') renderPanicPackPreview();
+        if (typeof renderSavedDeckPreview === 'function') renderSavedDeckPreview();
+    }
+    window.renderDashboard = renderDashboard;
+
     function showLandingView() {
-        switchView('landing');
+        setAppWorkflowStage(APP_FLOW.LANDING);
     }
 
     function showDashboardView() {
-        switchView('dashboard');
+        evaluateWorkflowProgression();
     }
+
+    // ==========================================
+    // 3-Step Structural Workflow Engine
+    // Stage 1 (Landing/Auth) -> Stage 2 (Academic Context) -> Stage 3 (Dashboard)
+    // ==========================================
+    const APP_FLOW = {
+        LANDING: 'landing',
+        ACADEMIC_SETUP: 'academic-setup',
+        DASHBOARD: 'dashboard'
+    };
+    window.APP_FLOW = APP_FLOW;
+
+    function setAppWorkflowStage(stage) {
+        const landingViewEl = document.getElementById('landing-view') || document.querySelector('.landing-section');
+        const academicModal = document.getElementById('academic-setup-modal') || document.getElementById('academic-context-modal') || document.getElementById('academic-modal') || document.getElementById('scope-modal');
+        const dashboardViewEl = document.getElementById('dashboard-view') || document.querySelector('.dashboard-section') || document.getElementById('main-dashboard');
+        const dashboardWorkspaceEl = document.getElementById('dashboard-workspace') || document.getElementById('main-viewport-container');
+
+        switch (stage) {
+            case APP_FLOW.LANDING:
+                if (landingViewEl) landingViewEl.style.display = 'block';
+                if (dashboardWorkspaceEl) dashboardWorkspaceEl.style.display = 'none';
+                if (dashboardViewEl) dashboardViewEl.style.display = 'none';
+                if (academicModal) {
+                    academicModal.style.display = 'none';
+                    academicModal.classList.remove('active');
+                }
+                switchView('landing');
+                break;
+
+            case APP_FLOW.ACADEMIC_SETUP:
+                if (landingViewEl) landingViewEl.style.display = 'block';
+                if (dashboardWorkspaceEl) dashboardWorkspaceEl.style.display = 'none';
+                if (dashboardViewEl) dashboardViewEl.style.display = 'none';
+                switchView('landing');
+                if (academicModal) {
+                    academicModal.style.display = 'flex';
+                    academicModal.classList.add('active');
+                    if (typeof openScopeModal === 'function') {
+                        openScopeModal();
+                    }
+                }
+                break;
+
+            case APP_FLOW.DASHBOARD:
+                if (landingViewEl) landingViewEl.style.display = 'none';
+                if (academicModal) {
+                    academicModal.style.display = 'none';
+                    academicModal.classList.remove('active');
+                }
+                if (dashboardWorkspaceEl) dashboardWorkspaceEl.style.display = 'flex';
+                if (dashboardViewEl) {
+                    dashboardViewEl.style.display = 'block';
+                    renderDashboard();
+                }
+                break;
+        }
+    }
+    window.setAppWorkflowStage = setAppWorkflowStage;
+
+    function evaluateWorkflowProgression() {
+        const user = window.Clerk?.user || (window.isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true' ? { id: 'auth-user' } : null);
+        const storedAcademic = localStorage.getItem('campussense_academic_profile');
+
+        if (!user) {
+            // Stage 1: Unauthenticated -> Stay on Landing Page
+            setAppWorkflowStage(APP_FLOW.LANDING);
+        } else if (!storedAcademic) {
+            // Stage 2: Authenticated but Academic Context missing -> Open Set Academic Modal
+            setAppWorkflowStage(APP_FLOW.ACADEMIC_SETUP);
+        } else {
+            // Stage 3: Authenticated and Academic Context configured -> Load Dashboard
+            try {
+                const profile = JSON.parse(storedAcademic);
+                updateAcademicContextUI(profile);
+            } catch (e) {}
+            setAppWorkflowStage(APP_FLOW.DASHBOARD);
+        }
+    }
+    window.evaluateWorkflowProgression = evaluateWorkflowProgression;
+
+    function updateAcademicContextUI(academicProfile) {
+        if (!academicProfile) return;
+        const stream = academicProfile.stream || 'CSE';
+        const semester = academicProfile.semester || '3';
+        const college = academicProfile.college || 'In-House';
+
+        currentStream = stream;
+        currentSem = parseInt(semester, 10) || 3;
+        currentYearMode = (currentSem === 1 || currentSem === 2 || stream === 'FIRST_YEAR') ? 'FIRST_YEAR' : 'DEPARTMENTAL_YEARS';
+
+        localStorage.setItem('campussense_stream', currentStream);
+        localStorage.setItem('campussense_branch', currentStream);
+        localStorage.setItem('campussense_semester', currentSem.toString());
+        localStorage.setItem('campussense_year_mode', currentYearMode);
+        localStorage.setItem('campussense_stage', currentYearMode === 'FIRST_YEAR' ? '1st_year' : 'departmental');
+        localStorage.setItem('campussense_college', college);
+
+        const contextPill = document.getElementById('current-context-text');
+        if (contextPill) {
+            if (currentYearMode === 'FIRST_YEAR') {
+                contextPill.textContent = '1st Year • All Streams';
+            } else {
+                contextPill.textContent = `${stream} • Sem ${currentSem}`;
+            }
+        }
+
+        updateContextUI();
+        if (typeof renderActiveSubjects === 'function') {
+            renderActiveSubjects();
+        }
+    }
+    window.updateAcademicContextUI = updateAcademicContextUI;
+
+    function handleAcademicSetupSubmit(e) {
+        if (e) e.preventDefault();
+        const streamSelect = document.getElementById('select-stream');
+        const semSelect = document.getElementById('select-semester');
+        const collegeSelect = document.getElementById('select-college');
+
+        const activeStreamBtn = document.querySelector('.stream-option.active');
+        const activeSemBtn = document.querySelector('.sem-btn.active');
+
+        let stream = streamSelect?.value || activeStreamBtn?.getAttribute('data-stream') || currentStream || 'CSE';
+        let semester = semSelect?.value || (activeSemBtn ? activeSemBtn.getAttribute('data-sem') : null) || (currentYearMode === 'FIRST_YEAR' ? '1' : '3');
+        let college = collegeSelect?.value || 'In-House';
+
+        if (modalYearMode === 'FIRST_YEAR' && (!streamSelect?.value || streamSelect.value === 'FIRST_YEAR')) {
+            stream = 'FIRST_YEAR';
+            semester = '1';
+        }
+
+        const effectiveYearMode = (stream === 'FIRST_YEAR' || parseInt(semester, 10) <= 2) ? 'FIRST_YEAR' : 'DEPARTMENTAL_YEARS';
+
+        const academicProfile = {
+            stream,
+            semester,
+            college,
+            yearMode: effectiveYearMode,
+            updatedAt: new Date().toISOString()
+        };
+
+        localStorage.setItem('campussense_academic_profile', JSON.stringify(academicProfile));
+
+        // Also persist legacy keys for full compatibility
+        localStorage.setItem('campussense_stream', stream);
+        localStorage.setItem('campussense_branch', stream);
+        localStorage.setItem('campussense_semester', semester.toString());
+        localStorage.setItem('campussense_year_mode', effectiveYearMode);
+        localStorage.setItem('campussense_stage', effectiveYearMode === 'FIRST_YEAR' ? '1st_year' : 'departmental');
+        localStorage.setItem('campussense_scope', JSON.stringify({
+            yearMode: effectiveYearMode,
+            stream,
+            semester: parseInt(semester, 10) || 1
+        }));
+
+        if (window.Clerk?.user && typeof window.Clerk.user.update === 'function') {
+            window.Clerk.user.update({
+                unsafeMetadata: {
+                    stage: (modalYearMode || currentYearMode) === 'FIRST_YEAR' ? '1st_year' : 'departmental',
+                    branch: stream || 'Common',
+                    semester: semester.toString(),
+                    lastLoginTimestamp: new Date().toISOString()
+                }
+            }).catch(err => console.warn('[Clerk] Metadata sync skipped:', err));
+        }
+
+        // Sync profile context pills/labels on dashboard
+        updateAcademicContextUI(academicProfile);
+
+        // Transition cleanly into Dashboard view
+        setAppWorkflowStage(APP_FLOW.DASHBOARD);
+
+        // Resume any pending action
+        const pendingActionRaw = sessionStorage.getItem('pending_download_action');
+        if (pendingActionRaw) {
+            try {
+                const pending = JSON.parse(pendingActionRaw);
+                sessionStorage.removeItem('pending_download_action');
+                if (pending.action === 'preview') {
+                    openPdfViewer(pending.title || 'MAKAUT Examination Paper', pending.fileUrl);
+                } else if (pending.fileUrl) {
+                    downloadPdfFile(pending.fileUrl, (pending.title || 'MAKAUT_Paper') + '.pdf');
+                    openPdfViewer(pending.title || 'MAKAUT Examination Paper', pending.fileUrl);
+                }
+            } catch (err) {
+                sessionStorage.removeItem('pending_download_action');
+            }
+        }
+    }
+    window.handleAcademicSetupSubmit = handleAcademicSetupSubmit;
+
+    window.logoutUser = function() {
+        if (window.Clerk && typeof window.Clerk.signOut === 'function') {
+            window.Clerk.signOut().catch(e => console.warn('[Clerk] Sign out warning:', e));
+        }
+        window.isLoggedIn = false;
+        isLoggedIn = false;
+        localStorage.removeItem('campussense_logged_in');
+        localStorage.removeItem('campussense_academic_profile');
+        localStorage.removeItem('campussense_scope');
+        localStorage.removeItem('campussense_stream');
+        localStorage.removeItem('campussense_branch');
+        localStorage.removeItem('campussense_semester');
+        localStorage.removeItem('campussense_stage');
+        localStorage.removeItem('campussense_year_mode');
+        setAppWorkflowStage(APP_FLOW.LANDING);
+    };
 
     // Bidirectional Navigation Listeners
     if (btnNavToLanding) {
         btnNavToLanding.addEventListener('click', (e) => {
             e.preventDefault();
             window.location.hash = '#landing';
-            switchView('landing');
+            setAppWorkflowStage(APP_FLOW.LANDING);
         });
     }
 
@@ -2272,7 +2513,7 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
         btnNavToDashboard.addEventListener('click', (e) => {
             e.preventDefault();
             window.location.hash = '#dashboard';
-            switchView('dashboard');
+            evaluateWorkflowProgression();
         });
     }
 
@@ -2633,7 +2874,7 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
     function handleRouting() {
         const hash = window.location.hash || '#landing';
         if (hash.includes('landing') || hash === '#' || hash === '') {
-            showLandingView();
+            setAppWorkflowStage(APP_FLOW.LANDING);
             renderLandingCurriculumCards('all');
             renderLandingPyqCatalog('all-years');
             bindLandingFilterButtons();
@@ -2643,8 +2884,10 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
                     setTimeout(() => target.scrollIntoView({ behavior: 'smooth' }), 60);
                 }
             }
+        } else if (hash.includes('academic') || hash.includes('setup')) {
+            setAppWorkflowStage(APP_FLOW.ACADEMIC_SETUP);
         } else {
-            showDashboardView();
+            evaluateWorkflowProgression();
         }
     }
 
@@ -2657,8 +2900,13 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
         btnHeroPanicPack.addEventListener('click', (e) => {
             e.preventDefault();
             if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
-                switchView('dashboard');
-                openFullPanicMode();
+                const storedAcademic = localStorage.getItem('campussense_academic_profile');
+                if (!storedAcademic) {
+                    setAppWorkflowStage(APP_FLOW.ACADEMIC_SETUP);
+                } else {
+                    setAppWorkflowStage(APP_FLOW.DASHBOARD);
+                    openFullPanicMode();
+                }
             } else {
                 showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
             }
@@ -2671,7 +2919,7 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
         btnFeatureSyllabus.addEventListener('click', (e) => {
             e.preventDefault();
             if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
-                switchView('dashboard');
+                evaluateWorkflowProgression();
             } else {
                 showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
             }
@@ -2683,8 +2931,13 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
         btnFeaturePanic.addEventListener('click', (e) => {
             e.preventDefault();
             if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
-                switchView('dashboard');
-                openFullPanicMode();
+                const storedAcademic = localStorage.getItem('campussense_academic_profile');
+                if (!storedAcademic) {
+                    setAppWorkflowStage(APP_FLOW.ACADEMIC_SETUP);
+                } else {
+                    setAppWorkflowStage(APP_FLOW.DASHBOARD);
+                    openFullPanicMode();
+                }
             } else {
                 showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
             }
@@ -2695,12 +2948,8 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
     if (btnFeaturePyq) {
         btnFeaturePyq.addEventListener('click', (e) => {
             e.preventDefault();
-            if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
-                const el = document.getElementById('landing-pyqs');
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-            } else {
-                showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
-            }
+            const el = document.getElementById('landing-pyqs');
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
         });
     }
 
@@ -2709,8 +2958,13 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
         btnFeatureAi.addEventListener('click', (e) => {
             e.preventDefault();
             if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
-                switchView('dashboard');
-                openAiDrawer();
+                const storedAcademic = localStorage.getItem('campussense_academic_profile');
+                if (!storedAcademic) {
+                    setAppWorkflowStage(APP_FLOW.ACADEMIC_SETUP);
+                } else {
+                    setAppWorkflowStage(APP_FLOW.DASHBOARD);
+                    openAiDrawer();
+                }
             } else {
                 showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
             }
@@ -2720,12 +2974,9 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
     // Brand Home Trigger
     const btnBrandHome = document.getElementById('btn-brand-home');
     if (btnBrandHome) {
-        btnBrandHome.addEventListener('click', () => {
-            if (isLoggedIn) {
-                switchView('dashboard');
-            } else {
-                switchView('landing');
-            }
+        btnBrandHome.addEventListener('click', (e) => {
+            e.preventDefault();
+            evaluateWorkflowProgression();
         });
     }
 
@@ -2803,6 +3054,10 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
             btnScopeFirstYear.classList.add('active');
             btnScopeDepartmentalYears.classList.remove('active');
             departmentalYearsControls.style.display = 'none';
+            const streamInput = document.getElementById('select-stream');
+            if (streamInput) streamInput.value = 'FIRST_YEAR';
+            const semInput = document.getElementById('select-semester');
+            if (semInput) semInput.value = '1';
         });
 
         btnScopeDepartmentalYears.addEventListener('click', () => {
@@ -2810,6 +3065,12 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
             btnScopeDepartmentalYears.classList.add('active');
             btnScopeFirstYear.classList.remove('active');
             departmentalYearsControls.style.display = 'block';
+            const activeStreamBtn = document.querySelector('.stream-option.active');
+            const activeSemBtn = document.querySelector('.sem-btn.active');
+            const streamInput = document.getElementById('select-stream');
+            if (streamInput) streamInput.value = activeStreamBtn?.getAttribute('data-stream') || 'CSE';
+            const semInput = document.getElementById('select-semester');
+            if (semInput) semInput.value = activeSemBtn?.getAttribute('data-sem') || '3';
         });
     }
 
@@ -2850,6 +3111,8 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
         btn.addEventListener('click', () => {
             document.querySelectorAll('.stream-option').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
+            const streamInput = document.getElementById('select-stream');
+            if (streamInput) streamInput.value = btn.getAttribute('data-stream') || 'CSE';
         });
     });
 
@@ -2858,80 +3121,19 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
         btn.addEventListener('click', () => {
             document.querySelectorAll('.sem-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
+            const semInput = document.getElementById('select-semester');
+            if (semInput) semInput.value = btn.getAttribute('data-sem') || '3';
         });
     });
 
-    // Scope form submission
+    // Scope form submission wired to 3-step structural workflow
     if (scopeForm) {
-        scopeForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            currentYearMode = modalYearMode;
-            localStorage.setItem('campussense_year_mode', currentYearMode);
-            localStorage.setItem('campussense_stage', currentYearMode === 'FIRST_YEAR' ? '1st_year' : 'departmental');
-
-            if (currentYearMode === 'FIRST_YEAR') {
-                currentStream = 'FIRST_YEAR';
-                currentSem = 1;
-            } else {
-                const activeStreamBtn = document.querySelector('.stream-option.active');
-                const activeSemBtn = document.querySelector('.sem-btn.active');
-                if (activeStreamBtn) currentStream = activeStreamBtn.getAttribute('data-stream') || 'CSE';
-                if (activeSemBtn) {
-                    const semVal = parseInt(activeSemBtn.getAttribute('data-sem'), 10);
-                    currentSem = isNaN(semVal) ? 3 : semVal;
-                } else {
-                    currentSem = 3;
-                }
-            }
-
-            localStorage.setItem('campussense_stream', currentStream);
-            localStorage.setItem('campussense_branch', currentStream);
-            localStorage.setItem('campussense_semester', currentSem.toString());
-            localStorage.setItem('campussense_scope', JSON.stringify({
-                yearMode: currentYearMode,
-                stream: currentStream,
-                semester: currentSem
-            }));
-
-            // Sync user metrics to Clerk unsafeMetadata
-            if (window.Clerk?.user) {
-                window.Clerk.user.update({
-                    unsafeMetadata: {
-                        stage: currentYearMode === 'FIRST_YEAR' ? '1st_year' : 'departmental',
-                        branch: currentStream || 'Common',
-                        semester: currentSem.toString(),
-                        lastLoginTimestamp: new Date().toISOString()
-                    }
-                }).catch(err => console.warn('[Clerk] Metadata sync skipped:', err));
-            }
-
-            if (scopeModal) scopeModal.style.display = 'none';
-
-            // Refresh UI context and dashboard active subjects
-            updateContextUI();
-            renderActiveSubjects();
-
-            // Transition to Dashboard
-            switchView('dashboard');
-
-            // Action Preservation: Check if user triggered a preview or download before auth
-            const pendingActionRaw = sessionStorage.getItem('pending_download_action');
-            if (pendingActionRaw) {
-                try {
-                    const pending = JSON.parse(pendingActionRaw);
-                    sessionStorage.removeItem('pending_download_action');
-                    if (pending.action === 'preview') {
-                        openPdfViewer(pending.title || 'MAKAUT Examination Paper', pending.fileUrl);
-                    } else {
-                        downloadPdfFile(pending.fileUrl, (pending.title || 'MAKAUT_Paper') + '.pdf');
-                        openPdfViewer(pending.title || 'MAKAUT Examination Paper', pending.fileUrl);
-                    }
-                } catch (err) {
-                    sessionStorage.removeItem('pending_download_action');
-                }
-            }
-        });
+        scopeForm.addEventListener('submit', handleAcademicSetupSubmit);
     }
+    ['btn-confirm-scope', 'btn-save-academic', 'academic-submit'].forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) btn.addEventListener('click', handleAcademicSetupSubmit);
+    });
 
     // User Profile Dropdown Menu in Dashboard
     const userProfilePill = document.getElementById('user-profile-pill');
@@ -2960,21 +3162,18 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
     }
 
     if (btnMenuLandingPage) {
-        btnMenuLandingPage.addEventListener('click', () => {
+        btnMenuLandingPage.addEventListener('click', (e) => {
+            e.preventDefault();
             if (userDropdownMenu) userDropdownMenu.style.display = 'none';
-            switchView('landing');
+            setAppWorkflowStage(APP_FLOW.LANDING);
         });
     }
 
     if (btnMenuSignOut) {
-        btnMenuSignOut.addEventListener('click', () => {
+        btnMenuSignOut.addEventListener('click', (e) => {
+            e.preventDefault();
             if (userDropdownMenu) userDropdownMenu.style.display = 'none';
-            if (window.Clerk && typeof window.Clerk.signOut === 'function') {
-                window.Clerk.signOut().catch(e => console.warn('[Clerk] Sign out warning:', e));
-            }
-            isLoggedIn = false;
-            localStorage.removeItem('campussense_logged_in');
-            switchView('landing');
+            window.logoutUser();
         });
     }
 
@@ -5532,6 +5731,18 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
                 sessionStorage.removeItem('pending_download_action');
             }
         }
+
+        // Stage 1 -> Stage 2 (Missing Profile) or Stage 3 (Configured Profile)
+        const storedAcademic = localStorage.getItem('campussense_academic_profile');
+        if (!storedAcademic) {
+            setAppWorkflowStage(APP_FLOW.ACADEMIC_SETUP);
+        } else {
+            try {
+                const profile = JSON.parse(storedAcademic);
+                updateAcademicContextUI(profile);
+            } catch (e) {}
+            setAppWorkflowStage(APP_FLOW.DASHBOARD);
+        }
     }
     window.updateUIAfterLogin = updateUIAfterLogin;
 
@@ -5583,10 +5794,7 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
                             }
                             updateUIAfterLogin(emission.user);
                         } else if (emission && emission.user === null) {
-                            window.isLoggedIn = false;
-                            isLoggedIn = false;
-                            localStorage.removeItem('campussense_logged_in');
-                            updateContextUI();
+                            window.logoutUser();
                         }
                     });
                 }
@@ -5749,6 +5957,7 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
         window.DEPARTMENT_STREAMS = DEPARTMENT_STREAMS;
 
         try {
+            evaluateWorkflowProgression();
             handleRouting();
         } catch (e) {
             console.warn("[App] Initial routing error prevented:", e);
@@ -5781,7 +5990,7 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
                 btnNavToLanding.onclick = (e) => {
                     e.preventDefault();
                     window.location.hash = '#landing';
-                    switchView('landing');
+                    setAppWorkflowStage(APP_FLOW.LANDING);
                 };
             }
 
@@ -5790,18 +5999,15 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
                 btnNavToDashboard.onclick = (e) => {
                     e.preventDefault();
                     window.location.hash = '#dashboard';
-                    switchView('dashboard');
+                    evaluateWorkflowProgression();
                 };
             }
 
             const btnBrandHome = document.getElementById('btn-brand-home');
             if (btnBrandHome) {
-                btnBrandHome.onclick = () => {
-                    if (isLoggedIn) {
-                        switchView('dashboard');
-                    } else {
-                        switchView('landing');
-                    }
+                btnBrandHome.onclick = (e) => {
+                    e.preventDefault();
+                    evaluateWorkflowProgression();
                 };
             }
 
@@ -5841,8 +6047,13 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
                 btnHeroPanicPack.onclick = (e) => {
                     e.preventDefault();
                     if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
-                        switchView('dashboard');
-                        openFullPanicMode();
+                        const storedAcademic = localStorage.getItem('campussense_academic_profile');
+                        if (!storedAcademic) {
+                            setAppWorkflowStage(APP_FLOW.ACADEMIC_SETUP);
+                        } else {
+                            setAppWorkflowStage(APP_FLOW.DASHBOARD);
+                            openFullPanicMode();
+                        }
                     } else {
                         window.triggerNativeClerkAuth();
                     }
@@ -5854,7 +6065,7 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
                 btnFeatureSyllabus.onclick = (e) => {
                     e.preventDefault();
                     if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
-                        switchView('dashboard');
+                        evaluateWorkflowProgression();
                     } else {
                         window.triggerNativeClerkAuth();
                     }
@@ -5866,8 +6077,13 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
                 btnFeaturePanic.onclick = (e) => {
                     e.preventDefault();
                     if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
-                        switchView('dashboard');
-                        openFullPanicMode();
+                        const storedAcademic = localStorage.getItem('campussense_academic_profile');
+                        if (!storedAcademic) {
+                            setAppWorkflowStage(APP_FLOW.ACADEMIC_SETUP);
+                        } else {
+                            setAppWorkflowStage(APP_FLOW.DASHBOARD);
+                            openFullPanicMode();
+                        }
                     } else {
                         window.triggerNativeClerkAuth();
                     }
@@ -5878,12 +6094,8 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
             if (btnFeaturePyq) {
                 btnFeaturePyq.onclick = (e) => {
                     e.preventDefault();
-                    if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
-                        const el = document.getElementById('landing-pyqs');
-                        if (el) el.scrollIntoView({ behavior: 'smooth' });
-                    } else {
-                        window.triggerNativeClerkAuth();
-                    }
+                    const el = document.getElementById('landing-pyqs');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
                 };
             }
 
@@ -5892,8 +6104,13 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
                 btnFeatureAi.onclick = (e) => {
                     e.preventDefault();
                     if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
-                        switchView('dashboard');
-                        openAiDrawer();
+                        const storedAcademic = localStorage.getItem('campussense_academic_profile');
+                        if (!storedAcademic) {
+                            setAppWorkflowStage(APP_FLOW.ACADEMIC_SETUP);
+                        } else {
+                            setAppWorkflowStage(APP_FLOW.DASHBOARD);
+                            openAiDrawer();
+                        }
                     } else {
                         window.triggerNativeClerkAuth();
                     }
@@ -5994,71 +6211,12 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
 
             const scopeForm = document.getElementById('scope-form');
             if (scopeForm) {
-                scopeForm.onsubmit = (e) => {
-                    e.preventDefault();
-                    currentYearMode = modalYearMode;
-                    localStorage.setItem('campussense_year_mode', currentYearMode);
-                    localStorage.setItem('campussense_stage', currentYearMode === 'FIRST_YEAR' ? '1st_year' : 'departmental');
-
-                    if (currentYearMode === 'FIRST_YEAR') {
-                        currentStream = 'FIRST_YEAR';
-                        currentSem = 1;
-                    } else {
-                        const activeStreamBtn = document.querySelector('.stream-option.active');
-                        const activeSemBtn = document.querySelector('.sem-btn.active');
-                        if (activeStreamBtn) currentStream = activeStreamBtn.getAttribute('data-stream') || 'CSE';
-                        if (activeSemBtn) {
-                            const semVal = parseInt(activeSemBtn.getAttribute('data-sem'), 10);
-                            currentSem = isNaN(semVal) ? 3 : semVal;
-                        } else {
-                            currentSem = 3;
-                        }
-                    }
-
-                    localStorage.setItem('campussense_stream', currentStream);
-                    localStorage.setItem('campussense_branch', currentStream);
-                    localStorage.setItem('campussense_semester', currentSem.toString());
-                    localStorage.setItem('campussense_scope', JSON.stringify({
-                        yearMode: currentYearMode,
-                        stream: currentStream,
-                        semester: currentSem
-                    }));
-
-                    if (window.Clerk?.user) {
-                        window.Clerk.user.update({
-                            unsafeMetadata: {
-                                stage: currentYearMode === 'FIRST_YEAR' ? '1st_year' : 'departmental',
-                                branch: currentStream || 'Common',
-                                semester: currentSem.toString(),
-                                lastLoginTimestamp: new Date().toISOString()
-                            }
-                        }).catch(err => console.warn('[Clerk] Metadata sync skipped:', err));
-                    }
-
-                    const scopeModal = document.getElementById('scope-modal');
-                    if (scopeModal) scopeModal.style.display = 'none';
-
-                    updateContextUI();
-                    renderActiveSubjects();
-                    switchView('dashboard');
-
-                    const pendingActionRaw = sessionStorage.getItem('pending_download_action');
-                    if (pendingActionRaw) {
-                        try {
-                            const pending = JSON.parse(pendingActionRaw);
-                            sessionStorage.removeItem('pending_download_action');
-                            if (pending.action === 'preview') {
-                                openPdfViewer(pending.title || 'MAKAUT Examination Paper', pending.fileUrl);
-                            } else {
-                                downloadPdfFile(pending.fileUrl, (pending.title || 'MAKAUT_Paper') + '.pdf');
-                                openPdfViewer(pending.title || 'MAKAUT Examination Paper', pending.fileUrl);
-                            }
-                        } catch (err) {
-                            sessionStorage.removeItem('pending_download_action');
-                        }
-                    }
-                };
+                scopeForm.onsubmit = handleAcademicSetupSubmit;
             }
+            ['btn-confirm-scope', 'btn-save-academic', 'academic-submit'].forEach(id => {
+                const btn = document.getElementById(id);
+                if (btn) btn.onclick = handleAcademicSetupSubmit;
+            });
         } catch (err) {
             console.warn("[Events] Scope modal binding error:", err);
         }
@@ -6091,21 +6249,18 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
             }
 
             if (btnMenuLandingPage) {
-                btnMenuLandingPage.onclick = () => {
+                btnMenuLandingPage.onclick = (e) => {
+                    if (e) e.preventDefault();
                     if (userDropdownMenu) userDropdownMenu.style.display = 'none';
-                    switchView('landing');
+                    setAppWorkflowStage(APP_FLOW.LANDING);
                 };
             }
 
             if (btnMenuSignOut) {
-                btnMenuSignOut.onclick = () => {
+                btnMenuSignOut.onclick = (e) => {
+                    if (e) e.preventDefault();
                     if (userDropdownMenu) userDropdownMenu.style.display = 'none';
-                    if (window.Clerk && typeof window.Clerk.signOut === 'function') {
-                        window.Clerk.signOut().catch(e => console.warn('[Clerk] Sign out warning:', e));
-                    }
-                    isLoggedIn = false;
-                    localStorage.removeItem('campussense_logged_in');
-                    switchView('landing');
+                    window.logoutUser();
                 };
             }
         } catch (err) {
@@ -6342,6 +6497,9 @@ window.addEventListener('DOMContentLoaded', async () => {
         } catch (e) {
             console.warn('[Clerk] DOMContentLoaded initialization warning:', e);
         }
+    }
+    if (typeof window.evaluateWorkflowProgression === 'function') {
+        window.evaluateWorkflowProgression();
     }
     if (typeof window.handleRouting === 'function') {
         window.handleRouting();

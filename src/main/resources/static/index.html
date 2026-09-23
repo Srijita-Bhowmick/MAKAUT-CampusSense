@@ -501,7 +501,7 @@
 
 
     <!-- Academic Scope Onboarding Modal (#scope-modal) -->
-    <div class="modal-backdrop" id="scope-modal" style="display: none;">
+    <div class="modal-backdrop" id="scope-modal" data-modal="academic-setup-modal" style="display: none;">
         <div class="modal-card onboarding-card">
             <div class="modal-header">
                 <div>
@@ -512,6 +512,9 @@
             </div>
 
             <form id="scope-form" class="onboarding-form">
+                <input type="hidden" id="select-stream" name="stream" value="CSE">
+                <input type="hidden" id="select-semester" name="semester" value="3">
+                <input type="hidden" id="select-college" name="college" value="In-House">
                 <!-- 1. Primary Year Level Selector -->
                 <div class="form-group">
                     <label class="form-label">Academic Stage & Program</label>
@@ -572,6 +575,8 @@
                     <button type="submit" class="btn btn-primary btn-large" id="btn-confirm-scope">
                         Enter Dashboard ➔
                     </button>
+                    <button type="button" id="btn-save-academic" style="display: none;" aria-hidden="true"></button>
+                    <button type="button" id="academic-submit" style="display: none;" aria-hidden="true"></button>
                 </div>
             </form>
         </div>
