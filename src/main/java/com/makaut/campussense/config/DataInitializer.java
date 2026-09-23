@@ -466,7 +466,7 @@ public class DataInitializer implements CommandLineRunner {
                 .subjectName("Data Structure & Algorithms")
                 .resourceType(ResourceType.SYLLABUS)
                 .year(2025)
-                .fileUrl("CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf")
+                .fileUrl("CSE(3rd to 8th sem)/CSE20.pdf")
                 .rawText("""
                         Module 1: Linear Data Structures, Stacks & Queues: Arrays, sparse matrices, stack operations, infix to postfix, circular queue, priority queue.
                         Module 2: Linked Lists: Singly linked, circular, doubly linked list, polynomial representation and addition.
@@ -484,7 +484,7 @@ public class DataInitializer implements CommandLineRunner {
                 .subjectName("Analog and Digital Electronics")
                 .resourceType(ResourceType.SYLLABUS)
                 .year(2025)
-                .fileUrl("CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf")
+                .fileUrl("CSE(3rd to 8th sem)/CSE20.pdf")
                 .rawText("""
                         Module 1: Analog Electronics & Operational Amplifiers: BJT characteristics, biasing, Op-Amp inverting/non-inverting amplifiers, active filters.
                         Module 2: Combinational Logic Circuits: Boolean algebra, De Morgan's laws, Karnaugh maps (K-map), multiplexers, decoders, adders.
@@ -501,7 +501,7 @@ public class DataInitializer implements CommandLineRunner {
                 .subjectName("Computer Organisation")
                 .resourceType(ResourceType.SYLLABUS)
                 .year(2025)
-                .fileUrl("CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf")
+                .fileUrl("CSE(3rd to 8th sem)/CSE20.pdf")
                 .rawText("""
                         Module 1: Basic Computer Organization & Buses: Functional units, bus structures, instruction formats, addressing modes.
                         Module 2: CPU & Control Unit: ALU design, instruction cycles, hardwired vs microprogrammed control unit.
@@ -519,7 +519,7 @@ public class DataInitializer implements CommandLineRunner {
                 .subjectName("Discrete Mathematics")
                 .resourceType(ResourceType.SYLLABUS)
                 .year(2025)
-                .fileUrl("CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf")
+                .fileUrl("CSE(3rd to 8th sem)/CSE20.pdf")
                 .rawText("""
                         Module 1: Sets, Relations & Functions: Sets, relations, equivalence relations, partial orderings, lattices, mathematical induction, pigeonhole principle.
                         Module 2: Propositional & Predicate Logic: Connectives, truth tables, tautologies, normal forms (DNF, CNF), quantifiers, rules of inference.
@@ -537,7 +537,7 @@ public class DataInitializer implements CommandLineRunner {
                 .subjectName("Computer Architecture")
                 .resourceType(ResourceType.SYLLABUS)
                 .year(2025)
-                .fileUrl("CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf")
+                .fileUrl("CSE(3rd to 8th sem)/CSE20.pdf")
                 .rawText("""
                         Module 1: Performance Principles & Pipelining: Amdahl's law, instruction pipelining, pipeline hazards (structural, data, control), branch prediction.
                         Module 2: Instruction-Level Parallelism: Dynamic scheduling, Tomasulo's algorithm, hardware speculation, superscalar and VLIW processors.
@@ -554,7 +554,7 @@ public class DataInitializer implements CommandLineRunner {
                 .subjectName("Formal Language & Automata Theory")
                 .resourceType(ResourceType.SYLLABUS)
                 .year(2025)
-                .fileUrl("CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf")
+                .fileUrl("CSE(3rd to 8th sem)/CSE20.pdf")
                 .rawText("""
                         Module 1: Finite Automata: DFA, NFA, epsilon-NFA, DFA minimization, regular expressions, pumping lemma for regular languages.
                         Module 2: Context-Free Grammars: CFG, derivation trees, ambiguity, Chomsky Normal Form (CNF), Greibach Normal Form (GNF), pumping lemma for CFLs.
@@ -571,7 +571,7 @@ public class DataInitializer implements CommandLineRunner {
                 .subjectName("Design & Analysis of Algorithms")
                 .resourceType(ResourceType.SYLLABUS)
                 .year(2025)
-                .fileUrl("CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf")
+                .fileUrl("CSE(3rd to 8th sem)/CSE20.pdf")
                 .rawText("""
                         Module 1: Algorithm Analysis: Asymptotic notations, recurrence relations, Master Theorem.
                         Module 2: Divide & Conquer: Merge Sort, Quick Sort, Strassen's matrix multiplication, order statistics.
@@ -590,7 +590,7 @@ public class DataInitializer implements CommandLineRunner {
                 .subjectName("Compiler Design")
                 .resourceType(ResourceType.SYLLABUS)
                 .year(2025)
-                .fileUrl("CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf")
+                .fileUrl("CSE(3rd to 8th sem)/CSE20.pdf")
                 .rawText("""
                         Module 1: Lexical Analysis: Compiler phases, role of lexical analyzer, tokens, patterns, regular expressions to DFA, Lex/Flex.
                         Module 2: Syntax Analysis: Context-free grammars, top-down parsing (Recursive Descent, LL(1)), bottom-up parsing (Shift-Reduce, LR(0), SLR(1), LR(1), LALR(1)), Yacc/Bison.
@@ -608,7 +608,7 @@ public class DataInitializer implements CommandLineRunner {
                 .subjectName("Artificial Intelligence")
                 .resourceType(ResourceType.SYLLABUS)
                 .year(2025)
-                .fileUrl("CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf")
+                .fileUrl("CSE(3rd to 8th sem)/CSE20.pdf")
                 .rawText("""
                         Module 1: Intelligent Agents & Search: Foundations of AI, agent architecture, uninformed search (BFS, DFS), informed heuristic search (Greedy Best-First, A* search, admissibility).
                         Module 2: Adversarial Search: Minimax algorithm, Alpha-Beta pruning, evaluation functions in games.
@@ -625,7 +625,7 @@ public class DataInitializer implements CommandLineRunner {
                 .subjectName("Computer Networks")
                 .resourceType(ResourceType.SYLLABUS)
                 .year(2025)
-                .fileUrl("CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf")
+                .fileUrl("CSE(3rd to 8th sem)/CSE20.pdf")
                 .rawText("""
                         Module 1: Physical Layer & Network Topologies: OSI 7-layer and TCP/IP protocol models, transmission media, circuit and packet switching.
                         Module 2: Data Link Layer: Framing, error control (CRC, Hamming codes), flow control (Stop-and-Wait, Go-Back-N, Selective Repeat), CSMA/CD, Ethernet.

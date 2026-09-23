@@ -1,74 +1,43 @@
 // MAKAUT-CampusSense — End-to-End Academic Engine & Conversational RAG
 // Maintained by Srijita Bhowmick (srijitabhowmick42@gmail.com)
-// --- INDEPENDENT THEME CONTROLLER (Isolated Failure Domain) ---
-(function initThemeEngine() {
+// --- INDEPENDENT GLOBAL CONTROLLER ---
+(function initGlobalThemeEngine() {
   try {
-    function getStoredTheme() {
-      try {
-        return localStorage.getItem('campussense_theme') || localStorage.getItem('theme') || 'dark';
-      } catch (e) {
-        return 'dark';
-      }
-    }
-
-    function syncThemeIcons(theme) {
-      const sunIcon = document.getElementById('theme-toggle-sun');
-      const moonIcon = document.getElementById('theme-toggle-moon');
-      if (sunIcon && moonIcon) {
-        if (theme === 'light') {
-          sunIcon.style.display = 'block';
-          moonIcon.style.display = 'none';
-        } else {
-          sunIcon.style.display = 'none';
-          moonIcon.style.display = 'block';
-        }
-      }
+    const savedTheme = localStorage.getItem('theme') || localStorage.getItem('campussense_theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    if (savedTheme === 'light') {
+      document.documentElement.classList.add('light-theme');
+    } else {
+      document.documentElement.classList.remove('light-theme');
     }
 
     function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      if (theme === 'light') {
+        document.documentElement.classList.add('light-theme');
+      } else {
+        document.documentElement.classList.remove('light-theme');
+      }
       try {
-        document.documentElement.setAttribute('data-theme', theme);
-        if (theme === 'light') {
-          document.documentElement.classList.add('light-theme');
-        } else {
-          document.documentElement.classList.remove('light-theme');
-        }
-        try {
-          localStorage.setItem('campussense_theme', theme);
-          localStorage.setItem('theme', theme);
-        } catch (e) {}
-        syncThemeIcons(theme);
-      } catch (err) {
-        console.warn("Theme application warning:", err);
+        localStorage.setItem('theme', theme);
+        localStorage.setItem('campussense_theme', theme);
+      } catch (e) {}
+
+      const sun = document.getElementById('theme-toggle-sun');
+      const moon = document.getElementById('theme-toggle-moon');
+      if (sun && moon) {
+        sun.style.display = theme === 'light' ? 'block' : 'none';
+        moon.style.display = theme === 'light' ? 'none' : 'block';
       }
     }
-
-    // Apply immediately to prevent flash of wrong theme
-    const savedTheme = getStoredTheme();
-    applyTheme(savedTheme);
 
     window.applyTheme = applyTheme;
     window.toggleTheme = function() {
-      const currentTheme = document.documentElement.getAttribute('data-theme') || getStoredTheme();
-      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      applyTheme(newTheme);
-      return newTheme;
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
+      const next = current === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+      return next;
     };
-
-    function bindThemeToggleElement() {
-      const themeBtn = document.getElementById('btn-theme-toggle') ||
-                       document.getElementById('theme-toggle') ||
-                       document.querySelector('.theme-toggle-btn') ||
-                       document.querySelector('.theme-switch') ||
-                       document.querySelector('[data-action="toggle-theme"]');
-      if (themeBtn) {
-        themeBtn.onclick = function(e) {
-          if (e && e.preventDefault) e.preventDefault();
-          window.toggleTheme();
-        };
-      }
-      syncThemeIcons(document.documentElement.getAttribute('data-theme') || 'dark');
-    }
 
     // Attach listener defensively via document delegation
     document.addEventListener('click', function(e) {
@@ -80,14 +49,31 @@
     });
 
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', bindThemeToggleElement);
+      document.addEventListener('DOMContentLoaded', () => applyTheme(savedTheme));
     } else {
-      bindThemeToggleElement();
+      applyTheme(savedTheme);
     }
   } catch (err) {
-    console.warn("Theme toggle initialization warning:", err);
+    console.warn("Theme initialization warning:", err);
   }
 })();
+
+function safeBind(selector, event, handler) {
+  try {
+    document.querySelectorAll(selector).forEach(el => {
+      el.addEventListener(event, (e) => {
+        try {
+          handler(e, el);
+        } catch (err) {
+          console.error(`Error on ${selector}:`, err);
+        }
+      });
+    });
+  } catch (err) {
+    console.error(`Error querying selector ${selector}:`, err);
+  }
+}
+window.safeBind = safeBind;
 
 window.CLERK_PUBLISHABLE_KEY = "pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk";
 
@@ -218,8 +204,18 @@ window.onClerkLoaded = function() {
     }
     let currentStream = localStorage.getItem('campussense_stream') || (currentYearMode === 'FIRST_YEAR' ? 'FIRST_YEAR' : 'CSE');
     let currentSem = parseInt(localStorage.getItem('campussense_semester') || (currentYearMode === 'FIRST_YEAR' ? '1' : '5'), 10);
-    let userChecklistState = JSON.parse(localStorage.getItem('campussense_checklist_state') || '{}');
-    let savedBookmarks = JSON.parse(localStorage.getItem('campussense_saved_deck') || '[]');
+    let userChecklistState = {};
+    try {
+        userChecklistState = JSON.parse(localStorage.getItem('campussense_checklist_state') || '{}');
+    } catch (e) {
+        userChecklistState = {};
+    }
+    let savedBookmarks = [];
+    try {
+        savedBookmarks = JSON.parse(localStorage.getItem('campussense_saved_deck') || '[]');
+    } catch (e) {
+        savedBookmarks = [];
+    }
 
     localStorage.setItem('campussense_user_id', userIdentifier);
     localStorage.setItem('campussense_year_mode', currentYearMode);
@@ -339,4722 +335,1251 @@ window.onClerkLoaded = function() {
     };
     window.cseCurriculumData = cseCurriculumData;
 
-    const OFFICIAL_CSE_COURSES = [
-        {
-                "code": "ESC 301",
-                "altCode": "ESC301",
-                "name": "Analog and Digital Electronics",
-                "isFirstYear": false,
-                "category": "ESC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 3,
-                "credits": 3,
-                "l_t_p": "3-0-0",
-                "l": 3,
-                "t": 0,
-                "p": 0,
-                "contactHours": 36,
-                "type": "THEORY",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Analog electronics, operational amplifiers, combinational and sequential logic design, flip-flops, counters, DAC/ADC converters, semiconductor memories.",
-                "units": [
-                        {
-                                "id": 3011,
-                                "unitNumber": 1,
-                                "title": "Module I: Analog Electronics & Operational Amplifiers",
-                                "subtopics": "BJT characteristics, biasing and amplifier configurations, Operational Amplifiers (Op-Amps), inverting and non-inverting configurations, active filters, Schmitt trigger.",
-                                "hours": 10
-                        },
-                        {
-                                "id": 3012,
-                                "unitNumber": 2,
-                                "title": "Module II: Combinational Logic Circuits",
-                                "subtopics": "Boolean algebra, De Morgan's laws, Karnaugh maps (K-map) minimization, encoders, decoders, multiplexers, demultiplexers, binary adders and subtractors.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3013,
-                                "unitNumber": 3,
-                                "title": "Module III: Sequential Logic & Registers",
-                                "subtopics": "Latches, flip-flops (SR, JK, D, T), master-slave JK flip-flop, edge triggering, shift registers, ripple counters, synchronous counters, finite state machines.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3014,
-                                "unitNumber": 4,
-                                "title": "Module IV: Data Converters & Semiconductor Memories",
-                                "subtopics": "D/A converters (weighted resistor, R-2R ladder), A/D converters (flash, successive approximation, dual slope), RAM, ROM, PLA, PAL and FPGA basics.",
-                                "hours": 8
-                        }
-                ],
-                "pyqs": [
-                        {
-                                "id": 4001,
-                                "year": 2025,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2025 Analog and Digital Electronics (ESC 301)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/ANALOG & DIGITAL/btech-cse-3-sem-analog-and-digital-electronics-esc-301-2025.pdf"
-                        },
-                        {
-                                "id": 4002,
-                                "year": 2024,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2024 Analog and Digital Electronics (ESC 301)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/ANALOG & DIGITAL/btech-cse-3-sem-analog-and-digital-electronics-esc-301-2024.pdf"
-                        },
-                        {
-                                "id": 4003,
-                                "year": 2023,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2023 Analog and Digital Electronics (ESC 301)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/ANALOG & DIGITAL/btech-cse-3-sem-analog-and-digital-electronics-esc301-2023.pdf"
-                        }
-                ]
-        },
-        {
-                "code": "PCC-CS301",
-                "altCode": "PC-ECS301",
-                "legacyCode": "PCC-CSBS301",
-                "name": "Data Structure & Algorithms",
-                "isFirstYear": false,
-                "category": "PCC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 3,
-                "credits": 3,
-                "l_t_p": "3-0-0",
-                "l": 3,
-                "t": 0,
-                "p": 0,
-                "contactHours": 36,
-                "type": "THEORY",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Linear and non-linear data structures, stacks, queues, linked lists, trees, binary search trees, AVL trees, graphs, sorting, searching, and hashing techniques.",
-                "units": [
-                        {
-                                "id": 3021,
-                                "unitNumber": 1,
-                                "title": "Module I: Linear Data Structures, Stacks & Queues",
-                                "subtopics": "Arrays, sparse matrices, stack operations, infix to postfix conversion, postfix evaluation, queue, circular queue, priority queue, deque.",
-                                "hours": 7
-                        },
-                        {
-                                "id": 3022,
-                                "unitNumber": 2,
-                                "title": "Module II: Linked Lists & Dynamic Storage",
-                                "subtopics": "Singly linked lists, circular linked lists, doubly linked lists, polynomial representation and addition, memory allocation and garbage collection.",
-                                "hours": 7
-                        },
-                        {
-                                "id": 3023,
-                                "unitNumber": 3,
-                                "title": "Module III: Trees, BST & Balanced Trees",
-                                "subtopics": "Binary trees, representation, traversals (preorder, inorder, postorder), binary search trees (BST), insertion, deletion, AVL trees, rotations, B-Trees and B+ Trees.",
-                                "hours": 8
-                        },
-                        {
-                                "id": 3024,
-                                "unitNumber": 4,
-                                "title": "Module IV: Graph Algorithms & Traversals",
-                                "subtopics": "Graph representations (adjacency matrix and list), BFS, DFS, topological sort, minimum spanning trees (Prim's and Kruskal's), single-source shortest path (Dijkstra's).",
-                                "hours": 7
-                        },
-                        {
-                                "id": 3025,
-                                "unitNumber": 5,
-                                "title": "Module V: Searching, Sorting & Hashing",
-                                "subtopics": "Linear and binary search, Bubble, Insertion, Selection, Quick Sort, Merge Sort, Heap Sort, hash functions, collision resolution (chaining, open addressing).",
-                                "hours": 7
-                        }
-                ],
-                "pyqs": [
-                        {
-                                "id": 4007,
-                                "year": 2025,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2025 Data Structure & Algorithms (PC-ECS301 / PCC-CS301)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/DSA/btech-cse-3-sem-data-structure-and-algorithms-pc-ecs301-2025.pdf"
-                        },
-                        {
-                                "id": 4008,
-                                "year": 2024,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2024 Data Structure & Algorithms (PCC-CS301)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/DSA/btech-cse-3-sem-data-structure-and-algorithms-pcc-cs301-2024.pdf"
-                        },
-                        {
-                                "id": 4009,
-                                "year": 2023,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2023 Data Structure & Algorithms (PCC-CSBS301 / PCC-CS301)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/DSA/btech-cse-3-sem-data-structure-and-algorithms-pcc-csbs301-2023.pdf"
-                        }
-                ]
-        },
-        {
-                "code": "PCC-CS302",
-                "altCode": "PC-ECS302",
-                "name": "Computer Organisation",
-                "isFirstYear": false,
-                "category": "PCC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 3,
-                "credits": 3,
-                "l_t_p": "3-0-0",
-                "l": 3,
-                "t": 0,
-                "p": 0,
-                "contactHours": 36,
-                "type": "THEORY",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Basic computer organization, CPU architecture, instruction formats, addressing modes, computer arithmetic, memory hierarchy, cache design, and I/O organization.",
-                "units": [
-                        {
-                                "id": 3031,
-                                "unitNumber": 1,
-                                "title": "Module I: Basic Computer Organization & Buses",
-                                "subtopics": "Functional units, bus structures, bus arbitration, instruction cycle, instruction formats, addressing modes, CISC vs RISC architectures.",
-                                "hours": 7
-                        },
-                        {
-                                "id": 3032,
-                                "unitNumber": 2,
-                                "title": "Module II: Central Processing Unit & Control Design",
-                                "subtopics": "ALU design, register organization, control unit operations, hardwired control vs microprogrammed control, microinstruction sequencing and execution.",
-                                "hours": 8
-                        },
-                        {
-                                "id": 3033,
-                                "unitNumber": 3,
-                                "title": "Module III: Computer Arithmetic",
-                                "subtopics": "Fixed point arithmetic, addition and subtraction, multiplication algorithms (Booth's algorithm), division algorithms (restoring and non-restoring), IEEE 754 floating point standard.",
-                                "hours": 7
-                        },
-                        {
-                                "id": 3034,
-                                "unitNumber": 4,
-                                "title": "Module IV: Memory Hierarchy & Cache Design",
-                                "subtopics": "Memory hierarchy, semiconductor RAM/ROM, cache memory mapping (direct, associative, set-associative), cache replacement policies, virtual memory, paging, TLB.",
-                                "hours": 8
-                        },
-                        {
-                                "id": 3035,
-                                "unitNumber": 5,
-                                "title": "Module V: Input-Output Organization & DMA",
-                                "subtopics": "Programmed I/O, interrupt-driven I/O, priority interrupts, Direct Memory Access (DMA) controller and transfer modes, standard I/O interfaces.",
-                                "hours": 6
-                        }
-                ],
-                "pyqs": [
-                        {
-                                "id": 4004,
-                                "year": 2025,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2025 Computer Organisation (PC-ECS302 / PCC-CS302)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/COMPUTER ORGANISATION/btech-cse-3-sem-computer-organisation-pc-ecs302-2025.pdf"
-                        },
-                        {
-                                "id": 4005,
-                                "year": 2024,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2024 Computer Organisation (PCC-CS302)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/COMPUTER ORGANISATION/btech-cse-3-sem-computer-organisation-pcc-cs302-2024.pdf"
-                        },
-                        {
-                                "id": 4006,
-                                "year": 2023,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2023 Computer Organisation (PCC-CS302)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/COMPUTER ORGANISATION/btech-cse-3-sem-computer-organisation-pcc-cs302-2023.pdf"
-                        }
-                ]
-        },
-        {
-                "code": "BSC 301",
-                "altCode": "BS-M301",
-                "name": "Mathematics-III (Differential Calculus)",
-                "isFirstYear": false,
-                "category": "BSC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 3,
-                "credits": 2,
-                "l_t_p": "2-0-0",
-                "l": 2,
-                "t": 0,
-                "p": 0,
-                "contactHours": 24,
-                "type": "THEORY",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Higher order ordinary differential equations, series solutions, Legendre polynomials, Bessel functions, partial differential equations, and boundary value problems.",
-                "units": [
-                        {
-                                "id": 3041,
-                                "unitNumber": 1,
-                                "title": "Module I: Higher Order Ordinary Differential Equations",
-                                "subtopics": "Exact equations, linear differential equations of higher order with constant coefficients, method of variation of parameters, Cauchy-Euler equations.",
-                                "hours": 6
-                        },
-                        {
-                                "id": 3042,
-                                "unitNumber": 2,
-                                "title": "Module II: Series Solutions of Differential Equations",
-                                "subtopics": "Power series method, Frobenius method, Legendre polynomials and recurrence relations, Bessel functions and their properties.",
-                                "hours": 6
-                        },
-                        {
-                                "id": 3043,
-                                "unitNumber": 3,
-                                "title": "Module III: Partial Differential Equations",
-                                "subtopics": "Formation of PDEs, first order linear equations (Lagrange's method), non-linear first order equations (Charpit's method), homogeneous PDEs with constant coefficients.",
-                                "hours": 6
-                        },
-                        {
-                                "id": 3044,
-                                "unitNumber": 4,
-                                "title": "Module IV: Boundary Value Problems & Applications",
-                                "subtopics": "Classification of second order PDEs, one-dimensional wave equation, one-dimensional heat conduction equation, Laplace's equation in two dimensions.",
-                                "hours": 6
-                        }
-                ],
-                "pyqs": [
-                        {
-                                "id": 4013,
-                                "year": 2026,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2026 Mathematics-III (BS-M301 / BSC 301)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/MATHS 3/btech-3-sem-mathematics-3-bs-m301-2026.pdf"
-                        },
-                        {
-                                "id": 4014,
-                                "year": 2025,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2025 Mathematics-III (BS-M301 / BSC 301)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/MATHS 3/btech-3-sem-mathematics-3-bs-m301-2025.pdf"
-                        },
-                        {
-                                "id": 4015,
-                                "year": 2025,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2025 Mathematics-3 Differential Calculus (BS-M301)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/MATHS 3/btech-cse-3-sem-mathematics-3-differential-calculus-bs-m301-2025.pdf"
-                        },
-                        {
-                                "id": 4016,
-                                "year": 2024,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2024 Mathematics-3 Differential Calculus (BSC 301)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/MATHS 3/btech-cse-3-sem-mathematics-3-differential-calculus-bsc-301-2024.pdf"
-                        },
-                        {
-                                "id": 4017,
-                                "year": 2023,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2023 Mathematics-3 Differential Calculus (BSC 301)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/MATHS 3/btech-cse-3-sem-mathematics-3-differential-calculus-bsc301-2023.pdf"
-                        }
-                ]
-        },
-        {
-                "code": "HSMC 301",
-                "altCode": "HM-HU301",
-                "name": "Economics for Engineers (Humanities-II)",
-                "isFirstYear": false,
-                "category": "HSMC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 3,
-                "credits": 3,
-                "l_t_p": "3-0-0",
-                "l": 3,
-                "t": 0,
-                "p": 0,
-                "contactHours": 36,
-                "type": "THEORY",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Economic decisions, law of demand and supply, cost analysis, break-even analysis, time value of money, discounted cash flows, inflation, and depreciation methods.",
-                "units": [
-                        {
-                                "id": 3051,
-                                "unitNumber": 1,
-                                "title": "Module I: Engineering Economics & Market Dynamics",
-                                "subtopics": "Nature and scope of economics, law of demand and supply, elasticity of demand, factors of production, market structures (perfect competition, monopoly, oligopoly).",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3052,
-                                "unitNumber": 2,
-                                "title": "Module II: Cost Analysis & Break-Even Evaluation",
-                                "subtopics": "Cost concepts (fixed, variable, marginal, sunk), cost-output relationship, break-even analysis, profit-volume (P/V) ratio, margin of safety.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3053,
-                                "unitNumber": 3,
-                                "title": "Module III: Time Value of Money & Project Appraisal",
-                                "subtopics": "Present worth, future worth, annuities, discounted cash flow techniques, Net Present Value (NPV), Internal Rate of Return (IRR), Payback period, Benefit-Cost ratio.",
-                                "hours": 10
-                        },
-                        {
-                                "id": 3054,
-                                "unitNumber": 4,
-                                "title": "Module IV: Inflation, Depreciation & Financial Accounting",
-                                "subtopics": "Inflation causes and remedies, depreciation methods (straight-line, declining balance, sum-of-years digits), elementary financial statements and ratio analysis.",
-                                "hours": 8
-                        }
-                ],
-                "pyqs": [
-                        {
-                                "id": 4010,
-                                "year": 2025,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2025 Economics for Engineers (HM-HU301 / HSMC 301)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/ECONOMICS/btech-cse-3-sem-economics-for-engineers-humanities-2-hm-hu301-2025.pdf"
-                        },
-                        {
-                                "id": 4011,
-                                "year": 2024,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2024 Economics for Engineers (HSMC 301)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/ECONOMICS/btech-cse-3-sem-economics-for-engineers-humanities-2-hsmc-301-2024.pdf"
-                        },
-                        {
-                                "id": 4012,
-                                "year": 2023,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2023 Economics for Engineers (HSMC 301)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/ECONOMICS/btech-cse-3-sem-economics-for-engineers-humanities-2-hsmc301-2023.pdf"
-                        }
-                ]
-        },
-        {
-                "code": "PCC-CS393",
-                "name": "IT Workshop (Sci Lab/MATLAB/Python/R)",
-                "isFirstYear": false,
-                "category": "PCC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 3,
-                "credits": 2,
-                "l_t_p": "0-0-4",
-                "l": 0,
-                "t": 0,
-                "p": 4,
-                "contactHours": 48,
-                "type": "PRACTICAL",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Scientific computing, numerical simulations, and statistical data visualization using Python, NumPy, SciPy, MATLAB, and R.",
-                "units": [
-                        {
-                                "id": 3061,
-                                "unitNumber": 1,
-                                "title": "Module I: Python for Scientific Computing",
-                                "subtopics": "NumPy arrays, vectorization, matrix operations, SciPy numerical integration, and Matplotlib data visualization.",
-                                "hours": 12
-                        },
-                        {
-                                "id": 3062,
-                                "unitNumber": 2,
-                                "title": "Module II: MATLAB / SciLab Programming",
-                                "subtopics": "Scripts, functions, matrix manipulations, linear equation solving, 2D/3D plotting, and control simulation.",
-                                "hours": 12
-                        },
-                        {
-                                "id": 3063,
-                                "unitNumber": 3,
-                                "title": "Module III: Statistical Computing with R",
-                                "subtopics": "R data frames, data cleaning, summary statistics, probability distributions, hypothesis testing, and ggplot2 plotting.",
-                                "hours": 12
-                        },
-                        {
-                                "id": 3064,
-                                "unitNumber": 4,
-                                "title": "Module IV: Applied Mini-Project",
-                                "subtopics": "Real-world numerical modeling or data analytics pipeline using Python/R.",
-                                "hours": 12
-                        }
-                ],
-                "pyqs": []
-        },
-        {
-                "code": "ESC 391",
-                "name": "Analog and Digital Electronics Lab",
-                "isFirstYear": false,
-                "category": "ESC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 3,
-                "credits": 2,
-                "l_t_p": "0-0-4",
-                "l": 0,
-                "t": 0,
-                "p": 4,
-                "contactHours": 48,
-                "type": "PRACTICAL",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Laboratory experiments on analog circuits, operational amplifiers, combinational logic gates, flip-flops, counters, and digital converters.",
-                "units": [
-                        {
-                                "id": 3071,
-                                "unitNumber": 1,
-                                "title": "Module I: BJT & Operational Amplifier Circuits",
-                                "subtopics": "Frequency response of CE amplifier, inverting and non-inverting Op-Amp circuits, adder and comparator circuits.",
-                                "hours": 12
-                        },
-                        {
-                                "id": 3072,
-                                "unitNumber": 2,
-                                "title": "Module II: Combinational Logic Implementation",
-                                "subtopics": "Realization of boolean functions using basic and universal gates, multiplexer and demultiplexer ICs, binary adders.",
-                                "hours": 12
-                        },
-                        {
-                                "id": 3073,
-                                "unitNumber": 3,
-                                "title": "Module III: Sequential Circuits & Counters",
-                                "subtopics": "Truth table verification of JK, D, T flip-flops, design and realization of 3-bit ripple and synchronous up/down counters.",
-                                "hours": 12
-                        },
-                        {
-                                "id": 3074,
-                                "unitNumber": 4,
-                                "title": "Module IV: Converters & Timer Circuits",
-                                "subtopics": "Digital-to-Analog converter using R-2R ladder, 555 timer astable and monostable multivibrators.",
-                                "hours": 12
-                        }
-                ],
-                "pyqs": []
-        },
-        {
-                "code": "PCC-CS391",
-                "name": "Data Structure & Algorithms Lab",
-                "isFirstYear": false,
-                "category": "PCC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 3,
-                "credits": 2,
-                "l_t_p": "0-0-4",
-                "l": 0,
-                "t": 0,
-                "p": 4,
-                "contactHours": 48,
-                "type": "PRACTICAL",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Practical implementations of linear data structures, stacks, queues, linked lists, trees, graphs, sorting, and searching algorithms in C/C++.",
-                "units": [
-                        {
-                                "id": 3081,
-                                "unitNumber": 1,
-                                "title": "Module I: Stack, Queue & Linked List Implementations",
-                                "subtopics": "Stack using arrays, infix to postfix evaluator, circular queue implementation, singly and doubly linked list manipulation.",
-                                "hours": 12
-                        },
-                        {
-                                "id": 3082,
-                                "unitNumber": 2,
-                                "title": "Module II: Tree Algorithms & Traversals",
-                                "subtopics": "Binary tree representation, recursive and iterative traversals, Binary Search Tree (BST) insertion, search, and deletion.",
-                                "hours": 12
-                        },
-                        {
-                                "id": 3083,
-                                "unitNumber": 3,
-                                "title": "Module III: Graph Algorithms Implementation",
-                                "subtopics": "BFS and DFS traversals, Prim's and Kruskal's minimum spanning tree algorithms, Dijkstra's shortest path.",
-                                "hours": 12
-                        },
-                        {
-                                "id": 3084,
-                                "unitNumber": 4,
-                                "title": "Module IV: Sorting, Searching & Hashing Experiments",
-                                "subtopics": "Quick Sort, Merge Sort, Heap Sort benchmarking, open addressing and chaining hash table implementations.",
-                                "hours": 12
-                        }
-                ],
-                "pyqs": []
-        },
-        {
-                "code": "PCC-CS392",
-                "name": "Computer Organisation Lab",
-                "isFirstYear": false,
-                "category": "PCC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 3,
-                "credits": 2,
-                "l_t_p": "0-0-4",
-                "l": 0,
-                "t": 0,
-                "p": 4,
-                "contactHours": 48,
-                "type": "PRACTICAL",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Simulation and realization of ALU, arithmetic circuits, Booth's multiplier, control units, cache mapping, and CPU architectures using hardware description tools.",
-                "units": [
-                        {
-                                "id": 3091,
-                                "unitNumber": 1,
-                                "title": "Module I: ALU & Arithmetic Circuit Design",
-                                "subtopics": "4-bit Ripple Carry Adder, Carry-Lookahead Adder, Arithmetic Logic Unit (ALU) design and verification.",
-                                "hours": 12
-                        },
-                        {
-                                "id": 3092,
-                                "unitNumber": 2,
-                                "title": "Module II: Multiplier & Fast Arithmetic Simulation",
-                                "subtopics": "Implementation of Booth's multiplication algorithm and restoring division algorithm using Verilog/VHDL.",
-                                "hours": 12
-                        },
-                        {
-                                "id": 3093,
-                                "unitNumber": 3,
-                                "title": "Module III: Memory & Cache Controller Simulation",
-                                "subtopics": "Direct mapped and set-associative cache hit/miss simulation and analysis using cache simulators.",
-                                "hours": 12
-                        },
-                        {
-                                "id": 3094,
-                                "unitNumber": 4,
-                                "title": "Module IV: CPU Datapath & Instruction Cycle",
-                                "subtopics": "Single-cycle datapath and register transfer simulation for basic CPU instruction set execution.",
-                                "hours": 12
-                        }
-                ],
-                "pyqs": []
-        },
-        {
-                "code": "PCC-CS401",
-                "name": "Discrete Mathematics",
-                "isFirstYear": false,
-                "category": "PCC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 4,
-                "credits": 4,
-                "l_t_p": "3-1-0",
-                "l": 3,
-                "t": 1,
-                "p": 0,
-                "contactHours": 48,
-                "type": "THEORY",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Sets, relations, functions, propositional and predicate logic, combinatorics, recurrence relations, algebraic structures, groups, lattices, and graph theory.",
-                "units": [
-                        {
-                                "id": 3101,
-                                "unitNumber": 1,
-                                "title": "Module I: Sets, Relations, Functions & Induction",
-                                "subtopics": "Sets, power sets, relations, equivalence relations, partial orderings, lattices, functions, bijection, pigeonhole principle, mathematical induction.",
-                                "hours": 10
-                        },
-                        {
-                                "id": 3102,
-                                "unitNumber": 2,
-                                "title": "Module II: Propositional & Predicate Logic",
-                                "subtopics": "Propositions, connectives, truth tables, tautologies, normal forms (DNF, CNF), predicate logic, quantifiers, rules of inference, validity proofs.",
-                                "hours": 10
-                        },
-                        {
-                                "id": 3103,
-                                "unitNumber": 3,
-                                "title": "Module III: Combinatorics & Recurrence Relations",
-                                "subtopics": "Permutations, combinations, inclusion-exclusion principle, generating functions, linear homogeneous and non-homogeneous recurrence relations.",
-                                "hours": 10
-                        },
-                        {
-                                "id": 3104,
-                                "unitNumber": 4,
-                                "title": "Module IV: Algebraic Structures & Modern Algebra",
-                                "subtopics": "Semigroups, monoids, groups, subgroups, cyclic groups, cosets, Lagrange's theorem, rings, fields, Boolean algebra representations.",
-                                "hours": 10
-                        },
-                        {
-                                "id": 3105,
-                                "unitNumber": 5,
-                                "title": "Module V: Graph Theory & Trees",
-                                "subtopics": "Graphs, subgraphs, isomorphism, paths, cycles, Eulerian and Hamiltonian circuits, planar graphs, graph coloring, trees, spanning trees.",
-                                "hours": 8
-                        }
-                ],
-                "pyqs": [
-                        {
-                                "id": 4025,
-                                "year": 2026,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2026 Discrete Mathematics (PCC-CS401)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/DISCRETE MATHS/btech-cse-4-sem-discrete-mathematics-pcc-cs401-2026.pdf"
-                        },
-                        {
-                                "id": 4026,
-                                "year": 2025,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2025 Discrete Mathematics (PCC-CS401)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/DISCRETE MATHS/btech-cse-4-sem-discrete-mathematics-pcc-cs401-2025.pdf"
-                        },
-                        {
-                                "id": 4027,
-                                "year": 2024,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2024 Discrete Mathematics (PCC-CS401)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/DISCRETE MATHS/btech-pcc-cs-4-sem-discrete-mathematics-pcc-cs401-2024.pdf"
-                        },
-                        {
-                                "id": 4028,
-                                "year": 2023,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2023 Discrete Mathematics (PCC-CS401)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/DISCRETE MATHS/btech-pcc-cse-4-sem-discrete-mathematics-pcc-cs401-2023.pdf"
-                        }
-                ]
-        },
-        {
-                "code": "PCC-CS402",
-                "name": "Computer Architecture",
-                "isFirstYear": false,
-                "category": "PCC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 4,
-                "credits": 3,
-                "l_t_p": "3-0-0",
-                "l": 3,
-                "t": 0,
-                "p": 0,
-                "contactHours": 36,
-                "type": "THEORY",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Pipelining, instruction-level parallelism, dynamic scheduling, branch prediction, cache memory optimizations, multiprocessors, and cache coherence protocols.",
-                "units": [
-                        {
-                                "id": 3111,
-                                "unitNumber": 1,
-                                "title": "Module I: Performance Principles & Instruction Pipelining",
-                                "subtopics": "Quantitative principles of design, Amdahl's law, instruction pipelining, pipeline hazards (structural, data, control), branch penalties, delayed branch.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3112,
-                                "unitNumber": 2,
-                                "title": "Module II: Instruction-Level Parallelism & Dynamic Scheduling",
-                                "subtopics": "Dynamic scheduling, Tomasulo's algorithm, hardware-based speculation, reorder buffer (ROB), multiple issue processors (superscalar, VLIW).",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3113,
-                                "unitNumber": 3,
-                                "title": "Module III: Memory Hierarchy & Advanced Cache Optimizations",
-                                "subtopics": "Multi-level caches, non-blocking caches, critical word first, trace caches, virtual memory management, TLB misses and hardware page tables.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3114,
-                                "unitNumber": 4,
-                                "title": "Module IV: Multiprocessors & Cache Coherence",
-                                "subtopics": "Symmetric multiprocessors (SMP), distributed shared memory (DSM), cache coherence protocols (MESI, MOESI), snooping vs directory-based protocols, interconnection networks.",
-                                "hours": 9
-                        }
-                ],
-                "pyqs": [
-                        {
-                                "id": 4018,
-                                "year": 2026,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2026 Computer Architecture (PCC-CS402)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/COMPUTER ARCHITECTURE/btech-cse-4-sem-computer-architecture-pcc-cs402-2026.pdf"
-                        },
-                        {
-                                "id": 4019,
-                                "year": 2025,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2025 Computer Architecture (PCC-CS402)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/COMPUTER ARCHITECTURE/btech-cse-4-sem-computer-architecture-pcc-cs402-2025.pdf"
-                        },
-                        {
-                                "id": 4020,
-                                "year": 2024,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2024 Computer Architecture (PCC-CS402)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/COMPUTER ARCHITECTURE/btech-pcc-cs-4-sem-computer-architecture-pcc-cs402-2024.pdf"
-                        },
-                        {
-                                "id": 4021,
-                                "year": 2023,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2023 Computer Architecture (PCC-CS402)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/COMPUTER ARCHITECTURE/btech-pcc-cse-4-sem-computer-architecture-pcc-cs402-2023.pdf"
-                        }
-                ]
-        },
-        {
-                "code": "PCC-CS403",
-                "name": "Formal Language & Automata Theory",
-                "isFirstYear": false,
-                "category": "PCC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 4,
-                "credits": 3,
-                "l_t_p": "3-0-0",
-                "l": 3,
-                "t": 0,
-                "p": 0,
-                "contactHours": 36,
-                "type": "THEORY",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Finite automata, regular expressions, pumping lemma, context-free grammars, pushdown automata, Turing machines, computability, undecidability, and Chomsky hierarchy.",
-                "units": [
-                        {
-                                "id": 3121,
-                                "unitNumber": 1,
-                                "title": "Module I: Finite Automata & Regular Languages",
-                                "subtopics": "Deterministic Finite Automata (DFA), NFA, epsilon-NFA, DFA minimization (Myhill-Nerode), regular expressions, Arden's theorem, pumping lemma for regular languages.",
-                                "hours": 10
-                        },
-                        {
-                                "id": 3122,
-                                "unitNumber": 2,
-                                "title": "Module II: Context-Free Grammars & Normal Forms",
-                                "subtopics": "Context-Free Grammars (CFG), derivation trees, ambiguity, simplification of grammars, Chomsky Normal Form (CNF), Greibach Normal Form (GNF), pumping lemma for CFLs.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3123,
-                                "unitNumber": 3,
-                                "title": "Module III: Pushdown Automata (PDA)",
-                                "subtopics": "Pushdown Automata (PDA) definition, acceptance by final state and empty stack, equivalence of PDA and CFG, Deterministic Pushdown Automata (DPDA).",
-                                "hours": 8
-                        },
-                        {
-                                "id": 3124,
-                                "unitNumber": 4,
-                                "title": "Module IV: Turing Machines & Undecidability",
-                                "subtopics": "Turing Machine model, multi-tape TMs, Church-Turing thesis, Universal Turing Machine, Halting problem, Post Correspondence Problem (PCP), Chomsky hierarchy.",
-                                "hours": 9
-                        }
-                ],
-                "pyqs": [
-                        {
-                                "id": 4029,
-                                "year": 2026,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2026 Formal Language & Automata Theory (PCC-CS403)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/TOC or FLAT/btech-cse-4-sem-formal-language-and-automata-theory-pcc-cs-403-2026.pdf"
-                        },
-                        {
-                                "id": 4030,
-                                "year": 2025,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2025 Formal Language & Automata Theory (PCC-CS403)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/TOC or FLAT/btech-cse-4-sem-formal-language-and-automata-theory-pcc-cs-403-2025.pdf"
-                        },
-                        {
-                                "id": 4031,
-                                "year": 2024,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2024 Formal Language & Automata Theory (PCC-CS403)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/TOC or FLAT/btech-pcc-cs-4-sem-formal-language-and-automata-theory-pcc-cs-403-2024.pdf"
-                        },
-                        {
-                                "id": 4032,
-                                "year": 2023,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2023 Formal Language & Automata Theory (PCC-CS403)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/TOC or FLAT/btech-pcc-cse-4-sem-formal-language-and-automata-pcc-cse-403-2023.pdf"
-                        }
-                ]
-        },
-        {
-                "code": "PCC-CS404",
-                "altCode": "ES-CS401",
-                "name": "Design & Analysis of Algorithms",
-                "isFirstYear": false,
-                "category": "PCC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 4,
-                "credits": 3,
-                "l_t_p": "3-0-0",
-                "l": 3,
-                "t": 0,
-                "p": 0,
-                "contactHours": 36,
-                "type": "THEORY",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Asymptotic notations, divide and conquer, greedy methods, dynamic programming, graph algorithms, backtracking, branch and bound, and NP-completeness.",
-                "units": [
-                        {
-                                "id": 3131,
-                                "unitNumber": 1,
-                                "title": "Module I: Algorithm Analysis & Asymptotic Bounds",
-                                "subtopics": "Big-O, Omega, Theta notations, recurrence relations, Master Theorem, substitution method, recursion-tree method.",
-                                "hours": 6
-                        },
-                        {
-                                "id": 3132,
-                                "unitNumber": 2,
-                                "title": "Module II: Divide & Conquer Strategies",
-                                "subtopics": "Merge Sort, Quick Sort analysis (worst, average cases), Strassen's matrix multiplication, order statistics and median finding.",
-                                "hours": 6
-                        },
-                        {
-                                "id": 3133,
-                                "unitNumber": 3,
-                                "title": "Module III: Greedy Algorithms",
-                                "subtopics": "Fractional Knapsack, Huffman coding, Job sequencing with deadlines, Prim's and Kruskal's algorithms, matroid theory fundamentals.",
-                                "hours": 6
-                        },
-                        {
-                                "id": 3134,
-                                "unitNumber": 4,
-                                "title": "Module IV: Dynamic Programming",
-                                "subtopics": "Matrix Chain Multiplication, Longest Common Subsequence (LCS), 0/1 Knapsack, Bellman-Ford shortest paths, Floyd-Warshall all-pairs shortest paths.",
-                                "hours": 7
-                        },
-                        {
-                                "id": 3135,
-                                "unitNumber": 5,
-                                "title": "Module V: Backtracking & Branch and Bound",
-                                "subtopics": "N-Queens problem, Graph Coloring, Hamiltonian Cycle, Subset Sum problem, Traveling Salesperson Problem (TSP) using branch and bound.",
-                                "hours": 6
-                        },
-                        {
-                                "id": 3136,
-                                "unitNumber": 6,
-                                "title": "Module VI: Complexity Classes & NP-Completeness",
-                                "subtopics": "Tractable vs intractable problems, classes P, NP, NP-Complete, NP-Hard, Cook's Theorem, polynomial-time reductions (3-SAT, Clique, Vertex Cover).",
-                                "hours": 5
-                        }
-                ],
-                "pyqs": [
-                        {
-                                "id": 4022,
-                                "year": 2025,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2025 Design & Analysis of Algorithms (ES-CS401 / PCC-CS404)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/DAA/btech-cse-it-4-sem-design-and-analysis-of-algorithms-es-cs401-2025.pdf"
-                        },
-                        {
-                                "id": 4023,
-                                "year": 2024,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2024 Design & Analysis of Algorithms (ES-CS401 / PCC-CS404)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/DAA/btech-es-cs-pcc-4-sem-design-and-analysis-of-algorithms-es-cs401-2024.pdf"
-                        },
-                        {
-                                "id": 4024,
-                                "year": 2023,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2023 Design & Analysis of Algorithms (ES-CS401 / PCC-CS404)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/DAA/btech-es-4-sem-design-and-analysis-of-algorithms-es-cs401-2023.pdf"
-                        }
-                ]
-        },
-        {
-                "code": "BSC 401",
-                "name": "Biology",
-                "isFirstYear": false,
-                "category": "BSC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 4,
-                "credits": 3,
-                "l_t_p": "2-1-0",
-                "l": 2,
-                "t": 1,
-                "p": 0,
-                "contactHours": 36,
-                "type": "THEORY",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Cellular biology, biomacromolecules, genetics, DNA replication, gene expression, enzyme kinetics, and applications in bioinformatics and bio-computing.",
-                "units": [
-                        {
-                                "id": 3141,
-                                "unitNumber": 1,
-                                "title": "Module I: Living World & Biomolecules",
-                                "subtopics": "Macromolecules of life: proteins, carbohydrates, lipids, nucleic acids, cell structure, membrane transport, and bioenergetics.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3142,
-                                "unitNumber": 2,
-                                "title": "Module II: Genetics & Molecular Information Flow",
-                                "subtopics": "Mendelian genetics, DNA double helix structure, DNA replication, transcription, translation, genetic code, gene regulation.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3143,
-                                "unitNumber": 3,
-                                "title": "Module III: Enzymes & Metabolism",
-                                "subtopics": "Enzyme kinetics (Michaelis-Menten), inhibition, metabolic pathways: glycolysis, TCA cycle, oxidative phosphorylation.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3144,
-                                "unitNumber": 4,
-                                "title": "Module IV: Applied Biology & Computational Models",
-                                "subtopics": "Recombinant DNA technology, biosensors, bioinformatics algorithms, neural network inspiration from biology, synthetic biology overview.",
-                                "hours": 9
-                        }
-                ],
-                "pyqs": []
-        },
-        {
-                "code": "MC401",
-                "name": "Environmental Sciences",
-                "isFirstYear": false,
-                "category": "MC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 4,
-                "credits": 1,
-                "l_t_p": "1-0-0",
-                "l": 1,
-                "t": 0,
-                "p": 0,
-                "contactHours": 12,
-                "type": "THEORY",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Ecosystems, biodiversity, environmental pollution, solid waste management, global warming, sustainable development, and environmental protection legislation.",
-                "units": [
-                        {
-                                "id": 3151,
-                                "unitNumber": 1,
-                                "title": "Module I: Ecosystems & Biodiversity",
-                                "subtopics": "Ecosystem structure, food chains, energy flow, biodiversity value, threats, and in-situ/ex-situ conservation strategies.",
-                                "hours": 4
-                        },
-                        {
-                                "id": 3152,
-                                "unitNumber": 2,
-                                "title": "Module II: Environmental Pollution & Waste Management",
-                                "subtopics": "Air, water, soil, noise pollution, electronic waste (e-waste) management, treatment technologies and recycling methods.",
-                                "hours": 4
-                        },
-                        {
-                                "id": 3153,
-                                "unitNumber": 3,
-                                "title": "Module III: Climate Change & Sustainable Governance",
-                                "subtopics": "Greenhouse effect, ozone depletion, carbon footprint, Environmental Protection Act, environmental impact assessment (EIA), SDGs.",
-                                "hours": 4
-                        }
-                ],
-                "pyqs": []
-        },
-        {
-                "code": "PCC-CS492",
-                "name": "Computer Architecture Lab",
-                "isFirstYear": false,
-                "category": "PCC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 4,
-                "credits": 2,
-                "l_t_p": "0-0-4",
-                "l": 0,
-                "t": 0,
-                "p": 4,
-                "contactHours": 48,
-                "type": "PRACTICAL",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Hands-on simulation of pipelined CPU architectures, instruction hazard detection, branch prediction, and cache memory hierarchy using hardware modeling tools.",
-                "units": [
-                        {
-                                "id": 3161,
-                                "unitNumber": 1,
-                                "title": "Module I: Pipelined Datapath Simulation",
-                                "subtopics": "Design and timing simulation of 5-stage instruction pipeline in HDL (Verilog/VHDL).",
-                                "hours": 12
-                        },
-                        {
-                                "id": 3162,
-                                "unitNumber": 2,
-                                "title": "Module II: Hazard Detection & Forwarding Units",
-                                "subtopics": "Implementation of data forwarding, hazard detection, and pipeline stall logic.",
-                                "hours": 12
-                        },
-                        {
-                                "id": 3163,
-                                "unitNumber": 3,
-                                "title": "Module III: Branch Prediction Simulators",
-                                "subtopics": "Dynamic branch prediction implementation (1-bit and 2-bit saturating counters).",
-                                "hours": 12
-                        },
-                        {
-                                "id": 3164,
-                                "unitNumber": 4,
-                                "title": "Module IV: Multi-Level Cache Memory Experiments",
-                                "subtopics": "Performance evaluation of L1/L2 caches under varying block sizes and associativity.",
-                                "hours": 12
-                        }
-                ],
-                "pyqs": []
-        },
-        {
-                "code": "PCC-CS494",
-                "name": "Design & Analysis of Algorithms Lab",
-                "isFirstYear": false,
-                "category": "PCC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 4,
-                "credits": 2,
-                "l_t_p": "0-0-4",
-                "l": 0,
-                "t": 0,
-                "p": 4,
-                "contactHours": 48,
-                "type": "PRACTICAL",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Practical implementations and algorithmic benchmarking of Divide & Conquer, Greedy, Dynamic Programming, and Backtracking algorithms in C/C++ or Python.",
-                "units": [
-                        {
-                                "id": 3171,
-                                "unitNumber": 1,
-                                "title": "Module I: Divide & Conquer Implementations",
-                                "subtopics": "Quick Sort vs Merge Sort performance benchmarking under varying input distributions.",
-                                "hours": 12
-                        },
-                        {
-                                "id": 3172,
-                                "unitNumber": 2,
-                                "title": "Module II: Greedy Strategy Implementations",
-                                "subtopics": "Fractional Knapsack, Huffman coding tree generation, Prim's and Kruskal's MST algorithms.",
-                                "hours": 12
-                        },
-                        {
-                                "id": 3173,
-                                "unitNumber": 3,
-                                "title": "Module III: Dynamic Programming Implementations",
-                                "subtopics": "Matrix Chain Multiplication, Longest Common Subsequence (LCS), 0/1 Knapsack problem.",
-                                "hours": 12
-                        },
-                        {
-                                "id": 3174,
-                                "unitNumber": 4,
-                                "title": "Module IV: Backtracking & Shortest Path",
-                                "subtopics": "N-Queens problem, Graph coloring, Dijkstra's algorithm, Bellman-Ford shortest paths.",
-                                "hours": 12
-                        }
-                ],
-                "pyqs": []
-        },
-        {
-                "code": "ESC501",
-                "name": "Software Engineering",
-                "isFirstYear": false,
-                "category": "ESC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 5,
-                "credits": 3,
-                "l_t_p": "3-0-0",
-                "l": 3,
-                "t": 0,
-                "p": 0,
-                "contactHours": 36,
-                "type": "THEORY",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "SDLC process models, Agile methodologies, software requirements specification (SRS), software architecture, UML modeling, software testing, and metrics.",
-                "units": [
-                        {
-                                "id": 3181,
-                                "unitNumber": 1,
-                                "title": "Module I: Software Life Cycle & Agile Models",
-                                "subtopics": "Waterfall, incremental, spiral, prototype models, Agile values, Scrum framework, sprint planning, user stories, extreme programming.",
-                                "hours": 8
-                        },
-                        {
-                                "id": 3182,
-                                "unitNumber": 2,
-                                "title": "Module II: Requirements Engineering & SRS",
-                                "subtopics": "Requirements elicitation techniques, functional and non-functional requirements, IEEE 830 SRS document standards, Use Case diagrams.",
-                                "hours": 7
-                        },
-                        {
-                                "id": 3183,
-                                "unitNumber": 3,
-                                "title": "Module III: Software Design & Architecture",
-                                "subtopics": "Cohesion and coupling, architectural styles (layered, MVC, microservices), UML structural and behavioral diagrams (Class, Sequence, Activity).",
-                                "hours": 7
-                        },
-                        {
-                                "id": 3184,
-                                "unitNumber": 4,
-                                "title": "Module IV: Software Testing & Quality Assurance",
-                                "subtopics": "Black-box testing (equivalence partitioning, boundary value analysis), white-box testing (control flow, cyclomatic complexity), integration and regression testing.",
-                                "hours": 7
-                        },
-                        {
-                                "id": 3185,
-                                "unitNumber": 5,
-                                "title": "Module V: Software Maintenance & Project Metrics",
-                                "subtopics": "COCOMO effort estimation, software maintenance types, configuration management (Git, CI/CD), software reliability and ISO 9001/CMMI standards.",
-                                "hours": 7
-                        }
-                ],
-                "pyqs": []
-        },
-        {
-                "code": "PCC-CS501",
-                "name": "Compiler Design",
-                "isFirstYear": false,
-                "category": "PCC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 5,
-                "credits": 3,
-                "l_t_p": "3-0-0",
-                "l": 3,
-                "t": 0,
-                "p": 0,
-                "contactHours": 36,
-                "type": "THEORY",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Phases of a compiler, lexical analysis, syntax analysis, top-down and bottom-up parsing, syntax-directed translation, intermediate code generation, and optimization.",
-                "units": [
-                        {
-                                "id": 3191,
-                                "unitNumber": 1,
-                                "title": "Module I: Lexical Analysis & Finite Automata",
-                                "subtopics": "Compiler phases, role of lexical analyzer, tokens, patterns, lexemes, regular expressions to DFA, Lex / Flex scanner generator tool.",
-                                "hours": 7
-                        },
-                        {
-                                "id": 3192,
-                                "unitNumber": 2,
-                                "title": "Module II: Syntax Analysis & Parsing",
-                                "subtopics": "Context-free grammars, top-down parsing (Recursive Descent, LL(1) parse tables), bottom-up parsing (Shift-Reduce, LR(0), SLR(1), LR(1), LALR(1)), Yacc / Bison.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3193,
-                                "unitNumber": 3,
-                                "title": "Module III: Syntax-Directed Translation (SDT)",
-                                "subtopics": "Syntax-directed definitions (SDD), synthesized and inherited attributes, dependency graphs, evaluation orders, S-attributed and L-attributed definitions.",
-                                "hours": 7
-                        },
-                        {
-                                "id": 3194,
-                                "unitNumber": 4,
-                                "title": "Module IV: Intermediate Code Generation",
-                                "subtopics": "Three-address code, quadruples, triples, indirect triples, translation of expressions, boolean expressions, and control flow statements.",
-                                "hours": 7
-                        },
-                        {
-                                "id": 3195,
-                                "unitNumber": 5,
-                                "title": "Module V: Code Optimization & Generation",
-                                "subtopics": "Basic blocks and flow graphs, local and loop optimizations, common subexpression elimination, dead-code elimination, machine-dependent code generation.",
-                                "hours": 6
-                        }
-                ],
-                "pyqs": [
-                        {
-                                "id": 4037,
-                                "year": 2026,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2026 Compiler Design (PCC-CS501)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/COMPILER DESIGN/btech-cs-5-sem-compiler-design-pcc-cs501-2026.pdf"
-                        },
-                        {
-                                "id": 4038,
-                                "year": 2025,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2025 Compiler Design (PCC-CS501)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/COMPILER DESIGN/btech-cse-5-sem-compiler-design-pcc-cs501-2025.pdf"
-                        },
-                        {
-                                "id": 4039,
-                                "year": 2024,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2024 Compiler Design (PCC-CS501)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/COMPILER DESIGN/btech-cse-5-sem-compiler-design-pcc-cs501-2024.pdf"
-                        }
-                ]
-        },
-        {
-                "code": "PCC-CS502",
-                "name": "Operating Systems",
-                "isFirstYear": false,
-                "category": "PCC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 5,
-                "credits": 3,
-                "l_t_p": "3-0-0",
-                "l": 3,
-                "t": 0,
-                "p": 0,
-                "contactHours": 36,
-                "type": "THEORY",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Operating system structures, process scheduling, synchronization, semaphores, deadlock avoidance, memory management, virtual memory, paging, and disk scheduling.",
-                "units": [
-                        {
-                                "id": 3201,
-                                "unitNumber": 1,
-                                "title": "Module I: Operating System Architecture & System Calls",
-                                "subtopics": "OS concepts, system calls, OS structure (monolithic, layered, microkernel), dual-mode operations, context switching.",
-                                "hours": 6
-                        },
-                        {
-                                "id": 3202,
-                                "unitNumber": 2,
-                                "title": "Module II: Process Management & CPU Scheduling",
-                                "subtopics": "Process states, PCB, thread models, scheduling criteria, FCFS, SJF, SRTF, Priority, Round Robin, multi-level queue scheduling.",
-                                "hours": 6
-                        },
-                        {
-                                "id": 3203,
-                                "unitNumber": 3,
-                                "title": "Module III: Inter-Process Communication & Synchronization",
-                                "subtopics": "Critical section problem, Peterson's algorithm, semaphores, mutex, monitors, classical IPC problems (Producer-Consumer, Readers-Writers, Dining Philosophers).",
-                                "hours": 6
-                        },
-                        {
-                                "id": 3204,
-                                "unitNumber": 4,
-                                "title": "Module IV: Deadlocks Detection & Avoidance",
-                                "subtopics": "Deadlock characterization, four necessary conditions, resource allocation graphs, deadlock prevention, Banker's algorithm for avoidance, detection and recovery.",
-                                "hours": 6
-                        },
-                        {
-                                "id": 3205,
-                                "unitNumber": 5,
-                                "title": "Module V: Memory Management & Virtual Memory",
-                                "subtopics": "Contiguous allocation, paging, segmentation, TLB, demand paging, page faults, page replacement algorithms (FIFO, Optimal, LRU, Clock).",
-                                "hours": 6
-                        },
-                        {
-                                "id": 3206,
-                                "unitNumber": 6,
-                                "title": "Module VI: File Systems & Storage Management",
-                                "subtopics": "File attributes, directory structures, disk scheduling algorithms (FCFS, SSTF, SCAN, C-SCAN), RAID levels.",
-                                "hours": 6
-                        }
-                ],
-                "pyqs": []
-        },
-        {
-                "code": "PCC-CS503",
-                "name": "Object Oriented Programming",
-                "isFirstYear": false,
-                "category": "PCC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 5,
-                "credits": 3,
-                "l_t_p": "3-0-0",
-                "l": 3,
-                "t": 0,
-                "p": 0,
-                "contactHours": 36,
-                "type": "THEORY",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "OOP paradigm, Java architecture, encapsulation, inheritance, polymorphism, interfaces, exception handling, multithreading, collections, generics, and file I/O.",
-                "units": [
-                        {
-                                "id": 3211,
-                                "unitNumber": 1,
-                                "title": "Module I: OOP Principles & Java Fundamentals",
-                                "subtopics": "OOP concepts, JVM, JRE, bytecode, classes, objects, data types, control structures, constructors, method overloading, garbage collection.",
-                                "hours": 7
-                        },
-                        {
-                                "id": 3212,
-                                "unitNumber": 2,
-                                "title": "Module II: Inheritance, Polymorphism & Interfaces",
-                                "subtopics": "Inheritance types, method overriding, super and final keywords, dynamic method dispatch, abstract classes, interfaces, multiple inheritance via interfaces, packages.",
-                                "hours": 8
-                        },
-                        {
-                                "id": 3213,
-                                "unitNumber": 3,
-                                "title": "Module III: Exception Handling & Multithreading",
-                                "subtopics": "Try-catch-finally blocks, throw, throws, custom exceptions, Thread class, Runnable interface, thread synchronization, inter-thread communication.",
-                                "hours": 7
-                        },
-                        {
-                                "id": 3214,
-                                "unitNumber": 4,
-                                "title": "Module IV: Collections Framework & Generics",
-                                "subtopics": "Collections hierarchy, List, ArrayList, LinkedList, Set, HashSet, Map, HashMap, Iterators, generic classes and methods.",
-                                "hours": 7
-                        },
-                        {
-                                "id": 3215,
-                                "unitNumber": 5,
-                                "title": "Module V: Streams, File I/O & Event Handling",
-                                "subtopics": "Byte streams, character streams, serialization, event delegation model, ActionListeners, modern Java lambda expressions and streams.",
-                                "hours": 7
-                        }
-                ],
-                "pyqs": []
-        },
-        {
-                "code": "HSMC-501",
-                "name": "Introduction to Industrial Management (Humanities III)",
-                "isFirstYear": false,
-                "category": "HSMC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 5,
-                "credits": 3,
-                "l_t_p": "3-0-0",
-                "l": 3,
-                "t": 0,
-                "p": 0,
-                "contactHours": 36,
-                "type": "THEORY",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Management principles, organizational behavior, production planning and control, inventory models, supply chain management, quality control, and safety.",
-                "units": [
-                        {
-                                "id": 3221,
-                                "unitNumber": 1,
-                                "title": "Module I: Principles of Management",
-                                "subtopics": "Taylor's scientific management, Fayol's administrative theory, functions of management: planning, organizing, staffing, directing, controlling.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3222,
-                                "unitNumber": 2,
-                                "title": "Module II: Production Planning & Operations",
-                                "subtopics": "Plant location and layout factors, Production Planning and Control (PPC), work study, method study, time study, process flow analysis.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3223,
-                                "unitNumber": 3,
-                                "title": "Module III: Inventory Control & Supply Chain Management",
-                                "subtopics": "ABC analysis, Economic Order Quantity (EOQ), reorder level, safety stock, just-in-time (JIT), supply chain fundamentals.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3224,
-                                "unitNumber": 4,
-                                "title": "Module IV: Quality Control & Ergonomics",
-                                "subtopics": "Total Quality Management (TQM), ISO 9000, Six Sigma concepts, Statistical Quality Control (SQC) control charts (X-bar, R-chart), ergonomics and industrial safety.",
-                                "hours": 9
-                        }
-                ],
-                "pyqs": []
-        },
-        {
-                "code": "PEC-IT501A/B/C/D",
-                "altCode": "PEC-IT501B",
-                "legacyCode": "PEC-CSBS-501-B",
-                "name": "Elective-I (Theory of Computation / Artificial Intelligence / Advanced Computer Architecture / Computer Graphics)",
-                "isFirstYear": false,
-                "category": "PEC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 5,
-                "credits": 3,
-                "l_t_p": "3-0-0",
-                "l": 3,
-                "t": 0,
-                "p": 0,
-                "contactHours": 36,
-                "type": "THEORY",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Elective options: Theory of Computation, Artificial Intelligence, Advanced Computer Architecture, or Computer Graphics. Emphasizes AI heuristic search, game playing, logic, and ML.",
-                "units": [
-                        {
-                                "id": 3231,
-                                "unitNumber": 1,
-                                "title": "Module I: Intelligent Agents & State-Space Search",
-                                "subtopics": "Foundations of AI, agent architectures, environment types, uninformed search (BFS, DFS, UCS), informed heuristic search (Greedy Best-First, A* search, admissibility).",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3232,
-                                "unitNumber": 2,
-                                "title": "Module II: Adversarial Search & Game Playing",
-                                "subtopics": "Game theory basics, Minimax algorithm, Alpha-Beta pruning, evaluation functions, games of chance, constraint satisfaction problems (CSP).",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3233,
-                                "unitNumber": 3,
-                                "title": "Module III: Knowledge Representation & Logical Reasoning",
-                                "subtopics": "Propositional logic, First-Order Predicate Logic (FOPL), forward and backward chaining, resolution refutation principle, semantic nets, frames.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3234,
-                                "unitNumber": 4,
-                                "title": "Module IV: Probabilistic Reasoning & Machine Learning",
-                                "subtopics": "Uncertainty handling, conditional probability, Bayes' Rule, Bayesian Networks, supervised and unsupervised machine learning algorithms.",
-                                "hours": 9
-                        }
-                ],
-                "pyqs": [
-                        {
-                                "id": 4033,
-                                "year": 2026,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2026 Artificial Intelligence (PEC-IT501B / PEC-CSBS-501-B)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/AI/btech-cse-it-5-sem-artificial-intelligence-pec-csbs-501-b-2026.pdf"
-                        },
-                        {
-                                "id": 4034,
-                                "year": 2025,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2025 Artificial Intelligence (PEC-IT501B / PEC-CSBS-501-B)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/AI/btech-cse-it-5-sem-artificial-intelligence-pec-csbs-501-b-2025.pdf"
-                        },
-                        {
-                                "id": 4035,
-                                "year": 2024,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2024 Artificial Intelligence (PEC-IT501B / PEC-CSBS-501-B)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/AI/btech-cse-5-sem-artificial-intelligence-pec-csbs-501-b-2024.pdf"
-                        },
-                        {
-                                "id": 4036,
-                                "year": 2024,
-                                "type": "END_SEM",
-                                "title": "MAKAUT 2024 CS Artificial Intelligence (PEC-CSBS-501-B)",
-                                "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/AI/btech-cs-pec-5-sem-artificial-intelligence-pec-csbs-501-b-2024.pdf"
-                        }
-                ]
-        },
-        {
-                "code": "MC-CS501A/B",
-                "name": "Constitution of India / Essence of Indian Knowledge Tradition",
-                "isFirstYear": false,
-                "category": "MC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 5,
-                "credits": 0,
-                "l_t_p": "0-0-0",
-                "l": 0,
-                "t": 0,
-                "p": 0,
-                "contactHours": 18,
-                "type": "MANDATORY",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Mandatory non-credit course covering constitutional framework, fundamental rights, directive principles, governance, and Indian traditional knowledge systems.",
-                "units": [
-                        {
-                                "id": 3241,
-                                "unitNumber": 1,
-                                "title": "Module I: Indian Constitutional Structure & Governance",
-                                "subtopics": "Historical background, Preamble, Fundamental Rights, Fundamental Duties, Directive Principles of State Policy, Union and State Executive.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3242,
-                                "unitNumber": 2,
-                                "title": "Module II: Essence of Indian Knowledge Tradition",
-                                "subtopics": "Ancient Indian science, mathematics (Sulba Sutras, Aryabhatta, Brahmagupta), astronomy, linguistic systems, ethics, and philosophical systems.",
-                                "hours": 9
-                        }
-                ],
-                "pyqs": []
-        },
-        {
-                "code": "ESC-591",
-                "name": "Software Engineering Lab",
-                "isFirstYear": false,
-                "category": "ESC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 5,
-                "credits": 2,
-                "l_t_p": "0-0-4",
-                "l": 0,
-                "t": 0,
-                "p": 4,
-                "contactHours": 48,
-                "type": "PRACTICAL",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Hands-on software project development, SRS drafting, UML architecture diagrams (StarUML), unit testing, test case design, and version control workflow.",
-                "units": [
-                        {
-                                "id": 3251,
-                                "unitNumber": 1,
-                                "title": "Module I: Requirements Elicitation & SRS Drafting",
-                                "subtopics": "Case study problem analysis and IEEE 830 standard SRS document preparation.",
-                                "hours": 12
-                        },
-                        {
-                                "id": 3252,
-                                "unitNumber": 2,
-                                "title": "Module II: UML Modeling with CASE Tools",
-                                "subtopics": "Creation of Use Case, Class, Sequence, and State Machine diagrams using CASE tools.",
-                                "hours": 12
-                        },
-                        {
-                                "id": 3253,
-                                "unitNumber": 3,
-                                "title": "Module III: Test Case Design & Automated Testing",
-                                "subtopics": "Black-box and white-box test suite execution, JUnit automated unit testing.",
-                                "hours": 12
-                        },
-                        {
-                                "id": 3254,
-                                "unitNumber": 4,
-                                "title": "Module IV: Agile Sprint Execution & Version Control",
-                                "subtopics": "Sprint execution, Git repository collaboration, code review, and project presentation.",
-                                "hours": 12
-                        }
-                ],
-                "pyqs": []
-        },
-        {
-                "code": "PCC-CS592",
-                "name": "Operating Systems Lab",
-                "isFirstYear": false,
-                "category": "PCC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 5,
-                "credits": 2,
-                "l_t_p": "0-0-4",
-                "l": 0,
-                "t": 0,
-                "p": 4,
-                "contactHours": 48,
-                "type": "PRACTICAL",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Linux shell scripting, process creation (fork, exec), CPU scheduling implementations, synchronization with semaphores, Banker's algorithm, and page replacement.",
-                "units": [
-                        {
-                                "id": 3261,
-                                "unitNumber": 1,
-                                "title": "Module I: Linux Shell Scripting & System Calls",
-                                "subtopics": "Bash scripts, file handling, system calls for process management (fork, wait, exec, exit).",
-                                "hours": 12
-                        },
-                        {
-                                "id": 3262,
-                                "unitNumber": 2,
-                                "title": "Module II: CPU Scheduling Implementations",
-                                "subtopics": "C implementations of FCFS, SJF, Priority, and Round Robin scheduling algorithms.",
-                                "hours": 12
-                        },
-                        {
-                                "id": 3263,
-                                "unitNumber": 3,
-                                "title": "Module III: Process Synchronization & Deadlock",
-                                "subtopics": "POSIX semaphores, mutex locks for Producer-Consumer problem, Banker's algorithm simulation.",
-                                "hours": 12
-                        },
-                        {
-                                "id": 3264,
-                                "unitNumber": 4,
-                                "title": "Module IV: Memory Management & Page Replacement",
-                                "subtopics": "Simulation of FIFO, LRU, and Optimal page replacement algorithms and hit/miss ratio calculation.",
-                                "hours": 12
-                        }
-                ],
-                "pyqs": []
-        },
-        {
-                "code": "PCC-CS593",
-                "name": "Object Oriented Programming Lab",
-                "isFirstYear": false,
-                "category": "PCC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 5,
-                "credits": 2,
-                "l_t_p": "0-0-4",
-                "l": 0,
-                "t": 0,
-                "p": 4,
-                "contactHours": 48,
-                "type": "PRACTICAL",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Java object-oriented application development, inheritance, interface implementation, custom exceptions, multithreaded producers/consumers, and collection utilities.",
-                "units": [
-                        {
-                                "id": 3271,
-                                "unitNumber": 1,
-                                "title": "Module I: Class Design & Inheritance in Java",
-                                "subtopics": "Encapsulation, constructors, inheritance hierarchies, abstract classes, interface implementations.",
-                                "hours": 12
-                        },
-                        {
-                                "id": 3272,
-                                "unitNumber": 2,
-                                "title": "Module II: Exception Handling & File I/O Streams",
-                                "subtopics": "Checked and unchecked exception handling, file stream operations, object serialization.",
-                                "hours": 12
-                        },
-                        {
-                                "id": 3273,
-                                "unitNumber": 3,
-                                "title": "Module III: Multithreading & Synchronization",
-                                "subtopics": "Thread creation via Runnable and Thread, synchronized blocks, wait/notify mechanisms.",
-                                "hours": 12
-                        },
-                        {
-                                "id": 3274,
-                                "unitNumber": 4,
-                                "title": "Module IV: Java Collections & Mini-Application",
-                                "subtopics": "Using List, Set, Map collections, developing a comprehensive console or GUI CRUD application.",
-                                "hours": 12
-                        }
-                ],
-                "pyqs": []
-        },
-        {
-                "code": "PCC-CS601",
-                "name": "Database Management Systems",
-                "isFirstYear": false,
-                "category": "PCC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 6,
-                "credits": 3,
-                "l_t_p": "3-0-0",
-                "l": 3,
-                "t": 0,
-                "p": 0,
-                "contactHours": 36,
-                "type": "THEORY",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Database architecture, relational models, relational algebra, SQL, functional dependencies, normal forms (1NF to BCNF), transactions, ACID properties, and concurrency control.",
-                "units": [
-                        {
-                                "id": 3281,
-                                "unitNumber": 1,
-                                "title": "Module I: Database Architecture & Relational Model",
-                                "subtopics": "Three-schema architecture, data independence, data models, ER modeling, relational model concepts, integrity constraints.",
-                                "hours": 7
-                        },
-                        {
-                                "id": 3282,
-                                "unitNumber": 2,
-                                "title": "Module II: Relational Algebra & SQL",
-                                "subtopics": "Relational algebra operations, DDL, DML, DCL, complex queries, nested subqueries, joins, aggregate functions, views.",
-                                "hours": 7
-                        },
-                        {
-                                "id": 3283,
-                                "unitNumber": 3,
-                                "title": "Module III: Normalization & Relational Design",
-                                "subtopics": "Functional dependencies, inference rules, Armstrong's axioms, Normal forms (1NF, 2NF, 3NF, BCNF), lossless join decomposition, dependency preservation.",
-                                "hours": 8
-                        },
-                        {
-                                "id": 3284,
-                                "unitNumber": 4,
-                                "title": "Module IV: Transaction Processing & Concurrency",
-                                "subtopics": "ACID properties, transaction states, schedules, serializability, conflict serializability, concurrency control protocols (2PL, strict 2PL, timestamp ordering).",
-                                "hours": 7
-                        },
-                        {
-                                "id": 3285,
-                                "unitNumber": 5,
-                                "title": "Module V: Storage Indexing & Recovery",
-                                "subtopics": "File organization, RAID, indexing structures (B-Trees, B+ Trees), log-based recovery, checkpointing, shadow paging.",
-                                "hours": 7
-                        }
-                ],
-                "pyqs": []
-        },
-        {
-                "code": "PCC-CS602",
-                "name": "Computer Networks",
-                "isFirstYear": false,
-                "category": "PCC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 6,
-                "credits": 3,
-                "l_t_p": "3-0-0",
-                "l": 3,
-                "t": 0,
-                "p": 0,
-                "contactHours": 36,
-                "type": "THEORY",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Data communications, OSI and TCP/IP protocol architectures, data link layer framing and error control, routing algorithms, transport protocols (TCP/UDP), and network security.",
-                "units": [
-                        {
-                                "id": 3291,
-                                "unitNumber": 1,
-                                "title": "Module I: Network Architecture & Physical Layer",
-                                "subtopics": "Network topologies, switching techniques (circuit, packet), OSI 7-layer model, TCP/IP protocol suite, transmission media, transmission impairments.",
-                                "hours": 7
-                        },
-                        {
-                                "id": 3292,
-                                "unitNumber": 2,
-                                "title": "Module II: Data Link Layer & MAC Sublayer",
-                                "subtopics": "Framing, error detection and correction (CRC, Hamming code), flow control (Stop-and-Wait, Go-Back-N, Selective Repeat), CSMA/CD, Ethernet standards.",
-                                "hours": 8
-                        },
-                        {
-                                "id": 3293,
-                                "unitNumber": 3,
-                                "title": "Module III: Network Layer & Routing Protocols",
-                                "subtopics": "IPv4 addressing, subnetting, CIDR, NAT, ARP, DHCP, routing algorithms (Distance Vector - Bellman-Ford, Link State - Dijkstra, BGP, OSPF), IPv6 overview.",
-                                "hours": 8
-                        },
-                        {
-                                "id": 3294,
-                                "unitNumber": 4,
-                                "title": "Module IV: Transport Layer Protocols",
-                                "subtopics": "UDP format, TCP segment structure, three-way handshake, connection release, flow control, TCP congestion control (slow start, AIMD), socket interface.",
-                                "hours": 7
-                        },
-                        {
-                                "id": 3295,
-                                "unitNumber": 5,
-                                "title": "Module V: Application Layer & Security",
-                                "subtopics": "DNS, HTTP, HTTPS, FTP, SMTP, POP3, cryptography basics (symmetric and asymmetric encryption), firewalls and network defense.",
-                                "hours": 6
-                        }
-                ],
-                "pyqs": []
-        },
-        {
-                "code": "PEC-IT601A/B/C/D",
-                "name": "Elective-II (Advanced Algorithms / Distributed Database Management System / Signals & Systems / Image Processing)",
-                "isFirstYear": false,
-                "category": "PEC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 6,
-                "credits": 3,
-                "l_t_p": "3-0-0",
-                "l": 3,
-                "t": 0,
-                "p": 0,
-                "contactHours": 36,
-                "type": "THEORY",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Professional elective covering Advanced Algorithms, Distributed Databases, Signals & Systems, or Digital Image Processing.",
-                "units": [
-                        {
-                                "id": 3301,
-                                "unitNumber": 1,
-                                "title": "Module I: Advanced Algorithmic Paradigms",
-                                "subtopics": "Amortized analysis, randomized algorithms, approximation algorithms for NP-Hard problems.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3302,
-                                "unitNumber": 2,
-                                "title": "Module II: Distributed Database Architecture",
-                                "subtopics": "Distributed data storage, fragmentation, replication, distributed transaction commit protocols (2PC, 3PC).",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3303,
-                                "unitNumber": 3,
-                                "title": "Module III: Signal Analysis & Transforms",
-                                "subtopics": "Continuous and discrete signals, Fourier transform, Z-transform, LTI systems.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3304,
-                                "unitNumber": 4,
-                                "title": "Module IV: Digital Image Processing Fundamentals",
-                                "subtopics": "Image enhancement in spatial and frequency domains, image filtering, edge detection, segmentation.",
-                                "hours": 9
-                        }
-                ],
-                "pyqs": []
-        },
-        {
-                "code": "PEC-IT602A/B/C/D",
-                "name": "Elective-III (Parallel and Distributed Algorithms / Data Warehousing & Data Mining / Human Computer Interaction / Pattern Recognition)",
-                "isFirstYear": false,
-                "category": "PEC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 6,
-                "credits": 3,
-                "l_t_p": "3-0-0",
-                "l": 3,
-                "t": 0,
-                "p": 0,
-                "contactHours": 36,
-                "type": "THEORY",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Professional elective covering Parallel Algorithms, Data Mining & Warehousing, HCI, or Pattern Recognition.",
-                "units": [
-                        {
-                                "id": 3311,
-                                "unitNumber": 1,
-                                "title": "Module I: Parallel Computing Architecture",
-                                "subtopics": "PRAM models, message passing interface (MPI), OpenMP shared memory parallel programming.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3312,
-                                "unitNumber": 2,
-                                "title": "Module II: Data Warehousing & Mining Concepts",
-                                "subtopics": "Data warehouse architecture, multidimensional data models, star/snowflake schemas, association rule mining (Apriori), classification, clustering.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3313,
-                                "unitNumber": 3,
-                                "title": "Module III: Human-Computer Interaction (HCI)",
-                                "subtopics": "User interface design paradigms, usability engineering, interactive systems evaluation.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3314,
-                                "unitNumber": 4,
-                                "title": "Module IV: Pattern Recognition Models",
-                                "subtopics": "Feature extraction, statistical pattern classification, Bayes decision theory, clustering models.",
-                                "hours": 9
-                        }
-                ],
-                "pyqs": []
-        },
-        {
-                "code": "OEC-IT601A/B",
-                "name": "Open Elective-I (Numerical Methods / Human Resource Development and Organizational Behavior)",
-                "isFirstYear": false,
-                "category": "OEC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 6,
-                "credits": 3,
-                "l_t_p": "3-0-0",
-                "l": 3,
-                "t": 0,
-                "p": 0,
-                "contactHours": 36,
-                "type": "THEORY",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Open elective options: Numerical Methods or HRD and Organizational Behavior.",
-                "units": [
-                        {
-                                "id": 3321,
-                                "unitNumber": 1,
-                                "title": "Module I: Numerical Solutions & Interpolation",
-                                "subtopics": "Root finding (Newton-Raphson, Bisection), Newton's forward and backward interpolation, Lagrange interpolation.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3322,
-                                "unitNumber": 2,
-                                "title": "Module II: Numerical Integration & Differential Equations",
-                                "subtopics": "Trapezoidal rule, Simpson's 1/3 and 3/8 rules, Euler's method, Runge-Kutta 4th order method.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3323,
-                                "unitNumber": 3,
-                                "title": "Module III: Organizational Behavior Principles",
-                                "subtopics": "Individual behavior, motivation theories, group dynamics, team building, organizational culture.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3324,
-                                "unitNumber": 4,
-                                "title": "Module IV: Human Resource Development",
-                                "subtopics": "HR planning, recruitment, selection, training and development, performance appraisal.",
-                                "hours": 9
-                        }
-                ],
-                "pyqs": []
-        },
-        {
-                "code": "PROJ-CS601",
-                "name": "Research Methodology",
-                "isFirstYear": false,
-                "category": "PROJ",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 6,
-                "credits": 3,
-                "l_t_p": "3-0-0",
-                "l": 3,
-                "t": 0,
-                "p": 0,
-                "contactHours": 36,
-                "type": "THEORY",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Scientific research formulation, literature review methodology, hypothesis testing, quantitative techniques, scientific writing, and research ethics.",
-                "units": [
-                        {
-                                "id": 3331,
-                                "unitNumber": 1,
-                                "title": "Module I: Research Formulation & Problem Definition",
-                                "subtopics": "Defining research problem, research objectives, literature review process, citation methods.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3332,
-                                "unitNumber": 2,
-                                "title": "Module II: Research Design & Empirical Methods",
-                                "subtopics": "Experimental vs descriptive research design, sampling methods, measurement scales.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3333,
-                                "unitNumber": 3,
-                                "title": "Module III: Statistical Analysis & Hypothesis Testing",
-                                "subtopics": "Parametric and non-parametric tests, t-test, ANOVA, chi-square test, regression analysis.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3334,
-                                "unitNumber": 4,
-                                "title": "Module IV: Technical Writing, IPR & Research Ethics",
-                                "subtopics": "Scientific manuscript preparation, plagiarism policies, intellectual property rights, patent filing.",
-                                "hours": 9
-                        }
-                ],
-                "pyqs": []
-        },
-        {
-                "code": "PCC-CS691",
-                "name": "Database Management Systems Lab",
-                "isFirstYear": false,
-                "category": "PCC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 6,
-                "credits": 2,
-                "l_t_p": "0-0-4",
-                "l": 0,
-                "t": 0,
-                "p": 4,
-                "contactHours": 48,
-                "type": "PRACTICAL",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "SQL query execution, DDL/DML, stored procedures, PL/SQL functions, triggers, database indexing, and backend integration with relational databases.",
-                "units": [
-                        {
-                                "id": 3341,
-                                "unitNumber": 1,
-                                "title": "Module I: Relational Schema & Complex SQL",
-                                "subtopics": "Table creation with integrity constraints, nested queries, aggregate functions, joins.",
-                                "hours": 12
-                        },
-                        {
-                                "id": 3342,
-                                "unitNumber": 2,
-                                "title": "Module II: PL/SQL Programming",
-                                "subtopics": "PL/SQL blocks, cursors, procedures, functions, packages, and database triggers.",
-                                "hours": 12
-                        },
-                        {
-                                "id": 3343,
-                                "unitNumber": 3,
-                                "title": "Module III: Schema Normalization & Indexing",
-                                "subtopics": "Database normalization verification, index creation (B+ Tree), performance tuning.",
-                                "hours": 12
-                        },
-                        {
-                                "id": 3344,
-                                "unitNumber": 4,
-                                "title": "Module IV: Database Application Integration",
-                                "subtopics": "Connecting relational database to web/desktop application using JDBC/ODBC.",
-                                "hours": 12
-                        }
-                ],
-                "pyqs": []
-        },
-        {
-                "code": "PCC-CS692",
-                "name": "Computer Networks Lab",
-                "isFirstYear": false,
-                "category": "PCC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 6,
-                "credits": 2,
-                "l_t_p": "0-0-4",
-                "l": 0,
-                "t": 0,
-                "p": 4,
-                "contactHours": 48,
-                "type": "PRACTICAL",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Network cabling, Wireshark packet capture analysis, socket programming in C/Python, Cisco Packet Tracer topology simulation, and subnetting.",
-                "units": [
-                        {
-                                "id": 3351,
-                                "unitNumber": 1,
-                                "title": "Module I: Hardware Configuration & Packet Sniffing",
-                                "subtopics": "Ethernet cable crimping (straight/cross), Wireshark packet inspection for HTTP, TCP, UDP, ARP, DNS.",
-                                "hours": 12
-                        },
-                        {
-                                "id": 3352,
-                                "unitNumber": 2,
-                                "title": "Module II: Socket Programming",
-                                "subtopics": "Client-Server TCP and UDP socket implementation in C/Python, iterative and concurrent servers.",
-                                "hours": 12
-                        },
-                        {
-                                "id": 3353,
-                                "unitNumber": 3,
-                                "title": "Module III: Cisco Packet Tracer Topology Design",
-                                "subtopics": "Router and switch configuration, VLAN setup, static routing, RIP, OSPF protocol configuration.",
-                                "hours": 12
-                        },
-                        {
-                                "id": 3354,
-                                "unitNumber": 4,
-                                "title": "Module IV: Subnetting & Network Services",
-                                "subtopics": "IPv4 subnet calculation, DHCP server setup, NAT configuration on gateway routers.",
-                                "hours": 12
-                        }
-                ],
-                "pyqs": []
-        },
-        {
-                "code": "PEC-CS701A/B/C/D/E",
-                "name": "Elective-IV (Quantum Computing / Cloud Computing / Digital Signal Processing / Multi-agent Intelligent Systems / Machine Learning)",
-                "isFirstYear": false,
-                "category": "PEC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 7,
-                "credits": 3,
-                "l_t_p": "3-0-0",
-                "l": 3,
-                "t": 0,
-                "p": 0,
-                "contactHours": 36,
-                "type": "THEORY",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Advanced elective options including Machine Learning, Cloud Computing, Quantum Computing, DSP, and Multi-agent Systems.",
-                "units": [
-                        {
-                                "id": 3361,
-                                "unitNumber": 1,
-                                "title": "Module I: Machine Learning Foundations",
-                                "subtopics": "Linear regression, logistic regression, decision trees, support vector machines (SVM), neural networks, evaluation metrics.",
-                                "hours": 8
-                        },
-                        {
-                                "id": 3362,
-                                "unitNumber": 2,
-                                "title": "Module II: Cloud Computing & Virtualization",
-                                "subtopics": "Cloud service models (IaaS, PaaS, SaaS), hypervisors, Docker containers, Kubernetes, serverless architectures.",
-                                "hours": 7
-                        },
-                        {
-                                "id": 3363,
-                                "unitNumber": 3,
-                                "title": "Module III: Quantum Computing Concepts",
-                                "subtopics": "Qubits, quantum superposition, entanglement, quantum logic gates, Deutsch-Jozsa and Shor's algorithms.",
-                                "hours": 7
-                        },
-                        {
-                                "id": 3364,
-                                "unitNumber": 4,
-                                "title": "Module IV: Digital Signal Processing",
-                                "subtopics": "Discrete Fourier Transform (DFT), Fast Fourier Transform (FFT), FIR and IIR digital filter design.",
-                                "hours": 7
-                        },
-                        {
-                                "id": 3365,
-                                "unitNumber": 5,
-                                "title": "Module V: Multi-Agent Systems",
-                                "subtopics": "Agent communication languages (KQML, FIPA-ACL), distributed problem solving, multi-agent negotiation.",
-                                "hours": 7
-                        }
-                ],
-                "pyqs": []
-        },
-        {
-                "code": "PEC-CS702A/B/C/D/E",
-                "name": "Elective-V (Neural Networks and Deep Learning / Soft Computing / Ad-Hoc and Sensor Networks / Information Theory and Coding / Cyber Security)",
-                "isFirstYear": false,
-                "category": "PEC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 7,
-                "credits": 3,
-                "l_t_p": "3-0-0",
-                "l": 3,
-                "t": 0,
-                "p": 0,
-                "contactHours": 36,
-                "type": "THEORY",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Specialized elective options including Neural Networks & Deep Learning, Soft Computing, Sensor Networks, Information Theory, and Cyber Security.",
-                "units": [
-                        {
-                                "id": 3371,
-                                "unitNumber": 1,
-                                "title": "Module I: Deep Learning & Neural Networks",
-                                "subtopics": "Multilayer perceptrons, backpropagation, CNNs for computer vision, RNNs and LSTMs for sequence modeling, transformers.",
-                                "hours": 8
-                        },
-                        {
-                                "id": 3372,
-                                "unitNumber": 2,
-                                "title": "Module II: Soft Computing & Fuzzy Logic",
-                                "subtopics": "Fuzzy sets, fuzzy relations, defuzzification methods, Genetic Algorithms (GA) selection, crossover, mutation.",
-                                "hours": 7
-                        },
-                        {
-                                "id": 3373,
-                                "unitNumber": 3,
-                                "title": "Module III: Wireless Ad-Hoc & Sensor Networks",
-                                "subtopics": "MANET routing protocols (AODV, DSR), WSN node architectures, MAC protocols, localization, power efficiency.",
-                                "hours": 7
-                        },
-                        {
-                                "id": 3374,
-                                "unitNumber": 4,
-                                "title": "Module IV: Information Theory & Coding",
-                                "subtopics": "Entropy, mutual information, source coding (Shannon-Fano, Huffman), error control codes (BCH, Reed-Solomon).",
-                                "hours": 7
-                        },
-                        {
-                                "id": 3375,
-                                "unitNumber": 5,
-                                "title": "Module V: Cyber Security & Threat Mitigation",
-                                "subtopics": "Vulnerability analysis, malware types, network intrusion detection (IDS/IPS), ethical hacking, security policies.",
-                                "hours": 7
-                        }
-                ],
-                "pyqs": []
-        },
-        {
-                "code": "OEC-CS701A/B/C",
-                "name": "Open Elective-II (Operations Research / Multimedia Systems / Introduction to Philosophical Thoughts)",
-                "isFirstYear": false,
-                "category": "OEC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 7,
-                "credits": 3,
-                "l_t_p": "3-0-0",
-                "l": 3,
-                "t": 0,
-                "p": 0,
-                "contactHours": 36,
-                "type": "THEORY",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Interdisciplinary open elective covering Operations Research, Multimedia Systems, or Philosophical Thoughts.",
-                "units": [
-                        {
-                                "id": 3381,
-                                "unitNumber": 1,
-                                "title": "Module I: Linear Programming & Optimization",
-                                "subtopics": "Linear programming problem formulation, graphical solution, Simplex method, Big-M method, duality theory.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3382,
-                                "unitNumber": 2,
-                                "title": "Module II: Transportation & Assignment Models",
-                                "subtopics": "Initial basic feasible solutions (North-West corner, Vogel's approximation), MODI method, Hungarian assignment algorithm.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3383,
-                                "unitNumber": 3,
-                                "title": "Module III: Multimedia Systems",
-                                "subtopics": "Audio, image, and video compression (JPEG, MPEG), streaming protocols, multimedia authoring tools.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3384,
-                                "unitNumber": 4,
-                                "title": "Module IV: Foundations of Philosophical Thoughts",
-                                "subtopics": "Epistemology, ethics, Indian philosophical schools (Nyaya, Vaisheshika, Vedanta), Western critical philosophy.",
-                                "hours": 9
-                        }
-                ],
-                "pyqs": []
-        },
-        {
-                "code": "HSMC 701",
-                "name": "Project Management and Entrepreneurship",
-                "isFirstYear": false,
-                "category": "HSMC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 7,
-                "credits": 3,
-                "l_t_p": "2-1-0",
-                "l": 2,
-                "t": 1,
-                "p": 0,
-                "contactHours": 36,
-                "type": "THEORY",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Project management lifecycle, CPM and PERT network techniques, cost estimation, risk management, entrepreneurship, business model canvas, and startup funding.",
-                "units": [
-                        {
-                                "id": 3391,
-                                "unitNumber": 1,
-                                "title": "Module I: Project Lifecycle & Work Breakdown Structure",
-                                "subtopics": "Project characteristics, feasibility analysis, project initiation, Work Breakdown Structure (WBS), project charter.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3392,
-                                "unitNumber": 2,
-                                "title": "Module II: Project Scheduling with CPM & PERT",
-                                "subtopics": "Network diagram construction, Critical Path Method (CPM), PERT three-point estimates, float calculations, crashing.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3393,
-                                "unitNumber": 3,
-                                "title": "Module III: Cost Control & Risk Management",
-                                "subtopics": "Earned Value Management (EVM), cost performance index, risk identification, qualitative/quantitative risk assessment.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3394,
-                                "unitNumber": 4,
-                                "title": "Module IV: Entrepreneurship & Business Plan Development",
-                                "subtopics": "Entrepreneurial mindset, opportunity recognition, Business Model Canvas, startup financing (bootstrapping, angel, VC), pitch presentation.",
-                                "hours": 9
-                        }
-                ],
-                "pyqs": []
-        },
-        {
-                "code": "PROJ-CS781",
-                "name": "Project-II",
-                "isFirstYear": false,
-                "category": "PROJ",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 7,
-                "credits": 6,
-                "l_t_p": "0-0-12",
-                "l": 0,
-                "t": 0,
-                "p": 12,
-                "contactHours": 144,
-                "type": "PROJECT",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Capstone project phase 1: problem formulation, extensive literature review, architectural system design, software/hardware prototyping, and preliminary defense.",
-                "units": [
-                        {
-                                "id": 3401,
-                                "unitNumber": 1,
-                                "title": "Module I: Problem Formulation & Literature Review",
-                                "subtopics": "Identification of real-world research problem, rigorous state-of-the-art literature survey, gap analysis.",
-                                "hours": 36
-                        },
-                        {
-                                "id": 3402,
-                                "unitNumber": 2,
-                                "title": "Module II: System Architecture & Requirements Design",
-                                "subtopics": "Detailed system architecture, modular design specifications, technology stack selection.",
-                                "hours": 36
-                        },
-                        {
-                                "id": 3403,
-                                "unitNumber": 3,
-                                "title": "Module III: Initial Prototype Implementation",
-                                "subtopics": "Core engine development, proof-of-concept prototype coding, preliminary testing.",
-                                "hours": 36
-                        },
-                        {
-                                "id": 3404,
-                                "unitNumber": 4,
-                                "title": "Module IV: Interim Defense & Technical Progress Report",
-                                "subtopics": "Interim evaluation report, progress defense before departmental panel.",
-                                "hours": 36
-                        }
-                ],
-                "pyqs": []
-        },
-        {
-                "code": "PEC-CS801A/B/C/D/E",
-                "name": "Elective-VI (Signals and Networks / Cryptography & Network Security / Speech and Natural Language Processing / Web and Internet Technology / Internet of Things)",
-                "isFirstYear": false,
-                "category": "PEC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 8,
-                "credits": 3,
-                "l_t_p": "3-0-0",
-                "l": 3,
-                "t": 0,
-                "p": 0,
-                "contactHours": 36,
-                "type": "THEORY",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Specialized elective covering Cryptography, NLP, IoT, Modern Web & Internet Technologies, or Signals & Networks.",
-                "units": [
-                        {
-                                "id": 3411,
-                                "unitNumber": 1,
-                                "title": "Module I: Cryptography & Network Security",
-                                "subtopics": "Classical ciphers, DES, AES, RSA, Diffie-Hellman key exchange, SHA hash functions, digital signatures, SSL/TLS.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3412,
-                                "unitNumber": 2,
-                                "title": "Module II: Natural Language Processing (NLP)",
-                                "subtopics": "Tokenization, POS tagging, parsing, n-gram language models, word embeddings (Word2Vec), transformer models.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3413,
-                                "unitNumber": 3,
-                                "title": "Module III: Internet of Things (IoT)",
-                                "subtopics": "IoT architecture, sensors, microcontrollers (ESP32, Raspberry Pi), protocols (MQTT, CoAP), cloud IoT platforms.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3414,
-                                "unitNumber": 4,
-                                "title": "Module IV: Web & Internet Technology",
-                                "subtopics": "RESTful APIs, asynchronous JavaScript, WebSockets, microservice architecture, web security best practices.",
-                                "hours": 9
-                        }
-                ],
-                "pyqs": []
-        },
-        {
-                "code": "OEC-CS801A/B/C/D/E",
-                "name": "Open Elective-III (Big Data Analysis / Cyber Law and Ethics / Mobile Computing / Robotics / Soft Skill & Interpersonal Communication)",
-                "isFirstYear": false,
-                "category": "OEC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 8,
-                "credits": 3,
-                "l_t_p": "3-0-0",
-                "l": 3,
-                "t": 0,
-                "p": 0,
-                "contactHours": 36,
-                "type": "THEORY",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Open elective options including Big Data Analytics, Cyber Law, Mobile Computing, Robotics, or Interpersonal Communication.",
-                "units": [
-                        {
-                                "id": 3421,
-                                "unitNumber": 1,
-                                "title": "Module I: Big Data Analytics & Distributed Processing",
-                                "subtopics": "Hadoop architecture, HDFS, MapReduce framework, Apache Spark, NoSQL databases (MongoDB, Cassandra).",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3422,
-                                "unitNumber": 2,
-                                "title": "Module II: Cyber Law & Professional Ethics",
-                                "subtopics": "Information Technology Act 2000, digital contracts, cyber crimes, intellectual property, IT compliance.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3423,
-                                "unitNumber": 3,
-                                "title": "Module III: Mobile Computing Architectures",
-                                "subtopics": "Cellular systems, 4G/5G architectures, mobile IP, mobile ad-hoc routing, location-based services.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3424,
-                                "unitNumber": 4,
-                                "title": "Module IV: Robotics & Soft Skills",
-                                "subtopics": "Robotic arm kinematics, sensors and vision, path planning, professional workplace soft skills.",
-                                "hours": 9
-                        }
-                ],
-                "pyqs": []
-        },
-        {
-                "code": "OEC-CS802A/B/C",
-                "name": "Open Elective-IV (E-Commerce and ERP / Micro-electronics and VLSI Design / Economic Policies in India)",
-                "isFirstYear": false,
-                "category": "OEC",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 8,
-                "credits": 3,
-                "l_t_p": "3-0-0",
-                "l": 3,
-                "t": 0,
-                "p": 0,
-                "contactHours": 36,
-                "type": "THEORY",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Open elective covering E-Commerce and Enterprise Resource Planning, VLSI Design, or Indian Economic Policies.",
-                "units": [
-                        {
-                                "id": 3431,
-                                "unitNumber": 1,
-                                "title": "Module I: E-Commerce Framework & Payment Systems",
-                                "subtopics": "B2B, B2C, C2C business models, electronic payment gateways, digital wallets, e-commerce security.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3432,
-                                "unitNumber": 2,
-                                "title": "Module II: Enterprise Resource Planning (ERP)",
-                                "subtopics": "ERP architecture, supply chain integration, CRM modules, SAP/Oracle ERP case studies.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3433,
-                                "unitNumber": 3,
-                                "title": "Module III: Micro-electronics & VLSI Design",
-                                "subtopics": "MOSFET characteristics, CMOS inverter design, layout design rules, ASIC design flow.",
-                                "hours": 9
-                        },
-                        {
-                                "id": 3434,
-                                "unitNumber": 4,
-                                "title": "Module IV: Macroeconomic Policies in India",
-                                "subtopics": "Fiscal and monetary policy, industrial policies, financial sector reforms, economic liberalization.",
-                                "hours": 9
-                        }
-                ],
-                "pyqs": []
-        },
-        {
-                "code": "PROJ-CS881",
-                "name": "Project-III [Summer Industry Internship]",
-                "isFirstYear": false,
-                "category": "PROJ",
-                "stream": "CSE",
-                "department": "Computer Science & Engineering",
-                "semester": 8,
-                "credits": 6,
-                "l_t_p": "0-0-12",
-                "l": 0,
-                "t": 0,
-                "p": 12,
-                "contactHours": 144,
-                "type": "PROJECT",
-                "syllabusUrl": "CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf",
-                "description": "Major B.Tech final capstone project / summer industry internship: complete system implementation, deployment, benchmark evaluation, thesis defense, and publication.",
-                "units": [
-                        {
-                                "id": 3441,
-                                "unitNumber": 1,
-                                "title": "Module I: System Implementation & Engineering Deliverables",
-                                "subtopics": "Full-scale software/hardware module implementation, algorithm optimization, cloud deployment.",
-                                "hours": 36
-                        },
-                        {
-                                "id": 3442,
-                                "unitNumber": 2,
-                                "title": "Module II: Rigorous Benchmarking & Verification",
-                                "subtopics": "Performance evaluation, stress testing, statistical validation, comparison against existing baselines.",
-                                "hours": 36
-                        },
-                        {
-                                "id": 3443,
-                                "unitNumber": 3,
-                                "title": "Module III: Thesis Documentation & Publication",
-                                "subtopics": "Comprehensive engineering dissertation report, conference/journal paper submission.",
-                                "hours": 36
-                        },
-                        {
-                                "id": 3444,
-                                "unitNumber": 4,
-                                "title": "Module IV: Final Project Viva & Departmental Defense",
-                                "subtopics": "Live project demonstration, oral defense, and external viva voce examination.",
-                                "hours": 36
-                        }
-                ],
-                "pyqs": []
-        }
-];
-    const OFFICIAL_CSE_MODULES = [
-        {
-                "courseCode": "ESC 301",
-                "courseName": "Analog and Digital Electronics",
-                "semester": 3,
-                "unitId": 3011,
-                "unitNumber": 1,
-                "title": "Module I: Analog Electronics & Operational Amplifiers",
-                "subtopics": "BJT characteristics, biasing and amplifier configurations, Operational Amplifiers (Op-Amps), inverting and non-inverting configurations, active filters, Schmitt trigger.",
-                "hours": 10
-        },
-        {
-                "courseCode": "ESC 301",
-                "courseName": "Analog and Digital Electronics",
-                "semester": 3,
-                "unitId": 3012,
-                "unitNumber": 2,
-                "title": "Module II: Combinational Logic Circuits",
-                "subtopics": "Boolean algebra, De Morgan's laws, Karnaugh maps (K-map) minimization, encoders, decoders, multiplexers, demultiplexers, binary adders and subtractors.",
-                "hours": 9
-        },
-        {
-                "courseCode": "ESC 301",
-                "courseName": "Analog and Digital Electronics",
-                "semester": 3,
-                "unitId": 3013,
-                "unitNumber": 3,
-                "title": "Module III: Sequential Logic & Registers",
-                "subtopics": "Latches, flip-flops (SR, JK, D, T), master-slave JK flip-flop, edge triggering, shift registers, ripple counters, synchronous counters, finite state machines.",
-                "hours": 9
-        },
-        {
-                "courseCode": "ESC 301",
-                "courseName": "Analog and Digital Electronics",
-                "semester": 3,
-                "unitId": 3014,
-                "unitNumber": 4,
-                "title": "Module IV: Data Converters & Semiconductor Memories",
-                "subtopics": "D/A converters (weighted resistor, R-2R ladder), A/D converters (flash, successive approximation, dual slope), RAM, ROM, PLA, PAL and FPGA basics.",
-                "hours": 8
-        },
-        {
-                "courseCode": "PCC-CS301",
-                "courseName": "Data Structure & Algorithms",
-                "semester": 3,
-                "unitId": 3021,
-                "unitNumber": 1,
-                "title": "Module I: Linear Data Structures, Stacks & Queues",
-                "subtopics": "Arrays, sparse matrices, stack operations, infix to postfix conversion, postfix evaluation, queue, circular queue, priority queue, deque.",
-                "hours": 7
-        },
-        {
-                "courseCode": "PCC-CS301",
-                "courseName": "Data Structure & Algorithms",
-                "semester": 3,
-                "unitId": 3022,
-                "unitNumber": 2,
-                "title": "Module II: Linked Lists & Dynamic Storage",
-                "subtopics": "Singly linked lists, circular linked lists, doubly linked lists, polynomial representation and addition, memory allocation and garbage collection.",
-                "hours": 7
-        },
-        {
-                "courseCode": "PCC-CS301",
-                "courseName": "Data Structure & Algorithms",
-                "semester": 3,
-                "unitId": 3023,
-                "unitNumber": 3,
-                "title": "Module III: Trees, BST & Balanced Trees",
-                "subtopics": "Binary trees, representation, traversals (preorder, inorder, postorder), binary search trees (BST), insertion, deletion, AVL trees, rotations, B-Trees and B+ Trees.",
-                "hours": 8
-        },
-        {
-                "courseCode": "PCC-CS301",
-                "courseName": "Data Structure & Algorithms",
-                "semester": 3,
-                "unitId": 3024,
-                "unitNumber": 4,
-                "title": "Module IV: Graph Algorithms & Traversals",
-                "subtopics": "Graph representations (adjacency matrix and list), BFS, DFS, topological sort, minimum spanning trees (Prim's and Kruskal's), single-source shortest path (Dijkstra's).",
-                "hours": 7
-        },
-        {
-                "courseCode": "PCC-CS301",
-                "courseName": "Data Structure & Algorithms",
-                "semester": 3,
-                "unitId": 3025,
-                "unitNumber": 5,
-                "title": "Module V: Searching, Sorting & Hashing",
-                "subtopics": "Linear and binary search, Bubble, Insertion, Selection, Quick Sort, Merge Sort, Heap Sort, hash functions, collision resolution (chaining, open addressing).",
-                "hours": 7
-        },
-        {
-                "courseCode": "PCC-CS302",
-                "courseName": "Computer Organisation",
-                "semester": 3,
-                "unitId": 3031,
-                "unitNumber": 1,
-                "title": "Module I: Basic Computer Organization & Buses",
-                "subtopics": "Functional units, bus structures, bus arbitration, instruction cycle, instruction formats, addressing modes, CISC vs RISC architectures.",
-                "hours": 7
-        },
-        {
-                "courseCode": "PCC-CS302",
-                "courseName": "Computer Organisation",
-                "semester": 3,
-                "unitId": 3032,
-                "unitNumber": 2,
-                "title": "Module II: Central Processing Unit & Control Design",
-                "subtopics": "ALU design, register organization, control unit operations, hardwired control vs microprogrammed control, microinstruction sequencing and execution.",
-                "hours": 8
-        },
-        {
-                "courseCode": "PCC-CS302",
-                "courseName": "Computer Organisation",
-                "semester": 3,
-                "unitId": 3033,
-                "unitNumber": 3,
-                "title": "Module III: Computer Arithmetic",
-                "subtopics": "Fixed point arithmetic, addition and subtraction, multiplication algorithms (Booth's algorithm), division algorithms (restoring and non-restoring), IEEE 754 floating point standard.",
-                "hours": 7
-        },
-        {
-                "courseCode": "PCC-CS302",
-                "courseName": "Computer Organisation",
-                "semester": 3,
-                "unitId": 3034,
-                "unitNumber": 4,
-                "title": "Module IV: Memory Hierarchy & Cache Design",
-                "subtopics": "Memory hierarchy, semiconductor RAM/ROM, cache memory mapping (direct, associative, set-associative), cache replacement policies, virtual memory, paging, TLB.",
-                "hours": 8
-        },
-        {
-                "courseCode": "PCC-CS302",
-                "courseName": "Computer Organisation",
-                "semester": 3,
-                "unitId": 3035,
-                "unitNumber": 5,
-                "title": "Module V: Input-Output Organization & DMA",
-                "subtopics": "Programmed I/O, interrupt-driven I/O, priority interrupts, Direct Memory Access (DMA) controller and transfer modes, standard I/O interfaces.",
-                "hours": 6
-        },
-        {
-                "courseCode": "BSC 301",
-                "courseName": "Mathematics-III (Differential Calculus)",
-                "semester": 3,
-                "unitId": 3041,
-                "unitNumber": 1,
-                "title": "Module I: Higher Order Ordinary Differential Equations",
-                "subtopics": "Exact equations, linear differential equations of higher order with constant coefficients, method of variation of parameters, Cauchy-Euler equations.",
-                "hours": 6
-        },
-        {
-                "courseCode": "BSC 301",
-                "courseName": "Mathematics-III (Differential Calculus)",
-                "semester": 3,
-                "unitId": 3042,
-                "unitNumber": 2,
-                "title": "Module II: Series Solutions of Differential Equations",
-                "subtopics": "Power series method, Frobenius method, Legendre polynomials and recurrence relations, Bessel functions and their properties.",
-                "hours": 6
-        },
-        {
-                "courseCode": "BSC 301",
-                "courseName": "Mathematics-III (Differential Calculus)",
-                "semester": 3,
-                "unitId": 3043,
-                "unitNumber": 3,
-                "title": "Module III: Partial Differential Equations",
-                "subtopics": "Formation of PDEs, first order linear equations (Lagrange's method), non-linear first order equations (Charpit's method), homogeneous PDEs with constant coefficients.",
-                "hours": 6
-        },
-        {
-                "courseCode": "BSC 301",
-                "courseName": "Mathematics-III (Differential Calculus)",
-                "semester": 3,
-                "unitId": 3044,
-                "unitNumber": 4,
-                "title": "Module IV: Boundary Value Problems & Applications",
-                "subtopics": "Classification of second order PDEs, one-dimensional wave equation, one-dimensional heat conduction equation, Laplace's equation in two dimensions.",
-                "hours": 6
-        },
-        {
-                "courseCode": "HSMC 301",
-                "courseName": "Economics for Engineers (Humanities-II)",
-                "semester": 3,
-                "unitId": 3051,
-                "unitNumber": 1,
-                "title": "Module I: Engineering Economics & Market Dynamics",
-                "subtopics": "Nature and scope of economics, law of demand and supply, elasticity of demand, factors of production, market structures (perfect competition, monopoly, oligopoly).",
-                "hours": 9
-        },
-        {
-                "courseCode": "HSMC 301",
-                "courseName": "Economics for Engineers (Humanities-II)",
-                "semester": 3,
-                "unitId": 3052,
-                "unitNumber": 2,
-                "title": "Module II: Cost Analysis & Break-Even Evaluation",
-                "subtopics": "Cost concepts (fixed, variable, marginal, sunk), cost-output relationship, break-even analysis, profit-volume (P/V) ratio, margin of safety.",
-                "hours": 9
-        },
-        {
-                "courseCode": "HSMC 301",
-                "courseName": "Economics for Engineers (Humanities-II)",
-                "semester": 3,
-                "unitId": 3053,
-                "unitNumber": 3,
-                "title": "Module III: Time Value of Money & Project Appraisal",
-                "subtopics": "Present worth, future worth, annuities, discounted cash flow techniques, Net Present Value (NPV), Internal Rate of Return (IRR), Payback period, Benefit-Cost ratio.",
-                "hours": 10
-        },
-        {
-                "courseCode": "HSMC 301",
-                "courseName": "Economics for Engineers (Humanities-II)",
-                "semester": 3,
-                "unitId": 3054,
-                "unitNumber": 4,
-                "title": "Module IV: Inflation, Depreciation & Financial Accounting",
-                "subtopics": "Inflation causes and remedies, depreciation methods (straight-line, declining balance, sum-of-years digits), elementary financial statements and ratio analysis.",
-                "hours": 8
-        },
-        {
-                "courseCode": "PCC-CS393",
-                "courseName": "IT Workshop (Sci Lab/MATLAB/Python/R)",
-                "semester": 3,
-                "unitId": 3061,
-                "unitNumber": 1,
-                "title": "Module I: Python for Scientific Computing",
-                "subtopics": "NumPy arrays, vectorization, matrix operations, SciPy numerical integration, and Matplotlib data visualization.",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS393",
-                "courseName": "IT Workshop (Sci Lab/MATLAB/Python/R)",
-                "semester": 3,
-                "unitId": 3062,
-                "unitNumber": 2,
-                "title": "Module II: MATLAB / SciLab Programming",
-                "subtopics": "Scripts, functions, matrix manipulations, linear equation solving, 2D/3D plotting, and control simulation.",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS393",
-                "courseName": "IT Workshop (Sci Lab/MATLAB/Python/R)",
-                "semester": 3,
-                "unitId": 3063,
-                "unitNumber": 3,
-                "title": "Module III: Statistical Computing with R",
-                "subtopics": "R data frames, data cleaning, summary statistics, probability distributions, hypothesis testing, and ggplot2 plotting.",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS393",
-                "courseName": "IT Workshop (Sci Lab/MATLAB/Python/R)",
-                "semester": 3,
-                "unitId": 3064,
-                "unitNumber": 4,
-                "title": "Module IV: Applied Mini-Project",
-                "subtopics": "Real-world numerical modeling or data analytics pipeline using Python/R.",
-                "hours": 12
-        },
-        {
-                "courseCode": "ESC 391",
-                "courseName": "Analog and Digital Electronics Lab",
-                "semester": 3,
-                "unitId": 3071,
-                "unitNumber": 1,
-                "title": "Module I: BJT & Operational Amplifier Circuits",
-                "subtopics": "Frequency response of CE amplifier, inverting and non-inverting Op-Amp circuits, adder and comparator circuits.",
-                "hours": 12
-        },
-        {
-                "courseCode": "ESC 391",
-                "courseName": "Analog and Digital Electronics Lab",
-                "semester": 3,
-                "unitId": 3072,
-                "unitNumber": 2,
-                "title": "Module II: Combinational Logic Implementation",
-                "subtopics": "Realization of boolean functions using basic and universal gates, multiplexer and demultiplexer ICs, binary adders.",
-                "hours": 12
-        },
-        {
-                "courseCode": "ESC 391",
-                "courseName": "Analog and Digital Electronics Lab",
-                "semester": 3,
-                "unitId": 3073,
-                "unitNumber": 3,
-                "title": "Module III: Sequential Circuits & Counters",
-                "subtopics": "Truth table verification of JK, D, T flip-flops, design and realization of 3-bit ripple and synchronous up/down counters.",
-                "hours": 12
-        },
-        {
-                "courseCode": "ESC 391",
-                "courseName": "Analog and Digital Electronics Lab",
-                "semester": 3,
-                "unitId": 3074,
-                "unitNumber": 4,
-                "title": "Module IV: Converters & Timer Circuits",
-                "subtopics": "Digital-to-Analog converter using R-2R ladder, 555 timer astable and monostable multivibrators.",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS391",
-                "courseName": "Data Structure & Algorithms Lab",
-                "semester": 3,
-                "unitId": 3081,
-                "unitNumber": 1,
-                "title": "Module I: Stack, Queue & Linked List Implementations",
-                "subtopics": "Stack using arrays, infix to postfix evaluator, circular queue implementation, singly and doubly linked list manipulation.",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS391",
-                "courseName": "Data Structure & Algorithms Lab",
-                "semester": 3,
-                "unitId": 3082,
-                "unitNumber": 2,
-                "title": "Module II: Tree Algorithms & Traversals",
-                "subtopics": "Binary tree representation, recursive and iterative traversals, Binary Search Tree (BST) insertion, search, and deletion.",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS391",
-                "courseName": "Data Structure & Algorithms Lab",
-                "semester": 3,
-                "unitId": 3083,
-                "unitNumber": 3,
-                "title": "Module III: Graph Algorithms Implementation",
-                "subtopics": "BFS and DFS traversals, Prim's and Kruskal's minimum spanning tree algorithms, Dijkstra's shortest path.",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS391",
-                "courseName": "Data Structure & Algorithms Lab",
-                "semester": 3,
-                "unitId": 3084,
-                "unitNumber": 4,
-                "title": "Module IV: Sorting, Searching & Hashing Experiments",
-                "subtopics": "Quick Sort, Merge Sort, Heap Sort benchmarking, open addressing and chaining hash table implementations.",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS392",
-                "courseName": "Computer Organisation Lab",
-                "semester": 3,
-                "unitId": 3091,
-                "unitNumber": 1,
-                "title": "Module I: ALU & Arithmetic Circuit Design",
-                "subtopics": "4-bit Ripple Carry Adder, Carry-Lookahead Adder, Arithmetic Logic Unit (ALU) design and verification.",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS392",
-                "courseName": "Computer Organisation Lab",
-                "semester": 3,
-                "unitId": 3092,
-                "unitNumber": 2,
-                "title": "Module II: Multiplier & Fast Arithmetic Simulation",
-                "subtopics": "Implementation of Booth's multiplication algorithm and restoring division algorithm using Verilog/VHDL.",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS392",
-                "courseName": "Computer Organisation Lab",
-                "semester": 3,
-                "unitId": 3093,
-                "unitNumber": 3,
-                "title": "Module III: Memory & Cache Controller Simulation",
-                "subtopics": "Direct mapped and set-associative cache hit/miss simulation and analysis using cache simulators.",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS392",
-                "courseName": "Computer Organisation Lab",
-                "semester": 3,
-                "unitId": 3094,
-                "unitNumber": 4,
-                "title": "Module IV: CPU Datapath & Instruction Cycle",
-                "subtopics": "Single-cycle datapath and register transfer simulation for basic CPU instruction set execution.",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS401",
-                "courseName": "Discrete Mathematics",
-                "semester": 4,
-                "unitId": 3101,
-                "unitNumber": 1,
-                "title": "Module I: Sets, Relations, Functions & Induction",
-                "subtopics": "Sets, power sets, relations, equivalence relations, partial orderings, lattices, functions, bijection, pigeonhole principle, mathematical induction.",
-                "hours": 10
-        },
-        {
-                "courseCode": "PCC-CS401",
-                "courseName": "Discrete Mathematics",
-                "semester": 4,
-                "unitId": 3102,
-                "unitNumber": 2,
-                "title": "Module II: Propositional & Predicate Logic",
-                "subtopics": "Propositions, connectives, truth tables, tautologies, normal forms (DNF, CNF), predicate logic, quantifiers, rules of inference, validity proofs.",
-                "hours": 10
-        },
-        {
-                "courseCode": "PCC-CS401",
-                "courseName": "Discrete Mathematics",
-                "semester": 4,
-                "unitId": 3103,
-                "unitNumber": 3,
-                "title": "Module III: Combinatorics & Recurrence Relations",
-                "subtopics": "Permutations, combinations, inclusion-exclusion principle, generating functions, linear homogeneous and non-homogeneous recurrence relations.",
-                "hours": 10
-        },
-        {
-                "courseCode": "PCC-CS401",
-                "courseName": "Discrete Mathematics",
-                "semester": 4,
-                "unitId": 3104,
-                "unitNumber": 4,
-                "title": "Module IV: Algebraic Structures & Modern Algebra",
-                "subtopics": "Semigroups, monoids, groups, subgroups, cyclic groups, cosets, Lagrange's theorem, rings, fields, Boolean algebra representations.",
-                "hours": 10
-        },
-        {
-                "courseCode": "PCC-CS401",
-                "courseName": "Discrete Mathematics",
-                "semester": 4,
-                "unitId": 3105,
-                "unitNumber": 5,
-                "title": "Module V: Graph Theory & Trees",
-                "subtopics": "Graphs, subgraphs, isomorphism, paths, cycles, Eulerian and Hamiltonian circuits, planar graphs, graph coloring, trees, spanning trees.",
-                "hours": 8
-        },
-        {
-                "courseCode": "PCC-CS402",
-                "courseName": "Computer Architecture",
-                "semester": 4,
-                "unitId": 3111,
-                "unitNumber": 1,
-                "title": "Module I: Performance Principles & Instruction Pipelining",
-                "subtopics": "Quantitative principles of design, Amdahl's law, instruction pipelining, pipeline hazards (structural, data, control), branch penalties, delayed branch.",
-                "hours": 9
-        },
-        {
-                "courseCode": "PCC-CS402",
-                "courseName": "Computer Architecture",
-                "semester": 4,
-                "unitId": 3112,
-                "unitNumber": 2,
-                "title": "Module II: Instruction-Level Parallelism & Dynamic Scheduling",
-                "subtopics": "Dynamic scheduling, Tomasulo's algorithm, hardware-based speculation, reorder buffer (ROB), multiple issue processors (superscalar, VLIW).",
-                "hours": 9
-        },
-        {
-                "courseCode": "PCC-CS402",
-                "courseName": "Computer Architecture",
-                "semester": 4,
-                "unitId": 3113,
-                "unitNumber": 3,
-                "title": "Module III: Memory Hierarchy & Advanced Cache Optimizations",
-                "subtopics": "Multi-level caches, non-blocking caches, critical word first, trace caches, virtual memory management, TLB misses and hardware page tables.",
-                "hours": 9
-        },
-        {
-                "courseCode": "PCC-CS402",
-                "courseName": "Computer Architecture",
-                "semester": 4,
-                "unitId": 3114,
-                "unitNumber": 4,
-                "title": "Module IV: Multiprocessors & Cache Coherence",
-                "subtopics": "Symmetric multiprocessors (SMP), distributed shared memory (DSM), cache coherence protocols (MESI, MOESI), snooping vs directory-based protocols, interconnection networks.",
-                "hours": 9
-        },
-        {
-                "courseCode": "PCC-CS403",
-                "courseName": "Formal Language & Automata Theory",
-                "semester": 4,
-                "unitId": 3121,
-                "unitNumber": 1,
-                "title": "Module I: Finite Automata & Regular Languages",
-                "subtopics": "Deterministic Finite Automata (DFA), NFA, epsilon-NFA, DFA minimization (Myhill-Nerode), regular expressions, Arden's theorem, pumping lemma for regular languages.",
-                "hours": 10
-        },
-        {
-                "courseCode": "PCC-CS403",
-                "courseName": "Formal Language & Automata Theory",
-                "semester": 4,
-                "unitId": 3122,
-                "unitNumber": 2,
-                "title": "Module II: Context-Free Grammars & Normal Forms",
-                "subtopics": "Context-Free Grammars (CFG), derivation trees, ambiguity, simplification of grammars, Chomsky Normal Form (CNF), Greibach Normal Form (GNF), pumping lemma for CFLs.",
-                "hours": 9
-        },
-        {
-                "courseCode": "PCC-CS403",
-                "courseName": "Formal Language & Automata Theory",
-                "semester": 4,
-                "unitId": 3123,
-                "unitNumber": 3,
-                "title": "Module III: Pushdown Automata (PDA)",
-                "subtopics": "Pushdown Automata (PDA) definition, acceptance by final state and empty stack, equivalence of PDA and CFG, Deterministic Pushdown Automata (DPDA).",
-                "hours": 8
-        },
-        {
-                "courseCode": "PCC-CS403",
-                "courseName": "Formal Language & Automata Theory",
-                "semester": 4,
-                "unitId": 3124,
-                "unitNumber": 4,
-                "title": "Module IV: Turing Machines & Undecidability",
-                "subtopics": "Turing Machine model, multi-tape TMs, Church-Turing thesis, Universal Turing Machine, Halting problem, Post Correspondence Problem (PCP), Chomsky hierarchy.",
-                "hours": 9
-        },
-        {
-                "courseCode": "PCC-CS404",
-                "courseName": "Design & Analysis of Algorithms",
-                "semester": 4,
-                "unitId": 3131,
-                "unitNumber": 1,
-                "title": "Module I: Algorithm Analysis & Asymptotic Bounds",
-                "subtopics": "Big-O, Omega, Theta notations, recurrence relations, Master Theorem, substitution method, recursion-tree method.",
-                "hours": 6
-        },
-        {
-                "courseCode": "PCC-CS404",
-                "courseName": "Design & Analysis of Algorithms",
-                "semester": 4,
-                "unitId": 3132,
-                "unitNumber": 2,
-                "title": "Module II: Divide & Conquer Strategies",
-                "subtopics": "Merge Sort, Quick Sort analysis (worst, average cases), Strassen's matrix multiplication, order statistics and median finding.",
-                "hours": 6
-        },
-        {
-                "courseCode": "PCC-CS404",
-                "courseName": "Design & Analysis of Algorithms",
-                "semester": 4,
-                "unitId": 3133,
-                "unitNumber": 3,
-                "title": "Module III: Greedy Algorithms",
-                "subtopics": "Fractional Knapsack, Huffman coding, Job sequencing with deadlines, Prim's and Kruskal's algorithms, matroid theory fundamentals.",
-                "hours": 6
-        },
-        {
-                "courseCode": "PCC-CS404",
-                "courseName": "Design & Analysis of Algorithms",
-                "semester": 4,
-                "unitId": 3134,
-                "unitNumber": 4,
-                "title": "Module IV: Dynamic Programming",
-                "subtopics": "Matrix Chain Multiplication, Longest Common Subsequence (LCS), 0/1 Knapsack, Bellman-Ford shortest paths, Floyd-Warshall all-pairs shortest paths.",
-                "hours": 7
-        },
-        {
-                "courseCode": "PCC-CS404",
-                "courseName": "Design & Analysis of Algorithms",
-                "semester": 4,
-                "unitId": 3135,
-                "unitNumber": 5,
-                "title": "Module V: Backtracking & Branch and Bound",
-                "subtopics": "N-Queens problem, Graph Coloring, Hamiltonian Cycle, Subset Sum problem, Traveling Salesperson Problem (TSP) using branch and bound.",
-                "hours": 6
-        },
-        {
-                "courseCode": "PCC-CS404",
-                "courseName": "Design & Analysis of Algorithms",
-                "semester": 4,
-                "unitId": 3136,
-                "unitNumber": 6,
-                "title": "Module VI: Complexity Classes & NP-Completeness",
-                "subtopics": "Tractable vs intractable problems, classes P, NP, NP-Complete, NP-Hard, Cook's Theorem, polynomial-time reductions (3-SAT, Clique, Vertex Cover).",
-                "hours": 5
-        },
-        {
-                "courseCode": "BSC 401",
-                "courseName": "Biology",
-                "semester": 4,
-                "unitId": 3141,
-                "unitNumber": 1,
-                "title": "Module I: Living World & Biomolecules",
-                "subtopics": "Macromolecules of life: proteins, carbohydrates, lipids, nucleic acids, cell structure, membrane transport, and bioenergetics.",
-                "hours": 9
-        },
-        {
-                "courseCode": "BSC 401",
-                "courseName": "Biology",
-                "semester": 4,
-                "unitId": 3142,
-                "unitNumber": 2,
-                "title": "Module II: Genetics & Molecular Information Flow",
-                "subtopics": "Mendelian genetics, DNA double helix structure, DNA replication, transcription, translation, genetic code, gene regulation.",
-                "hours": 9
-        },
-        {
-                "courseCode": "BSC 401",
-                "courseName": "Biology",
-                "semester": 4,
-                "unitId": 3143,
-                "unitNumber": 3,
-                "title": "Module III: Enzymes & Metabolism",
-                "subtopics": "Enzyme kinetics (Michaelis-Menten), inhibition, metabolic pathways: glycolysis, TCA cycle, oxidative phosphorylation.",
-                "hours": 9
-        },
-        {
-                "courseCode": "BSC 401",
-                "courseName": "Biology",
-                "semester": 4,
-                "unitId": 3144,
-                "unitNumber": 4,
-                "title": "Module IV: Applied Biology & Computational Models",
-                "subtopics": "Recombinant DNA technology, biosensors, bioinformatics algorithms, neural network inspiration from biology, synthetic biology overview.",
-                "hours": 9
-        },
-        {
-                "courseCode": "MC401",
-                "courseName": "Environmental Sciences",
-                "semester": 4,
-                "unitId": 3151,
-                "unitNumber": 1,
-                "title": "Module I: Ecosystems & Biodiversity",
-                "subtopics": "Ecosystem structure, food chains, energy flow, biodiversity value, threats, and in-situ/ex-situ conservation strategies.",
-                "hours": 4
-        },
-        {
-                "courseCode": "MC401",
-                "courseName": "Environmental Sciences",
-                "semester": 4,
-                "unitId": 3152,
-                "unitNumber": 2,
-                "title": "Module II: Environmental Pollution & Waste Management",
-                "subtopics": "Air, water, soil, noise pollution, electronic waste (e-waste) management, treatment technologies and recycling methods.",
-                "hours": 4
-        },
-        {
-                "courseCode": "MC401",
-                "courseName": "Environmental Sciences",
-                "semester": 4,
-                "unitId": 3153,
-                "unitNumber": 3,
-                "title": "Module III: Climate Change & Sustainable Governance",
-                "subtopics": "Greenhouse effect, ozone depletion, carbon footprint, Environmental Protection Act, environmental impact assessment (EIA), SDGs.",
-                "hours": 4
-        },
-        {
-                "courseCode": "PCC-CS492",
-                "courseName": "Computer Architecture Lab",
-                "semester": 4,
-                "unitId": 3161,
-                "unitNumber": 1,
-                "title": "Module I: Pipelined Datapath Simulation",
-                "subtopics": "Design and timing simulation of 5-stage instruction pipeline in HDL (Verilog/VHDL).",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS492",
-                "courseName": "Computer Architecture Lab",
-                "semester": 4,
-                "unitId": 3162,
-                "unitNumber": 2,
-                "title": "Module II: Hazard Detection & Forwarding Units",
-                "subtopics": "Implementation of data forwarding, hazard detection, and pipeline stall logic.",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS492",
-                "courseName": "Computer Architecture Lab",
-                "semester": 4,
-                "unitId": 3163,
-                "unitNumber": 3,
-                "title": "Module III: Branch Prediction Simulators",
-                "subtopics": "Dynamic branch prediction implementation (1-bit and 2-bit saturating counters).",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS492",
-                "courseName": "Computer Architecture Lab",
-                "semester": 4,
-                "unitId": 3164,
-                "unitNumber": 4,
-                "title": "Module IV: Multi-Level Cache Memory Experiments",
-                "subtopics": "Performance evaluation of L1/L2 caches under varying block sizes and associativity.",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS494",
-                "courseName": "Design & Analysis of Algorithms Lab",
-                "semester": 4,
-                "unitId": 3171,
-                "unitNumber": 1,
-                "title": "Module I: Divide & Conquer Implementations",
-                "subtopics": "Quick Sort vs Merge Sort performance benchmarking under varying input distributions.",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS494",
-                "courseName": "Design & Analysis of Algorithms Lab",
-                "semester": 4,
-                "unitId": 3172,
-                "unitNumber": 2,
-                "title": "Module II: Greedy Strategy Implementations",
-                "subtopics": "Fractional Knapsack, Huffman coding tree generation, Prim's and Kruskal's MST algorithms.",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS494",
-                "courseName": "Design & Analysis of Algorithms Lab",
-                "semester": 4,
-                "unitId": 3173,
-                "unitNumber": 3,
-                "title": "Module III: Dynamic Programming Implementations",
-                "subtopics": "Matrix Chain Multiplication, Longest Common Subsequence (LCS), 0/1 Knapsack problem.",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS494",
-                "courseName": "Design & Analysis of Algorithms Lab",
-                "semester": 4,
-                "unitId": 3174,
-                "unitNumber": 4,
-                "title": "Module IV: Backtracking & Shortest Path",
-                "subtopics": "N-Queens problem, Graph coloring, Dijkstra's algorithm, Bellman-Ford shortest paths.",
-                "hours": 12
-        },
-        {
-                "courseCode": "ESC501",
-                "courseName": "Software Engineering",
-                "semester": 5,
-                "unitId": 3181,
-                "unitNumber": 1,
-                "title": "Module I: Software Life Cycle & Agile Models",
-                "subtopics": "Waterfall, incremental, spiral, prototype models, Agile values, Scrum framework, sprint planning, user stories, extreme programming.",
-                "hours": 8
-        },
-        {
-                "courseCode": "ESC501",
-                "courseName": "Software Engineering",
-                "semester": 5,
-                "unitId": 3182,
-                "unitNumber": 2,
-                "title": "Module II: Requirements Engineering & SRS",
-                "subtopics": "Requirements elicitation techniques, functional and non-functional requirements, IEEE 830 SRS document standards, Use Case diagrams.",
-                "hours": 7
-        },
-        {
-                "courseCode": "ESC501",
-                "courseName": "Software Engineering",
-                "semester": 5,
-                "unitId": 3183,
-                "unitNumber": 3,
-                "title": "Module III: Software Design & Architecture",
-                "subtopics": "Cohesion and coupling, architectural styles (layered, MVC, microservices), UML structural and behavioral diagrams (Class, Sequence, Activity).",
-                "hours": 7
-        },
-        {
-                "courseCode": "ESC501",
-                "courseName": "Software Engineering",
-                "semester": 5,
-                "unitId": 3184,
-                "unitNumber": 4,
-                "title": "Module IV: Software Testing & Quality Assurance",
-                "subtopics": "Black-box testing (equivalence partitioning, boundary value analysis), white-box testing (control flow, cyclomatic complexity), integration and regression testing.",
-                "hours": 7
-        },
-        {
-                "courseCode": "ESC501",
-                "courseName": "Software Engineering",
-                "semester": 5,
-                "unitId": 3185,
-                "unitNumber": 5,
-                "title": "Module V: Software Maintenance & Project Metrics",
-                "subtopics": "COCOMO effort estimation, software maintenance types, configuration management (Git, CI/CD), software reliability and ISO 9001/CMMI standards.",
-                "hours": 7
-        },
-        {
-                "courseCode": "PCC-CS501",
-                "courseName": "Compiler Design",
-                "semester": 5,
-                "unitId": 3191,
-                "unitNumber": 1,
-                "title": "Module I: Lexical Analysis & Finite Automata",
-                "subtopics": "Compiler phases, role of lexical analyzer, tokens, patterns, lexemes, regular expressions to DFA, Lex / Flex scanner generator tool.",
-                "hours": 7
-        },
-        {
-                "courseCode": "PCC-CS501",
-                "courseName": "Compiler Design",
-                "semester": 5,
-                "unitId": 3192,
-                "unitNumber": 2,
-                "title": "Module II: Syntax Analysis & Parsing",
-                "subtopics": "Context-free grammars, top-down parsing (Recursive Descent, LL(1) parse tables), bottom-up parsing (Shift-Reduce, LR(0), SLR(1), LR(1), LALR(1)), Yacc / Bison.",
-                "hours": 9
-        },
-        {
-                "courseCode": "PCC-CS501",
-                "courseName": "Compiler Design",
-                "semester": 5,
-                "unitId": 3193,
-                "unitNumber": 3,
-                "title": "Module III: Syntax-Directed Translation (SDT)",
-                "subtopics": "Syntax-directed definitions (SDD), synthesized and inherited attributes, dependency graphs, evaluation orders, S-attributed and L-attributed definitions.",
-                "hours": 7
-        },
-        {
-                "courseCode": "PCC-CS501",
-                "courseName": "Compiler Design",
-                "semester": 5,
-                "unitId": 3194,
-                "unitNumber": 4,
-                "title": "Module IV: Intermediate Code Generation",
-                "subtopics": "Three-address code, quadruples, triples, indirect triples, translation of expressions, boolean expressions, and control flow statements.",
-                "hours": 7
-        },
-        {
-                "courseCode": "PCC-CS501",
-                "courseName": "Compiler Design",
-                "semester": 5,
-                "unitId": 3195,
-                "unitNumber": 5,
-                "title": "Module V: Code Optimization & Generation",
-                "subtopics": "Basic blocks and flow graphs, local and loop optimizations, common subexpression elimination, dead-code elimination, machine-dependent code generation.",
-                "hours": 6
-        },
-        {
-                "courseCode": "PCC-CS502",
-                "courseName": "Operating Systems",
-                "semester": 5,
-                "unitId": 3201,
-                "unitNumber": 1,
-                "title": "Module I: Operating System Architecture & System Calls",
-                "subtopics": "OS concepts, system calls, OS structure (monolithic, layered, microkernel), dual-mode operations, context switching.",
-                "hours": 6
-        },
-        {
-                "courseCode": "PCC-CS502",
-                "courseName": "Operating Systems",
-                "semester": 5,
-                "unitId": 3202,
-                "unitNumber": 2,
-                "title": "Module II: Process Management & CPU Scheduling",
-                "subtopics": "Process states, PCB, thread models, scheduling criteria, FCFS, SJF, SRTF, Priority, Round Robin, multi-level queue scheduling.",
-                "hours": 6
-        },
-        {
-                "courseCode": "PCC-CS502",
-                "courseName": "Operating Systems",
-                "semester": 5,
-                "unitId": 3203,
-                "unitNumber": 3,
-                "title": "Module III: Inter-Process Communication & Synchronization",
-                "subtopics": "Critical section problem, Peterson's algorithm, semaphores, mutex, monitors, classical IPC problems (Producer-Consumer, Readers-Writers, Dining Philosophers).",
-                "hours": 6
-        },
-        {
-                "courseCode": "PCC-CS502",
-                "courseName": "Operating Systems",
-                "semester": 5,
-                "unitId": 3204,
-                "unitNumber": 4,
-                "title": "Module IV: Deadlocks Detection & Avoidance",
-                "subtopics": "Deadlock characterization, four necessary conditions, resource allocation graphs, deadlock prevention, Banker's algorithm for avoidance, detection and recovery.",
-                "hours": 6
-        },
-        {
-                "courseCode": "PCC-CS502",
-                "courseName": "Operating Systems",
-                "semester": 5,
-                "unitId": 3205,
-                "unitNumber": 5,
-                "title": "Module V: Memory Management & Virtual Memory",
-                "subtopics": "Contiguous allocation, paging, segmentation, TLB, demand paging, page faults, page replacement algorithms (FIFO, Optimal, LRU, Clock).",
-                "hours": 6
-        },
-        {
-                "courseCode": "PCC-CS502",
-                "courseName": "Operating Systems",
-                "semester": 5,
-                "unitId": 3206,
-                "unitNumber": 6,
-                "title": "Module VI: File Systems & Storage Management",
-                "subtopics": "File attributes, directory structures, disk scheduling algorithms (FCFS, SSTF, SCAN, C-SCAN), RAID levels.",
-                "hours": 6
-        },
-        {
-                "courseCode": "PCC-CS503",
-                "courseName": "Object Oriented Programming",
-                "semester": 5,
-                "unitId": 3211,
-                "unitNumber": 1,
-                "title": "Module I: OOP Principles & Java Fundamentals",
-                "subtopics": "OOP concepts, JVM, JRE, bytecode, classes, objects, data types, control structures, constructors, method overloading, garbage collection.",
-                "hours": 7
-        },
-        {
-                "courseCode": "PCC-CS503",
-                "courseName": "Object Oriented Programming",
-                "semester": 5,
-                "unitId": 3212,
-                "unitNumber": 2,
-                "title": "Module II: Inheritance, Polymorphism & Interfaces",
-                "subtopics": "Inheritance types, method overriding, super and final keywords, dynamic method dispatch, abstract classes, interfaces, multiple inheritance via interfaces, packages.",
-                "hours": 8
-        },
-        {
-                "courseCode": "PCC-CS503",
-                "courseName": "Object Oriented Programming",
-                "semester": 5,
-                "unitId": 3213,
-                "unitNumber": 3,
-                "title": "Module III: Exception Handling & Multithreading",
-                "subtopics": "Try-catch-finally blocks, throw, throws, custom exceptions, Thread class, Runnable interface, thread synchronization, inter-thread communication.",
-                "hours": 7
-        },
-        {
-                "courseCode": "PCC-CS503",
-                "courseName": "Object Oriented Programming",
-                "semester": 5,
-                "unitId": 3214,
-                "unitNumber": 4,
-                "title": "Module IV: Collections Framework & Generics",
-                "subtopics": "Collections hierarchy, List, ArrayList, LinkedList, Set, HashSet, Map, HashMap, Iterators, generic classes and methods.",
-                "hours": 7
-        },
-        {
-                "courseCode": "PCC-CS503",
-                "courseName": "Object Oriented Programming",
-                "semester": 5,
-                "unitId": 3215,
-                "unitNumber": 5,
-                "title": "Module V: Streams, File I/O & Event Handling",
-                "subtopics": "Byte streams, character streams, serialization, event delegation model, ActionListeners, modern Java lambda expressions and streams.",
-                "hours": 7
-        },
-        {
-                "courseCode": "HSMC-501",
-                "courseName": "Introduction to Industrial Management (Humanities III)",
-                "semester": 5,
-                "unitId": 3221,
-                "unitNumber": 1,
-                "title": "Module I: Principles of Management",
-                "subtopics": "Taylor's scientific management, Fayol's administrative theory, functions of management: planning, organizing, staffing, directing, controlling.",
-                "hours": 9
-        },
-        {
-                "courseCode": "HSMC-501",
-                "courseName": "Introduction to Industrial Management (Humanities III)",
-                "semester": 5,
-                "unitId": 3222,
-                "unitNumber": 2,
-                "title": "Module II: Production Planning & Operations",
-                "subtopics": "Plant location and layout factors, Production Planning and Control (PPC), work study, method study, time study, process flow analysis.",
-                "hours": 9
-        },
-        {
-                "courseCode": "HSMC-501",
-                "courseName": "Introduction to Industrial Management (Humanities III)",
-                "semester": 5,
-                "unitId": 3223,
-                "unitNumber": 3,
-                "title": "Module III: Inventory Control & Supply Chain Management",
-                "subtopics": "ABC analysis, Economic Order Quantity (EOQ), reorder level, safety stock, just-in-time (JIT), supply chain fundamentals.",
-                "hours": 9
-        },
-        {
-                "courseCode": "HSMC-501",
-                "courseName": "Introduction to Industrial Management (Humanities III)",
-                "semester": 5,
-                "unitId": 3224,
-                "unitNumber": 4,
-                "title": "Module IV: Quality Control & Ergonomics",
-                "subtopics": "Total Quality Management (TQM), ISO 9000, Six Sigma concepts, Statistical Quality Control (SQC) control charts (X-bar, R-chart), ergonomics and industrial safety.",
-                "hours": 9
-        },
-        {
-                "courseCode": "PEC-IT501A/B/C/D",
-                "courseName": "Elective-I (Theory of Computation / Artificial Intelligence / Advanced Computer Architecture / Computer Graphics)",
-                "semester": 5,
-                "unitId": 3231,
-                "unitNumber": 1,
-                "title": "Module I: Intelligent Agents & State-Space Search",
-                "subtopics": "Foundations of AI, agent architectures, environment types, uninformed search (BFS, DFS, UCS), informed heuristic search (Greedy Best-First, A* search, admissibility).",
-                "hours": 9
-        },
-        {
-                "courseCode": "PEC-IT501A/B/C/D",
-                "courseName": "Elective-I (Theory of Computation / Artificial Intelligence / Advanced Computer Architecture / Computer Graphics)",
-                "semester": 5,
-                "unitId": 3232,
-                "unitNumber": 2,
-                "title": "Module II: Adversarial Search & Game Playing",
-                "subtopics": "Game theory basics, Minimax algorithm, Alpha-Beta pruning, evaluation functions, games of chance, constraint satisfaction problems (CSP).",
-                "hours": 9
-        },
-        {
-                "courseCode": "PEC-IT501A/B/C/D",
-                "courseName": "Elective-I (Theory of Computation / Artificial Intelligence / Advanced Computer Architecture / Computer Graphics)",
-                "semester": 5,
-                "unitId": 3233,
-                "unitNumber": 3,
-                "title": "Module III: Knowledge Representation & Logical Reasoning",
-                "subtopics": "Propositional logic, First-Order Predicate Logic (FOPL), forward and backward chaining, resolution refutation principle, semantic nets, frames.",
-                "hours": 9
-        },
-        {
-                "courseCode": "PEC-IT501A/B/C/D",
-                "courseName": "Elective-I (Theory of Computation / Artificial Intelligence / Advanced Computer Architecture / Computer Graphics)",
-                "semester": 5,
-                "unitId": 3234,
-                "unitNumber": 4,
-                "title": "Module IV: Probabilistic Reasoning & Machine Learning",
-                "subtopics": "Uncertainty handling, conditional probability, Bayes' Rule, Bayesian Networks, supervised and unsupervised machine learning algorithms.",
-                "hours": 9
-        },
-        {
-                "courseCode": "MC-CS501A/B",
-                "courseName": "Constitution of India / Essence of Indian Knowledge Tradition",
-                "semester": 5,
-                "unitId": 3241,
-                "unitNumber": 1,
-                "title": "Module I: Indian Constitutional Structure & Governance",
-                "subtopics": "Historical background, Preamble, Fundamental Rights, Fundamental Duties, Directive Principles of State Policy, Union and State Executive.",
-                "hours": 9
-        },
-        {
-                "courseCode": "MC-CS501A/B",
-                "courseName": "Constitution of India / Essence of Indian Knowledge Tradition",
-                "semester": 5,
-                "unitId": 3242,
-                "unitNumber": 2,
-                "title": "Module II: Essence of Indian Knowledge Tradition",
-                "subtopics": "Ancient Indian science, mathematics (Sulba Sutras, Aryabhatta, Brahmagupta), astronomy, linguistic systems, ethics, and philosophical systems.",
-                "hours": 9
-        },
-        {
-                "courseCode": "ESC-591",
-                "courseName": "Software Engineering Lab",
-                "semester": 5,
-                "unitId": 3251,
-                "unitNumber": 1,
-                "title": "Module I: Requirements Elicitation & SRS Drafting",
-                "subtopics": "Case study problem analysis and IEEE 830 standard SRS document preparation.",
-                "hours": 12
-        },
-        {
-                "courseCode": "ESC-591",
-                "courseName": "Software Engineering Lab",
-                "semester": 5,
-                "unitId": 3252,
-                "unitNumber": 2,
-                "title": "Module II: UML Modeling with CASE Tools",
-                "subtopics": "Creation of Use Case, Class, Sequence, and State Machine diagrams using CASE tools.",
-                "hours": 12
-        },
-        {
-                "courseCode": "ESC-591",
-                "courseName": "Software Engineering Lab",
-                "semester": 5,
-                "unitId": 3253,
-                "unitNumber": 3,
-                "title": "Module III: Test Case Design & Automated Testing",
-                "subtopics": "Black-box and white-box test suite execution, JUnit automated unit testing.",
-                "hours": 12
-        },
-        {
-                "courseCode": "ESC-591",
-                "courseName": "Software Engineering Lab",
-                "semester": 5,
-                "unitId": 3254,
-                "unitNumber": 4,
-                "title": "Module IV: Agile Sprint Execution & Version Control",
-                "subtopics": "Sprint execution, Git repository collaboration, code review, and project presentation.",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS592",
-                "courseName": "Operating Systems Lab",
-                "semester": 5,
-                "unitId": 3261,
-                "unitNumber": 1,
-                "title": "Module I: Linux Shell Scripting & System Calls",
-                "subtopics": "Bash scripts, file handling, system calls for process management (fork, wait, exec, exit).",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS592",
-                "courseName": "Operating Systems Lab",
-                "semester": 5,
-                "unitId": 3262,
-                "unitNumber": 2,
-                "title": "Module II: CPU Scheduling Implementations",
-                "subtopics": "C implementations of FCFS, SJF, Priority, and Round Robin scheduling algorithms.",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS592",
-                "courseName": "Operating Systems Lab",
-                "semester": 5,
-                "unitId": 3263,
-                "unitNumber": 3,
-                "title": "Module III: Process Synchronization & Deadlock",
-                "subtopics": "POSIX semaphores, mutex locks for Producer-Consumer problem, Banker's algorithm simulation.",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS592",
-                "courseName": "Operating Systems Lab",
-                "semester": 5,
-                "unitId": 3264,
-                "unitNumber": 4,
-                "title": "Module IV: Memory Management & Page Replacement",
-                "subtopics": "Simulation of FIFO, LRU, and Optimal page replacement algorithms and hit/miss ratio calculation.",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS593",
-                "courseName": "Object Oriented Programming Lab",
-                "semester": 5,
-                "unitId": 3271,
-                "unitNumber": 1,
-                "title": "Module I: Class Design & Inheritance in Java",
-                "subtopics": "Encapsulation, constructors, inheritance hierarchies, abstract classes, interface implementations.",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS593",
-                "courseName": "Object Oriented Programming Lab",
-                "semester": 5,
-                "unitId": 3272,
-                "unitNumber": 2,
-                "title": "Module II: Exception Handling & File I/O Streams",
-                "subtopics": "Checked and unchecked exception handling, file stream operations, object serialization.",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS593",
-                "courseName": "Object Oriented Programming Lab",
-                "semester": 5,
-                "unitId": 3273,
-                "unitNumber": 3,
-                "title": "Module III: Multithreading & Synchronization",
-                "subtopics": "Thread creation via Runnable and Thread, synchronized blocks, wait/notify mechanisms.",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS593",
-                "courseName": "Object Oriented Programming Lab",
-                "semester": 5,
-                "unitId": 3274,
-                "unitNumber": 4,
-                "title": "Module IV: Java Collections & Mini-Application",
-                "subtopics": "Using List, Set, Map collections, developing a comprehensive console or GUI CRUD application.",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS601",
-                "courseName": "Database Management Systems",
-                "semester": 6,
-                "unitId": 3281,
-                "unitNumber": 1,
-                "title": "Module I: Database Architecture & Relational Model",
-                "subtopics": "Three-schema architecture, data independence, data models, ER modeling, relational model concepts, integrity constraints.",
-                "hours": 7
-        },
-        {
-                "courseCode": "PCC-CS601",
-                "courseName": "Database Management Systems",
-                "semester": 6,
-                "unitId": 3282,
-                "unitNumber": 2,
-                "title": "Module II: Relational Algebra & SQL",
-                "subtopics": "Relational algebra operations, DDL, DML, DCL, complex queries, nested subqueries, joins, aggregate functions, views.",
-                "hours": 7
-        },
-        {
-                "courseCode": "PCC-CS601",
-                "courseName": "Database Management Systems",
-                "semester": 6,
-                "unitId": 3283,
-                "unitNumber": 3,
-                "title": "Module III: Normalization & Relational Design",
-                "subtopics": "Functional dependencies, inference rules, Armstrong's axioms, Normal forms (1NF, 2NF, 3NF, BCNF), lossless join decomposition, dependency preservation.",
-                "hours": 8
-        },
-        {
-                "courseCode": "PCC-CS601",
-                "courseName": "Database Management Systems",
-                "semester": 6,
-                "unitId": 3284,
-                "unitNumber": 4,
-                "title": "Module IV: Transaction Processing & Concurrency",
-                "subtopics": "ACID properties, transaction states, schedules, serializability, conflict serializability, concurrency control protocols (2PL, strict 2PL, timestamp ordering).",
-                "hours": 7
-        },
-        {
-                "courseCode": "PCC-CS601",
-                "courseName": "Database Management Systems",
-                "semester": 6,
-                "unitId": 3285,
-                "unitNumber": 5,
-                "title": "Module V: Storage Indexing & Recovery",
-                "subtopics": "File organization, RAID, indexing structures (B-Trees, B+ Trees), log-based recovery, checkpointing, shadow paging.",
-                "hours": 7
-        },
-        {
-                "courseCode": "PCC-CS602",
-                "courseName": "Computer Networks",
-                "semester": 6,
-                "unitId": 3291,
-                "unitNumber": 1,
-                "title": "Module I: Network Architecture & Physical Layer",
-                "subtopics": "Network topologies, switching techniques (circuit, packet), OSI 7-layer model, TCP/IP protocol suite, transmission media, transmission impairments.",
-                "hours": 7
-        },
-        {
-                "courseCode": "PCC-CS602",
-                "courseName": "Computer Networks",
-                "semester": 6,
-                "unitId": 3292,
-                "unitNumber": 2,
-                "title": "Module II: Data Link Layer & MAC Sublayer",
-                "subtopics": "Framing, error detection and correction (CRC, Hamming code), flow control (Stop-and-Wait, Go-Back-N, Selective Repeat), CSMA/CD, Ethernet standards.",
-                "hours": 8
-        },
-        {
-                "courseCode": "PCC-CS602",
-                "courseName": "Computer Networks",
-                "semester": 6,
-                "unitId": 3293,
-                "unitNumber": 3,
-                "title": "Module III: Network Layer & Routing Protocols",
-                "subtopics": "IPv4 addressing, subnetting, CIDR, NAT, ARP, DHCP, routing algorithms (Distance Vector - Bellman-Ford, Link State - Dijkstra, BGP, OSPF), IPv6 overview.",
-                "hours": 8
-        },
-        {
-                "courseCode": "PCC-CS602",
-                "courseName": "Computer Networks",
-                "semester": 6,
-                "unitId": 3294,
-                "unitNumber": 4,
-                "title": "Module IV: Transport Layer Protocols",
-                "subtopics": "UDP format, TCP segment structure, three-way handshake, connection release, flow control, TCP congestion control (slow start, AIMD), socket interface.",
-                "hours": 7
-        },
-        {
-                "courseCode": "PCC-CS602",
-                "courseName": "Computer Networks",
-                "semester": 6,
-                "unitId": 3295,
-                "unitNumber": 5,
-                "title": "Module V: Application Layer & Security",
-                "subtopics": "DNS, HTTP, HTTPS, FTP, SMTP, POP3, cryptography basics (symmetric and asymmetric encryption), firewalls and network defense.",
-                "hours": 6
-        },
-        {
-                "courseCode": "PEC-IT601A/B/C/D",
-                "courseName": "Elective-II (Advanced Algorithms / Distributed Database Management System / Signals & Systems / Image Processing)",
-                "semester": 6,
-                "unitId": 3301,
-                "unitNumber": 1,
-                "title": "Module I: Advanced Algorithmic Paradigms",
-                "subtopics": "Amortized analysis, randomized algorithms, approximation algorithms for NP-Hard problems.",
-                "hours": 9
-        },
-        {
-                "courseCode": "PEC-IT601A/B/C/D",
-                "courseName": "Elective-II (Advanced Algorithms / Distributed Database Management System / Signals & Systems / Image Processing)",
-                "semester": 6,
-                "unitId": 3302,
-                "unitNumber": 2,
-                "title": "Module II: Distributed Database Architecture",
-                "subtopics": "Distributed data storage, fragmentation, replication, distributed transaction commit protocols (2PC, 3PC).",
-                "hours": 9
-        },
-        {
-                "courseCode": "PEC-IT601A/B/C/D",
-                "courseName": "Elective-II (Advanced Algorithms / Distributed Database Management System / Signals & Systems / Image Processing)",
-                "semester": 6,
-                "unitId": 3303,
-                "unitNumber": 3,
-                "title": "Module III: Signal Analysis & Transforms",
-                "subtopics": "Continuous and discrete signals, Fourier transform, Z-transform, LTI systems.",
-                "hours": 9
-        },
-        {
-                "courseCode": "PEC-IT601A/B/C/D",
-                "courseName": "Elective-II (Advanced Algorithms / Distributed Database Management System / Signals & Systems / Image Processing)",
-                "semester": 6,
-                "unitId": 3304,
-                "unitNumber": 4,
-                "title": "Module IV: Digital Image Processing Fundamentals",
-                "subtopics": "Image enhancement in spatial and frequency domains, image filtering, edge detection, segmentation.",
-                "hours": 9
-        },
-        {
-                "courseCode": "PEC-IT602A/B/C/D",
-                "courseName": "Elective-III (Parallel and Distributed Algorithms / Data Warehousing & Data Mining / Human Computer Interaction / Pattern Recognition)",
-                "semester": 6,
-                "unitId": 3311,
-                "unitNumber": 1,
-                "title": "Module I: Parallel Computing Architecture",
-                "subtopics": "PRAM models, message passing interface (MPI), OpenMP shared memory parallel programming.",
-                "hours": 9
-        },
-        {
-                "courseCode": "PEC-IT602A/B/C/D",
-                "courseName": "Elective-III (Parallel and Distributed Algorithms / Data Warehousing & Data Mining / Human Computer Interaction / Pattern Recognition)",
-                "semester": 6,
-                "unitId": 3312,
-                "unitNumber": 2,
-                "title": "Module II: Data Warehousing & Mining Concepts",
-                "subtopics": "Data warehouse architecture, multidimensional data models, star/snowflake schemas, association rule mining (Apriori), classification, clustering.",
-                "hours": 9
-        },
-        {
-                "courseCode": "PEC-IT602A/B/C/D",
-                "courseName": "Elective-III (Parallel and Distributed Algorithms / Data Warehousing & Data Mining / Human Computer Interaction / Pattern Recognition)",
-                "semester": 6,
-                "unitId": 3313,
-                "unitNumber": 3,
-                "title": "Module III: Human-Computer Interaction (HCI)",
-                "subtopics": "User interface design paradigms, usability engineering, interactive systems evaluation.",
-                "hours": 9
-        },
-        {
-                "courseCode": "PEC-IT602A/B/C/D",
-                "courseName": "Elective-III (Parallel and Distributed Algorithms / Data Warehousing & Data Mining / Human Computer Interaction / Pattern Recognition)",
-                "semester": 6,
-                "unitId": 3314,
-                "unitNumber": 4,
-                "title": "Module IV: Pattern Recognition Models",
-                "subtopics": "Feature extraction, statistical pattern classification, Bayes decision theory, clustering models.",
-                "hours": 9
-        },
-        {
-                "courseCode": "OEC-IT601A/B",
-                "courseName": "Open Elective-I (Numerical Methods / Human Resource Development and Organizational Behavior)",
-                "semester": 6,
-                "unitId": 3321,
-                "unitNumber": 1,
-                "title": "Module I: Numerical Solutions & Interpolation",
-                "subtopics": "Root finding (Newton-Raphson, Bisection), Newton's forward and backward interpolation, Lagrange interpolation.",
-                "hours": 9
-        },
-        {
-                "courseCode": "OEC-IT601A/B",
-                "courseName": "Open Elective-I (Numerical Methods / Human Resource Development and Organizational Behavior)",
-                "semester": 6,
-                "unitId": 3322,
-                "unitNumber": 2,
-                "title": "Module II: Numerical Integration & Differential Equations",
-                "subtopics": "Trapezoidal rule, Simpson's 1/3 and 3/8 rules, Euler's method, Runge-Kutta 4th order method.",
-                "hours": 9
-        },
-        {
-                "courseCode": "OEC-IT601A/B",
-                "courseName": "Open Elective-I (Numerical Methods / Human Resource Development and Organizational Behavior)",
-                "semester": 6,
-                "unitId": 3323,
-                "unitNumber": 3,
-                "title": "Module III: Organizational Behavior Principles",
-                "subtopics": "Individual behavior, motivation theories, group dynamics, team building, organizational culture.",
-                "hours": 9
-        },
-        {
-                "courseCode": "OEC-IT601A/B",
-                "courseName": "Open Elective-I (Numerical Methods / Human Resource Development and Organizational Behavior)",
-                "semester": 6,
-                "unitId": 3324,
-                "unitNumber": 4,
-                "title": "Module IV: Human Resource Development",
-                "subtopics": "HR planning, recruitment, selection, training and development, performance appraisal.",
-                "hours": 9
-        },
-        {
-                "courseCode": "PROJ-CS601",
-                "courseName": "Research Methodology",
-                "semester": 6,
-                "unitId": 3331,
-                "unitNumber": 1,
-                "title": "Module I: Research Formulation & Problem Definition",
-                "subtopics": "Defining research problem, research objectives, literature review process, citation methods.",
-                "hours": 9
-        },
-        {
-                "courseCode": "PROJ-CS601",
-                "courseName": "Research Methodology",
-                "semester": 6,
-                "unitId": 3332,
-                "unitNumber": 2,
-                "title": "Module II: Research Design & Empirical Methods",
-                "subtopics": "Experimental vs descriptive research design, sampling methods, measurement scales.",
-                "hours": 9
-        },
-        {
-                "courseCode": "PROJ-CS601",
-                "courseName": "Research Methodology",
-                "semester": 6,
-                "unitId": 3333,
-                "unitNumber": 3,
-                "title": "Module III: Statistical Analysis & Hypothesis Testing",
-                "subtopics": "Parametric and non-parametric tests, t-test, ANOVA, chi-square test, regression analysis.",
-                "hours": 9
-        },
-        {
-                "courseCode": "PROJ-CS601",
-                "courseName": "Research Methodology",
-                "semester": 6,
-                "unitId": 3334,
-                "unitNumber": 4,
-                "title": "Module IV: Technical Writing, IPR & Research Ethics",
-                "subtopics": "Scientific manuscript preparation, plagiarism policies, intellectual property rights, patent filing.",
-                "hours": 9
-        },
-        {
-                "courseCode": "PCC-CS691",
-                "courseName": "Database Management Systems Lab",
-                "semester": 6,
-                "unitId": 3341,
-                "unitNumber": 1,
-                "title": "Module I: Relational Schema & Complex SQL",
-                "subtopics": "Table creation with integrity constraints, nested queries, aggregate functions, joins.",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS691",
-                "courseName": "Database Management Systems Lab",
-                "semester": 6,
-                "unitId": 3342,
-                "unitNumber": 2,
-                "title": "Module II: PL/SQL Programming",
-                "subtopics": "PL/SQL blocks, cursors, procedures, functions, packages, and database triggers.",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS691",
-                "courseName": "Database Management Systems Lab",
-                "semester": 6,
-                "unitId": 3343,
-                "unitNumber": 3,
-                "title": "Module III: Schema Normalization & Indexing",
-                "subtopics": "Database normalization verification, index creation (B+ Tree), performance tuning.",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS691",
-                "courseName": "Database Management Systems Lab",
-                "semester": 6,
-                "unitId": 3344,
-                "unitNumber": 4,
-                "title": "Module IV: Database Application Integration",
-                "subtopics": "Connecting relational database to web/desktop application using JDBC/ODBC.",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS692",
-                "courseName": "Computer Networks Lab",
-                "semester": 6,
-                "unitId": 3351,
-                "unitNumber": 1,
-                "title": "Module I: Hardware Configuration & Packet Sniffing",
-                "subtopics": "Ethernet cable crimping (straight/cross), Wireshark packet inspection for HTTP, TCP, UDP, ARP, DNS.",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS692",
-                "courseName": "Computer Networks Lab",
-                "semester": 6,
-                "unitId": 3352,
-                "unitNumber": 2,
-                "title": "Module II: Socket Programming",
-                "subtopics": "Client-Server TCP and UDP socket implementation in C/Python, iterative and concurrent servers.",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS692",
-                "courseName": "Computer Networks Lab",
-                "semester": 6,
-                "unitId": 3353,
-                "unitNumber": 3,
-                "title": "Module III: Cisco Packet Tracer Topology Design",
-                "subtopics": "Router and switch configuration, VLAN setup, static routing, RIP, OSPF protocol configuration.",
-                "hours": 12
-        },
-        {
-                "courseCode": "PCC-CS692",
-                "courseName": "Computer Networks Lab",
-                "semester": 6,
-                "unitId": 3354,
-                "unitNumber": 4,
-                "title": "Module IV: Subnetting & Network Services",
-                "subtopics": "IPv4 subnet calculation, DHCP server setup, NAT configuration on gateway routers.",
-                "hours": 12
-        },
-        {
-                "courseCode": "PEC-CS701A/B/C/D/E",
-                "courseName": "Elective-IV (Quantum Computing / Cloud Computing / Digital Signal Processing / Multi-agent Intelligent Systems / Machine Learning)",
-                "semester": 7,
-                "unitId": 3361,
-                "unitNumber": 1,
-                "title": "Module I: Machine Learning Foundations",
-                "subtopics": "Linear regression, logistic regression, decision trees, support vector machines (SVM), neural networks, evaluation metrics.",
-                "hours": 8
-        },
-        {
-                "courseCode": "PEC-CS701A/B/C/D/E",
-                "courseName": "Elective-IV (Quantum Computing / Cloud Computing / Digital Signal Processing / Multi-agent Intelligent Systems / Machine Learning)",
-                "semester": 7,
-                "unitId": 3362,
-                "unitNumber": 2,
-                "title": "Module II: Cloud Computing & Virtualization",
-                "subtopics": "Cloud service models (IaaS, PaaS, SaaS), hypervisors, Docker containers, Kubernetes, serverless architectures.",
-                "hours": 7
-        },
-        {
-                "courseCode": "PEC-CS701A/B/C/D/E",
-                "courseName": "Elective-IV (Quantum Computing / Cloud Computing / Digital Signal Processing / Multi-agent Intelligent Systems / Machine Learning)",
-                "semester": 7,
-                "unitId": 3363,
-                "unitNumber": 3,
-                "title": "Module III: Quantum Computing Concepts",
-                "subtopics": "Qubits, quantum superposition, entanglement, quantum logic gates, Deutsch-Jozsa and Shor's algorithms.",
-                "hours": 7
-        },
-        {
-                "courseCode": "PEC-CS701A/B/C/D/E",
-                "courseName": "Elective-IV (Quantum Computing / Cloud Computing / Digital Signal Processing / Multi-agent Intelligent Systems / Machine Learning)",
-                "semester": 7,
-                "unitId": 3364,
-                "unitNumber": 4,
-                "title": "Module IV: Digital Signal Processing",
-                "subtopics": "Discrete Fourier Transform (DFT), Fast Fourier Transform (FFT), FIR and IIR digital filter design.",
-                "hours": 7
-        },
-        {
-                "courseCode": "PEC-CS701A/B/C/D/E",
-                "courseName": "Elective-IV (Quantum Computing / Cloud Computing / Digital Signal Processing / Multi-agent Intelligent Systems / Machine Learning)",
-                "semester": 7,
-                "unitId": 3365,
-                "unitNumber": 5,
-                "title": "Module V: Multi-Agent Systems",
-                "subtopics": "Agent communication languages (KQML, FIPA-ACL), distributed problem solving, multi-agent negotiation.",
-                "hours": 7
-        },
-        {
-                "courseCode": "PEC-CS702A/B/C/D/E",
-                "courseName": "Elective-V (Neural Networks and Deep Learning / Soft Computing / Ad-Hoc and Sensor Networks / Information Theory and Coding / Cyber Security)",
-                "semester": 7,
-                "unitId": 3371,
-                "unitNumber": 1,
-                "title": "Module I: Deep Learning & Neural Networks",
-                "subtopics": "Multilayer perceptrons, backpropagation, CNNs for computer vision, RNNs and LSTMs for sequence modeling, transformers.",
-                "hours": 8
-        },
-        {
-                "courseCode": "PEC-CS702A/B/C/D/E",
-                "courseName": "Elective-V (Neural Networks and Deep Learning / Soft Computing / Ad-Hoc and Sensor Networks / Information Theory and Coding / Cyber Security)",
-                "semester": 7,
-                "unitId": 3372,
-                "unitNumber": 2,
-                "title": "Module II: Soft Computing & Fuzzy Logic",
-                "subtopics": "Fuzzy sets, fuzzy relations, defuzzification methods, Genetic Algorithms (GA) selection, crossover, mutation.",
-                "hours": 7
-        },
-        {
-                "courseCode": "PEC-CS702A/B/C/D/E",
-                "courseName": "Elective-V (Neural Networks and Deep Learning / Soft Computing / Ad-Hoc and Sensor Networks / Information Theory and Coding / Cyber Security)",
-                "semester": 7,
-                "unitId": 3373,
-                "unitNumber": 3,
-                "title": "Module III: Wireless Ad-Hoc & Sensor Networks",
-                "subtopics": "MANET routing protocols (AODV, DSR), WSN node architectures, MAC protocols, localization, power efficiency.",
-                "hours": 7
-        },
-        {
-                "courseCode": "PEC-CS702A/B/C/D/E",
-                "courseName": "Elective-V (Neural Networks and Deep Learning / Soft Computing / Ad-Hoc and Sensor Networks / Information Theory and Coding / Cyber Security)",
-                "semester": 7,
-                "unitId": 3374,
-                "unitNumber": 4,
-                "title": "Module IV: Information Theory & Coding",
-                "subtopics": "Entropy, mutual information, source coding (Shannon-Fano, Huffman), error control codes (BCH, Reed-Solomon).",
-                "hours": 7
-        },
-        {
-                "courseCode": "PEC-CS702A/B/C/D/E",
-                "courseName": "Elective-V (Neural Networks and Deep Learning / Soft Computing / Ad-Hoc and Sensor Networks / Information Theory and Coding / Cyber Security)",
-                "semester": 7,
-                "unitId": 3375,
-                "unitNumber": 5,
-                "title": "Module V: Cyber Security & Threat Mitigation",
-                "subtopics": "Vulnerability analysis, malware types, network intrusion detection (IDS/IPS), ethical hacking, security policies.",
-                "hours": 7
-        },
-        {
-                "courseCode": "OEC-CS701A/B/C",
-                "courseName": "Open Elective-II (Operations Research / Multimedia Systems / Introduction to Philosophical Thoughts)",
-                "semester": 7,
-                "unitId": 3381,
-                "unitNumber": 1,
-                "title": "Module I: Linear Programming & Optimization",
-                "subtopics": "Linear programming problem formulation, graphical solution, Simplex method, Big-M method, duality theory.",
-                "hours": 9
-        },
-        {
-                "courseCode": "OEC-CS701A/B/C",
-                "courseName": "Open Elective-II (Operations Research / Multimedia Systems / Introduction to Philosophical Thoughts)",
-                "semester": 7,
-                "unitId": 3382,
-                "unitNumber": 2,
-                "title": "Module II: Transportation & Assignment Models",
-                "subtopics": "Initial basic feasible solutions (North-West corner, Vogel's approximation), MODI method, Hungarian assignment algorithm.",
-                "hours": 9
-        },
-        {
-                "courseCode": "OEC-CS701A/B/C",
-                "courseName": "Open Elective-II (Operations Research / Multimedia Systems / Introduction to Philosophical Thoughts)",
-                "semester": 7,
-                "unitId": 3383,
-                "unitNumber": 3,
-                "title": "Module III: Multimedia Systems",
-                "subtopics": "Audio, image, and video compression (JPEG, MPEG), streaming protocols, multimedia authoring tools.",
-                "hours": 9
-        },
-        {
-                "courseCode": "OEC-CS701A/B/C",
-                "courseName": "Open Elective-II (Operations Research / Multimedia Systems / Introduction to Philosophical Thoughts)",
-                "semester": 7,
-                "unitId": 3384,
-                "unitNumber": 4,
-                "title": "Module IV: Foundations of Philosophical Thoughts",
-                "subtopics": "Epistemology, ethics, Indian philosophical schools (Nyaya, Vaisheshika, Vedanta), Western critical philosophy.",
-                "hours": 9
-        },
-        {
-                "courseCode": "HSMC 701",
-                "courseName": "Project Management and Entrepreneurship",
-                "semester": 7,
-                "unitId": 3391,
-                "unitNumber": 1,
-                "title": "Module I: Project Lifecycle & Work Breakdown Structure",
-                "subtopics": "Project characteristics, feasibility analysis, project initiation, Work Breakdown Structure (WBS), project charter.",
-                "hours": 9
-        },
-        {
-                "courseCode": "HSMC 701",
-                "courseName": "Project Management and Entrepreneurship",
-                "semester": 7,
-                "unitId": 3392,
-                "unitNumber": 2,
-                "title": "Module II: Project Scheduling with CPM & PERT",
-                "subtopics": "Network diagram construction, Critical Path Method (CPM), PERT three-point estimates, float calculations, crashing.",
-                "hours": 9
-        },
-        {
-                "courseCode": "HSMC 701",
-                "courseName": "Project Management and Entrepreneurship",
-                "semester": 7,
-                "unitId": 3393,
-                "unitNumber": 3,
-                "title": "Module III: Cost Control & Risk Management",
-                "subtopics": "Earned Value Management (EVM), cost performance index, risk identification, qualitative/quantitative risk assessment.",
-                "hours": 9
-        },
-        {
-                "courseCode": "HSMC 701",
-                "courseName": "Project Management and Entrepreneurship",
-                "semester": 7,
-                "unitId": 3394,
-                "unitNumber": 4,
-                "title": "Module IV: Entrepreneurship & Business Plan Development",
-                "subtopics": "Entrepreneurial mindset, opportunity recognition, Business Model Canvas, startup financing (bootstrapping, angel, VC), pitch presentation.",
-                "hours": 9
-        },
-        {
-                "courseCode": "PROJ-CS781",
-                "courseName": "Project-II",
-                "semester": 7,
-                "unitId": 3401,
-                "unitNumber": 1,
-                "title": "Module I: Problem Formulation & Literature Review",
-                "subtopics": "Identification of real-world research problem, rigorous state-of-the-art literature survey, gap analysis.",
-                "hours": 36
-        },
-        {
-                "courseCode": "PROJ-CS781",
-                "courseName": "Project-II",
-                "semester": 7,
-                "unitId": 3402,
-                "unitNumber": 2,
-                "title": "Module II: System Architecture & Requirements Design",
-                "subtopics": "Detailed system architecture, modular design specifications, technology stack selection.",
-                "hours": 36
-        },
-        {
-                "courseCode": "PROJ-CS781",
-                "courseName": "Project-II",
-                "semester": 7,
-                "unitId": 3403,
-                "unitNumber": 3,
-                "title": "Module III: Initial Prototype Implementation",
-                "subtopics": "Core engine development, proof-of-concept prototype coding, preliminary testing.",
-                "hours": 36
-        },
-        {
-                "courseCode": "PROJ-CS781",
-                "courseName": "Project-II",
-                "semester": 7,
-                "unitId": 3404,
-                "unitNumber": 4,
-                "title": "Module IV: Interim Defense & Technical Progress Report",
-                "subtopics": "Interim evaluation report, progress defense before departmental panel.",
-                "hours": 36
-        },
-        {
-                "courseCode": "PEC-CS801A/B/C/D/E",
-                "courseName": "Elective-VI (Signals and Networks / Cryptography & Network Security / Speech and Natural Language Processing / Web and Internet Technology / Internet of Things)",
-                "semester": 8,
-                "unitId": 3411,
-                "unitNumber": 1,
-                "title": "Module I: Cryptography & Network Security",
-                "subtopics": "Classical ciphers, DES, AES, RSA, Diffie-Hellman key exchange, SHA hash functions, digital signatures, SSL/TLS.",
-                "hours": 9
-        },
-        {
-                "courseCode": "PEC-CS801A/B/C/D/E",
-                "courseName": "Elective-VI (Signals and Networks / Cryptography & Network Security / Speech and Natural Language Processing / Web and Internet Technology / Internet of Things)",
-                "semester": 8,
-                "unitId": 3412,
-                "unitNumber": 2,
-                "title": "Module II: Natural Language Processing (NLP)",
-                "subtopics": "Tokenization, POS tagging, parsing, n-gram language models, word embeddings (Word2Vec), transformer models.",
-                "hours": 9
-        },
-        {
-                "courseCode": "PEC-CS801A/B/C/D/E",
-                "courseName": "Elective-VI (Signals and Networks / Cryptography & Network Security / Speech and Natural Language Processing / Web and Internet Technology / Internet of Things)",
-                "semester": 8,
-                "unitId": 3413,
-                "unitNumber": 3,
-                "title": "Module III: Internet of Things (IoT)",
-                "subtopics": "IoT architecture, sensors, microcontrollers (ESP32, Raspberry Pi), protocols (MQTT, CoAP), cloud IoT platforms.",
-                "hours": 9
-        },
-        {
-                "courseCode": "PEC-CS801A/B/C/D/E",
-                "courseName": "Elective-VI (Signals and Networks / Cryptography & Network Security / Speech and Natural Language Processing / Web and Internet Technology / Internet of Things)",
-                "semester": 8,
-                "unitId": 3414,
-                "unitNumber": 4,
-                "title": "Module IV: Web & Internet Technology",
-                "subtopics": "RESTful APIs, asynchronous JavaScript, WebSockets, microservice architecture, web security best practices.",
-                "hours": 9
-        },
-        {
-                "courseCode": "OEC-CS801A/B/C/D/E",
-                "courseName": "Open Elective-III (Big Data Analysis / Cyber Law and Ethics / Mobile Computing / Robotics / Soft Skill & Interpersonal Communication)",
-                "semester": 8,
-                "unitId": 3421,
-                "unitNumber": 1,
-                "title": "Module I: Big Data Analytics & Distributed Processing",
-                "subtopics": "Hadoop architecture, HDFS, MapReduce framework, Apache Spark, NoSQL databases (MongoDB, Cassandra).",
-                "hours": 9
-        },
-        {
-                "courseCode": "OEC-CS801A/B/C/D/E",
-                "courseName": "Open Elective-III (Big Data Analysis / Cyber Law and Ethics / Mobile Computing / Robotics / Soft Skill & Interpersonal Communication)",
-                "semester": 8,
-                "unitId": 3422,
-                "unitNumber": 2,
-                "title": "Module II: Cyber Law & Professional Ethics",
-                "subtopics": "Information Technology Act 2000, digital contracts, cyber crimes, intellectual property, IT compliance.",
-                "hours": 9
-        },
-        {
-                "courseCode": "OEC-CS801A/B/C/D/E",
-                "courseName": "Open Elective-III (Big Data Analysis / Cyber Law and Ethics / Mobile Computing / Robotics / Soft Skill & Interpersonal Communication)",
-                "semester": 8,
-                "unitId": 3423,
-                "unitNumber": 3,
-                "title": "Module III: Mobile Computing Architectures",
-                "subtopics": "Cellular systems, 4G/5G architectures, mobile IP, mobile ad-hoc routing, location-based services.",
-                "hours": 9
-        },
-        {
-                "courseCode": "OEC-CS801A/B/C/D/E",
-                "courseName": "Open Elective-III (Big Data Analysis / Cyber Law and Ethics / Mobile Computing / Robotics / Soft Skill & Interpersonal Communication)",
-                "semester": 8,
-                "unitId": 3424,
-                "unitNumber": 4,
-                "title": "Module IV: Robotics & Soft Skills",
-                "subtopics": "Robotic arm kinematics, sensors and vision, path planning, professional workplace soft skills.",
-                "hours": 9
-        },
-        {
-                "courseCode": "OEC-CS802A/B/C",
-                "courseName": "Open Elective-IV (E-Commerce and ERP / Micro-electronics and VLSI Design / Economic Policies in India)",
-                "semester": 8,
-                "unitId": 3431,
-                "unitNumber": 1,
-                "title": "Module I: E-Commerce Framework & Payment Systems",
-                "subtopics": "B2B, B2C, C2C business models, electronic payment gateways, digital wallets, e-commerce security.",
-                "hours": 9
-        },
-        {
-                "courseCode": "OEC-CS802A/B/C",
-                "courseName": "Open Elective-IV (E-Commerce and ERP / Micro-electronics and VLSI Design / Economic Policies in India)",
-                "semester": 8,
-                "unitId": 3432,
-                "unitNumber": 2,
-                "title": "Module II: Enterprise Resource Planning (ERP)",
-                "subtopics": "ERP architecture, supply chain integration, CRM modules, SAP/Oracle ERP case studies.",
-                "hours": 9
-        },
-        {
-                "courseCode": "OEC-CS802A/B/C",
-                "courseName": "Open Elective-IV (E-Commerce and ERP / Micro-electronics and VLSI Design / Economic Policies in India)",
-                "semester": 8,
-                "unitId": 3433,
-                "unitNumber": 3,
-                "title": "Module III: Micro-electronics & VLSI Design",
-                "subtopics": "MOSFET characteristics, CMOS inverter design, layout design rules, ASIC design flow.",
-                "hours": 9
-        },
-        {
-                "courseCode": "OEC-CS802A/B/C",
-                "courseName": "Open Elective-IV (E-Commerce and ERP / Micro-electronics and VLSI Design / Economic Policies in India)",
-                "semester": 8,
-                "unitId": 3434,
-                "unitNumber": 4,
-                "title": "Module IV: Macroeconomic Policies in India",
-                "subtopics": "Fiscal and monetary policy, industrial policies, financial sector reforms, economic liberalization.",
-                "hours": 9
-        },
-        {
-                "courseCode": "PROJ-CS881",
-                "courseName": "Project-III [Summer Industry Internship]",
-                "semester": 8,
-                "unitId": 3441,
-                "unitNumber": 1,
-                "title": "Module I: System Implementation & Engineering Deliverables",
-                "subtopics": "Full-scale software/hardware module implementation, algorithm optimization, cloud deployment.",
-                "hours": 36
-        },
-        {
-                "courseCode": "PROJ-CS881",
-                "courseName": "Project-III [Summer Industry Internship]",
-                "semester": 8,
-                "unitId": 3442,
-                "unitNumber": 2,
-                "title": "Module II: Rigorous Benchmarking & Verification",
-                "subtopics": "Performance evaluation, stress testing, statistical validation, comparison against existing baselines.",
-                "hours": 36
-        },
-        {
-                "courseCode": "PROJ-CS881",
-                "courseName": "Project-III [Summer Industry Internship]",
-                "semester": 8,
-                "unitId": 3443,
-                "unitNumber": 3,
-                "title": "Module III: Thesis Documentation & Publication",
-                "subtopics": "Comprehensive engineering dissertation report, conference/journal paper submission.",
-                "hours": 36
-        },
-        {
-                "courseCode": "PROJ-CS881",
-                "courseName": "Project-III [Summer Industry Internship]",
-                "semester": 8,
-                "unitId": 3444,
-                "unitNumber": 4,
-                "title": "Module IV: Final Project Viva & Departmental Defense",
-                "subtopics": "Live project demonstration, oral defense, and external viva voce examination.",
-                "hours": 36
-        }
-];
-    const OFFICIAL_CSE_PYQS = [
-        {
-                "subjectCode": "ESC 301",
-                "subjectName": "Analog and Digital Electronics",
-                "year": 2025,
-                "type": "END_SEM",
-                "title": "MAKAUT 2025 Analog and Digital Electronics (ESC 301)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/ANALOG & DIGITAL/btech-cse-3-sem-analog-and-digital-electronics-esc-301-2025.pdf"
-        },
-        {
-                "subjectCode": "ESC 301",
-                "subjectName": "Analog and Digital Electronics",
-                "year": 2024,
-                "type": "END_SEM",
-                "title": "MAKAUT 2024 Analog and Digital Electronics (ESC 301)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/ANALOG & DIGITAL/btech-cse-3-sem-analog-and-digital-electronics-esc-301-2024.pdf"
-        },
-        {
-                "subjectCode": "ESC 301",
-                "subjectName": "Analog and Digital Electronics",
-                "year": 2023,
-                "type": "END_SEM",
-                "title": "MAKAUT 2023 Analog and Digital Electronics (ESC 301)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/ANALOG & DIGITAL/btech-cse-3-sem-analog-and-digital-electronics-esc301-2023.pdf"
-        },
-        {
-                "subjectCode": "PCC-CS301",
-                "subjectName": "Data Structure & Algorithms",
-                "year": 2025,
-                "type": "END_SEM",
-                "title": "MAKAUT 2025 Data Structure & Algorithms (PC-ECS301 / PCC-CS301)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/DSA/btech-cse-3-sem-data-structure-and-algorithms-pc-ecs301-2025.pdf"
-        },
-        {
-                "subjectCode": "PCC-CS301",
-                "subjectName": "Data Structure & Algorithms",
-                "year": 2024,
-                "type": "END_SEM",
-                "title": "MAKAUT 2024 Data Structure & Algorithms (PCC-CS301)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/DSA/btech-cse-3-sem-data-structure-and-algorithms-pcc-cs301-2024.pdf"
-        },
-        {
-                "subjectCode": "PCC-CS301",
-                "subjectName": "Data Structure & Algorithms",
-                "year": 2023,
-                "type": "END_SEM",
-                "title": "MAKAUT 2023 Data Structure & Algorithms (PCC-CSBS301 / PCC-CS301)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/DSA/btech-cse-3-sem-data-structure-and-algorithms-pcc-csbs301-2023.pdf"
-        },
-        {
-                "subjectCode": "PCC-CS302",
-                "subjectName": "Computer Organisation",
-                "year": 2025,
-                "type": "END_SEM",
-                "title": "MAKAUT 2025 Computer Organisation (PC-ECS302 / PCC-CS302)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/COMPUTER ORGANISATION/btech-cse-3-sem-computer-organisation-pc-ecs302-2025.pdf"
-        },
-        {
-                "subjectCode": "PCC-CS302",
-                "subjectName": "Computer Organisation",
-                "year": 2024,
-                "type": "END_SEM",
-                "title": "MAKAUT 2024 Computer Organisation (PCC-CS302)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/COMPUTER ORGANISATION/btech-cse-3-sem-computer-organisation-pcc-cs302-2024.pdf"
-        },
-        {
-                "subjectCode": "PCC-CS302",
-                "subjectName": "Computer Organisation",
-                "year": 2023,
-                "type": "END_SEM",
-                "title": "MAKAUT 2023 Computer Organisation (PCC-CS302)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/COMPUTER ORGANISATION/btech-cse-3-sem-computer-organisation-pcc-cs302-2023.pdf"
-        },
-        {
-                "subjectCode": "BSC 301",
-                "subjectName": "Mathematics-III (Differential Calculus)",
-                "year": 2026,
-                "type": "END_SEM",
-                "title": "MAKAUT 2026 Mathematics-III (BS-M301 / BSC 301)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/MATHS 3/btech-3-sem-mathematics-3-bs-m301-2026.pdf"
-        },
-        {
-                "subjectCode": "BSC 301",
-                "subjectName": "Mathematics-III (Differential Calculus)",
-                "year": 2025,
-                "type": "END_SEM",
-                "title": "MAKAUT 2025 Mathematics-III (BS-M301 / BSC 301)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/MATHS 3/btech-3-sem-mathematics-3-bs-m301-2025.pdf"
-        },
-        {
-                "subjectCode": "BSC 301",
-                "subjectName": "Mathematics-III (Differential Calculus)",
-                "year": 2025,
-                "type": "END_SEM",
-                "title": "MAKAUT 2025 Mathematics-3 Differential Calculus (BS-M301)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/MATHS 3/btech-cse-3-sem-mathematics-3-differential-calculus-bs-m301-2025.pdf"
-        },
-        {
-                "subjectCode": "BSC 301",
-                "subjectName": "Mathematics-III (Differential Calculus)",
-                "year": 2024,
-                "type": "END_SEM",
-                "title": "MAKAUT 2024 Mathematics-3 Differential Calculus (BSC 301)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/MATHS 3/btech-cse-3-sem-mathematics-3-differential-calculus-bsc-301-2024.pdf"
-        },
-        {
-                "subjectCode": "BSC 301",
-                "subjectName": "Mathematics-III (Differential Calculus)",
-                "year": 2023,
-                "type": "END_SEM",
-                "title": "MAKAUT 2023 Mathematics-3 Differential Calculus (BSC 301)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/MATHS 3/btech-cse-3-sem-mathematics-3-differential-calculus-bsc301-2023.pdf"
-        },
-        {
-                "subjectCode": "HSMC 301",
-                "subjectName": "Economics for Engineers (Humanities-II)",
-                "year": 2025,
-                "type": "END_SEM",
-                "title": "MAKAUT 2025 Economics for Engineers (HM-HU301 / HSMC 301)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/ECONOMICS/btech-cse-3-sem-economics-for-engineers-humanities-2-hm-hu301-2025.pdf"
-        },
-        {
-                "subjectCode": "HSMC 301",
-                "subjectName": "Economics for Engineers (Humanities-II)",
-                "year": 2024,
-                "type": "END_SEM",
-                "title": "MAKAUT 2024 Economics for Engineers (HSMC 301)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/ECONOMICS/btech-cse-3-sem-economics-for-engineers-humanities-2-hsmc-301-2024.pdf"
-        },
-        {
-                "subjectCode": "HSMC 301",
-                "subjectName": "Economics for Engineers (Humanities-II)",
-                "year": 2023,
-                "type": "END_SEM",
-                "title": "MAKAUT 2023 Economics for Engineers (HSMC 301)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/ECONOMICS/btech-cse-3-sem-economics-for-engineers-humanities-2-hsmc301-2023.pdf"
-        },
-        {
-                "subjectCode": "PCC-CS401",
-                "subjectName": "Discrete Mathematics",
-                "year": 2026,
-                "type": "END_SEM",
-                "title": "MAKAUT 2026 Discrete Mathematics (PCC-CS401)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/DISCRETE MATHS/btech-cse-4-sem-discrete-mathematics-pcc-cs401-2026.pdf"
-        },
-        {
-                "subjectCode": "PCC-CS401",
-                "subjectName": "Discrete Mathematics",
-                "year": 2025,
-                "type": "END_SEM",
-                "title": "MAKAUT 2025 Discrete Mathematics (PCC-CS401)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/DISCRETE MATHS/btech-cse-4-sem-discrete-mathematics-pcc-cs401-2025.pdf"
-        },
-        {
-                "subjectCode": "PCC-CS401",
-                "subjectName": "Discrete Mathematics",
-                "year": 2024,
-                "type": "END_SEM",
-                "title": "MAKAUT 2024 Discrete Mathematics (PCC-CS401)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/DISCRETE MATHS/btech-pcc-cs-4-sem-discrete-mathematics-pcc-cs401-2024.pdf"
-        },
-        {
-                "subjectCode": "PCC-CS401",
-                "subjectName": "Discrete Mathematics",
-                "year": 2023,
-                "type": "END_SEM",
-                "title": "MAKAUT 2023 Discrete Mathematics (PCC-CS401)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/DISCRETE MATHS/btech-pcc-cse-4-sem-discrete-mathematics-pcc-cs401-2023.pdf"
-        },
-        {
-                "subjectCode": "PCC-CS402",
-                "subjectName": "Computer Architecture",
-                "year": 2026,
-                "type": "END_SEM",
-                "title": "MAKAUT 2026 Computer Architecture (PCC-CS402)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/COMPUTER ARCHITECTURE/btech-cse-4-sem-computer-architecture-pcc-cs402-2026.pdf"
-        },
-        {
-                "subjectCode": "PCC-CS402",
-                "subjectName": "Computer Architecture",
-                "year": 2025,
-                "type": "END_SEM",
-                "title": "MAKAUT 2025 Computer Architecture (PCC-CS402)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/COMPUTER ARCHITECTURE/btech-cse-4-sem-computer-architecture-pcc-cs402-2025.pdf"
-        },
-        {
-                "subjectCode": "PCC-CS402",
-                "subjectName": "Computer Architecture",
-                "year": 2024,
-                "type": "END_SEM",
-                "title": "MAKAUT 2024 Computer Architecture (PCC-CS402)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/COMPUTER ARCHITECTURE/btech-pcc-cs-4-sem-computer-architecture-pcc-cs402-2024.pdf"
-        },
-        {
-                "subjectCode": "PCC-CS402",
-                "subjectName": "Computer Architecture",
-                "year": 2023,
-                "type": "END_SEM",
-                "title": "MAKAUT 2023 Computer Architecture (PCC-CS402)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/COMPUTER ARCHITECTURE/btech-pcc-cse-4-sem-computer-architecture-pcc-cs402-2023.pdf"
-        },
-        {
-                "subjectCode": "PCC-CS403",
-                "subjectName": "Formal Language & Automata Theory",
-                "year": 2026,
-                "type": "END_SEM",
-                "title": "MAKAUT 2026 Formal Language & Automata Theory (PCC-CS403)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/TOC or FLAT/btech-cse-4-sem-formal-language-and-automata-theory-pcc-cs-403-2026.pdf"
-        },
-        {
-                "subjectCode": "PCC-CS403",
-                "subjectName": "Formal Language & Automata Theory",
-                "year": 2025,
-                "type": "END_SEM",
-                "title": "MAKAUT 2025 Formal Language & Automata Theory (PCC-CS403)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/TOC or FLAT/btech-cse-4-sem-formal-language-and-automata-theory-pcc-cs-403-2025.pdf"
-        },
-        {
-                "subjectCode": "PCC-CS403",
-                "subjectName": "Formal Language & Automata Theory",
-                "year": 2024,
-                "type": "END_SEM",
-                "title": "MAKAUT 2024 Formal Language & Automata Theory (PCC-CS403)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/TOC or FLAT/btech-pcc-cs-4-sem-formal-language-and-automata-theory-pcc-cs-403-2024.pdf"
-        },
-        {
-                "subjectCode": "PCC-CS403",
-                "subjectName": "Formal Language & Automata Theory",
-                "year": 2023,
-                "type": "END_SEM",
-                "title": "MAKAUT 2023 Formal Language & Automata Theory (PCC-CS403)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/TOC or FLAT/btech-pcc-cse-4-sem-formal-language-and-automata-pcc-cse-403-2023.pdf"
-        },
-        {
-                "subjectCode": "PCC-CS404",
-                "subjectName": "Design & Analysis of Algorithms",
-                "year": 2025,
-                "type": "END_SEM",
-                "title": "MAKAUT 2025 Design & Analysis of Algorithms (ES-CS401 / PCC-CS404)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/DAA/btech-cse-it-4-sem-design-and-analysis-of-algorithms-es-cs401-2025.pdf"
-        },
-        {
-                "subjectCode": "PCC-CS404",
-                "subjectName": "Design & Analysis of Algorithms",
-                "year": 2024,
-                "type": "END_SEM",
-                "title": "MAKAUT 2024 Design & Analysis of Algorithms (ES-CS401 / PCC-CS404)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/DAA/btech-es-cs-pcc-4-sem-design-and-analysis-of-algorithms-es-cs401-2024.pdf"
-        },
-        {
-                "subjectCode": "PCC-CS404",
-                "subjectName": "Design & Analysis of Algorithms",
-                "year": 2023,
-                "type": "END_SEM",
-                "title": "MAKAUT 2023 Design & Analysis of Algorithms (ES-CS401 / PCC-CS404)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/DAA/btech-es-4-sem-design-and-analysis-of-algorithms-es-cs401-2023.pdf"
-        },
-        {
-                "subjectCode": "PCC-CS501",
-                "subjectName": "Compiler Design",
-                "year": 2026,
-                "type": "END_SEM",
-                "title": "MAKAUT 2026 Compiler Design (PCC-CS501)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/COMPILER DESIGN/btech-cs-5-sem-compiler-design-pcc-cs501-2026.pdf"
-        },
-        {
-                "subjectCode": "PCC-CS501",
-                "subjectName": "Compiler Design",
-                "year": 2025,
-                "type": "END_SEM",
-                "title": "MAKAUT 2025 Compiler Design (PCC-CS501)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/COMPILER DESIGN/btech-cse-5-sem-compiler-design-pcc-cs501-2025.pdf"
-        },
-        {
-                "subjectCode": "PCC-CS501",
-                "subjectName": "Compiler Design",
-                "year": 2024,
-                "type": "END_SEM",
-                "title": "MAKAUT 2024 Compiler Design (PCC-CS501)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/COMPILER DESIGN/btech-cse-5-sem-compiler-design-pcc-cs501-2024.pdf"
-        },
-        {
-                "subjectCode": "PEC-IT501A/B/C/D",
-                "subjectName": "Elective-I (Theory of Computation / Artificial Intelligence / Advanced Computer Architecture / Computer Graphics)",
-                "year": 2026,
-                "type": "END_SEM",
-                "title": "MAKAUT 2026 Artificial Intelligence (PEC-IT501B / PEC-CSBS-501-B)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/AI/btech-cse-it-5-sem-artificial-intelligence-pec-csbs-501-b-2026.pdf"
-        },
-        {
-                "subjectCode": "PEC-IT501A/B/C/D",
-                "subjectName": "Elective-I (Theory of Computation / Artificial Intelligence / Advanced Computer Architecture / Computer Graphics)",
-                "year": 2025,
-                "type": "END_SEM",
-                "title": "MAKAUT 2025 Artificial Intelligence (PEC-IT501B / PEC-CSBS-501-B)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/AI/btech-cse-it-5-sem-artificial-intelligence-pec-csbs-501-b-2025.pdf"
-        },
-        {
-                "subjectCode": "PEC-IT501A/B/C/D",
-                "subjectName": "Elective-I (Theory of Computation / Artificial Intelligence / Advanced Computer Architecture / Computer Graphics)",
-                "year": 2024,
-                "type": "END_SEM",
-                "title": "MAKAUT 2024 Artificial Intelligence (PEC-IT501B / PEC-CSBS-501-B)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/AI/btech-cse-5-sem-artificial-intelligence-pec-csbs-501-b-2024.pdf"
-        },
-        {
-                "subjectCode": "PEC-IT501A/B/C/D",
-                "subjectName": "Elective-I (Theory of Computation / Artificial Intelligence / Advanced Computer Architecture / Computer Graphics)",
-                "year": 2024,
-                "type": "END_SEM",
-                "title": "MAKAUT 2024 CS Artificial Intelligence (PEC-CSBS-501-B)",
-                "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/AI/btech-cs-pec-5-sem-artificial-intelligence-pec-csbs-501-b-2024.pdf"
-        }
+    const CSE_MASTER_SYLLABUS = {
+  id: "cse-master-syllabus-3-8",
+  stream: "CSE",
+  title: "CSE Syllabus (3rd to 8th sem)",
+  code: "MAKAUT-CSE-3-8-SEM",
+  credits: "Sem 3–8 Complete Curriculum",
+  contactHours: "Official University Document (80+ Pages)",
+  pdfUrl: "CSE(3rd to 8th sem)/CSE20.pdf",
+  description: "Official complete syllabus of Maulana Abul Kalam Azad University of Technology for B.Tech Computer Science & Engineering (Semesters 3 to 8).",
+  isSinglePdf: true
+};
+window.CSE_MASTER_SYLLABUS = CSE_MASTER_SYLLABUS;
+
+const OFFICIAL_CSE_COURSES = [
+  {
+    "code": "ESC 301",
+    "name": "Analog & Digital Electronics",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 3,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Analog & Digital Electronics (ESC 301) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/ANALOG & DIGITAL/btech-cse-3-sem-analog-and-digital-electronics-esc-301-2025.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Analog & Digital Electronics (ESC 301) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/ANALOG & DIGITAL/btech-cse-3-sem-analog-and-digital-electronics-esc-301-2024.pdf"
+      },
+      {
+        "year": 2023,
+        "type": "END_SEM",
+        "title": "Analog & Digital Electronics (ESC 301) 2023 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/ANALOG & DIGITAL/btech-cse-3-sem-analog-and-digital-electronics-esc301-2023.pdf"
+      }
+    ]
+  },
+  {
+    "code": "PCC-CS301",
+    "name": "Data Structure & Algorithms",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 3,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Data Structure & Algorithms (PCC-CS301) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/DSA/btech-cse-3-sem-data-structure-and-algorithms-pc-ecs301-2025.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Data Structure & Algorithms (PCC-CS301) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/DSA/btech-cse-3-sem-data-structure-and-algorithms-pcc-cs301-2024.pdf"
+      },
+      {
+        "year": 2023,
+        "type": "END_SEM",
+        "title": "Data Structure & Algorithms (PCC-CS301) 2023 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/DSA/btech-cse-3-sem-data-structure-and-algorithms-pcc-csbs301-2023.pdf"
+      }
+    ]
+  },
+  {
+    "code": "PCC-CS302",
+    "name": "Computer Organisation",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 3,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Computer Organisation (PCC-CS302) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/COMPUTER ORGANISATION/btech-cse-3-sem-computer-organisation-pc-ecs302-2025.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Computer Organisation (PCC-CS302) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/COMPUTER ORGANISATION/btech-cse-3-sem-computer-organisation-pcc-cs302-2024.pdf"
+      },
+      {
+        "year": 2023,
+        "type": "END_SEM",
+        "title": "Computer Organisation (PCC-CS302) 2023 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/COMPUTER ORGANISATION/btech-cse-3-sem-computer-organisation-pcc-cs302-2023.pdf"
+      }
+    ]
+  },
+  {
+    "code": "BSC 301",
+    "name": "Mathematics-III (Differential Calculus)",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 3,
+    "credits": 2,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2026,
+        "type": "END_SEM",
+        "title": "Mathematics-III (Differential Calculus) (BSC 301) 2026 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/MATHS 3/btech-3-sem-mathematics-3-bs-m301-2026.pdf"
+      },
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Mathematics-III (Differential Calculus) (BSC 301) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/MATHS 3/btech-3-sem-mathematics-3-bs-m301-2025.pdf"
+      },
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Mathematics-III (Differential Calculus) (BSC 301) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/MATHS 3/btech-cse-3-sem-mathematics-3-differential-calculus-bs-m301-2025.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Mathematics-III (Differential Calculus) (BSC 301) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/MATHS 3/btech-cse-3-sem-mathematics-3-differential-calculus-bsc-301-2024.pdf"
+      },
+      {
+        "year": 2023,
+        "type": "END_SEM",
+        "title": "Mathematics-III (Differential Calculus) (BSC 301) 2023 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/MATHS 3/btech-cse-3-sem-mathematics-3-differential-calculus-bsc301-2023.pdf"
+      }
+    ]
+  },
+  {
+    "code": "HSMC 301",
+    "name": "Economics for Engineers",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 3,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Economics for Engineers (HSMC 301) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/ECONOMICS/btech-cse-3-sem-economics-for-engineers-humanities-2-hm-hu301-2025.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Economics for Engineers (HSMC 301) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/ECONOMICS/btech-cse-3-sem-economics-for-engineers-humanities-2-hsmc-301-2024.pdf"
+      },
+      {
+        "year": 2023,
+        "type": "END_SEM",
+        "title": "Economics for Engineers (HSMC 301) 2023 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/3rd sem/ECONOMICS/btech-cse-3-sem-economics-for-engineers-humanities-2-hsmc301-2023.pdf"
+      }
+    ]
+  },
+  {
+    "code": "PCC-CS393",
+    "name": "IT Workshop (Python / MATLAB / R)",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 3,
+    "credits": 2,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": []
+  },
+  {
+    "code": "PCC-CS401",
+    "name": "Discrete Mathematics",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 4,
+    "credits": 4,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2026,
+        "type": "END_SEM",
+        "title": "Discrete Mathematics (PCC-CS401) 2026 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/DISCRETE MATHS/btech-cse-4-sem-discrete-mathematics-pcc-cs401-2026.pdf"
+      },
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Discrete Mathematics (PCC-CS401) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/DISCRETE MATHS/btech-cse-4-sem-discrete-mathematics-pcc-cs401-2025.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Discrete Mathematics (PCC-CS401) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/DISCRETE MATHS/btech-pcc-cs-4-sem-discrete-mathematics-pcc-cs401-2024.pdf"
+      },
+      {
+        "year": 2023,
+        "type": "END_SEM",
+        "title": "Discrete Mathematics (PCC-CS401) 2023 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/DISCRETE MATHS/btech-pcc-cse-4-sem-discrete-mathematics-pcc-cs401-2023.pdf"
+      }
+    ]
+  },
+  {
+    "code": "PCC-CS402",
+    "name": "Computer Architecture",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 4,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2026,
+        "type": "END_SEM",
+        "title": "Computer Architecture (PCC-CS402) 2026 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/COMPUTER ARCHITECTURE/btech-cse-4-sem-computer-architecture-pcc-cs402-2026.pdf"
+      },
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Computer Architecture (PCC-CS402) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/COMPUTER ARCHITECTURE/btech-cse-4-sem-computer-architecture-pcc-cs402-2025.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Computer Architecture (PCC-CS402) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/COMPUTER ARCHITECTURE/btech-pcc-cs-4-sem-computer-architecture-pcc-cs402-2024.pdf"
+      },
+      {
+        "year": 2023,
+        "type": "END_SEM",
+        "title": "Computer Architecture (PCC-CS402) 2023 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/COMPUTER ARCHITECTURE/btech-pcc-cse-4-sem-computer-architecture-pcc-cs402-2023.pdf"
+      }
+    ]
+  },
+  {
+    "code": "PCC-CS403",
+    "name": "Formal Language & Automata Theory",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 4,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2026,
+        "type": "END_SEM",
+        "title": "Formal Language & Automata Theory (PCC-CS403) 2026 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/TOC or FLAT/btech-cse-4-sem-formal-language-and-automata-theory-pcc-cs-403-2026.pdf"
+      },
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Formal Language & Automata Theory (PCC-CS403) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/TOC or FLAT/btech-cse-4-sem-formal-language-and-automata-theory-pcc-cs-403-2025.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Formal Language & Automata Theory (PCC-CS403) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/TOC or FLAT/btech-pcc-cs-4-sem-formal-language-and-automata-theory-pcc-cs-403-2024.pdf"
+      },
+      {
+        "year": 2023,
+        "type": "END_SEM",
+        "title": "Formal Language & Automata Theory (PCC-CS403) 2023 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/TOC or FLAT/btech-pcc-cse-4-sem-formal-language-and-automata-pcc-cse-403-2023.pdf"
+      }
+    ]
+  },
+  {
+    "code": "PCC-CS404",
+    "name": "Design & Analysis of Algorithms",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 4,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Design & Analysis of Algorithms (PCC-CS404) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/DAA/btech-cse-it-4-sem-design-and-analysis-of-algorithms-es-cs401-2025.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Design & Analysis of Algorithms (PCC-CS404) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/DAA/btech-es-cs-pcc-4-sem-design-and-analysis-of-algorithms-es-cs401-2024.pdf"
+      },
+      {
+        "year": 2023,
+        "type": "END_SEM",
+        "title": "Design & Analysis of Algorithms (PCC-CS404) 2023 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/4th sem/DAA/btech-es-4-sem-design-and-analysis-of-algorithms-es-cs401-2023.pdf"
+      }
+    ]
+  },
+  {
+    "code": "BSC 401",
+    "name": "Biology",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 4,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": []
+  },
+  {
+    "code": "MC401",
+    "name": "Environmental Sciences",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 4,
+    "credits": 1,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": []
+  },
+  {
+    "code": "ESC501",
+    "name": "Software Engineering",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 5,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2026,
+        "type": "END_SEM",
+        "title": "Software Engineering (ESC501) 2026 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/SOFTWARE ENGG/btech-cs-esc-5-sem-software-engineering-esc501-2026.pdf"
+      },
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Software Engineering (ESC501) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/SOFTWARE ENGG/btech-cse-5-sem-software-engineering-esc501-2025.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Software Engineering (ESC501) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/SOFTWARE ENGG/btech-cse-5-sem-software-engineering-esc501-2024.pdf"
+      }
+    ]
+  },
+  {
+    "code": "PCC-CS501",
+    "name": "Compiler Design",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 5,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2026,
+        "type": "END_SEM",
+        "title": "Compiler Design (PCC-CS501) 2026 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/COMPILER DESIGN/btech-cs-5-sem-compiler-design-pcc-cs501-2026.pdf"
+      },
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Compiler Design (PCC-CS501) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/COMPILER DESIGN/btech-cse-5-sem-compiler-design-pcc-cs501-2025.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Compiler Design (PCC-CS501) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/COMPILER DESIGN/btech-cse-5-sem-compiler-design-pcc-cs501-2024.pdf"
+      },
+      {
+        "year": 2023,
+        "type": "END_SEM",
+        "title": "Compiler Design (PCC-CS501) 2023 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/COMPILER DESIGN/btech-pcc-cse-5-sem-compiler-design-pcc-cs501-2023.pdf"
+      }
+    ]
+  },
+  {
+    "code": "PCC-CS502",
+    "name": "Operating Systems",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 5,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2026,
+        "type": "END_SEM",
+        "title": "Operating Systems (PCC-CS502) 2026 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/OS/btech-cs-5-sem-operating-systems-pcc-cs502-2026.pdf"
+      },
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Operating Systems (PCC-CS502) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/OS/btech-cs-5-sem-operating-system-pc-cs502-2025.pdf"
+      },
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Operating Systems (PCC-CS502) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/OS/btech-cse-5-sem-operating-systems-pcc-cs502-2025.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Operating Systems (PCC-CS502) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/OS/btech-cse-5-sem-operating-systems-pcc-cs502-2024.pdf"
+      },
+      {
+        "year": 2023,
+        "type": "END_SEM",
+        "title": "Operating Systems (PCC-CS502) 2023 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/OS/btech-pcc-cse-5-sem-operating-systems-pcc-cs502-2023.pdf"
+      }
+    ]
+  },
+  {
+    "code": "PCC-CS503",
+    "name": "Object Oriented Programming",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 5,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2026,
+        "type": "END_SEM",
+        "title": "Object Oriented Programming (PCC-CS503) 2026 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/OOPS/btech-cs-5-sem-object-oriected-programming-pcc-cs503-2026.pdf"
+      },
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Object Oriented Programming (PCC-CS503) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/OOPS/btech-cse-5-sem-object-oriented-programming-pcc-cs503-2025.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Object Oriented Programming (PCC-CS503) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/OOPS/btech-cse-5-sem-object-oriented-programming-pcc-cs503-2024.pdf"
+      },
+      {
+        "year": 2023,
+        "type": "END_SEM",
+        "title": "Object Oriented Programming (PCC-CS503) 2023 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/OOPS/btech-pcc-cse-5-sem-object-oriented-programming-pcc-cs503-2023.pdf"
+      }
+    ]
+  },
+  {
+    "code": "HSMC-501",
+    "name": "Introduction to Industrial Management",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 5,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Introduction to Industrial Management (HSMC-501) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/INDUSTRIAL MGMT/btech-cse-5-sem-introduction-to-industrial-management-humanities-3-hsmc-501-2025.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Introduction to Industrial Management (HSMC-501) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/INDUSTRIAL MGMT/btech-cse-5-sem-introducon-to-industrial-management-humanities-3-hsmc-501-2024.pdf"
+      }
+    ]
+  },
+  {
+    "code": "PEC-CSBS-501-B",
+    "name": "Artificial Intelligence",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 5,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2026,
+        "type": "END_SEM",
+        "title": "Artificial Intelligence (PEC-CSBS-501-B) 2026 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/AI/btech-cse-it-5-sem-artificial-intelligence-pec-csbs-501-b-2026.pdf"
+      },
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Artificial Intelligence (PEC-CSBS-501-B) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/AI/btech-cse-it-5-sem-artificial-intelligence-pec-csbs-501-b-2025.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Artificial Intelligence (PEC-CSBS-501-B) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/AI/btech-cs-pec-5-sem-artificial-intelligence-pec-csbs-501-b-2024.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Artificial Intelligence (PEC-CSBS-501-B) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/AI/btech-cse-5-sem-artificial-intelligence-pec-csbs-501-b-2024.pdf"
+      }
+    ]
+  },
+  {
+    "code": "PEC-IT501A",
+    "name": "Theory of Computation",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 5,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2026,
+        "type": "END_SEM",
+        "title": "Theory of Computation (PEC-IT501A) 2026 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/TOC or FLAT/btech-cse-4-sem-formal-language-and-automata-theory-pcc-cs-403-2026.pdf"
+      },
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Theory of Computation (PEC-IT501A) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/TOC or FLAT/btech-cse-4-sem-formal-language-and-automata-theory-pcc-cs-403-2025.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Theory of Computation (PEC-IT501A) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/TOC or FLAT/btech-pcc-cs-4-sem-formal-language-and-automata-theory-pcc-cs-403-2024.pdf"
+      },
+      {
+        "year": 2023,
+        "type": "END_SEM",
+        "title": "Theory of Computation (PEC-IT501A) 2023 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/5th sem/TOC or FLAT/btech-pcc-cse-4-sem-formal-language-and-automata-pcc-cse-403-2023.pdf"
+      }
+    ]
+  },
+  {
+    "code": "PCC-CS601",
+    "name": "Database Management Systems",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 6,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2026,
+        "type": "END_SEM",
+        "title": "Database Management Systems (PCC-CS601) 2026 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/6th sem/DBMS/btech-cse-6-sem-database-management-systems-pcc-cs601-2026.pdf"
+      },
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Database Management Systems (PCC-CS601) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/6th sem/DBMS/btech-cse-6-sem-database-management-systems-pcc-cs601-2025.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Database Management Systems (PCC-CS601) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/6th sem/DBMS/btech-cse-6-sem-database-management-systems-pcc-cs601-2024.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Database Management Systems (PCC-CS601) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/6th sem/DBMS/btech-pcc-cs-6-sem-database-management-systems-pcc-cs601-2024.pdf"
+      },
+      {
+        "year": 2023,
+        "type": "END_SEM",
+        "title": "Database Management Systems (PCC-CS601) 2023 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/6th sem/DBMS/btech-pcc-cse-6-sem-database-management-systems-pcc-cs601-2023.pdf"
+      }
+    ]
+  },
+  {
+    "code": "PCC-CS602",
+    "name": "Computer Networks",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 6,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2026,
+        "type": "END_SEM",
+        "title": "Computer Networks (PCC-CS602) 2026 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/6th sem/CN/btech-ec-cse-6-sem-computer-networks-ec602-2026.pdf"
+      },
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Computer Networks (PCC-CS602) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/6th sem/CN/btech-ec-cse-6-sem-computer-networks-ec602-2025.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Computer Networks (PCC-CS602) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/6th sem/CN/btech-ec-cse-6-sem-computer-networks-ec602-2024.pdf"
+      }
+    ]
+  },
+  {
+    "code": "PEC-IT601A",
+    "name": "Advanced Algorithms",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 6,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Advanced Algorithms (PEC-IT601A) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/6th sem/ADV ALGO/btech-cse-it-6-sem-advanced-algorithms-pec-it601a-2025.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Advanced Algorithms (PEC-IT601A) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/6th sem/ADV ALGO/btech-cse-it-6-sem-advanced-algorithms-pec-it-601a-2024.pdf"
+      }
+    ]
+  },
+  {
+    "code": "PEC-IT601B",
+    "name": "Distributed Systems",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 6,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2026,
+        "type": "END_SEM",
+        "title": "Distributed Systems (PEC-IT601B) 2026 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/6th sem/DISTRIBUTED SYSTEMS/btech-cse-it-6-sem-distributed-systems-pec-it601b-2026.pdf"
+      },
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Distributed Systems (PEC-IT601B) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/6th sem/DISTRIBUTED SYSTEMS/btech-cse-it-6-sem-distributed-systems-pec-it601b-2025.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Distributed Systems (PEC-IT601B) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/6th sem/DISTRIBUTED SYSTEMS/btech-cse-it-6-sem-distributed-systems-pec-it601b-2024.pdf"
+      }
+    ]
+  },
+  {
+    "code": "PEC-IT601D",
+    "name": "Image Processing",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 6,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2026,
+        "type": "END_SEM",
+        "title": "Image Processing (PEC-IT601D) 2026 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/6th sem/IMG PROCESSING/btech-cse-it-6-sem-image-processing-pec-it601d-2026.pdf"
+      },
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Image Processing (PEC-IT601D) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/6th sem/IMG PROCESSING/btech-cse-it-6-sem-image-processing-pec-it601d-2025.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Image Processing (PEC-IT601D) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/6th sem/IMG PROCESSING/btech-cse-it-6-sem-image-processing-pec-it601d-2024.pdf"
+      }
+    ]
+  },
+  {
+    "code": "PEC-IT602B",
+    "name": "Data Warehousing & Data Mining",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 6,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2026,
+        "type": "END_SEM",
+        "title": "Data Warehousing & Data Mining (PEC-IT602B) 2026 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/6th sem/DATA WAREHOUSING & DATA MINING/btech-cse-it-6-sem-data-warehousing-and-data-mining-pec-it602b-2026.pdf"
+      },
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Data Warehousing & Data Mining (PEC-IT602B) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/6th sem/DATA WAREHOUSING & DATA MINING/btech-cse-it-6-sem-data-warehousing-and-data-mining-pec-it602b-2025.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Data Warehousing & Data Mining (PEC-IT602B) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/6th sem/DATA WAREHOUSING & DATA MINING/btech-cse-it-6-sem-data-warehousing-and-data-mining-pec-it602b-2024.pdf"
+      }
+    ]
+  },
+  {
+    "code": "OEC-IT601A",
+    "name": "Numerical Methods",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 6,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Numerical Methods (OEC-IT601A) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/6th sem/NUMERICAL METHOD/btech-cse-it-6-sem-numerical-methods-oec-it-601a-2024.pdf"
+      }
+    ]
+  },
+  {
+    "code": "OEC-IT601B",
+    "name": "Human Resource Development and Organizational Behavior",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 6,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Human Resource Development and Organizational Behavior (OEC-IT601B) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/6th sem/HR DEV & ORG BEHAVIOUR/btech-cse-it-6-sem-human-resource-development-and-organizational-behavior-oec-it601b-2025.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Human Resource Development and Organizational Behavior (OEC-IT601B) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/6th sem/HR DEV & ORG BEHAVIOUR/btech-cse-it-6-sem-human-resource-development-and-organizational-behavior-oec-it601b-2024.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Human Resource Development and Organizational Behavior (OEC-IT601B) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/6th sem/HR DEV & ORG BEHAVIOUR/btech-cse-it-6-sem-human-resource-development-and-organizational-behaviour-oec-it-601b-2024.pdf"
+      }
+    ]
+  },
+  {
+    "code": "PROJ-CS601",
+    "name": "Research Methodology",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 6,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Research Methodology (PROJ-CS601) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/6th sem/RESEARCH METHODOLOGY/btech-cse-6-sem-research-methodology-cs601-2025.pdf"
+      }
+    ]
+  },
+  {
+    "code": "PEC-CS701B",
+    "name": "Cloud Computing",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 7,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2026,
+        "type": "END_SEM",
+        "title": "Cloud Computing (PEC-CS701B) 2026 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/7th sem/CLOUD COMPUTING/btech-cs-it-7-sem-cloud-computing-pec-cs701b-2026.pdf"
+      },
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Cloud Computing (PEC-CS701B) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/7th sem/CLOUD COMPUTING/btech-cse-it-7-sem-cloud-computing-pec-cs701b-2025.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Cloud Computing (PEC-CS701B) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/7th sem/CLOUD COMPUTING/btech-cse-7-sem-cloud-computing-pec-cs701b-2024.pdf"
+      }
+    ]
+  },
+  {
+    "code": "PEC-CS701E",
+    "name": "Machine Learning",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 7,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2026,
+        "type": "END_SEM",
+        "title": "Machine Learning (PEC-CS701E) 2026 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/7th sem/ML/btech-cs-it-7-sem-machine-learning-pec-cs701e-2026.pdf"
+      },
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Machine Learning (PEC-CS701E) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/7th sem/ML/btech-cse-it-7-sem-machine-learning-pec-cs701e-2025.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Machine Learning (PEC-CS701E) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/7th sem/ML/btech-cse-7-sem-machine-learning-pec-cs701e-2024.pdf"
+      },
+      {
+        "year": 2023,
+        "type": "END_SEM",
+        "title": "Machine Learning (PEC-CS701E) 2023 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/7th sem/ML/btech-pec-cse-7-sem-machine-learning-pec-cs701e-2023.pdf"
+      }
+    ]
+  },
+  {
+    "code": "PEC-CS702B",
+    "name": "Soft Computing",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 7,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2026,
+        "type": "END_SEM",
+        "title": "Soft Computing (PEC-CS702B) 2026 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/7th sem/SOFT COMPUTING/btech-cs-it-7-sem-soft-computing-pec-cs702b-2026.pdf"
+      },
+      {
+        "year": 2026,
+        "type": "END_SEM",
+        "title": "Soft Computing (PEC-CS702B) 2026 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/7th sem/SOFT COMPUTING/btech-cse-it-7-sem-soft-computing-pec-cs702b-2026.pdf"
+      },
+      {
+        "year": 2023,
+        "type": "END_SEM",
+        "title": "Soft Computing (PEC-CS702B) 2023 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/7th sem/SOFT COMPUTING/btech-pec-cse-7-sem-soft-computing-pec-cs702b-2023.pdf"
+      }
+    ]
+  },
+  {
+    "code": "PEC-CS702E",
+    "name": "Cyber Security",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 7,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2026,
+        "type": "END_SEM",
+        "title": "Cyber Security (PEC-CS702E) 2026 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/7th sem/CYBER SECURUTY/btech-cs-it-7-sem-cyber-security-pec-cs702e-2026.pdf"
+      },
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Cyber Security (PEC-CS702E) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/7th sem/CYBER SECURUTY/btech-cse-it-7-sem-cyber-security-pec-cs702e-2025.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Cyber Security (PEC-CS702E) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/7th sem/CYBER SECURUTY/btech-cse-7-sem-cyber-security-pec-cs702e-2024.pdf"
+      },
+      {
+        "year": 2023,
+        "type": "END_SEM",
+        "title": "Cyber Security (PEC-CS702E) 2023 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/7th sem/CYBER SECURUTY/btech-pec-cse-7-sem-cyber-security-pec-cs702e-2023.pdf"
+      }
+    ]
+  },
+  {
+    "code": "OEC-IT701A",
+    "name": "Operations Research",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 7,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Operations Research (OEC-IT701A) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/7th sem/OPERATIONAL RESEARCH/btech-cse-it-7-sem-operations-research-oec-it701a-2025.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Operations Research (OEC-IT701A) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/7th sem/OPERATIONAL RESEARCH/btech-cse-7-sem-operations-research-oec-it701a-2024.pdf"
+      }
+    ]
+  },
+  {
+    "code": "OEC-CS701B",
+    "name": "Multimedia Systems",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 7,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2026,
+        "type": "END_SEM",
+        "title": "Multimedia Systems (OEC-CS701B) 2026 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/7th sem/MLTIMEDIA SYSTEM/btech-cs-7-sem-multimedia-systems-oeccs701b-2026.pdf"
+      },
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Multimedia Systems (OEC-CS701B) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/7th sem/MLTIMEDIA SYSTEM/btech-cse-7-sem-multimedia-systems-oeccs701b-2025.pdf"
+      },
+      {
+        "year": 2023,
+        "type": "END_SEM",
+        "title": "Multimedia Systems (OEC-CS701B) 2023 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/7th sem/MLTIMEDIA SYSTEM/btech-oeccs-7-sem-multimedia-systems-oeccs701b-2023.pdf"
+      }
+    ]
+  },
+  {
+    "code": "HSMC 701",
+    "name": "Project Management and Entrepreneurship",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 7,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Project Management and Entrepreneurship (HSMC 701) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/7th sem/PME/btech-cse-7-sem-project-management-and-entrepreneurship-hsmc-701-2024.pdf"
+      }
+    ]
+  },
+  {
+    "code": "PEC-AIDS702A",
+    "name": "E-Commerce and ERP",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 7,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2026,
+        "type": "END_SEM",
+        "title": "E-Commerce and ERP (PEC-AIDS702A) 2026 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/7th sem/E.COMM & ERP/btech-cs-aids-7-sem-ecommerce-and-erp-pecaids702a-2026.pdf"
+      },
+      {
+        "year": 2026,
+        "type": "END_SEM",
+        "title": "E-Commerce and ERP (PEC-AIDS702A) 2026 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/7th sem/E.COMM & ERP/btech-cse-it-8-sem-e-commerce-and-erp-oec-cs802a-2026.pdf"
+      },
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "E-Commerce and ERP (PEC-AIDS702A) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/7th sem/E.COMM & ERP/btech-cse-it-8-sem-e-commerce-and-erp-oec-cs802a-2025.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "E-Commerce and ERP (PEC-AIDS702A) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/7th sem/E.COMM & ERP/btech-cse-it-8-sem-e-commerce-and-erp-oec-cs802a-2024.pdf"
+      },
+      {
+        "year": 2023,
+        "type": "END_SEM",
+        "title": "E-Commerce and ERP (PEC-AIDS702A) 2023 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/7th sem/E.COMM & ERP/btech-oec-cse-it-8-sem-e-commerce-and-erp-oec-cs802a-2023.pdf"
+      }
+    ]
+  },
+  {
+    "code": "OEC-AID701A",
+    "name": "Internet of Things (IoT)",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 7,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2026,
+        "type": "END_SEM",
+        "title": "Internet of Things (IoT) (OEC-AID701A) 2026 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/7th sem/IOT/btech-cs-aids-7-sem-internet-of-things-oecaid701a-2026.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Internet of Things (IoT) (OEC-AID701A) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/7th sem/IOT/btech-cse-it-8-sem-internet-of-things-cs801e-2024.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Internet of Things (IoT) (OEC-AID701A) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/7th sem/IOT/btech-cse-it-8-sem-internet-of-things-pec-cs801e-2024.pdf"
+      }
+    ]
+  },
+  {
+    "code": "PROJ-CS781",
+    "name": "Project-II",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 7,
+    "credits": 6,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": []
+  },
+  {
+    "code": "PEC-CS801B",
+    "name": "Cryptography and Network Security",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 8,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2026,
+        "type": "END_SEM",
+        "title": "Cryptography and Network Security (PEC-CS801B) 2026 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/8th sem/CRYPTO & NETWORK SECURITY/btech-cse-it-8-sem-cryptography-and-network-security-pec-cs801-b-2026.pdf"
+      },
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Cryptography and Network Security (PEC-CS801B) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/8th sem/CRYPTO & NETWORK SECURITY/btech-cse-it-8-sem-cryptography-and-network-security-pec-cs801-b-2025.pdf"
+      },
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Cryptography and Network Security (PEC-CS801B) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/8th sem/CRYPTO & NETWORK SECURITY/btech-cse-it-8-sem-cyptography-and-network-security-pec-cs801-b-2025.pdf"
+      },
+      {
+        "year": 2023,
+        "type": "END_SEM",
+        "title": "Cryptography and Network Security (PEC-CS801B) 2023 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/8th sem/CRYPTO & NETWORK SECURITY/btech-pec-cse-it-8-sem-cryptography-and-network-security-pec-cs801-b-2023.pdf"
+      }
+    ]
+  },
+  {
+    "code": "PEC-CS801D",
+    "name": "Web and Internet Technology",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 8,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Web and Internet Technology (PEC-CS801D) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/8th sem/WEB & INTERNET TECH/btech-cse-it-8-sem-web-and-internet-technology-pec-cs801d-2025.pdf"
+      }
+    ]
+  },
+  {
+    "code": "PEC-CS801E",
+    "name": "Internet of Things",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 8,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Internet of Things (PEC-CS801E) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/8th sem/IOT/btech-cse-it-8-sem-internet-of-things-cs801e-2024.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Internet of Things (PEC-CS801E) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/8th sem/IOT/btech-cse-it-8-sem-internet-of-things-pec-cs801e-2024.pdf"
+      }
+    ]
+  },
+  {
+    "code": "OEC-CS801A",
+    "name": "Big Data Analysis",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 8,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2026,
+        "type": "END_SEM",
+        "title": "Big Data Analysis (OEC-CS801A) 2026 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/8th sem/BIG DATA ANALYSIS/btech-cse-8-sem-big-data-analysis-oec-cs801a-2026.pdf"
+      }
+    ]
+  },
+  {
+    "code": "OEC-CS801B",
+    "name": "Cyber Law and Ethics",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 8,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": [
+      {
+        "year": 2026,
+        "type": "END_SEM",
+        "title": "Cyber Law and Ethics (OEC-CS801B) 2026 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/8th sem/CYBER LAW & ETHICS/btech-cse-it-8-sem-cyber-law-and-ethics-oec-cs801b-2026.pdf"
+      },
+      {
+        "year": 2025,
+        "type": "END_SEM",
+        "title": "Cyber Law and Ethics (OEC-CS801B) 2025 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/8th sem/CYBER LAW & ETHICS/btech-cse-it-8-sem-cyber-law-and-ethics-oec-cs801b-2025.pdf"
+      },
+      {
+        "year": 2024,
+        "type": "END_SEM",
+        "title": "Cyber Law and Ethics (OEC-CS801B) 2024 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/8th sem/CYBER LAW & ETHICS/btech-cse-it-8-sem-cyber-law-and-ethics-oec-cs801b-2024.pdf"
+      },
+      {
+        "year": 2023,
+        "type": "END_SEM",
+        "title": "Cyber Law and Ethics (OEC-CS801B) 2023 Examination Paper",
+        "fileUrl": "CSE(3rd to 8th sem)/PYQs/8th sem/CYBER LAW & ETHICS/btech-oec-cse-it-8-sem-cyber-law-and-ethics-oec-cs801b-2023.pdf"
+      }
+    ]
+  },
+  {
+    "code": "OEC-CS802A",
+    "name": "E-Commerce and ERP (Sem 8)",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 8,
+    "credits": 3,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": []
+  },
+  {
+    "code": "PROJ-CS881",
+    "name": "Project-III (Summer Industry Internship)",
+    "department": "Computer Science & Engineering",
+    "stream": "CSE",
+    "semester": 8,
+    "credits": 6,
+    "syllabusUrl": "CSE(3rd to 8th sem)/CSE20.pdf",
+    "pyqs": []
+  }
 ];
 
-    // 4-Year Departmental Architecture across Streams (CSE stream verified & ingested from CSE20.pdf)
+const OFFICIAL_CSE_MODULES = [];
+const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p => ({
+  ...p,
+  subjectCode: c.code,
+  subjectName: c.name,
+  semester: c.semester
+})));
+
     const DEPARTMENT_STREAMS = {
         'CSE': {
             code: 'CSE',
@@ -5738,7 +2263,7 @@ window.onClerkLoaded = function() {
         
         let filtered = MAKAUT_CURRICULUM;
         if (sLower === 'cse') {
-            filtered = DEPARTMENT_STREAMS['CSE']?.courses || [];
+            filtered = [CSE_MASTER_SYLLABUS];
         } else if (sLower === 'it' || sLower === 'ece' || sLower === 'ee' || sLower === 'me' || sLower === 'ce' || sLower === 'aiml') {
             container.innerHTML = `
                 <div class="empty-stream-notice">
@@ -5750,7 +2275,7 @@ window.onClerkLoaded = function() {
         } else if (sLower === 'common' || sLower === '1st-year-common') {
             filtered = MAKAUT_CURRICULUM.filter(s => s.isFirstYear || s.stream === 'GROUP_A' || s.stream === 'GROUP_B' || s.stream === 'COMMON');
         } else if (sLower === 'all' || sLower === 'all subjects') {
-            filtered = [...MAKAUT_CURRICULUM, ...(DEPARTMENT_STREAMS['CSE']?.courses || [])];
+            filtered = [...MAKAUT_CURRICULUM, CSE_MASTER_SYLLABUS];
         } else {
             filtered = MAKAUT_CURRICULUM.filter(s => (s.stream && s.stream.toLowerCase() === sLower) || (s.department && s.department.toLowerCase().includes(sLower)));
             if (filtered.length === 0) {
@@ -5765,6 +2290,38 @@ window.onClerkLoaded = function() {
         }
 
         container.innerHTML = filtered.map(sub => {
+            if (sub.isSinglePdf) {
+                const encodedPdf = encodeURI(sub.pdfUrl);
+                return `
+                    <div class="curriculum-card single-master-card" data-code="${escapeHtml(sub.code)}">
+                        <div>
+                            <div class="curriculum-card-header">
+                                <span class="landing-subject-code">${escapeHtml(sub.code)}</span>
+                                <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
+                                    <span class="badge credit-badge" style="background: rgba(255,255,255,0.06); font-family: var(--font-mono);">${escapeHtml(sub.credits)}</span>
+                                    <span class="badge contact-hours-badge" style="background: rgba(255,255,255,0.05); font-family: var(--font-mono);">${escapeHtml(sub.contactHours)}</span>
+                                </div>
+                            </div>
+                            <h3 class="curriculum-card-title">${escapeHtml(sub.title || sub.name)}</h3>
+                            <div class="curriculum-card-meta">Computer Science & Engineering • Semesters 3 to 8</div>
+                            <p style="margin: 0.75rem 0 1rem; color: var(--text-muted); font-size: 0.88rem; line-height: 1.5;">
+                                ${escapeHtml(sub.description)}
+                            </p>
+                            <div style="margin: 0.5rem 0 0.85rem;">
+                                <button type="button" class="btn-preview-pdf" data-pdf="${escapeHtml(encodedPdf)}" data-title="${escapeHtml(sub.title || sub.name)}" data-url="${escapeHtml(encodedPdf)}">
+                                    📖 Official Syllabus PDF
+                                </button>
+                            </div>
+                        </div>
+                        <div class="curriculum-card-action">
+                            <button type="button" class="btn-preview-pdf" data-pdf="${escapeHtml(encodedPdf)}" data-title="${escapeHtml(sub.title || sub.name)}" data-url="${escapeHtml(encodedPdf)}">
+                                Open Official Syllabus PDF (80+ Pages) ➔
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+
             const units = sub.units || [];
             return `
                 <div class="curriculum-card" data-code="${escapeHtml(sub.code)}">
@@ -5777,11 +2334,11 @@ window.onClerkLoaded = function() {
                             </div>
                         </div>
                         <h3 class="curriculum-card-title">${escapeHtml(sub.name)}</h3>
-                        <div class="curriculum-card-meta">${escapeHtml(sub.department)} • Semester ${sub.semester}</div>
+                        <div class="curriculum-card-meta">${escapeHtml(sub.department || 'MAKAUT')} • Semester ${sub.semester}</div>
 
                         ${sub.syllabusUrl ? `
                         <div style="margin: 0.5rem 0 0.85rem;">
-                            <button type="button" class="btn-curriculum-syllabus-pdf" data-title="${escapeHtml(sub.name)} Official Syllabus" data-url="${escapeHtml(sub.syllabusUrl)}">
+                            <button type="button" class="btn-preview-pdf btn-curriculum-syllabus-pdf" data-title="${escapeHtml(sub.name)} Official Syllabus" data-url="${escapeHtml(encodeURI(sub.syllabusUrl))}">
                                 <span>📖</span> Official Syllabus PDF
                             </button>
                         </div>
@@ -5789,16 +2346,16 @@ window.onClerkLoaded = function() {
 
                         <div class="curriculum-units-accordion">
                             ${units.map(u => `
-                                <div class="curriculum-unit-item" data-unit-id="${u.id}">
+                                <div class="curriculum-unit-item" data-unit-id="${u.id || ''}">
                                     <button type="button" class="curriculum-unit-trigger">
-                                        <span><strong>Unit ${u.unitNumber}:</strong> ${escapeHtml(u.title.replace(/^Unit \d+:\s*/, ''))}</span>
+                                        <span><strong>Unit ${u.unitNumber || 1}:</strong> ${escapeHtml((u.title || '').replace(/^Unit \d+:\s*/, ''))}</span>
                                         <div style="display: flex; align-items: center; gap: 0.4rem;">
-                                            <span class="unit-hours">${u.hours} hrs</span>
+                                            <span class="unit-hours">${u.hours || 8} hrs</span>
                                             <span class="accordion-chevron">▾</span>
                                         </div>
                                     </button>
                                     <div class="curriculum-unit-body">
-                                        ${escapeHtml(u.subtopics)}
+                                        ${escapeHtml(u.subtopics || '')}
                                     </div>
                                 </div>
                             `).join('')}
@@ -5814,41 +2371,32 @@ window.onClerkLoaded = function() {
             `;
         }).join('');
 
-        // Wire accordion toggle handlers
-        container.querySelectorAll('.curriculum-unit-trigger').forEach(trigger => {
-            trigger.addEventListener('click', (e) => {
-                e.preventDefault();
-                const item = trigger.closest('.curriculum-unit-item');
-                if (item) item.classList.toggle('open');
-            });
+        // Wire accordion toggle handlers safely
+        safeBind('.curriculum-unit-trigger', 'click', (e, trigger) => {
+            e.preventDefault();
+            const item = trigger.closest('.curriculum-unit-item');
+            if (item) item.classList.toggle('open');
         });
 
-        // Wire Official Syllabus PDF button
-        container.querySelectorAll('.btn-curriculum-syllabus-pdf').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                const title = btn.getAttribute('data-title');
-                const url = btn.getAttribute('data-url');
-                if (!window.Clerk?.user) {
-                    window.triggerNativeClerkAuth({ action: 'preview', fileUrl: url, title });
-                    return;
-                }
-                openPdfViewer(title, url);
-            });
+        // Wire Official Syllabus PDF buttons
+        safeBind('.btn-preview-pdf, .btn-curriculum-syllabus-pdf', 'click', (e, btn) => {
+            e.preventDefault();
+            const title = btn.getAttribute('data-title') || 'Official Syllabus PDF';
+            const url = btn.getAttribute('data-pdf') || btn.getAttribute('data-url');
+            if (url) openPdfViewer(title, url);
         });
 
         // Wire "Track Checklist in Dashboard" CTA
-        container.querySelectorAll('.btn-curriculum-track').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const code = btn.getAttribute('data-code');
-                if (window.Clerk?.user || isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
-                    window.location.hash = '#dashboard';
-                    switchView('dashboard');
-                    openSubjectHub(code);
-                } else {
-                    window.triggerNativeClerkAuth();
-                }
-            });
+        safeBind('.btn-curriculum-track', 'click', (e, btn) => {
+            e.preventDefault();
+            const code = btn.getAttribute('data-code');
+            if (window.Clerk?.user || isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
+                window.location.hash = '#dashboard';
+                switchView('dashboard');
+                openSubjectHub(code);
+            } else {
+                window.triggerNativeClerkAuth();
+            }
         });
       } catch (err) {
         console.error("Error in curriculumCards:", err);
@@ -5929,48 +2477,47 @@ window.onClerkLoaded = function() {
                 </div>
 
                 <div class="pyq-repo-actions">
-                    <button type="button" class="btn-preview-paper btn-preview-pdf" data-subject="${escapeHtml(p.subjectCode)}" data-paper="${p.year}" data-title="${escapeHtml(p.title)}" data-url="${escapeHtml(p.fileUrl)}">
+                    <button type="button" class="btn-preview-paper btn-preview-pdf" data-subject="${escapeHtml(p.subjectCode)}" data-paper="${p.year}" data-title="${escapeHtml(p.title)}" data-url="${escapeHtml(encodeURI(p.fileUrl))}">
                         👁 Preview Paper
                     </button>
-                    <button type="button" class="btn-download-paper btn-download-pdf btn-download-pdf-gate" data-subject="${escapeHtml(p.subjectCode)}" data-paper="${p.year}" data-name="${escapeHtml(p.title)}" data-url="${escapeHtml(p.fileUrl)}">
+                    <button type="button" class="btn-download-paper btn-download-pdf btn-download-pdf-gate" data-subject="${escapeHtml(p.subjectCode)}" data-paper="${p.year}" data-name="${escapeHtml(p.title)}" data-url="${escapeHtml(encodeURI(p.fileUrl))}">
                         📥 Download PDF
                     </button>
                 </div>
             </div>
         `).join('');
 
-        // Wire Preview buttons (Gated Flow with Real Clerk SDK)
-        grid.querySelectorAll('.btn-preview-paper, .btn-preview-pdf').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                const title = btn.getAttribute('data-title');
-                const url = btn.getAttribute('data-url');
-                const subjectCode = btn.getAttribute('data-subject') || '';
-                const paperYear = btn.getAttribute('data-paper') || '';
+        // Wire Preview buttons safely
+        safeBind('.btn-preview-paper, .btn-preview-pdf', 'click', (e, btn) => {
+            e.preventDefault();
+            const title = btn.getAttribute('data-title');
+            const url = btn.getAttribute('data-url') || btn.getAttribute('data-pdf');
+            const subjectCode = btn.getAttribute('data-subject') || '';
+            const paperYear = btn.getAttribute('data-paper') || '';
 
-                if (!window.Clerk?.user) {
-                    window.triggerNativeClerkAuth({ action: 'preview', fileUrl: url, title, subjectCode, paperYear });
-                    return;
-                }
-                openPdfViewer(title, url);
-            });
+            if (!url) return;
+            const isSyllabus = url.toLowerCase().includes('syllabus') || url.toLowerCase().includes('cse20');
+            if (!isSyllabus && !window.Clerk?.user && !isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
+                window.triggerNativeClerkAuth({ action: 'preview', fileUrl: url, title, subjectCode, paperYear });
+                return;
+            }
+            openPdfViewer(title, url);
         });
 
-        // Wire Download buttons (Gated Flow with Real Clerk SDK)
-        grid.querySelectorAll('.btn-download-paper, .btn-download-pdf, .btn-download-pdf-gate').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                const subjectCode = btn.getAttribute('data-subject');
-                const paperYear = btn.getAttribute('data-paper');
-                const title = btn.getAttribute('data-name') || `${subjectCode} (${paperYear})`;
-                const fileUrl = btn.getAttribute('data-url') || '';
+        // Wire Download buttons safely
+        safeBind('.btn-download-paper, .btn-download-pdf, .btn-download-pdf-gate', 'click', (e, btn) => {
+            e.preventDefault();
+            const subjectCode = btn.getAttribute('data-subject');
+            const paperYear = btn.getAttribute('data-paper');
+            const title = btn.getAttribute('data-name') || `${subjectCode} (${paperYear})`;
+            const fileUrl = btn.getAttribute('data-url') || '';
 
-                if (!window.Clerk?.user) {
-                    window.triggerNativeClerkAuth({ action: 'download', fileUrl, title, subjectCode, paperYear });
-                    return;
-                }
-                downloadPdfFile(fileUrl, (title || 'MAKAUT_Paper') + '.pdf');
-            });
+            if (!fileUrl) return;
+            if (!window.Clerk?.user && !isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
+                window.triggerNativeClerkAuth({ action: 'download', fileUrl, title, subjectCode, paperYear });
+                return;
+            }
+            downloadPdfFile(fileUrl, (title || 'MAKAUT_Paper') + '.pdf');
         });
       } catch (err) {
         console.error("Error in pyqCatalog:", err);
@@ -5983,49 +2530,45 @@ window.onClerkLoaded = function() {
 
     // Wire All Landing Filter Buttons & PYQ Year Filters
     function bindLandingFilterButtons() {
-        // 1. Curriculum Stream Filter Buttons
-        document.querySelectorAll('.landing-filter-btn').forEach(btn => {
-            btn.onclick = (e) => {
+        try {
+            safeBind('.landing-filter-btn', 'click', (e, btn) => {
                 e.preventDefault();
                 document.querySelectorAll('.landing-filter-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 const stream = btn.getAttribute('data-stream') || 'all';
                 renderLandingCurriculumCards(stream);
-            };
-        });
-        document.querySelectorAll('#curriculum-stream-filter .curriculum-tab-btn').forEach(tab => {
-            if (!tab.classList.contains('landing-filter-btn')) {
-                tab.onclick = (e) => {
+            });
+
+            safeBind('#curriculum-stream-filter .curriculum-tab-btn', 'click', (e, tab) => {
+                if (!tab.classList.contains('landing-filter-btn')) {
                     e.preventDefault();
                     document.querySelectorAll('#curriculum-stream-filter .curriculum-tab-btn').forEach(t => t.classList.remove('active'));
                     tab.classList.add('active');
                     const stream = tab.getAttribute('data-curriculum-stream') || 'ALL';
                     renderLandingCurriculumCards(stream);
-                };
-            }
-        });
+                }
+            });
 
-        // 2. PYQ Archive Year Filter Buttons
-        document.querySelectorAll('.pyq-year-filter-btn').forEach(btn => {
-            btn.onclick = (e) => {
+            safeBind('.pyq-year-filter-btn', 'click', (e, btn) => {
                 e.preventDefault();
                 document.querySelectorAll('.pyq-year-filter-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 const year = btn.getAttribute('data-year') || 'all-years';
                 renderLandingPyqCatalog(year);
-            };
-        });
-        document.querySelectorAll('#pyq-year-pills .filter-pill').forEach(pill => {
-            if (!pill.classList.contains('pyq-year-filter-btn')) {
-                pill.onclick = (e) => {
+            });
+
+            safeBind('#pyq-year-pills .filter-pill', 'click', (e, pill) => {
+                if (!pill.classList.contains('pyq-year-filter-btn')) {
                     e.preventDefault();
                     document.querySelectorAll('#pyq-year-pills .filter-pill').forEach(p => p.classList.remove('active'));
                     pill.classList.add('active');
                     currentPyqYearFilter = pill.getAttribute('data-pyq-year') || 'ALL';
                     renderLandingPyqCatalog(currentPyqYearFilter);
-                };
-            }
-        });
+                }
+            });
+        } catch (err) {
+            console.error("Error in bindLandingFilterButtons:", err);
+        }
     }
 
     function initLandingPage() {
@@ -7069,8 +3612,9 @@ window.onClerkLoaded = function() {
 
         let targetUrl = url || '';
 
-        // Security Gate: Protect all academic archives and previews behind authentication gate
-        if (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
+        // Security Gate: Protect examination papers behind authentication gate while allowing public syllabus inspection
+        const isSyllabus = (targetUrl && (targetUrl.toLowerCase().includes('syllabus') || targetUrl.toLowerCase().includes('cse20')));
+        if (!isSyllabus && !isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
             sessionStorage.setItem('pending_download_action', JSON.stringify({ action: 'preview', fileUrl: targetUrl, title }));
             showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
             return;
@@ -7344,8 +3888,18 @@ window.onClerkLoaded = function() {
     // ==========================================
     // 15. Decoupled Search History & Chat History State
     // ==========================================
-    let searchbarHistory = JSON.parse(localStorage.getItem('campussense_searchbar_history') || '[]');
-    let chatHistory = JSON.parse(localStorage.getItem('campussense_chat_history') || '[]');
+    let searchbarHistory = [];
+    try {
+        searchbarHistory = JSON.parse(localStorage.getItem('campussense_searchbar_history') || '[]');
+    } catch (e) {
+        searchbarHistory = [];
+    }
+    let chatHistory = [];
+    try {
+        chatHistory = JSON.parse(localStorage.getItem('campussense_chat_history') || '[]');
+    } catch (e) {
+        chatHistory = [];
+    }
     let searchHistoryActiveIndex = -1;
 
     function saveSearchbarHistory(q) {
@@ -8112,7 +4666,7 @@ window.onClerkLoaded = function() {
                 if (practicalLines) resp += `**Practical / Sessional Courses:**\n${practicalLines}\n\n`;
                 if (projectLines) resp += `**Project / Internship:**\n${projectLines}\n\n`;
 
-                resp += `<button class="btn-paper-open btn-chat-paper" onclick="openPdfViewer('MAKAUT CSE Core Curriculum', 'CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf')">📖 View Complete CSE Syllabus PDF</button>`;
+                resp += `<button class="btn-paper-open btn-chat-paper" onclick="openPdfViewer('MAKAUT CSE Core Curriculum', 'CSE(3rd to 8th sem)/CSE20.pdf')">📖 View Complete CSE Syllabus PDF</button>`;
 
                 return {
                     verified: true,
@@ -8123,7 +4677,7 @@ window.onClerkLoaded = function() {
                         year: 2026,
                         group: `Semester ${semNum}`,
                         questionNumber: `Curriculum Structure`,
-                        pageUrl: 'CSE(3rd to 8th sem)/Syllabus/AllSem23_cse core .pdf'
+                        pageUrl: 'CSE(3rd to 8th sem)/CSE20.pdf'
                     }]
                 };
             }
