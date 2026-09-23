@@ -145,27 +145,78 @@ window.onClerkLoaded = function() {
     }
 
     // ==========================================
-    // 2. Asset Resolution & Robust PDF Download Engine
+    // 2. Asset Resolution & Robust PDF Engine
     // ==========================================
+    function sanitizePdfUrl(rawUrl) {
+        if (!rawUrl) return '';
+        let prefix = '';
+        let urlToProcess = rawUrl;
+        
+        // Preserve full origin if present
+        if (/^https?:\/\/[^/]+/i.test(rawUrl)) {
+            const match = rawUrl.match(/^(https?:\/\/[^/]+)(\/.*)?$/i);
+            prefix = match[1];
+            urlToProcess = match[2] || '';
+        }
+
+        let [pathAndQuery, hash] = urlToProcess.split('#');
+        // Ensure path starts cleanly without leading slash conflicts
+        let cleanUrl = pathAndQuery.startsWith('/') ? pathAndQuery.slice(1) : pathAndQuery;
+        
+        // Split path by segments and encode each segment individually (including ampersands)
+        const sanitizedPath = cleanUrl
+            .split('/')
+            .map(segment => {
+                try {
+                    return encodeURIComponent(decodeURIComponent(segment));
+                } catch (e) {
+                    return encodeURIComponent(segment);
+                }
+            })
+            .join('/');
+
+        let result = (prefix ? prefix + '/' : '') + sanitizedPath;
+        return hash !== undefined ? `${result}#${hash}` : result;
+    }
+    window.sanitizePdfUrl = sanitizePdfUrl;
+
     function resolveAssetPath(relativePath) {
         if (!relativePath) return '';
         if (/^(https?:|blob:|data:)/.test(relativePath)) {
-            return relativePath;
+            return sanitizePdfUrl(relativePath);
         }
-        const clean = relativePath.replace(/^\.?\//, '');
+        const clean = sanitizePdfUrl(relativePath.replace(/^\.?\//, ''));
         if (window.location.pathname.includes('/MAKAUT-CampusSense/')) {
             return window.location.origin + '/MAKAUT-CampusSense/' + clean;
         }
         return window.location.origin + '/' + clean;
     }
+    window.resolveAssetPath = resolveAssetPath;
+
+    window.previewPdfFile = function(url, title) {
+        const sanitizedUrl = sanitizePdfUrl(url);
+        const iframe = document.getElementById('pdf-modal-frame') || document.querySelector('.pdf-viewer-frame') || document.getElementById('pdf-viewer-iframe');
+        const modal = document.getElementById('pdf-preview-modal') || document.getElementById('pdf-modal') || document.getElementById('pdf-viewer-modal');
+
+        if (iframe) {
+            const sep = sanitizedUrl.includes('?') ? '&' : '?';
+            const baseWithTime = sanitizedUrl.includes('#') 
+                ? sanitizedUrl.replace('#', `${sep}_t=${Date.now()}#`) 
+                : `${sanitizedUrl}${sep}_t=${Date.now()}`;
+            iframe.src = baseWithTime.includes('#') ? baseWithTime : `${baseWithTime}#toolbar=1&navpanes=0`;
+        }
+
+        if (modal) {
+            modal.style.display = 'flex';
+        }
+    };
 
     async function downloadPdfFile(fileUrl, preferredName) {
-        if (!window.Clerk?.user) {
-            const resolved = resolveAssetPath(fileUrl);
+        const resolved = resolveAssetPath(fileUrl);
+        if (!window.Clerk?.user && !isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
             window.triggerNativeClerkAuth({ action: 'download', fileUrl: resolved, title: preferredName });
             return;
         }
-        const resolved = resolveAssetPath(fileUrl);
         try {
             const res = await fetch(resolved);
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -189,6 +240,7 @@ window.onClerkLoaded = function() {
             document.body.removeChild(a);
         }
     }
+    window.downloadPdfFile = downloadPdfFile;
 
     // ==========================================
     // 3. State Machine & User Context
@@ -2291,7 +2343,7 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
 
         container.innerHTML = filtered.map(sub => {
             if (sub.isSinglePdf) {
-                const encodedPdf = encodeURI(sub.pdfUrl);
+                const encodedPdf = sanitizePdfUrl(sub.pdfUrl);
                 return `
                     <div class="curriculum-card single-master-card" data-code="${escapeHtml(sub.code)}">
                         <div>
@@ -2338,7 +2390,7 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
 
                         ${sub.syllabusUrl ? `
                         <div style="margin: 0.5rem 0 0.85rem;">
-                            <button type="button" class="btn-preview-pdf btn-curriculum-syllabus-pdf" data-title="${escapeHtml(sub.name)} Official Syllabus" data-url="${escapeHtml(encodeURI(sub.syllabusUrl))}">
+                            <button type="button" class="btn-preview-pdf btn-curriculum-syllabus-pdf" data-title="${escapeHtml(sub.name)} Official Syllabus" data-url="${escapeHtml(sanitizePdfUrl(sub.syllabusUrl))}">
                                 <span>📖</span> Official Syllabus PDF
                             </button>
                         </div>
@@ -2477,10 +2529,10 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
                 </div>
 
                 <div class="pyq-repo-actions">
-                    <button type="button" class="btn-preview-paper btn-preview-pdf" data-subject="${escapeHtml(p.subjectCode)}" data-paper="${p.year}" data-title="${escapeHtml(p.title)}" data-url="${escapeHtml(encodeURI(p.fileUrl))}">
+                    <button type="button" class="btn-preview-paper btn-preview-pdf" data-subject="${escapeHtml(p.subjectCode)}" data-paper="${p.year}" data-title="${escapeHtml(p.title)}" data-url="${escapeHtml(sanitizePdfUrl(p.fileUrl))}">
                         👁 Preview Paper
                     </button>
-                    <button type="button" class="btn-download-paper btn-download-pdf btn-download-pdf-gate" data-subject="${escapeHtml(p.subjectCode)}" data-paper="${p.year}" data-name="${escapeHtml(p.title)}" data-url="${escapeHtml(encodeURI(p.fileUrl))}">
+                    <button type="button" class="btn-download-paper btn-download-pdf btn-download-pdf-gate" data-subject="${escapeHtml(p.subjectCode)}" data-paper="${p.year}" data-name="${escapeHtml(p.title)}" data-url="${escapeHtml(sanitizePdfUrl(p.fileUrl))}">
                         📥 Download PDF
                     </button>
                 </div>
@@ -3716,8 +3768,14 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
             }, 3000);
 
             let finalUrl = resolvedUrl || 'about:blank';
-            if (finalUrl.indexOf('.pdf') !== -1 && finalUrl.indexOf('#') === -1) {
-                finalUrl += '#toolbar=0';
+            if (finalUrl.indexOf('.pdf') !== -1) {
+                const sep = finalUrl.includes('?') ? '&' : '?';
+                const timeParam = `_t=${Date.now()}`;
+                if (finalUrl.indexOf('#') !== -1) {
+                    finalUrl = finalUrl.replace('#', `${sep}${timeParam}#`);
+                } else {
+                    finalUrl += `${sep}${timeParam}#toolbar=1&navpanes=0`;
+                }
             }
             iframe.src = finalUrl;
         }

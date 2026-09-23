@@ -126,4 +126,13 @@ class CampusSenseIntegrationTest {
                 .andExpect(header().string("Content-Type", containsString("application/pdf")))
                 .andExpect(header().string("X-Frame-Options", "SAMEORIGIN"));
     }
+
+    @Test
+    @DisplayName("Integration: GET /CSE(3rd to 8th sem)/CSE20.pdf - Master Syllabus Delivery")
+    void testMasterCseSyllabusDelivery() throws Exception {
+        mockMvc.perform(get("/CSE(3rd to 8th sem)/CSE20.pdf"))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Content-Type", containsString("application/pdf")))
+                .andExpect(header().string("X-Frame-Options", "SAMEORIGIN"));
+    }
 }
