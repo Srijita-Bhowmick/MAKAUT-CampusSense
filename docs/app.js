@@ -1,7 +1,7 @@
 // MAKAUT-CampusSense — End-to-End Academic Engine & Conversational RAG
 // Maintained by Srijita Bhowmick (srijitabhowmick42@gmail.com)
 // --- INDEPENDENT GLOBAL CONTROLLER ---
-(function initTheme() {
+(function initThemeEngine() {
   const saved = localStorage.getItem('campussense_theme') || localStorage.getItem('theme') || 'dark';
   document.documentElement.setAttribute('data-theme', saved);
   if (saved === 'light') {
@@ -19,12 +19,16 @@
     }
   }
 
+  let isToggling = false;
   window.toggleTheme = function(e) {
     if (e) {
       if (typeof e.preventDefault === 'function') e.preventDefault();
       if (typeof e.stopPropagation === 'function') e.stopPropagation();
     }
-    const current = document.documentElement.getAttribute('data-theme') || 'dark';
+    if (isToggling) return;
+    isToggling = true;
+
+    const current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
     const next = current === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', next);
     if (next === 'light') {
@@ -35,6 +39,8 @@
     localStorage.setItem('campussense_theme', next);
     try { localStorage.setItem('theme', next); } catch (err) {}
     updateThemeIcons(next);
+
+    setTimeout(() => { isToggling = false; }, 150);
     return next;
   };
 
@@ -322,19 +328,98 @@ window.onClerkLoaded = function() {
     }
     window.getActiveAcademicSubject = getActiveAcademicSubject;
 
+    function updateLandingLiveMetrics() {
+        try {
+            let totalSubjects = 0;
+            let totalPyqPapers = 0;
+            const countedSubjectIds = new Set();
+
+            // 1. Count Common 1st Year Subjects & PYQs
+            if (typeof MAKAUT_CURRICULUM === 'object' && MAKAUT_CURRICULUM !== null) {
+                const curriculumList = Array.isArray(MAKAUT_CURRICULUM) ? MAKAUT_CURRICULUM : Object.values(MAKAUT_CURRICULUM);
+                curriculumList.forEach((sub, idx) => {
+                    const subKey = sub.code || sub.id || `1st_${idx}`;
+                    if (!countedSubjectIds.has(subKey)) {
+                        countedSubjectIds.add(subKey);
+                        totalSubjects++;
+                    }
+                    if (Array.isArray(sub.pyqs)) {
+                        totalPyqPapers += sub.pyqs.length;
+                    }
+                });
+            }
+
+            // 2. Count Stream Subjects & PYQs (CSE)
+            if (typeof DEPARTMENT_STREAMS === 'object' && DEPARTMENT_STREAMS !== null) {
+                Object.keys(DEPARTMENT_STREAMS).forEach(streamKey => {
+                    const streamData = DEPARTMENT_STREAMS[streamKey];
+                    if (streamData && streamData.courses) {
+                        const courseList = Array.isArray(streamData.courses) ? streamData.courses : Object.values(streamData.courses);
+                        courseList.forEach((course, idx) => {
+                            const courseKey = course.code || course.id || `${streamKey}_${idx}`;
+                            const uniqueId = `${streamKey}_${courseKey}`;
+                            if (!countedSubjectIds.has(uniqueId)) {
+                                countedSubjectIds.add(uniqueId);
+                                totalSubjects++;
+                            }
+                            if (Array.isArray(course.pyqs)) {
+                                totalPyqPapers += course.pyqs.length;
+                            }
+                        });
+                    }
+                });
+            } else if (typeof OFFICIAL_CSE_COURSES !== 'undefined' && Array.isArray(OFFICIAL_CSE_COURSES)) {
+                OFFICIAL_CSE_COURSES.forEach((course, idx) => {
+                    const courseKey = course.code || `cse_${idx}`;
+                    const uniqueId = `CSE_${courseKey}`;
+                    if (!countedSubjectIds.has(uniqueId)) {
+                        countedSubjectIds.add(uniqueId);
+                        totalSubjects++;
+                    }
+                    if (Array.isArray(course.pyqs)) {
+                        totalPyqPapers += course.pyqs.length;
+                    }
+                });
+            }
+
+            // 3. Inject Computed Counts into DOM
+            const subjectsEl = document.getElementById('metric-subjects-count') || document.getElementById('stat-subjects-count');
+            const pyqsEl = document.getElementById('metric-pyqs-count') || document.getElementById('stat-pyqs-count');
+
+            if (subjectsEl && totalSubjects > 0) {
+                subjectsEl.textContent = `${totalSubjects}`;
+            }
+            if (pyqsEl && totalPyqPapers > 0) {
+                pyqsEl.textContent = `${totalPyqPapers}`;
+            }
+        } catch (err) {
+            console.warn("Could not calculate dynamic landing metrics:", err);
+        }
+    }
+    window.updateLandingLiveMetrics = updateLandingLiveMetrics;
+
+    function bindAcademicSetupOptions() {
+        ['.stream-pill', '.sem-pill', '.academic-option', '.college-card', '.primary-year-btn', '.stream-option', '.sem-btn'].forEach(selector => {
+            document.querySelectorAll(selector).forEach(el => {
+                el.onclick = function(e) {
+                    const parent = el.parentElement;
+                    if (parent) {
+                        parent.querySelectorAll(selector).forEach(sib => sib.classList.remove('selected', 'active'));
+                    }
+                    el.classList.add('selected', 'active');
+                };
+            });
+        });
+    }
+    window.bindAcademicSetupOptions = bindAcademicSetupOptions;
+
     const STREAM_LABELS = {
         'FIRST_YEAR': '1st Year Common Scheme',
         'GROUP_A': '1st Year (Group A / Physics)',
         'GROUP_B': '1st Year (Group B / Chemistry)',
         'COMMON': '1st Year Common',
         'MULTIDISCIPLINARY': '1st Year Multidisciplinary',
-        'CSE': 'Computer Science & Engineering',
-        'IT': 'Information Technology',
-        'ECE': 'Electronics & Communication Engineering',
-        'EE': 'Electrical Engineering',
-        'ME': 'Mechanical Engineering',
-        'CE': 'Civil Engineering',
-        'AIML': 'AI & Machine Learning'
+        'CSE': 'Computer Science & Engineering'
     };
 
     // =========================================================================
@@ -1691,53 +1776,9 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
             courses: OFFICIAL_CSE_COURSES,
             modules: OFFICIAL_CSE_MODULES,
             pyqs: OFFICIAL_CSE_PYQS
-        },
-        'IT': {
-            code: 'IT',
-            name: 'Information Technology',
-            years: [1, 2, 3, 4],
-            semesters: [1, 2, 3, 4, 5, 6, 7, 8],
-            courses: [],
-            modules: [],
-            pyqs: []
-        },
-        'ECE': {
-            code: 'ECE',
-            name: 'Electronics & Communication Engineering',
-            years: [1, 2, 3, 4],
-            semesters: [1, 2, 3, 4, 5, 6, 7, 8],
-            courses: [],
-            modules: [],
-            pyqs: []
-        },
-        'EE': {
-            code: 'EE',
-            name: 'Electrical Engineering',
-            years: [1, 2, 3, 4],
-            semesters: [1, 2, 3, 4, 5, 6, 7, 8],
-            courses: [],
-            modules: [],
-            pyqs: []
-        },
-        'ME': {
-            code: 'ME',
-            name: 'Mechanical Engineering',
-            years: [1, 2, 3, 4],
-            semesters: [1, 2, 3, 4, 5, 6, 7, 8],
-            courses: [],
-            modules: [],
-            pyqs: []
-        },
-        'CE': {
-            code: 'CE',
-            name: 'Civil Engineering',
-            years: [1, 2, 3, 4],
-            semesters: [1, 2, 3, 4, 5, 6, 7, 8],
-            courses: [],
-            modules: [],
-            pyqs: []
         }
     };
+    window.DEPARTMENT_STREAMS = DEPARTMENT_STREAMS;
 
     function updateContextUI() {
         const contextTextEl = document.getElementById('current-context-text');
@@ -2377,9 +2418,23 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
     }
     window.setAppWorkflowStage = setAppWorkflowStage;
 
+    function loadStoredProfile() {
+        try {
+            let profile = JSON.parse(localStorage.getItem('campussense_academic_profile') || '{}');
+            if (profile.stream === 'IT') {
+                profile.stream = 'CSE';
+                localStorage.setItem('campussense_academic_profile', JSON.stringify(profile));
+            }
+            return profile;
+        } catch (e) {
+            return {};
+        }
+    }
+    window.loadStoredProfile = loadStoredProfile;
+
     function evaluateWorkflowProgression() {
         const user = window.Clerk?.user || (window.isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true' ? { id: 'auth-user' } : null);
-        const storedAcademic = localStorage.getItem('campussense_academic_profile');
+        let storedAcademic = localStorage.getItem('campussense_academic_profile');
 
         if (!user) {
             // Stage 1: Unauthenticated -> Stay on Landing Page
@@ -2390,7 +2445,11 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
         } else {
             // Stage 3: Authenticated and Academic Context configured -> Load Dashboard
             try {
-                const profile = JSON.parse(storedAcademic);
+                let profile = JSON.parse(storedAcademic);
+                if (profile.stream === 'IT') {
+                    profile.stream = 'CSE';
+                    localStorage.setItem('campussense_academic_profile', JSON.stringify(profile));
+                }
                 updateAcademicContextUI(profile);
             } catch (e) {}
             setAppWorkflowStage(APP_FLOW.DASHBOARD);
@@ -2400,7 +2459,8 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
 
     function updateAcademicContextUI(academicProfile) {
         if (!academicProfile) return;
-        const stream = academicProfile.stream || 'CSE';
+        let stream = academicProfile.stream || 'CSE';
+        if (stream === 'IT') stream = 'CSE';
         const semester = academicProfile.semester || '3';
         const college = academicProfile.college || 'In-House';
 
@@ -3129,6 +3189,9 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
             btn.classList.toggle('active', isMatch);
             btn.classList.toggle('selected', isMatch);
         });
+        if (typeof bindAcademicSetupOptions === 'function') {
+            bindAcademicSetupOptions();
+        }
         if (scopeModal) scopeModal.style.display = 'flex';
     }
 
@@ -3246,9 +3309,10 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
         } else {
             if (regNotice) regNotice.style.display = 'none';
             if (firstYearFilterRow) firstYearFilterRow.style.display = 'none';
-            if (headingEl) headingEl.textContent = `${currentStream} • Sem ${currentSem} Subjects & Progress`;
+            const streamTitle = (currentStream === 'IT' || currentStream === 'CSE' || !currentStream) ? 'CSE' : currentStream;
+            if (headingEl) headingEl.textContent = `${streamTitle} • Sem ${currentSem} Subjects & Progress`;
 
-            const branchData = DEPARTMENT_STREAMS[currentStream] || { courses: [], modules: [], pyqs: [] };
+            const branchData = DEPARTMENT_STREAMS['CSE'] || { courses: [], modules: [], pyqs: [] };
             matchingSubjects = ((branchData.courses && branchData.courses.length > 0) ? branchData.courses : OFFICIAL_CSE_COURSES).filter(s => s.semester === currentSem);
 
             if (matchingSubjects.length === 0) {
@@ -3274,21 +3338,22 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
 
         let totalUnitsAll = 0;
         let completedUnitsAll = 0;
-        const isCseUpperYears = (currentStream === 'CSE' && currentYearMode !== 'FIRST_YEAR');
+        const isCseUpperYears = (currentStream === 'CSE' || currentStream === 'IT') && currentYearMode !== 'FIRST_YEAR';
 
         const masterCardHtml = isCseUpperYears ? `
-            <div class="curriculum-card single-master-card" style="grid-column: 1 / -1; margin-bottom: 1.25rem; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-md); padding: 1.25rem; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
-                    <span class="subject-code-tag" style="color: var(--accent-primary); font-weight: 700;">MAKAUT-CSE-3-8-SEM</span>
-                    <span class="badge credit-badge" style="background: rgba(255,255,255,0.06); font-family: var(--font-mono);">Sem 3–8 Official</span>
+            <div class="bento-card master-syllabus-card single-master-card" style="grid-column: 1 / -1; margin-bottom: 1.25rem;">
+                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+                    <span class="badge credit-badge" style="background: rgba(255,255,255,0.06); font-family: var(--font-mono);">Official 4-Year Scheme</span>
+                    <span class="credits" style="font-size: 0.82rem; color: var(--text-muted);">Semesters 3 to 8</span>
                 </div>
                 <h3 style="font-size: 1.2rem; font-weight: 700; margin: 0 0 0.35rem; color: var(--text-main);">CSE Syllabus (3rd to 8th sem)</h3>
-                <p style="margin: 0 0 0.85rem; color: var(--text-muted); font-size: 0.88rem; line-height: 1.5;">
-                    Complete official 80+ page MAKAUT syllabus covering 3rd to 8th semester.
-                </p>
-                <div>
-                    <button type="button" class="btn btn-primary btn-preview-pdf" data-pdf="CSE(3rd to 8th sem)/CSE20.pdf" data-title="CSE Syllabus (3rd to 8th sem)" data-url="CSE(3rd to 8th%20sem)/CSE20.pdf" style="padding: 0.5rem 1.15rem; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
+                <p style="margin: 0 0 0.85rem; color: var(--text-muted); font-size: 0.88rem; line-height: 1.5;">Complete official 80+ page MAKAUT syllabus covering all courses, practical labs, and departmental electives for B.Tech Computer Science & Engineering.</p>
+                <div class="card-actions" style="margin-top: 1rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                    <button type="button" class="btn btn-primary btn-preview-pdf" data-pdf="CSE(3rd to 8th sem)/CSE20.pdf" data-title="CSE Syllabus (3rd to 8th sem)" data-url="CSE(3rd to 8th%20sem)/CSE20.pdf" onclick="if(window.previewPdfFile)window.previewPdfFile('CSE(3rd to 8th sem)/CSE20.pdf', 'CSE Syllabus (3rd to 8th sem)')" style="padding: 0.5rem 1.15rem; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
                         📖 Official Syllabus PDF
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="if(window.downloadPdfFile)window.downloadPdfFile('CSE(3rd to 8th sem)/CSE20.pdf', 'CSE20.pdf')" style="padding: 0.5rem 1.15rem; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
+                        ⬇ Download PDF
                     </button>
                 </div>
             </div>
@@ -3309,7 +3374,7 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
             const pyqsCount = (sub.pyqs || []).length;
 
             return `
-                <div class="subject-item-card" data-code="${escapeHtml(sub.code)}" style="cursor: pointer;">
+                <div class="subject-item-card" data-code="${escapeHtml(sub.code)}" data-subject-id="${escapeHtml(sub.code)}" data-subject-name="${escapeHtml(sub.name)}" style="cursor: pointer;">
                     <div>
                         <div class="subject-card-top">
                             <span class="subject-code-tag">${escapeHtml(codeDisplay)}</span>
@@ -3362,11 +3427,11 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
 
         // Attach card click handlers to launch Subject Hub directly to that subject's PYQs
         grid.querySelectorAll('.subject-item-card').forEach(card => {
-            card.addEventListener('click', (e) => {
+            card.onclick = function(e) {
                 if (e.target.closest('.btn-subject-syllabus-view') || e.target.closest('.btn-preview-pdf')) return;
-                const code = card.getAttribute('data-code');
-                openSubjectHub(code, 'pyqs');
-            });
+                const subjectId = card.getAttribute('data-subject-id') || card.getAttribute('data-code');
+                openSubjectHub(subjectId, 'pyqs');
+            };
         });
 
         // Attach master syllabus / preview buttons
@@ -3466,15 +3531,15 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
             p.classList.toggle('active', p.getAttribute('data-pyq-year') === 'ALL');
         });
 
-        const codeEl = document.getElementById('hub-subject-code');
-        const nameEl = document.getElementById('hub-subject-name');
+        const titleEl = document.getElementById('hub-modal-title') || document.getElementById('hub-subject-name');
+        const codeEl = document.getElementById('hub-modal-code') || document.getElementById('hub-subject-code');
         const streamEl = document.getElementById('hub-subject-stream');
-        const creditsEl = document.getElementById('hub-credits-badge');
+        const creditsEl = document.getElementById('hub-modal-credits') || document.getElementById('hub-credits-badge');
 
         if (codeEl) codeEl.textContent = subject.code + (subject.altCode ? ` / ${subject.altCode}` : '');
-        if (nameEl) nameEl.textContent = subject.name;
-        if (streamEl) streamEl.textContent = subject.isFirstYear ? `1st Year Common Scheme` : `${subject.department} • Sem ${subject.semester}`;
-        if (creditsEl) creditsEl.textContent = `${subject.credits} credits`;
+        if (titleEl) titleEl.textContent = subject.name || subject.title;
+        if (streamEl) streamEl.textContent = subject.isFirstYear ? `1st Year Common Scheme` : `${subject.department || 'CSE'} • Sem ${subject.semester || currentSem}`;
+        if (creditsEl) creditsEl.textContent = `${subject.credits || 3} credits`;
 
         // Render Tabs
         renderHubChecklist(subject, targetModNum);
@@ -6596,6 +6661,8 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
     document.addEventListener('DOMContentLoaded', () => {
       safeExecute('curriculumCards', () => renderLandingCurriculumCards('all'));
       safeExecute('pyqCatalog', () => renderLandingPyqCatalog('all-years'));
+      safeExecute('liveMetrics', updateLandingLiveMetrics);
+      safeExecute('academicSetupOptions', bindAcademicSetupOptions);
       safeExecute('bindButtons', bindInteractiveButtons);
       try {
         initializeApp();
@@ -6607,6 +6674,8 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
     if (document.readyState === 'interactive' || document.readyState === 'complete') {
       safeExecute('curriculumCards', () => renderLandingCurriculumCards('all'));
       safeExecute('pyqCatalog', () => renderLandingPyqCatalog('all-years'));
+      safeExecute('liveMetrics', updateLandingLiveMetrics);
+      safeExecute('academicSetupOptions', bindAcademicSetupOptions);
       safeExecute('bindButtons', bindInteractiveButtons);
       try {
         initializeApp();

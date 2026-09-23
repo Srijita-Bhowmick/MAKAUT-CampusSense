@@ -63,7 +63,7 @@
             <!-- Navigation Actions & Controls -->
             <div class="nav-actions">
                 <!-- Theme Toggle Button (Dynamic SVG Sun/Moon) -->
-                <button class="theme-toggle-btn" id="theme-toggle" title="Toggle Light / Dark Mode">
+                <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme" title="Toggle Light / Dark Mode">
                     <svg id="theme-toggle-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none; width: 20px; height: 20px;">
                         <circle cx="12" cy="12" r="5"></circle>
                         <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -162,11 +162,23 @@
                 </button>
             </div>
 
-            <div class="landing-highlights-row" id="landing-stats-bar">
-                <div class="highlight-pill" style="cursor: pointer;" onclick="if(window.triggerNativeClerkAuth)window.triggerNativeClerkAuth();">📚 <span id="stat-subjects-count">9</span> Subjects: 1st Year & Core Streams Ingested</div>
-                <div class="highlight-pill" style="cursor: pointer;" onclick="if(window.triggerNativeClerkAuth)window.triggerNativeClerkAuth();">🔥 Top 20% Repeated Exam Questions</div>
-                <div class="highlight-pill" style="cursor: pointer;" onclick="if(window.triggerNativeClerkAuth)window.triggerNativeClerkAuth();">📄 <span id="stat-pyqs-count">35</span> Papers: PYQ Archives</div>
-                <div class="highlight-pill" style="cursor: pointer;" onclick="if(window.triggerNativeClerkAuth)window.triggerNativeClerkAuth();">🤖 Grounded AI Assistant with Citations</div>
+            <div class="landing-highlights-grid landing-highlights-row" id="landing-stats-bar">
+                <div class="highlight-pill" style="cursor: pointer;" onclick="if(window.triggerNativeClerkAuth)window.triggerNativeClerkAuth();">
+                    <span>📚</span>
+                    <span><strong id="metric-subjects-count">50+</strong> Subjects: 1st Year & Core Streams Ingested</span>
+                </div>
+                <div class="highlight-pill" style="cursor: pointer;" onclick="if(window.triggerNativeClerkAuth)window.triggerNativeClerkAuth();">
+                    <span>🔥</span>
+                    <span>Top 20% Repeated Exam Questions</span>
+                </div>
+                <div class="highlight-pill" style="cursor: pointer;" onclick="if(window.triggerNativeClerkAuth)window.triggerNativeClerkAuth();">
+                    <span>📄</span>
+                    <span><strong id="metric-pyqs-count">150+</strong> Papers: PYQ Archives</span>
+                </div>
+                <div class="highlight-pill" style="cursor: pointer;" onclick="if(window.triggerNativeClerkAuth)window.triggerNativeClerkAuth();">
+                    <span>🤖</span>
+                    <span>Grounded AI Assistant with Citations</span>
+                </div>
             </div>
         </div>
 
@@ -245,7 +257,6 @@
                 <button class="curriculum-tab-btn landing-filter-btn active" data-curriculum-stream="ALL" data-stream="all">All Subjects</button>
                 <button class="curriculum-tab-btn landing-filter-btn" data-curriculum-stream="COMMON" data-stream="common">1st Year Common</button>
                 <button class="curriculum-tab-btn landing-filter-btn" data-curriculum-stream="CSE" data-stream="cse">CSE</button>
-                <button class="curriculum-tab-btn landing-filter-btn" data-curriculum-stream="IT" data-stream="it">IT</button>
             </div>
 
             <div class="curriculum-cards-grid" id="landing-curriculum-grid">
@@ -544,15 +555,11 @@
                     <div class="form-group">
                         <label class="form-label">Department / Engineering Stream</label>
                         <div class="stream-select-grid" id="stream-picker-grid">
-                            <button type="button" class="stream-option stream-card stream-pill academic-option active" data-stream="CSE">
+                            <!-- Stream selection restricted strictly to CSE -->
+                            <button type="button" class="stream-option stream-card stream-pill academic-option active selected" data-stream="CSE">
                                 <span class="stream-icon">💻</span>
-                                <span class="stream-name">CSE</span>
-                                <span class="stream-desc">Computer Science & Engineering</span>
-                            </button>
-                            <button type="button" class="stream-option stream-card stream-pill academic-option" data-stream="IT">
-                                <span class="stream-icon">🌐</span>
-                                <span class="stream-name">IT</span>
-                                <span class="stream-desc">Information Technology</span>
+                                <span class="stream-name">Computer Science & Engineering (CSE)</span>
+                                <span class="stream-desc">Official MAKAUT 4-Year B.Tech Curriculum</span>
                             </button>
                         </div>
                     </div>
