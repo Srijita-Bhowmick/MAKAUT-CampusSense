@@ -38,6 +38,8 @@
 
   // Bind ONCE on DOM load
   document.addEventListener('DOMContentLoaded', () => {
+    document.body.classList.remove('modal-open');
+    document.body.style.overflow = '';
     const btn = document.getElementById('theme-toggle');
     if (btn) {
       btn.onclick = window.toggleTheme;
@@ -3183,6 +3185,7 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
             bindAcademicSetupOptions();
         }
         if (scopeModal) {
+            scopeModal.classList.add('active');
             scopeModal.style.display = 'flex';
             lockBodyScroll(true);
         }
@@ -3193,6 +3196,7 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
     if (btnCloseScopeModal) {
         btnCloseScopeModal.addEventListener('click', () => {
             if (scopeModal) {
+                scopeModal.classList.remove('active');
                 scopeModal.style.display = 'none';
                 lockBodyScroll(false);
             }
@@ -3624,6 +3628,7 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
 
         const hubModal = document.getElementById('subject-hub-modal');
         if (hubModal) {
+            hubModal.classList.add('active');
             hubModal.style.display = 'flex';
             lockBodyScroll(true);
         }
@@ -3859,6 +3864,7 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
     function closeSubjectHub() {
         const hub = document.getElementById('subject-hub-modal');
         if (hub) {
+            hub.classList.remove('active');
             hub.style.display = 'none';
             lockBodyScroll(false);
         }
@@ -4013,7 +4019,11 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
         if (filterSelect) filterSelect.onchange = () => renderQuestions(filterSelect.value);
 
         const modal = document.getElementById('panic-mode-modal');
-        if (modal) modal.style.display = 'flex';
+        if (modal) {
+            modal.classList.add('active');
+            modal.style.display = 'flex';
+            lockBodyScroll(true);
+        }
     }
 
     if (btnOpenPanicNav) btnOpenPanicNav.addEventListener('click', openFullPanicMode);
@@ -4024,7 +4034,11 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
     if (btnClosePanicModal) {
         btnClosePanicModal.addEventListener('click', () => {
             const modal = document.getElementById('panic-mode-modal');
-            if (modal) modal.style.display = 'none';
+            if (modal) {
+                modal.classList.remove('active');
+                modal.style.display = 'none';
+                lockBodyScroll(false);
+            }
         });
     }
 
@@ -4251,6 +4265,7 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
         }
 
         if (modal) {
+            modal.classList.add('active');
             modal.style.display = 'flex';
             lockBodyScroll(true);
         }
@@ -4260,6 +4275,7 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
     function closePdfViewerModal() {
         const modal = document.getElementById('pdf-viewer-modal');
         if (modal) {
+            modal.classList.remove('active');
             modal.style.display = 'none';
             lockBodyScroll(false);
         }
@@ -4312,13 +4328,19 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
 
     function openSavedDeckDrawer() {
         if (savedDeckDrawer) savedDeckDrawer.classList.add('open');
-        if (savedDeckBackdrop) savedDeckBackdrop.style.display = 'block';
+        if (savedDeckBackdrop) {
+            savedDeckBackdrop.classList.add('active');
+            savedDeckBackdrop.style.display = 'block';
+        }
         renderSavedDeckFull();
     }
 
     function closeSavedDeckDrawer() {
         if (savedDeckDrawer) savedDeckDrawer.classList.remove('open');
-        if (savedDeckBackdrop) savedDeckBackdrop.style.display = 'none';
+        if (savedDeckBackdrop) {
+            savedDeckBackdrop.classList.remove('active');
+            savedDeckBackdrop.style.display = 'none';
+        }
     }
 
     if (btnOpenSavedDeck) btnOpenSavedDeck.addEventListener('click', openSavedDeckDrawer);
@@ -5881,14 +5903,22 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
 
     if (btnOpenFeedbackNav) {
         btnOpenFeedbackNav.addEventListener('click', () => {
-            if (feedbackModal) feedbackModal.style.display = 'flex';
+            if (feedbackModal) {
+                feedbackModal.classList.add('active');
+                feedbackModal.style.display = 'flex';
+                lockBodyScroll(true);
+            }
             if (feedbackResult) feedbackResult.style.display = 'none';
         });
     }
 
     if (btnCloseFeedbackModal) {
         btnCloseFeedbackModal.addEventListener('click', () => {
-            if (feedbackModal) feedbackModal.style.display = 'none';
+            if (feedbackModal) {
+                feedbackModal.classList.remove('active');
+                feedbackModal.style.display = 'none';
+                lockBodyScroll(false);
+            }
         });
     }
 
@@ -6639,7 +6669,11 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
                 if (e.key === 'Escape') {
                     closeAiDrawer();
                     closeSavedDeckDrawer();
-                    document.querySelectorAll('.modal-backdrop').forEach(m => m.style.display = 'none');
+                    document.querySelectorAll('.modal-backdrop').forEach(m => {
+                        m.style.display = 'none';
+                        m.classList.remove('active');
+                    });
+                    lockBodyScroll(false);
                 }
             });
         } catch (err) {
@@ -6656,14 +6690,22 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
 
             if (btnOpenFeedbackNav) {
                 btnOpenFeedbackNav.onclick = () => {
-                    if (feedbackModal) feedbackModal.style.display = 'flex';
+                    if (feedbackModal) {
+                        feedbackModal.classList.add('active');
+                        feedbackModal.style.display = 'flex';
+                        lockBodyScroll(true);
+                    }
                     if (feedbackResult) feedbackResult.style.display = 'none';
                 };
             }
 
             if (btnCloseFeedbackModal) {
                 btnCloseFeedbackModal.onclick = () => {
-                    if (feedbackModal) feedbackModal.style.display = 'none';
+                    if (feedbackModal) {
+                        feedbackModal.classList.remove('active');
+                        feedbackModal.style.display = 'none';
+                        lockBodyScroll(false);
+                    }
                 };
             }
 
@@ -6745,6 +6787,8 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
 
     // Bulletproof initialization wrapper with try-catch as strictly required
     document.addEventListener('DOMContentLoaded', () => {
+      document.body.classList.remove('modal-open');
+      document.body.style.overflow = '';
       safeExecute('curriculumCards', () => renderLandingCurriculumCards('all'));
       safeExecute('pyqCatalog', () => renderLandingPyqCatalog('all-years'));
       safeExecute('liveMetrics', updateLandingLiveMetrics);

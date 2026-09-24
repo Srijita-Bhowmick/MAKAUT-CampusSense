@@ -57,6 +57,28 @@ function runAudit() {
     console.log("✅ PASSED: Modal scroll lock guard active in app.js.");
   }
 
+  // 4b. Verify Touch Action & Inactive Overlay Guards
+  if (!stylesCssContent.includes('touch-action: auto !important') || !stylesCssContent.includes('.modal:not(.active)')) {
+    console.error("❌ FAILURE: Touch unblocking or inactive overlay rules missing in styles.css!");
+    passed = false;
+  } else {
+    console.log("✅ PASSED: Touch unblocking and inactive overlay guards verified in styles.css.");
+  }
+
+  if (!appJsContent.includes("document.body.classList.remove('modal-open')")) {
+    console.error("❌ FAILURE: modal-open cleanup missing on DOM load in app.js!");
+    passed = false;
+  } else {
+    console.log("✅ PASSED: modal-open cleanup on DOM load verified in app.js.");
+  }
+
+  if (!indexHtmlContent.includes('<meta name="viewport" content="width=device-width, initial-scale=1.0">')) {
+    console.error("❌ FAILURE: Viewport meta tag is missing or non-standard in index.html!");
+    passed = false;
+  } else {
+    console.log("✅ PASSED: Standard viewport meta tag verified in index.html.");
+  }
+
   // 5. Verify Zero Practicals/Labs and Zero Non-PYQ Subjects in Dashboard Stream View
   const match = appJsContent.match(/const OFFICIAL_CSE_COURSES = (\[[\s\S]*?\]);\s*const OFFICIAL_CSE_MODULES/);
   if (!match) {

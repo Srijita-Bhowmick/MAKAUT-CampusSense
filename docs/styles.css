@@ -236,6 +236,12 @@
 }
 
 /* --- BULLETPROOF VIEWPORT & SCROLLBAR STABILIZATION --- */
+html, body {
+  touch-action: auto !important;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: hidden;
+}
+
 html {
   overflow-y: scroll !important;
   scrollbar-gutter: stable both-edges;
@@ -248,7 +254,6 @@ body {
   font-family: var(--font-body);
   line-height: 1.6;
   min-height: 100vh;
-  overflow-x: hidden !important;
   position: relative;
   overscroll-behavior-y: none;
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -283,10 +288,40 @@ body.modal-open {
   overscroll-behavior: contain !important;
 }
 
-/* Universal touch optimization */
-button, .btn, .pill, .interactive-card, .academic-option, .subject-card, .sem-pill, .stream-pill {
+/* Interactive elements must allow standard tap manipulation */
+button, a, input, select, .btn, .pill, .interactive-card, .academic-option, .subject-card, .sem-pill, .stream-pill {
   touch-action: manipulation !important;
+  cursor: pointer;
   -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Ensure Inactive Overlays Do NOT Intercept Touches */
+.modal:not(.active),
+.modal-backdrop:not(.active),
+#pdf-preview-modal:not(.active),
+#pdf-viewer-modal:not(.active),
+#subject-hub-modal:not(.active),
+#scope-modal:not(.active),
+#academic-setup-modal:not(.active),
+#panic-mode-modal:not(.active),
+#feedback-modal:not(.active),
+.drawer-backdrop:not(.active) {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+.modal.active,
+.modal-backdrop.active,
+#pdf-preview-modal.active,
+#pdf-viewer-modal.active,
+#subject-hub-modal.active,
+#scope-modal.active,
+#academic-setup-modal.active,
+#panic-mode-modal.active,
+#feedback-modal.active,
+.drawer-backdrop.active {
+  display: flex !important;
+  pointer-events: auto !important;
 }
 
 /* Set Academic selection magnification */
