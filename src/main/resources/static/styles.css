@@ -498,7 +498,11 @@ button, a, input, select, .btn, .pill, .interactive-card, .academic-option, .sub
 }
 
 /* Context Lock Pill */
-.context-pill {
+.context-pill,
+.academic-context-pill,
+#btn-context-switcher,
+#nav-academic-pill,
+#btn-academic-context {
     display: flex;
     align-items: center;
     gap: 0.6rem;
@@ -510,19 +514,28 @@ button, a, input, select, .btn, .pill, .interactive-card, .academic-option, .sub
     font-family: var(--font-heading);
     font-size: 0.85rem;
     font-weight: 600;
-    cursor: pointer;
+    cursor: pointer !important;
+    touch-action: manipulation !important;
+    pointer-events: auto !important;
     transition: var(--transition-fast);
 }
 
-.context-pill:hover {
+.context-pill:hover,
+.academic-context-pill:hover,
+#btn-context-switcher:hover,
+#nav-academic-pill:hover,
+#btn-academic-context:hover {
     background: rgba(99, 102, 241, 0.15);
     border-color: var(--accent-primary);
     box-shadow: 0 0 16px rgba(99, 102, 241, 0.25);
 }
 
-.dropdown-chevron {
+.dropdown-chevron,
+.dropdown-caret {
     color: var(--accent-cyan);
     font-size: 0.75rem;
+    pointer-events: none;
+    user-select: none;
 }
 
 /* Nav Actions */

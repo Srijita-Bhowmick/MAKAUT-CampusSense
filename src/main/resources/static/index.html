@@ -54,11 +54,14 @@
             </nav>
 
             <!-- Context Lock Pill (Visible when Dashboard is active) -->
-            <button class="context-pill" id="btn-context-switcher" style="display: none;" title="Click to switch Department or Semester">
-                <span class="context-icon">🏛️</span>
-                <span id="current-context-text">CSE • Sem 5</span>
-                <span class="dropdown-chevron">▾</span>
+            <button id="nav-academic-pill" class="context-pill academic-context-pill" data-action="open-academic-setup" style="display: none;" title="Click to switch Department or Semester" aria-label="Change Academic Context">
+                <span class="context-icon icon">🏛️</span>
+                <span id="nav-academic-label">CSE • Sem 3</span>
+                <span id="current-context-text" style="display: none;" aria-hidden="true">CSE • Sem 3</span>
+                <span class="dropdown-chevron dropdown-caret">▾</span>
             </button>
+            <button id="btn-context-switcher" style="display: none;" aria-hidden="true"></button>
+            <button id="btn-academic-context" style="display: none;" aria-hidden="true"></button>
 
             <!-- Navigation Actions & Controls -->
             <div class="nav-actions">
