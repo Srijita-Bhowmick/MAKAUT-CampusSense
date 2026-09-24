@@ -599,11 +599,15 @@
             <div class="hub-header">
                 <div>
                     <div class="hub-meta-row">
-                        <span class="badge" id="hub-subject-code">BS-M101</span>
-                        <span class="stat-pill" id="hub-subject-stream">1st Year Common • Sem 1</span>
-                        <span class="badge credit-badge" id="hub-credits-badge">4 credits</span>
+                        <span class="badge" id="hub-modal-code" data-id="hub-subject-code">BS-M101</span>
+                        <span id="hub-subject-code" style="display: none;" aria-hidden="true">BS-M101</span>
+                        <span class="stat-pill hub-subject-stream" id="hub-modal-stream-sem" data-id="hub-subject-stream">1st Year Common • Sem 1</span>
+                        <span id="hub-subject-stream" style="display: none;" aria-hidden="true">1st Year Common • Sem 1</span>
+                        <span class="badge credit-badge" id="hub-modal-credits" data-id="hub-credits-badge">4 credits</span>
+                        <span id="hub-credits-badge" style="display: none;" aria-hidden="true">4 credits</span>
                     </div>
-                    <h2 class="hub-title" id="hub-subject-name">Mathematics 1A</h2>
+                    <h2 class="hub-title" id="hub-modal-title" data-id="hub-subject-name">Mathematics 1A</h2>
+                    <span id="hub-subject-name" style="display: none;" aria-hidden="true">Mathematics 1A</span>
                 </div>
                 <div class="hub-progress-stat">
                     <div class="stat-num" id="hub-completion-stat">0%</div>

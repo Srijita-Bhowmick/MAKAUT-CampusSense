@@ -808,6 +808,7 @@ const OFFICIAL_CSE_COURSES = [
   },
   {
     "code": "PCC-CS404",
+    "altCode": "ES-CS401",
     "name": "Design & Analysis of Algorithms",
     "department": "Computer Science & Engineering",
     "stream": "CSE",
@@ -1764,6 +1765,7 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
   subjectName: c.name,
   semester: c.semester
 })));
+window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
 
     const DEPARTMENT_STREAMS = {
         'CSE': {
@@ -2066,6 +2068,7 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
             ]
         }
     ];
+    window.MAKAUT_CURRICULUM = MAKAUT_CURRICULUM;
 
     // Verified High-Frequency Panic Pack Questions (Grounded 5-Year Exam Repeats)
     const MAKAUT_PANIC_QUESTIONS = [
@@ -3724,58 +3727,121 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
     let currentHubSubject = null;
     let currentHubPyqYearFilter = 'ALL';
 
-    function openSubjectHub(subjectCodeOrObj, initialTab = 'checklist', targetModNum = null) {
-        let subject = null;
-        if (typeof subjectCodeOrObj === 'object' && subjectCodeOrObj !== null) {
-            subject = subjectCodeOrObj;
-        } else if (typeof subjectCodeOrObj === 'string' && subjectCodeOrObj.trim().length > 0) {
-            const scLower = subjectCodeOrObj.trim().toLowerCase();
-            const scNorm = scLower.replace(/[\s\-_]/g, '');
+    function normalizeCode(str) {
+        if (!str) return '';
+        return str.toString().toLowerCase().replace(/[^a-z0-9]/g, '');
+    }
+    window.normalizeCode = normalizeCode;
 
-            // 1. Departmental Streams (e.g. CSE)
-            if (typeof DEPARTMENT_STREAMS !== 'undefined') {
-                for (const strKey of Object.keys(DEPARTMENT_STREAMS)) {
-                    const found = (DEPARTMENT_STREAMS[strKey].courses || []).find(s => {
-                        const sCodeNorm = (s.code || '').replace(/[\s\-_]/g, '').toLowerCase();
-                        const sAltNorm = (s.altCode || '').replace(/[\s\-_]/g, '').toLowerCase();
-                        const sLegacyNorm = (s.legacyCode || '').replace(/[\s\-_]/g, '').toLowerCase();
-                        return sCodeNorm === scNorm || sAltNorm === scNorm || sLegacyNorm === scNorm ||
-                               (s.name && s.name.toLowerCase() === scLower);
-                    });
-                    if (found) {
-                        subject = found;
-                        break;
-                    }
+    function resolveSubjectData(identifier) {
+        if (!identifier) return null;
+        if (typeof identifier === 'object' && identifier !== null) return identifier;
+
+        const targetNorm = normalizeCode(identifier);
+
+        // 1. Search in CSE Stream Courses
+        const cseCourses = (window.DEPARTMENT_STREAMS && window.DEPARTMENT_STREAMS.CSE && window.DEPARTMENT_STREAMS.CSE.courses) ||
+                           (typeof DEPARTMENT_STREAMS !== 'undefined' && DEPARTMENT_STREAMS.CSE && DEPARTMENT_STREAMS.CSE.courses) || {};
+
+        // Exact key check
+        if (cseCourses[identifier]) return cseCourses[identifier];
+
+        // Normalized code / ID / key match
+        for (const [key, course] of Object.entries(cseCourses)) {
+            if (!course) continue;
+            if (
+                normalizeCode(key) === targetNorm ||
+                normalizeCode(course.code) === targetNorm ||
+                normalizeCode(course.id) === targetNorm ||
+                normalizeCode(course.altCode) === targetNorm ||
+                normalizeCode(course.legacyCode) === targetNorm ||
+                normalizeCode(course.title || course.name) === targetNorm
+            ) {
+                return course;
+            }
+        }
+
+        // 2. Search in Official Courses Dictionary if present
+        const officialCourses = window.OFFICIAL_CSE_COURSES || (typeof OFFICIAL_CSE_COURSES !== 'undefined' ? OFFICIAL_CSE_COURSES : null);
+        if (officialCourses) {
+            if (officialCourses[identifier]) return officialCourses[identifier];
+            for (const [key, course] of Object.entries(officialCourses)) {
+                if (!course) continue;
+                if (
+                    normalizeCode(key) === targetNorm ||
+                    normalizeCode(course.code) === targetNorm ||
+                    normalizeCode(course.id) === targetNorm ||
+                    normalizeCode(course.altCode) === targetNorm ||
+                    normalizeCode(course.legacyCode) === targetNorm ||
+                    normalizeCode(course.title || course.name) === targetNorm
+                ) {
+                    return course;
                 }
             }
+        }
 
-            // 2. OFFICIAL_CSE_COURSES
-            if (!subject && typeof OFFICIAL_CSE_COURSES !== 'undefined') {
-                subject = OFFICIAL_CSE_COURSES.find(s => {
-                    const sCodeNorm = (s.code || '').replace(/[\s\-_]/g, '').toLowerCase();
-                    const sAltNorm = (s.altCode || '').replace(/[\s\-_]/g, '').toLowerCase();
-                    return sCodeNorm === scNorm || sAltNorm === scNorm || (s.name && s.name.toLowerCase() === scLower);
-                });
-            }
-
-            // 3. MAKAUT_CURRICULUM
-            if (!subject && typeof MAKAUT_CURRICULUM !== 'undefined') {
-                subject = MAKAUT_CURRICULUM.find(s => {
-                    const sCodeNorm = (s.code || '').replace(/[\s\-_]/g, '').toLowerCase();
-                    const sAltNorm = (s.altCode || '').replace(/[\s\-_]/g, '').toLowerCase();
-                    const sLegacyNorm = (s.legacyCode || '').replace(/[\s\-_]/g, '').toLowerCase();
-                    return sCodeNorm === scNorm || sAltNorm === scNorm || sLegacyNorm === scNorm ||
-                           (s.name && s.name.toLowerCase() === scLower);
-                });
+        // 3. Search in 1st Year Curriculum
+        const curriculum = window.MAKAUT_CURRICULUM || (typeof MAKAUT_CURRICULUM !== 'undefined' ? MAKAUT_CURRICULUM : null);
+        if (curriculum) {
+            if (curriculum[identifier]) return curriculum[identifier];
+            for (const [key, course] of Object.entries(curriculum)) {
+                if (!course) continue;
+                if (
+                    normalizeCode(key) === targetNorm ||
+                    normalizeCode(course.code) === targetNorm ||
+                    normalizeCode(course.id) === targetNorm ||
+                    normalizeCode(course.altCode) === targetNorm ||
+                    normalizeCode(course.legacyCode) === targetNorm ||
+                    normalizeCode(course.name || course.title) === targetNorm
+                ) {
+                    return course;
+                }
             }
         }
 
-        // If no subject resolved, dynamically resolve based on active academic profile (never default to Physics!)
+        console.error("Subject could not be resolved for identifier:", identifier);
+        return null;
+    }
+    window.resolveSubjectData = resolveSubjectData;
+
+    window.openSubjectHub = function(subjectIdentifier, defaultTab = 'pyqs', targetModNum = null) {
+        const subject = resolveSubjectData(subjectIdentifier);
+
         if (!subject) {
-            subject = getActiveAcademicSubject();
+            alert("Subject details could not be found for: " + subjectIdentifier);
+            return;
         }
 
-        if (!subject) return;
+        const modal = document.getElementById('subject-hub-modal');
+        if (!modal) return;
+
+        // Populate header data
+        const titleEl = document.getElementById('hub-modal-title') || document.getElementById('hub-subject-name');
+        const subjectNameEl = document.getElementById('hub-subject-name');
+        const codeEl = document.getElementById('hub-modal-code') || document.getElementById('hub-subject-code');
+        const subjectCodeEl = document.getElementById('hub-subject-code');
+        const streamSemEl = document.getElementById('hub-modal-stream-sem') || document.getElementById('hub-subject-stream');
+        const subjectStreamEl = document.getElementById('hub-subject-stream');
+        const creditsEl = document.getElementById('hub-modal-credits') || document.getElementById('hub-credits-badge');
+        const creditsBadgeEl = document.getElementById('hub-credits-badge');
+
+        const displayTitle = subject.title || subject.name || subject.code;
+        if (titleEl) titleEl.textContent = displayTitle;
+        if (subjectNameEl && subjectNameEl !== titleEl) subjectNameEl.textContent = displayTitle;
+
+        const displayCode = subject.code + (subject.altCode ? ` / ${subject.altCode}` : '');
+        if (codeEl) codeEl.textContent = displayCode;
+        if (subjectCodeEl && subjectCodeEl !== codeEl) subjectCodeEl.textContent = displayCode;
+
+        const semText = subject.semester ? `Sem ${subject.semester}` : 'Sem 3';
+        const displayStream = subject.isFirstYear ? `1st Year Common Scheme` : `Computer Science & Engineering • ${semText}`;
+        if (streamSemEl) streamSemEl.textContent = displayStream;
+        if (subjectStreamEl && subjectStreamEl !== streamSemEl) subjectStreamEl.textContent = displayStream;
+
+        const displayCredits = `${subject.credits || 3} credits`;
+        if (creditsEl) creditsEl.textContent = displayCredits;
+        if (creditsBadgeEl && creditsBadgeEl !== creditsEl) creditsBadgeEl.textContent = displayCredits;
+
         currentHubSubject = subject;
         currentHubPyqYearFilter = 'ALL';
 
@@ -3784,27 +3850,27 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
             p.classList.toggle('active', p.getAttribute('data-pyq-year') === 'ALL');
         });
 
-        const titleEl = document.getElementById('hub-modal-title') || document.getElementById('hub-subject-name');
-        const codeEl = document.getElementById('hub-modal-code') || document.getElementById('hub-subject-code');
-        const streamEl = document.getElementById('hub-subject-stream');
-        const creditsEl = document.getElementById('hub-modal-credits') || document.getElementById('hub-credits-badge');
-
-        if (codeEl) codeEl.textContent = subject.code + (subject.altCode ? ` / ${subject.altCode}` : '');
-        if (titleEl) titleEl.textContent = subject.name || subject.title;
-        if (streamEl) streamEl.textContent = subject.isFirstYear ? `1st Year Common Scheme` : `${subject.department || 'CSE'} • Sem ${subject.semester || currentSem}`;
-        if (creditsEl) creditsEl.textContent = `${subject.credits || 3} credits`;
-
         // Render Tabs
-        renderHubChecklist(subject, targetModNum);
-        renderHubPyqs(subject, 'ALL');
+        if (typeof renderHubChecklist === 'function') {
+            renderHubChecklist(subject, targetModNum);
+        }
+        if (typeof renderHubPyqs === 'function') {
+            renderHubPyqs(subject, 'ALL');
+        }
+        if (typeof renderHubPyqList === 'function') {
+            renderHubPyqList(subject.pyqs || []);
+        }
 
         // Activate specified initial tab
-        activateHubTab(initialTab);
+        if (typeof switchHubTab === 'function') {
+            switchHubTab(defaultTab || 'pyqs');
+        } else if (typeof activateHubTab === 'function') {
+            activateHubTab(defaultTab || 'pyqs');
+        }
 
-        const hubModal = document.getElementById('subject-hub-modal');
-        if (hubModal) {
-            hubModal.classList.add('active');
-            hubModal.style.display = 'flex';
+        modal.classList.add('active');
+        modal.style.display = 'flex';
+        if (typeof lockBodyScroll === 'function') {
             lockBodyScroll(true);
         }
 
@@ -3820,7 +3886,20 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
                 }
             }, 250);
         }
+    };
+    function openSubjectHub(subjectIdentifier, defaultTab = 'pyqs', targetModNum = null) {
+        return window.openSubjectHub(subjectIdentifier, defaultTab, targetModNum);
     }
+    window.switchHubTab = function(tabName) {
+        if (typeof activateHubTab === 'function') {
+            activateHubTab(tabName);
+        }
+    };
+    window.renderHubPyqList = function(pyqs) {
+        if (typeof renderHubPyqs === 'function' && currentHubSubject) {
+            renderHubPyqs({ ...currentHubSubject, pyqs: pyqs || currentHubSubject.pyqs });
+        }
+    };
 
     function renderHubChecklist(subject, targetModNum = null) {
         const container = document.getElementById('hub-units-container');
