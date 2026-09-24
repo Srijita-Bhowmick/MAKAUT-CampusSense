@@ -1,8 +1,8 @@
 // MAKAUT-CampusSense — End-to-End Academic Engine & Conversational RAG
 // Maintained by Srijita Bhowmick (srijitabhowmick42@gmail.com)
 // --- INDEPENDENT GLOBAL CONTROLLER ---
-(function initThemeEngine() {
-  const saved = localStorage.getItem('campussense_theme') || localStorage.getItem('theme') || 'dark';
+(function initThemeSingleton() {
+  const saved = localStorage.getItem('campussense_theme') || 'dark';
   document.documentElement.setAttribute('data-theme', saved);
   if (saved === 'light') {
     document.documentElement.classList.add('light-theme');
@@ -10,7 +10,7 @@
     document.documentElement.classList.remove('light-theme');
   }
 
-  function updateThemeIcons(theme) {
+  function updateIcons(theme) {
     const sun = document.getElementById('theme-toggle-sun');
     const moon = document.getElementById('theme-toggle-moon');
     if (sun && moon) {
@@ -19,16 +19,12 @@
     }
   }
 
-  let isToggling = false;
   window.toggleTheme = function(e) {
     if (e) {
-      if (typeof e.preventDefault === 'function') e.preventDefault();
-      if (typeof e.stopPropagation === 'function') e.stopPropagation();
+      e.preventDefault();
+      e.stopImmediatePropagation();
     }
-    if (isToggling) return;
-    isToggling = true;
-
-    const current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    const current = document.documentElement.getAttribute('data-theme') || 'dark';
     const next = current === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', next);
     if (next === 'light') {
@@ -37,32 +33,17 @@
       document.documentElement.classList.remove('light-theme');
     }
     localStorage.setItem('campussense_theme', next);
-    try { localStorage.setItem('theme', next); } catch (err) {}
-    updateThemeIcons(next);
-
-    setTimeout(() => { isToggling = false; }, 150);
-    return next;
+    updateIcons(next);
   };
 
-  window.applyTheme = function(theme) {
-    document.documentElement.setAttribute('data-theme', theme);
-    if (theme === 'light') {
-      document.documentElement.classList.add('light-theme');
-    } else {
-      document.documentElement.classList.remove('light-theme');
-    }
-    localStorage.setItem('campussense_theme', theme);
-    try { localStorage.setItem('theme', theme); } catch (err) {}
-    updateThemeIcons(theme);
-  };
-
+  // Bind ONCE on DOM load
   document.addEventListener('DOMContentLoaded', () => {
-    const btn = document.getElementById('theme-toggle') || document.getElementById('btn-theme-toggle');
+    const btn = document.getElementById('theme-toggle');
     if (btn) {
       btn.onclick = window.toggleTheme;
     }
     const cur = document.documentElement.getAttribute('data-theme') || 'dark';
-    updateThemeIcons(cur);
+    updateIcons(cur);
   });
 })();
 
@@ -3294,35 +3275,38 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
     // ==========================================
     let currentFirstYearCategory = 'ALL';
 
-    function getQualifiedDashboardSubjects(semester, streamKey = 'CSE') {
-        const stream = (typeof DEPARTMENT_STREAMS !== 'undefined' && DEPARTMENT_STREAMS[streamKey]) || null;
-        const courses = stream && stream.courses ? stream.courses : (typeof OFFICIAL_CSE_COURSES !== 'undefined' ? OFFICIAL_CSE_COURSES : []);
-        const courseList = Array.isArray(courses) ? courses : Object.values(courses);
+    function getFilteredTheorySubjectsWithPYQs(semester, stream = 'CSE') {
+        if (stream !== 'CSE') return [];
+        const streamData = (typeof DEPARTMENT_STREAMS !== 'undefined' && DEPARTMENT_STREAMS.CSE) ? DEPARTMENT_STREAMS.CSE : null;
+        if (!streamData || !streamData.courses) return [];
 
-        return courseList.filter(course => {
-            // Check semester match
+        const coursesList = Array.isArray(streamData.courses) ? streamData.courses : Object.values(streamData.courses);
+
+        return coursesList.filter(course => {
+            // 1. Must match active semester
             if (String(course.semester) !== String(semester)) return false;
 
-            // Filter out practicals/labs/workshops/projects
-            const titleLower = (course.title || course.name || '').toLowerCase();
+            // 2. Reject all practicals, labs, workshops, projects
+            const title = (course.title || course.name || '').toLowerCase();
             const code = (course.code || '').trim();
             if (
-                titleLower.includes('lab') ||
-                titleLower.includes('laboratory') ||
-                titleLower.includes('workshop') ||
-                titleLower.includes('project') ||
-                titleLower.includes('internship') ||
-                /9[1-4]$/.test(code) || // Matches practical course codes ending in 91, 92, 93, 94
-                /8[1-9]$/.test(code)    // Matches project course codes like 781, 881
+                title.includes('lab') ||
+                title.includes('laboratory') ||
+                title.includes('workshop') ||
+                title.includes('project') ||
+                title.includes('internship') ||
+                /9[1-4]$/.test(code) || // Codes ending in 91, 92, 93, 94
+                /8[1-9]$/.test(code)    // Codes ending in 81, 881, 781
             ) {
                 return false;
             }
 
-            // Must have at least 1 verified PYQ PDF provided
+            // 3. STRICT RULE: Must have at least 1 verified PYQ file
             return Array.isArray(course.pyqs) && course.pyqs.length > 0;
         });
     }
-    window.getQualifiedDashboardSubjects = getQualifiedDashboardSubjects;
+    window.getFilteredTheorySubjectsWithPYQs = getFilteredTheorySubjectsWithPYQs;
+    window.getQualifiedDashboardSubjects = getFilteredTheorySubjectsWithPYQs;
 
     function renderActiveSubjects(categoryFilter = currentFirstYearCategory) {
         currentFirstYearCategory = categoryFilter;
@@ -3356,7 +3340,7 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
             if (firstYearFilterRow) firstYearFilterRow.style.display = 'none';
             const streamTitle = (currentStream === 'IT' || currentStream === 'CSE' || !currentStream) ? 'CSE' : currentStream;
 
-            matchingSubjects = getQualifiedDashboardSubjects(currentSem, 'CSE');
+            matchingSubjects = getFilteredTheorySubjectsWithPYQs(currentSem, 'CSE');
             if (headingEl) headingEl.textContent = `${streamTitle} • Sem ${currentSem} (${matchingSubjects.length} Verified Theory Subjects)`;
 
             if (matchingSubjects.length === 0) {
@@ -3513,31 +3497,34 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
     window.renderDashboardSubjects = renderActiveSubjects;
 
     function renderDashboardSyllabus() {
-        const profile = (typeof loadStoredProfile === 'function') ? loadStoredProfile() : JSON.parse(localStorage.getItem('campussense_academic_profile') || '{}');
-        const isCse = (profile.stream === 'CSE' || currentStream === 'CSE');
-        const sem = parseInt(profile.semester || currentSem, 10);
-        const syllabusContainer = document.getElementById('dashboard-syllabus-list') || document.querySelector('.dashboard-syllabus-container');
-        if (syllabusContainer) {
-            if (isCse && sem >= 3) {
-                syllabusContainer.innerHTML = `
-                    <div class="bento-card master-syllabus-card" style="grid-column: 1 / -1;">
-                        <div class="card-header">
-                            <span class="badge">Official 4-Year Scheme</span>
-                            <span class="credits">Semesters 3 to 8</span>
-                        </div>
-                        <h3>CSE Syllabus (3rd to 8th sem)</h3>
-                        <p>Complete official 80+ page MAKAUT syllabus covering all courses, practical labs, and departmental electives for B.Tech Computer Science & Engineering.</p>
-                        <div class="card-actions" style="margin-top: 1.25rem;">
-                            <button class="btn btn-primary" onclick="previewPdfFile('CSE(3rd to 8th sem)/CSE20.pdf', 'CSE Syllabus (3rd to 8th sem)')">
-                                📖 Official Syllabus PDF
-                            </button>
-                            <button class="btn btn-secondary" onclick="downloadPdfFile('CSE(3rd to 8th sem)/CSE20.pdf', 'CSE20.pdf')">
-                                ⬇ Download PDF
-                            </button>
-                        </div>
+        const container = document.getElementById('dashboard-syllabus-list') || document.querySelector('.dashboard-syllabus-container');
+        if (!container) return;
+
+        const profile = JSON.parse(localStorage.getItem('campussense_academic_profile') || '{}');
+        const sem = parseInt(profile.semester) || 3;
+
+        if (profile.stream === 'CSE' && sem >= 3) {
+            container.innerHTML = `
+                <div class="bento-card master-syllabus-card" style="grid-column: 1 / -1;">
+                    <div class="card-header">
+                        <span class="badge">Official University Curriculum</span>
+                        <span class="credits">Semesters 3 to 8 Complete</span>
                     </div>
-                `;
-            }
+                    <h3 style="font-size: 1.5rem; margin: 0.75rem 0;">CSE Syllabus (3rd to 8th sem)</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 1.25rem;">
+                        Official complete 80+ page Maulana Abul Kalam Azad University of Technology syllabus covering all semesters (3rd to 8th sem) for B.Tech Computer Science & Engineering.
+                    </p>
+                    <div class="card-actions">
+                        <button class="btn btn-primary" onclick="previewPdfFile('CSE(3rd to 8th sem)/CSE20.pdf', 'CSE Syllabus (3rd to 8th sem)')">
+                            📖 Official Syllabus PDF
+                        </button>
+                        <button class="btn btn-secondary" onclick="downloadPdfFile('CSE(3rd to 8th sem)/CSE20.pdf', 'CSE20.pdf')">
+                            ⬇ Download PDF
+                        </button>
+                    </div>
+                </div>
+            `;
+            return;
         }
     }
     window.renderDashboardSyllabus = renderDashboardSyllabus;

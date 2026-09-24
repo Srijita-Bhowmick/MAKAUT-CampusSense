@@ -67,15 +67,15 @@ function runAudit() {
     const mockWindow = {};
     const evalEnv = { DEPARTMENT_STREAMS: { CSE: { courses } }, OFFICIAL_CSE_COURSES: courses, window: mockWindow };
     
-    // Extract getQualifiedDashboardSubjects definition
-    const funcMatch = appJsContent.match(/function getQualifiedDashboardSubjects\(semester, streamKey = 'CSE'\) \{[\s\S]*?\n    \}/);
+    // Extract getFilteredTheorySubjectsWithPYQs definition
+    const funcMatch = appJsContent.match(/function getFilteredTheorySubjectsWithPYQs\(semester, stream = 'CSE'\) \{[\s\S]*?\n    \}/);
     if (!funcMatch) {
-      console.error("❌ FAILURE: getQualifiedDashboardSubjects not found in app.js!");
+      console.error("❌ FAILURE: getFilteredTheorySubjectsWithPYQs not found in app.js!");
       passed = false;
     } else {
       const getQualifiedDashboardSubjects = new Function('DEPARTMENT_STREAMS', 'OFFICIAL_CSE_COURSES', `
         ${funcMatch[0]}
-        return getQualifiedDashboardSubjects;
+        return getFilteredTheorySubjectsWithPYQs;
       `)(evalEnv.DEPARTMENT_STREAMS, evalEnv.OFFICIAL_CSE_COURSES);
 
       let foundInvalidSubject = false;
