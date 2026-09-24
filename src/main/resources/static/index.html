@@ -530,27 +530,27 @@
                 <div class="form-group">
                     <label class="form-label">Academic Stage & Program</label>
                     <div class="primary-year-select-row" id="primary-year-select-row">
-                        <button type="button" class="primary-year-btn academic-stage-card academic-option active" id="btn-scope-first-year" data-year-mode="FIRST_YEAR">
+                        <button type="button" class="primary-year-btn academic-stage-card stage-card stage-first-year academic-option active selected" id="btn-scope-first-year" data-year-mode="FIRST_YEAR" data-stage="first-year">
                             <span class="year-btn-icon">🌱</span>
                             <div class="year-btn-content">
                                 <span class="year-btn-title">1st Year Common Curriculum</span>
                                 <span class="year-btn-sub">Physics, Chemistry, Mathematics 1 & 2, BEE, PPS, English, EVS, Biology</span>
                             </div>
-                            <span class="year-check-icon">✓</span>
+                            <span class="year-check-icon checkmark check-icon">✓</span>
                         </button>
-                        <button type="button" class="primary-year-btn academic-stage-card academic-option" id="btn-scope-departmental-years" data-year-mode="DEPARTMENTAL_YEARS">
+                        <button type="button" class="primary-year-btn academic-stage-card stage-card stage-departmental academic-option" id="btn-scope-departmental-years" data-year-mode="DEPARTMENTAL_YEARS" data-stage="departmental">
                             <span class="year-btn-icon">⚡</span>
                             <div class="year-btn-content">
                                 <span class="year-btn-title">Departmental Years (Semesters 3 – 8)</span>
                                 <span class="year-btn-sub">Branch-Specific Departmental Core & Advanced Electives</span>
                             </div>
-                            <span class="year-check-icon">✓</span>
+                            <span class="year-check-icon checkmark check-icon" style="display: none;">✓</span>
                         </button>
                     </div>
                 </div>
 
                 <!-- Departmental Years Controls (Shown only when Departmental Years is active) -->
-                <div id="departmental-years-controls" style="display: none;">
+                <div id="departmental-years-controls" class="departmental-options-container hidden" style="display: none;">
                     <!-- Department / Engineering Stream Selector -->
                     <div class="form-group">
                         <label class="form-label">Department / Engineering Stream</label>
@@ -568,7 +568,7 @@
                     <div class="form-group">
                         <label class="form-label">Current Semester (Semesters 3 to 8)</label>
                         <div class="sem-pills-selector" id="sem-picker-row">
-                            <button type="button" class="sem-btn semester-btn sem-pill academic-option active" data-sem="3">Sem 3</button>
+                            <button type="button" class="sem-btn semester-btn sem-pill academic-option active selected" data-sem="3">Sem 3</button>
                             <button type="button" class="sem-btn semester-btn sem-pill academic-option" data-sem="4">Sem 4</button>
                             <button type="button" class="sem-btn semester-btn sem-pill academic-option" data-sem="5">Sem 5</button>
                             <button type="button" class="sem-btn semester-btn sem-pill academic-option" data-sem="6">Sem 6</button>
@@ -579,9 +579,10 @@
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" class="btn btn-primary btn-large" id="btn-confirm-scope">
+                    <button type="submit" class="btn btn-primary btn-large btn-enter-dashboard" id="btn-confirm-scope">
                         Enter Dashboard ➔
                     </button>
+                    <button type="button" id="btn-enter-dashboard" style="display: none;" aria-hidden="true"></button>
                     <button type="button" id="btn-save-academic" style="display: none;" aria-hidden="true"></button>
                     <button type="button" id="academic-submit" style="display: none;" aria-hidden="true"></button>
                 </div>

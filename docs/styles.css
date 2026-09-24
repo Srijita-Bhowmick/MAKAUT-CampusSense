@@ -375,6 +375,34 @@ button, a, input, select, .btn, .pill, .interactive-card, .academic-option, .sub
   box-shadow: 0 0 14px rgba(79, 70, 229, 0.3) !important;
 }
 
+/* Ensure child icons, spans, and paragraphs pass clicks directly to the parent card */
+.academic-stage-card *,
+.stage-card *,
+.program-card *,
+[data-stage] * {
+  pointer-events: none !important;
+}
+
+/* Ensure the cards themselves are clickable and display pointer cursor */
+.academic-stage-card,
+.stage-card,
+.program-card,
+[data-stage] {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  touch-action: manipulation !important;
+}
+
+/* Clear display rules for the conditional departmental container */
+.departmental-options-container.hidden {
+  display: none !important;
+}
+
+.departmental-options-container.visible {
+  display: block !important;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
 /* Background Ambient Lighting */
 .background-mesh {
     position: fixed;
@@ -5332,10 +5360,10 @@ body.is-drawer-resizing .ai-slide-drawer {
 .semester-btn:active,
 .sem-btn:active,
 .primary-year-btn:active {
-  transform: translateY(-2px) scale(1.01) !important;
+  transform: scale(1.07) !important;
   border-color: var(--accent-primary) !important;
-  background: rgba(55, 48, 163, 0.12) !important;
-  box-shadow: 0 14px 32px -4px rgba(55, 48, 163, 0.4) !important;
+  background: rgba(99, 102, 241, 0.25) !important;
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.5) !important;
 }
 
 

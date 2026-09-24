@@ -391,8 +391,11 @@ window.onClerkLoaded = function() {
     window.updateLandingLiveMetrics = updateLandingLiveMetrics;
 
     function bindAcademicSetupOptions() {
-        ['.stream-pill', '.sem-pill', '.academic-option', '.college-card', '.primary-year-btn', '.stream-option', '.sem-btn'].forEach(selector => {
+        ['.stream-pill', '.sem-pill', '.college-card', '.stream-option', '.sem-btn'].forEach(selector => {
             document.querySelectorAll(selector).forEach(el => {
+                if (el.classList.contains('academic-stage-card') || el.classList.contains('stage-card') || el.hasAttribute('data-stage') || el.classList.contains('primary-year-btn')) {
+                    return;
+                }
                 el.onclick = function(e) {
                     const parent = el.parentElement;
                     if (parent) {
@@ -402,6 +405,9 @@ window.onClerkLoaded = function() {
                 };
             });
         });
+        if (typeof bindAcademicContextModal === 'function') {
+            bindAcademicContextModal();
+        }
     }
     window.bindAcademicSetupOptions = bindAcademicSetupOptions;
 
@@ -2370,6 +2376,7 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
 
         switch (stage) {
             case APP_FLOW.LANDING:
+            case 'landing':
                 if (landingViewEl) landingViewEl.style.display = 'block';
                 if (dashboardWorkspaceEl) dashboardWorkspaceEl.style.display = 'none';
                 if (dashboardViewEl) dashboardViewEl.style.display = 'none';
@@ -2381,6 +2388,7 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
                 break;
 
             case APP_FLOW.ACADEMIC_SETUP:
+            case 'academic-setup':
                 if (landingViewEl) landingViewEl.style.display = 'block';
                 if (dashboardWorkspaceEl) dashboardWorkspaceEl.style.display = 'none';
                 if (dashboardViewEl) dashboardViewEl.style.display = 'none';
@@ -2391,10 +2399,14 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
                     if (typeof openScopeModal === 'function') {
                         openScopeModal();
                     }
+                    if (typeof bindAcademicContextModal === 'function') {
+                        bindAcademicContextModal();
+                    }
                 }
                 break;
 
             case APP_FLOW.DASHBOARD:
+            case 'dashboard':
                 if (landingViewEl) landingViewEl.style.display = 'none';
                 if (academicModal) {
                     academicModal.style.display = 'none';
@@ -3119,118 +3131,233 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
     }
 
     // ==========================================
-    // 9. Academic Scope Onboarding Modal (#scope-modal)
+    // 9. Academic Scope Onboarding Modal (#scope-modal / #academic-setup-modal)
     // ==========================================
-    const scopeModal = document.getElementById('scope-modal');
-    const btnCloseScopeModal = document.getElementById('btn-close-scope-modal');
-    const scopeForm = document.getElementById('scope-form');
-    const btnScopeFirstYear = document.getElementById('btn-scope-first-year');
-    const btnScopeDepartmentalYears = document.getElementById('btn-scope-departmental-years') || document.getElementById('btn-scope-upper-years');
-    const departmentalYearsControls = document.getElementById('departmental-years-controls') || document.getElementById('upper-years-controls');
+    function bindAcademicContextModal() {
+        const modal = document.getElementById('academic-setup-modal') || document.getElementById('academic-modal') || document.getElementById('scope-modal');
+        if (!modal) return;
 
-    let modalYearMode = (currentYearMode === 'UPPER_YEARS' || currentYearMode === 'DEPARTMENTAL_YEARS') ? 'DEPARTMENTAL_YEARS' : 'FIRST_YEAR';
+        // Track active stage state: 'first-year' or 'departmental'
+        let selectedStage = 'first-year';
+        let selectedSemester = '3';
+        const selectedStream = 'CSE'; // Strictly locked to CSE
 
-    if (btnScopeFirstYear && btnScopeDepartmentalYears && departmentalYearsControls) {
-        btnScopeFirstYear.addEventListener('click', () => {
-            modalYearMode = 'FIRST_YEAR';
-            btnScopeFirstYear.classList.add('active', 'selected');
-            btnScopeDepartmentalYears.classList.remove('active', 'selected');
-            departmentalYearsControls.style.display = 'none';
-            const streamInput = document.getElementById('select-stream');
-            if (streamInput) streamInput.value = 'FIRST_YEAR';
-            const semInput = document.getElementById('select-semester');
-            if (semInput) semInput.value = '1';
-        });
+        const firstYearCard = document.querySelector('[data-stage="first-year"]') || modal.querySelector('.stage-first-year') || modal.querySelectorAll('.academic-stage-card, .stage-card')[0] || document.getElementById('btn-scope-first-year');
+        const deptCard = document.querySelector('[data-stage="departmental"]') || modal.querySelector('.stage-departmental') || modal.querySelectorAll('.academic-stage-card, .stage-card')[1] || document.getElementById('btn-scope-departmental-years');
+        const deptOptionsSection = document.getElementById('departmental-options') || modal.querySelector('.departmental-options-container') || document.getElementById('sem-picker-container') || document.getElementById('departmental-years-controls');
+        const enterBtn = document.getElementById('btn-enter-dashboard') || modal.querySelector('.btn-enter-dashboard') || modal.querySelector('button[type="submit"]') || modal.querySelector('.btn-primary') || document.getElementById('btn-confirm-scope');
 
-        btnScopeDepartmentalYears.addEventListener('click', () => {
-            modalYearMode = 'DEPARTMENTAL_YEARS';
-            btnScopeDepartmentalYears.classList.add('active', 'selected');
-            btnScopeFirstYear.classList.remove('active', 'selected');
-            departmentalYearsControls.style.display = 'block';
-            const activeStreamBtn = document.querySelector('.stream-option.active, .stream-option.selected');
-            const activeSemBtn = document.querySelector('.sem-btn.active, .sem-btn.selected');
-            const streamInput = document.getElementById('select-stream');
-            if (streamInput) streamInput.value = activeStreamBtn?.getAttribute('data-stream') || 'CSE';
-            const semInput = document.getElementById('select-semester');
-            if (semInput) semInput.value = activeSemBtn?.getAttribute('data-sem') || '3';
-        });
-    }
+        function updateStageUI(stage) {
+            selectedStage = stage;
 
-    function openScopeModal() {
-        modalYearMode = (currentYearMode === 'UPPER_YEARS' || currentYearMode === 'DEPARTMENTAL_YEARS') ? 'DEPARTMENTAL_YEARS' : 'FIRST_YEAR';
-        if (btnScopeFirstYear && btnScopeDepartmentalYears && departmentalYearsControls) {
-            if (modalYearMode === 'FIRST_YEAR') {
-                btnScopeFirstYear.classList.add('active', 'selected');
-                btnScopeDepartmentalYears.classList.remove('active', 'selected');
-                departmentalYearsControls.style.display = 'none';
+            if (stage === 'first-year') {
+                if (firstYearCard) {
+                    firstYearCard.classList.add('selected', 'active');
+                    const check = firstYearCard.querySelector('.check-icon, .checkmark, .year-check-icon');
+                    if (check) check.style.display = 'block';
+                }
+                if (deptCard) {
+                    deptCard.classList.remove('selected', 'active');
+                    const check = deptCard.querySelector('.check-icon, .checkmark, .year-check-icon');
+                    if (check) check.style.display = 'none';
+                }
+                if (deptOptionsSection) {
+                    deptOptionsSection.classList.remove('visible');
+                    deptOptionsSection.classList.add('hidden');
+                    deptOptionsSection.style.display = 'none';
+                }
+                const streamInput = document.getElementById('select-stream');
+                if (streamInput) streamInput.value = 'FIRST_YEAR';
+                const semInput = document.getElementById('select-semester');
+                if (semInput) semInput.value = '1';
             } else {
-                btnScopeDepartmentalYears.classList.add('active', 'selected');
-                btnScopeFirstYear.classList.remove('active', 'selected');
-                departmentalYearsControls.style.display = 'block';
+                if (deptCard) {
+                    deptCard.classList.add('selected', 'active');
+                    let check = deptCard.querySelector('.check-icon, .checkmark, .year-check-icon');
+                    if (check) check.style.display = 'block';
+                }
+                if (firstYearCard) {
+                    firstYearCard.classList.remove('selected', 'active');
+                    const check = firstYearCard.querySelector('.check-icon, .checkmark, .year-check-icon');
+                    if (check) check.style.display = 'none';
+                }
+                if (deptOptionsSection) {
+                    deptOptionsSection.classList.remove('hidden');
+                    deptOptionsSection.classList.add('visible');
+                    deptOptionsSection.style.display = 'block';
+                }
+                const streamInput = document.getElementById('select-stream');
+                if (streamInput) streamInput.value = 'CSE';
+                const semInput = document.getElementById('select-semester');
+                if (semInput) semInput.value = String(selectedSemester || '3');
             }
         }
-        // Highlight active stream in departmental years
-        document.querySelectorAll('.stream-option').forEach(btn => {
-            const isMatch = btn.getAttribute('data-stream') === currentStream;
-            btn.classList.toggle('active', isMatch);
-            btn.classList.toggle('selected', isMatch);
-        });
-        // Highlight active semester in departmental years
-        document.querySelectorAll('.sem-btn').forEach(btn => {
-            const isMatch = parseInt(btn.getAttribute('data-sem'), 10) === currentSem;
-            btn.classList.toggle('active', isMatch);
-            btn.classList.toggle('selected', isMatch);
-        });
-        if (typeof bindAcademicSetupOptions === 'function') {
-            bindAcademicSetupOptions();
+
+        // Restore active state from profile if available
+        try {
+            const profile = JSON.parse(localStorage.getItem('campussense_academic_profile') || '{}');
+            if (profile.stage === 'departmental' || (profile.stream === 'CSE' && parseInt(profile.semester, 10) >= 3)) {
+                selectedSemester = String(profile.semester || '3');
+                updateStageUI('departmental');
+            } else {
+                updateStageUI('first-year');
+            }
+        } catch (err) {
+            updateStageUI('first-year');
         }
-        if (scopeModal) {
-            scopeModal.classList.add('active');
-            scopeModal.style.display = 'flex';
+
+        // 1. Direct Click Binding on First Year Card
+        if (firstYearCard) {
+            firstYearCard.onclick = function(e) {
+                if (e) e.preventDefault();
+                updateStageUI('first-year');
+            };
+        }
+
+        // 2. Direct Click Binding on Departmental Card
+        if (deptCard) {
+            deptCard.onclick = function(e) {
+                if (e) e.preventDefault();
+                updateStageUI('departmental');
+            };
+        }
+
+        // 3. Semester Selection Pills (3, 4, 5, 6, 7, 8)
+        modal.querySelectorAll('.sem-pill, [data-sem], .sem-btn').forEach(pill => {
+            pill.onclick = function(e) {
+                if (e) e.preventDefault();
+                modal.querySelectorAll('.sem-pill, [data-sem], .sem-btn').forEach(p => p.classList.remove('selected', 'active'));
+                pill.classList.add('selected', 'active');
+                selectedSemester = pill.getAttribute('data-sem') || pill.textContent.trim().replace(/\D/g, '') || '3';
+                const semInput = document.getElementById('select-semester');
+                if (semInput) semInput.value = String(selectedSemester);
+            };
+        });
+
+        // Stream Selection Pills (locked strictly to CSE)
+        modal.querySelectorAll('.stream-option, .stream-pill, [data-stream]').forEach(pill => {
+            pill.onclick = function(e) {
+                if (e) e.preventDefault();
+                modal.querySelectorAll('.stream-option, .stream-pill, [data-stream]').forEach(p => p.classList.remove('selected', 'active'));
+                pill.classList.add('selected', 'active');
+                const streamInput = document.getElementById('select-stream');
+                if (streamInput) streamInput.value = 'CSE';
+            };
+        });
+
+        // 4. "Enter Dashboard ->" Submission
+        if (enterBtn) {
+            enterBtn.onclick = function(e) {
+                if (e) e.preventDefault();
+
+                let profile = {};
+                if (selectedStage === 'first-year') {
+                    profile = {
+                        stage: 'first-year',
+                        stream: 'Common',
+                        semester: '1',
+                        college: 'In-House'
+                    };
+                } else {
+                    profile = {
+                        stage: 'departmental',
+                        stream: 'CSE', // Strictly locked to CSE
+                        semester: String(selectedSemester || '3'),
+                        college: 'In-House'
+                    };
+                }
+
+                localStorage.setItem('campussense_academic_profile', JSON.stringify(profile));
+
+                // Close modal
+                modal.style.display = 'none';
+                modal.classList.remove('active');
+                if (typeof lockBodyScroll === 'function') {
+                    lockBodyScroll(false);
+                }
+
+                // Also persist legacy keys for full compatibility
+                const effectiveYearMode = (profile.stage === 'first-year' || parseInt(profile.semester, 10) <= 2) ? 'FIRST_YEAR' : 'DEPARTMENTAL_YEARS';
+                localStorage.setItem('campussense_stream', profile.stream);
+                localStorage.setItem('campussense_branch', profile.stream);
+                localStorage.setItem('campussense_semester', profile.semester.toString());
+                localStorage.setItem('campussense_year_mode', effectiveYearMode);
+                localStorage.setItem('campussense_stage', effectiveYearMode === 'FIRST_YEAR' ? '1st_year' : 'departmental');
+                localStorage.setItem('campussense_scope', JSON.stringify({
+                    yearMode: effectiveYearMode,
+                    stream: profile.stream,
+                    semester: parseInt(profile.semester, 10) || 1
+                }));
+
+                if (window.Clerk?.user && typeof window.Clerk.user.update === 'function') {
+                    window.Clerk.user.update({
+                        unsafeMetadata: {
+                            stage: effectiveYearMode === 'FIRST_YEAR' ? '1st_year' : 'departmental',
+                            branch: profile.stream || 'Common',
+                            semester: profile.semester.toString(),
+                            lastLoginTimestamp: new Date().toISOString()
+                        }
+                    }).catch(err => console.warn('[Clerk] Metadata sync skipped:', err));
+                }
+
+                if (typeof updateAcademicContextUI === 'function') {
+                    updateAcademicContextUI(profile);
+                }
+
+                // Transition to Dashboard
+                if (typeof setAppWorkflowStage === 'function') {
+                    setAppWorkflowStage('dashboard');
+                } else {
+                    window.location.reload();
+                }
+            };
+        }
+
+        const scopeForm = document.getElementById('scope-form') || modal.querySelector('form');
+        if (scopeForm) {
+            scopeForm.onsubmit = function(e) {
+                if (e) e.preventDefault();
+                if (enterBtn && typeof enterBtn.onclick === 'function') {
+                    enterBtn.onclick(e);
+                }
+            };
+        }
+
+        ['btn-confirm-scope', 'btn-save-academic', 'academic-submit'].forEach(id => {
+            const btn = document.getElementById(id);
+            if (btn && enterBtn) btn.onclick = enterBtn.onclick;
+        });
+    }
+    window.bindAcademicContextModal = bindAcademicContextModal;
+
+    function openScopeModal() {
+        const modal = document.getElementById('academic-setup-modal') || document.getElementById('scope-modal') || document.getElementById('academic-modal');
+        if (typeof bindAcademicContextModal === 'function') {
+            bindAcademicContextModal();
+        }
+        if (modal) {
+            modal.classList.add('active');
+            modal.style.display = 'flex';
             lockBodyScroll(true);
         }
     }
+    window.openScopeModal = openScopeModal;
 
-    if (contextSwitcherBtn) contextSwitcherBtn.addEventListener('click', openScopeModal);
+    if (contextSwitcherBtn) {
+        contextSwitcherBtn.addEventListener('click', openScopeModal);
+    }
 
+    const btnCloseScopeModal = document.getElementById('btn-close-scope-modal');
     if (btnCloseScopeModal) {
         btnCloseScopeModal.addEventListener('click', () => {
-            if (scopeModal) {
-                scopeModal.classList.remove('active');
-                scopeModal.style.display = 'none';
+            const modal = document.getElementById('academic-setup-modal') || document.getElementById('scope-modal') || document.getElementById('academic-modal');
+            if (modal) {
+                modal.classList.remove('active');
+                modal.style.display = 'none';
                 lockBodyScroll(false);
             }
         });
     }
-
-    // Stream pickers for Upper Years
-    document.querySelectorAll('.stream-option').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.stream-option').forEach(b => b.classList.remove('active', 'selected'));
-            btn.classList.add('active', 'selected');
-            const streamInput = document.getElementById('select-stream');
-            if (streamInput) streamInput.value = btn.getAttribute('data-stream') || 'CSE';
-        });
-    });
-
-    // Semester pickers for Upper Years (Sem 3-8)
-    document.querySelectorAll('.sem-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.sem-btn').forEach(b => b.classList.remove('active', 'selected'));
-            btn.classList.add('active', 'selected');
-            const semInput = document.getElementById('select-semester');
-            if (semInput) semInput.value = btn.getAttribute('data-sem') || '3';
-        });
-    });
-
-    // Scope form submission wired to 3-step structural workflow
-    if (scopeForm) {
-        scopeForm.addEventListener('submit', handleAcademicSetupSubmit);
-    }
-    ['btn-confirm-scope', 'btn-save-academic', 'academic-submit'].forEach(id => {
-        const btn = document.getElementById(id);
-        if (btn) btn.addEventListener('click', handleAcademicSetupSubmit);
-    });
 
     // User Profile Dropdown Menu in Dashboard
     const userProfilePill = document.getElementById('user-profile-pill');
@@ -6462,35 +6589,7 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
 
         try {
             // Academic Scope Modal Controls
-            const btnScopeFirstYear = document.getElementById('btn-scope-first-year');
-            const btnScopeDepartmentalYears = document.getElementById('btn-scope-departmental-years') || document.getElementById('btn-scope-upper-years');
-            const departmentalYearsControls = document.getElementById('departmental-years-controls') || document.getElementById('upper-years-controls');
-
-            if (btnScopeFirstYear && btnScopeDepartmentalYears && departmentalYearsControls) {
-                btnScopeFirstYear.onclick = () => {
-                    modalYearMode = 'FIRST_YEAR';
-                    btnScopeFirstYear.classList.add('active', 'selected');
-                    btnScopeDepartmentalYears.classList.remove('active', 'selected');
-                    departmentalYearsControls.style.display = 'none';
-                    const streamInput = document.getElementById('select-stream');
-                    if (streamInput) streamInput.value = 'FIRST_YEAR';
-                    const semInput = document.getElementById('select-semester');
-                    if (semInput) semInput.value = '1';
-                };
-
-                btnScopeDepartmentalYears.onclick = () => {
-                    modalYearMode = 'DEPARTMENTAL_YEARS';
-                    btnScopeDepartmentalYears.classList.add('active', 'selected');
-                    btnScopeFirstYear.classList.remove('active', 'selected');
-                    departmentalYearsControls.style.display = 'block';
-                    const activeStreamBtn = document.querySelector('.stream-option.active, .stream-option.selected');
-                    const activeSemBtn = document.querySelector('.sem-btn.active, .sem-btn.selected');
-                    const streamInput = document.getElementById('select-stream');
-                    if (streamInput) streamInput.value = activeStreamBtn?.getAttribute('data-stream') || 'CSE';
-                    const semInput = document.getElementById('select-semester');
-                    if (semInput) semInput.value = activeSemBtn?.getAttribute('data-sem') || '3';
-                };
-            }
+            bindAcademicContextModal();
 
             const contextSwitcherBtn = document.getElementById('btn-context-switcher');
             if (contextSwitcherBtn) contextSwitcherBtn.onclick = openScopeModal;
@@ -6498,41 +6597,14 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
             const btnCloseScopeModal = document.getElementById('btn-close-scope-modal');
             if (btnCloseScopeModal) {
                 btnCloseScopeModal.onclick = () => {
-                    const scopeModal = document.getElementById('scope-modal');
-                    if (scopeModal) scopeModal.style.display = 'none';
+                    const modal = document.getElementById('academic-setup-modal') || document.getElementById('scope-modal') || document.getElementById('academic-modal');
+                    if (modal) {
+                        modal.classList.remove('active');
+                        modal.style.display = 'none';
+                        lockBodyScroll(false);
+                    }
                 };
             }
-
-            document.querySelectorAll('.stream-option').forEach(btn => {
-                if (btn) {
-                    btn.onclick = () => {
-                        document.querySelectorAll('.stream-option').forEach(b => b.classList.remove('active', 'selected'));
-                        btn.classList.add('active', 'selected');
-                        const streamInput = document.getElementById('select-stream');
-                        if (streamInput) streamInput.value = btn.getAttribute('data-stream') || 'CSE';
-                    };
-                }
-            });
-
-            document.querySelectorAll('.sem-btn').forEach(btn => {
-                if (btn) {
-                    btn.onclick = () => {
-                        document.querySelectorAll('.sem-btn').forEach(b => b.classList.remove('active', 'selected'));
-                        btn.classList.add('active', 'selected');
-                        const semInput = document.getElementById('select-semester');
-                        if (semInput) semInput.value = btn.getAttribute('data-sem') || '3';
-                    };
-                }
-            });
-
-            const scopeForm = document.getElementById('scope-form');
-            if (scopeForm) {
-                scopeForm.onsubmit = handleAcademicSetupSubmit;
-            }
-            ['btn-confirm-scope', 'btn-save-academic', 'academic-submit'].forEach(id => {
-                const btn = document.getElementById(id);
-                if (btn) btn.onclick = handleAcademicSetupSubmit;
-            });
         } catch (err) {
             console.warn("[Events] Scope modal binding error:", err);
         }
@@ -6793,6 +6865,7 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
       safeExecute('pyqCatalog', () => renderLandingPyqCatalog('all-years'));
       safeExecute('liveMetrics', updateLandingLiveMetrics);
       safeExecute('academicSetupOptions', bindAcademicSetupOptions);
+      safeExecute('academicContextModal', bindAcademicContextModal);
       safeExecute('bindButtons', bindInteractiveButtons);
       try {
         initializeApp();
@@ -6806,6 +6879,7 @@ const OFFICIAL_CSE_PYQS = OFFICIAL_CSE_COURSES.flatMap(c => (c.pyqs || []).map(p
       safeExecute('pyqCatalog', () => renderLandingPyqCatalog('all-years'));
       safeExecute('liveMetrics', updateLandingLiveMetrics);
       safeExecute('academicSetupOptions', bindAcademicSetupOptions);
+      safeExecute('academicContextModal', bindAcademicContextModal);
       safeExecute('bindButtons', bindInteractiveButtons);
       try {
         initializeApp();
