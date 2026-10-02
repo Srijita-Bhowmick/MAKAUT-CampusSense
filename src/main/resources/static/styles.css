@@ -80,6 +80,7 @@
 
 [data-theme="dark"] .modal-title,
 [data-theme="dark"] #scope-modal h2,
+[data-theme="dark"] #academic-setup-modal h2,
 [data-theme="dark"] .subject-modal-title,
 [data-theme="dark"] .hub-title,
 [data-theme="dark"] .panic-title,
@@ -90,6 +91,7 @@
 
 [data-theme="dark"] .modal-subtitle,
 [data-theme="dark"] #scope-modal .modal-subtitle,
+[data-theme="dark"] #academic-setup-modal .modal-subtitle,
 [data-theme="dark"] .subject-modal-subtitle,
 [data-theme="dark"] .panic-subhead,
 [data-theme="dark"] .hub-subject-stream {
@@ -98,24 +100,32 @@
 
 [data-theme="dark"] #scope-modal .primary-year-btn,
 [data-theme="dark"] #scope-modal .stream-option,
-[data-theme="dark"] #scope-modal .sem-btn {
+[data-theme="dark"] #scope-modal .sem-btn,
+[data-theme="dark"] #academic-setup-modal .primary-year-btn,
+[data-theme="dark"] #academic-setup-modal .stream-option,
+[data-theme="dark"] #academic-setup-modal .sem-btn {
     background: #1e293b !important;
     border: 1px solid #334155 !important;
     color: #f8fafc !important;
 }
 
 [data-theme="dark"] #scope-modal .year-btn-title,
-[data-theme="dark"] #scope-modal .stream-name {
+[data-theme="dark"] #scope-modal .stream-name,
+[data-theme="dark"] #academic-setup-modal .year-btn-title,
+[data-theme="dark"] #academic-setup-modal .stream-name {
     color: #f8fafc !important;
     font-weight: 700 !important;
 }
 
 [data-theme="dark"] #scope-modal .year-btn-sub,
-[data-theme="dark"] #scope-modal .stream-desc {
+[data-theme="dark"] #scope-modal .stream-desc,
+[data-theme="dark"] #academic-setup-modal .year-btn-sub,
+[data-theme="dark"] #academic-setup-modal .stream-desc {
     color: #cbd5e1 !important;
 }
 
-[data-theme="dark"] #scope-modal .form-label {
+[data-theme="dark"] #scope-modal .form-label,
+[data-theme="dark"] #academic-setup-modal .form-label {
     color: #f8fafc !important;
 }
 
@@ -142,6 +152,7 @@
 
 [data-theme="light"] .modal-title,
 [data-theme="light"] #scope-modal h2,
+[data-theme="light"] #academic-setup-modal h2,
 [data-theme="light"] .subject-modal-title,
 [data-theme="light"] .hub-title,
 [data-theme="light"] .panic-title,
@@ -152,6 +163,7 @@
 
 [data-theme="light"] .modal-subtitle,
 [data-theme="light"] #scope-modal .modal-subtitle,
+[data-theme="light"] #academic-setup-modal .modal-subtitle,
 [data-theme="light"] .subject-modal-subtitle,
 [data-theme="light"] .panic-subhead,
 [data-theme="light"] .hub-subject-stream {
@@ -160,24 +172,32 @@
 
 [data-theme="light"] #scope-modal .primary-year-btn,
 [data-theme="light"] #scope-modal .stream-option,
-[data-theme="light"] #scope-modal .sem-btn {
+[data-theme="light"] #scope-modal .sem-btn,
+[data-theme="light"] #academic-setup-modal .primary-year-btn,
+[data-theme="light"] #academic-setup-modal .stream-option,
+[data-theme="light"] #academic-setup-modal .sem-btn {
     background: #f8fafc !important;
     border: 1px solid #cbd5e1 !important;
     color: #090d16 !important;
 }
 
 [data-theme="light"] #scope-modal .year-btn-title,
-[data-theme="light"] #scope-modal .stream-name {
+[data-theme="light"] #scope-modal .stream-name,
+[data-theme="light"] #academic-setup-modal .year-btn-title,
+[data-theme="light"] #academic-setup-modal .stream-name {
     color: #090d16 !important;
     font-weight: 700 !important;
 }
 
 [data-theme="light"] #scope-modal .year-btn-sub,
-[data-theme="light"] #scope-modal .stream-desc {
+[data-theme="light"] #scope-modal .stream-desc,
+[data-theme="light"] #academic-setup-modal .year-btn-sub,
+[data-theme="light"] #academic-setup-modal .stream-desc {
     color: #475569 !important;
 }
 
-[data-theme="light"] #scope-modal .form-label {
+[data-theme="light"] #scope-modal .form-label,
+[data-theme="light"] #academic-setup-modal .form-label {
     color: #090d16 !important;
 }
 
@@ -288,14 +308,24 @@ body.modal-open {
   overscroll-behavior: contain !important;
 }
 
-/* Interactive elements must allow standard tap manipulation */
-button, a, input, select, .btn, .pill, .interactive-card, .academic-option, .subject-card, .sem-pill, .stream-pill {
-  touch-action: manipulation !important;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent !important;
+/* Global touch & pointer restoration */
+html, body {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* Ensure Inactive Overlays Do NOT Intercept Touches */
+button, .btn, .stage-card, .academic-stage-card, .subject-card, .pill, a, input, select, .interactive-card, .academic-option, .sem-pill, .stream-pill {
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  touch-action: manipulation !important;
+  user-select: none;
+}
+
+/* Modals must only absorb clicks when explicitly visible */
+.modal, .modal-backdrop, #academic-setup-modal, #subject-hub-modal, #pdf-preview-modal, #scope-modal, #panic-mode-modal, #feedback-modal, .drawer-backdrop {
+  pointer-events: none;
+}
+
 .modal:not(.active),
 .modal-backdrop:not(.active),
 #pdf-preview-modal:not(.active),
@@ -312,14 +342,16 @@ button, a, input, select, .btn, .pill, .interactive-card, .academic-option, .sub
 
 .modal.active,
 .modal-backdrop.active,
+#academic-setup-modal.active,
+#subject-hub-modal.active,
 #pdf-preview-modal.active,
 #pdf-viewer-modal.active,
-#subject-hub-modal.active,
 #scope-modal.active,
-#academic-setup-modal.active,
 #panic-mode-modal.active,
 #feedback-modal.active,
-.drawer-backdrop.active {
+.drawer-backdrop.active,
+.modal[style*="display: flex"],
+.modal[style*="display: block"] {
   display: flex !important;
   pointer-events: auto !important;
 }
@@ -329,6 +361,15 @@ button, a, input, select, .btn, .pill, .interactive-card, .academic-option, .sub
 .stream-option, .sem-btn, .primary-year-btn, .academic-stage-card, .stream-card, .semester-btn {
   transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease !important;
   cursor: pointer !important;
+}
+
+/* Academic selection feedback */
+.stage-card.selected, .academic-stage-card.selected,
+.sem-pill.selected, .stream-pill.selected {
+  border: 2px solid #6366f1 !important;
+  background: rgba(99, 102, 241, 0.2) !important;
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.4) !important;
+  transform: scale(1.04);
 }
 
 .academic-option.selected, .academic-option.active,
@@ -373,14 +414,6 @@ button, a, input, select, .btn, .pill, .interactive-card, .academic-option, .sub
   border-color: #4f46e5 !important;
   color: #1e1b4b !important;
   box-shadow: 0 0 14px rgba(79, 70, 229, 0.3) !important;
-}
-
-/* Ensure child icons, spans, and paragraphs pass clicks directly to the parent card */
-.academic-stage-card *,
-.stage-card *,
-.program-card *,
-[data-stage] * {
-  pointer-events: none !important;
 }
 
 /* Ensure the cards themselves are clickable and display pointer cursor */

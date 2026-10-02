@@ -3144,164 +3144,86 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
     }
 
     // ==========================================
-    // 9. Academic Scope Onboarding Modal (#scope-modal / #academic-setup-modal)
+    // 9. Academic Scope Onboarding Modal (#academic-setup-modal / #scope-modal)
     // ==========================================
-    function updateAcademicStageUI(stage) {
-        const modal = document.getElementById('academic-setup-modal') || document.getElementById('scope-modal') || document.getElementById('academic-modal');
+    function initAcademicModalStageSelector() {
+        const modal = document.getElementById('academic-setup-modal') || document.querySelector('.academic-setup-modal') || document.getElementById('scope-modal');
         if (!modal) return;
 
-        const firstYearCard = document.querySelector('[data-stage="first-year"]') || modal.querySelector('.stage-first-year') || modal.querySelectorAll('.academic-stage-card, .stage-card')[0] || document.getElementById('btn-scope-first-year');
-        const deptCard = document.querySelector('[data-stage="departmental"]') || modal.querySelector('.stage-departmental') || modal.querySelectorAll('.academic-stage-card, .stage-card')[1] || document.getElementById('btn-scope-departmental-years');
-        const deptOptionsSection = document.getElementById('departmental-options') || modal.querySelector('.departmental-options-container') || document.getElementById('sem-picker-container') || document.getElementById('departmental-years-controls');
+        // Grab all stage cards inside the modal
+        const cards = modal.querySelectorAll('.academic-stage-card, .stage-card, [data-stage]');
 
-        if (stage === 'first-year') {
-            if (firstYearCard) {
-                firstYearCard.classList.add('selected', 'active');
-                const check = firstYearCard.querySelector('.check-icon, .checkmark, .year-check-icon');
-                if (check) check.style.display = 'block';
-            }
-            if (deptCard) {
-                deptCard.classList.remove('selected', 'active');
-                const check = deptCard.querySelector('.check-icon, .checkmark, .year-check-icon');
-                if (check) check.style.display = 'none';
-            }
-            if (deptOptionsSection) {
-                deptOptionsSection.classList.remove('visible');
-                deptOptionsSection.classList.add('hidden');
-                deptOptionsSection.style.display = 'none';
-            }
-            const streamInput = document.getElementById('select-stream');
-            if (streamInput) streamInput.value = 'FIRST_YEAR';
-            const semInput = document.getElementById('select-semester');
-            if (semInput) semInput.value = '1';
-        } else {
-            if (deptCard) {
-                deptCard.classList.add('selected', 'active');
-                let check = deptCard.querySelector('.check-icon, .checkmark, .year-check-icon');
-                if (check) check.style.display = 'block';
-            }
-            if (firstYearCard) {
-                firstYearCard.classList.remove('selected', 'active');
-                const check = firstYearCard.querySelector('.check-icon, .checkmark, .year-check-icon');
-                if (check) check.style.display = 'none';
-            }
-            if (deptOptionsSection) {
-                deptOptionsSection.classList.remove('hidden');
-                deptOptionsSection.classList.add('visible');
-                deptOptionsSection.style.display = 'block';
-            }
-            const streamInput = document.getElementById('select-stream');
-            if (streamInput) streamInput.value = 'CSE';
-            const semInput = document.getElementById('select-semester');
-            const activeSemBtn = modal.querySelector('.sem-btn.active, .sem-btn.selected, [data-sem].selected');
-            if (semInput) semInput.value = activeSemBtn?.getAttribute('data-sem') || '3';
-        }
-    }
-    window.updateAcademicStageUI = updateAcademicStageUI;
+        cards.forEach((card, index) => {
+            card.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
 
-    function bindAcademicContextModal() {
-        const modal = document.getElementById('academic-setup-modal') || document.getElementById('academic-modal') || document.getElementById('scope-modal');
-        if (!modal) return;
+                // Clear selected class and checkmarks from all cards
+                cards.forEach(c => {
+                    c.classList.remove('selected', 'active');
+                    const check = c.querySelector('.check-icon, .checkmark, .stage-check, .year-check-icon');
+                    if (check) check.style.display = 'none';
+                });
 
-        // Track active stage state: 'first-year' or 'departmental'
-        let selectedStage = 'first-year';
-        let selectedSemester = '3';
-        const selectedStream = 'CSE'; // Strictly locked to CSE
+                // Activate the clicked card
+                card.classList.add('selected', 'active');
+                let check = card.querySelector('.check-icon, .checkmark, .stage-check, .year-check-icon');
+                if (!check) {
+                    check = document.createElement('span');
+                    check.className = 'stage-check checkmark';
+                    check.innerHTML = '&#10003;';
+                    card.appendChild(check);
+                }
+                check.style.display = 'block';
 
-        const firstYearCard = document.querySelector('[data-stage="first-year"]') || modal.querySelector('.stage-first-year') || modal.querySelectorAll('.academic-stage-card, .stage-card')[0] || document.getElementById('btn-scope-first-year');
-        const deptCard = document.querySelector('[data-stage="departmental"]') || modal.querySelector('.stage-departmental') || modal.querySelectorAll('.academic-stage-card, .stage-card')[1] || document.getElementById('btn-scope-departmental-years');
-        const deptOptionsSection = document.getElementById('departmental-options') || modal.querySelector('.departmental-options-container') || document.getElementById('sem-picker-container') || document.getElementById('departmental-years-controls');
-        const enterBtn = document.getElementById('btn-enter-dashboard') || modal.querySelector('.btn-enter-dashboard') || modal.querySelector('button[type="submit"]') || modal.querySelector('.btn-primary') || document.getElementById('btn-confirm-scope');
+                // Determine selection: index 0 = 1st Year, index 1 = Departmental (Sem 3-8)
+                const isDept = index === 1 || card.textContent.includes('Departmental') || card.getAttribute('data-stage') === 'departmental';
+                modal.setAttribute('data-selected-stage', isDept ? 'departmental' : 'first-year');
 
-        function updateStageUI(stage) {
-            selectedStage = stage;
-            updateAcademicStageUI(stage);
-        }
-
-        // Restore active state from profile if available
-        try {
-            const profile = JSON.parse(localStorage.getItem('campussense_academic_profile') || '{}');
-            if (profile.stage === 'departmental' || (profile.stream === 'CSE' && parseInt(profile.semester, 10) >= 3)) {
-                selectedSemester = String(profile.semester || '3');
-                updateStageUI('departmental');
-            } else {
-                updateStageUI('first-year');
-            }
-        } catch (err) {
-            updateStageUI('first-year');
-        }
-
-        // 1. Direct Click Binding on First Year Card
-        if (firstYearCard) {
-            firstYearCard.onclick = function(e) {
-                if (e) e.preventDefault();
-                updateStageUI('first-year');
+                // Toggle departmental sub-options if present
+                const deptOptions = modal.querySelector('.departmental-options, #departmental-options, .departmental-options-container, #departmental-years-controls, .sem-picker');
+                if (deptOptions) {
+                    deptOptions.style.display = isDept ? 'block' : 'none';
+                    if (isDept) {
+                        deptOptions.classList.remove('hidden');
+                        deptOptions.classList.add('visible');
+                    } else {
+                        deptOptions.classList.remove('visible');
+                        deptOptions.classList.add('hidden');
+                    }
+                }
             };
-        }
+        });
 
-        // 2. Direct Click Binding on Departmental Card
-        if (deptCard) {
-            deptCard.onclick = function(e) {
-                if (e) e.preventDefault();
-                updateStageUI('departmental');
-            };
-        }
-
-        // 3. Semester Selection Pills (3, 4, 5, 6, 7, 8)
-        modal.querySelectorAll('.sem-pill, [data-sem], .sem-btn').forEach(pill => {
+        // Semester selector pills in departmental section
+        modal.querySelectorAll('.sem-pill, [data-sem], .sem-btn, .semester-btn').forEach(pill => {
             pill.onclick = function(e) {
-                if (e) e.preventDefault();
-                modal.querySelectorAll('.sem-pill, [data-sem], .sem-btn').forEach(p => p.classList.remove('selected', 'active'));
+                e.preventDefault();
+                e.stopPropagation();
+                modal.querySelectorAll('.sem-pill, [data-sem], .sem-btn, .semester-btn').forEach(p => p.classList.remove('selected', 'active'));
                 pill.classList.add('selected', 'active');
-                selectedSemester = pill.getAttribute('data-sem') || pill.textContent.trim().replace(/\D/g, '') || '3';
+                const chosenSem = pill.getAttribute('data-sem') || pill.textContent.trim().replace(/\D/g, '') || '3';
+                modal.setAttribute('data-selected-sem', chosenSem);
                 const semInput = document.getElementById('select-semester');
-                if (semInput) semInput.value = String(selectedSemester);
+                if (semInput) semInput.value = String(chosenSem);
             };
         });
 
-        // Stream Selection Pills (locked strictly to CSE)
-        modal.querySelectorAll('.stream-option, .stream-pill, [data-stream]').forEach(pill => {
-            pill.onclick = function(e) {
-                if (e) e.preventDefault();
-                modal.querySelectorAll('.stream-option, .stream-pill, [data-stream]').forEach(p => p.classList.remove('selected', 'active'));
-                pill.classList.add('selected', 'active');
-                const streamInput = document.getElementById('select-stream');
-                if (streamInput) streamInput.value = 'CSE';
-            };
-        });
-
-        // 4. "Enter Dashboard ->" Submission
+        // "Enter Dashboard ->" Button
+        const enterBtn = modal.querySelector('#btn-enter-dashboard, .btn-enter-dashboard, #btn-confirm-scope, button[type="submit"]');
         if (enterBtn) {
             enterBtn.onclick = function(e) {
-                if (e) e.preventDefault();
+                e.preventDefault();
+                const isDept = modal.getAttribute('data-selected-stage') === 'departmental';
+                const chosenSem = modal.getAttribute('data-selected-sem') || '3';
 
-                let profile = {};
-                if (selectedStage === 'first-year') {
-                    profile = {
-                        stage: 'first-year',
-                        stream: 'Common',
-                        semester: '1',
-                        college: 'In-House'
-                    };
-                } else {
-                    profile = {
-                        stage: 'departmental',
-                        stream: 'CSE', // Strictly locked to CSE
-                        semester: String(selectedSemester || '3'),
-                        college: 'In-House'
-                    };
-                }
+                const profile = isDept 
+                    ? { stage: 'departmental', stream: 'CSE', semester: String(chosenSem), college: 'In-House' }
+                    : { stage: 'first-year', stream: 'Common', semester: '1', college: 'In-House' };
 
                 localStorage.setItem('campussense_academic_profile', JSON.stringify(profile));
 
-                // Close modal
-                modal.style.display = 'none';
-                modal.classList.remove('active');
-                if (typeof lockBodyScroll === 'function') {
-                    lockBodyScroll(false);
-                }
-
-                // Also persist legacy keys for full compatibility
+                // Persist legacy keys
                 const effectiveYearMode = (profile.stage === 'first-year' || parseInt(profile.semester, 10) <= 2) ? 'FIRST_YEAR' : 'DEPARTMENTAL_YEARS';
                 localStorage.setItem('campussense_stream', profile.stream);
                 localStorage.setItem('campussense_branch', profile.stream);
@@ -3325,11 +3247,16 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
                     }).catch(err => console.warn('[Clerk] Metadata sync skipped:', err));
                 }
 
+                modal.style.display = 'none';
+                modal.classList.remove('active');
+                if (typeof lockBodyScroll === 'function') {
+                    lockBodyScroll(false);
+                }
+
                 if (typeof updateAcademicContextUI === 'function') {
                     updateAcademicContextUI(profile);
                 }
 
-                // Transition to Dashboard
                 if (typeof setAppWorkflowStage === 'function') {
                     setAppWorkflowStage('dashboard');
                 } else {
@@ -3337,26 +3264,48 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
                 }
             };
         }
+    }
+    window.initAcademicModalStageSelector = initAcademicModalStageSelector;
 
-        const scopeForm = document.getElementById('scope-form') || modal.querySelector('form');
-        if (scopeForm) {
-            scopeForm.onsubmit = function(e) {
-                if (e) e.preventDefault();
-                if (enterBtn && typeof enterBtn.onclick === 'function') {
-                    enterBtn.onclick(e);
-                }
-            };
-        }
+    function updateAcademicStageUI(stage) {
+        initAcademicModalStageSelector();
+        const modal = document.getElementById('academic-setup-modal') || document.getElementById('scope-modal') || document.getElementById('academic-modal');
+        if (!modal) return;
 
-        ['btn-confirm-scope', 'btn-save-academic', 'academic-submit'].forEach(id => {
-            const btn = document.getElementById(id);
-            if (btn && enterBtn) btn.onclick = enterBtn.onclick;
+        const isDept = stage === 'departmental';
+        modal.setAttribute('data-selected-stage', isDept ? 'departmental' : 'first-year');
+
+        const cards = modal.querySelectorAll('.academic-stage-card, .stage-card, [data-stage]');
+        cards.forEach((c, idx) => {
+            const cardIsDept = idx === 1 || c.textContent.includes('Departmental') || c.getAttribute('data-stage') === 'departmental';
+            const shouldSelect = isDept ? cardIsDept : !cardIsDept;
+            c.classList.toggle('selected', shouldSelect);
+            c.classList.toggle('active', shouldSelect);
+            const check = c.querySelector('.check-icon, .checkmark, .stage-check, .year-check-icon');
+            if (check) check.style.display = shouldSelect ? 'block' : 'none';
         });
+
+        const deptOptions = modal.querySelector('.departmental-options, #departmental-options, .departmental-options-container, #departmental-years-controls, .sem-picker');
+        if (deptOptions) {
+            deptOptions.style.display = isDept ? 'block' : 'none';
+            if (isDept) {
+                deptOptions.classList.remove('hidden');
+                deptOptions.classList.add('visible');
+            } else {
+                deptOptions.classList.remove('visible');
+                deptOptions.classList.add('hidden');
+            }
+        }
+    }
+    window.updateAcademicStageUI = updateAcademicStageUI;
+
+    function bindAcademicContextModal() {
+        initAcademicModalStageSelector();
     }
     window.bindAcademicContextModal = bindAcademicContextModal;
 
     window.openAcademicSetupModal = function() {
-        const modal = document.getElementById('academic-setup-modal') || document.getElementById('academic-modal') || document.getElementById('scope-modal');
+        const modal = document.getElementById('academic-setup-modal') || document.getElementById('academic-modal') || document.getElementById('scope-modal') || document.querySelector('.academic-setup-modal');
         if (!modal) {
             console.error("Academic setup modal element not found in DOM");
             return;
@@ -3369,18 +3318,43 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
             lockBodyScroll(true);
         }
 
-        // Sync existing profile selection if available
-        const profile = JSON.parse(localStorage.getItem('campussense_academic_profile') || '{}');
-        const isDept = profile.stage === 'departmental' || (profile.semester && parseInt(profile.semester, 10) >= 3);
+        initAcademicModalStageSelector();
 
-        if (typeof bindAcademicContextModal === 'function') {
-            bindAcademicContextModal();
-        }
-        if (typeof window.updateAcademicStageUI === 'function') {
-            window.updateAcademicStageUI(isDept ? 'departmental' : 'first-year');
-        }
+        // Sync existing profile selection if available
+        try {
+            const profile = JSON.parse(localStorage.getItem('campussense_academic_profile') || '{}');
+            const isDept = profile.stage === 'departmental' || (profile.semester && parseInt(profile.semester, 10) >= 3);
+            updateAcademicStageUI(isDept ? 'departmental' : 'first-year');
+
+            if (isDept && profile.semester) {
+                modal.setAttribute('data-selected-sem', String(profile.semester));
+                modal.querySelectorAll('.sem-pill, [data-sem], .sem-btn, .semester-btn').forEach(p => {
+                    const semVal = p.getAttribute('data-sem') || p.textContent.trim().replace(/\D/g, '');
+                    const isMatch = semVal === String(profile.semester);
+                    p.classList.toggle('selected', isMatch);
+                    p.classList.toggle('active', isMatch);
+                });
+            }
+        } catch (e) {}
     };
     window.openScopeModal = window.openAcademicSetupModal;
+
+    // Phase 3: Reliable Modal Trigger for Academic Context Pill
+    document.addEventListener('DOMContentLoaded', () => {
+        const pill = document.getElementById('nav-academic-pill') || document.querySelector('.academic-context-pill');
+        if (pill) {
+            pill.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const modal = document.getElementById('academic-setup-modal') || document.querySelector('.academic-setup-modal') || document.getElementById('scope-modal');
+                if (modal) {
+                    modal.style.display = 'flex';
+                    modal.classList.add('active');
+                    initAcademicModalStageSelector();
+                }
+            };
+        }
+    });
 
     // Global Delegated Click Listener for the Context Pill
     document.addEventListener('click', (e) => {
@@ -3584,7 +3558,7 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
             const pyqsCount = (sub.pyqs || []).length;
 
             return `
-                <div class="subject-item-card" data-code="${escapeHtml(sub.code)}" data-subject-id="${escapeHtml(sub.code)}" data-subject-name="${escapeHtml(sub.name)}" style="cursor: pointer;">
+                <div class="subject-item-card" data-code="${escapeHtml(sub.code)}" data-course-code="${escapeHtml(sub.code)}" data-subject-id="${escapeHtml(sub.code)}" data-subject-name="${escapeHtml(sub.name)}" style="cursor: pointer;">
                     <div>
                         <div class="subject-card-top">
                             <span class="subject-code-tag">${escapeHtml(codeDisplay)}</span>
@@ -3645,10 +3619,12 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
 
         // Attach card click handlers to launch Subject Hub directly to that subject's PYQs
         grid.querySelectorAll('.subject-item-card').forEach(card => {
+            const courseCode = card.getAttribute('data-course-code') || card.getAttribute('data-subject-id') || card.getAttribute('data-code');
+            card.setAttribute('data-course-code', courseCode);
             card.onclick = function(e) {
                 if (e.target.closest('.btn-subject-syllabus-view') || e.target.closest('.btn-preview-pdf')) return;
-                const subjectId = card.getAttribute('data-subject-id') || card.getAttribute('data-code');
-                openSubjectHub(subjectId, 'pyqs');
+                e.preventDefault();
+                window.openSubjectHubByCode(courseCode);
             };
         });
 
@@ -3804,14 +3780,48 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
     }
     window.resolveSubjectData = resolveSubjectData;
 
-    window.openSubjectHub = function(subjectIdentifier, defaultTab = 'pyqs', targetModNum = null) {
-        const subject = resolveSubjectData(subjectIdentifier);
+    window.openSubjectHubByCode = function(targetCode, defaultTab = 'pyqs', targetModNum = null) {
+        if (!targetCode) return;
+        const cleanTarget = targetCode.toString().trim().toLowerCase().replace(/[^a-z0-9]/g, '');
 
-        if (!subject) {
-            alert("Subject details could not be found for: " + subjectIdentifier);
-            return;
+        // Search CSE departmental courses
+        let matchedCourse = null;
+        const courses = window.DEPARTMENT_STREAMS?.CSE?.courses || window.OFFICIAL_CSE_COURSES || {};
+
+        for (const course of Object.values(courses)) {
+            if (!course) continue;
+            const codeNorm = (course.code || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+            const altCodeNorm = (course.altCode || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+            const legacyCodeNorm = (course.legacyCode || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+            const titleNorm = (course.title || course.name || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+            if (codeNorm === cleanTarget || altCodeNorm === cleanTarget || legacyCodeNorm === cleanTarget || titleNorm === cleanTarget) {
+                matchedCourse = course;
+                break;
+            }
         }
 
+        // If not found in CSE, search 1st year curriculum
+        if (!matchedCourse && (window.MAKAUT_CURRICULUM || typeof MAKAUT_CURRICULUM !== 'undefined')) {
+            const curriculum = window.MAKAUT_CURRICULUM || MAKAUT_CURRICULUM;
+            for (const course of Object.values(curriculum)) {
+                if (!course) continue;
+                const codeNorm = (course.code || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+                const altCodeNorm = (course.altCode || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+                const legacyCodeNorm = (course.legacyCode || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+                const titleNorm = (course.title || course.name || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+                if (codeNorm === cleanTarget || altCodeNorm === cleanTarget || legacyCodeNorm === cleanTarget || titleNorm === cleanTarget) {
+                    matchedCourse = course;
+                    break;
+                }
+            }
+        }
+
+        if (!matchedCourse) {
+            console.error("Could not find subject data for code:", targetCode);
+            return; // DO NOT fall back to Analog & Digital Electronics
+        }
+
+        // Populate Subject Hub Modal
         const modal = document.getElementById('subject-hub-modal');
         if (!modal) return;
 
@@ -3825,24 +3835,26 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
         const creditsEl = document.getElementById('hub-modal-credits') || document.getElementById('hub-credits-badge');
         const creditsBadgeEl = document.getElementById('hub-credits-badge');
 
-        const displayTitle = subject.title || subject.name || subject.code;
+        const displayTitle = matchedCourse.title || matchedCourse.name || matchedCourse.code;
         if (titleEl) titleEl.textContent = displayTitle;
         if (subjectNameEl && subjectNameEl !== titleEl) subjectNameEl.textContent = displayTitle;
 
-        const displayCode = subject.code + (subject.altCode ? ` / ${subject.altCode}` : '');
+        const displayCode = matchedCourse.code + (matchedCourse.altCode ? ` / ${matchedCourse.altCode}` : '');
         if (codeEl) codeEl.textContent = displayCode;
         if (subjectCodeEl && subjectCodeEl !== codeEl) subjectCodeEl.textContent = displayCode;
 
-        const semText = subject.semester ? `Sem ${subject.semester}` : 'Sem 3';
-        const displayStream = subject.isFirstYear ? `1st Year Common Scheme` : `Computer Science & Engineering • ${semText}`;
+        const semText = matchedCourse.semester ? `Sem ${matchedCourse.semester}` : 'Sem 3';
+        const displayStream = matchedCourse.isFirstYear 
+            ? '1st Year Common Scheme' 
+            : `Computer Science & Engineering • ${semText}`;
         if (streamSemEl) streamSemEl.textContent = displayStream;
         if (subjectStreamEl && subjectStreamEl !== streamSemEl) subjectStreamEl.textContent = displayStream;
 
-        const displayCredits = `${subject.credits || 3} credits`;
+        const displayCredits = `${matchedCourse.credits || 3} credits`;
         if (creditsEl) creditsEl.textContent = displayCredits;
         if (creditsBadgeEl && creditsBadgeEl !== creditsEl) creditsBadgeEl.textContent = displayCredits;
 
-        currentHubSubject = subject;
+        currentHubSubject = matchedCourse;
         currentHubPyqYearFilter = 'ALL';
 
         // Reset PYQ year filter pills
@@ -3850,22 +3862,22 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
             p.classList.toggle('active', p.getAttribute('data-pyq-year') === 'ALL');
         });
 
-        // Render Tabs
-        if (typeof renderHubChecklist === 'function') {
-            renderHubChecklist(subject, targetModNum);
+        // Populate PYQs strictly belonging to this matched subject
+        if (typeof renderHubPyqList === 'function') {
+            renderHubPyqList(matchedCourse.pyqs || []);
         }
         if (typeof renderHubPyqs === 'function') {
-            renderHubPyqs(subject, 'ALL');
+            renderHubPyqs(matchedCourse, 'ALL');
         }
-        if (typeof renderHubPyqList === 'function') {
-            renderHubPyqList(subject.pyqs || []);
+        if (typeof renderHubChecklist === 'function') {
+            renderHubChecklist(matchedCourse, targetModNum);
         }
 
         // Activate specified initial tab
-        if (typeof switchHubTab === 'function') {
-            switchHubTab(defaultTab || 'pyqs');
-        } else if (typeof activateHubTab === 'function') {
+        if (typeof activateHubTab === 'function') {
             activateHubTab(defaultTab || 'pyqs');
+        } else if (typeof switchHubTab === 'function') {
+            switchHubTab(defaultTab || 'pyqs');
         }
 
         modal.classList.add('active');
@@ -3886,6 +3898,15 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
                 }
             }, 250);
         }
+    };
+
+    window.openSubjectHub = function(subjectIdentifier, defaultTab = 'pyqs', targetModNum = null) {
+        if (!subjectIdentifier) return;
+        if (typeof subjectIdentifier === 'object' && subjectIdentifier !== null) {
+            const code = subjectIdentifier.code || subjectIdentifier.id || subjectIdentifier.name;
+            return window.openSubjectHubByCode(code, defaultTab, targetModNum);
+        }
+        return window.openSubjectHubByCode(subjectIdentifier, defaultTab, targetModNum);
     };
     function openSubjectHub(subjectIdentifier, defaultTab = 'pyqs', targetModNum = null) {
         return window.openSubjectHub(subjectIdentifier, defaultTab, targetModNum);

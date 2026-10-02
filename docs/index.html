@@ -58,7 +58,7 @@
                 <span class="context-icon icon">🏛️</span>
                 <span id="nav-academic-label">CSE • Sem 3</span>
                 <span id="current-context-text" style="display: none;" aria-hidden="true">CSE • Sem 3</span>
-                <span class="dropdown-chevron dropdown-caret">▾</span>
+                <span class="dropdown-chevron dropdown-caret caret">▾</span>
             </button>
             <button id="btn-context-switcher" style="display: none;" aria-hidden="true"></button>
             <button id="btn-academic-context" style="display: none;" aria-hidden="true"></button>
@@ -514,8 +514,9 @@
          ==================================================================== -->
 
 
-    <!-- Academic Scope Onboarding Modal (#scope-modal) -->
-    <div class="modal-backdrop" id="scope-modal" data-modal="academic-setup-modal" style="display: none;">
+    <!-- Academic Scope Onboarding Modal (#academic-setup-modal / #scope-modal) -->
+    <div class="modal-backdrop academic-setup-modal" id="academic-setup-modal" data-modal="academic-setup-modal" style="display: none;">
+        <div id="scope-modal" style="display: none;" aria-hidden="true"></div>
         <div class="modal-card onboarding-card">
             <div class="modal-header">
                 <div>
