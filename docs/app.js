@@ -216,8 +216,42 @@ window.onClerkLoaded = function() {
         return window.location.origin + '/' + clean;
     }
     window.resolveAssetPath = resolveAssetPath;
+    
+    // Central Authentication Guard Functions
+    function isUserAuthenticated() {
+        const hasClerkUser = Boolean(window.Clerk && window.Clerk.user);
+        const hasMockAuth = Boolean(window.isLoggedIn);
+        const hasStoredUser = Boolean(localStorage.getItem('campussense_user_session') || localStorage.getItem('campussense_academic_profile') || localStorage.getItem('campussense_logged_in') === 'true');
+        return hasClerkUser || hasMockAuth;
+    }
+    window.isUserAuthenticated = isUserAuthenticated;
+
+    function requireAuthOrTrigger(actionCallback) {
+        if (isUserAuthenticated()) {
+            if (typeof actionCallback === 'function') actionCallback();
+            return true;
+        }
+
+        // User is NOT authenticated: intercept action and trigger sign-in
+        if (typeof triggerNativeClerkAuth === 'function') {
+            triggerNativeClerkAuth();
+        } else if (window.triggerNativeClerkAuth && typeof window.triggerNativeClerkAuth === 'function') {
+            window.triggerNativeClerkAuth();
+        } else if (window.Clerk && window.Clerk.openSignIn) {
+            window.Clerk.openSignIn();
+        } else {
+            // Fallback: scroll to landing sign-in or alert
+            const authCard = document.getElementById('clerk-auth-container') || document.querySelector('.auth-card');
+            if (authCard) {
+                authCard.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+        return false;
+    }
+    window.requireAuthOrTrigger = requireAuthOrTrigger;
 
     window.previewPdfFile = function(url, title) {
+        if (!requireAuthOrTrigger()) return;
         const sanitizedUrl = sanitizePdfUrl(url);
         const iframe = document.getElementById('pdf-modal-frame') || document.querySelector('.pdf-viewer-frame') || document.getElementById('pdf-viewer-iframe');
         const modal = document.getElementById('pdf-preview-modal') || document.getElementById('pdf-modal') || document.getElementById('pdf-viewer-modal');
@@ -232,15 +266,16 @@ window.onClerkLoaded = function() {
 
         if (modal) {
             modal.style.display = 'flex';
+            modal.classList.add('active');
+            if (typeof lockBodyScroll === 'function') {
+                lockBodyScroll(true);
+            }
         }
     };
 
     async function downloadPdfFile(fileUrl, preferredName) {
+        if (!requireAuthOrTrigger()) return;
         const resolved = resolveAssetPath(fileUrl);
-        if (!window.Clerk?.user && !isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
-            window.triggerNativeClerkAuth({ action: 'download', fileUrl: resolved, title: preferredName });
-            return;
-        }
         try {
             const res = await fetch(resolved);
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -2689,6 +2724,10 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
             }
         }
 
+        const isAuth = isUserAuthenticated();
+        const syllabusBtnText = isAuth ? '📖 Official Syllabus PDF' : '🔒 Sign In to View Syllabus';
+        const masterActionText = isAuth ? 'Open Official Syllabus PDF (80+ Pages) ➔' : '🔒 Sign In to View Syllabus (80+ Pages)';
+
         container.innerHTML = filtered.map(sub => {
             if (sub.isSinglePdf) {
                 const encodedPdf = sanitizePdfUrl(sub.pdfUrl);
@@ -2709,13 +2748,13 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
                             </p>
                             <div style="margin: 0.5rem 0 0.85rem;">
                                 <button type="button" class="btn-preview-pdf" data-pdf="${escapeHtml(encodedPdf)}" data-title="${escapeHtml(sub.title || sub.name)}" data-url="${escapeHtml(encodedPdf)}">
-                                    📖 Official Syllabus PDF
+                                    ${syllabusBtnText}
                                 </button>
                             </div>
                         </div>
                         <div class="curriculum-card-action">
                             <button type="button" class="btn-preview-pdf" data-pdf="${escapeHtml(encodedPdf)}" data-title="${escapeHtml(sub.title || sub.name)}" data-url="${escapeHtml(encodedPdf)}">
-                                Open Official Syllabus PDF (80+ Pages) ➔
+                                ${masterActionText}
                             </button>
                         </div>
                     </div>
@@ -2739,7 +2778,7 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
                         ${sub.syllabusUrl ? `
                         <div style="margin: 0.5rem 0 0.85rem;">
                             <button type="button" class="btn-preview-pdf btn-curriculum-syllabus-pdf" data-title="${escapeHtml(sub.name)} Official Syllabus" data-url="${escapeHtml(sanitizePdfUrl(sub.syllabusUrl))}">
-                                <span>📖</span> Official Syllabus PDF
+                                <span>${isAuth ? '📖' : '🔒'}</span> ${syllabusBtnText}
                             </button>
                         </div>
                         ` : ''}
@@ -2781,6 +2820,7 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
         // Wire Official Syllabus PDF buttons
         safeBind('.btn-preview-pdf, .btn-curriculum-syllabus-pdf', 'click', (e, btn) => {
             e.preventDefault();
+            if (!requireAuthOrTrigger()) return;
             const title = btn.getAttribute('data-title') || 'Official Syllabus PDF';
             const url = btn.getAttribute('data-pdf') || btn.getAttribute('data-url');
             if (url) openPdfViewer(title, url);
@@ -2790,13 +2830,25 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
         safeBind('.btn-curriculum-track', 'click', (e, btn) => {
             e.preventDefault();
             const code = btn.getAttribute('data-code');
-            if (window.Clerk?.user || isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
+            if (isUserAuthenticated()) {
                 window.location.hash = '#dashboard';
                 switchView('dashboard');
                 openSubjectHub(code);
             } else {
-                window.triggerNativeClerkAuth();
+                requireAuthOrTrigger();
             }
+        });
+
+        // On landing page cards, clicking any syllabus preview or PYQ button triggers auth
+        container.querySelectorAll('.curriculum-card').forEach(card => {
+            card.onclick = function(e) {
+                if (e.target.closest('.curriculum-unit-trigger') || e.target.closest('.curriculum-unit-body')) return;
+                if (!isUserAuthenticated()) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    requireAuthOrTrigger();
+                }
+            };
         });
       } catch (err) {
         console.error("Error in curriculumCards:", err);
@@ -2890,34 +2942,35 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
         // Wire Preview buttons safely
         safeBind('.btn-preview-paper, .btn-preview-pdf', 'click', (e, btn) => {
             e.preventDefault();
+            if (!requireAuthOrTrigger()) return;
             const title = btn.getAttribute('data-title');
             const url = btn.getAttribute('data-url') || btn.getAttribute('data-pdf');
-            const subjectCode = btn.getAttribute('data-subject') || '';
-            const paperYear = btn.getAttribute('data-paper') || '';
-
             if (!url) return;
-            const isSyllabus = url.toLowerCase().includes('syllabus') || url.toLowerCase().includes('cse20');
-            if (!isSyllabus && !window.Clerk?.user && !isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
-                window.triggerNativeClerkAuth({ action: 'preview', fileUrl: url, title, subjectCode, paperYear });
-                return;
-            }
             openPdfViewer(title, url);
         });
 
         // Wire Download buttons safely
         safeBind('.btn-download-paper, .btn-download-pdf, .btn-download-pdf-gate', 'click', (e, btn) => {
             e.preventDefault();
+            if (!requireAuthOrTrigger()) return;
             const subjectCode = btn.getAttribute('data-subject');
             const paperYear = btn.getAttribute('data-paper');
             const title = btn.getAttribute('data-name') || `${subjectCode} (${paperYear})`;
             const fileUrl = btn.getAttribute('data-url') || '';
-
             if (!fileUrl) return;
-            if (!window.Clerk?.user && !isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
-                window.triggerNativeClerkAuth({ action: 'download', fileUrl, title, subjectCode, paperYear });
-                return;
-            }
             downloadPdfFile(fileUrl, (title || 'MAKAUT_Paper') + '.pdf');
+        });
+
+        // On landing page PYQ cards, clicking triggers auth if not authenticated
+        grid.querySelectorAll('.pyq-repo-card').forEach(card => {
+            card.onclick = function(e) {
+                if (e.target.closest('button')) return;
+                if (!isUserAuthenticated()) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    requireAuthOrTrigger();
+                }
+            };
         });
       } catch (err) {
         console.error("Error in pyqCatalog:", err);
@@ -3781,6 +3834,7 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
     window.resolveSubjectData = resolveSubjectData;
 
     window.openSubjectHubByCode = function(targetCode, defaultTab = 'pyqs', targetModNum = null) {
+        if (!requireAuthOrTrigger()) return;
         if (!targetCode) return;
         const cleanTarget = targetCode.toString().trim().toLowerCase().replace(/[^a-z0-9]/g, '');
 
@@ -4423,11 +4477,8 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
 
         let targetUrl = url || '';
 
-        // Security Gate: Protect examination papers behind authentication gate while allowing public syllabus inspection
-        const isSyllabus = (targetUrl && (targetUrl.toLowerCase().includes('syllabus') || targetUrl.toLowerCase().includes('cse20')));
-        if (!isSyllabus && !isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
-            sessionStorage.setItem('pending_download_action', JSON.stringify({ action: 'preview', fileUrl: targetUrl, title }));
-            showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
+        // Security Gate: Strict Auth-Wall for all academic syllabi, master schemes, and PYQs
+        if (!requireAuthOrTrigger()) {
             return;
         }
 

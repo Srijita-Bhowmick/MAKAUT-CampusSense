@@ -39,15 +39,49 @@ function runAudit() {
     console.log("✅ PASSED: Official CSE20.pdf present in both static/ and docs/.");
   }
 
-  // 4. Verify Scrollbar Stability & Modal Scroll Lock in styles.css and app.js
+  // 4. Verify Native Viewport & Fluid Touchpad Scrolling in styles.css
   const stylesCssPath = path.join(__dirname, '../src/main/resources/static/styles.css');
   const stylesCssContent = fs.readFileSync(stylesCssPath, 'utf8');
 
-  if (!stylesCssContent.includes('scrollbar-gutter: stable') || !stylesCssContent.includes('body.modal-open')) {
-    console.error("❌ FAILURE: Scrollbar stability or modal-open styles missing in styles.css!");
+  // Check 4a: html and body do not contain overscroll-behavior-y: none or touch-action: none
+  if (stylesCssContent.includes('overscroll-behavior-y: none') || stylesCssContent.includes('touch-action: none')) {
+    console.error("❌ FAILURE: styles.css contains overscroll-behavior-y: none or touch-action: none!");
     passed = false;
   } else {
-    console.log("✅ PASSED: Scrollbar stability and modal lock styles verified in styles.css.");
+    console.log("✅ PASSED: html and body do not contain overscroll-behavior-y: none or touch-action: none.");
+  }
+
+  // Check 4b: Large containers do not have touch-action: manipulation or touch-action: none
+  const lines = stylesCssContent.split('\n');
+  let containerHasTouchLock = false;
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    if ((line.includes('.bento-card') || line.includes('.subject-card') || line.includes('.landing-section')) &&
+        (line.includes('touch-action: manipulation') || line.includes('touch-action: none'))) {
+      containerHasTouchLock = true;
+      break;
+    }
+  }
+  if (containerHasTouchLock) {
+    console.error("❌ FAILURE: Large containers have touch-action manipulation or none in styles.css!");
+    passed = false;
+  } else {
+    console.log("✅ PASSED: Large containers (.bento-card, .subject-card, .landing-section) allow natural touch/touchpad scrolling.");
+  }
+
+  // Check 4c: Strict Authentication Gate in app.js
+  const previewPdfGated = appJsContent.includes('window.previewPdfFile = function') && 
+                          appJsContent.includes('requireAuthOrTrigger()');
+  const downloadPdfGated = appJsContent.includes('async function downloadPdfFile') && 
+                           appJsContent.includes('requireAuthOrTrigger()');
+  const openSubjectHubGated = appJsContent.includes('window.openSubjectHubByCode = function') && 
+                              appJsContent.includes('requireAuthOrTrigger()');
+
+  if (!previewPdfGated || !downloadPdfGated || !openSubjectHubGated) {
+    console.error("❌ FAILURE: previewPdfFile, downloadPdfFile, or openSubjectHubByCode missing requireAuthOrTrigger in app.js!");
+    passed = false;
+  } else {
+    console.log("✅ PASSED: previewPdfFile, downloadPdfFile, and openSubjectHubByCode verify authentication before exposing resources.");
   }
 
   if (!appJsContent.includes('lockBodyScroll(true)') || !appJsContent.includes('lockBodyScroll(false)')) {
@@ -57,7 +91,6 @@ function runAudit() {
     console.log("✅ PASSED: Modal scroll lock guard active in app.js.");
   }
 
-  // 4b. Verify Touch Action & Inactive Overlay Guards
   if (!stylesCssContent.includes('touch-action: auto !important') || !stylesCssContent.includes('.modal:not(.active)')) {
     console.error("❌ FAILURE: Touch unblocking or inactive overlay rules missing in styles.css!");
     passed = false;

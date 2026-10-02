@@ -255,27 +255,28 @@
     box-sizing: border-box;
 }
 
-/* --- BULLETPROOF VIEWPORT & SCROLLBAR STABILIZATION --- */
-html, body {
-  touch-action: auto !important;
-  -webkit-overflow-scrolling: touch;
-  overflow-x: hidden;
-}
-
+/* --- NATIVE VIEWPORT & FLUID TOUCHPAD SCROLLING --- */
 html {
-  overflow-y: scroll !important;
-  scrollbar-gutter: stable both-edges;
-  scroll-behavior: auto !important; /* Disables smooth-scroll loop jitter */
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  scrollbar-gutter: auto !important;
+  scroll-behavior: smooth !important;
+  height: auto !important;
+  min-height: 100%;
 }
 
 body {
+  overflow-y: visible !important;
+  overflow-x: hidden !important;
+  min-height: 100vh;
+  position: relative;
+  overscroll-behavior: auto !important;
+  touch-action: auto !important;
+  -webkit-overflow-scrolling: touch;
   background-color: var(--bg-main);
   color: var(--text-main);
   font-family: var(--font-body);
   line-height: 1.6;
-  min-height: 100vh;
-  position: relative;
-  overscroll-behavior-y: none;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -303,22 +304,45 @@ body.modal-open {
   background: #6366f1;
 }
 
-/* Contain modal wheel scrolling */
-.modal-body, .subject-hub-modal-content, .drawer-content {
-  overscroll-behavior: contain !important;
+/* Allow cards and large layout containers to scroll naturally under touch/touchpad */
+.landing-section,
+.dashboard-section,
+.bento-grid,
+.bento-card,
+.subject-card,
+.interactive-card,
+.academic-stage-card,
+.stage-card,
+main,
+section {
+  touch-action: auto !important;
 }
 
-/* Global touch & pointer restoration */
-html, body {
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-}
-
-button, .btn, .stage-card, .academic-stage-card, .subject-card, .pill, a, input, select, .interactive-card, .academic-option, .sem-pill, .stream-pill {
+/* Restrict touch-action ONLY to small, clickable buttons to prevent tap delay */
+button,
+.btn,
+.pill,
+.sem-pill,
+.stream-pill,
+.tab-btn {
+  touch-action: manipulation !important;
   cursor: pointer !important;
   pointer-events: auto !important;
-  touch-action: manipulation !important;
   user-select: none;
+}
+
+/* Modals keep internal scrolling isolated without locking the root document permanently */
+.modal-body,
+.subject-hub-modal-content,
+.drawer-content {
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Remove body freeze if leftover */
+body:not(.modal-open) {
+  overflow: visible !important;
 }
 
 /* Modals must only absorb clicks when explicitly visible */
@@ -423,7 +447,7 @@ button, .btn, .stage-card, .academic-stage-card, .subject-card, .pill, a, input,
 [data-stage] {
   pointer-events: auto !important;
   cursor: pointer !important;
-  touch-action: manipulation !important;
+  touch-action: auto !important;
 }
 
 /* Clear display rules for the conditional departmental container */
