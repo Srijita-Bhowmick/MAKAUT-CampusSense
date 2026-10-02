@@ -112,6 +112,35 @@ function runAudit() {
     console.log("✅ PASSED: Standard viewport meta tag verified in index.html.");
   }
 
+  // 4d. Verify Light Mode Palette, Instant Theme Switching, and Panic Pack Hook
+  if (!stylesCssContent.includes('--bg-primary: #f8fafc') || !stylesCssContent.includes('.panic-catch-modal')) {
+    console.error("❌ FAILURE: Light mode palette or panic-catch-modal styles missing in styles.css!");
+    passed = false;
+  } else {
+    console.log("✅ PASSED: High-contrast light mode palette and panic-catch-modal styles verified in styles.css.");
+  }
+
+  if (stylesCssContent.includes('transition: background-color 0.3s ease, color 0.3s ease;')) {
+    console.error("❌ FAILURE: Body contains slow background-color transition in styles.css!");
+    passed = false;
+  } else {
+    console.log("✅ PASSED: Instantaneous theme transition verified (no lagging universal transitions).");
+  }
+
+  if (!indexHtmlContent.includes('feature-gate-card') || !indexHtmlContent.includes('data-gate-target="panic"') || !indexHtmlContent.includes('Battle-Tested MAKAUT Examination Archives')) {
+    console.error("❌ FAILURE: Feature gate cards, panic-pack card, or battle-tested PYQ copy missing in index.html!");
+    passed = false;
+  } else {
+    console.log("✅ PASSED: Feature gate cards and updated battle-tested PYQ section copy verified in index.html.");
+  }
+
+  if (!appJsContent.includes('triggerPanicPackConversionAuth') || !appJsContent.includes('.feature-gate-card')) {
+    console.error("❌ FAILURE: triggerPanicPackConversionAuth or feature-gate-card listener missing in app.js!");
+    passed = false;
+  } else {
+    console.log("✅ PASSED: Panic pack conversion hook and feature card auth listener verified in app.js.");
+  }
+
   // 5. Verify Zero Practicals/Labs and Zero Non-PYQ Subjects in Dashboard Stream View
   const match = appJsContent.match(/const OFFICIAL_CSE_COURSES = (\[[\s\S]*?\]);\s*const OFFICIAL_CSE_MODULES/);
   if (!match) {

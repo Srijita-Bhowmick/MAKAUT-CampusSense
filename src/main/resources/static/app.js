@@ -250,6 +250,83 @@ window.onClerkLoaded = function() {
     }
     window.requireAuthOrTrigger = requireAuthOrTrigger;
 
+    // Phase 4: Panic Pack Navbar & Card Click "Catch" Hook
+    window.triggerPanicPackConversionAuth = function() {
+        // High-conversion banner toast before triggering sign-in
+        let catchBanner = document.getElementById('panic-pack-catch-banner');
+        if (!catchBanner) {
+            catchBanner = document.createElement('div');
+            catchBanner.id = 'panic-pack-catch-banner';
+            catchBanner.className = 'panic-catch-modal';
+            catchBanner.innerHTML = `
+              <div class="panic-catch-content">
+                <span class="fire-icon">🔥</span>
+                <h3>The 48-Hour Exam Survival Protocol</h3>
+                <p><strong>80% of your MAKAUT semester paper comes from just 20% of recurring topics.</strong> Sign in with your college account to unlock high-yield question predictions, marked weightage patterns, and the panic revision pack before exam day.</p>
+                <button id="btn-panic-continue-auth" class="btn btn-primary">Sign In & Unlock Panic Pack →</button>
+                <button id="btn-panic-dismiss" class="btn-text">Close</button>
+              </div>
+            `;
+            document.body.appendChild(catchBanner);
+
+            document.getElementById('btn-panic-continue-auth').onclick = function() {
+                catchBanner.classList.remove('active');
+                if (typeof triggerNativeClerkAuth === 'function') {
+                    triggerNativeClerkAuth();
+                } else if (window.triggerNativeClerkAuth) {
+                    window.triggerNativeClerkAuth();
+                }
+            };
+            document.getElementById('btn-panic-dismiss').onclick = function() {
+                catchBanner.classList.remove('active');
+            };
+        }
+
+        catchBanner.classList.add('active');
+    };
+
+    // Phase 3: Auth Interceptor Listener for All Feature Cards
+    document.addEventListener('click', function(e) {
+        const gateTarget = e.target.closest('.feature-gate-card, .gate-action-btn');
+        if (gateTarget) {
+            const user = window.Clerk?.user || window.isLoggedIn || isUserAuthenticated();
+            if (!user) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const isPanic = gateTarget.closest('[data-gate-target="panic"]') || gateTarget.classList.contains('panic-pack-card');
+                if (isPanic) {
+                    window.triggerPanicPackConversionAuth();
+                } else {
+                    if (typeof triggerNativeClerkAuth === 'function') {
+                        triggerNativeClerkAuth();
+                    } else if (window.triggerNativeClerkAuth) {
+                        window.triggerNativeClerkAuth();
+                    }
+                }
+            }
+        }
+    }, true);
+
+    // Wire Navbar "Panic Pack" Link
+    const wireNavPanicLink = () => {
+        const navPanicLink = document.querySelector('a[href="#panic-pack"], a[href="#landing-panic-drill"], .nav-panic-link, [data-nav="panic-pack"]');
+        if (navPanicLink) {
+            navPanicLink.onclick = function(e) {
+                const user = window.Clerk?.user || window.isLoggedIn || isUserAuthenticated();
+                if (!user) {
+                    e.preventDefault();
+                    window.triggerPanicPackConversionAuth();
+                }
+            };
+        }
+    };
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', wireNavPanicLink);
+    } else {
+        wireNavPanicLink();
+    }
+
     window.previewPdfFile = function(url, title) {
         if (!requireAuthOrTrigger()) return;
         const sanitizedUrl = sanitizePdfUrl(url);

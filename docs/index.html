@@ -50,7 +50,7 @@
                 <a href="#landing-features" class="landing-nav-link">Features</a>
                 <a href="#landing-curriculum" class="landing-nav-link">Curriculum</a>
                 <a href="#landing-pyqs" class="landing-nav-link">PYQ Archives</a>
-                <a href="#landing-panic-drill" class="landing-nav-link">🔥 Panic Pack</a>
+                <a href="#panic-pack" class="landing-nav-link nav-panic-link" data-nav="panic-pack">🔥 Panic Pack</a>
             </nav>
 
             <!-- Context Lock Pill (Visible when Dashboard is active) -->
@@ -193,51 +193,51 @@
                 <p class="landing-section-subhead">Everything you need to master your semester syllabus and clear your examinations with high marks.</p>
             </div>
 
-            <div class="landing-features-grid">
+            <div class="landing-features-grid features-bento-grid">
                 <!-- Card 1: Syllabus Checklist -->
-                <div class="landing-feature-card">
+                <div class="landing-feature-card bento-card feature-gate-card" data-gate-target="syllabus">
                     <div class="feature-card-content">
                         <div class="feature-icon-box">📋</div>
                         <h3 class="feature-card-title">Curated Syllabi & Unit Checklists</h3>
                         <p class="feature-card-desc">Complete syllabus units with module hours, exact topic breakdowns, and interactive checklist rings to track your exam readiness.</p>
                     </div>
-                    <button class="feature-card-cta" id="btn-feature-syllabus">
-                        Explore Syllabus Checklist ➔
+                    <button class="feature-card-cta btn btn-secondary gate-action-btn" id="btn-feature-syllabus">
+                        Explore Syllabus Checklist →
                     </button>
                 </div>
 
                 <!-- Card 2: PYQ Archives (placed directly adjacent to Curated Syllabi) -->
-                <div class="landing-feature-card">
+                <div class="landing-feature-card bento-card feature-gate-card" data-gate-target="pyqs">
                     <div class="feature-card-content">
                         <div class="feature-icon-box emerald">📑</div>
                         <h3 class="feature-card-title">PYQ Archives</h3>
                         <p class="feature-card-desc">Semester examination papers arranged by stream, year, and group (Group A, B, and C) with instant PDF viewing and downloads.</p>
                     </div>
-                    <button class="feature-card-cta emerald" id="btn-feature-pyq">
-                        Browse PYQ Repository ➔
+                    <button class="feature-card-cta emerald btn btn-secondary gate-action-btn" id="btn-feature-pyq">
+                        Browse PYQ Repository →
                     </button>
                 </div>
 
                 <!-- Card 3: 48-Hour Panic Pack -->
-                <div class="landing-feature-card">
+                <div class="landing-feature-card bento-card feature-gate-card panic-pack-card" data-gate-target="panic">
                     <div class="feature-card-content">
                         <div class="feature-icon-box flame">🔥</div>
                         <h3 class="feature-card-title">The 48-Hour Panic Pack</h3>
                         <p class="feature-card-desc">High-yield algorithm analyzing exam papers to isolate the top 20% most repeated questions with marks distribution and model answers.</p>
                     </div>
-                    <button class="feature-card-cta flame" id="btn-feature-panic">
+                    <button class="feature-card-cta flame btn btn-primary gate-action-btn" id="btn-feature-panic">
                         Access Panic Pack 🔥
                     </button>
                 </div>
 
                 <!-- Card 4: AI Assistant -->
-                <div class="landing-feature-card">
+                <div class="landing-feature-card bento-card feature-gate-card" data-gate-target="ai">
                     <div class="feature-card-content">
                         <div class="feature-icon-box cyan">🤖</div>
                         <h3 class="feature-card-title">Grounded Conversational AI Assistant</h3>
                         <p class="feature-card-desc">Need a clarification right before your exam? Ask our university-grounded AI engine. Every response cites exact syllabus modules and exam paper years.</p>
                     </div>
-                    <button class="feature-card-cta cyan" id="btn-feature-ai">
+                    <button class="feature-card-cta cyan btn btn-secondary gate-action-btn" id="btn-feature-ai">
                         Launch AI Assistant 🤖
                     </button>
                 </div>
@@ -272,10 +272,12 @@
              (Strictly examination papers categorized by Year)
              ========================================================== -->
         <section id="landing-pyqs" class="landing-content-section">
-            <div class="landing-section-header" id="landing-panic-drill">
+            <div class="landing-section-header section-header-block" id="landing-panic-drill">
                 <div class="landing-section-pretitle">PAST EXAMINATION REPOSITORY</div>
-                <h2 class="landing-section-title">MAKAUT PYQ Archives</h2>
-                <p class="landing-section-subhead">Semester examination papers categorized by Year. Preview papers instantly or sign in to download full PDFs.</p>
+                <h2 class="landing-section-title section-title">Battle-Tested MAKAUT Examination Archives</h2>
+                <p class="landing-section-subhead section-subtitle">
+                    Stop guessing what is on the semester question paper. Access verified, year-wise official MAKAUT PYQs (2020–2026) with solved answer distributions and recurring pattern intelligence—curated to safeguard your semester CGPA.
+                </p>
             </div>
 
             <!-- PYQ Filter Bar: Year -->
