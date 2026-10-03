@@ -260,11 +260,21 @@ window.onClerkLoaded = function() {
             catchBanner.className = 'panic-catch-modal';
             catchBanner.innerHTML = `
               <div class="panic-catch-content">
-                <span class="fire-icon">🔥</span>
-                <h3>The 48-Hour Exam Survival Protocol</h3>
-                <p><strong>80% of your MAKAUT semester paper comes from just 20% of recurring topics.</strong> Sign in with your college account to unlock high-yield question predictions, marked weightage patterns, and the panic revision pack before exam day.</p>
-                <button id="btn-panic-continue-auth" class="btn btn-primary">Sign In & Unlock Panic Pack →</button>
-                <button id="btn-panic-dismiss" class="btn-text">Close</button>
+                <span class="fire-icon">🕊️</span>
+                <h3 style="font-size: 1.45rem; font-weight: 700; margin: 0.75rem 0; color: #818cf8;">
+                  The Eleventh-Hour Accord
+                </h3>
+                <p style="color: var(--text-secondary); line-height: 1.6; font-size: 0.95rem; margin-bottom: 1.5rem;">
+                  We won't inquire about what happened to the last four months of the semester—that remains strictly classified. But negotiations with the examination hall are fast approaching, and walking in unbriefed is simply poor statecraft.
+                  <br><br>
+                  Sign in to consult high-frequency topic distributions and prioritized revision notes. Let's keep this civilized.
+                </p>
+                <button id="btn-panic-continue-auth" class="btn btn-primary" style="width: 100%; margin-bottom: 0.75rem;">
+                  Sign In for the Strategic Briefing →
+                </button>
+                <button id="btn-panic-dismiss" class="btn-text" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.85rem;">
+                  I'll take my chances
+                </button>
               </div>
             `;
             document.body.appendChild(catchBanner);
