@@ -412,63 +412,72 @@ body {
 }
 .panic-catch-content {
   background: #111827;
-  border: 1px solid #f97316;
-  box-shadow: 0 0 35px rgba(249, 115, 22, 0.35);
+  border: 1px solid rgba(129, 140, 248, 0.3);
+  box-shadow: 0 0 35px rgba(99, 102, 241, 0.25);
   border-radius: 1rem;
-  padding: 2.25rem;
-  max-width: 480px;
+  padding: 2rem;
+  max-width: 460px;
   text-align: center;
   color: #ffffff;
 }
+:root.light-theme .panic-catch-content,
 [data-theme="light"] .panic-catch-content {
-  background: #ffffff;
-  color: #0f172a;
-  border: 1px solid #ea580c;
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05) !important;
 }
 .panic-catch-content h3 {
-  font-size: 1.5rem;
+  font-size: 1.35rem;
   font-weight: 700;
-  margin: 0.75rem 0;
-  color: #f97316;
+  margin: 0.25rem 0 0.75rem 0;
+  color: #818cf8;
+}
+:root.light-theme .panic-catch-content h3,
+[data-theme="light"] .panic-catch-content h3 {
+  color: #4f46e5 !important;
 }
 .panic-catch-content .fire-icon {
-  font-size: 2.25rem;
-  display: inline-block;
+  font-size: 2rem;
+  display: block;
   margin-bottom: 0.5rem;
 }
 .panic-catch-content p {
-  color: #cbd5e1;
+  color: #94a3b8;
   font-size: 0.95rem;
   line-height: 1.55;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.35rem;
 }
+:root.light-theme .panic-catch-content p,
 [data-theme="light"] .panic-catch-content p {
-  color: #334155;
+  color: #334155 !important;
 }
 .panic-catch-content .btn-primary {
   width: 100%;
-  padding: 0.8rem 1.25rem;
-  font-size: 1rem;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.95rem;
   font-weight: 600;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.65rem;
 }
 .panic-catch-content .btn-text {
   background: transparent;
   border: none;
   color: #94a3b8;
   cursor: pointer;
-  font-size: 0.9rem;
-  padding: 0.35rem 0.75rem;
+  font-size: 0.85rem;
+  padding: 0.4rem;
   transition: color 0.15s ease;
 }
 .panic-catch-content .btn-text:hover {
   color: #ffffff;
 }
+:root.light-theme .panic-catch-content .btn-text,
 [data-theme="light"] .panic-catch-content .btn-text {
-  color: #64748b;
+  color: #64748b !important;
 }
+:root.light-theme .panic-catch-content .btn-text:hover,
 [data-theme="light"] .panic-catch-content .btn-text:hover {
-  color: #0f172a;
+  color: #0f172a !important;
 }
 
 body.modal-open {

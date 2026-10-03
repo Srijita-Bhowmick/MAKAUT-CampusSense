@@ -260,36 +260,43 @@ window.onClerkLoaded = function() {
             catchBanner.className = 'panic-catch-modal';
             catchBanner.innerHTML = `
               <div class="panic-catch-content">
-                <span class="fire-icon">🕊️</span>
-                <h3 style="font-size: 1.45rem; font-weight: 700; margin: 0.75rem 0; color: #818cf8;">
-                  The Eleventh-Hour Accord
+                <span class="fire-icon" style="font-size: 2rem; display: block; margin-bottom: 0.5rem;">🕊️</span>
+                <h3 style="font-size: 1.35rem; font-weight: 700; margin: 0.25rem 0 0.75rem 0; color: #818cf8;">
+                  Tactical De-escalation
                 </h3>
-                <p style="color: var(--text-secondary); line-height: 1.6; font-size: 0.95rem; margin-bottom: 1.5rem;">
-                  We won't inquire about what happened to the last four months of the semester—that remains strictly classified. But negotiations with the examination hall are fast approaching, and walking in unbriefed is simply poor statecraft.
-                  <br><br>
-                  Sign in to consult high-frequency topic distributions and prioritized revision notes. Let's keep this civilized.
+                <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.55; margin-bottom: 1.35rem;">
+                  Let’s negotiate peace with tomorrow's question paper. High-yield topics only—sign in to review the terms.
                 </p>
-                <button id="btn-panic-continue-auth" class="btn btn-primary" style="width: 100%; margin-bottom: 0.75rem;">
-                  Sign In for the Strategic Briefing →
+                <button id="btn-panic-continue-auth" class="btn btn-primary" style="width: 100%; margin-bottom: 0.65rem; font-weight: 600;">
+                  Sign In to Review Terms →
                 </button>
-                <button id="btn-panic-dismiss" class="btn-text" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.85rem;">
+                <button id="btn-panic-dismiss" class="btn-text" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.85rem; padding: 0.4rem;">
                   I'll take my chances
                 </button>
               </div>
             `;
             document.body.appendChild(catchBanner);
 
-            document.getElementById('btn-panic-continue-auth').onclick = function() {
-                catchBanner.classList.remove('active');
-                if (typeof triggerNativeClerkAuth === 'function') {
-                    triggerNativeClerkAuth();
-                } else if (window.triggerNativeClerkAuth) {
-                    window.triggerNativeClerkAuth();
-                }
-            };
-            document.getElementById('btn-panic-dismiss').onclick = function() {
-                catchBanner.classList.remove('active');
-            };
+            const authBtn = document.getElementById('btn-panic-continue-auth');
+            if (authBtn) {
+                authBtn.onclick = function() {
+                    catchBanner.classList.remove('active');
+                    if (typeof triggerNativeClerkAuth === 'function') {
+                        triggerNativeClerkAuth();
+                    } else if (window.Clerk && window.Clerk.openSignIn) {
+                        window.Clerk.openSignIn();
+                    } else if (window.triggerNativeClerkAuth) {
+                        window.triggerNativeClerkAuth();
+                    }
+                };
+            }
+
+            const dismissBtn = document.getElementById('btn-panic-dismiss');
+            if (dismissBtn) {
+                dismissBtn.onclick = function() {
+                    catchBanner.classList.remove('active');
+                };
+            }
         }
 
         catchBanner.classList.add('active');
