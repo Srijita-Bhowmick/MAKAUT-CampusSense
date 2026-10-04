@@ -1633,19 +1633,474 @@ body:not(.modal-open) {
     border-color: #ef4444;
 }
 
-/* Clerk Native Auth Theming */
-[data-theme="light"] .cl-card,
-[data-theme="light"] .cl-rootBox {
-  background-color: #ffffff !important;
-  color: #090d16 !important;
+/* ==============================================================================
+   CLERK NATIVE AUTH THEMING — OPTIMIZED FOR CAMPUSSENSE DARK & LIGHT MODES
+   ============================================================================== */
+
+/* Base Clerk Reset & Global Card Styling */
+.cl-rootBox {
+    font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif) !important;
 }
 
-[data-theme="light"] .cl-internal-b3fm6y,
+.cl-card {
+    border-radius: var(--radius-lg, 16px) !important;
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+/* ------------------------------------------------------------------------------
+   DARK MODE STYLES (Default & [data-theme="dark"])
+   ------------------------------------------------------------------------------ */
+:root,
+[data-theme="dark"] {
+    --clerk-bg-card: #111827;
+    --clerk-border-card: rgba(255, 255, 255, 0.12);
+    --clerk-text-primary: #f3f4f6;
+    --clerk-text-secondary: #9ca3af;
+    --clerk-text-subtle: #6b7280;
+    --clerk-input-bg: #1e293b;
+    --clerk-input-border: rgba(255, 255, 255, 0.16);
+    --clerk-input-focus: #6366f1;
+    --clerk-input-focus-ring: rgba(99, 102, 241, 0.35);
+    --clerk-social-bg: rgba(255, 255, 255, 0.05);
+    --clerk-social-border: rgba(255, 255, 255, 0.14);
+    --clerk-social-hover: rgba(255, 255, 255, 0.1);
+    --clerk-btn-primary-bg: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    --clerk-btn-primary-shadow: 0 4px 16px rgba(99, 102, 241, 0.45);
+    --clerk-btn-primary-hover-shadow: 0 6px 22px rgba(99, 102, 241, 0.65);
+    --clerk-link-color: #818cf8;
+    --clerk-link-hover: #a5b4fc;
+    --clerk-divider: rgba(255, 255, 255, 0.1);
+    --clerk-backdrop: rgba(7, 11, 20, 0.85);
+    --clerk-card-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 25px rgba(99, 102, 241, 0.18);
+}
+
+:root:not(.light-theme) .cl-modalBackdrop,
+[data-theme="dark"] .cl-modalBackdrop {
+    background-color: var(--clerk-backdrop) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+}
+
+:root:not(.light-theme) .cl-card,
+:root:not(.light-theme) .cl-rootBox,
+[data-theme="dark"] .cl-card,
+[data-theme="dark"] .cl-rootBox {
+    background-color: var(--clerk-bg-card) !important;
+    color: var(--clerk-text-primary) !important;
+    border: 1px solid var(--clerk-border-card) !important;
+    box-shadow: var(--clerk-card-shadow) !important;
+}
+
+:root:not(.light-theme) .cl-headerTitle,
+[data-theme="dark"] .cl-headerTitle {
+    font-family: var(--font-heading, 'Outfit', sans-serif) !important;
+    color: var(--clerk-text-primary) !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.02em !important;
+}
+
+:root:not(.light-theme) .cl-headerSubtitle,
+[data-theme="dark"] .cl-headerSubtitle {
+    color: var(--clerk-text-secondary) !important;
+}
+
+:root:not(.light-theme) .cl-socialButtonsBlockButton,
+:root:not(.light-theme) .cl-socialButtonsIconButton,
+[data-theme="dark"] .cl-socialButtonsBlockButton,
+[data-theme="dark"] .cl-socialButtonsIconButton {
+    background-color: var(--clerk-social-bg) !important;
+    border: 1px solid var(--clerk-social-border) !important;
+    color: var(--clerk-text-primary) !important;
+    border-radius: var(--radius-sm, 10px) !important;
+    transition: var(--transition-fast) !important;
+}
+
+:root:not(.light-theme) .cl-socialButtonsBlockButton:hover,
+:root:not(.light-theme) .cl-socialButtonsIconButton:hover,
+[data-theme="dark"] .cl-socialButtonsBlockButton:hover,
+[data-theme="dark"] .cl-socialButtonsIconButton:hover {
+    background-color: var(--clerk-social-hover) !important;
+    border-color: #6366f1 !important;
+    box-shadow: 0 0 12px rgba(99, 102, 241, 0.25) !important;
+}
+
+:root:not(.light-theme) .cl-socialButtonsBlockButtonText,
+[data-theme="dark"] .cl-socialButtonsBlockButtonText {
+    color: var(--clerk-text-primary) !important;
+    font-weight: 600 !important;
+}
+
+:root:not(.light-theme) .cl-dividerLine,
+[data-theme="dark"] .cl-dividerLine {
+    background-color: var(--clerk-divider) !important;
+}
+
+:root:not(.light-theme) .cl-dividerText,
+[data-theme="dark"] .cl-dividerText {
+    color: var(--clerk-text-subtle) !important;
+    font-size: 0.78rem !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+}
+
+:root:not(.light-theme) .cl-formFieldLabel,
+[data-theme="dark"] .cl-formFieldLabel {
+    font-family: var(--font-heading, 'Outfit', sans-serif) !important;
+    color: #e2e8f0 !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+}
+
+:root:not(.light-theme) .cl-formFieldInput,
+:root:not(.light-theme) .cl-otpCodeFieldInput,
+[data-theme="dark"] .cl-formFieldInput,
+[data-theme="dark"] .cl-otpCodeFieldInput {
+    background-color: var(--clerk-input-bg) !important;
+    border: 1px solid var(--clerk-input-border) !important;
+    color: var(--clerk-text-primary) !important;
+    border-radius: var(--radius-sm, 10px) !important;
+    padding: 0.75rem 1rem !important;
+    font-size: 0.95rem !important;
+    transition: var(--transition-fast) !important;
+}
+
+:root:not(.light-theme) .cl-formFieldInput:focus,
+:root:not(.light-theme) .cl-otpCodeFieldInput:focus,
+[data-theme="dark"] .cl-formFieldInput:focus,
+[data-theme="dark"] .cl-otpCodeFieldInput:focus {
+    border-color: var(--clerk-input-focus) !important;
+    box-shadow: 0 0 0 3px var(--clerk-input-focus-ring) !important;
+    outline: none !important;
+}
+
+:root:not(.light-theme) .cl-formButtonPrimary,
+[data-theme="dark"] .cl-formButtonPrimary {
+    background: var(--clerk-btn-primary-bg) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: var(--radius-sm, 10px) !important;
+    padding: 0.8rem 1.25rem !important;
+    font-weight: 600 !important;
+    font-size: 0.95rem !important;
+    box-shadow: var(--clerk-btn-primary-shadow) !important;
+    transition: var(--transition-smooth) !important;
+}
+
+:root:not(.light-theme) .cl-formButtonPrimary:hover,
+[data-theme="dark"] .cl-formButtonPrimary:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: var(--clerk-btn-primary-hover-shadow) !important;
+}
+
+:root:not(.light-theme) .cl-footerActionText,
+[data-theme="dark"] .cl-footerActionText {
+    color: var(--clerk-text-secondary) !important;
+}
+
+:root:not(.light-theme) .cl-footerActionLink,
+:root:not(.light-theme) .cl-formFieldAction,
+:root:not(.light-theme) .cl-formResendCodeLink,
+[data-theme="dark"] .cl-footerActionLink,
+[data-theme="dark"] .cl-formFieldAction,
+[data-theme="dark"] .cl-formResendCodeLink {
+    color: var(--clerk-link-color) !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    transition: var(--transition-fast) !important;
+}
+
+:root:not(.light-theme) .cl-footerActionLink:hover,
+:root:not(.light-theme) .cl-formFieldAction:hover,
+:root:not(.light-theme) .cl-formResendCodeLink:hover,
+[data-theme="dark"] .cl-footerActionLink:hover,
+[data-theme="dark"] .cl-formFieldAction:hover,
+[data-theme="dark"] .cl-formResendCodeLink:hover {
+    color: var(--clerk-link-hover) !important;
+    text-decoration: underline !important;
+}
+
+:root:not(.light-theme) .cl-modalCloseButton,
+[data-theme="dark"] .cl-modalCloseButton {
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    color: var(--clerk-text-secondary) !important;
+    border-radius: 8px !important;
+    transition: var(--transition-fast) !important;
+}
+
+:root:not(.light-theme) .cl-modalCloseButton:hover,
+[data-theme="dark"] .cl-modalCloseButton:hover {
+    background: rgba(239, 68, 68, 0.2) !important;
+    color: #fca5a5 !important;
+    border-color: #ef4444 !important;
+}
+
+:root:not(.light-theme) .cl-userButtonPopoverCard,
+[data-theme="dark"] .cl-userButtonPopoverCard {
+    background-color: var(--clerk-bg-card) !important;
+    border: 1px solid var(--clerk-border-card) !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6) !important;
+    border-radius: var(--radius-md, 12px) !important;
+}
+
+:root:not(.light-theme) .cl-userButtonPopoverActionButton,
+[data-theme="dark"] .cl-userButtonPopoverActionButton {
+    color: var(--clerk-text-primary) !important;
+    border-radius: 8px !important;
+    transition: var(--transition-fast) !important;
+}
+
+:root:not(.light-theme) .cl-userButtonPopoverActionButton:hover,
+[data-theme="dark"] .cl-userButtonPopoverActionButton:hover {
+    background-color: rgba(99, 102, 241, 0.15) !important;
+    color: #818cf8 !important;
+}
+
+:root:not(.light-theme) .cl-userPreviewMainIdentifier,
+[data-theme="dark"] .cl-userPreviewMainIdentifier {
+    color: var(--clerk-text-primary) !important;
+    font-weight: 700 !important;
+}
+
+:root:not(.light-theme) .cl-userPreviewSecondaryIdentifier,
+[data-theme="dark"] .cl-userPreviewSecondaryIdentifier {
+    color: var(--clerk-text-secondary) !important;
+}
+
+:root:not(.light-theme) .cl-identityPreview,
+[data-theme="dark"] .cl-identityPreview {
+    background-color: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid var(--clerk-border-card) !important;
+    border-radius: 10px !important;
+}
+
+/* ------------------------------------------------------------------------------
+   LIGHT MODE STYLES (:root.light-theme & [data-theme="light"])
+   ------------------------------------------------------------------------------ */
+:root.light-theme,
+[data-theme="light"] {
+    --clerk-light-bg-card: #ffffff;
+    --clerk-light-border-card: #e2e8f0;
+    --clerk-light-text-primary: #0f172a;
+    --clerk-light-text-secondary: #64748b;
+    --clerk-light-text-subtle: #94a3b8;
+    --clerk-light-input-bg: #ffffff;
+    --clerk-light-input-border: #cbd5e1;
+    --clerk-light-input-focus: #4f46e5;
+    --clerk-light-input-focus-ring: rgba(79, 70, 229, 0.2);
+    --clerk-light-social-bg: #ffffff;
+    --clerk-light-social-border: #cbd5e1;
+    --clerk-light-social-hover: #f8fafc;
+    --clerk-light-btn-primary-bg: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+    --clerk-light-btn-primary-shadow: 0 4px 14px rgba(79, 70, 229, 0.25);
+    --clerk-light-btn-primary-hover-shadow: 0 6px 18px rgba(79, 70, 229, 0.35);
+    --clerk-light-link-color: #4f46e5;
+    --clerk-light-link-hover: #3730a3;
+    --clerk-light-divider: #e2e8f0;
+    --clerk-light-backdrop: rgba(15, 23, 42, 0.55);
+    --clerk-light-card-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05), 0 0 0 1px #e2e8f0;
+}
+
+:root.light-theme .cl-modalBackdrop,
+[data-theme="light"] .cl-modalBackdrop {
+    background-color: var(--clerk-light-backdrop) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+}
+
+:root.light-theme .cl-card,
+:root.light-theme .cl-rootBox,
+[data-theme="light"] .cl-card,
+[data-theme="light"] .cl-rootBox {
+    background-color: var(--clerk-light-bg-card) !important;
+    color: var(--clerk-light-text-primary) !important;
+    border: 1px solid var(--clerk-light-border-card) !important;
+    box-shadow: var(--clerk-light-card-shadow) !important;
+}
+
+:root.light-theme .cl-headerTitle,
+[data-theme="light"] .cl-headerTitle {
+    font-family: var(--font-heading, 'Outfit', sans-serif) !important;
+    color: var(--clerk-light-text-primary) !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.02em !important;
+}
+
+:root.light-theme .cl-headerSubtitle,
+[data-theme="light"] .cl-headerSubtitle {
+    color: var(--clerk-light-text-secondary) !important;
+}
+
+:root.light-theme .cl-socialButtonsBlockButton,
+:root.light-theme .cl-socialButtonsIconButton,
 [data-theme="light"] .cl-socialButtonsBlockButton,
-[data-theme="light"] .cl-formFieldInput {
-  background-color: #ffffff !important;
-  color: #090d16 !important;
-  border-color: #cbd5e1 !important;
+[data-theme="light"] .cl-socialButtonsIconButton {
+    background-color: var(--clerk-light-social-bg) !important;
+    border: 1px solid var(--clerk-light-social-border) !important;
+    color: var(--clerk-light-text-primary) !important;
+    border-radius: var(--radius-sm, 10px) !important;
+    transition: var(--transition-fast) !important;
+}
+
+:root.light-theme .cl-socialButtonsBlockButton:hover,
+:root.light-theme .cl-socialButtonsIconButton:hover,
+[data-theme="light"] .cl-socialButtonsBlockButton:hover,
+[data-theme="light"] .cl-socialButtonsIconButton:hover {
+    background-color: var(--clerk-light-social-hover) !important;
+    border-color: #4f46e5 !important;
+    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.12) !important;
+}
+
+:root.light-theme .cl-socialButtonsBlockButtonText,
+[data-theme="light"] .cl-socialButtonsBlockButtonText {
+    color: var(--clerk-light-text-primary) !important;
+    font-weight: 600 !important;
+}
+
+:root.light-theme .cl-dividerLine,
+[data-theme="light"] .cl-dividerLine {
+    background-color: var(--clerk-light-divider) !important;
+}
+
+:root.light-theme .cl-dividerText,
+[data-theme="light"] .cl-dividerText {
+    color: var(--clerk-light-text-subtle) !important;
+    font-size: 0.78rem !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+}
+
+:root.light-theme .cl-formFieldLabel,
+[data-theme="light"] .cl-formFieldLabel {
+    font-family: var(--font-heading, 'Outfit', sans-serif) !important;
+    color: var(--clerk-light-text-primary) !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
+}
+
+:root.light-theme .cl-formFieldInput,
+:root.light-theme .cl-otpCodeFieldInput,
+[data-theme="light"] .cl-formFieldInput,
+[data-theme="light"] .cl-otpCodeFieldInput {
+    background-color: var(--clerk-light-input-bg) !important;
+    border: 1px solid var(--clerk-light-input-border) !important;
+    color: var(--clerk-light-text-primary) !important;
+    border-radius: var(--radius-sm, 10px) !important;
+    padding: 0.75rem 1rem !important;
+    font-size: 0.95rem !important;
+    transition: var(--transition-fast) !important;
+}
+
+:root.light-theme .cl-formFieldInput:focus,
+:root.light-theme .cl-otpCodeFieldInput:focus,
+[data-theme="light"] .cl-formFieldInput:focus,
+[data-theme="light"] .cl-otpCodeFieldInput:focus {
+    border-color: var(--clerk-light-input-focus) !important;
+    box-shadow: 0 0 0 3px var(--clerk-light-input-focus-ring) !important;
+    outline: none !important;
+}
+
+:root.light-theme .cl-formButtonPrimary,
+[data-theme="light"] .cl-formButtonPrimary {
+    background: var(--clerk-light-btn-primary-bg) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: var(--radius-sm, 10px) !important;
+    padding: 0.8rem 1.25rem !important;
+    font-weight: 600 !important;
+    font-size: 0.95rem !important;
+    box-shadow: var(--clerk-light-btn-primary-shadow) !important;
+    transition: var(--transition-smooth) !important;
+}
+
+:root.light-theme .cl-formButtonPrimary:hover,
+[data-theme="light"] .cl-formButtonPrimary:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: var(--clerk-light-btn-primary-hover-shadow) !important;
+}
+
+:root.light-theme .cl-footerActionText,
+[data-theme="light"] .cl-footerActionText {
+    color: var(--clerk-light-text-secondary) !important;
+}
+
+:root.light-theme .cl-footerActionLink,
+:root.light-theme .cl-formFieldAction,
+:root.light-theme .cl-formResendCodeLink,
+[data-theme="light"] .cl-footerActionLink,
+[data-theme="light"] .cl-formFieldAction,
+[data-theme="light"] .cl-formResendCodeLink {
+    color: var(--clerk-light-link-color) !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    transition: var(--transition-fast) !important;
+}
+
+:root.light-theme .cl-footerActionLink:hover,
+:root.light-theme .cl-formFieldAction:hover,
+:root.light-theme .cl-formResendCodeLink:hover,
+[data-theme="light"] .cl-footerActionLink:hover,
+[data-theme="light"] .cl-formFieldAction:hover,
+[data-theme="light"] .cl-formResendCodeLink:hover {
+    color: var(--clerk-light-link-hover) !important;
+    text-decoration: underline !important;
+}
+
+:root.light-theme .cl-modalCloseButton,
+[data-theme="light"] .cl-modalCloseButton {
+    background: #f1f5f9 !important;
+    border: 1px solid #cbd5e1 !important;
+    color: var(--clerk-light-text-secondary) !important;
+    border-radius: 8px !important;
+    transition: var(--transition-fast) !important;
+}
+
+:root.light-theme .cl-modalCloseButton:hover,
+[data-theme="light"] .cl-modalCloseButton:hover {
+    background: #fee2e2 !important;
+    color: #dc2626 !important;
+    border-color: #f87171 !important;
+}
+
+:root.light-theme .cl-userButtonPopoverCard,
+[data-theme="light"] .cl-userButtonPopoverCard {
+    background-color: var(--clerk-light-bg-card) !important;
+    border: 1px solid var(--clerk-light-border-card) !important;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05) !important;
+    border-radius: var(--radius-md, 12px) !important;
+}
+
+:root.light-theme .cl-userButtonPopoverActionButton,
+[data-theme="light"] .cl-userButtonPopoverActionButton {
+    color: var(--clerk-light-text-primary) !important;
+    border-radius: 8px !important;
+    transition: var(--transition-fast) !important;
+}
+
+:root.light-theme .cl-userButtonPopoverActionButton:hover,
+[data-theme="light"] .cl-userButtonPopoverActionButton:hover {
+    background-color: #eef2ff !important;
+    color: #4f46e5 !important;
+}
+
+:root.light-theme .cl-userPreviewMainIdentifier,
+[data-theme="light"] .cl-userPreviewMainIdentifier {
+    color: var(--clerk-light-text-primary) !important;
+    font-weight: 700 !important;
+}
+
+:root.light-theme .cl-userPreviewSecondaryIdentifier,
+[data-theme="light"] .cl-userPreviewSecondaryIdentifier {
+    color: var(--clerk-light-text-secondary) !important;
+}
+
+:root.light-theme .cl-identityPreview,
+[data-theme="light"] .cl-identityPreview {
+    background-color: #f8fafc !important;
+    border: 1px solid var(--clerk-light-border-card) !important;
+    border-radius: 10px !important;
 }
 
 /* Onboarding Modal */

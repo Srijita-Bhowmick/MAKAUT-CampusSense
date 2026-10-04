@@ -34,6 +34,9 @@
     }
     localStorage.setItem('campussense_theme', next);
     updateIcons(next);
+    if (typeof window.updateClerkTheme === 'function') {
+      window.updateClerkTheme(next);
+    }
   };
 
   // Bind ONCE on DOM load
@@ -77,11 +80,97 @@ window.safeBind = safeBind;
 
 window.CLERK_PUBLISHABLE_KEY = "pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk";
 
+// --- CLERK THEME & APPEARANCE CONFIGURATION ---
+window.getClerkAppearance = function(themeOverride) {
+  const theme = themeOverride || document.documentElement.getAttribute('data-theme') || 'dark';
+  const isDark = theme === 'dark';
+  return {
+    variables: {
+      colorPrimary: isDark ? '#6366f1' : '#4f46e5',
+      colorBackground: isDark ? '#111827' : '#ffffff',
+      colorInputBackground: isDark ? '#1e293b' : '#f8fafc',
+      colorInputText: isDark ? '#f3f4f6' : '#0f172a',
+      colorText: isDark ? '#f3f4f6' : '#0f172a',
+      colorTextSecondary: isDark ? '#9ca3af' : '#64748b',
+      colorNeutral: isDark ? '#f3f4f6' : '#0f172a',
+      colorTextOnPrimaryBackground: '#ffffff',
+      borderRadius: '0.85rem',
+      fontFamily: "'Outfit', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif"
+    },
+    elements: {
+      rootBox: {
+        fontFamily: "'Outfit', 'Plus Jakarta Sans', sans-serif"
+      },
+      card: {
+        backgroundColor: isDark ? '#111827' : '#ffffff',
+        border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid #e2e8f0',
+        borderRadius: '1rem',
+        boxShadow: isDark
+          ? '0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 25px rgba(99, 102, 241, 0.18)'
+          : '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05)'
+      },
+      modalBackdrop: {
+        backgroundColor: isDark ? 'rgba(7, 11, 20, 0.85)' : 'rgba(15, 23, 42, 0.55)',
+        backdropFilter: 'blur(10px)'
+      },
+      headerTitle: {
+        fontFamily: "'Outfit', sans-serif",
+        fontWeight: '700',
+        color: isDark ? '#f3f4f6' : '#0f172a'
+      },
+      headerSubtitle: {
+        color: isDark ? '#9ca3af' : '#64748b'
+      },
+      socialButtonsBlockButton: {
+        backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : '#ffffff',
+        borderColor: isDark ? 'rgba(255, 255, 255, 0.14)' : '#cbd5e1',
+        color: isDark ? '#f3f4f6' : '#0f172a',
+        borderRadius: '0.65rem'
+      },
+      formFieldInput: {
+        backgroundColor: isDark ? '#1e293b' : '#ffffff',
+        borderColor: isDark ? 'rgba(255, 255, 255, 0.16)' : '#cbd5e1',
+        color: isDark ? '#f3f4f6' : '#0f172a',
+        borderRadius: '0.65rem'
+      },
+      formButtonPrimary: {
+        background: isDark
+          ? 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)'
+          : 'linear-gradient(135deg, #4f46e5 0%, #4338ca 100%)',
+        boxShadow: isDark ? '0 4px 16px rgba(99, 102, 241, 0.45)' : '0 4px 14px rgba(79, 70, 229, 0.25)',
+        borderRadius: '0.65rem',
+        fontWeight: '600'
+      },
+      footerActionLink: {
+        color: isDark ? '#818cf8' : '#4f46e5',
+        fontWeight: '600'
+      }
+    }
+  };
+};
+
+window.updateClerkTheme = function(theme) {
+  try {
+    const appearance = window.getClerkAppearance(theme);
+    if (appearance && window.Clerk) {
+      if (typeof window.Clerk.updateAppearance === 'function') {
+        window.Clerk.updateAppearance(appearance);
+      } else if (typeof window.Clerk.__unstable__updateProps === 'function') {
+        window.Clerk.__unstable__updateProps({ appearance });
+      }
+    }
+  } catch (e) {
+    console.debug('[Clerk] Dynamic appearance update:', e);
+  }
+};
+
 // Defensive global Clerk native trigger accessible immediately
 window.triggerNativeClerkAuth = async function(pendingAction = null, mode = 'signIn') {
   if (pendingAction) {
     try { sessionStorage.setItem('pending_download_action', JSON.stringify(pendingAction)); } catch (e) {}
   }
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+  const clerkAppearance = window.getClerkAppearance ? window.getClerkAppearance(currentTheme) : null;
   try {
     // Gracefully wait up to 3 seconds if Clerk script is still in-flight
     if (!window.Clerk) {
@@ -94,7 +183,8 @@ window.triggerNativeClerkAuth = async function(pendingAction = null, mode = 'sig
     if (window.Clerk) {
       if (!window.Clerk.loaded && typeof window.Clerk.load === 'function') {
         await window.Clerk.load({
-          publishableKey: window.CLERK_PUBLISHABLE_KEY || 'pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk'
+          publishableKey: window.CLERK_PUBLISHABLE_KEY || 'pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk',
+          appearance: clerkAppearance
         });
       }
       const authFn = (mode === 'signUp' && typeof window.Clerk.openSignUp === 'function')
@@ -103,6 +193,7 @@ window.triggerNativeClerkAuth = async function(pendingAction = null, mode = 'sig
 
       if (authFn) {
         authFn({
+          appearance: clerkAppearance,
           fallbackRedirectUrl: window.location.href,
           signUpFallbackRedirectUrl: window.location.href,
           signInFallbackRedirectUrl: window.location.href,
@@ -133,14 +224,25 @@ window.triggerNativeClerkSignUp = function() {
 window.triggerRealClerkAuth = window.triggerNativeClerkAuth;
 
 window.onClerkLoaded = function() {
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+  const appearance = window.getClerkAppearance ? window.getClerkAppearance(currentTheme) : null;
   if (typeof window.setupClerkAuthInternal === 'function') {
     window.setupClerkAuthInternal();
   } else if (window.Clerk && !window.Clerk.loaded && typeof window.Clerk.load === 'function') {
     window.Clerk.load({
-      publishableKey: window.CLERK_PUBLISHABLE_KEY || 'pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk'
+      publishableKey: window.CLERK_PUBLISHABLE_KEY || 'pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk',
+      appearance: appearance
     }).catch(err => console.warn('[Clerk] Auto-load warning:', err));
-  }
 };
+
+// Immediately initialize or re-theme Clerk if it loaded before app.js
+if (window.Clerk) {
+  if (!window.Clerk.loaded && typeof window.Clerk.load === 'function') {
+    window.onClerkLoaded();
+  } else if (window.Clerk.loaded && typeof window.updateClerkTheme === 'function') {
+    window.updateClerkTheme();
+  }
+}
 
 (() => {
     // Global Element Proxy Helper for Workflow Compatibility
@@ -238,7 +340,7 @@ window.onClerkLoaded = function() {
         } else if (window.triggerNativeClerkAuth && typeof window.triggerNativeClerkAuth === 'function') {
             window.triggerNativeClerkAuth();
         } else if (window.Clerk && window.Clerk.openSignIn) {
-            window.Clerk.openSignIn();
+            window.Clerk.openSignIn({ appearance: window.getClerkAppearance ? window.getClerkAppearance() : undefined });
         } else {
             // Fallback: scroll to landing sign-in or alert
             const authCard = document.getElementById('clerk-auth-container') || document.querySelector('.auth-card');
@@ -283,10 +385,10 @@ window.onClerkLoaded = function() {
                     catchBanner.classList.remove('active');
                     if (typeof triggerNativeClerkAuth === 'function') {
                         triggerNativeClerkAuth();
-                    } else if (window.Clerk && window.Clerk.openSignIn) {
-                        window.Clerk.openSignIn();
                     } else if (window.triggerNativeClerkAuth) {
                         window.triggerNativeClerkAuth();
+                    } else if (window.Clerk && window.Clerk.openSignIn) {
+                        window.Clerk.openSignIn({ appearance: window.getClerkAppearance ? window.getClerkAppearance() : undefined });
                     }
                 };
             }
