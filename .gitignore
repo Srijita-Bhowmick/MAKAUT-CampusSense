@@ -1,10 +1,17 @@
-# Compiled class file
+# ==============================================================================
+# MAKAUT CampusSense — Git Ignore Configuration
+# Comprehensive rules for Java 21, Spring Boot, Maven, IDEs, OS, and Secrets
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. Java & Maven Build Output
+# ------------------------------------------------------------------------------
 *.class
-
-# Log file
-*.log
-
-# Package Files #
+target/
+bin/
+out/
+build/
+.gradle/
 *.jar
 *.war
 *.nar
@@ -13,8 +20,7 @@
 *.tar.gz
 *.rar
 
-# Maven build target directory
-target/
+# Maven Release & Plugin Artifacts
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
@@ -24,48 +30,151 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 
-# Bundled local build tools
+# Bundled Local Maven Installations
 apache-maven-*/
+apache-maven/
+
+# ------------------------------------------------------------------------------
+# 2. Environment Variables & Secrets (CRITICAL: Never commit to Git)
+# ------------------------------------------------------------------------------
+.env*
+!.env.example
+.env
+.env.local
+.env.*.local
+*.private
+*secret*
+
+# Spring Profile Secrets
+application-prod.yml
+application-prod.properties
+application-local.yml
+application-local.properties
+application-secret.yml
+application-secret.properties
+
+# Keys, Certificates, and Tokens
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.crt
+credentials.json
+service-account*.json
+token.json
+id_rsa*
+id_ed25519*
+
+# ------------------------------------------------------------------------------
+# 3. IDEs & Text Editors
+# ------------------------------------------------------------------------------
+# VS Code
+.vscode/
+*.code-workspace
+.history/
 
 # IntelliJ IDEA
 .idea/
 *.iml
 *.iws
 *.ipr
-out/
+.idea_modules/
 
 # Eclipse
-.apt_generated
+.apt_generated/
+.apt_generated_tests/
 .classpath
 .factorypath
 .project
-.settings
+.settings/
 .springBeans
-.sts4-cache
+.sts4-cache/
 
 # NetBeans
 /nbproject/private/
 /nbbuild/
 /dist/
+nbproject/genfiles.properties
 
-# VS Code
-.vscode/
+# Vim / Emacs / Sublime
+*.swp
+*.swo
+.*.sw[a-p]
+*~
+\#*\#
+.#*
+*.sublime-project
+*.sublime-workspace
 
-# OS generated files
+# ------------------------------------------------------------------------------
+# 4. Logs, Diagnostics & Crash Dumps
+# ------------------------------------------------------------------------------
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+hs_err_pid*
+replay_pid*
+
+# ------------------------------------------------------------------------------
+# 5. Databases, Local Storage & Docker Volumes
+# ------------------------------------------------------------------------------
+*.db
+*.sqlite
+*.sqlite3
+*.h2.db
+*.trace.db
+postgres_data/
+pgdata/
+data/
+tmp/
+temp/
+*.tmp
+*.bak
+*.patch
+*.diff
+
+# ------------------------------------------------------------------------------
+# 6. Operating System Files
+# ------------------------------------------------------------------------------
+# Windows
 Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
 Desktop.ini
+*.lnk
+$RECYCLE.BIN/
+
+# macOS
 .DS_Store
+.AppleDouble
+.LSOverride
+Icon\r\r
+._*
+.Spotlight-V100
+.Trashes
 
-# Environment and secrets
-.env*
-.env
-.env.local
-*.private
-*secret*
-application-prod.yml
+# Linux
+.fuse_hidden*
+.directory
+.Trash-*
 
-# Raw extraction folder
-1st year MAKAUT-CampusSense/
+# ------------------------------------------------------------------------------
+# 7. Local Project Scratch & Raw Extraction Dumps
+# ------------------------------------------------------------------------------
+# Local scratch folder and scripts
+scratch/
+
+# Raw local syllabus extraction directories (curated files live in static/ & docs/)
+/1st year MAKAUT-CampusSense/
 /CSE(3rd to 8th sem)/
 
-
+# Node / Frontend temporary folders (if used)
+node_modules/
+.npm/
+.yarn/

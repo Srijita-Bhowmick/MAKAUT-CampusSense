@@ -1,5 +1,5 @@
 // MAKAUT-CampusSense — End-to-End Academic Engine & Conversational RAG
-// Maintained by Srijita Bhowmick (srijitabhowmick42@gmail.com)
+// Maintained by MAKAUT CampusSense Contributors
 // --- INDEPENDENT GLOBAL CONTROLLER ---
 (function initThemeSingleton() {
   const saved = localStorage.getItem('campussense_theme') || 'dark';
