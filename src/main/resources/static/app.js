@@ -200,6 +200,20 @@ window.triggerNativeClerkAuth = async function(pendingAction = null, mode = 'sig
           afterSignInUrl: window.location.href,
           afterSignUpUrl: window.location.href
         });
+
+        // Actively monitor for login completion from Clerk modal
+        const authPollInterval = setInterval(() => {
+          if (window.Clerk && window.Clerk.user) {
+            clearInterval(authPollInterval);
+            window.isLoggedIn = true;
+            if (typeof isLoggedIn !== 'undefined') isLoggedIn = true;
+            localStorage.setItem('campussense_logged_in', 'true');
+            if (typeof window.updateUIAfterLogin === 'function') {
+              window.updateUIAfterLogin(window.Clerk.user);
+            }
+          }
+        }, 500);
+        setTimeout(() => clearInterval(authPollInterval), 120000);
         return;
       }
     }
@@ -323,9 +337,20 @@ if (window.Clerk) {
     // Central Authentication Guard Functions
     function isUserAuthenticated() {
         const hasClerkUser = Boolean(window.Clerk && window.Clerk.user);
-        const hasMockAuth = Boolean(window.isLoggedIn);
-        const hasStoredUser = Boolean(localStorage.getItem('campussense_user_session') || localStorage.getItem('campussense_academic_profile') || localStorage.getItem('campussense_logged_in') === 'true');
-        return hasClerkUser || hasMockAuth;
+        const hasMockAuth = Boolean(window.isLoggedIn || (typeof isLoggedIn !== 'undefined' && isLoggedIn));
+        const hasStoredUser = Boolean(
+            localStorage.getItem('campussense_logged_in') === 'true' ||
+            localStorage.getItem('campussense_user_session') ||
+            localStorage.getItem('campussense_user_id') ||
+            localStorage.getItem('campussense_academic_profile') ||
+            sessionStorage.getItem('campussense_session_token')
+        );
+        if (hasClerkUser || hasMockAuth || hasStoredUser) {
+            window.isLoggedIn = true;
+            if (typeof isLoggedIn !== 'undefined') isLoggedIn = true;
+            return true;
+        }
+        return false;
     }
     window.isUserAuthenticated = isUserAuthenticated;
 
@@ -2555,14 +2580,15 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
             if (dashboardView) dashboardView.style.display = 'none';
             document.querySelectorAll('#nav-academic-pill, #btn-context-switcher, .academic-context-pill').forEach(p => p.style.display = 'none');
             if (btnNavToLanding) btnNavToLanding.style.display = 'none';
-            if (btnNavToDashboard) btnNavToDashboard.style.display = isLoggedIn ? 'inline-flex' : 'none';
+            const authenticated = isUserAuthenticated();
+            if (btnNavToDashboard) btnNavToDashboard.style.display = authenticated ? 'inline-flex' : 'none';
             if (btnOpenPanicNav) btnOpenPanicNav.style.display = 'none';
             if (btnOpenSavedDeck) btnOpenSavedDeck.style.display = 'none';
             if (btnOpenFeedback) btnOpenFeedback.style.display = 'none';
             if (btnOpenAiFab) btnOpenAiFab.style.display = 'none';
             if (landingNavLinks) landingNavLinks.style.display = 'flex';
 
-            if (isLoggedIn) {
+            if (authenticated) {
                 if (userProfileWrapper) userProfileWrapper.style.display = 'block';
                 if (btnNavSignIn) btnNavSignIn.style.display = 'none';
                 if (btnNavSignUp) btnNavSignUp.style.display = 'none';
@@ -3256,7 +3282,7 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
     if (btnHeroPanicPack) {
         btnHeroPanicPack.addEventListener('click', (e) => {
             e.preventDefault();
-            if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
+            if (isUserAuthenticated()) {
                 const storedAcademic = localStorage.getItem('campussense_academic_profile');
                 if (!storedAcademic) {
                     setAppWorkflowStage(APP_FLOW.ACADEMIC_SETUP);
@@ -3275,7 +3301,7 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
     if (btnFeatureSyllabus) {
         btnFeatureSyllabus.addEventListener('click', (e) => {
             e.preventDefault();
-            if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
+            if (isUserAuthenticated()) {
                 evaluateWorkflowProgression();
             } else {
                 showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
@@ -3287,7 +3313,7 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
     if (btnFeaturePanic) {
         btnFeaturePanic.addEventListener('click', (e) => {
             e.preventDefault();
-            if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
+            if (isUserAuthenticated()) {
                 const storedAcademic = localStorage.getItem('campussense_academic_profile');
                 if (!storedAcademic) {
                     setAppWorkflowStage(APP_FLOW.ACADEMIC_SETUP);
@@ -3314,7 +3340,7 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
     if (btnFeatureAi) {
         btnFeatureAi.addEventListener('click', (e) => {
             e.preventDefault();
-            if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
+            if (isUserAuthenticated()) {
                 const storedAcademic = localStorage.getItem('campussense_academic_profile');
                 if (!storedAcademic) {
                     setAppWorkflowStage(APP_FLOW.ACADEMIC_SETUP);
@@ -6523,17 +6549,34 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
     }
 
     function updateUIAfterLogin(user) {
-        if (!user) return;
-        userName = user.fullName || user.firstName || user.username || 'Student';
+        if (!user) {
+            const hasStoredAuth = Boolean(
+                localStorage.getItem('campussense_logged_in') === 'true' ||
+                localStorage.getItem('campussense_user_session') ||
+                localStorage.getItem('campussense_user_id')
+            );
+            if (!hasStoredAuth) return;
+            user = {
+                fullName: localStorage.getItem('campussense_user_name') || 'Student',
+                id: localStorage.getItem('campussense_user_id') || 'student_user',
+                primaryEmailAddress: { emailAddress: localStorage.getItem('campussense_user_email') || 'student@makaut.edu.in' }
+            };
+        }
+        userName = user.fullName || user.firstName || user.username || localStorage.getItem('campussense_user_name') || 'Student';
         isLoggedIn = true;
         window.isLoggedIn = true;
-        const userEmail = user.primaryEmailAddress?.emailAddress || `${userName.toLowerCase().replace(/\s+/g, '')}@makaut.edu.in`;
+        const userEmail = user.primaryEmailAddress?.emailAddress || localStorage.getItem('campussense_user_email') || `${userName.toLowerCase().replace(/\s+/g, '')}@makaut.edu.in`;
 
         localStorage.setItem('campussense_logged_in', 'true');
         localStorage.setItem('campussense_user_name', userName);
         localStorage.setItem('campussense_user_id', user.id || userEmail);
         localStorage.setItem('campussense_user_email', userEmail);
         sessionStorage.setItem('campussense_session_token', 'cs_clerk_' + (user.id || Date.now()));
+
+        const userNameSpan = document.getElementById('user-profile-name') || document.getElementById('user-display-name');
+        if (userNameSpan) {
+            userNameSpan.textContent = userName;
+        }
 
         if (typeof user.update === 'function') {
             user.update({
@@ -6601,6 +6644,7 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
                 }
 
                 const user = window.Clerk.user;
+                let clerkUserWasPresent = Boolean(user);
                 if (user) {
                     window.isLoggedIn = true;
                     isLoggedIn = true;
@@ -6610,14 +6654,19 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
                         userNameSpan.textContent = user.fullName || (user.primaryEmailAddress ? user.primaryEmailAddress.emailAddress : 'Student');
                     }
                     updateUIAfterLogin(user);
+                } else if (localStorage.getItem('campussense_logged_in') === 'true') {
+                    window.isLoggedIn = true;
+                    isLoggedIn = true;
+                    updateUIAfterLogin();
                 } else {
-                    window.isLoggedIn = localStorage.getItem('campussense_logged_in') === 'true';
-                    isLoggedIn = window.isLoggedIn;
+                    window.isLoggedIn = false;
+                    isLoggedIn = false;
                 }
 
                 if (typeof window.Clerk.addListener === 'function') {
                     window.Clerk.addListener(async (emission) => {
                         if (emission && emission.user) {
+                            clerkUserWasPresent = true;
                             window.isLoggedIn = true;
                             isLoggedIn = true;
                             localStorage.setItem('campussense_logged_in', 'true');
@@ -6626,7 +6675,8 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
                                 userNameSpan.textContent = emission.user.fullName || (emission.user.primaryEmailAddress ? emission.user.primaryEmailAddress.emailAddress : 'Student');
                             }
                             updateUIAfterLogin(emission.user);
-                        } else if (emission && emission.user === null) {
+                        } else if (emission && emission.user === null && clerkUserWasPresent) {
+                            clerkUserWasPresent = false;
                             window.logoutUser();
                         }
                     });
@@ -6871,7 +6921,7 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
             if (btnHeroPanicPack) {
                 btnHeroPanicPack.onclick = (e) => {
                     e.preventDefault();
-                    if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
+                    if (isUserAuthenticated()) {
                         const storedAcademic = localStorage.getItem('campussense_academic_profile');
                         if (!storedAcademic) {
                             setAppWorkflowStage(APP_FLOW.ACADEMIC_SETUP);
@@ -6889,7 +6939,7 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
             if (btnFeatureSyllabus) {
                 btnFeatureSyllabus.onclick = (e) => {
                     e.preventDefault();
-                    if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
+                    if (isUserAuthenticated()) {
                         evaluateWorkflowProgression();
                     } else {
                         window.triggerNativeClerkAuth();
@@ -6901,7 +6951,7 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
             if (btnFeaturePanic) {
                 btnFeaturePanic.onclick = (e) => {
                     e.preventDefault();
-                    if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
+                    if (isUserAuthenticated()) {
                         const storedAcademic = localStorage.getItem('campussense_academic_profile');
                         if (!storedAcademic) {
                             setAppWorkflowStage(APP_FLOW.ACADEMIC_SETUP);
@@ -6928,7 +6978,7 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
             if (btnFeatureAi) {
                 btnFeatureAi.onclick = (e) => {
                     e.preventDefault();
-                    if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
+                    if (isUserAuthenticated()) {
                         const storedAcademic = localStorage.getItem('campussense_academic_profile');
                         if (!storedAcademic) {
                             setAppWorkflowStage(APP_FLOW.ACADEMIC_SETUP);
@@ -7292,8 +7342,14 @@ window.addEventListener('DOMContentLoaded', async () => {
             const user = window.Clerk.user;
             if (user) {
                 window.isLoggedIn = true;
+                localStorage.setItem('campussense_logged_in', 'true');
                 if (typeof window.updateUIAfterLogin === 'function') {
                     window.updateUIAfterLogin(user);
+                }
+            } else if (localStorage.getItem('campussense_logged_in') === 'true') {
+                window.isLoggedIn = true;
+                if (typeof window.updateUIAfterLogin === 'function') {
+                    window.updateUIAfterLogin();
                 }
             } else {
                 window.isLoggedIn = false;
