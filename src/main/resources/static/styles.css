@@ -798,6 +798,7 @@ body:not(.modal-open) {
 .accent-text {
     background: linear-gradient(135deg, #818cf8 0%, #38bdf8 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -1457,6 +1458,7 @@ body:not(.modal-open) {
     margin-bottom: 0.45rem;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -3421,6 +3423,7 @@ body.is-drawer-resizing .ai-slide-drawer {
     margin-bottom: 1.35rem;
     background: linear-gradient(135deg, #ffffff 25%, #818cf8 65%, #38bdf8 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -3428,6 +3431,7 @@ body.is-drawer-resizing .ai-slide-drawer {
 [data-theme="light"] .landing-hero-title {
     background: linear-gradient(135deg, #0f172a 25%, #4338ca 65%, #0284c7 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
