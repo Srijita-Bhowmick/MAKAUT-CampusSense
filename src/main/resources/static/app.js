@@ -233,6 +233,7 @@ window.onClerkLoaded = function() {
       publishableKey: window.CLERK_PUBLISHABLE_KEY || 'pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk',
       appearance: appearance
     }).catch(err => console.warn('[Clerk] Auto-load warning:', err));
+  }
 };
 
 // Immediately initialize or re-theme Clerk if it loaded before app.js

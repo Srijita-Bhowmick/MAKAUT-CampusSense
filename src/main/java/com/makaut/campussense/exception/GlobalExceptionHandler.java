@@ -58,6 +58,18 @@ public class GlobalExceptionHandler {
                         .build());
     }
 
+    @ExceptionHandler(org.springframework.web.servlet.resource.NoResourceFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNoResourceFound(org.springframework.web.servlet.resource.NoResourceFoundException ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ErrorResponse.builder()
+                        .timestamp(Instant.now())
+                        .status(HttpStatus.NOT_FOUND.value())
+                        .error("Not Found")
+                        .message(ex.getMessage())
+                        .path(request.getRequestURI())
+                        .build());
+    }
+
     @ExceptionHandler(IngestionException.class)
     public ResponseEntity<ErrorResponse> handleIngestion(IngestionException ex, HttpServletRequest request) {
         log.error("Ingestion failed: {}", ex.getMessage(), ex);
