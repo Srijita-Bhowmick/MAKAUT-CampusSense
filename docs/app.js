@@ -1,5 +1,5 @@
 // MAKAUT-CampusSense — End-to-End Academic Engine & Conversational RAG
-// Maintained by MAKAUT CampusSense Contributors
+// Maintained by Srijita Bhowmick (srijitabhowmick42@gmail.com)
 // --- INDEPENDENT GLOBAL CONTROLLER ---
 (function initThemeSingleton() {
   const saved = localStorage.getItem('campussense_theme') || 'dark';
@@ -34,9 +34,6 @@
     }
     localStorage.setItem('campussense_theme', next);
     updateIcons(next);
-    if (typeof window.updateClerkTheme === 'function') {
-      window.updateClerkTheme(next);
-    }
   };
 
   // Bind ONCE on DOM load
@@ -80,97 +77,60 @@ window.safeBind = safeBind;
 
 window.CLERK_PUBLISHABLE_KEY = "pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk";
 
-// --- CLERK THEME & APPEARANCE CONFIGURATION ---
-window.getClerkAppearance = function(themeOverride) {
-  const theme = themeOverride || document.documentElement.getAttribute('data-theme') || 'dark';
-  const isDark = theme === 'dark';
-  return {
-    variables: {
-      colorPrimary: isDark ? '#6366f1' : '#4f46e5',
-      colorBackground: isDark ? '#111827' : '#ffffff',
-      colorInputBackground: isDark ? '#1e293b' : '#f8fafc',
-      colorInputText: isDark ? '#f3f4f6' : '#0f172a',
-      colorText: isDark ? '#f3f4f6' : '#0f172a',
-      colorTextSecondary: isDark ? '#9ca3af' : '#64748b',
-      colorNeutral: isDark ? '#f3f4f6' : '#0f172a',
-      colorTextOnPrimaryBackground: '#ffffff',
-      borderRadius: '0.85rem',
-      fontFamily: "'Outfit', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif"
-    },
-    elements: {
-      rootBox: {
-        fontFamily: "'Outfit', 'Plus Jakarta Sans', sans-serif"
-      },
-      card: {
-        backgroundColor: isDark ? '#111827' : '#ffffff',
-        border: isDark ? '1px solid rgba(255, 255, 255, 0.12)' : '1px solid #e2e8f0',
-        borderRadius: '1rem',
-        boxShadow: isDark
-          ? '0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 25px rgba(99, 102, 241, 0.18)'
-          : '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05)'
-      },
-      modalBackdrop: {
-        backgroundColor: isDark ? 'rgba(7, 11, 20, 0.85)' : 'rgba(15, 23, 42, 0.55)',
-        backdropFilter: 'blur(10px)'
-      },
-      headerTitle: {
-        fontFamily: "'Outfit', sans-serif",
-        fontWeight: '700',
-        color: isDark ? '#f3f4f6' : '#0f172a'
-      },
-      headerSubtitle: {
-        color: isDark ? '#9ca3af' : '#64748b'
-      },
-      socialButtonsBlockButton: {
-        backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : '#ffffff',
-        borderColor: isDark ? 'rgba(255, 255, 255, 0.14)' : '#cbd5e1',
-        color: isDark ? '#f3f4f6' : '#0f172a',
-        borderRadius: '0.65rem'
-      },
-      formFieldInput: {
-        backgroundColor: isDark ? '#1e293b' : '#ffffff',
-        borderColor: isDark ? 'rgba(255, 255, 255, 0.16)' : '#cbd5e1',
-        color: isDark ? '#f3f4f6' : '#0f172a',
-        borderRadius: '0.65rem'
-      },
-      formButtonPrimary: {
-        background: isDark
-          ? 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)'
-          : 'linear-gradient(135deg, #4f46e5 0%, #4338ca 100%)',
-        boxShadow: isDark ? '0 4px 16px rgba(99, 102, 241, 0.45)' : '0 4px 14px rgba(79, 70, 229, 0.25)',
-        borderRadius: '0.65rem',
-        fontWeight: '600'
-      },
-      footerActionLink: {
-        color: isDark ? '#818cf8' : '#4f46e5',
-        fontWeight: '600'
-      }
+// Defensive global Clerk native trigger accessible immediately
+window.openAppAuthModal = function() {
+  const modal = document.getElementById('app-auth-modal');
+  if (modal) {
+    modal.style.display = 'flex';
+    modal.classList.add('active');
+    if (typeof lockBodyScroll === 'function') {
+      lockBodyScroll(true);
     }
-  };
-};
-
-window.updateClerkTheme = function(theme) {
-  try {
-    const appearance = window.getClerkAppearance(theme);
-    if (appearance && window.Clerk) {
-      if (typeof window.Clerk.updateAppearance === 'function') {
-        window.Clerk.updateAppearance(appearance);
-      } else if (typeof window.Clerk.__unstable__updateProps === 'function') {
-        window.Clerk.__unstable__updateProps({ appearance });
-      }
+  } else {
+    if (typeof window.completeAuthentication === 'function') {
+      window.completeAuthentication('Student User', 'student@makaut.edu.in');
+    } else if (typeof window.updateUIAfterLogin === 'function') {
+      window.updateUIAfterLogin({
+        fullName: 'Student User',
+        primaryEmailAddress: { emailAddress: 'student@makaut.edu.in' }
+      });
     }
-  } catch (e) {
-    console.debug('[Clerk] Dynamic appearance update:', e);
   }
 };
 
-// Defensive global Clerk native trigger accessible immediately
+window.closeAppAuthModal = function() {
+  const modal = document.getElementById('app-auth-modal');
+  if (modal) {
+    modal.style.display = 'none';
+    modal.classList.remove('active');
+    if (typeof lockBodyScroll === 'function') {
+      lockBodyScroll(false);
+    }
+  }
+};
+
+window.submitFallbackAuth = function() {
+  const nameInput = document.getElementById('auth-student-name');
+  const emailInput = document.getElementById('auth-student-email');
+  const name = (nameInput && nameInput.value.trim()) || 'Student User';
+  const email = (emailInput && emailInput.value.trim()) || 'student@makaut.edu.in';
+
+  window.closeAppAuthModal();
+
+  if (typeof window.completeAuthentication === 'function') {
+    window.completeAuthentication(name, email);
+  } else if (typeof window.updateUIAfterLogin === 'function') {
+    window.updateUIAfterLogin({
+      fullName: name,
+      primaryEmailAddress: { emailAddress: email }
+    });
+  }
+};
+
 window.triggerNativeClerkAuth = async function(pendingAction = null, mode = 'signIn') {
   if (pendingAction) {
     try { sessionStorage.setItem('pending_download_action', JSON.stringify(pendingAction)); } catch (e) {}
   }
-  const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-  const clerkAppearance = window.getClerkAppearance ? window.getClerkAppearance(currentTheme) : null;
   try {
     // Gracefully wait up to 3 seconds if Clerk script is still in-flight
     if (!window.Clerk) {
@@ -183,8 +143,7 @@ window.triggerNativeClerkAuth = async function(pendingAction = null, mode = 'sig
     if (window.Clerk) {
       if (!window.Clerk.loaded && typeof window.Clerk.load === 'function') {
         await window.Clerk.load({
-          publishableKey: window.CLERK_PUBLISHABLE_KEY || 'pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk',
-          appearance: clerkAppearance
+          publishableKey: window.CLERK_PUBLISHABLE_KEY || 'pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk'
         });
       }
       const authFn = (mode === 'signUp' && typeof window.Clerk.openSignUp === 'function')
@@ -193,43 +152,21 @@ window.triggerNativeClerkAuth = async function(pendingAction = null, mode = 'sig
 
       if (authFn) {
         authFn({
-          appearance: clerkAppearance,
           fallbackRedirectUrl: window.location.href,
           signUpFallbackRedirectUrl: window.location.href,
           signInFallbackRedirectUrl: window.location.href,
           afterSignInUrl: window.location.href,
           afterSignUpUrl: window.location.href
         });
-
-        // Actively monitor for login completion from Clerk modal
-        const authPollInterval = setInterval(() => {
-          if (window.Clerk && window.Clerk.user) {
-            clearInterval(authPollInterval);
-            window.isLoggedIn = true;
-            if (typeof isLoggedIn !== 'undefined') isLoggedIn = true;
-            localStorage.setItem('campussense_logged_in', 'true');
-            if (typeof window.updateUIAfterLogin === 'function') {
-              window.updateUIAfterLogin(window.Clerk.user);
-            }
-          }
-        }, 500);
-        setTimeout(() => clearInterval(authPollInterval), 120000);
         return;
       }
     }
   } catch (err) {
     console.warn("[Clerk] Auth modal error:", err);
   }
-  console.warn("[Clerk] Authentication modal could not open. Please verify network connection or publishable key.");
+  console.warn("[Clerk] Authentication modal could not open. Using in-app fallback modal.");
   if (!window.Clerk?.user && !window.isLoggedIn) {
-    if (typeof window.completeAuthentication === 'function') {
-      window.completeAuthentication('Student User', 'student@makaut.edu.in');
-    } else if (typeof window.updateUIAfterLogin === 'function') {
-      window.updateUIAfterLogin({
-        fullName: 'Student User',
-        primaryEmailAddress: { emailAddress: 'student@makaut.edu.in' }
-      });
-    }
+    window.openAppAuthModal();
   }
 };
 window.triggerNativeClerkSignUp = function() {
@@ -238,26 +175,14 @@ window.triggerNativeClerkSignUp = function() {
 window.triggerRealClerkAuth = window.triggerNativeClerkAuth;
 
 window.onClerkLoaded = function() {
-  const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-  const appearance = window.getClerkAppearance ? window.getClerkAppearance(currentTheme) : null;
   if (typeof window.setupClerkAuthInternal === 'function') {
     window.setupClerkAuthInternal();
   } else if (window.Clerk && !window.Clerk.loaded && typeof window.Clerk.load === 'function') {
     window.Clerk.load({
-      publishableKey: window.CLERK_PUBLISHABLE_KEY || 'pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk',
-      appearance: appearance
+      publishableKey: window.CLERK_PUBLISHABLE_KEY || 'pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk'
     }).catch(err => console.warn('[Clerk] Auto-load warning:', err));
   }
 };
-
-// Immediately initialize or re-theme Clerk if it loaded before app.js
-if (window.Clerk) {
-  if (!window.Clerk.loaded && typeof window.Clerk.load === 'function') {
-    window.onClerkLoaded();
-  } else if (window.Clerk.loaded && typeof window.updateClerkTheme === 'function') {
-    window.updateClerkTheme();
-  }
-}
 
 (() => {
     // Global Element Proxy Helper for Workflow Compatibility
@@ -288,23 +213,24 @@ if (window.Clerk) {
     // ==========================================
     // 2. Asset Resolution & Robust PDF Engine
     // ==========================================
-    function sanitizePdfUrl(rawUrl) {
-        if (!rawUrl) return '';
+    function normalizePdfUrl(rawPath) {
+        if (!rawPath) return '';
         let prefix = '';
-        let urlToProcess = rawUrl;
+        let urlToProcess = String(rawPath).trim();
         
         // Preserve full origin if present
-        if (/^https?:\/\/[^/]+/i.test(rawUrl)) {
-            const match = rawUrl.match(/^(https?:\/\/[^/]+)(\/.*)?$/i);
+        if (/^https?:\/\/[^/]+/i.test(urlToProcess)) {
+            const match = urlToProcess.match(/^(https?:\/\/[^/]+)(\/.*)?$/i);
             prefix = match[1];
             urlToProcess = match[2] || '';
         }
 
         let [pathAndQuery, hash] = urlToProcess.split('#');
+        let [pathOnly, queryString] = pathAndQuery.split('?');
         // Ensure path starts cleanly without leading slash conflicts
-        let cleanUrl = pathAndQuery.startsWith('/') ? pathAndQuery.slice(1) : pathAndQuery;
+        let cleanUrl = pathOnly.startsWith('/') ? pathOnly.slice(1) : pathOnly;
         
-        // Split path by segments and encode each segment individually (including ampersands)
+        // Split path by segments and encode each segment individually (including spaces and parentheses like '(3rd to 8th sem)')
         const sanitizedPath = cleanUrl
             .split('/')
             .map(segment => {
@@ -317,28 +243,14 @@ if (window.Clerk) {
             .join('/');
 
         let result = (prefix ? prefix + '/' : '') + sanitizedPath;
+        if (queryString) {
+            result += `?${queryString}`;
+        }
         return hash !== undefined ? `${result}#${hash}` : result;
     }
-    window.sanitizePdfUrl = sanitizePdfUrl;
-
-    function normalizePdfUrl(rawPath) {
-        if (!rawPath) return '';
-        let cleanPath = rawPath.trim();
-
-        // Remove redundant leading slashes
-        cleanPath = cleanPath.replace(/^\/+/, '');
-
-        // Safely encode special characters (parentheses, spaces) without double-encoding
-        const segments = cleanPath.split('/').map(segment => {
-            try {
-                return encodeURIComponent(decodeURIComponent(segment));
-            } catch (e) {
-                return encodeURIComponent(segment);
-            }
-        });
-        return segments.join('/');
-    }
+    const sanitizePdfUrl = normalizePdfUrl;
     window.normalizePdfUrl = normalizePdfUrl;
+    window.sanitizePdfUrl = normalizePdfUrl;
 
     function resolveAssetPath(relativePath) {
         if (!relativePath) return '';
@@ -356,20 +268,9 @@ if (window.Clerk) {
     // Central Authentication Guard Functions
     function isUserAuthenticated() {
         const hasClerkUser = Boolean(window.Clerk && window.Clerk.user);
-        const hasMockAuth = Boolean(window.isLoggedIn || (typeof isLoggedIn !== 'undefined' && isLoggedIn));
-        const hasStoredUser = Boolean(
-            localStorage.getItem('campussense_logged_in') === 'true' ||
-            localStorage.getItem('campussense_user_session') ||
-            localStorage.getItem('campussense_user_id') ||
-            localStorage.getItem('campussense_academic_profile') ||
-            sessionStorage.getItem('campussense_session_token')
-        );
-        if (hasClerkUser || hasMockAuth || hasStoredUser) {
-            window.isLoggedIn = true;
-            if (typeof isLoggedIn !== 'undefined') isLoggedIn = true;
-            return true;
-        }
-        return false;
+        const hasMockAuth = Boolean(window.isLoggedIn);
+        const hasStoredUser = Boolean(localStorage.getItem('campussense_user_session') || localStorage.getItem('campussense_academic_profile') || localStorage.getItem('campussense_logged_in') === 'true');
+        return hasClerkUser || hasMockAuth;
     }
     window.isUserAuthenticated = isUserAuthenticated;
 
@@ -385,7 +286,7 @@ if (window.Clerk) {
         } else if (window.triggerNativeClerkAuth && typeof window.triggerNativeClerkAuth === 'function') {
             window.triggerNativeClerkAuth();
         } else if (window.Clerk && window.Clerk.openSignIn) {
-            window.Clerk.openSignIn({ appearance: window.getClerkAppearance ? window.getClerkAppearance() : undefined });
+            window.Clerk.openSignIn();
         } else {
             // Fallback: scroll to landing sign-in or alert
             const authCard = document.getElementById('clerk-auth-container') || document.querySelector('.auth-card');
@@ -430,10 +331,10 @@ if (window.Clerk) {
                     catchBanner.classList.remove('active');
                     if (typeof triggerNativeClerkAuth === 'function') {
                         triggerNativeClerkAuth();
+                    } else if (window.Clerk && window.Clerk.openSignIn) {
+                        window.Clerk.openSignIn();
                     } else if (window.triggerNativeClerkAuth) {
                         window.triggerNativeClerkAuth();
-                    } else if (window.Clerk && window.Clerk.openSignIn) {
-                        window.Clerk.openSignIn({ appearance: window.getClerkAppearance ? window.getClerkAppearance() : undefined });
                     }
                 };
             }
@@ -491,32 +392,30 @@ if (window.Clerk) {
         wireNavPanicLink();
     }
 
-    window.previewPdfFile = function(rawUrl, title) {
+    window.previewPdfFile = function(url, title) {
         if (!requireAuthOrTrigger()) return;
+        const sanitizedUrl = normalizePdfUrl(url);
+        const iframe = document.getElementById('pdf-viewer-frame') || document.getElementById('pdf-viewer-iframe') || document.getElementById('pdf-modal-frame') || document.querySelector('.pdf-viewer-frame');
+        const modal = document.getElementById('pdf-preview-modal') || document.getElementById('pdf-viewer-modal') || document.getElementById('pdf-modal');
 
-        const modal = document.getElementById('pdf-preview-modal') || document.getElementById('pdf-viewer-modal');
-        const iframe = document.getElementById('pdf-viewer-frame') || document.getElementById('pdf-viewer-iframe') || modal?.querySelector('iframe');
-        const titleEl = document.getElementById('pdf-preview-title') || document.getElementById('pdf-modal-title') || modal?.querySelector('.pdf-title');
-
-        if (!modal || !iframe) {
-            console.error("PDF Preview Modal elements not found");
-            window.open(normalizePdfUrl(rawUrl), '_blank');
-            return;
+        if (iframe) {
+            const sep = sanitizedUrl.includes('?') ? '&' : '?';
+            const baseWithTime = sanitizedUrl.includes('#') 
+                ? sanitizedUrl.replace('#', `${sep}_t=${Date.now()}#`) 
+                : `${sanitizedUrl}${sep}_t=${Date.now()}`;
+            iframe.src = baseWithTime.includes('#') ? baseWithTime : `${baseWithTime}#toolbar=1&navpanes=0`;
         }
 
-        const finalUrl = normalizePdfUrl(rawUrl);
-        if (titleEl) titleEl.textContent = title || 'Official Document Preview';
-
-        // Load document into viewer
-        iframe.src = finalUrl;
-
-        // Ensure modal is visibly active with elevated z-index
-        modal.style.display = 'flex';
-        modal.classList.add('active');
-        modal.style.pointerEvents = 'auto';
-        document.body.classList.add('modal-open');
-        if (typeof lockBodyScroll === 'function') {
-            lockBodyScroll(true);
+        if (modal) {
+            const titleEl = document.getElementById('pdf-modal-title') || modal.querySelector('.pdf-title');
+            if (titleEl && title) {
+                titleEl.textContent = title;
+            }
+            modal.style.display = 'flex';
+            modal.classList.add('active');
+            if (typeof lockBodyScroll === 'function') {
+                lockBodyScroll(true);
+            }
         }
     };
 
@@ -547,80 +446,6 @@ if (window.Clerk) {
         }
     }
     window.downloadPdfFile = downloadPdfFile;
-
-    // Phase 4: Dual-Engine Authentication Repair (Login / Sign-Up)
-    document.addEventListener('click', (e) => {
-        const trigger = e.target.closest('#btn-sign-in, #btn-sign-up, .btn-auth-trigger, [data-action="login"], [data-action="signup"]');
-        if (!trigger) return;
-
-        e.preventDefault();
-        e.stopPropagation();
-
-        const isSignUp = trigger.id === 'btn-sign-up' || trigger.getAttribute('data-action') === 'signup';
-
-        // 1. If Clerk is initialized and ready, open Clerk modal
-        if (window.Clerk && typeof window.Clerk.openSignIn === 'function') {
-            if (isSignUp && typeof window.Clerk.openSignUp === 'function') {
-                window.Clerk.openSignUp();
-            } else {
-                window.Clerk.openSignIn();
-            }
-            return;
-        }
-
-        // 2. Graceful In-App Session Fallback (Local / Offline / Pre-Clerk init)
-        let authModal = document.getElementById('app-auth-modal');
-        if (!authModal) {
-            authModal = document.createElement('div');
-            authModal.id = 'app-auth-modal';
-            authModal.className = 'modal active';
-            authModal.style.cssText = 'position:fixed;inset:0;background:rgba(15,23,42,0.8);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:99999;';
-            authModal.innerHTML = `
-              <div class="bento-card auth-modal-box" style="max-width:400px;width:90%;padding:2rem;text-align:center;">
-                <h3 style="margin-bottom:0.75rem;">Sign In to CampusSense</h3>
-                <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:1.5rem;">Access verified MAKAUT syllabi, PYQs, and high-frequency exam revisions.</p>
-                <button id="btn-quick-login-student" class="btn btn-primary" style="width:100%;margin-bottom:0.75rem;">Continue with Student Session</button>
-                <button id="btn-close-auth-fallback" class="btn btn-secondary" style="width:100%;">Cancel</button>
-              </div>
-            `;
-            document.body.appendChild(authModal);
-
-            document.getElementById('btn-quick-login-student').onclick = function() {
-                window.isLoggedIn = true;
-                localStorage.setItem('campussense_user_session', JSON.stringify({ role: 'student', name: 'Student' }));
-                authModal.style.display = 'none';
-                if (typeof updateAuthUIState === 'function') updateAuthUIState();
-                window.location.reload();
-            };
-            document.getElementById('btn-close-auth-fallback').onclick = function() {
-                authModal.style.display = 'none';
-            };
-        } else {
-            authModal.style.display = 'flex';
-        }
-    });
-
-    // Phase 5: Navbar Top-Left Brand Navigation to Landing Page
-    document.addEventListener('click', (e) => {
-        const brandLink = e.target.closest('#nav-brand-logo, .navbar-brand, .brand-container');
-        if (brandLink) {
-            e.preventDefault();
-
-            // Switch app workflow state to landing
-            if (typeof setAppWorkflowStage === 'function') {
-                setAppWorkflowStage('landing');
-            } else {
-                const landingSec = document.getElementById('landing-section') || document.querySelector('.landing-hero');
-                const dashboardSec = document.getElementById('dashboard-section') || document.querySelector('.dashboard-container');
-                if (landingSec) landingSec.style.display = 'block';
-                if (dashboardSec) dashboardSec.style.display = 'none';
-                window.location.hash = '';
-            }
-
-            // Reset scroll to top
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    });
 
     // ==========================================
     // 3. State Machine & User Context
@@ -2679,15 +2504,14 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
             if (dashboardView) dashboardView.style.display = 'none';
             document.querySelectorAll('#nav-academic-pill, #btn-context-switcher, .academic-context-pill').forEach(p => p.style.display = 'none');
             if (btnNavToLanding) btnNavToLanding.style.display = 'none';
-            const authenticated = isUserAuthenticated();
-            if (btnNavToDashboard) btnNavToDashboard.style.display = authenticated ? 'inline-flex' : 'none';
+            if (btnNavToDashboard) btnNavToDashboard.style.display = isLoggedIn ? 'inline-flex' : 'none';
             if (btnOpenPanicNav) btnOpenPanicNav.style.display = 'none';
             if (btnOpenSavedDeck) btnOpenSavedDeck.style.display = 'none';
             if (btnOpenFeedback) btnOpenFeedback.style.display = 'none';
             if (btnOpenAiFab) btnOpenAiFab.style.display = 'none';
             if (landingNavLinks) landingNavLinks.style.display = 'flex';
 
-            if (authenticated) {
+            if (isLoggedIn) {
                 if (userProfileWrapper) userProfileWrapper.style.display = 'block';
                 if (btnNavSignIn) btnNavSignIn.style.display = 'none';
                 if (btnNavSignUp) btnNavSignUp.style.display = 'none';
@@ -3381,7 +3205,7 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
     if (btnHeroPanicPack) {
         btnHeroPanicPack.addEventListener('click', (e) => {
             e.preventDefault();
-            if (isUserAuthenticated()) {
+            if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
                 const storedAcademic = localStorage.getItem('campussense_academic_profile');
                 if (!storedAcademic) {
                     setAppWorkflowStage(APP_FLOW.ACADEMIC_SETUP);
@@ -3400,7 +3224,7 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
     if (btnFeatureSyllabus) {
         btnFeatureSyllabus.addEventListener('click', (e) => {
             e.preventDefault();
-            if (isUserAuthenticated()) {
+            if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
                 evaluateWorkflowProgression();
             } else {
                 showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
@@ -3412,7 +3236,7 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
     if (btnFeaturePanic) {
         btnFeaturePanic.addEventListener('click', (e) => {
             e.preventDefault();
-            if (isUserAuthenticated()) {
+            if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
                 const storedAcademic = localStorage.getItem('campussense_academic_profile');
                 if (!storedAcademic) {
                     setAppWorkflowStage(APP_FLOW.ACADEMIC_SETUP);
@@ -3439,7 +3263,7 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
     if (btnFeatureAi) {
         btnFeatureAi.addEventListener('click', (e) => {
             e.preventDefault();
-            if (isUserAuthenticated()) {
+            if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
                 const storedAcademic = localStorage.getItem('campussense_academic_profile');
                 if (!storedAcademic) {
                     setAppWorkflowStage(APP_FLOW.ACADEMIC_SETUP);
@@ -3453,17 +3277,33 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
         });
     }
 
-    // Brand Home Trigger
+    // Brand Home Trigger — Resets to Landing Page and Smoothly Scrolls to Top
+    function handleBrandLogoClick(e) {
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        if (typeof switchView === 'function') {
+            switchView('landing');
+        } else if (typeof showLandingView === 'function') {
+            showLandingView();
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    const navBrandLogo = document.getElementById('nav-brand-logo');
+    if (navBrandLogo) {
+        navBrandLogo.addEventListener('click', handleBrandLogoClick);
+    }
     const btnBrandHome = document.getElementById('btn-brand-home');
     if (btnBrandHome) {
-        btnBrandHome.addEventListener('click', (e) => {
-            e.preventDefault();
-            evaluateWorkflowProgression();
-        });
+        btnBrandHome.addEventListener('click', handleBrandLogoClick);
     }
+    document.querySelectorAll('.navbar-brand').forEach(el => {
+        el.addEventListener('click', handleBrandLogoClick);
+    });
 
     // ==========================================
-    // 8. Real Clerk Native Authentication
+    // 8. Dual-Engine Native Authentication (Clerk + Student Fallback)
     // ==========================================
     const triggerNativeClerkAuth = window.triggerNativeClerkAuth;
     const triggerRealClerkAuth = window.triggerNativeClerkAuth;
@@ -3480,35 +3320,76 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
         });
     });
 
-    if (btnNavSignIn) {
-        btnNavSignIn.addEventListener('click', () => {
+    // Wire dedicated Sign In / Sign Up buttons
+    const btnSignIn = document.getElementById('btn-sign-in') || btnNavSignIn;
+    if (btnSignIn) {
+        btnSignIn.addEventListener('click', (e) => {
+            if (e) e.preventDefault();
+            window.triggerNativeClerkAuth(null, 'signIn');
+        });
+    }
+    if (btnNavSignIn && btnNavSignIn !== btnSignIn) {
+        btnNavSignIn.addEventListener('click', (e) => {
+            if (e) e.preventDefault();
             window.triggerNativeClerkAuth(null, 'signIn');
         });
     }
 
-    if (btnNavSignUp) {
-        btnNavSignUp.addEventListener('click', () => {
+    const btnSignUp = document.getElementById('btn-sign-up') || btnNavSignUp;
+    if (btnSignUp) {
+        btnSignUp.addEventListener('click', (e) => {
+            if (e) e.preventDefault();
+            window.triggerNativeClerkAuth(null, 'signUp');
+        });
+    }
+    if (btnNavSignUp && btnNavSignUp !== btnSignUp) {
+        btnNavSignUp.addEventListener('click', (e) => {
+            if (e) e.preventDefault();
             window.triggerNativeClerkAuth(null, 'signUp');
         });
     }
 
+    document.querySelectorAll('.btn-auth-trigger, [data-action="login"]').forEach(el => {
+        el.addEventListener('click', (e) => {
+            if (e) e.preventDefault();
+            window.triggerNativeClerkAuth(null, 'signIn');
+        });
+    });
+    document.querySelectorAll('[data-action="signup"]').forEach(el => {
+        el.addEventListener('click', (e) => {
+            if (e) e.preventDefault();
+            window.triggerNativeClerkAuth(null, 'signUp');
+        });
+    });
+
+    const btnCloseAuthModal = document.getElementById('btn-close-auth-modal');
+    if (btnCloseAuthModal) {
+        btnCloseAuthModal.addEventListener('click', () => {
+            window.closeAppAuthModal();
+        });
+    }
+
     if (btnLandingAuth) {
-        btnLandingAuth.addEventListener('click', () => {
+        btnLandingAuth.addEventListener('click', (e) => {
+            if (e) e.preventDefault();
             window.triggerNativeClerkAuth();
         });
     }
 
     const authTriggerBtn = document.getElementById('auth-trigger-btn');
     if (authTriggerBtn) {
-        authTriggerBtn.addEventListener('click', () => {
+        authTriggerBtn.addEventListener('click', (e) => {
+            if (e) e.preventDefault();
             window.triggerNativeClerkAuth();
         });
     }
 
     document.querySelectorAll('.auth-trigger-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', (e) => {
+            if (e) e.preventDefault();
             window.triggerNativeClerkAuth();
         });
+    });
     });
 
     function completeAuthentication(name, email) {
@@ -4789,9 +4670,9 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
     let currentOpenPdf = null;
 
     function openPdfViewer(title, url) {
-        const modal = document.getElementById('pdf-viewer-modal');
+        const modal = document.getElementById('pdf-preview-modal') || document.getElementById('pdf-viewer-modal');
         const titleEl = document.getElementById('pdf-modal-title');
-        const iframe = document.getElementById('pdf-viewer-iframe');
+        const iframe = document.getElementById('pdf-viewer-frame') || document.getElementById('pdf-viewer-iframe');
         const downloadBtn = document.getElementById('btn-pdf-external-download');
         const bookmarkBtn = document.getElementById('btn-pdf-bookmark');
         const fallbackView = document.getElementById('pdf-fallback-view');
@@ -4909,7 +4790,7 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
                     finalUrl += `${sep}${timeParam}#toolbar=1&navpanes=0`;
                 }
             }
-            iframe.src = normalizePdfUrl(finalUrl);
+            iframe.src = finalUrl;
         }
 
         if (modal) {
@@ -6648,34 +6529,17 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
     }
 
     function updateUIAfterLogin(user) {
-        if (!user) {
-            const hasStoredAuth = Boolean(
-                localStorage.getItem('campussense_logged_in') === 'true' ||
-                localStorage.getItem('campussense_user_session') ||
-                localStorage.getItem('campussense_user_id')
-            );
-            if (!hasStoredAuth) return;
-            user = {
-                fullName: localStorage.getItem('campussense_user_name') || 'Student',
-                id: localStorage.getItem('campussense_user_id') || 'student_user',
-                primaryEmailAddress: { emailAddress: localStorage.getItem('campussense_user_email') || 'student@makaut.edu.in' }
-            };
-        }
-        userName = user.fullName || user.firstName || user.username || localStorage.getItem('campussense_user_name') || 'Student';
+        if (!user) return;
+        userName = user.fullName || user.firstName || user.username || 'Student';
         isLoggedIn = true;
         window.isLoggedIn = true;
-        const userEmail = user.primaryEmailAddress?.emailAddress || localStorage.getItem('campussense_user_email') || `${userName.toLowerCase().replace(/\s+/g, '')}@makaut.edu.in`;
+        const userEmail = user.primaryEmailAddress?.emailAddress || `${userName.toLowerCase().replace(/\s+/g, '')}@makaut.edu.in`;
 
         localStorage.setItem('campussense_logged_in', 'true');
         localStorage.setItem('campussense_user_name', userName);
         localStorage.setItem('campussense_user_id', user.id || userEmail);
         localStorage.setItem('campussense_user_email', userEmail);
         sessionStorage.setItem('campussense_session_token', 'cs_clerk_' + (user.id || Date.now()));
-
-        const userNameSpan = document.getElementById('user-profile-name') || document.getElementById('user-display-name');
-        if (userNameSpan) {
-            userNameSpan.textContent = userName;
-        }
 
         if (typeof user.update === 'function') {
             user.update({
@@ -6743,7 +6607,6 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
                 }
 
                 const user = window.Clerk.user;
-                let clerkUserWasPresent = Boolean(user);
                 if (user) {
                     window.isLoggedIn = true;
                     isLoggedIn = true;
@@ -6753,19 +6616,14 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
                         userNameSpan.textContent = user.fullName || (user.primaryEmailAddress ? user.primaryEmailAddress.emailAddress : 'Student');
                     }
                     updateUIAfterLogin(user);
-                } else if (localStorage.getItem('campussense_logged_in') === 'true') {
-                    window.isLoggedIn = true;
-                    isLoggedIn = true;
-                    updateUIAfterLogin();
                 } else {
-                    window.isLoggedIn = false;
-                    isLoggedIn = false;
+                    window.isLoggedIn = localStorage.getItem('campussense_logged_in') === 'true';
+                    isLoggedIn = window.isLoggedIn;
                 }
 
                 if (typeof window.Clerk.addListener === 'function') {
                     window.Clerk.addListener(async (emission) => {
                         if (emission && emission.user) {
-                            clerkUserWasPresent = true;
                             window.isLoggedIn = true;
                             isLoggedIn = true;
                             localStorage.setItem('campussense_logged_in', 'true');
@@ -6774,8 +6632,7 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
                                 userNameSpan.textContent = emission.user.fullName || (emission.user.primaryEmailAddress ? emission.user.primaryEmailAddress.emailAddress : 'Student');
                             }
                             updateUIAfterLogin(emission.user);
-                        } else if (emission && emission.user === null && clerkUserWasPresent) {
-                            clerkUserWasPresent = false;
+                        } else if (emission && emission.user === null) {
                             window.logoutUser();
                         }
                     });
@@ -6973,13 +6830,16 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
                 };
             }
 
+            const resetToLanding = (e) => {
+                if (e) e.preventDefault();
+                switchView('landing');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+            const navBrandLogo = document.getElementById('nav-brand-logo');
+            if (navBrandLogo) navBrandLogo.onclick = resetToLanding;
             const btnBrandHome = document.getElementById('btn-brand-home');
-            if (btnBrandHome) {
-                btnBrandHome.onclick = (e) => {
-                    e.preventDefault();
-                    evaluateWorkflowProgression();
-                };
-            }
+            if (btnBrandHome) btnBrandHome.onclick = resetToLanding;
+            document.querySelectorAll('.navbar-brand').forEach(el => { el.onclick = resetToLanding; });
 
             const tileActionSyllabi = document.getElementById('tile-action-syllabi');
             if (tileActionSyllabi) {
@@ -7020,7 +6880,7 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
             if (btnHeroPanicPack) {
                 btnHeroPanicPack.onclick = (e) => {
                     e.preventDefault();
-                    if (isUserAuthenticated()) {
+                    if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
                         const storedAcademic = localStorage.getItem('campussense_academic_profile');
                         if (!storedAcademic) {
                             setAppWorkflowStage(APP_FLOW.ACADEMIC_SETUP);
@@ -7038,7 +6898,7 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
             if (btnFeatureSyllabus) {
                 btnFeatureSyllabus.onclick = (e) => {
                     e.preventDefault();
-                    if (isUserAuthenticated()) {
+                    if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
                         evaluateWorkflowProgression();
                     } else {
                         window.triggerNativeClerkAuth();
@@ -7050,7 +6910,7 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
             if (btnFeaturePanic) {
                 btnFeaturePanic.onclick = (e) => {
                     e.preventDefault();
-                    if (isUserAuthenticated()) {
+                    if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
                         const storedAcademic = localStorage.getItem('campussense_academic_profile');
                         if (!storedAcademic) {
                             setAppWorkflowStage(APP_FLOW.ACADEMIC_SETUP);
@@ -7077,7 +6937,7 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
             if (btnFeatureAi) {
                 btnFeatureAi.onclick = (e) => {
                     e.preventDefault();
-                    if (isUserAuthenticated()) {
+                    if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
                         const storedAcademic = localStorage.getItem('campussense_academic_profile');
                         if (!storedAcademic) {
                             setAppWorkflowStage(APP_FLOW.ACADEMIC_SETUP);
@@ -7103,13 +6963,21 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
                 }
             });
 
+            const btnSignIn = document.getElementById('btn-sign-in') || document.getElementById('btn-nav-signin');
+            if (btnSignIn) {
+                btnSignIn.onclick = () => window.triggerNativeClerkAuth(null, 'signIn');
+            }
             const btnNavSignIn = document.getElementById('btn-nav-signin');
-            if (btnNavSignIn) {
+            if (btnNavSignIn && btnNavSignIn !== btnSignIn) {
                 btnNavSignIn.onclick = () => window.triggerNativeClerkAuth(null, 'signIn');
             }
 
+            const btnSignUp = document.getElementById('btn-sign-up') || document.getElementById('btn-nav-signup');
+            if (btnSignUp) {
+                btnSignUp.onclick = () => window.triggerNativeClerkAuth(null, 'signUp');
+            }
             const btnNavSignUp = document.getElementById('btn-nav-signup');
-            if (btnNavSignUp) {
+            if (btnNavSignUp && btnNavSignUp !== btnSignUp) {
                 btnNavSignUp.onclick = () => window.triggerNativeClerkAuth(null, 'signUp');
             }
 
@@ -7441,14 +7309,8 @@ window.addEventListener('DOMContentLoaded', async () => {
             const user = window.Clerk.user;
             if (user) {
                 window.isLoggedIn = true;
-                localStorage.setItem('campussense_logged_in', 'true');
                 if (typeof window.updateUIAfterLogin === 'function') {
                     window.updateUIAfterLogin(user);
-                }
-            } else if (localStorage.getItem('campussense_logged_in') === 'true') {
-                window.isLoggedIn = true;
-                if (typeof window.updateUIAfterLogin === 'function') {
-                    window.updateUIAfterLogin();
                 }
             } else {
                 window.isLoggedIn = false;
