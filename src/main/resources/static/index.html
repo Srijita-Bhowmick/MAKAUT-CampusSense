@@ -2,17 +2,17 @@
 <html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>MAKAUT CampusSense — Official Curated Syllabi, Subject-wise PYQs & Exam Intelligence</title>
     <meta name="description" content="Access verified MAKAUT semester question papers (2020-2026), 1st-year common and core CSE curriculum blueprints, syllabus module trackers, and 48-hour exam revision packs.">
     <meta name="keywords" content="MAKAUT, Maulana Abul Kalam Azad University of Technology, MAKAUT PYQ, MAKAUT Syllabus, BTech CSE, Question Papers, Panic Pack, Exam Revision">
     <meta name="author" content="MAKAUT CampusSense Community">
-    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://srijita-bhowmick.github.io/MAKAUT-CampusSense/">
 
     <!-- Dual Adaptive Theme Colors -->
-    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f8fafc">
-    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0a0e17">
+    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f8fafc" media="(prefers-color-scheme: light)">
 
     <!-- Mobile Web App & PWA Capabilities -->
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -42,6 +42,24 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Schema.org Educational WebApplication Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "MAKAUT CampusSense",
+      "url": "https://srijita-bhowmick.github.io/MAKAUT-CampusSense/",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "All",
+      "description": "Curated academic syllabus, examination archives, and verified PYQs for MAKAUT B.Tech CSE.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "INR"
+      }
+    }
+    </script>
 
     <!-- Schema.org JSON-LD Structured Data for 100% Webmaster / Google Search Rich Snippets -->
     <script type="application/ld+json">
@@ -136,7 +154,7 @@
     <!-- 1. Universal Top Navigation Bar -->
     <header class="app-header" id="main-header">
         <div class="header-container">
-            <div class="brand-group" id="btn-brand-home" title="MAKAUT CampusSense">
+            <a href="#landing" id="nav-brand-logo" class="navbar-brand brand-group brand-container" aria-label="CampusSense Home" title="MAKAUT CampusSense">
                 <div class="brand-logo">
                     <span class="logo-icon">🎓</span>
                 </div>
@@ -144,7 +162,8 @@
                     <div class="brand-title">MAKAUT <span class="accent-text">CampusSense</span></div>
                     <div class="brand-subtitle">Curated Academic Engine</div>
                 </div>
-            </div>
+            </a>
+            <div id="btn-brand-home" style="display: none;" aria-hidden="true"></div>
 
             <!-- Navigation Links (Shown on Landing Page) -->
             <nav class="landing-nav-links" id="landing-nav-links">
@@ -155,7 +174,7 @@
             </nav>
 
             <!-- Context Lock Pill (Visible when Dashboard is active) -->
-            <button id="nav-academic-pill" class="context-pill academic-context-pill" data-action="open-academic-setup" style="display: none;" title="Click to switch Department or Semester" aria-label="Change Academic Context">
+            <button id="nav-academic-pill" class="context-pill academic-context-pill nav-action-pill" data-action="open-academic-setup" style="display: none;" title="Click to switch Department or Semester" aria-label="Change Academic Context">
                 <span class="context-icon icon">🏛️</span>
                 <span id="nav-academic-label">CSE • Sem 3</span>
                 <span id="current-context-text" style="display: none;" aria-hidden="true">CSE • Sem 3</span>
@@ -185,29 +204,33 @@
                 </button>
 
                 <!-- Dashboard Specific Buttons (Hidden on Landing) -->
-                <button class="nav-btn flame-btn" id="btn-open-panic-mode" style="display: none;" title="Open Panic Pack 48h High-Yield Revision">
+                <button class="nav-btn flame-btn nav-action-pill pill-panic" id="btn-open-panic-mode" style="display: none;" title="Open Panic Pack 48h High-Yield Revision" aria-label="Open Panic Pack">
                     <span class="flame-icon">🔥</span>
                     <span class="btn-label">Panic Pack</span>
                     <span class="badge flame-badge" id="panic-count-badge">16 High-Yield</span>
                 </button>
+                <button id="btn-panic-pack" class="nav-action-pill pill-panic" style="display: none;" aria-hidden="true"></button>
 
-                <button class="nav-btn deck-btn" id="btn-open-saved-deck" style="display: none;" title="View Saved Review Deck">
+                <button class="nav-btn deck-btn nav-action-pill pill-deck" id="btn-open-saved-deck" style="display: none;" title="View Saved Review Deck" aria-label="View Saved Review Deck">
                     <span class="deck-icon">🔖</span>
                     <span class="btn-label">Saved Deck</span>
                     <span class="badge deck-badge" id="deck-counter-badge">0</span>
                 </button>
+                <button id="btn-saved-deck" class="nav-action-pill pill-deck" style="display: none;" aria-hidden="true"></button>
 
-                <button class="nav-btn" id="btn-open-feedback" style="display: none;" title="Report broken link or request missing paper">
+                <button class="nav-btn nav-action-pill pill-feedback" id="btn-open-feedback" style="display: none;" title="Report broken link or request missing paper" aria-label="Report broken link or request missing paper">
                     <span class="icon">💬</span> Feedback
                 </button>
+                <button id="btn-feedback" class="nav-action-pill pill-feedback" style="display: none;" aria-hidden="true"></button>
 
                 <!-- Dashboard User Profile Pill with Dropdown -->
                 <div class="user-profile-menu-wrapper" id="user-profile-wrapper" style="display: none;">
-                    <div class="user-profile-pill" id="user-profile-pill" title="Click to view profile menu" style="cursor: pointer;">
+                    <div class="user-profile-pill nav-action-pill pill-student" id="user-profile-pill" title="Click to view profile menu" aria-label="Student profile menu" style="cursor: pointer;">
                         <span class="user-avatar" id="user-avatar-icon">👤</span>
                         <span class="user-name" id="user-profile-name">Student</span>
                         <span style="font-size: 0.65rem; opacity: 0.7;">▾</span>
                     </div>
+                    <button id="btn-student-profile" class="nav-action-pill pill-student" style="display: none;" aria-hidden="true"></button>
                     <div class="user-dropdown-menu" id="user-dropdown-menu">
                         <button class="user-dropdown-item" id="btn-menu-switch-scope">
                             <span>🎯</span> Change Stream / Semester
@@ -222,18 +245,20 @@
                 </div>
 
                 <!-- Bidirectional Nav: Go to Dashboard (Visible when logged in on Landing) -->
-                <button type="button" class="btn-nav-switch btn-nav-highlight" id="btn-nav-to-dashboard" style="display: none;" title="Open Your Dashboard">
+                <button type="button" class="btn-nav-switch btn-nav-highlight" id="btn-nav-to-dashboard" style="display: none;" title="Open Your Dashboard" aria-label="Open Your Dashboard">
                     Go to Dashboard →
                 </button>
 
                 <!-- Dedicated Top-Right Auth Triggers -->
-                <button class="btn btn-outline" id="btn-nav-signin" title="Sign In" onclick="if(window.triggerNativeClerkAuth)window.triggerNativeClerkAuth(null,'signIn');">
+                <button class="btn btn-outline btn-auth-trigger" id="btn-nav-signin" data-action="login" title="Sign In" aria-label="Sign In">
                     Sign In
                 </button>
-                <button class="btn btn-primary" id="btn-nav-signup" title="Create Account" onclick="if(window.triggerNativeClerkAuth)window.triggerNativeClerkAuth(null,'signUp');">
+                <button class="btn btn-primary btn-auth-trigger" id="btn-nav-signup" data-action="signup" title="Create Account" aria-label="Create Account">
                     Sign Up
                 </button>
-                <button class="btn btn-primary" id="btn-landing-auth" style="display: none;" title="Sign In or Create Account" onclick="if(window.triggerNativeClerkAuth)window.triggerNativeClerkAuth(null,'signIn');">
+                <button id="btn-sign-in" class="btn-auth-trigger" style="display: none;" aria-hidden="true"></button>
+                <button id="btn-sign-up" class="btn-auth-trigger" style="display: none;" aria-hidden="true"></button>
+                <button class="btn btn-primary btn-auth-trigger" id="btn-landing-auth" data-action="login" style="display: none;" title="Sign In or Create Account" aria-label="Sign In or Create Account">
                     Sign In / Sign Up
                 </button>
             </div>
@@ -422,11 +447,9 @@
                 <div class="search-bar-wrapper">
                     <span class="search-lens">🔍</span>
                     <input type="text" id="global-search-input" class="hero-search-input"
-                           placeholder="Search PYQ papers (e.g., 'English 2025 PYQ'), modules ('Physics module 2'), or syllabus..."
+                           placeholder="Search PYQ papers, modules, or subjects..."
+                           aria-label="Search"
                            autocomplete="off">
-                    <div class="shortcut-chip">
-                        <kbd>Ctrl</kbd> + <kbd>K</kbd>
-                    </div>
                     <button class="search-submit-btn" id="btn-hero-search">
                         Search 🔍
                     </button>
@@ -581,7 +604,7 @@
                             </ul>
                         </div>
                     </div>
-                    <button class="drawer-close-btn" id="btn-close-ai-drawer" title="Close Drawer (Esc)">✕</button>
+                    <button class="drawer-close-btn" id="btn-close-ai-drawer" title="Close Drawer (Esc)" aria-label="Close AI Drawer">✕</button>
                 </div>
             </div>
 
@@ -603,8 +626,9 @@
             <div class="drawer-chat-input-area">
                 <form id="drawer-chat-form" class="drawer-input-form">
                     <textarea id="ai-query-input" rows="2" class="drawer-textarea"
-                              placeholder="Ask a MAKAUT academic query..."></textarea>
-                    <button type="submit" class="btn btn-primary drawer-send-btn" id="btn-drawer-send">
+                              placeholder="Ask a MAKAUT academic query..."
+                              aria-label="Ask a MAKAUT academic query"></textarea>
+                    <button type="submit" class="btn btn-primary drawer-send-btn" id="btn-drawer-send" aria-label="Send Query">
                         Send ⚡
                     </button>
                 </form>
@@ -626,7 +650,7 @@
                     <h2 class="modal-title">Set Your Academic Context</h2>
                     <p class="modal-subtitle">Choose your academic stage to load verified MAKAUT syllabi and PYQs.</p>
                 </div>
-                <button class="modal-close-btn" id="btn-close-scope-modal" title="Close">✕</button>
+                <button class="modal-close-btn" id="btn-close-scope-modal" title="Close" aria-label="Close Academic Setup">✕</button>
             </div>
 
             <form id="scope-form" class="onboarding-form">
@@ -718,8 +742,8 @@
                     <div class="stat-lbl">Syllabus Covered</div>
                 </div>
                 <div class="hub-header-actions" style="display: flex; align-items: center; gap: 0.75rem;">
-                    <button type="button" class="btn-modal-back" id="btn-back-hub-modal" title="Back to Dashboard">← Back</button>
-                    <button class="modal-close-btn" id="btn-close-hub-modal" title="Close">✕</button>
+                    <button type="button" class="btn-modal-back" id="btn-back-hub-modal" title="Back to Dashboard" aria-label="Back to Dashboard">← Back</button>
+                    <button class="modal-close-btn" id="btn-close-hub-modal" title="Close" aria-label="Close Subject Hub">✕</button>
                 </div>
             </div>
 
@@ -769,12 +793,12 @@
                         <p class="panic-subhead">The top 20% most repeated exam questions across MAKAUT semester papers. Prioritize these for guaranteed pass & scoring.</p>
                     </div>
                 </div>
-                <button class="modal-close-btn" id="btn-close-panic-modal" title="Close">✕</button>
+                <button class="modal-close-btn" id="btn-close-panic-modal" title="Close" aria-label="Close Panic Pack Modal">✕</button>
             </div>
 
             <div class="panic-filter-bar">
                 <span class="filter-label">Filter by Subject:</span>
-                <select id="panic-subject-filter" class="custom-select">
+                <select id="panic-subject-filter" class="custom-select" aria-label="Filter by Subject">
                     <option value="">All Current Semester Subjects</option>
                 </select>
                 <div class="panic-sort-info">
@@ -788,29 +812,31 @@
         </div>
     </div>
 
-    <!-- PDF Previewer Modal -->
-    <div class="modal-backdrop" id="pdf-viewer-modal" style="display: none;">
+    <!-- PDF Previewer Modal (#pdf-preview-modal / #pdf-viewer-modal) -->
+    <div class="modal-backdrop modal" id="pdf-preview-modal" style="display: none;">
+        <div id="pdf-viewer-modal" style="display: none;" aria-hidden="true"></div>
         <div class="modal-card pdf-viewer-card">
             <div class="pdf-viewer-header">
                 <div class="pdf-file-info">
                     <span class="doc-icon">📄</span>
                     <div>
-                        <div class="pdf-title" id="pdf-modal-title">Examination Paper</div>
+                        <div class="pdf-title" id="pdf-preview-title">Examination Paper</div>
+                        <div id="pdf-modal-title" style="display: none;" aria-hidden="true">Examination Paper</div>
                         <div class="pdf-subtitle" id="pdf-modal-subtitle">Maulana Abul Kalam Azad University of Technology Question Repository</div>
                     </div>
                 </div>
                 <div class="pdf-viewer-actions">
-                    <button type="button" class="btn-modal-back" id="btn-back-pdf-modal" title="Back">← Back</button>
-                    <button type="button" class="btn btn-secondary" id="btn-pdf-bookmark" title="Save to Deck">
+                    <button type="button" class="btn-modal-back" id="btn-back-pdf-modal" title="Back" aria-label="Back">← Back</button>
+                    <button type="button" class="btn btn-secondary" id="btn-pdf-bookmark" title="Save to Deck" aria-label="Save to Deck">
                         🔖 Save to Deck
                     </button>
-                    <button type="button" class="btn btn-secondary" id="btn-pdf-fullscreen" title="Toggle Fullscreen">
+                    <button type="button" class="btn btn-secondary" id="btn-pdf-fullscreen" title="Toggle Fullscreen" aria-label="Toggle Fullscreen">
                         ⛶ Fullscreen
                     </button>
-                    <button type="button" class="btn btn-secondary" id="btn-pdf-external-download" title="Download PDF">
+                    <button type="button" class="btn btn-secondary" id="btn-pdf-external-download" title="Download PDF" aria-label="Download PDF">
                         ⬇ Download PDF
                     </button>
-                    <button class="modal-close-btn" id="btn-close-pdf-modal" title="Close">✕</button>
+                    <button class="modal-close-btn" id="btn-close-pdf-modal" title="Close" aria-label="Close PDF Viewer">✕</button>
                 </div>
             </div>
 
@@ -819,7 +845,8 @@
                     <div class="spinner-ring"></div>
                     <span>Loading Document Preview...</span>
                 </div>
-                <iframe id="pdf-viewer-iframe" src="about:blank" title="Document Viewer"></iframe>
+                <iframe id="pdf-viewer-frame" class="pdf-viewer-frame" src="about:blank" title="Document Viewer"></iframe>
+                <iframe id="pdf-viewer-iframe" style="display: none;" aria-hidden="true"></iframe>
                 <div class="pdf-fallback-view" id="pdf-fallback-view" style="display: none;">
                     <div class="pdf-fallback-alert">
                         <div class="pdf-fallback-alert-title">
@@ -829,10 +856,10 @@
                             Your browser environment prevented direct inline PDF rendering. You can download the complete document or view the syllabus breakdown below.
                         </div>
                         <div class="pdf-fallback-actions">
-                            <button type="button" class="btn btn-primary" id="btn-fallback-direct-download">
+                            <button type="button" class="btn btn-primary" id="btn-fallback-direct-download" aria-label="Direct Download PDF">
                                 ⬇ Direct Download PDF
                             </button>
-                            <button type="button" class="btn btn-secondary" id="btn-fallback-new-tab">
+                            <button type="button" class="btn btn-secondary" id="btn-fallback-new-tab" aria-label="Open PDF in New Window">
                                 ↗ Open in New Window
                             </button>
                         </div>
@@ -851,13 +878,13 @@
                     <h2 class="modal-title">Feedback & Academic Help Desk</h2>
                     <p class="modal-subtitle">Report a broken paper link, submit missing question papers, or request model answers.</p>
                 </div>
-                <button class="modal-close-btn" id="btn-close-feedback-modal" title="Close">✕</button>
+                <button class="modal-close-btn" id="btn-close-feedback-modal" title="Close" aria-label="Close Feedback Modal">✕</button>
             </div>
 
             <form id="feedback-form" class="feedback-form">
                 <div class="form-group">
                     <label class="form-label">Category</label>
-                    <select id="feedback-category" class="custom-select" required>
+                    <select id="feedback-category" class="custom-select" aria-label="Feedback Category" required>
                         <option value="BROKEN_PDF">🔗 Broken / Missing PDF Paper Link</option>
                         <option value="MISSING_PYQ">📄 Submit / Request Missing Year PYQ</option>
                         <option value="MODEL_ANSWER">💡 Request Model Answer for Question</option>
@@ -868,17 +895,18 @@
 
                 <div class="form-group">
                     <label class="form-label">Subject Code (Optional)</label>
-                    <input type="text" id="feedback-subject" class="custom-input" placeholder="e.g. BS-M101, ES-CS101, BS-PH101">
+                    <input type="text" id="feedback-subject" class="custom-input" placeholder="e.g. BS-M101, ES-CS101, BS-PH101" aria-label="Subject Code">
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Your Message or Issue Details</label>
                     <textarea id="feedback-message" rows="5" class="custom-textarea"
-                              placeholder="Describe the issue, specify the year/paper, or paste Google Drive links..." required></textarea>
+                              placeholder="Describe the issue, specify the year/paper, or paste Google Drive links..."
+                              aria-label="Your Message or Issue Details" required></textarea>
                 </div>
 
                 <div class="form-actions">
-                    <button type="submit" class="btn btn-primary" id="btn-submit-feedback">
+                    <button type="submit" class="btn btn-primary" id="btn-submit-feedback" aria-label="Submit Feedback">
                         Submit Feedback ✉️
                     </button>
                 </div>
@@ -900,7 +928,7 @@
                     <div class="drawer-subtitle" id="saved-deck-subtitle">Saved High-Yield Questions & Papers</div>
                 </div>
             </div>
-            <button class="drawer-close-btn" id="btn-close-saved-deck-drawer" title="Close Drawer (Esc)">✕</button>
+            <button class="drawer-close-btn" id="btn-close-saved-deck-drawer" title="Close Drawer (Esc)" aria-label="Close Saved Deck Drawer">✕</button>
         </div>
         <div class="saved-deck-body" id="saved-deck-body">
             <!-- Rendered dynamically by app.js -->
@@ -908,7 +936,7 @@
     </aside>
 
     <!-- Persistent Floating Action Button (FAB) for AI Drawer (Visible on Dashboard) -->
-    <button class="ai-fab-btn" id="btn-open-ai-fab" style="display: none;" title="Ask MAKAUT AI (Ctrl + K)">
+    <button class="ai-fab-btn" id="btn-open-ai-fab" style="display: none;" title="Ask MAKAUT AI" aria-label="Ask MAKAUT AI">
         <span class="fab-icon">🤖</span>
         <span class="fab-text">Ask AI</span>
     </button>

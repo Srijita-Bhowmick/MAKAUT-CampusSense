@@ -2738,6 +2738,7 @@ body:not(.modal-open) {
     position: relative;
 }
 
+#pdf-viewer-frame,
 #pdf-viewer-iframe {
     width: 100%;
     height: 100%;
@@ -6517,6 +6518,155 @@ body.is-drawer-resizing .ai-slide-drawer {
 [data-theme="light"] {
   --text-muted: #475569 !important;
   --text-secondary: #334155 !important;
+}
+
+/* ====================================================================
+   PHASE 1: SEARCH BAR CLEANUP & OUTER BOX REMOVAL
+   ==================================================================== */
+.search-container,
+.search-outer-wrapper,
+.search-bar-outer,
+.search-hero-container {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 1rem auto !important;
+  width: 100%;
+  max-width: 760px;
+}
+
+.search-hotkey,
+.hotkey-badge,
+kbd,
+.ctrl-k-badge,
+.shortcut-chip {
+  display: none !important;
+}
+
+/* ====================================================================
+   PHASE 2: NAVBAR ACTION PILL UNIFORMITY & DISTINCT COLOR ACCENTS
+   ==================================================================== */
+.nav-action-pill,
+.nav-pill,
+#btn-panic-pack,
+#btn-saved-deck,
+#btn-feedback,
+#btn-student-profile,
+#btn-open-panic-mode,
+#btn-open-saved-deck,
+#btn-open-feedback,
+#user-profile-pill,
+.academic-context-pill {
+  border-radius: 12px !important;
+  padding: 0.5rem 0.85rem !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  transition: all 0.15s ease !important;
+}
+
+/* 1. Panic Pack — Warm Amber/Peach */
+[data-theme="light"] #btn-panic-pack,
+[data-theme="light"] #btn-open-panic-mode,
+[data-theme="light"] .pill-panic,
+[data-theme="light"] .flame-btn {
+  background: #fff7ed !important;
+  border: 1px solid #ffedd5 !important;
+  color: #c2410c !important;
+}
+[data-theme="dark"] #btn-panic-pack,
+[data-theme="dark"] #btn-open-panic-mode,
+[data-theme="dark"] .pill-panic,
+[data-theme="dark"] .flame-btn {
+  background: rgba(249, 115, 22, 0.15) !important;
+  border: 1px solid rgba(249, 115, 22, 0.3) !important;
+  color: #fb923c !important;
+}
+
+/* 2. Saved Deck — Soft Lavender/Purple */
+[data-theme="light"] #btn-saved-deck,
+[data-theme="light"] #btn-open-saved-deck,
+[data-theme="light"] .pill-deck,
+[data-theme="light"] .deck-btn {
+  background: #f5f3ff !important;
+  border: 1px solid #ede9fe !important;
+  color: #6d28d9 !important;
+}
+[data-theme="dark"] #btn-saved-deck,
+[data-theme="dark"] #btn-open-saved-deck,
+[data-theme="dark"] .pill-deck,
+[data-theme="dark"] .deck-btn {
+  background: rgba(139, 92, 246, 0.15) !important;
+  border: 1px solid rgba(139, 92, 246, 0.3) !important;
+  color: #c084fc !important;
+}
+
+/* 3. Feedback — Subtle Mint/Emerald */
+[data-theme="light"] #btn-feedback,
+[data-theme="light"] #btn-open-feedback,
+[data-theme="light"] .pill-feedback {
+  background: #ecfdf5 !important;
+  border: 1px solid #d1fae5 !important;
+  color: #047857 !important;
+}
+[data-theme="dark"] #btn-feedback,
+[data-theme="dark"] #btn-open-feedback,
+[data-theme="dark"] .pill-feedback {
+  background: rgba(16, 185, 129, 0.15) !important;
+  border: 1px solid rgba(16, 185, 129, 0.3) !important;
+  color: #34d399 !important;
+}
+
+/* 4. Student Profile — Subtle Indigo/Sky */
+[data-theme="light"] #btn-student-profile,
+[data-theme="light"] #user-profile-pill,
+[data-theme="light"] .pill-student {
+  background: #eef2ff !important;
+  border: 1px solid #e0e7ff !important;
+  color: #3730a3 !important;
+}
+[data-theme="dark"] #btn-student-profile,
+[data-theme="dark"] #user-profile-pill,
+[data-theme="dark"] .pill-student {
+  background: rgba(99, 102, 241, 0.15) !important;
+  border: 1px solid rgba(99, 102, 241, 0.3) !important;
+  color: #818cf8 !important;
+}
+
+/* ====================================================================
+   PHASE 6: UNIVERSAL RESPONSIVE CARD ENGINE (DYNAMIC SCREEN FLUIDITY)
+   ==================================================================== */
+.features-bento-grid,
+.subjects-grid,
+.pyq-grid,
+.dashboard-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)) !important;
+  gap: clamp(1rem, 2vw, 1.75rem) !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Master Syllabus Card spans full row dynamically */
+.master-syllabus-card {
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+}
+
+/* Fluid Card Sizing without Overflow */
+.bento-card,
+.subject-card,
+.pyq-card,
+.interactive-card {
+  width: 100% !important;
+  min-height: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  box-sizing: border-box !important;
 }
 
 

@@ -321,6 +321,25 @@ if (window.Clerk) {
     }
     window.sanitizePdfUrl = sanitizePdfUrl;
 
+    function normalizePdfUrl(rawPath) {
+        if (!rawPath) return '';
+        let cleanPath = rawPath.trim();
+
+        // Remove redundant leading slashes
+        cleanPath = cleanPath.replace(/^\/+/, '');
+
+        // Safely encode special characters (parentheses, spaces) without double-encoding
+        const segments = cleanPath.split('/').map(segment => {
+            try {
+                return encodeURIComponent(decodeURIComponent(segment));
+            } catch (e) {
+                return encodeURIComponent(segment);
+            }
+        });
+        return segments.join('/');
+    }
+    window.normalizePdfUrl = normalizePdfUrl;
+
     function resolveAssetPath(relativePath) {
         if (!relativePath) return '';
         if (/^(https?:|blob:|data:)/.test(relativePath)) {
@@ -472,26 +491,32 @@ if (window.Clerk) {
         wireNavPanicLink();
     }
 
-    window.previewPdfFile = function(url, title) {
+    window.previewPdfFile = function(rawUrl, title) {
         if (!requireAuthOrTrigger()) return;
-        const sanitizedUrl = sanitizePdfUrl(url);
-        const iframe = document.getElementById('pdf-modal-frame') || document.querySelector('.pdf-viewer-frame') || document.getElementById('pdf-viewer-iframe');
-        const modal = document.getElementById('pdf-preview-modal') || document.getElementById('pdf-modal') || document.getElementById('pdf-viewer-modal');
 
-        if (iframe) {
-            const sep = sanitizedUrl.includes('?') ? '&' : '?';
-            const baseWithTime = sanitizedUrl.includes('#') 
-                ? sanitizedUrl.replace('#', `${sep}_t=${Date.now()}#`) 
-                : `${sanitizedUrl}${sep}_t=${Date.now()}`;
-            iframe.src = baseWithTime.includes('#') ? baseWithTime : `${baseWithTime}#toolbar=1&navpanes=0`;
+        const modal = document.getElementById('pdf-preview-modal') || document.getElementById('pdf-viewer-modal');
+        const iframe = document.getElementById('pdf-viewer-frame') || document.getElementById('pdf-viewer-iframe') || modal?.querySelector('iframe');
+        const titleEl = document.getElementById('pdf-preview-title') || document.getElementById('pdf-modal-title') || modal?.querySelector('.pdf-title');
+
+        if (!modal || !iframe) {
+            console.error("PDF Preview Modal elements not found");
+            window.open(normalizePdfUrl(rawUrl), '_blank');
+            return;
         }
 
-        if (modal) {
-            modal.style.display = 'flex';
-            modal.classList.add('active');
-            if (typeof lockBodyScroll === 'function') {
-                lockBodyScroll(true);
-            }
+        const finalUrl = normalizePdfUrl(rawUrl);
+        if (titleEl) titleEl.textContent = title || 'Official Document Preview';
+
+        // Load document into viewer
+        iframe.src = finalUrl;
+
+        // Ensure modal is visibly active with elevated z-index
+        modal.style.display = 'flex';
+        modal.classList.add('active');
+        modal.style.pointerEvents = 'auto';
+        document.body.classList.add('modal-open');
+        if (typeof lockBodyScroll === 'function') {
+            lockBodyScroll(true);
         }
     };
 
@@ -522,6 +547,80 @@ if (window.Clerk) {
         }
     }
     window.downloadPdfFile = downloadPdfFile;
+
+    // Phase 4: Dual-Engine Authentication Repair (Login / Sign-Up)
+    document.addEventListener('click', (e) => {
+        const trigger = e.target.closest('#btn-sign-in, #btn-sign-up, .btn-auth-trigger, [data-action="login"], [data-action="signup"]');
+        if (!trigger) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        const isSignUp = trigger.id === 'btn-sign-up' || trigger.getAttribute('data-action') === 'signup';
+
+        // 1. If Clerk is initialized and ready, open Clerk modal
+        if (window.Clerk && typeof window.Clerk.openSignIn === 'function') {
+            if (isSignUp && typeof window.Clerk.openSignUp === 'function') {
+                window.Clerk.openSignUp();
+            } else {
+                window.Clerk.openSignIn();
+            }
+            return;
+        }
+
+        // 2. Graceful In-App Session Fallback (Local / Offline / Pre-Clerk init)
+        let authModal = document.getElementById('app-auth-modal');
+        if (!authModal) {
+            authModal = document.createElement('div');
+            authModal.id = 'app-auth-modal';
+            authModal.className = 'modal active';
+            authModal.style.cssText = 'position:fixed;inset:0;background:rgba(15,23,42,0.8);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:99999;';
+            authModal.innerHTML = `
+              <div class="bento-card auth-modal-box" style="max-width:400px;width:90%;padding:2rem;text-align:center;">
+                <h3 style="margin-bottom:0.75rem;">Sign In to CampusSense</h3>
+                <p style="color:var(--text-secondary);font-size:0.9rem;margin-bottom:1.5rem;">Access verified MAKAUT syllabi, PYQs, and high-frequency exam revisions.</p>
+                <button id="btn-quick-login-student" class="btn btn-primary" style="width:100%;margin-bottom:0.75rem;">Continue with Student Session</button>
+                <button id="btn-close-auth-fallback" class="btn btn-secondary" style="width:100%;">Cancel</button>
+              </div>
+            `;
+            document.body.appendChild(authModal);
+
+            document.getElementById('btn-quick-login-student').onclick = function() {
+                window.isLoggedIn = true;
+                localStorage.setItem('campussense_user_session', JSON.stringify({ role: 'student', name: 'Student' }));
+                authModal.style.display = 'none';
+                if (typeof updateAuthUIState === 'function') updateAuthUIState();
+                window.location.reload();
+            };
+            document.getElementById('btn-close-auth-fallback').onclick = function() {
+                authModal.style.display = 'none';
+            };
+        } else {
+            authModal.style.display = 'flex';
+        }
+    });
+
+    // Phase 5: Navbar Top-Left Brand Navigation to Landing Page
+    document.addEventListener('click', (e) => {
+        const brandLink = e.target.closest('#nav-brand-logo, .navbar-brand, .brand-container');
+        if (brandLink) {
+            e.preventDefault();
+
+            // Switch app workflow state to landing
+            if (typeof setAppWorkflowStage === 'function') {
+                setAppWorkflowStage('landing');
+            } else {
+                const landingSec = document.getElementById('landing-section') || document.querySelector('.landing-hero');
+                const dashboardSec = document.getElementById('dashboard-section') || document.querySelector('.dashboard-container');
+                if (landingSec) landingSec.style.display = 'block';
+                if (dashboardSec) dashboardSec.style.display = 'none';
+                window.location.hash = '';
+            }
+
+            // Reset scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    });
 
     // ==========================================
     // 3. State Machine & User Context
@@ -4810,7 +4909,7 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
                     finalUrl += `${sep}${timeParam}#toolbar=1&navpanes=0`;
                 }
             }
-            iframe.src = finalUrl;
+            iframe.src = normalizePdfUrl(finalUrl);
         }
 
         if (modal) {
@@ -4822,13 +4921,13 @@ window.OFFICIAL_CSE_COURSES = OFFICIAL_CSE_COURSES;
     window.openPdfViewer = openPdfViewer;
 
     function closePdfViewerModal() {
-        const modal = document.getElementById('pdf-viewer-modal');
+        const modal = document.getElementById('pdf-preview-modal') || document.getElementById('pdf-viewer-modal');
         if (modal) {
             modal.classList.remove('active');
             modal.style.display = 'none';
             lockBodyScroll(false);
         }
-        const iframe = document.getElementById('pdf-viewer-iframe');
+        const iframe = document.getElementById('pdf-viewer-frame') || document.getElementById('pdf-viewer-iframe');
         if (iframe) {
             iframe.src = 'about:blank';
             iframe.style.opacity = '0';

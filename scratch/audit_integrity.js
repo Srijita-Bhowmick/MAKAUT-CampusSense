@@ -105,7 +105,7 @@ function runAudit() {
     console.log("✅ PASSED: modal-open cleanup on DOM load verified in app.js.");
   }
 
-  if (!indexHtmlContent.includes('<meta name="viewport" content="width=device-width, initial-scale=1.0">')) {
+  if (!indexHtmlContent.includes('<meta name="viewport" content="width=device-width, initial-scale=1.0')) {
     console.error("❌ FAILURE: Viewport meta tag is missing or non-standard in index.html!");
     passed = false;
   } else {
