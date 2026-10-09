@@ -6637,35 +6637,14 @@ kbd,
 }
 
 /* ====================================================================
-   PHASE 6: UNIVERSAL RESPONSIVE CARD ENGINE (DYNAMIC SCREEN FLUIDITY)
+   LAYOUT VIEWPORT SAFETY: CLEAN WRAPPING ONLY (ZERO REDESIGNS)
    ==================================================================== */
-.features-bento-grid,
-.subjects-grid,
-.pyq-grid,
-.dashboard-grid {
-  display: grid !important;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)) !important;
-  gap: clamp(1rem, 2vw, 1.75rem) !important;
-  width: 100% !important;
-  box-sizing: border-box !important;
-}
-
-/* Master Syllabus Card spans full row dynamically */
-.master-syllabus-card {
-  grid-column: 1 / -1 !important;
-  width: 100% !important;
-}
-
-/* Fluid Card Sizing without Overflow */
 .bento-card,
 .subject-card,
 .pyq-card,
-.interactive-card {
-  width: 100% !important;
-  min-height: auto !important;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: space-between !important;
+.interactive-card,
+.master-syllabus-card {
+  max-width: 100% !important;
   box-sizing: border-box !important;
 }
 
