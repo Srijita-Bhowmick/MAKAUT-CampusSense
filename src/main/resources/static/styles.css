@@ -2950,7 +2950,8 @@ body.is-drawer-resizing .ai-slide-drawer {
   font-weight: 600 !important;
   letter-spacing: -0.01em !important;
   line-height: 1.5 !important;
-  padding: 0.85rem 1.6rem !important;
+  height: 44px !important;
+  padding: 0 1.6rem !important;
   border-radius: 12px !important;
   display: inline-flex !important;
   align-items: center !important;

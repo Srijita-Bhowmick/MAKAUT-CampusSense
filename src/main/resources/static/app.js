@@ -236,6 +236,9 @@ window.onClerkLoaded = function() {
     function normalizePdfUrl(rawPath) {
       if (!rawPath) return '';
       let clean = rawPath.trim().replace(/^\/+/, '');
+      if (clean === 'CSE20.pdf' || clean === '/CSE20.pdf' || clean.includes('IT_Syllabus_3rd_to_8th.pdf') || clean.includes('CSE_AIML_Syllabus_3rd_to_8th.pdf')) {
+        clean = 'CSE(3rd to 8th sem)/CSE20.pdf';
+      }
       return clean.split('/').map(seg => encodeURIComponent(decodeURIComponent(seg))).join('/');
     }
     const sanitizePdfUrl = normalizePdfUrl;
@@ -2683,6 +2686,31 @@ const OFFICIAL_IT_PYQS = OFFICIAL_IT_COURSES.flatMap(c => (c.pyqs || []).map(p =
 window.OFFICIAL_IT_COURSES = OFFICIAL_IT_COURSES;
 window.OFFICIAL_IT_PYQS = OFFICIAL_IT_PYQS;
 
+const STREAM_MASTER_SYLLABI = {
+  'cse': {
+    title: 'CSE Syllabus (3rd to 8th sem)',
+    description: 'Complete official 80+ page MAKAUT syllabus covering all courses, practical labs, and departmental electives for B.Tech Computer Science & Engineering.',
+    path: 'CSE20.pdf',
+    badge: 'Official 4-Year Scheme (Sem 3 to 8)'
+  },
+  'it': {
+    title: 'IT Syllabus (3rd to 8th sem)',
+    description: 'Official MAKAUT curriculum structure, departmental electives, and module guidelines for B.Tech Information Technology.',
+    path: 'IT(3rd to 8th sem)/IT_Syllabus_3rd_to_8th.pdf',
+    badge: 'Official 4-Year Scheme (Sem 3 to 8)'
+  },
+  'cse-aiml': {
+    title: 'CSE-AIML Syllabus (3rd to 8th sem)',
+    description: 'Official MAKAUT specialized curriculum covering AI, machine learning foundations, electives, and practical tracks.',
+    path: 'CSE-AIML(3rd to 8th sem)/CSE_AIML_Syllabus_3rd_to_8th.pdf',
+    badge: 'Official 4-Year Scheme (Sem 3 to 8)'
+  }
+};
+STREAM_MASTER_SYLLABI['CSE'] = STREAM_MASTER_SYLLABI['cse'];
+STREAM_MASTER_SYLLABI['IT'] = STREAM_MASTER_SYLLABI['it'];
+STREAM_MASTER_SYLLABI['CSE-AIML'] = STREAM_MASTER_SYLLABI['cse-aiml'];
+window.STREAM_MASTER_SYLLABI = STREAM_MASTER_SYLLABI;
+
 const DEPARTMENT_REGISTRY = {
   'cse': { name: 'Computer Science & Engineering', code: 'CSE' },
   'it': { name: 'Information Technology', code: 'IT' },
@@ -3607,16 +3635,11 @@ window.getSubjectDocuments = getSubjectDocuments;
     if (tileActionSyllabi) {
         tileActionSyllabi.addEventListener('click', () => {
             if (currentYearMode !== 'FIRST_YEAR') {
-                if (currentStream === 'IT') {
-                    openPdfViewer('IT Syllabus (3rd to 8th sem)', 'IT(3rd to 8th sem)/Syllabus.pdf');
-                    return;
-                }
-                if (currentStream === 'CSE-AIML') {
-                    openPdfViewer('CSE (AI & ML) Syllabus (3rd to 8th sem)', 'CSE-AIML(3rd to 8th sem)/Syllabus.pdf');
-                    return;
-                }
-                if (currentStream === 'CSE') {
-                    openPdfViewer('CSE Syllabus (3rd to 8th sem)', 'CSE(3rd to 8th sem)/CSE20.pdf');
+                const sKey = (currentStream || 'CSE').toLowerCase().replace('_', '-');
+                const streamKey = (sKey === 'cse_aiml' || sKey === 'cse-aiml' || sKey === 'aiml') ? 'cse-aiml' : (sKey === 'it' ? 'it' : 'cse');
+                const masterSyllabus = (typeof STREAM_MASTER_SYLLABI !== 'undefined') ? STREAM_MASTER_SYLLABI[streamKey] : null;
+                if (masterSyllabus) {
+                    openPdfViewer(masterSyllabus.title, masterSyllabus.path);
                     return;
                 }
             }
@@ -4433,9 +4456,10 @@ window.getSubjectDocuments = getSubjectDocuments;
         } else {
             if (regNotice) regNotice.style.display = 'none';
             if (firstYearFilterRow) firstYearFilterRow.style.display = 'none';
-            const streamTitle = (currentStream === 'IT' || currentStream === 'CSE' || !currentStream) ? 'CSE' : currentStream;
+            const activeStream = (currentStream || 'CSE').toUpperCase();
+            const streamTitle = activeStream === 'CSE-AIML' ? 'CSE-AIML' : (activeStream === 'IT' ? 'IT' : 'CSE');
 
-            matchingSubjects = getFilteredTheorySubjectsWithPYQs(currentSem, 'CSE');
+            matchingSubjects = getFilteredTheorySubjectsWithPYQs(currentSem, activeStream);
             if (headingEl) headingEl.textContent = `${streamTitle} • Sem ${currentSem} (${matchingSubjects.length} Verified Theory Subjects)`;
 
             if (matchingSubjects.length === 0) {
@@ -4461,35 +4485,35 @@ window.getSubjectDocuments = getSubjectDocuments;
 
         let totalUnitsAll = 0;
         let completedUnitsAll = 0;
-        const isDeptUpperYears = (currentStream === 'CSE' || currentStream === 'IT' || currentStream === 'CSE-AIML') && currentYearMode !== 'FIRST_YEAR';
-        let deptSyllabusPdf = 'CSE(3rd to 8th sem)/CSE20.pdf';
-        let deptSyllabusTitle = 'CSE Syllabus (3rd to 8th sem)';
-        let deptSyllabusDesc = 'Complete official 80+ page MAKAUT syllabus covering all courses, practical labs, and departmental electives for B.Tech Computer Science & Engineering.';
-        if (currentStream === 'IT') {
-            deptSyllabusPdf = 'IT(3rd to 8th sem)/Syllabus.pdf';
-            deptSyllabusTitle = 'IT Syllabus (3rd to 8th sem)';
-            deptSyllabusDesc = 'Complete official MAKAUT syllabus covering all courses, practical labs, and departmental electives for B.Tech Information Technology.';
-        } else if (currentStream === 'CSE-AIML') {
-            deptSyllabusPdf = 'CSE-AIML(3rd to 8th sem)/Syllabus.pdf';
-            deptSyllabusTitle = 'CSE (AI & ML) Syllabus (3rd to 8th sem)';
-            deptSyllabusDesc = 'Complete official MAKAUT syllabus covering all courses, practical labs, and departmental electives for B.Tech CSE (Artificial Intelligence & Machine Learning).';
-        }
+        const currentSemNum = parseInt(currentSem) || 3;
+        const isDeptUpperYears = currentYearMode !== 'FIRST_YEAR' && currentSemNum >= 3;
+        const isCseUpperYears = isDeptUpperYears;
+        const sKey = (currentStream || 'CSE').toLowerCase().replace('_', '-');
+        const streamKey = (sKey === 'cse_aiml' || sKey === 'cse-aiml' || sKey === 'aiml') ? 'cse-aiml' : (sKey === 'it' ? 'it' : 'cse');
+        const masterSyllabus = (typeof STREAM_MASTER_SYLLABI !== 'undefined' && STREAM_MASTER_SYLLABI[streamKey]) 
+            ? STREAM_MASTER_SYLLABI[streamKey] 
+            : {
+                title: 'CSE Syllabus (3rd to 8th sem)',
+                description: 'Complete official 80+ page MAKAUT syllabus covering all courses, practical labs, and departmental electives for B.Tech Computer Science & Engineering.',
+                path: 'CSE20.pdf',
+                badge: 'Official 4-Year Scheme (Sem 3 to 8)'
+            };
 
         const masterCardHtml = isDeptUpperYears ? `
             <div class="bento-card master-syllabus-card single-master-card" style="grid-column: 1 / -1; margin-bottom: 1.25rem;">
                 <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
-                    <span class="badge credit-badge" style="background: rgba(255,255,255,0.06); font-family: var(--font-mono);">Official 4-Year Scheme</span>
+                    <span class="badge credit-badge" style="background: rgba(255,255,255,0.06); font-family: var(--font-mono); font-size: 0.75rem;">${masterSyllabus.badge || 'Official 4-Year Scheme (Sem 3 to 8)'}</span>
                     <span class="credits" style="font-size: 0.82rem; color: var(--text-muted);">Semesters 3 to 8</span>
                 </div>
-                <h3 style="font-size: 1.2rem; font-weight: 700; margin: 0 0 0.35rem; color: var(--text-main);">${deptSyllabusTitle}</h3>
-                <p style="margin: 0 0 0.85rem; color: var(--text-muted); font-size: 0.88rem; line-height: 1.5;">${deptSyllabusDesc}</p>
+                <h3 style="font-size: 1.2rem; font-weight: 700; margin: 0 0 0.35rem; color: var(--text-main);">${masterSyllabus.title}</h3>
+                <p style="margin: 0 0 0.85rem; color: var(--text-muted); font-size: 0.88rem; line-height: 1.5;">${masterSyllabus.description}</p>
                 <div class="card-actions" style="margin-top: 1rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
-                    <button type="button" class="btn btn-primary btn-preview-pdf" data-pdf="${deptSyllabusPdf}" data-title="${deptSyllabusTitle}" data-url="${normalizePdfUrl(deptSyllabusPdf)}" onclick="if(window.previewPdfFile)window.previewPdfFile('${deptSyllabusPdf}', '${deptSyllabusTitle}')" style="padding: 0.5rem 1.15rem; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
+                    <button type="button" class="btn btn-primary btn-preview-pdf" data-pdf="${masterSyllabus.path}" data-title="${masterSyllabus.title}" data-url="${normalizePdfUrl(masterSyllabus.path)}" onclick="if(window.previewPdfFile)window.previewPdfFile('${masterSyllabus.path}', '${masterSyllabus.title}')" style="padding: 0.5rem 1.15rem; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
                         📖 Official Syllabus PDF
                     </button>
-                    <button type="button" class="btn btn-secondary" onclick="if(window.downloadPdfFile)window.downloadPdfFile('${deptSyllabusPdf}', '${deptSyllabusPdf.split('/').pop()}')" style="padding: 0.5rem 1.15rem; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
+                    <a href="${normalizePdfUrl(masterSyllabus.path)}" download="${masterSyllabus.path.split('/').pop()}" class="btn btn-secondary" onclick="if(window.downloadPdfFile)window.downloadPdfFile('${masterSyllabus.path}', '${masterSyllabus.path.split('/').pop()}')" style="padding: 0.5rem 1.15rem; font-size: 0.85rem; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center;">
                         ⬇ Download PDF
-                    </button>
+                    </a>
                 </div>
             </div>
         ` : '';
@@ -4610,24 +4634,27 @@ window.getSubjectDocuments = getSubjectDocuments;
         if (!container) return;
 
         const profile = JSON.parse(localStorage.getItem('campussense_academic_profile') || '{}');
-        const sem = parseInt(profile.semester) || 3;
+        const sem = parseInt(profile.semester || currentSem) || 3;
+        const rawStream = (profile.stream || currentStream || 'CSE').toLowerCase().replace('_', '-');
+        const streamKey = (rawStream === 'cse_aiml' || rawStream === 'cse-aiml' || rawStream === 'aiml') ? 'cse-aiml' : (rawStream === 'it' ? 'it' : 'cse');
 
-        if (profile.stream === 'CSE' && sem >= 3) {
+        if (sem >= 3 && currentYearMode !== 'FIRST_YEAR' && typeof STREAM_MASTER_SYLLABI !== 'undefined' && STREAM_MASTER_SYLLABI[streamKey]) {
+            const masterData = STREAM_MASTER_SYLLABI[streamKey];
             container.innerHTML = `
                 <div class="bento-card master-syllabus-card" style="grid-column: 1 / -1;">
                     <div class="card-header">
-                        <span class="badge">Official University Curriculum</span>
+                        <span class="badge">${masterData.badge || 'Official 4-Year Scheme (Sem 3 to 8)'}</span>
                         <span class="credits">Semesters 3 to 8 Complete</span>
                     </div>
-                    <h3 style="font-size: 1.5rem; margin: 0.75rem 0;">CSE Syllabus (3rd to 8th sem)</h3>
+                    <h3 style="font-size: 1.5rem; margin: 0.75rem 0;">${masterData.title}</h3>
                     <p style="color: var(--text-muted); margin-bottom: 1.25rem;">
-                        Official complete 80+ page Maulana Abul Kalam Azad University of Technology syllabus covering all semesters (3rd to 8th sem) for B.Tech Computer Science & Engineering.
+                        ${masterData.description}
                     </p>
                     <div class="card-actions">
-                        <button class="btn btn-primary" onclick="previewPdfFile('CSE(3rd to 8th sem)/CSE20.pdf', 'CSE Syllabus (3rd to 8th sem)')">
+                        <button class="btn btn-primary" onclick="previewPdfFile('${masterData.path}', '${masterData.title}')">
                             📖 Official Syllabus PDF
                         </button>
-                        <button class="btn btn-secondary" onclick="downloadPdfFile('CSE(3rd to 8th sem)/CSE20.pdf', 'CSE20.pdf')">
+                        <button class="btn btn-secondary" onclick="downloadPdfFile('${masterData.path}', '${masterData.title}.pdf')">
                             ⬇ Download PDF
                         </button>
                     </div>
@@ -4873,22 +4900,30 @@ window.getSubjectDocuments = getSubjectDocuments;
         const statNum = document.getElementById('hub-completion-stat');
         if (!container) return;
 
-        // For CSE (Sem 3-8), render exclusively the single master syllabus card
-        if ((subject.stream === 'CSE' || currentStream === 'CSE') && (!subject.isFirstYear && (subject.semester >= 3 || currentSem >= 3))) {
+        // For Upper Semesters (Sem 3-8), render exclusively the single master syllabus card
+        const sKey = (subject.stream || currentStream || 'cse').toLowerCase().replace('_', '-');
+        const streamKey = (sKey === 'cse_aiml' || sKey === 'cse-aiml' || sKey === 'aiml') ? 'cse-aiml' : (sKey === 'it' ? 'it' : 'cse');
+        const isUpperSem = !subject.isFirstYear && (subject.semester >= 3 || currentSem >= 3);
+        const masterData = (typeof STREAM_MASTER_SYLLABI !== 'undefined') ? STREAM_MASTER_SYLLABI[streamKey] : null;
+
+        if (isUpperSem && masterData) {
             container.innerHTML = `
                 <div class="curriculum-card single-master-card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-md); padding: 1.5rem; margin-bottom: 1rem;">
                     <div class="curriculum-card-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; flex-wrap: wrap; gap: 0.5rem;">
-                        <span class="subject-code-tag" style="font-weight: 700; color: var(--accent-primary);">MAKAUT-CSE-3-8-SEM</span>
-                        <span class="badge credit-badge" style="background: rgba(255,255,255,0.06); font-family: var(--font-mono); font-size: 0.75rem;">Sem 3–8 Complete Curriculum</span>
+                        <span class="subject-code-tag" style="font-weight: 700; color: var(--accent-primary);">MAKAUT-${streamKey.toUpperCase()}-3-8-SEM</span>
+                        <span class="badge credit-badge" style="background: rgba(255,255,255,0.06); font-family: var(--font-mono); font-size: 0.75rem;">${masterData.badge || 'Sem 3–8 Complete Curriculum'}</span>
                     </div>
-                    <h3 class="curriculum-card-title" style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-main);">CSE Syllabus (3rd to 8th sem)</h3>
-                    <div class="curriculum-card-meta" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.85rem;">Computer Science & Engineering • Semesters 3 to 8</div>
+                    <h3 class="curriculum-card-title" style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-main);">${masterData.title}</h3>
+                    <div class="curriculum-card-meta" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.85rem;">${streamKey.toUpperCase()} • Semesters 3 to 8</div>
                     <p style="margin: 0 0 1.25rem; color: var(--text-muted); font-size: 0.9rem; line-height: 1.6;">
-                        Complete official 80+ page MAKAUT syllabus covering 3rd to 8th semester.
+                        ${masterData.description}
                     </p>
-                    <div>
-                        <button type="button" class="btn btn-primary btn-preview-pdf" data-pdf="CSE(3rd to 8th sem)/CSE20.pdf" data-title="CSE Syllabus (3rd to 8th sem)" data-url="CSE(3rd to 8th%20sem)/CSE20.pdf" style="padding: 0.55rem 1.15rem; font-size: 0.88rem; font-weight: 600; cursor: pointer;">
+                    <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                        <button type="button" class="btn btn-primary btn-preview-pdf" data-pdf="${masterData.path}" data-title="${masterData.title}" style="padding: 0.55rem 1.15rem; font-size: 0.88rem; font-weight: 600; cursor: pointer;">
                             📖 Official Syllabus PDF
+                        </button>
+                        <button type="button" class="btn btn-secondary btn-download-pdf" onclick="downloadPdfFile('${masterData.path}', '${masterData.title}.pdf')" style="padding: 0.55rem 1.15rem; font-size: 0.88rem; font-weight: 600; cursor: pointer;">
+                            ⬇ Download PDF
                         </button>
                     </div>
                 </div>
@@ -4897,7 +4932,11 @@ window.getSubjectDocuments = getSubjectDocuments;
             if (previewBtn) {
                 previewBtn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    openPdfViewer('CSE Syllabus (3rd to 8th sem)', 'CSE(3rd to 8th sem)/CSE20.pdf');
+                    if (typeof previewPdfFile === 'function') {
+                        previewPdfFile(masterData.path, masterData.title);
+                    } else {
+                        openPdfViewer(masterData.title, masterData.path);
+                    }
                 });
             }
             if (statNum) statNum.textContent = '100%';
@@ -7535,9 +7574,14 @@ window.getSubjectDocuments = getSubjectDocuments;
             const tileActionSyllabi = document.getElementById('tile-action-syllabi');
             if (tileActionSyllabi) {
                 tileActionSyllabi.onclick = () => {
-                    if (currentStream === 'CSE' && currentYearMode !== 'FIRST_YEAR') {
-                        openPdfViewer('CSE Syllabus (3rd to 8th sem)', 'CSE(3rd to 8th sem)/CSE20.pdf');
-                        return;
+                    if (currentYearMode !== 'FIRST_YEAR') {
+                        const sKey = (currentStream || 'CSE').toLowerCase().replace('_', '-');
+                        const streamKey = (sKey === 'cse_aiml' || sKey === 'cse-aiml' || sKey === 'aiml') ? 'cse-aiml' : (sKey === 'it' ? 'it' : 'cse');
+                        const masterSyllabus = (typeof STREAM_MASTER_SYLLABI !== 'undefined') ? STREAM_MASTER_SYLLABI[streamKey] : null;
+                        if (masterSyllabus) {
+                            openPdfViewer(masterSyllabus.title, masterSyllabus.path);
+                            return;
+                        }
                     }
                     const subjectsSection = document.querySelector('.bento-card-subjects');
                     if (subjectsSection) {
