@@ -2376,7 +2376,7 @@ body:not(.modal-open) {
     height: 100vh;
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(2px);
-    z-index: 999990;
+    z-index: 9998;
     animation: fadeIn 0.2s ease-out;
 }
 
@@ -3100,12 +3100,24 @@ body.is-drawer-resizing .ai-slide-drawer {
     margin-bottom: 0.45rem;
 }
 
-.landing-section-title {
-    font-family: var(--font-heading);
-    font-size: 2.1rem;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    margin-bottom: 0.6rem;
+.section-header h2,
+.landing-section-title,
+.why-campussense-title,
+#why-campussense h2 {
+  white-space: nowrap !important;
+  font-size: clamp(1.5rem, 2.7vw, 2.25rem) !important;
+  letter-spacing: -0.02em !important;
+  text-align: center !important;
+  max-width: 100% !important;
+}
+
+@media (max-width: 768px) {
+  .section-header h2,
+  .landing-section-title,
+  .why-campussense-title,
+  #why-campussense h2 {
+    white-space: normal !important;
+  }
 }
 
 .landing-section-subhead {
@@ -3226,21 +3238,28 @@ body.is-drawer-resizing .ai-slide-drawer {
 }
 
 /* Feature Card Action Buttons */
+.features-grid .feature-card .btn,
+.features-grid .bento-card button,
+.features-grid .bento-card a,
+.landing-features-grid .bento-card button,
+.landing-features-grid .feature-card-cta,
 .feature-card-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-top: 1.25rem;
-    background: rgba(99, 102, 241, 0.12);
-    border: 1px solid rgba(99, 102, 241, 0.3);
-    color: #a5b4fc;
-    border-radius: var(--radius-sm);
-    padding: 0.55rem 1rem;
-    font-family: var(--font-heading);
-    font-weight: 600;
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: var(--transition-fast);
+  border-radius: 10px !important;
+  height: 38px !important;
+  padding: 0.5rem 1rem !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.4rem !important;
+  text-decoration: none !important;
+  margin-top: 1.25rem;
+  background: rgba(99, 102, 241, 0.12);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  color: #a5b4fc;
+  cursor: pointer;
+  transition: var(--transition-fast);
 }
 
 .feature-card-cta:hover {
@@ -4340,26 +4359,60 @@ body.is-drawer-resizing .ai-slide-drawer {
 }
 
 /* ====================================================================
-   Saved Deck Drawer & Cards
+   Saved Deck Drawer & Cards — Razor Sharp & De-Blurred
    ==================================================================== */
-.saved-deck-drawer {
-    position: fixed;
-    top: 0;
-    right: -480px;
-    width: 460px;
-    max-width: 90vw;
-    height: 100vh;
-    background: var(--bg-card, #0f172a);
-    border-left: 1px solid var(--card-border);
-    box-shadow: -12px 0 32px rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-    transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+/* Backdrop overlay behind the drawer */
+.drawer-backdrop,
+.saved-deck-backdrop,
+.modal-backdrop {
+  position: fixed !important;
+  inset: 0 !important;
+  background: rgba(15, 23, 42, 0.6) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  z-index: 9998 !important;
 }
 
-.saved-deck-drawer.open {
-    right: 0;
+/* The Saved Deck Drawer Panel — Must be completely sharp */
+#saved-deck-drawer,
+.saved-deck-drawer,
+.drawer-panel {
+  position: fixed !important;
+  top: 0 !important;
+  right: -480px !important;
+  bottom: 0 !important;
+  width: min(100%, 420px) !important;
+  background: #0f172a !important; /* solid/opaque surface */
+  z-index: 9999 !important;
+  filter: none !important; /* Prevent inherited blur */
+  -webkit-filter: none !important;
+  backdrop-filter: none !important; /* Prevent text rasterization blur */
+  -webkit-font-smoothing: antialiased !important;
+  transform: translateZ(0) !important;
+  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.4) !important;
+  overflow-y: auto !important;
+  transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+#saved-deck-drawer.open,
+.saved-deck-drawer.open,
+.drawer-panel.open {
+  right: 0 !important;
+}
+
+/* Ensure all child elements inside the drawer are razor sharp */
+#saved-deck-drawer *,
+.saved-deck-drawer * {
+  filter: none !important;
+  -webkit-filter: none !important;
+}
+
+/* Prevent applying filter to any container that houses the drawer */
+body.modal-open #saved-deck-drawer,
+body.drawer-open #saved-deck-drawer {
+  filter: none !important;
 }
 
 .saved-deck-body {

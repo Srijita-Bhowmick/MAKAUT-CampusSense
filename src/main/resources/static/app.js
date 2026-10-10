@@ -9550,6 +9550,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             savedDeckBackdrop.classList.add('active');
             savedDeckBackdrop.style.display = 'block';
         }
+        document.body.classList.add('drawer-open');
         renderSavedDeckFull();
     }
 
@@ -9559,6 +9560,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             savedDeckBackdrop.classList.remove('active');
             savedDeckBackdrop.style.display = 'none';
         }
+        document.body.classList.remove('drawer-open');
     }
 
     if (btnOpenSavedDeck) btnOpenSavedDeck.addEventListener('click', openSavedDeckDrawer);
