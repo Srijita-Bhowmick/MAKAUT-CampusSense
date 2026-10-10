@@ -107,11 +107,11 @@
                 Curated syllabi, subject-wise PYQs, and exam-ready revisions for MAKAUT students
             </p>
 
-            <div class="landing-hero-actions">
+            <div class="landing-hero-actions hero-actions">
                 <a href="#landing-curriculum" class="btn btn-primary btn-hero-cta" id="btn-explore-curriculum">
                     Explore Curriculums and PYQs ➔
                 </a>
-                <button class="btn btn-flame-hero" id="btn-hero-panic-pack">
+                <button class="btn btn-panic btn-flame-hero" id="btn-hero-panic-pack">
                     🔥 View 48h Panic Pack
                 </button>
             </div>
@@ -144,9 +144,9 @@
                 <p class="landing-section-subhead">Everything you need to master your semester syllabus and clear your examinations with high marks.</p>
             </div>
 
-            <div class="landing-features-grid features-bento-grid">
+            <div class="landing-features-grid features-grid features-container features-bento-grid">
                 <!-- Card 1: Syllabus Checklist -->
-                <div class="landing-feature-card bento-card feature-gate-card" data-gate-target="syllabus">
+                <div class="landing-feature-card bento-card feature-card feature-gate-card" data-gate-target="syllabus">
                     <div class="feature-card-content">
                         <div class="feature-icon-box">📋</div>
                         <h3 class="feature-card-title">Curated Syllabi & Unit Checklists</h3>
@@ -158,7 +158,7 @@
                 </div>
 
                 <!-- Card 2: PYQ Archives (placed directly adjacent to Curated Syllabi) -->
-                <div class="landing-feature-card bento-card feature-gate-card" data-gate-target="pyqs">
+                <div class="landing-feature-card bento-card feature-card feature-gate-card" data-gate-target="pyqs">
                     <div class="feature-card-content">
                         <div class="feature-icon-box emerald">📑</div>
                         <h3 class="feature-card-title">PYQ Archives</h3>
@@ -170,7 +170,7 @@
                 </div>
 
                 <!-- Card 3: 48-Hour Panic Pack -->
-                <div class="landing-feature-card bento-card feature-gate-card panic-pack-card" data-gate-target="panic">
+                <div class="landing-feature-card bento-card feature-card feature-gate-card panic-pack-card" data-gate-target="panic">
                     <div class="feature-card-content">
                         <div class="feature-icon-box flame">🔥</div>
                         <h3 class="feature-card-title">The 48-Hour Panic Pack</h3>
@@ -182,7 +182,7 @@
                 </div>
 
                 <!-- Card 4: AI Assistant -->
-                <div class="landing-feature-card bento-card feature-gate-card" data-gate-target="ai">
+                <div class="landing-feature-card bento-card feature-card feature-gate-card" data-gate-target="ai">
                     <div class="feature-card-content">
                         <div class="feature-icon-box cyan">🤖</div>
                         <h3 class="feature-card-title">Grounded Conversational AI Assistant</h3>
@@ -207,10 +207,12 @@
             </div>
 
             <!-- Stream Filter Tabs for Curriculum -->
-            <div class="curriculum-filter-tabs" id="curriculum-stream-filter">
-                <button class="curriculum-tab-btn landing-filter-btn active" data-curriculum-filter="all" data-curriculum-stream="ALL" data-stream="all">All Subjects</button>
-                <button class="curriculum-tab-btn landing-filter-btn" data-curriculum-filter="common" data-curriculum-stream="COMMON" data-stream="common">1st Year Common</button>
-                <button class="curriculum-tab-btn landing-filter-btn" data-curriculum-filter="cse" data-curriculum-stream="CSE" data-stream="cse">CSE</button>
+            <div class="stream-filter-group curriculum-filter-tabs" id="curriculum-filter-group" role="tablist">
+                <button class="filter-pill-btn curriculum-tab-btn landing-filter-btn active" data-stream="all" data-curriculum-filter="all" role="tab">All Subjects</button>
+                <button class="filter-pill-btn curriculum-tab-btn landing-filter-btn" data-stream="first-year" data-curriculum-filter="first-year" role="tab">1st Year Common</button>
+                <button class="filter-pill-btn curriculum-tab-btn landing-filter-btn" data-stream="cse" data-curriculum-filter="cse" role="tab">CSE</button>
+                <button class="filter-pill-btn curriculum-tab-btn landing-filter-btn" data-stream="it" data-curriculum-filter="it" role="tab">IT</button>
+                <button class="filter-pill-btn curriculum-tab-btn landing-filter-btn" data-stream="cse-aiml" data-curriculum-filter="cse-aiml" role="tab">CSE-AIML</button>
             </div>
 
             <div id="curriculum-grid" class="subjects-grid">

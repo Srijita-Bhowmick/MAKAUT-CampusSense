@@ -249,7 +249,19 @@ window.onClerkLoaded = function() {
         let [pathOnly, queryString] = pathAndQuery.split('?');
         // Ensure path starts cleanly without leading slash conflicts
         let cleanUrl = pathOnly.startsWith('/') ? pathOnly.slice(1) : pathOnly;
+        cleanUrl = cleanUrl.replace(/^\.\//, '');
         
+        // Auto-resolve paths that omit PYQs/ subfolder for IT, CSE-AIML, CSE, or 1st Year
+        if (/^CSE-AIML\(3rd to 8th sem\)\/Semester_/i.test(cleanUrl)) {
+            cleanUrl = cleanUrl.replace(/^CSE-AIML\(3rd to 8th sem\)\/(Semester_.*)$/i, 'CSE-AIML(3rd to 8th sem)/PYQs/$1');
+        } else if (/^IT\(3rd to 8th sem\)\/Semester_/i.test(cleanUrl)) {
+            cleanUrl = cleanUrl.replace(/^IT\(3rd to 8th sem\)\/(Semester_.*)$/i, 'IT(3rd to 8th sem)/PYQs/$1');
+        } else if (/^CSE\(3rd to 8th sem\)\/Semester_/i.test(cleanUrl)) {
+            cleanUrl = cleanUrl.replace(/^CSE\(3rd to 8th sem\)\/(Semester_.*)$/i, 'CSE(3rd to 8th sem)/PYQs/$1');
+        } else if (/^1st_Year_Engineering_All_Branches\/Semester_/i.test(cleanUrl)) {
+            cleanUrl = cleanUrl.replace(/^1st_Year_Engineering_All_Branches\/(Semester_.*)$/i, '1st_Year_Engineering_All_Branches/PYQs/$1');
+        }
+
         // Split path by segments and encode each segment individually (including spaces and parentheses like '(3rd to 8th sem)')
         const sanitizedPath = cleanUrl
             .split('/')
@@ -7635,14 +7647,20 @@ window.getSubjectDocuments = getSubjectDocuments;
 
       const commonSubjects = (typeof MAKAUT_CURRICULUM !== 'undefined') ? MAKAUT_CURRICULUM : [];
       const cseCourses = (typeof DEPARTMENT_STREAMS !== 'undefined' && DEPARTMENT_STREAMS.CSE && DEPARTMENT_STREAMS.CSE.courses) ? DEPARTMENT_STREAMS.CSE.courses : [];
+      const itCourses = (typeof DEPARTMENT_STREAMS !== 'undefined' && DEPARTMENT_STREAMS.IT && DEPARTMENT_STREAMS.IT.courses) ? DEPARTMENT_STREAMS.IT.courses : (typeof OFFICIAL_IT_COURSES !== 'undefined' ? OFFICIAL_IT_COURSES : []);
+      const aimlCourses = (typeof DEPARTMENT_STREAMS !== 'undefined' && (DEPARTMENT_STREAMS['CSE-AIML'] || DEPARTMENT_STREAMS['cse-aiml']) && (DEPARTMENT_STREAMS['CSE-AIML'] || DEPARTMENT_STREAMS['cse-aiml']).courses) ? (DEPARTMENT_STREAMS['CSE-AIML'] || DEPARTMENT_STREAMS['cse-aiml']).courses : (typeof OFFICIAL_CSE_AIML_COURSES !== 'undefined' ? OFFICIAL_CSE_AIML_COURSES : []);
 
-      if (fLower === 'common' || fLower === '1st year common' || fLower === '1st-year-common') {
-        subjects = commonSubjects.filter(s => s.isFirstYear || s.stream === 'GROUP_A' || s.stream === 'GROUP_B' || s.stream === 'COMMON');
+      if (fLower === 'common' || fLower === '1st year common' || fLower === '1st-year-common' || fLower === 'first-year' || fLower === 'first_year' || fLower === 'fy') {
+        subjects = commonSubjects.filter(s => s.isFirstYear || s.semester === 1 || s.semester === 2 || s.stream === 'GROUP_A' || s.stream === 'GROUP_B' || s.stream === 'COMMON');
       } else if (fLower === 'cse') {
         subjects = cseCourses;
+      } else if (fLower === 'it') {
+        subjects = itCourses;
+      } else if (fLower === 'cse-aiml' || fLower === 'aiml' || fLower === 'cse_aiml') {
+        subjects = aimlCourses;
       } else {
         // 'all'
-        subjects = [...commonSubjects, ...cseCourses];
+        subjects = [...commonSubjects, ...cseCourses, ...itCourses, ...aimlCourses];
       }
 
       const seen = new Set();
@@ -7767,38 +7785,42 @@ window.getSubjectDocuments = getSubjectDocuments;
     // Wire All Landing Filter Buttons & PYQ Year Filters
     function bindLandingFilterButtons() {
         try {
-            document.querySelectorAll('[data-curriculum-filter]').forEach(btn => {
+            const filterPills = document.querySelectorAll('#curriculum-filter-group .filter-pill-btn, .curriculum-filter-tabs button, [data-curriculum-filter], [data-stream]');
+            filterPills.forEach(btn => {
               btn.addEventListener('click', (e) => {
-                document.querySelectorAll('[data-curriculum-filter]').forEach(b => b.classList.remove('active'));
+                e.preventDefault();
+                const stream = btn.getAttribute('data-stream') || btn.getAttribute('data-curriculum-filter') || 'all';
+                filterPills.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                renderLandingCurriculum(btn.getAttribute('data-curriculum-filter'));
-              });
-            });
-
-            document.querySelectorAll('[data-year-filter]').forEach(btn => {
-              btn.addEventListener('click', (e) => {
-                document.querySelectorAll('[data-year-filter]').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                renderLandingArchives(btn.getAttribute('data-year-filter'));
-              });
-            });
-
-            document.querySelectorAll('.landing-filter-btn').forEach(btn => {
-              btn.addEventListener('click', () => {
-                const stream = btn.getAttribute('data-curriculum-filter') || btn.getAttribute('data-stream') || 'all';
                 renderLandingCurriculum(stream);
               });
             });
 
-            document.querySelectorAll('.pyq-year-filter-btn').forEach(btn => {
-              btn.addEventListener('click', () => {
+            const yearPills = document.querySelectorAll('[data-year-filter], .pyq-year-filter-btn');
+            yearPills.forEach(btn => {
+              btn.addEventListener('click', (e) => {
+                e.preventDefault();
                 const year = btn.getAttribute('data-year-filter') || btn.getAttribute('data-year') || 'all';
+                yearPills.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
                 renderLandingArchives(year);
               });
             });
         } catch (err) {
             console.error("Error in bindLandingFilterButtons:", err);
         }
+    }
+
+    // Ensure both are called on initial boot:
+    document.addEventListener('DOMContentLoaded', () => {
+      renderLandingCurriculum('all');
+      renderLandingArchives('all');
+      bindLandingFilterButtons();
+    });
+    if (document.readyState !== 'loading') {
+      renderLandingCurriculum('all');
+      renderLandingArchives('all');
+      bindLandingFilterButtons();
     }
 
     function initLandingPage() {
