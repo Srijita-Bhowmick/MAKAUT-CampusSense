@@ -5986,11 +5986,23 @@ kbd,
 }
 
 /* Universal PDF Preview Engine Frame */
+#pdf-preview-modal .modal-dialog,
+#pdf-preview-modal .modal-card {
+  max-width: 1200px !important;
+  width: 92vw !important;
+  height: 90vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+  padding: 0 !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+}
+
 #pdf-viewer-frame,
 #pdf-viewer-iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
+  width: 100% !important;
+  height: 100% !important;
+  border: none !important;
   min-height: 520px;
 }
 

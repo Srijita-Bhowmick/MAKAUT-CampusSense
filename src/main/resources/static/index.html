@@ -640,60 +640,23 @@
     </div>
 
     <!-- PDF Previewer Modal -->
-    <div class="modal-backdrop" id="pdf-preview-modal" style="display: none;">
-        <div id="pdf-viewer-modal" style="display:none;" aria-hidden="true"></div>
-        <div class="modal-card pdf-viewer-card">
-            <div class="pdf-viewer-header">
-                <div class="pdf-file-info">
-                    <span class="doc-icon">📄</span>
-                    <div>
-                        <div class="pdf-title" id="pdf-modal-title">Examination Paper</div>
-                        <div class="pdf-subtitle" id="pdf-modal-subtitle">Maulana Abul Kalam Azad University of Technology Question Repository</div>
-                    </div>
-                </div>
-                <div class="pdf-viewer-actions">
-                    <button type="button" class="btn-modal-back" id="btn-back-pdf-modal" title="Back">← Back</button>
-                    <button type="button" class="btn btn-secondary" id="btn-pdf-bookmark" title="Save to Deck">
-                        🔖 Save to Deck
-                    </button>
-                    <button type="button" class="btn btn-secondary" id="btn-pdf-fullscreen" title="Toggle Fullscreen">
-                        ⛶ Fullscreen
-                    </button>
-                    <button type="button" class="btn btn-secondary" id="btn-pdf-external-download" title="Download PDF">
-                        ⬇ Download PDF
-                    </button>
-                    <button class="modal-close-btn" id="btn-close-pdf-modal" title="Close">✕</button>
-                </div>
-            </div>
-
-            <div class="pdf-viewer-body" id="pdf-viewer-body">
-                <div class="pdf-loading-spinner" id="pdf-loading-spinner" style="display: none;">
-                    <div class="spinner-ring"></div>
-                    <span>Loading Document Preview...</span>
-                </div>
-                <iframe id="pdf-viewer-frame" class="pdf-viewer-frame" src="about:blank" title="Document Viewer"></iframe>
-                <iframe id="pdf-viewer-iframe" style="display:none;" aria-hidden="true"></iframe>
-                <div class="pdf-fallback-view" id="pdf-fallback-view" style="display: none;">
-                    <div class="pdf-fallback-alert">
-                        <div class="pdf-fallback-alert-title">
-                            <span>⚠️</span> Embedded Preview Restricted
-                        </div>
-                        <div class="pdf-fallback-alert-desc">
-                            Your browser environment prevented direct inline PDF rendering. You can download the complete document or view the syllabus breakdown below.
-                        </div>
-                        <div class="pdf-fallback-actions">
-                            <button type="button" class="btn btn-primary" id="btn-fallback-direct-download">
-                                ⬇ Direct Download PDF
-                            </button>
-                            <button type="button" class="btn btn-secondary" id="btn-fallback-new-tab">
-                                ↗ Open in New Window
-                            </button>
-                        </div>
-                    </div>
-                    <div id="pdf-fallback-content"></div>
-                </div>
-            </div>
+    <div id="pdf-preview-modal" class="modal modal-backdrop" style="display: none;">
+      <div id="pdf-viewer-modal" style="display: none;" aria-hidden="true"></div>
+      <div class="modal-dialog modal-xl modal-card pdf-viewer-card" style="width: 92vw; max-width: 1200px; height: 90vh; display: flex; flex-direction: column;">
+        <div class="modal-header pdf-viewer-header" style="display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 1.25rem;">
+          <h3 id="pdf-preview-title" class="pdf-title" style="margin: 0; font-size: 1.1rem; font-weight: 600;">Document Preview</h3>
+          <span id="pdf-modal-title" style="display:none;" aria-hidden="true">Document Preview</span>
+          <div style="display: flex; align-items: center; gap: 0.6rem;">
+            <a id="btn-pdf-open-external" href="#" target="_blank" class="btn btn-outline" style="padding: 0.35rem 0.75rem; font-size: 0.825rem; text-decoration: none;">Open in New Tab ↗</a>
+            <a id="btn-pdf-download-direct" href="#" download class="btn btn-primary" style="padding: 0.35rem 0.75rem; font-size: 0.825rem; text-decoration: none;">Download ⬇</a>
+            <button id="btn-close-pdf-modal" class="modal-close-btn" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; margin-left: 0.5rem;" onclick="document.getElementById('pdf-preview-modal').style.display='none'; document.getElementById('pdf-preview-modal').classList.remove('active'); document.body.classList.remove('modal-open');">&times;</button>
+          </div>
         </div>
+        <div class="modal-body pdf-viewer-body" style="flex: 1; padding: 0; background: #525659; overflow: hidden; position: relative;">
+          <iframe id="pdf-viewer-frame" class="pdf-viewer-frame" src="about:blank" style="width: 100%; height: 100%; border: none; background: #ffffff;" title="Document Viewer"></iframe>
+          <iframe id="pdf-viewer-iframe" style="display: none;" aria-hidden="true"></iframe>
+        </div>
+      </div>
     </div>
 
     <!-- In-App Student Authentication Fallback Modal (Dual-Engine Support) -->

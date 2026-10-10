@@ -239,7 +239,8 @@ window.onClerkLoaded = function() {
       if (clean === 'CSE20.pdf' || clean === '/CSE20.pdf' || clean.includes('IT_Syllabus_3rd_to_8th.pdf') || clean.includes('CSE_AIML_Syllabus_3rd_to_8th.pdf')) {
         clean = 'CSE(3rd to 8th sem)/CSE20.pdf';
       }
-      return clean.split('/').map(seg => encodeURIComponent(decodeURIComponent(seg))).join('/');
+      const encodedSegments = clean.split('/').map(seg => encodeURIComponent(decodeURIComponent(seg)));
+      return '/' + encodedSegments.join('/');
     }
     const sanitizePdfUrl = normalizePdfUrl;
     window.normalizePdfUrl = normalizePdfUrl;
@@ -250,11 +251,11 @@ window.onClerkLoaded = function() {
         if (/^(https?:|blob:|data:)/.test(relativePath)) {
             return sanitizePdfUrl(relativePath);
         }
-        const clean = sanitizePdfUrl(relativePath.replace(/^\.?\//, ''));
+        const clean = sanitizePdfUrl(relativePath);
         if (window.location.pathname.includes('/MAKAUT-CampusSense/')) {
-            return window.location.origin + '/MAKAUT-CampusSense/' + clean;
+            return window.location.origin + '/MAKAUT-CampusSense' + clean;
         }
-        return window.location.origin + '/' + clean;
+        return window.location.origin + clean;
     }
     window.resolveAssetPath = resolveAssetPath;
     
@@ -428,33 +429,56 @@ window.onClerkLoaded = function() {
       if (!requireAuthOrTrigger()) return;
       const isAuth = (window.Clerk && window.Clerk.user) || localStorage.getItem('campussense_user_session');
       if (!isAuth) {
-        triggerAppAuthentication(false);
+        if (typeof triggerAppAuthentication === 'function') {
+          triggerAppAuthentication(false);
+        }
         return;
       }
 
       const modal = document.getElementById('pdf-preview-modal') || document.getElementById('pdf-viewer-modal') || document.getElementById('pdf-modal');
-      let iframe = document.getElementById('pdf-viewer-frame') || document.getElementById('pdf-viewer-iframe') || (modal ? modal.querySelector('iframe') : null);
-      let titleEl = document.getElementById('pdf-preview-title') || document.getElementById('pdf-modal-title') || (modal ? (modal.querySelector('.pdf-title') || modal.querySelector('h3')) : null);
-
-      const resolvedUrl = normalizePdfUrl(rawUrl);
+      let iframe = document.getElementById('pdf-viewer-frame');
+      const titleEl = document.getElementById('pdf-preview-title') || document.getElementById('pdf-modal-title');
+      const openNewTabBtn = document.getElementById('btn-pdf-open-external');
+      const downloadBtn = document.getElementById('btn-pdf-download-direct') || document.getElementById('btn-pdf-external-download');
 
       if (!modal) {
-        window.open(resolvedUrl, '_blank');
+        window.open(normalizePdfUrl(rawUrl), '_blank');
         return;
       }
 
+      if (!iframe) iframe = modal.querySelector('iframe');
+      const resolvedUrl = normalizePdfUrl(rawUrl);
+
+      // 1. Update text and direct action links
       if (titleEl) titleEl.textContent = title || 'Document Preview';
-      if (iframe) {
-        iframe.src = resolvedUrl;
+      if (openNewTabBtn) {
+        openNewTabBtn.href = resolvedUrl;
+        openNewTabBtn.target = '_blank';
+      }
+      if (downloadBtn) {
+        downloadBtn.href = resolvedUrl;
+        downloadBtn.setAttribute('download', '');
       }
 
+      // 2. Clear previous iframe state to prevent black screen freeze
+      if (iframe) iframe.src = 'about:blank';
+
+      // 3. Make modal visible first so the DOM calculates geometry
       modal.style.display = 'flex';
       modal.classList.add('active');
-      modal.style.zIndex = '99998';
+      modal.style.zIndex = '99999';
       document.body.classList.add('modal-open');
       if (typeof lockBodyScroll === 'function') {
         lockBodyScroll(true);
       }
+
+      // 4. Defer setting iframe src until modal layout is calculated
+      setTimeout(() => {
+        if (iframe) {
+          // Append toolbar parameters for clean viewport display
+          iframe.src = resolvedUrl + '#toolbar=1&navpanes=0';
+        }
+      }, 60);
     };
 
     async function downloadPdfFile(fileUrl, preferredName) {
@@ -5518,12 +5542,28 @@ window.getSubjectDocuments = getSubjectDocuments;
                     finalUrl += `${sep}${timeParam}#toolbar=1&navpanes=0`;
                 }
             }
-            iframe.src = finalUrl;
+            const openNewTabBtn = document.getElementById('btn-pdf-open-external');
+            const downloadDirectBtn = document.getElementById('btn-pdf-download-direct');
+            if (openNewTabBtn) {
+                openNewTabBtn.href = resolvedUrl;
+                openNewTabBtn.target = '_blank';
+            }
+            if (downloadDirectBtn) {
+                downloadDirectBtn.href = resolvedUrl;
+                downloadDirectBtn.setAttribute('download', preferredName);
+            }
+
+            iframe.src = 'about:blank';
+            setTimeout(() => {
+                if (iframe) iframe.src = finalUrl;
+            }, 60);
         }
 
         if (modal) {
             modal.classList.add('active');
             modal.style.display = 'flex';
+            modal.style.zIndex = '99999';
+            document.body.classList.add('modal-open');
             lockBodyScroll(true);
         }
     }

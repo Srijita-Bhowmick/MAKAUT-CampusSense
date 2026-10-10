@@ -11,5 +11,11 @@ public class WebConfig implements WebMvcConfigurer {
     public void addResourceHandlers(@NonNull ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/static/");
+        registry.addResourceHandler("/CSE(3rd to 8th sem)/**")
+                .addResourceLocations("classpath:/static/CSE(3rd to 8th sem)/");
+        registry.addResourceHandler("/CSE-AIML(3rd to 8th sem)/**")
+                .addResourceLocations("classpath:/static/CSE-AIML(3rd to 8th sem)/");
+        registry.addResourceHandler("/IT(3rd to 8th sem)/**")
+                .addResourceLocations("classpath:/static/IT(3rd to 8th sem)/");
     }
 }
