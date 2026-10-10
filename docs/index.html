@@ -66,82 +66,26 @@
 
             <!-- Navigation Actions & Controls -->
             <div class="nav-actions">
-                <!-- Theme Toggle Button (Dynamic SVG Sun/Moon) -->
-                <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme" title="Toggle Light / Dark Mode">
-                    <svg id="theme-toggle-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none; width: 20px; height: 20px;">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                    <svg id="theme-toggle-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px;">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
+                <!-- Theme Toggle -->
+                <button id="theme-toggle" class="nav-icon-btn" aria-label="Toggle theme">🌙</button>
+
+                <!-- Action Buttons (Only render these, NO empty sibling tags) -->
+                <button id="btn-panic-pack" class="nav-action-pill pill-panic">
+                    <span>🔥 Panic Pack</span>
+                    <span class="badge">16 High-Yield</span>
+                </button>
+                
+                <button id="btn-saved-deck" class="nav-action-pill pill-deck">
+                    <span>🔖 Saved Deck</span>
+                    <span class="badge">0</span>
+                </button>
+                
+                <button id="btn-feedback" class="nav-action-pill pill-feedback">
+                    <span>💬 Feedback</span>
                 </button>
 
-                <!-- Dashboard Specific Buttons (Hidden on Landing) -->
-                <button class="nav-btn flame-btn nav-action-pill" id="btn-open-panic-mode" style="display: none;" title="Open Panic Pack 48h High-Yield Revision">
-                    <span class="flame-icon">🔥</span>
-                    <span class="btn-label">Panic Pack</span>
-                    <span class="badge flame-badge" id="panic-count-badge">16 High-Yield</span>
-                </button>
-                <button id="btn-panic-pack" class="nav-action-pill" style="display: none;" aria-hidden="true"></button>
-
-                <button class="nav-btn deck-btn nav-action-pill" id="btn-open-saved-deck" style="display: none;" title="View Saved Review Deck">
-                    <span class="deck-icon">🔖</span>
-                    <span class="btn-label">Saved Deck</span>
-                    <span class="badge deck-badge" id="deck-counter-badge">0</span>
-                </button>
-                <button id="btn-saved-deck" class="nav-action-pill" style="display: none;" aria-hidden="true"></button>
-
-                <button class="nav-btn nav-action-pill" id="btn-open-feedback" style="display: none;" title="Report broken link or request missing paper">
-                    <span class="icon">💬</span> Feedback
-                </button>
-                <button id="btn-feedback" class="nav-action-pill" style="display: none;" aria-hidden="true"></button>
-
-                <!-- Dashboard User Profile Pill with Dropdown -->
-                <div class="user-profile-menu-wrapper" id="user-profile-wrapper" style="display: none;">
-                    <div class="user-profile-pill nav-action-pill" id="user-profile-pill" title="Click to view profile menu" style="cursor: pointer;">
-                        <span class="user-avatar" id="user-avatar-icon">👤</span>
-                        <span class="user-name" id="user-profile-name">Student</span>
-                        <span style="font-size: 0.65rem; opacity: 0.7;">▾</span>
-                    </div>
-                    <div id="btn-student-profile" class="nav-action-pill" style="display:none;" aria-hidden="true"></div>
-                    <div class="user-dropdown-menu" id="user-dropdown-menu">
-                        <button class="user-dropdown-item" id="btn-menu-switch-scope">
-                            <span>🎯</span> Change Stream / Semester
-                        </button>
-                        <button class="user-dropdown-item" id="btn-menu-landing-page">
-                            <span>🏠</span> Return to Landing Page
-                        </button>
-                        <button class="user-dropdown-item danger-item" id="btn-menu-sign-out">
-                            <span>🚪</span> Sign Out
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Bidirectional Nav: Go to Dashboard (Visible when logged in on Landing) -->
-                <button type="button" class="btn-nav-switch btn-nav-highlight" id="btn-nav-to-dashboard" style="display: none;" title="Open Your Dashboard">
-                    Go to Dashboard →
-                </button>
-
-                <!-- Dedicated Top-Right Auth Triggers -->
-                <button class="btn btn-outline btn-auth-trigger" id="btn-sign-in" data-action="login" title="Sign In">
-                    Sign In
-                </button>
-                <button class="btn btn-primary btn-auth-trigger" id="btn-sign-up" data-action="signup" title="Create Account">
-                    Sign Up
-                </button>
-                <button id="btn-nav-signin" style="display:none;" aria-hidden="true"></button>
-                <button id="btn-nav-signup" style="display:none;" aria-hidden="true"></button>
-                <button class="btn btn-primary" id="btn-landing-auth" style="display: none;" title="Sign In or Create Account">
-                    Sign In / Sign Up
-                </button>
+                <button id="btn-sign-in" class="btn btn-outline">Sign In</button>
+                <button id="btn-sign-up" class="btn btn-primary">Sign Up</button>
             </div>
         </div>
     </header>
@@ -264,12 +208,12 @@
 
             <!-- Stream Filter Tabs for Curriculum -->
             <div class="curriculum-filter-tabs" id="curriculum-stream-filter">
-                <button class="curriculum-tab-btn landing-filter-btn active" data-curriculum-stream="ALL" data-stream="all">All Subjects</button>
-                <button class="curriculum-tab-btn landing-filter-btn" data-curriculum-stream="COMMON" data-stream="common">1st Year Common</button>
-                <button class="curriculum-tab-btn landing-filter-btn" data-curriculum-stream="CSE" data-stream="cse">CSE</button>
+                <button class="curriculum-tab-btn landing-filter-btn active" data-curriculum-filter="all" data-curriculum-stream="ALL" data-stream="all">All Subjects</button>
+                <button class="curriculum-tab-btn landing-filter-btn" data-curriculum-filter="common" data-curriculum-stream="COMMON" data-stream="common">1st Year Common</button>
+                <button class="curriculum-tab-btn landing-filter-btn" data-curriculum-filter="cse" data-curriculum-stream="CSE" data-stream="cse">CSE</button>
             </div>
 
-            <div class="curriculum-cards-grid" id="landing-curriculum-grid">
+            <div id="curriculum-grid" class="subjects-grid">
                 <!-- Rendered dynamically by app.js with expandable Unit 1-5 accordions -->
             </div>
         </section>
@@ -292,18 +236,18 @@
                 <div class="filter-group">
                     <span class="filter-lbl">Year:</span>
                     <div class="filter-pills" id="pyq-year-pills">
-                        <button class="filter-pill pyq-year-filter-btn active" data-pyq-year="ALL" data-year="all-years">All Years</button>
-                        <button class="filter-pill pyq-year-filter-btn" data-pyq-year="2026" data-year="2026">2026</button>
-                        <button class="filter-pill pyq-year-filter-btn" data-pyq-year="2025" data-year="2025">2025</button>
-                        <button class="filter-pill pyq-year-filter-btn" data-pyq-year="2024" data-year="2024">2024</button>
-                        <button class="filter-pill pyq-year-filter-btn" data-pyq-year="2023" data-year="2023">2023</button>
-                        <button class="filter-pill pyq-year-filter-btn" data-pyq-year="2020" data-year="2020">2020</button>
+                        <button class="filter-pill pyq-year-filter-btn active" data-year-filter="all" data-pyq-year="ALL" data-year="all-years">All Years</button>
+                        <button class="filter-pill pyq-year-filter-btn" data-year-filter="2026" data-pyq-year="2026" data-year="2026">2026</button>
+                        <button class="filter-pill pyq-year-filter-btn" data-year-filter="2025" data-pyq-year="2025" data-year="2025">2025</button>
+                        <button class="filter-pill pyq-year-filter-btn" data-year-filter="2024" data-pyq-year="2024" data-year="2024">2024</button>
+                        <button class="filter-pill pyq-year-filter-btn" data-year-filter="2023" data-pyq-year="2023" data-year="2023">2023</button>
+                        <button class="filter-pill pyq-year-filter-btn" data-year-filter="2020" data-pyq-year="2020" data-year="2020">2020</button>
                     </div>
                 </div>
             </div>
 
             <!-- PYQ Repository Grid -->
-            <div class="pyq-repo-grid" id="landing-pyq-grid">
+            <div id="archives-grid" class="pyq-grid">
                 <!-- Rendered dynamically by app.js with Preview and Gated Download -->
             </div>
         </section>

@@ -16,6 +16,11 @@
     if (sun && moon) {
       sun.style.display = theme === 'light' ? 'block' : 'none';
       moon.style.display = theme === 'light' ? 'none' : 'block';
+    } else {
+      const btn = document.getElementById('theme-toggle');
+      if (btn) {
+        btn.textContent = theme === 'light' ? '☀️' : '🌙';
+      }
     }
   }
 
@@ -194,6 +199,21 @@ window.onClerkLoaded = function() {
             }
             if (id === 'btn-save-academic' || id === 'academic-submit') {
                 return _origGetElementById('btn-save-academic') || _origGetElementById('academic-submit') || _origGetElementById('btn-confirm-scope');
+            }
+            if (id === 'btn-open-panic-mode' || id === 'btn-panic-pack') {
+                return _origGetElementById('btn-panic-pack') || _origGetElementById('btn-open-panic-mode') || _origGetElementById(id);
+            }
+            if (id === 'btn-open-saved-deck' || id === 'btn-saved-deck') {
+                return _origGetElementById('btn-saved-deck') || _origGetElementById('btn-open-saved-deck') || _origGetElementById(id);
+            }
+            if (id === 'btn-open-feedback' || id === 'btn-feedback') {
+                return _origGetElementById('btn-feedback') || _origGetElementById('btn-open-feedback') || _origGetElementById(id);
+            }
+            if (id === 'curriculum-grid' || id === 'landing-curriculum-grid') {
+                return _origGetElementById('curriculum-grid') || _origGetElementById('landing-curriculum-grid') || _origGetElementById(id);
+            }
+            if (id === 'archives-grid' || id === 'landing-pyq-grid') {
+                return _origGetElementById('archives-grid') || _origGetElementById('landing-pyq-grid') || _origGetElementById(id);
             }
             return _origGetElementById(id);
         };
@@ -7607,337 +7627,174 @@ window.getSubjectDocuments = getSubjectDocuments;
     }
 
     // ==========================================
-    // 5. Landing Page: Curriculum Explorer with Expandable Units
+    // 5. Landing Page: Curriculum Blueprint & Examination Archives
     // ==========================================
-    function renderLandingCurriculumCards(stream = 'all') {
-      try {
-        const container = document.getElementById('landing-curriculum-grid') || document.getElementById('curriculum-cards-container');
-        if (!container) return;
+    function getFilteredSubjects(filter = 'all') {
+      const fLower = (filter || 'all').toLowerCase();
+      let subjects = [];
 
-        const sLower = (stream || 'all').toLowerCase();
-        
-        let filtered = MAKAUT_CURRICULUM;
-        if (sLower === 'cse') {
-            filtered = [CSE_MASTER_SYLLABUS];
-        } else if (sLower === 'it' || sLower === 'ece' || sLower === 'ee' || sLower === 'me' || sLower === 'ce' || sLower === 'aiml') {
-            container.innerHTML = `
-                <div class="empty-stream-notice">
-                    <h3>Stream Syllabus & PYQ Archive Awaiting Ingestion</h3>
-                    <p>Curated 4-year curriculum and semester examination papers for this branch will be available soon.</p>
-                </div>
-            `;
-            return;
-        } else if (sLower === 'common' || sLower === '1st-year-common') {
-            filtered = MAKAUT_CURRICULUM.filter(s => s.isFirstYear || s.stream === 'GROUP_A' || s.stream === 'GROUP_B' || s.stream === 'COMMON');
-        } else if (sLower === 'all' || sLower === 'all subjects') {
-            filtered = [...MAKAUT_CURRICULUM, CSE_MASTER_SYLLABUS];
-        } else {
-            filtered = MAKAUT_CURRICULUM.filter(s => (s.stream && s.stream.toLowerCase() === sLower) || (s.department && s.department.toLowerCase().includes(sLower)));
-            if (filtered.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-stream-notice">
-                        <h3>Stream Syllabus & PYQ Archive Awaiting Ingestion</h3>
-                        <p>Curated 4-year curriculum and semester examination papers for this branch will be available soon.</p>
-                    </div>
-                `;
-                return;
-            }
-        }
+      const commonSubjects = (typeof MAKAUT_CURRICULUM !== 'undefined') ? MAKAUT_CURRICULUM : [];
+      const cseCourses = (typeof DEPARTMENT_STREAMS !== 'undefined' && DEPARTMENT_STREAMS.CSE && DEPARTMENT_STREAMS.CSE.courses) ? DEPARTMENT_STREAMS.CSE.courses : [];
 
-        const isAuth = isUserAuthenticated();
-        const syllabusBtnText = isAuth ? '📖 Official Syllabus PDF' : '🔒 Sign In to View Syllabus';
-        const masterActionText = isAuth ? 'Open Official Syllabus PDF (80+ Pages) ➔' : '🔒 Sign In to View Syllabus (80+ Pages)';
-
-        container.innerHTML = filtered.map(sub => {
-            if (sub.isSinglePdf) {
-                const encodedPdf = sanitizePdfUrl(sub.pdfUrl);
-                return `
-                    <div class="curriculum-card single-master-card" data-code="${escapeHtml(sub.code)}">
-                        <div>
-                            <div class="curriculum-card-header">
-                                <span class="landing-subject-code">${escapeHtml(sub.code)}</span>
-                                <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
-                                    <span class="badge credit-badge" style="background: rgba(255,255,255,0.06); font-family: var(--font-mono);">${escapeHtml(sub.credits)}</span>
-                                    <span class="badge contact-hours-badge" style="background: rgba(255,255,255,0.05); font-family: var(--font-mono);">${escapeHtml(sub.contactHours)}</span>
-                                </div>
-                            </div>
-                            <h3 class="curriculum-card-title">${escapeHtml(sub.title || sub.name)}</h3>
-                            <div class="curriculum-card-meta">Computer Science & Engineering • Semesters 3 to 8</div>
-                            <p style="margin: 0.75rem 0 1rem; color: var(--text-muted); font-size: 0.88rem; line-height: 1.5;">
-                                ${escapeHtml(sub.description)}
-                            </p>
-                            <div style="margin: 0.5rem 0 0.85rem;">
-                                <button type="button" class="btn-preview-pdf" data-pdf="${escapeHtml(encodedPdf)}" data-title="${escapeHtml(sub.title || sub.name)}" data-url="${escapeHtml(encodedPdf)}">
-                                    ${syllabusBtnText}
-                                </button>
-                            </div>
-                        </div>
-                        <div class="curriculum-card-action">
-                            <button type="button" class="btn-preview-pdf" data-pdf="${escapeHtml(encodedPdf)}" data-title="${escapeHtml(sub.title || sub.name)}" data-url="${escapeHtml(encodedPdf)}">
-                                ${masterActionText}
-                            </button>
-                        </div>
-                    </div>
-                `;
-            }
-
-            const units = sub.units || [];
-            return `
-                <div class="curriculum-card" data-code="${escapeHtml(sub.code)}">
-                    <div>
-                        <div class="curriculum-card-header">
-                            <span class="landing-subject-code">${escapeHtml(sub.code)}</span>
-                            <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;">
-                                <span class="badge credit-badge" style="background: rgba(255,255,255,0.06); font-family: var(--font-mono);">${sub.credits} credits</span>
-                                <span class="badge contact-hours-badge" style="background: rgba(255,255,255,0.05); font-family: var(--font-mono);">${sub.contactHours || 40} Contact Hours</span>
-                            </div>
-                        </div>
-                        <h3 class="curriculum-card-title">${escapeHtml(sub.name)}</h3>
-                        <div class="curriculum-card-meta">${escapeHtml(sub.department || 'MAKAUT')} • Semester ${sub.semester}</div>
-
-                        ${sub.syllabusUrl ? `
-                        <div style="margin: 0.5rem 0 0.85rem;">
-                            <button type="button" class="btn-preview-pdf btn-curriculum-syllabus-pdf" data-title="${escapeHtml(sub.name)} Official Syllabus" data-url="${escapeHtml(sanitizePdfUrl(sub.syllabusUrl))}">
-                                <span>${isAuth ? '📖' : '🔒'}</span> ${syllabusBtnText}
-                            </button>
-                        </div>
-                        ` : ''}
-
-                        <div class="curriculum-units-accordion">
-                            ${units.map(u => `
-                                <div class="curriculum-unit-item" data-unit-id="${u.id || ''}">
-                                    <button type="button" class="curriculum-unit-trigger">
-                                        <span><strong>Unit ${u.unitNumber || 1}:</strong> ${escapeHtml((u.title || '').replace(/^Unit \d+:\s*/, ''))}</span>
-                                        <div style="display: flex; align-items: center; gap: 0.4rem;">
-                                            <span class="unit-hours">${u.hours || 8} hrs</span>
-                                            <span class="accordion-chevron">▾</span>
-                                        </div>
-                                    </button>
-                                    <div class="curriculum-unit-body">
-                                        ${escapeHtml(u.subtopics || '')}
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-
-                    <div class="curriculum-card-action">
-                        <button type="button" class="btn-curriculum-track" data-code="${escapeHtml(sub.code)}">
-                            Track Checklist in Dashboard ➔
-                        </button>
-                    </div>
-                </div>
-            `;
-        }).join('');
-
-        // Wire accordion toggle handlers safely
-        safeBind('.curriculum-unit-trigger', 'click', (e, trigger) => {
-            e.preventDefault();
-            const item = trigger.closest('.curriculum-unit-item');
-            if (item) item.classList.toggle('open');
-        });
-
-        // Wire Official Syllabus PDF buttons
-        safeBind('.btn-preview-pdf, .btn-curriculum-syllabus-pdf', 'click', (e, btn) => {
-            e.preventDefault();
-            if (!requireAuthOrTrigger()) return;
-            const title = btn.getAttribute('data-title') || 'Official Syllabus PDF';
-            const url = btn.getAttribute('data-pdf') || btn.getAttribute('data-url');
-            if (url) openPdfViewer(title, url);
-        });
-
-        // Wire "Track Checklist in Dashboard" CTA
-        safeBind('.btn-curriculum-track', 'click', (e, btn) => {
-            e.preventDefault();
-            const code = btn.getAttribute('data-code');
-            if (isUserAuthenticated()) {
-                window.location.hash = '#dashboard';
-                switchView('dashboard');
-                openSubjectHub(code);
-            } else {
-                requireAuthOrTrigger();
-            }
-        });
-
-        // On landing page cards, clicking any syllabus preview or PYQ button triggers auth
-        container.querySelectorAll('.curriculum-card').forEach(card => {
-            card.onclick = function(e) {
-                if (e.target.closest('.curriculum-unit-trigger') || e.target.closest('.curriculum-unit-body')) return;
-                if (!isUserAuthenticated()) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    requireAuthOrTrigger();
-                }
-            };
-        });
-      } catch (err) {
-        console.error("Error in curriculumCards:", err);
+      if (fLower === 'common' || fLower === '1st year common' || fLower === '1st-year-common') {
+        subjects = commonSubjects.filter(s => s.isFirstYear || s.stream === 'GROUP_A' || s.stream === 'GROUP_B' || s.stream === 'COMMON');
+      } else if (fLower === 'cse') {
+        subjects = cseCourses;
+      } else {
+        // 'all'
+        subjects = [...commonSubjects, ...cseCourses];
       }
+
+      const seen = new Set();
+      const result = [];
+      subjects.forEach(sub => {
+        const code = sub.code || 'MAKAUT';
+        if (!seen.has(code)) {
+          seen.add(code);
+          const papers = sub.pyqs || sub.papers || [];
+          result.push({
+            code: code,
+            title: sub.title || sub.name || 'Subject Blueprint',
+            credits: sub.credits || 4,
+            papers: papers
+          });
+        }
+      });
+      return result;
     }
 
-    function renderLandingCurriculum(filterStream = 'ALL') {
-        renderLandingCurriculumCards(filterStream);
-    }
+    function getFilteredPapers(yearFilter = 'all') {
+      const allPapers = [];
+      const seenUrls = new Set();
 
-    // ==========================================
-    // 6. Landing Page: PYQ Archives Repository
-    // ==========================================
-    let currentPyqYearFilter = 'ALL';
+      function addPaper(sub, p) {
+        const rawUrl = p.fileUrl || p.url || '';
+        const cleanUrl = normalizePdfUrl(rawUrl);
+        if (!cleanUrl || seenUrls.has(cleanUrl)) return;
+        seenUrls.add(cleanUrl);
+        const yr = p.year || (p.title && (p.title.match(/202\d/) || [])[0]) || 'Verified';
+        allPapers.push({
+          year: yr,
+          subjectCode: sub.code || 'MAKAUT',
+          title: p.title || `${sub.name || sub.title || 'Paper'} (${yr})`,
+          url: cleanUrl
+        });
+      }
 
-    function renderLandingPyqCatalog(year = 'all-years') {
-      try {
-        const grid = document.getElementById('landing-pyq-grid');
-        if (!grid) return;
-
-        // Collect all papers from curriculum subjects (1st-year Common and Ingested CSE Departmental)
-        const allPapers = [];
+      if (typeof MAKAUT_CURRICULUM !== 'undefined') {
         MAKAUT_CURRICULUM.forEach(sub => {
-            (sub.pyqs || []).forEach(p => {
-                allPapers.push({
-                    subjectCode: sub.code,
-                    subjectName: sub.name,
-                    year: p.year,
-                    type: p.type || 'END_SEM',
-                    title: p.title,
-                    fileUrl: p.fileUrl
-                });
-            });
+          (sub.pyqs || sub.papers || []).forEach(p => addPaper(sub, p));
         });
-        if (DEPARTMENT_STREAMS['CSE'] && DEPARTMENT_STREAMS['CSE'].courses) {
-            DEPARTMENT_STREAMS['CSE'].courses.forEach(sub => {
-                (sub.pyqs || []).forEach(p => {
-                    allPapers.push({
-                        subjectCode: sub.code,
-                        subjectName: sub.name,
-                        year: p.year,
-                        type: p.type || 'END_SEM',
-                        title: p.title,
-                        fileUrl: p.fileUrl
-                    });
-                });
-            });
-        }
-
-        let filtered = allPapers;
-        const yStr = (year || 'all-years').toString().toLowerCase();
-        if (yStr !== 'all-years' && yStr !== 'all' && yStr !== 'all years') {
-            const yr = parseInt(yStr, 10);
-            if (!isNaN(yr)) {
-                filtered = allPapers.filter(p => p.year === yr);
-            }
-        }
-
-        if (filtered.length === 0) {
-            grid.innerHTML = '<div style="grid-column: 1/-1; padding: 2.5rem; text-align: center; color: var(--text-muted);">No past papers matching this filter. Try selecting "All Years".</div>';
-            return;
-        }
-
-        grid.innerHTML = filtered.map(p => `
-            <div class="pyq-repo-card">
-                <div>
-                    <div class="pyq-repo-card-top">
-                        <span class="pyq-paper-code">${escapeHtml(p.subjectCode)}</span>
-                        <div style="display: flex; align-items: center; gap: 0.35rem;">
-                            <span class="badge" style="background: rgba(99, 102, 241, 0.15); color: var(--accent-primary); font-size: 0.72rem; font-weight: 700; text-transform: uppercase;">${p.type === 'MID_SEM' ? 'Mid Sem' : 'End Sem Exam'}</span>
-                            <span class="pyq-year-tag">${p.year}</span>
-                        </div>
-                    </div>
-                    <h4 class="pyq-repo-title">${escapeHtml(p.title || p.subjectName)}</h4>
-                    <div class="pyq-repo-meta">
-                        <span>${escapeHtml(p.subjectName)} • 70 Marks Theory • Verified Official Paper</span>
-                    </div>
-                </div>
-
-                <div class="pyq-repo-actions">
-                    <button type="button" class="btn-preview-paper btn-preview-pdf" data-subject="${escapeHtml(p.subjectCode)}" data-paper="${p.year}" data-title="${escapeHtml(p.title)}" data-url="${escapeHtml(sanitizePdfUrl(p.fileUrl))}">
-                        👁 Preview Paper
-                    </button>
-                    <button type="button" class="btn-download-paper btn-download-pdf btn-download-pdf-gate" data-subject="${escapeHtml(p.subjectCode)}" data-paper="${p.year}" data-name="${escapeHtml(p.title)}" data-url="${escapeHtml(sanitizePdfUrl(p.fileUrl))}">
-                        📥 Download PDF
-                    </button>
-                </div>
-            </div>
-        `).join('');
-
-        // Wire Preview buttons safely
-        safeBind('.btn-preview-paper, .btn-preview-pdf', 'click', (e, btn) => {
-            e.preventDefault();
-            if (!requireAuthOrTrigger()) return;
-            const title = btn.getAttribute('data-title');
-            const url = btn.getAttribute('data-url') || btn.getAttribute('data-pdf');
-            if (!url) return;
-            openPdfViewer(title, url);
-        });
-
-        // Wire Download buttons safely
-        safeBind('.btn-download-paper, .btn-download-pdf, .btn-download-pdf-gate', 'click', (e, btn) => {
-            e.preventDefault();
-            if (!requireAuthOrTrigger()) return;
-            const subjectCode = btn.getAttribute('data-subject');
-            const paperYear = btn.getAttribute('data-paper');
-            const title = btn.getAttribute('data-name') || `${subjectCode} (${paperYear})`;
-            const fileUrl = btn.getAttribute('data-url') || '';
-            if (!fileUrl) return;
-            downloadPdfFile(fileUrl, (title || 'MAKAUT_Paper') + '.pdf');
-        });
-
-        // On landing page PYQ cards, clicking triggers auth if not authenticated
-        grid.querySelectorAll('.pyq-repo-card').forEach(card => {
-            card.onclick = function(e) {
-                if (e.target.closest('button')) return;
-                if (!isUserAuthenticated()) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    requireAuthOrTrigger();
-                }
-            };
-        });
-      } catch (err) {
-        console.error("Error in pyqCatalog:", err);
       }
+
+      if (typeof DEPARTMENT_STREAMS !== 'undefined') {
+        Object.values(DEPARTMENT_STREAMS).forEach(stream => {
+          if (stream && stream.courses) {
+            stream.courses.forEach(sub => {
+              (sub.pyqs || sub.papers || []).forEach(p => addPaper(sub, p));
+            });
+          }
+        });
+      }
+
+      const yStr = (yearFilter || 'all').toString().toLowerCase();
+      if (yStr === 'all' || yStr === 'all-years' || yStr === 'all years') {
+        return allPapers;
+      }
+
+      return allPapers.filter(paper => String(paper.year) === String(yearFilter));
     }
 
-    function renderLandingPyqRepo(yearFilter = 'ALL') {
-        renderLandingPyqCatalog(yearFilter);
+    function renderLandingCurriculum(filter = 'all') {
+      const container = document.getElementById('curriculum-grid') || document.querySelector('.subjects-grid') || document.getElementById('landing-curriculum-grid');
+      if (!container) return;
+
+      const subjects = getFilteredSubjects(filter); // Your subject list
+      if (!subjects || subjects.length === 0) {
+        container.innerHTML = `<div class="empty-state" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-secondary);">Select a stream to preview subjects and blueprints.</div>`;
+        return;
+      }
+
+      container.innerHTML = subjects.map(sub => `
+        <div class="bento-card subject-card" data-course-code="${sub.code}">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+            <span class="badge" style="font-weight: 700; color: #38bdf8;">${sub.code}</span>
+            <span class="badge" style="opacity: 0.8;">${sub.credits || 4} Credits</span>
+          </div>
+          <h3 style="font-size: 1.1rem; margin: 0 0 0.5rem 0;">${sub.title}</h3>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">${sub.papers ? sub.papers.length : 0} Verified PYQ Papers Available</p>
+          <button class="btn btn-outline" style="width: 100%;" onclick="openSubjectHubByCode('${sub.code}')">View Question Papers →</button>
+        </div>
+      `).join('');
     }
+
+    function renderLandingArchives(yearFilter = 'all') {
+      const container = document.getElementById('archives-grid') || document.querySelector('.pyq-grid') || document.getElementById('landing-pyq-grid');
+      if (!container) return;
+
+      const papers = getFilteredPapers(yearFilter); // Your paper archive list
+      if (!papers || papers.length === 0) {
+        container.innerHTML = `<div class="empty-state" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-secondary);">Select an exam year to view verified questions.</div>`;
+        return;
+      }
+
+      container.innerHTML = papers.map(paper => `
+        <div class="bento-card pyq-card">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+            <span class="badge" style="background: rgba(249, 115, 22, 0.15); color: #fb923c;">${paper.year || 'Verified'}</span>
+            <span class="badge">${paper.subjectCode || 'MAKAUT'}</span>
+          </div>
+          <h4 style="font-size: 1rem; margin: 0 0 0.5rem 0;">${paper.title}</h4>
+          <div style="display: flex; gap: 0.5rem; margin-top: auto;">
+            <button class="btn btn-primary" style="flex: 1;" onclick="previewPdfFile('${paper.url}', '${paper.title}')">Preview</button>
+            <a href="${paper.url}" download class="btn btn-outline" style="flex: 1; text-align: center;">Download</a>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    const renderLandingCurriculumCards = renderLandingCurriculum;
+    const renderLandingPyqCatalog = renderLandingArchives;
+    const renderLandingPyqRepo = renderLandingArchives;
+    window.getFilteredSubjects = getFilteredSubjects;
+    window.getFilteredPapers = getFilteredPapers;
+    window.renderLandingCurriculum = renderLandingCurriculum;
+    window.renderLandingArchives = renderLandingArchives;
+    window.renderLandingCurriculumCards = renderLandingCurriculum;
+    window.renderLandingPyqCatalog = renderLandingArchives;
+    window.renderLandingPyqRepo = renderLandingArchives;
 
     // Wire All Landing Filter Buttons & PYQ Year Filters
     function bindLandingFilterButtons() {
         try {
-            safeBind('.landing-filter-btn', 'click', (e, btn) => {
-                e.preventDefault();
-                document.querySelectorAll('.landing-filter-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('[data-curriculum-filter]').forEach(btn => {
+              btn.addEventListener('click', (e) => {
+                document.querySelectorAll('[data-curriculum-filter]').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                const stream = btn.getAttribute('data-stream') || 'all';
-                renderLandingCurriculumCards(stream);
+                renderLandingCurriculum(btn.getAttribute('data-curriculum-filter'));
+              });
             });
 
-            safeBind('#curriculum-stream-filter .curriculum-tab-btn', 'click', (e, tab) => {
-                if (!tab.classList.contains('landing-filter-btn')) {
-                    e.preventDefault();
-                    document.querySelectorAll('#curriculum-stream-filter .curriculum-tab-btn').forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    const stream = tab.getAttribute('data-curriculum-stream') || 'ALL';
-                    renderLandingCurriculumCards(stream);
-                }
-            });
-
-            safeBind('.pyq-year-filter-btn', 'click', (e, btn) => {
-                e.preventDefault();
-                document.querySelectorAll('.pyq-year-filter-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('[data-year-filter]').forEach(btn => {
+              btn.addEventListener('click', (e) => {
+                document.querySelectorAll('[data-year-filter]').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                const year = btn.getAttribute('data-year') || 'all-years';
-                renderLandingPyqCatalog(year);
+                renderLandingArchives(btn.getAttribute('data-year-filter'));
+              });
             });
 
-            safeBind('#pyq-year-pills .filter-pill', 'click', (e, pill) => {
-                if (!pill.classList.contains('pyq-year-filter-btn')) {
-                    e.preventDefault();
-                    document.querySelectorAll('#pyq-year-pills .filter-pill').forEach(p => p.classList.remove('active'));
-                    pill.classList.add('active');
-                    currentPyqYearFilter = pill.getAttribute('data-pyq-year') || 'ALL';
-                    renderLandingPyqCatalog(currentPyqYearFilter);
-                }
+            document.querySelectorAll('.landing-filter-btn').forEach(btn => {
+              btn.addEventListener('click', () => {
+                const stream = btn.getAttribute('data-curriculum-filter') || btn.getAttribute('data-stream') || 'all';
+                renderLandingCurriculum(stream);
+              });
+            });
+
+            document.querySelectorAll('.pyq-year-filter-btn').forEach(btn => {
+              btn.addEventListener('click', () => {
+                const year = btn.getAttribute('data-year-filter') || btn.getAttribute('data-year') || 'all';
+                renderLandingArchives(year);
+              });
             });
         } catch (err) {
             console.error("Error in bindLandingFilterButtons:", err);
@@ -8163,7 +8020,6 @@ window.getSubjectDocuments = getSubjectDocuments;
             if (e) e.preventDefault();
             window.triggerNativeClerkAuth();
         });
-    });
     });
 
     function completeAuthentication(name, email) {
@@ -12085,8 +11941,9 @@ window.getSubjectDocuments = getSubjectDocuments;
     document.addEventListener('DOMContentLoaded', () => {
       document.body.classList.remove('modal-open');
       document.body.style.overflow = '';
-      safeExecute('curriculumCards', () => renderLandingCurriculumCards('all'));
-      safeExecute('pyqCatalog', () => renderLandingPyqCatalog('all-years'));
+      safeExecute('curriculumCards', () => renderLandingCurriculum('all'));
+      safeExecute('pyqCatalog', () => renderLandingArchives('all'));
+      safeExecute('filterButtons', bindLandingFilterButtons);
       safeExecute('liveMetrics', updateLandingLiveMetrics);
       safeExecute('academicSetupOptions', bindAcademicSetupOptions);
       safeExecute('academicContextModal', bindAcademicContextModal);
@@ -12099,8 +11956,9 @@ window.getSubjectDocuments = getSubjectDocuments;
     });
 
     if (document.readyState === 'interactive' || document.readyState === 'complete') {
-      safeExecute('curriculumCards', () => renderLandingCurriculumCards('all'));
-      safeExecute('pyqCatalog', () => renderLandingPyqCatalog('all-years'));
+      safeExecute('curriculumCards', () => renderLandingCurriculum('all'));
+      safeExecute('pyqCatalog', () => renderLandingArchives('all'));
+      safeExecute('filterButtons', bindLandingFilterButtons);
       safeExecute('liveMetrics', updateLandingLiveMetrics);
       safeExecute('academicSetupOptions', bindAcademicSetupOptions);
       safeExecute('academicContextModal', bindAcademicContextModal);
