@@ -3100,22 +3100,18 @@ body.is-drawer-resizing .ai-slide-drawer {
     margin-bottom: 0.45rem;
 }
 
-.section-header h2,
-.landing-section-title,
 .why-campussense-title,
-#why-campussense h2 {
+#why-campussense h2,
+.section-header h2 {
   white-space: nowrap !important;
-  font-size: clamp(1.5rem, 2.7vw, 2.25rem) !important;
-  letter-spacing: -0.02em !important;
+  font-size: clamp(1.4rem, 2.5vw, 2.15rem) !important;
   text-align: center !important;
-  max-width: 100% !important;
 }
 
-@media (max-width: 768px) {
-  .section-header h2,
-  .landing-section-title,
+@media (max-width: 800px) {
   .why-campussense-title,
-  #why-campussense h2 {
+  #why-campussense h2,
+  .section-header h2 {
     white-space: normal !important;
   }
 }
@@ -4361,58 +4357,55 @@ body.is-drawer-resizing .ai-slide-drawer {
 /* ====================================================================
    Saved Deck Drawer & Cards — Razor Sharp & De-Blurred
    ==================================================================== */
-/* Backdrop overlay behind the drawer */
+/* Backdrop Overlay */
 .drawer-backdrop,
-.saved-deck-backdrop,
-.modal-backdrop {
+.saved-deck-backdrop {
   position: fixed !important;
   inset: 0 !important;
-  background: rgba(15, 23, 42, 0.6) !important;
+  background: rgba(15, 23, 42, 0.65) !important;
   backdrop-filter: blur(8px) !important;
   -webkit-backdrop-filter: blur(8px) !important;
   z-index: 9998 !important;
 }
 
-/* The Saved Deck Drawer Panel — Must be completely sharp */
+/* Saved Deck Drawer Panel */
 #saved-deck-drawer,
 .saved-deck-drawer,
 .drawer-panel {
   position: fixed !important;
   top: 0 !important;
-  right: -480px !important;
+  right: 0 !important;
   bottom: 0 !important;
   width: min(100%, 420px) !important;
-  background: #0f172a !important; /* solid/opaque surface */
+  background: #0f172a !important; /* Fully opaque background */
   z-index: 9999 !important;
-  filter: none !important; /* Prevent inherited blur */
+  filter: none !important;
   -webkit-filter: none !important;
-  backdrop-filter: none !important; /* Prevent text rasterization blur */
-  -webkit-font-smoothing: antialiased !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   transform: translateZ(0) !important;
-  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.4) !important;
+  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.5) !important;
   overflow-y: auto !important;
-  transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  display: flex !important;
-  flex-direction: column !important;
+}
+
+#saved-deck-drawer:not(.open),
+.saved-deck-drawer:not(.open),
+.drawer-panel:not(.open) {
+  display: none !important;
 }
 
 #saved-deck-drawer.open,
 .saved-deck-drawer.open,
 .drawer-panel.open {
+  display: flex !important;
   right: 0 !important;
 }
 
-/* Ensure all child elements inside the drawer are razor sharp */
+/* Ensure all drawer children remain crisp */
 #saved-deck-drawer *,
 .saved-deck-drawer * {
   filter: none !important;
   -webkit-filter: none !important;
-}
-
-/* Prevent applying filter to any container that houses the drawer */
-body.modal-open #saved-deck-drawer,
-body.drawer-open #saved-deck-drawer {
-  filter: none !important;
 }
 
 .saved-deck-body {
