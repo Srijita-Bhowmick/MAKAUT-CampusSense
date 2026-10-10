@@ -660,7 +660,12 @@ window.onClerkLoaded = function() {
         'GROUP_B': '1st Year (Group B / Chemistry)',
         'COMMON': '1st Year Common',
         'MULTIDISCIPLINARY': '1st Year Multidisciplinary',
-        'CSE': 'Computer Science & Engineering'
+        'CSE': 'Computer Science & Engineering',
+        'IT': 'Information Technology',
+        'CSE-AIML': 'CSE (Artificial Intelligence & Machine Learning)',
+        'CSCS': 'Computer Science & Cyber Security',
+        'CSDS': 'Computer Science & Data Science',
+        'CSBS': 'Computer Science & Business Systems'
     };
 
     // =========================================================================
@@ -775,6 +780,72 @@ window.onClerkLoaded = function() {
   isSinglePdf: true
 };
 window.CSE_MASTER_SYLLABUS = CSE_MASTER_SYLLABUS;
+
+const IT_MASTER_SYLLABUS = {
+  id: "it-master-syllabus-3-8",
+  stream: "IT",
+  title: "IT Syllabus (3rd to 8th sem)",
+  code: "MAKAUT-IT-3-8-SEM",
+  credits: "Sem 3–8 Complete Curriculum",
+  contactHours: "Official University Document",
+  pdfUrl: "syllabus/it/IT_Syllabus.pdf",
+  description: "Official complete syllabus of Maulana Abul Kalam Azad University of Technology for B.Tech Information Technology (Semesters 3 to 8).",
+  isSinglePdf: true
+};
+window.IT_MASTER_SYLLABUS = IT_MASTER_SYLLABUS;
+
+const CSE_AIML_MASTER_SYLLABUS = {
+  id: "cse-aiml-master-syllabus-3-8",
+  stream: "CSE-AIML",
+  title: "CSE-AIML Syllabus (3rd to 8th sem)",
+  code: "MAKAUT-AIML-3-8-SEM",
+  credits: "Sem 3–8 Complete Curriculum",
+  contactHours: "Official University Document",
+  pdfUrl: "syllabus/cse_aiml/CSE-AIML_Syllabus.pdf",
+  description: "Official complete syllabus of Maulana Abul Kalam Azad University of Technology for B.Tech CSE-AIML (Semesters 3 to 8).",
+  isSinglePdf: true
+};
+window.CSE_AIML_MASTER_SYLLABUS = CSE_AIML_MASTER_SYLLABUS;
+
+const CSCS_MASTER_SYLLABUS = {
+  id: "cscs-master-syllabus-3-8",
+  stream: "CSCS",
+  title: "CSCS Syllabus (3rd to 8th sem)",
+  code: "MAKAUT-CSCS-3-8-SEM",
+  credits: "Sem 3–8 Complete Curriculum",
+  contactHours: "Official University Document",
+  pdfUrl: "syllabus/cscs/cscs_syllabus.pdf",
+  description: "Official complete syllabus of Maulana Abul Kalam Azad University of Technology for B.Tech CSCS (Semesters 3 to 8).",
+  isSinglePdf: true
+};
+window.CSCS_MASTER_SYLLABUS = CSCS_MASTER_SYLLABUS;
+
+const CSDS_MASTER_SYLLABUS = {
+  id: "csds-master-syllabus-3-8",
+  stream: "CSDS",
+  title: "CSDS Syllabus (3rd to 8th sem)",
+  code: "MAKAUT-CSDS-3-8-SEM",
+  credits: "Sem 3–8 Complete Curriculum",
+  contactHours: "Official University Document",
+  pdfUrl: "syllabus/csds/csds_syllabus.pdf",
+  description: "Official complete syllabus of Maulana Abul Kalam Azad University of Technology for B.Tech CSDS (Semesters 3 to 8).",
+  isSinglePdf: true
+};
+window.CSDS_MASTER_SYLLABUS = CSDS_MASTER_SYLLABUS;
+
+const CSBS_MASTER_SYLLABUS = {
+  id: "csbs-master-syllabus-3-8",
+  stream: "CSBS",
+  title: "CSBS Syllabus (3rd to 8th sem)",
+  code: "MAKAUT-CSBS-3-8-SEM",
+  credits: "Sem 3–8 Complete Curriculum",
+  contactHours: "Official University Document",
+  pdfUrl: "syllabus/csbs/csbs_syllabus.pdf",
+  description: "Official complete syllabus of Maulana Abul Kalam Azad University of Technology for B.Tech CSBS (Semesters 3 to 8).",
+  isSinglePdf: true
+};
+window.CSBS_MASTER_SYLLABUS = CSBS_MASTER_SYLLABUS;
+
 
 const OFFICIAL_CSE_COURSES = [
   {
@@ -2348,6 +2419,1676 @@ const OFFICIAL_CSE_AIML_COURSES = [
                      }
                  ]
     }
+,
+{
+        "code": "PCC-CS302",
+        "name": "Computer Organization and Architecture",
+        "department": "CSE (Artificial Intelligence & Machine Learning)",
+        "stream": "CSE-AIML",
+        "semester": 3,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cse_aiml/CSE-AIML_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech Cs It 3 Sem Computer Organisation Pcc Cs 302 2020",
+                "fileUrl": "pyqs/cse_aiml/Semester_3/PCC-CS302_Computer_Organization_and_Architecture/btech-cs-it-3-sem-computer-organisation-pcc-cs-302-2020.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Computer Organisation Pcc Cs302 2023",
+                "fileUrl": "pyqs/cse_aiml/Semester_3/PCC-CS302_Computer_Organization_and_Architecture/btech-cse-3-sem-computer-organisation-pcc-cs302-2023.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Computer Organisation Pcc Cs302 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_3/PCC-CS302_Computer_Organization_and_Architecture/btech-cse-3-sem-computer-organisation-pcc-cs302-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 3 Sem Computer Organisation Pcc Cs302 2023",
+                "fileUrl": "pyqs/cse_aiml/Semester_3/PCC-CS302_Computer_Organization_and_Architecture/btech-pcc-cse-3-sem-computer-organisation-pcc-cs302-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "Electives and Allied Subjects",
+        "name": "Electives and Allied Subjects",
+        "department": "CSE (Artificial Intelligence & Machine Learning)",
+        "stream": "CSE-AIML",
+        "semester": 4,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cse_aiml/CSE-AIML_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech 4 Sem Biology Bs B401 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/Electives_and_Allied_Subjects/btech-4-sem-biology-bs-b401-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech 4 Sem Biology Bs B401 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/Electives_and_Allied_Subjects/btech-4-sem-biology-bs-b401-2025.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech 4 Sem Numerical Methods M(cs) 401 2017",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/Electives_and_Allied_Subjects/btech-4-sem-numerical-methods-m(cs)-401-2017.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Communication Engineering And Coding Theory 2015",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/Electives_and_Allied_Subjects/btech-cse-4-sem-communication-engineering-and-coding-theory-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Communication Engineering And Coding Theory 2016",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/Electives_and_Allied_Subjects/btech-cse-4-sem-communication-engineering-and-coding-theory-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Communication Engineering And Coding Theory 2017",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/Electives_and_Allied_Subjects/btech-cse-4-sem-communication-engineering-and-coding-theory-2017.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Computer Architecture 2015",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/Electives_and_Allied_Subjects/btech-cse-4-sem-computer-architecture-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Computer Architecture 2016",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/Electives_and_Allied_Subjects/btech-cse-4-sem-computer-architecture-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Computer Architecture 2017",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/Electives_and_Allied_Subjects/btech-cse-4-sem-computer-architecture-2017.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Numerical Methods 2016",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/Electives_and_Allied_Subjects/btech-cse-4-sem-numerical-methods-2016.pdf"
+            }
+        ]
+    },
+    {
+        "code": "MC-401",
+        "name": "Environmental Sciences",
+        "department": "CSE (Artificial Intelligence & Machine Learning)",
+        "stream": "CSE-AIML",
+        "semester": 4,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cse_aiml/CSE-AIML_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech 4 Sem Environmental Sciences Mc 401 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/MC-401_Environmental_Sciences/btech-4-sem-environmental-sciences-mc-401-2024.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech 4 Sem Environmental Sciences Mc 401 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/MC-401_Environmental_Sciences/btech-4-sem-environmental-sciences-mc-401-2026.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CS401",
+        "name": "Discrete Mathematics",
+        "department": "CSE (Artificial Intelligence & Machine Learning)",
+        "stream": "CSE-AIML",
+        "semester": 4,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cse_aiml/CSE-AIML_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech 4 Sem Numerical Methods Bs M401 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS401_Discrete_Mathematics/btech-4-sem-numerical-methods-bs-m401-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech 4 Sem Numerical Methods Bs M401 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS401_Discrete_Mathematics/btech-4-sem-numerical-methods-bs-m401-2025.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Discrete Mathematics Pcc Cs401 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS401_Discrete_Mathematics/btech-cse-4-sem-discrete-mathematics-pcc-cs401-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Discrete Mathematics Pcc Cs401 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS401_Discrete_Mathematics/btech-cse-4-sem-discrete-mathematics-pcc-cs401-2026.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech M 401 Numerical Methods 2015",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS401_Discrete_Mathematics/btech-m-401-numerical-methods-2015.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cs 4 Sem Discrete Mathematics Pcc Cs401 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS401_Discrete_Mathematics/btech-pcc-cs-4-sem-discrete-mathematics-pcc-cs401-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 4 Sem Discrete Mathematics Pcc Cs401 2023",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS401_Discrete_Mathematics/btech-pcc-cse-4-sem-discrete-mathematics-pcc-cs401-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CS402",
+        "name": "Computer Architecture",
+        "department": "CSE (Artificial Intelligence & Machine Learning)",
+        "stream": "CSE-AIML",
+        "semester": 4,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cse_aiml/CSE-AIML_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Computer Architecture Pcc Cs402 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS402_Computer_Architecture/btech-cse-4-sem-computer-architecture-pcc-cs402-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Computer Architecture Pcc Cs402 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS402_Computer_Architecture/btech-cse-4-sem-computer-architecture-pcc-cs402-2026.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 4 Sem Design And Analysis Of Algorithms Es Cs401 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS402_Computer_Architecture/btech-cse-it-4-sem-design-and-analysis-of-algorithms-es-cs401-2025.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Es 4 Sem Design And Analysis Of Algorithms Es Cs401 2023",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS402_Computer_Architecture/btech-es-4-sem-design-and-analysis-of-algorithms-es-cs401-2023.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Es Cs Pcc 4 Sem Design And Analysis Of Algorithms Es Cs401 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS402_Computer_Architecture/btech-es-cs-pcc-4-sem-design-and-analysis-of-algorithms-es-cs401-2024.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cs 4 Sem Computer Architecture Pcc Cs402 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS402_Computer_Architecture/btech-pcc-cs-4-sem-computer-architecture-pcc-cs402-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 4 Sem Computer Architecture Pcc Cs402 2023",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS402_Computer_Architecture/btech-pcc-cse-4-sem-computer-architecture-pcc-cs402-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CS403",
+        "name": "Formal Language and Automata Theory",
+        "department": "CSE (Artificial Intelligence & Machine Learning)",
+        "stream": "CSE-AIML",
+        "semester": 4,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cse_aiml/CSE-AIML_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Formal Language And Automata Theory 2015",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS403_Formal_Language_and_Automata_Theory/btech-cse-4-sem-formal-language-and-automata-theory-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Formal Language And Automata Theory 2016",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS403_Formal_Language_and_Automata_Theory/btech-cse-4-sem-formal-language-and-automata-theory-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Formal Language And Automata Theory 2017",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS403_Formal_Language_and_Automata_Theory/btech-cse-4-sem-formal-language-and-automata-theory-2017.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Formal Language And Automata Theory Pcc Cs 403 2023",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS403_Formal_Language_and_Automata_Theory/btech-cse-4-sem-formal-language-and-automata-theory-pcc-cs-403-2023.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Formal Language And Automata Theory Pcc Cs 403 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS403_Formal_Language_and_Automata_Theory/btech-cse-4-sem-formal-language-and-automata-theory-pcc-cs-403-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Formal Language And Automata Theory Pcc Cs 403 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS403_Formal_Language_and_Automata_Theory/btech-cse-4-sem-formal-language-and-automata-theory-pcc-cs-403-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cs 4 Sem Formal Language And Automata Theory Pcc Cs 403 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS403_Formal_Language_and_Automata_Theory/btech-pcc-cs-4-sem-formal-language-and-automata-theory-pcc-cs-403-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 4 Sem Formal Language And Automata Pcc Cse 403 2023",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS403_Formal_Language_and_Automata_Theory/btech-pcc-cse-4-sem-formal-language-and-automata-pcc-cse-403-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 4 Sem Formal Language And Automata Theory Pcc Cse 403 2023",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS403_Formal_Language_and_Automata_Theory/btech-pcc-cse-4-sem-formal-language-and-automata-theory-pcc-cse-403-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CS404",
+        "name": "Design and Analysis of Algorithms",
+        "department": "CSE (Artificial Intelligence & Machine Learning)",
+        "stream": "CSE-AIML",
+        "semester": 4,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cse_aiml/CSE-AIML_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Design And Analysis Of Algorithms Cs 501 2018",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS404_Design_and_Analysis_of_Algorithms/btech-cs-5-sem-design-and-analysis-of-algorithms-cs-501-2018.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Data Structure And Algorithm 2017",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS404_Design_and_Analysis_of_Algorithms/btech-cse-3-sem-data-structure-and-algorithm-2017.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Data Structure And Algorithms 2015",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS404_Design_and_Analysis_of_Algorithms/btech-cse-3-sem-data-structure-and-algorithms-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Data Structure And Algorithms 2016",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS404_Design_and_Analysis_of_Algorithms/btech-cse-3-sem-data-structure-and-algorithms-2016.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Data Structure And Algorithms Pc Ecs301 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS404_Design_and_Analysis_of_Algorithms/btech-cse-3-sem-data-structure-and-algorithms-pc-ecs301-2025.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Data Structure And Algorithms Pcc Csbs301 2023",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS404_Design_and_Analysis_of_Algorithms/btech-cse-3-sem-data-structure-and-algorithms-pcc-csbs301-2023.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Design And Analysis Of Algorithm 2015",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS404_Design_and_Analysis_of_Algorithms/btech-cse-5-sem-design-and-analysis-of-algorithm-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Design And Analysis Of Algorithm 2016",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS404_Design_and_Analysis_of_Algorithms/btech-cse-5-sem-design-and-analysis-of-algorithm-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Design And Analysis Of Algorithms 2017",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS404_Design_and_Analysis_of_Algorithms/btech-cse-5-sem-design-and-analysis-of-algorithms-2017.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 3 Sem Data Structure And Algorithms Pc Ecs301 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS404_Design_and_Analysis_of_Algorithms/btech-cse-it-3-sem-data-structure-and-algorithms-pc-ecs301-2025.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Advanced Algorithms Pec It 601a 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS404_Design_and_Analysis_of_Algorithms/btech-cse-it-6-sem-advanced-algorithms-pec-it-601a-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Advanced Algorithms Pec It601a 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS404_Design_and_Analysis_of_Algorithms/btech-cse-it-6-sem-advanced-algorithms-pec-it601a-2025.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Csbs Cs 3 Sem Data Structures And Algorithms Pcc Csbs301 2023 Solutions",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS404_Design_and_Analysis_of_Algorithms/btech-pcc-csbs-cs-3-sem-data-structures-and-algorithms-pcc-csbs301-2023-solutions.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CS405",
+        "name": "Object Oriented Programming using Java",
+        "department": "CSE (Artificial Intelligence & Machine Learning)",
+        "stream": "CSE-AIML",
+        "semester": 4,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cse_aiml/CSE-AIML_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Csd 4 Sem Object Oriented Programming And Design Pcc Csd 403 2023",
+                "fileUrl": "pyqs/cse_aiml/Semester_4/PCC-CS405_Object_Oriented_Programming_using_Java/btech-pcc-csd-4-sem-object-oriented-programming-and-design-pcc-csd-403-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "Electives and Allied Subjects",
+        "name": "Electives and Allied Subjects",
+        "department": "CSE (Artificial Intelligence & Machine Learning)",
+        "stream": "CSE-AIML",
+        "semester": 5,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cse_aiml/CSE-AIML_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech 5 Sem Economics For Engineers Hu 501 2019",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/Electives_and_Allied_Subjects/btech-5-sem-economics-for-engineers-hu-501-2019.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech 5 Sem Introduction To Industrial Management Hm Hu501 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/Electives_and_Allied_Subjects/btech-5-sem-introduction-to-industrial-management-hm-hu501-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Machine Learning Esc Csbs 502 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/Electives_and_Allied_Subjects/btech-cs-5-sem-machine-learning-esc-csbs-502-2026.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Object Oriented Programming Cs 504d 2018",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/Electives_and_Allied_Subjects/btech-cs-5-sem-object-oriented-programming-cs-504d-2018.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Object Oriented Programming Cs 504d 2020",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/Electives_and_Allied_Subjects/btech-cs-5-sem-object-oriented-programming-cs-504d-2020.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs Aids 5 Sem Social Network Analysis Pecaids701a 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/Electives_and_Allied_Subjects/btech-cs-aids-5-sem-social-network-analysis-pecaids701a-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs Esc 5 Sem Software Engineering Esc501 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/Electives_and_Allied_Subjects/btech-cs-esc-5-sem-software-engineering-esc501-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cs Pec 5 Sem Artificial Intelligence Pec Csbs 501 B 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/Electives_and_Allied_Subjects/btech-cs-pec-5-sem-artificial-intelligence-pec-csbs-501-b-2024.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Artificial Intelligence Pec Csbs 501 B 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/Electives_and_Allied_Subjects/btech-cse-5-sem-artificial-intelligence-pec-csbs-501-b-2024.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Discrete Mathematics 2015",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/Electives_and_Allied_Subjects/btech-cse-5-sem-discrete-mathematics-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Discrete Mathematics 2016",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/Electives_and_Allied_Subjects/btech-cse-5-sem-discrete-mathematics-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Discrete Mathematics 2017",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/Electives_and_Allied_Subjects/btech-cse-5-sem-discrete-mathematics-2017.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Introducon To Industrial Management Humanities 3 Hsmc 501 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/Electives_and_Allied_Subjects/btech-cse-5-sem-introducon-to-industrial-management-humanities-3-hsmc-501-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Introduction To Industrial Management Humanities 3 Hsmc 501 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/Electives_and_Allied_Subjects/btech-cse-5-sem-introduction-to-industrial-management-humanities-3-hsmc-501-2025.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Microprocessor And Microcontroller 2015",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/Electives_and_Allied_Subjects/btech-cse-5-sem-microprocessor-and-microcontroller-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Microprocessor And Microcontroller 2016",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/Electives_and_Allied_Subjects/btech-cse-5-sem-microprocessor-and-microcontroller-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Microprocessor And Microcontroller 2017",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/Electives_and_Allied_Subjects/btech-cse-5-sem-microprocessor-and-microcontroller-2017.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Object Oriented Programming 2015",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/Electives_and_Allied_Subjects/btech-cse-5-sem-object-oriented-programming-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Object Oriented Programming 2016",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/Electives_and_Allied_Subjects/btech-cse-5-sem-object-oriented-programming-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Object Oriented Programming 2017",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/Electives_and_Allied_Subjects/btech-cse-5-sem-object-oriented-programming-2017.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Software Engineering Esc501 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/Electives_and_Allied_Subjects/btech-cse-5-sem-software-engineering-esc501-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Software Engineering Esc501 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/Electives_and_Allied_Subjects/btech-cse-5-sem-software-engineering-esc501-2025.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 5 Sem Artificial Intelligence Pec Csbs 501 B 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/Electives_and_Allied_Subjects/btech-cse-it-5-sem-artificial-intelligence-pec-csbs-501-b-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse It 5 Sem Artificial Intelligence Pec Csbs 501 B 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/Electives_and_Allied_Subjects/btech-cse-it-5-sem-artificial-intelligence-pec-csbs-501-b-2026.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Ds Cse It 5 Sem Theory Of Computation Pec Ds 501a 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/Electives_and_Allied_Subjects/btech-ds-cse-it-5-sem-theory-of-computation-pec-ds-501a-2025.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Esc 5 Sem Software Engineering Esc501 2023 Solution",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/Electives_and_Allied_Subjects/btech-esc-5-sem-software-engineering-esc501-2023-solution.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Esc 5 Sem Software Engineering Esc501 2023",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/Electives_and_Allied_Subjects/btech-esc-5-sem-software-engineering-esc501-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Hsmc 5 Sem Introduction To Industrial Management Hsmc 501 2023",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/Electives_and_Allied_Subjects/btech-hsmc-5-sem-introduction-to-industrial-management-hsmc-501-2023.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Hu 5 Sem Economics For Engineers Hu 501 2018",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/Electives_and_Allied_Subjects/btech-hu-5-sem-economics-for-engineers-hu-501-2018.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech Hu 5 Sem Economics For Engineers Hu 501 2020",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/Electives_and_Allied_Subjects/btech-hu-5-sem-economics-for-engineers-hu-501-2020.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Hu 5 Sem Principles And Practice Of Management Hu 511 2017",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/Electives_and_Allied_Subjects/btech-hu-5-sem-principles-and-practice-of-management-hu-511-2017.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech Hu 5 Sem Principles And Practices Of Management Hu 511 2020",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/Electives_and_Allied_Subjects/btech-hu-5-sem-principles-and-practices-of-management-hu-511-2020.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-AIML501",
+        "name": "Artificial Intelligence",
+        "department": "CSE (Artificial Intelligence & Machine Learning)",
+        "stream": "CSE-AIML",
+        "semester": 5,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cse_aiml/CSE-AIML_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Ai 5 Sem Probability And Statistics Pcc Ai501 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/PCC-AIML501_Artificial_Intelligence/btech-ai-5-sem-probability-and-statistics-pcc-ai501-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Ai Aids Aiml 8 Sem Research Methodology Oecai802b 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/PCC-AIML501_Artificial_Intelligence/btech-ai-aids-aiml-8-sem-research-methodology-oecai802b-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Ai Aids Aiml 8 Sem Software Engineering Oecai801c 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/PCC-AIML501_Artificial_Intelligence/btech-ai-aids-aiml-8-sem-software-engineering-oecai801c-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs Ai 5 Sem Cloud Computing Pecai501 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/PCC-AIML501_Artificial_Intelligence/btech-cs-ai-5-sem-cloud-computing-pecai501-2026.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-AIML502",
+        "name": "Foundations of Machine Learning",
+        "department": "CSE (Artificial Intelligence & Machine Learning)",
+        "stream": "CSE-AIML",
+        "semester": 5,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cse_aiml/CSE-AIML_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pec Cse 7 Sem Machine Learning Pec Cs701e 2023",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/PCC-AIML502_Foundations_of_Machine_Learning/btech-pec-cse-7-sem-machine-learning-pec-cs701e-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CS501",
+        "name": "Operating Systems",
+        "department": "CSE (Artificial Intelligence & Machine Learning)",
+        "stream": "CSE-AIML",
+        "semester": 5,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cse_aiml/CSE-AIML_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Compiler Design Pcc Cs501 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/PCC-CS501_Operating_Systems/btech-cs-5-sem-compiler-design-pcc-cs501-2026.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Microprocessor And Microcontroller Cs 502 2018",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/PCC-CS501_Operating_Systems/btech-cs-5-sem-microprocessor-and-microcontroller-cs-502-2018.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Operating System Pc Cs502 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/PCC-CS501_Operating_Systems/btech-cs-5-sem-operating-system-pc-cs502-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Operating Systems Pcc Cs502 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/PCC-CS501_Operating_Systems/btech-cs-5-sem-operating-systems-pcc-cs502-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Compiler Design Pcc Cs501 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/PCC-CS501_Operating_Systems/btech-cse-5-sem-compiler-design-pcc-cs501-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Compiler Design Pcc Cs501 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/PCC-CS501_Operating_Systems/btech-cse-5-sem-compiler-design-pcc-cs501-2025.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Operating Systems Pcc Cs502 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/PCC-CS501_Operating_Systems/btech-cse-5-sem-operating-systems-pcc-cs502-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Operating Systems Pcc Cs502 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/PCC-CS501_Operating_Systems/btech-cse-5-sem-operating-systems-pcc-cs502-2025.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 5 Sem Compiler Design Pcc Cs501 2023",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/PCC-CS501_Operating_Systems/btech-pcc-cse-5-sem-compiler-design-pcc-cs501-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 5 Sem Operating Systems Pcc Cs502 2023",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/PCC-CS501_Operating_Systems/btech-pcc-cse-5-sem-operating-systems-pcc-cs502-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CS502",
+        "name": "Database Management Systems",
+        "department": "CSE (Artificial Intelligence & Machine Learning)",
+        "stream": "CSE-AIML",
+        "semester": 5,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cse_aiml/CSE-AIML_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Discrete Mathematics Cs 503 2018",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/PCC-CS502_Database_Management_Systems/btech-cs-5-sem-discrete-mathematics-cs-503-2018.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Discrete Mathematics Cs 503 2020",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/PCC-CS502_Database_Management_Systems/btech-cs-5-sem-discrete-mathematics-cs-503-2020.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Object Oriected Programming Pcc Cs503 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/PCC-CS502_Database_Management_Systems/btech-cs-5-sem-object-oriected-programming-pcc-cs503-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Object Oriented Programming Pcc Cs503 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/PCC-CS502_Database_Management_Systems/btech-cse-5-sem-object-oriented-programming-pcc-cs503-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Object Oriented Programming Pcc Cs503 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/PCC-CS502_Database_Management_Systems/btech-cse-5-sem-object-oriented-programming-pcc-cs503-2025.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Database Management System 2015",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/PCC-CS502_Database_Management_Systems/btech-cse-6-sem-database-management-system-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Database Management System 2016",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/PCC-CS502_Database_Management_Systems/btech-cse-6-sem-database-management-system-2016.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 5 Sem Object Oriented Programming Pcc Cs503 2023",
+                "fileUrl": "pyqs/cse_aiml/Semester_5/PCC-CS502_Database_Management_Systems/btech-pcc-cse-5-sem-object-oriented-programming-pcc-cs503-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "Electives and Allied Subjects",
+        "name": "Electives and Allied Subjects",
+        "department": "CSE (Artificial Intelligence & Machine Learning)",
+        "stream": "CSE-AIML",
+        "semester": 6,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cse_aiml/CSE-AIML_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech 6 Sem Production And Operational Management Hu 611 2018",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-6-sem-production-and-operational-management-hu-611-2018.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Apm 6 Sem Apparel Marketing And Merchandising Apm 603 2018",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-apm-6-sem-apparel-marketing-and-merchandising-apm-603-2018.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Apm 6 Sem Knitting And Knitwear Technology Apm 604a 2018",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-apm-6-sem-knitting-and-knitwear-technology-apm-604a-2018.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Apm 6 Sem Production Planning And Control In Apparel Industry Apm 602 2018",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-apm-6-sem-production-planning-and-control-in-apparel-industry-apm-602-2018.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 6 Sem Computer Networks Cs 602 2018",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-cs-6-sem-computer-networks-cs-602-2018.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 6 Sem Operating System Cs 603 2018",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-cs-6-sem-operating-system-cs-603-2018.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 6 Sem Operations Research Cs 605a 2018",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-cs-6-sem-operations-research-cs-605a-2018.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Computer Graphics 2015",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-cse-6-sem-computer-graphics-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Computer Graphics 2016",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-cse-6-sem-computer-graphics-2016.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Computer Network 2016",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-cse-6-sem-computer-network-2016.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Computer Networks 2015",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-cse-6-sem-computer-networks-2015.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Computer Networks 2017",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-cse-6-sem-computer-networks-2017.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Data Base Management System 2017",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-cse-6-sem-data-base-management-system-2017.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Multimedia Technology 2015",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-cse-6-sem-multimedia-technology-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Multimedia Technology 2016",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-cse-6-sem-multimedia-technology-2016.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Operating System 2015",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-cse-6-sem-operating-system-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Operating System 2016",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-cse-6-sem-operating-system-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Operating System 2017",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-cse-6-sem-operating-system-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Operating System 2019",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-cse-6-sem-operating-system-2019.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Operations Research 2015",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-cse-6-sem-operations-research-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Operations Research 2016",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-cse-6-sem-operations-research-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Operations Research 2017",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-cse-6-sem-operations-research-2017.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Software Engineering 2015",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-cse-6-sem-software-engineering-2015.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Data Warehousing And Data Mining Pec It602b 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-cse-it-6-sem-data-warehousing-and-data-mining-pec-it602b-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Data Warehousing And Data Mining Pec It602b 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-cse-it-6-sem-data-warehousing-and-data-mining-pec-it602b-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Data Warehousing And Data Mining Pec It602b 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-cse-it-6-sem-data-warehousing-and-data-mining-pec-it602b-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Distributed Systems Pec It601b 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-cse-it-6-sem-distributed-systems-pec-it601b-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Distributed Systems Pec It601b 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-cse-it-6-sem-distributed-systems-pec-it601b-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Distributed Systems Pec It601b 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-cse-it-6-sem-distributed-systems-pec-it601b-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Human Resource Development And Organizational Behavior Oec It601b 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-cse-it-6-sem-human-resource-development-and-organizational-behavior-oec-it601b-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Human Resource Development And Organizational Behavior Oec It601b 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-cse-it-6-sem-human-resource-development-and-organizational-behavior-oec-it601b-2025.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Human Resource Development And Organizational Behaviour Oec It 601b 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-cse-it-6-sem-human-resource-development-and-organizational-behaviour-oec-it-601b-2024.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Image Processing Pec It601d 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-cse-it-6-sem-image-processing-pec-it601d-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Image Processing Pec It601d 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-cse-it-6-sem-image-processing-pec-it601d-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Image Processing Pec It601d 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-cse-it-6-sem-image-processing-pec-it601d-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Numerical Methods Oec It 601a 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-cse-it-6-sem-numerical-methods-oec-it-601a-2024.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Ec Cse 6 Sem Computer Networks Ec602 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-ec-cse-6-sem-computer-networks-ec602-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Ec Cse 6 Sem Computer Networks Ec602 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-ec-cse-6-sem-computer-networks-ec602-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Ec Cse 6 Sem Computer Networks Ec602 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-ec-cse-6-sem-computer-networks-ec602-2026.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Hu 6 Sem Principles Of Management Hu 601 2018",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-hu-6-sem-principles-of-management-hu-601-2018.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Numerical Methods Oec It601a 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/Electives_and_Allied_Subjects/btech-it-6-sem-numerical-methods-oec-it601a-2025.pdf"
+            }
+        ]
+    },
+    {
+        "code": "OEC-AIML601",
+        "name": "Numerical Methods and Optimization",
+        "department": "CSE (Artificial Intelligence & Machine Learning)",
+        "stream": "CSE-AIML",
+        "semester": 6,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cse_aiml/CSE-AIML_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Hm Hu 6 Sem Operations Research Hm Hu601 2023",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/OEC-AIML601_Numerical_Methods_and_Optimization/btech-hm-hu-6-sem-operations-research-hm-hu601-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-AIML602",
+        "name": "Natural Language Processing",
+        "department": "CSE (Artificial Intelligence & Machine Learning)",
+        "stream": "CSE-AIML",
+        "semester": 6,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cse_aiml/CSE-AIML_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Aiml 6 Sem Deep Learning Pccaiml602 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/PCC-AIML602_Natural_Language_Processing/btech-aiml-6-sem-deep-learning-pccaiml602-2025.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CS601",
+        "name": "Computer Networks",
+        "department": "CSE (Artificial Intelligence & Machine Learning)",
+        "stream": "CSE-AIML",
+        "semester": 6,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cse_aiml/CSE-AIML_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 6 Sem Database Management System Cs 601 2018",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/PCC-CS601_Computer_Networks/btech-cs-6-sem-database-management-system-cs-601-2018.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Database Management Systems Pcc Cs601 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/PCC-CS601_Computer_Networks/btech-cse-6-sem-database-management-systems-pcc-cs601-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Database Management Systems Pcc Cs601 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/PCC-CS601_Computer_Networks/btech-cse-6-sem-database-management-systems-pcc-cs601-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Database Management Systems Pcc Cs601 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/PCC-CS601_Computer_Networks/btech-cse-6-sem-database-management-systems-pcc-cs601-2026.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Research Methodology Cs601 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/PCC-CS601_Computer_Networks/btech-cse-6-sem-research-methodology-cs601-2025.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cs 6 Sem Database Management Systems Pcc Cs601 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/PCC-CS601_Computer_Networks/btech-pcc-cs-6-sem-database-management-systems-pcc-cs601-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 6 Sem Database Management Systems Pcc Cs601 2023",
+                "fileUrl": "pyqs/cse_aiml/Semester_6/PCC-CS601_Computer_Networks/btech-pcc-cse-6-sem-database-management-systems-pcc-cs601-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "Electives and Allied Subjects",
+        "name": "Electives and Allied Subjects",
+        "department": "CSE (Artificial Intelligence & Machine Learning)",
+        "stream": "CSE-AIML",
+        "semester": 7,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cse_aiml/CSE-AIML_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs 7 Sem Multimedia Systems Oeccs701b 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cs-7-sem-multimedia-systems-oeccs701b-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs Aids 7 Sem Internet Of Things Oecaid701a 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cs-aids-7-sem-internet-of-things-oecaid701a-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs It 7 Sem Cloud Computing Pec Cs701b 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cs-it-7-sem-cloud-computing-pec-cs701b-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs It 7 Sem Cyber Security Pec Cs702e 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cs-it-7-sem-cyber-security-pec-cs702e-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs It 7 Sem Machine Learning Pec Cs701e 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cs-it-7-sem-machine-learning-pec-cs701e-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs It 7 Sem Soft Computing Pec Cs702b 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cs-it-7-sem-soft-computing-pec-cs702b-2026.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Artificial Intelligence 2015",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-7-sem-artificial-intelligence-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Artificial Intelligence 2016",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-7-sem-artificial-intelligence-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Artificial Intelligence 2017",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-7-sem-artificial-intelligence-2017.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Artificial Intelligence 2018",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-7-sem-artificial-intelligence-2018.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Artificial Intelligence 2019",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-7-sem-artificial-intelligence-2019.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Cloud Computing 2016",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-7-sem-cloud-computing-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Cloud Computing 2017",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-7-sem-cloud-computing-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Cloud Computing 2019",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-7-sem-cloud-computing-2019.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Cloud Computing Pec Cs701b 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-7-sem-cloud-computing-pec-cs701b-2024.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Compiler Design 2018",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-7-sem-compiler-design-2018.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Compiler Design 2019",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-7-sem-compiler-design-2019.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Cyber Security Pec Cs702e 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-7-sem-cyber-security-pec-cs702e-2024.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Internet Technology 2015",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-7-sem-internet-technology-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Internet Technology 2016",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-7-sem-internet-technology-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Internet Technology 2017",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-7-sem-internet-technology-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Internet Technology 2019",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-7-sem-internet-technology-2019.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Machine Learning Pec Cs701e 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-7-sem-machine-learning-pec-cs701e-2024.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Mobile Computing 2015",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-7-sem-mobile-computing-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Mobile Computing 2016",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-7-sem-mobile-computing-2016.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Multimedia Systems Oeccs701b 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-7-sem-multimedia-systems-oeccs701b-2025.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Operations Research Oec It701a 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-7-sem-operations-research-oec-it701a-2024.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Soft Computing 2015",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-7-sem-soft-computing-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Soft Computing 2016",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-7-sem-soft-computing-2016.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Software Engineering 2015",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-7-sem-software-engineering-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Software Engineering 2016",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-7-sem-software-engineering-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Software Engineering 2017",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-7-sem-software-engineering-2017.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Software Engineering 2018",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-7-sem-software-engineering-2018.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Software Engineering 2019",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-7-sem-software-engineering-2019.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Software Engineering Cse 701 2020",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-7-sem-software-engineering-cse-701-2020.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse Ee Eee 7 Sem Computer Network Es Cs701 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-ee-eee-7-sem-computer-network-es-cs701-2025.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 7 Sem Cloud Computing Pec Cs701b 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-it-7-sem-cloud-computing-pec-cs701b-2025.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 7 Sem Cyber Security Pec Cs702e 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-it-7-sem-cyber-security-pec-cs702e-2025.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 7 Sem Machine Learning Pec Cs701e 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-it-7-sem-machine-learning-pec-cs701e-2025.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 7 Sem Operations Research Oec It701a 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-it-7-sem-operations-research-oec-it701a-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse It 7 Sem Soft Computing Pec Cs702b 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-cse-it-7-sem-soft-computing-pec-cs702b-2026.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Oeccs 7 Sem Multimedia Systems Oeccs701b 2023",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-oeccs-7-sem-multimedia-systems-oeccs701b-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pec Cse 7 Sem Cyber Security Pec Cs702e 2023",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-pec-cse-7-sem-cyber-security-pec-cs702e-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pec Cse 7 Sem Soft Computing Pec Cs702b 2023",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/Electives_and_Allied_Subjects/btech-pec-cse-7-sem-soft-computing-pec-cs702b-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "HSMC-701",
+        "name": "Principles of Management and Ethics",
+        "department": "CSE (Artificial Intelligence & Machine Learning)",
+        "stream": "CSE-AIML",
+        "semester": 7,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cse_aiml/CSE-AIML_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech 7 Sem Project Management And Entrepreneurship Hsmc 701 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/HSMC-701_Principles_of_Management_and_Ethics/btech-7-sem-project-management-and-entrepreneurship-hsmc-701-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech 7 Sem Project Management And Entrepreneurship Hsmc 701 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/HSMC-701_Principles_of_Management_and_Ethics/btech-7-sem-project-management-and-entrepreneurship-hsmc-701-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech 7 Sem Project Management And Entrepreneurship Hsmc 701 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/HSMC-701_Principles_of_Management_and_Ethics/btech-7-sem-project-management-and-entrepreneurship-hsmc-701-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Project Management And Entrepreneurship Hsmc 701 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/HSMC-701_Principles_of_Management_and_Ethics/btech-cse-7-sem-project-management-and-entrepreneurship-hsmc-701-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Hm Hu 7 Sem Economics For Engineers Hm Hu701 2023",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/HSMC-701_Principles_of_Management_and_Ethics/btech-hm-hu-7-sem-economics-for-engineers-hm-hu701-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Hm Hu 7 Sem Principles Of Management And Organisation Behaviour Hm Hu 701 2023",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/HSMC-701_Principles_of_Management_and_Ethics/btech-hm-hu-7-sem-principles-of-management-and-organisation-behaviour-hm-hu-701-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Hs Hu 7 Sem Principles Of Management Hs Hu701 2023",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/HSMC-701_Principles_of_Management_and_Ethics/btech-hs-hu-7-sem-principles-of-management-hs-hu701-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Hsmc 7 Sem Project Management And Entrepreneurship Hsmc701 2023",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/HSMC-701_Principles_of_Management_and_Ethics/btech-hsmc-7-sem-project-management-and-entrepreneurship-hsmc701-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PEC-AIML703",
+        "name": "Cryptography and Network Security",
+        "department": "CSE (Artificial Intelligence & Machine Learning)",
+        "stream": "CSE-AIML",
+        "semester": 7,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cse_aiml/CSE-AIML_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 8 Sem Cryptography And Network Security 2015",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/PEC-AIML703_Cryptography_and_Network_Security/btech-cse-8-sem-cryptography-and-network-security-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 8 Sem Cryptography And Network Security 2016",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/PEC-AIML703_Cryptography_and_Network_Security/btech-cse-8-sem-cryptography-and-network-security-2016.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Cryptography And Network Security Pec Cs801 B 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/PEC-AIML703_Cryptography_and_Network_Security/btech-cse-it-8-sem-cryptography-and-network-security-pec-cs801-b-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Cryptography And Network Security Pec Cs801 B 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/PEC-AIML703_Cryptography_and_Network_Security/btech-cse-it-8-sem-cryptography-and-network-security-pec-cs801-b-2026.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pec Cse It 8 Sem Cryptography And Network Security Pec Cs801 B 2023",
+                "fileUrl": "pyqs/cse_aiml/Semester_7/PEC-AIML703_Cryptography_and_Network_Security/btech-pec-cse-it-8-sem-cryptography-and-network-security-pec-cs801-b-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "Electives and Allied Subjects",
+        "name": "Electives and Allied Subjects",
+        "department": "CSE (Artificial Intelligence & Machine Learning)",
+        "stream": "CSE-AIML",
+        "semester": 8,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cse_aiml/CSE-AIML_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse 8 Sem Big Data Analysis Oec Cs801a 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_8/Electives_and_Allied_Subjects/btech-cse-8-sem-big-data-analysis-oec-cs801a-2026.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 8 Sem Cyber Law And Security Policy 2016",
+                "fileUrl": "pyqs/cse_aiml/Semester_8/Electives_and_Allied_Subjects/btech-cse-8-sem-cyber-law-and-security-policy-2016.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 8 Sem Cyber Laws And Security Policy 2015",
+                "fileUrl": "pyqs/cse_aiml/Semester_8/Electives_and_Allied_Subjects/btech-cse-8-sem-cyber-laws-and-security-policy-2015.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Cyber Law And Ethics Oec Cs801b 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_8/Electives_and_Allied_Subjects/btech-cse-it-8-sem-cyber-law-and-ethics-oec-cs801b-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Cyber Law And Ethics Oec Cs801b 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_8/Electives_and_Allied_Subjects/btech-cse-it-8-sem-cyber-law-and-ethics-oec-cs801b-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Cyber Law And Ethics Oec Cs801b 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_8/Electives_and_Allied_Subjects/btech-cse-it-8-sem-cyber-law-and-ethics-oec-cs801b-2026.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Cyptography And Network Security Pec Cs801 B 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_8/Electives_and_Allied_Subjects/btech-cse-it-8-sem-cyptography-and-network-security-pec-cs801-b-2025.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Internet Of Things Cs801e 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_8/Electives_and_Allied_Subjects/btech-cse-it-8-sem-internet-of-things-cs801e-2024.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Internet Of Things Pec Cs801e 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_8/Electives_and_Allied_Subjects/btech-cse-it-8-sem-internet-of-things-pec-cs801e-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Web And Internet Technology Pec Cs801d 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_8/Electives_and_Allied_Subjects/btech-cse-it-8-sem-web-and-internet-technology-pec-cs801d-2025.pdf"
+            }
+        ]
+    },
+    {
+        "code": "OEC-AIML801",
+        "name": "E Commerce and ERP",
+        "department": "CSE (Artificial Intelligence & Machine Learning)",
+        "stream": "CSE-AIML",
+        "semester": 8,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cse_aiml/CSE-AIML_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Apm 6 Sem E Commerce Apm 605c 2018",
+                "fileUrl": "pyqs/cse_aiml/Semester_8/OEC-AIML801_E_Commerce_and_ERP/btech-apm-6-sem-e-commerce-apm-605c-2018.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs Aids 7 Sem Ecommerce And Erp Pecaids702a 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_8/OEC-AIML801_E_Commerce_and_ERP/btech-cs-aids-7-sem-ecommerce-and-erp-pecaids702a-2026.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Erp 2018",
+                "fileUrl": "pyqs/cse_aiml/Semester_8/OEC-AIML801_E_Commerce_and_ERP/btech-cse-6-sem-erp-2018.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Erp 2019",
+                "fileUrl": "pyqs/cse_aiml/Semester_8/OEC-AIML801_E_Commerce_and_ERP/btech-cse-6-sem-erp-2019.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 8 Sem E Commerce 2015",
+                "fileUrl": "pyqs/cse_aiml/Semester_8/OEC-AIML801_E_Commerce_and_ERP/btech-cse-8-sem-e-commerce-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 8 Sem E Commerce 2016",
+                "fileUrl": "pyqs/cse_aiml/Semester_8/OEC-AIML801_E_Commerce_and_ERP/btech-cse-8-sem-e-commerce-2016.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem E Commerce And Erp Oec Cs802a 2024",
+                "fileUrl": "pyqs/cse_aiml/Semester_8/OEC-AIML801_E_Commerce_and_ERP/btech-cse-it-8-sem-e-commerce-and-erp-oec-cs802a-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem E Commerce And Erp Oec Cs802a 2025",
+                "fileUrl": "pyqs/cse_aiml/Semester_8/OEC-AIML801_E_Commerce_and_ERP/btech-cse-it-8-sem-e-commerce-and-erp-oec-cs802a-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem E Commerce And Erp Oec Cs802a 2026",
+                "fileUrl": "pyqs/cse_aiml/Semester_8/OEC-AIML801_E_Commerce_and_ERP/btech-cse-it-8-sem-e-commerce-and-erp-oec-cs802a-2026.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Oec Cse It 8 Sem E Commerce And Erp Oec Cs802a 2023",
+                "fileUrl": "pyqs/cse_aiml/Semester_8/OEC-AIML801_E_Commerce_and_ERP/btech-oec-cse-it-8-sem-e-commerce-and-erp-oec-cs802a-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "OEC-AIML802",
+        "name": "Cyber Law and Intellectual Property Rights",
+        "department": "CSE (Artificial Intelligence & Machine Learning)",
+        "stream": "CSE-AIML",
+        "semester": 8,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cse_aiml/CSE-AIML_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Oec Cse It 8 Sem Cyber Law And Ethics Oec Cs801b 2023",
+                "fileUrl": "pyqs/cse_aiml/Semester_8/OEC-AIML802_Cyber_Law_and_Intellectual_Property_Rights/btech-oec-cse-it-8-sem-cyber-law-and-ethics-oec-cs801b-2023.pdf"
+            }
+        ]
+    }
 ];
 
 const OFFICIAL_CSE_AIML_PYQS = OFFICIAL_CSE_AIML_COURSES.flatMap(c => (c.pyqs || []).map(p => ({
@@ -2698,6 +4439,2291 @@ const OFFICIAL_IT_COURSES = [
                      }
                  ]
     }
+,
+{
+        "code": "PCC-IT302",
+        "name": "Computer Organization and Architecture",
+        "department": "Information Technology",
+        "stream": "IT",
+        "semester": 3,
+        "credits": 3,
+        "syllabusUrl": "syllabus/it/IT_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech Cs It 3 Sem Computer Organisation Pcc Cs 302 2020",
+                "fileUrl": "pyqs/it/Semester_3/PCC-IT302_Computer_Organization_and_Architecture/btech-cs-it-3-sem-computer-organisation-pcc-cs-302-2020.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Computer Organisation Pcc Cs302 2023",
+                "fileUrl": "pyqs/it/Semester_3/PCC-IT302_Computer_Organization_and_Architecture/btech-cse-3-sem-computer-organisation-pcc-cs302-2023.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Computer Organisation Pcc Cs302 2024",
+                "fileUrl": "pyqs/it/Semester_3/PCC-IT302_Computer_Organization_and_Architecture/btech-cse-3-sem-computer-organisation-pcc-cs302-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech It 3 Sem Computer Organisation Pcc Cs302 2023",
+                "fileUrl": "pyqs/it/Semester_3/PCC-IT302_Computer_Organization_and_Architecture/btech-it-3-sem-computer-organisation-pcc-cs302-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 3 Sem Computer Organisation Pcc Cs302 2023",
+                "fileUrl": "pyqs/it/Semester_3/PCC-IT302_Computer_Organization_and_Architecture/btech-pcc-cse-3-sem-computer-organisation-pcc-cs302-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "Elective or Allied Subject",
+        "name": "Elective or Allied Subject",
+        "department": "Information Technology",
+        "stream": "IT",
+        "semester": 4,
+        "credits": 3,
+        "syllabusUrl": "syllabus/it/IT_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech 4 Sem Biology Bs B401 2024",
+                "fileUrl": "pyqs/it/Semester_4/Elective_or_Allied_Subject/btech-4-sem-biology-bs-b401-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech 4 Sem Biology Bs B401 2025",
+                "fileUrl": "pyqs/it/Semester_4/Elective_or_Allied_Subject/btech-4-sem-biology-bs-b401-2025.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech 4 Sem Numerical Methods M(cs) 401 2017",
+                "fileUrl": "pyqs/it/Semester_4/Elective_or_Allied_Subject/btech-4-sem-numerical-methods-m(cs)-401-2017.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Communication Engineering And Coding Theory 2015",
+                "fileUrl": "pyqs/it/Semester_4/Elective_or_Allied_Subject/btech-cse-4-sem-communication-engineering-and-coding-theory-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Communication Engineering And Coding Theory 2016",
+                "fileUrl": "pyqs/it/Semester_4/Elective_or_Allied_Subject/btech-cse-4-sem-communication-engineering-and-coding-theory-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Communication Engineering And Coding Theory 2017",
+                "fileUrl": "pyqs/it/Semester_4/Elective_or_Allied_Subject/btech-cse-4-sem-communication-engineering-and-coding-theory-2017.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Computer Architecture 2015",
+                "fileUrl": "pyqs/it/Semester_4/Elective_or_Allied_Subject/btech-cse-4-sem-computer-architecture-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Computer Architecture 2016",
+                "fileUrl": "pyqs/it/Semester_4/Elective_or_Allied_Subject/btech-cse-4-sem-computer-architecture-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Computer Architecture 2017",
+                "fileUrl": "pyqs/it/Semester_4/Elective_or_Allied_Subject/btech-cse-4-sem-computer-architecture-2017.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Numerical Methods 2016",
+                "fileUrl": "pyqs/it/Semester_4/Elective_or_Allied_Subject/btech-cse-4-sem-numerical-methods-2016.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech It 4 Sem Object Oriented Programming And Uml 2015",
+                "fileUrl": "pyqs/it/Semester_4/Elective_or_Allied_Subject/btech-it-4-sem-object-oriented-programming-and-uml-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech It 4 Sem Object Oriented Programming And Uml 2016",
+                "fileUrl": "pyqs/it/Semester_4/Elective_or_Allied_Subject/btech-it-4-sem-object-oriented-programming-and-uml-2016.pdf"
+            }
+        ]
+    },
+    {
+        "code": "MC-401",
+        "name": "Environmental Sciences",
+        "department": "Information Technology",
+        "stream": "IT",
+        "semester": 4,
+        "credits": 3,
+        "syllabusUrl": "syllabus/it/IT_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech 4 Sem Environmental Sciences Mc 401 2024",
+                "fileUrl": "pyqs/it/Semester_4/MC-401_Environmental_Sciences/btech-4-sem-environmental-sciences-mc-401-2024.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech 4 Sem Environmental Sciences Mc 401 2026",
+                "fileUrl": "pyqs/it/Semester_4/MC-401_Environmental_Sciences/btech-4-sem-environmental-sciences-mc-401-2026.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-IT401",
+        "name": "Discrete Mathematics",
+        "department": "Information Technology",
+        "stream": "IT",
+        "semester": 4,
+        "credits": 3,
+        "syllabusUrl": "syllabus/it/IT_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech 4 Sem Numerical Methods Bs M401 2024",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT401_Discrete_Mathematics/btech-4-sem-numerical-methods-bs-m401-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech 4 Sem Numerical Methods Bs M401 2025",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT401_Discrete_Mathematics/btech-4-sem-numerical-methods-bs-m401-2025.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Discrete Mathematics Pcc Cs401 2025",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT401_Discrete_Mathematics/btech-cse-4-sem-discrete-mathematics-pcc-cs401-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Discrete Mathematics Pcc Cs401 2026",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT401_Discrete_Mathematics/btech-cse-4-sem-discrete-mathematics-pcc-cs401-2026.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech M 401 Numerical Methods 2015",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT401_Discrete_Mathematics/btech-m-401-numerical-methods-2015.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cs 4 Sem Discrete Mathematics Pcc Cs401 2024",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT401_Discrete_Mathematics/btech-pcc-cs-4-sem-discrete-mathematics-pcc-cs401-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 4 Sem Discrete Mathematics Pcc Cs401 2023",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT401_Discrete_Mathematics/btech-pcc-cse-4-sem-discrete-mathematics-pcc-cs401-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-IT402",
+        "name": "Computer Architecture",
+        "department": "Information Technology",
+        "stream": "IT",
+        "semester": 4,
+        "credits": 3,
+        "syllabusUrl": "syllabus/it/IT_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Computer Architecture Pcc Cs402 2025",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT402_Computer_Architecture/btech-cse-4-sem-computer-architecture-pcc-cs402-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Computer Architecture Pcc Cs402 2026",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT402_Computer_Architecture/btech-cse-4-sem-computer-architecture-pcc-cs402-2026.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 4 Sem Design And Analysis Of Algorithms Es Cs401 2025",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT402_Computer_Architecture/btech-cse-it-4-sem-design-and-analysis-of-algorithms-es-cs401-2025.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Es 4 Sem Design And Analysis Of Algorithms Es Cs401 2023",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT402_Computer_Architecture/btech-es-4-sem-design-and-analysis-of-algorithms-es-cs401-2023.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Es Cs Pcc 4 Sem Design And Analysis Of Algorithms Es Cs401 2024",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT402_Computer_Architecture/btech-es-cs-pcc-4-sem-design-and-analysis-of-algorithms-es-cs401-2024.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cs 4 Sem Computer Architecture Pcc Cs402 2024",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT402_Computer_Architecture/btech-pcc-cs-4-sem-computer-architecture-pcc-cs402-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 4 Sem Computer Architecture Pcc Cs402 2023",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT402_Computer_Architecture/btech-pcc-cse-4-sem-computer-architecture-pcc-cs402-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-IT403",
+        "name": "Formal Language and Automata Theory",
+        "department": "Information Technology",
+        "stream": "IT",
+        "semester": 4,
+        "credits": 3,
+        "syllabusUrl": "syllabus/it/IT_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Formal Language And Automata Theory 2015",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT403_Formal_Language_and_Automata_Theory/btech-cse-4-sem-formal-language-and-automata-theory-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Formal Language And Automata Theory 2016",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT403_Formal_Language_and_Automata_Theory/btech-cse-4-sem-formal-language-and-automata-theory-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Formal Language And Automata Theory 2017",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT403_Formal_Language_and_Automata_Theory/btech-cse-4-sem-formal-language-and-automata-theory-2017.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Formal Language And Automata Theory Pcc Cs 403 2023",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT403_Formal_Language_and_Automata_Theory/btech-cse-4-sem-formal-language-and-automata-theory-pcc-cs-403-2023.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Formal Language And Automata Theory Pcc Cs 403 2025",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT403_Formal_Language_and_Automata_Theory/btech-cse-4-sem-formal-language-and-automata-theory-pcc-cs-403-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Formal Language And Automata Theory Pcc Cs 403 2026",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT403_Formal_Language_and_Automata_Theory/btech-cse-4-sem-formal-language-and-automata-theory-pcc-cs-403-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cs 4 Sem Formal Language And Automata Theory Pcc Cs 403 2024",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT403_Formal_Language_and_Automata_Theory/btech-pcc-cs-4-sem-formal-language-and-automata-theory-pcc-cs-403-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 4 Sem Formal Language And Automata Pcc Cse 403 2023",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT403_Formal_Language_and_Automata_Theory/btech-pcc-cse-4-sem-formal-language-and-automata-pcc-cse-403-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 4 Sem Formal Language And Automata Theory Pcc Cse 403 2023",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT403_Formal_Language_and_Automata_Theory/btech-pcc-cse-4-sem-formal-language-and-automata-theory-pcc-cse-403-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-IT404",
+        "name": "Design and Analysis of Algorithms",
+        "department": "Information Technology",
+        "stream": "IT",
+        "semester": 4,
+        "credits": 3,
+        "syllabusUrl": "syllabus/it/IT_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Data Structure And Algorithm 2017",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT404_Design_and_Analysis_of_Algorithms/btech-cse-3-sem-data-structure-and-algorithm-2017.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Data Structure And Algorithms 2015",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT404_Design_and_Analysis_of_Algorithms/btech-cse-3-sem-data-structure-and-algorithms-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Data Structure And Algorithms 2016",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT404_Design_and_Analysis_of_Algorithms/btech-cse-3-sem-data-structure-and-algorithms-2016.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Data Structure And Algorithms Pc Ecs301 2025",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT404_Design_and_Analysis_of_Algorithms/btech-cse-3-sem-data-structure-and-algorithms-pc-ecs301-2025.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Data Structure And Algorithms Pcc Csbs301 2023",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT404_Design_and_Analysis_of_Algorithms/btech-cse-3-sem-data-structure-and-algorithms-pcc-csbs301-2023.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 3 Sem Data Structure And Algorithms Pc Ecs301 2025",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT404_Design_and_Analysis_of_Algorithms/btech-cse-it-3-sem-data-structure-and-algorithms-pc-ecs301-2025.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Advanced Algorithms Pec It 601a 2024",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT404_Design_and_Analysis_of_Algorithms/btech-cse-it-6-sem-advanced-algorithms-pec-it-601a-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Advanced Algorithms Pec It601a 2025",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT404_Design_and_Analysis_of_Algorithms/btech-cse-it-6-sem-advanced-algorithms-pec-it601a-2025.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech It 3 Sem Data Structure And Algorithms Pcc Csbs301 2023",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT404_Design_and_Analysis_of_Algorithms/btech-it-3-sem-data-structure-and-algorithms-pcc-csbs301-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Csbs Cs 3 Sem Data Structures And Algorithms Pcc Csbs301 2023 Solutions",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT404_Design_and_Analysis_of_Algorithms/btech-pcc-csbs-cs-3-sem-data-structures-and-algorithms-pcc-csbs301-2023-solutions.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-IT405",
+        "name": "Object Oriented Programming using Java",
+        "department": "Information Technology",
+        "stream": "IT",
+        "semester": 4,
+        "credits": 3,
+        "syllabusUrl": "syllabus/it/IT_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Csd 4 Sem Object Oriented Programming And Design Pcc Csd 403 2023",
+                "fileUrl": "pyqs/it/Semester_4/PCC-IT405_Object_Oriented_Programming_using_Java/btech-pcc-csd-4-sem-object-oriented-programming-and-design-pcc-csd-403-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-IT501",
+        "name": "Software Engineering",
+        "department": "Information Technology",
+        "stream": "IT",
+        "semester": 5,
+        "credits": 3,
+        "syllabusUrl": "syllabus/it/IT_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech 5 Sem Economics For Engineers Hu 501 2019",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-5-sem-economics-for-engineers-hu-501-2019.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech 5 Sem Introduction To Industrial Management Hm Hu501 2026",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-5-sem-introduction-to-industrial-management-hm-hu501-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Ai 5 Sem Probability And Statistics Pcc Ai501 2026",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-ai-5-sem-probability-and-statistics-pcc-ai501-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Compiler Design Pcc Cs501 2026",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cs-5-sem-compiler-design-pcc-cs501-2026.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Design And Analysis Of Algorithms Cs 501 2018",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cs-5-sem-design-and-analysis-of-algorithms-cs-501-2018.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Discrete Mathematics Cs 503 2018",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cs-5-sem-discrete-mathematics-cs-503-2018.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Discrete Mathematics Cs 503 2020",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cs-5-sem-discrete-mathematics-cs-503-2020.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Machine Learning Esc Csbs 502 2026",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cs-5-sem-machine-learning-esc-csbs-502-2026.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Microprocessor And Microcontroller Cs 502 2018",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cs-5-sem-microprocessor-and-microcontroller-cs-502-2018.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Object Oriected Programming Pcc Cs503 2026",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cs-5-sem-object-oriected-programming-pcc-cs503-2026.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Object Oriented Programming Cs 504d 2018",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cs-5-sem-object-oriented-programming-cs-504d-2018.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Object Oriented Programming Cs 504d 2020",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cs-5-sem-object-oriented-programming-cs-504d-2020.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Operating System Pc Cs502 2025",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cs-5-sem-operating-system-pc-cs502-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Operating Systems Pcc Cs502 2026",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cs-5-sem-operating-systems-pcc-cs502-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs Ai 5 Sem Cloud Computing Pecai501 2026",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cs-ai-5-sem-cloud-computing-pecai501-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs Aids 5 Sem Social Network Analysis Pecaids701a 2026",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cs-aids-5-sem-social-network-analysis-pecaids701a-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs Esc 5 Sem Software Engineering Esc501 2026",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cs-esc-5-sem-software-engineering-esc501-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cs Pec 5 Sem Artificial Intelligence Pec Csbs 501 B 2024",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cs-pec-5-sem-artificial-intelligence-pec-csbs-501-b-2024.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Artificial Intelligence Pec Csbs 501 B 2024",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cse-5-sem-artificial-intelligence-pec-csbs-501-b-2024.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Compiler Design Pcc Cs501 2024",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cse-5-sem-compiler-design-pcc-cs501-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Compiler Design Pcc Cs501 2025",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cse-5-sem-compiler-design-pcc-cs501-2025.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Design And Analysis Of Algorithm 2015",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cse-5-sem-design-and-analysis-of-algorithm-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Design And Analysis Of Algorithm 2016",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cse-5-sem-design-and-analysis-of-algorithm-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Design And Analysis Of Algorithms 2017",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cse-5-sem-design-and-analysis-of-algorithms-2017.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Discrete Mathematics 2015",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cse-5-sem-discrete-mathematics-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Discrete Mathematics 2016",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cse-5-sem-discrete-mathematics-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Discrete Mathematics 2017",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cse-5-sem-discrete-mathematics-2017.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Introducon To Industrial Management Humanities 3 Hsmc 501 2024",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cse-5-sem-introducon-to-industrial-management-humanities-3-hsmc-501-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Introduction To Industrial Management Humanities 3 Hsmc 501 2025",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cse-5-sem-introduction-to-industrial-management-humanities-3-hsmc-501-2025.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Microprocessor And Microcontroller 2015",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cse-5-sem-microprocessor-and-microcontroller-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Microprocessor And Microcontroller 2016",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cse-5-sem-microprocessor-and-microcontroller-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Microprocessor And Microcontroller 2017",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cse-5-sem-microprocessor-and-microcontroller-2017.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Object Oriented Programming 2015",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cse-5-sem-object-oriented-programming-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Object Oriented Programming 2016",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cse-5-sem-object-oriented-programming-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Object Oriented Programming 2017",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cse-5-sem-object-oriented-programming-2017.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Object Oriented Programming Pcc Cs503 2024",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cse-5-sem-object-oriented-programming-pcc-cs503-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Object Oriented Programming Pcc Cs503 2025",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cse-5-sem-object-oriented-programming-pcc-cs503-2025.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Operating Systems Pcc Cs502 2024",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cse-5-sem-operating-systems-pcc-cs502-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Operating Systems Pcc Cs502 2025",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cse-5-sem-operating-systems-pcc-cs502-2025.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Software Engineering Esc501 2024",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cse-5-sem-software-engineering-esc501-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Software Engineering Esc501 2025",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cse-5-sem-software-engineering-esc501-2025.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Software Engineering Cse 701 2020",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cse-7-sem-software-engineering-cse-701-2020.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 5 Sem Artificial Intelligence Pec Csbs 501 B 2025",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cse-it-5-sem-artificial-intelligence-pec-csbs-501-b-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse It 5 Sem Artificial Intelligence Pec Csbs 501 B 2026",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-cse-it-5-sem-artificial-intelligence-pec-csbs-501-b-2026.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Ds Cse It 5 Sem Theory Of Computation Pec Ds 501a 2025",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-ds-cse-it-5-sem-theory-of-computation-pec-ds-501a-2025.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Esc 5 Sem Software Engineering Esc501 2023 Solution",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-esc-5-sem-software-engineering-esc501-2023-solution.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Esc 5 Sem Software Engineering Esc501 2023",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-esc-5-sem-software-engineering-esc501-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Hsmc 5 Sem Introduction To Industrial Management Hsmc 501 2023",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-hsmc-5-sem-introduction-to-industrial-management-hsmc-501-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Hsmc 5 Sem Introduction To Industrial Management Humanities 3 Hsmc 501 2023",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-hsmc-5-sem-introduction-to-industrial-management-humanities-3-hsmc-501-2023.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Hu 5 Sem Economics For Engineers Hu 501 2018",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-hu-5-sem-economics-for-engineers-hu-501-2018.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech Hu 5 Sem Economics For Engineers Hu 501 2020",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-hu-5-sem-economics-for-engineers-hu-501-2020.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Hu 5 Sem Principles And Practice Of Management Hu 511 2017",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-hu-5-sem-principles-and-practice-of-management-hu-511-2017.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech Hu 5 Sem Principles And Practices Of Management Hu 511 2020",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-hu-5-sem-principles-and-practices-of-management-hu-511-2020.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech It 5 Sem Computer Architecture 2015",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-it-5-sem-computer-architecture-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech It 5 Sem Computer Architecture 2016",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-it-5-sem-computer-architecture-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 5 Sem Computer Architecture 2017",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-it-5-sem-computer-architecture-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech It 5 Sem Computer Architecture 2019",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-it-5-sem-computer-architecture-2019.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech It 5 Sem Design And Analysis Of Algorithms 2015",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-it-5-sem-design-and-analysis-of-algorithms-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech It 5 Sem Design And Analysis Of Algorithms 2016",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-it-5-sem-design-and-analysis-of-algorithms-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 5 Sem Design And Analysis Of Algorithms 2017",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-it-5-sem-design-and-analysis-of-algorithms-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech It 5 Sem Design And Analysis Of Algorithms It 501 2019",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-it-5-sem-design-and-analysis-of-algorithms-it-501-2019.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech It 5 Sem Microprocessors And Microcontrollers 2016",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-it-5-sem-microprocessors-and-microcontrollers-2016.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech It 5 Sem Operating System 2015",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-it-5-sem-operating-system-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech It 5 Sem Operating System 2016",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-it-5-sem-operating-system-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 5 Sem Operating System 2017",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-it-5-sem-operating-system-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech It 5 Sem Operating System 2019",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-it-5-sem-operating-system-2019.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech It 5 Sem Operations Research 2016",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-it-5-sem-operations-research-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 5 Sem Operations Research 2017",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-it-5-sem-operations-research-2017.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 5 Sem Programming Practices Using Cpp 2017",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-it-5-sem-programming-practices-using-cpp-2017.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 5 Sem Compiler Design Pcc Cs501 2023",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-pcc-cse-5-sem-compiler-design-pcc-cs501-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 5 Sem Object Oriented Programming Pcc Cs503 2023",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-pcc-cse-5-sem-object-oriented-programming-pcc-cs503-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 5 Sem Operating Systems Pcc Cs502 2023",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-pcc-cse-5-sem-operating-systems-pcc-cs502-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pec It 5 Sem Artificial Intelligence Pec It 501b 2023",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-pec-it-5-sem-artificial-intelligence-pec-it-501b-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pec It 5 Sem Artificial Intelligence Pec It501b 2023",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT501_Software_Engineering/btech-pec-it-5-sem-artificial-intelligence-pec-it501b-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-IT502",
+        "name": "Compiler Design",
+        "department": "Information Technology",
+        "stream": "IT",
+        "semester": 5,
+        "credits": 3,
+        "syllabusUrl": "syllabus/it/IT_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Compiler Design 2018",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT502_Compiler_Design/btech-cse-7-sem-compiler-design-2018.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Compiler Design 2019",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT502_Compiler_Design/btech-cse-7-sem-compiler-design-2019.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Compiler Design 2015",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT502_Compiler_Design/btech-it-6-sem-compiler-design-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Compiler Design 2016",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT502_Compiler_Design/btech-it-6-sem-compiler-design-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Compiler Design 2017",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT502_Compiler_Design/btech-it-6-sem-compiler-design-2017.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-IT504",
+        "name": "Database Management Systems",
+        "department": "Information Technology",
+        "stream": "IT",
+        "semester": 5,
+        "credits": 3,
+        "syllabusUrl": "syllabus/it/IT_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Database Management System 2015",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT504_Database_Management_Systems/btech-cse-6-sem-database-management-system-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Database Management System 2016",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT504_Database_Management_Systems/btech-cse-6-sem-database-management-system-2016.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Database Management System 2015",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT504_Database_Management_Systems/btech-it-6-sem-database-management-system-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Database Management System 2016",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT504_Database_Management_Systems/btech-it-6-sem-database-management-system-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Database Management System 2017",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT504_Database_Management_Systems/btech-it-6-sem-database-management-system-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Database Management System 2019",
+                "fileUrl": "pyqs/it/Semester_5/PCC-IT504_Database_Management_Systems/btech-it-6-sem-database-management-system-2019.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PEC-IT501",
+        "name": "Artificial Intelligence",
+        "department": "Information Technology",
+        "stream": "IT",
+        "semester": 5,
+        "credits": 3,
+        "syllabusUrl": "syllabus/it/IT_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Ai Aids Aiml 8 Sem Research Methodology Oecai802b 2026",
+                "fileUrl": "pyqs/it/Semester_5/PEC-IT501_Artificial_Intelligence/btech-ai-aids-aiml-8-sem-research-methodology-oecai802b-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Ai Aids Aiml 8 Sem Software Engineering Oecai801c 2026",
+                "fileUrl": "pyqs/it/Semester_5/PEC-IT501_Artificial_Intelligence/btech-ai-aids-aiml-8-sem-software-engineering-oecai801c-2026.pdf"
+            }
+        ]
+    },
+    {
+        "code": "Elective or Allied Subject",
+        "name": "Elective or Allied Subject",
+        "department": "Information Technology",
+        "stream": "IT",
+        "semester": 6,
+        "credits": 3,
+        "syllabusUrl": "syllabus/it/IT_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech 6 Sem Production And Operational Management Hu 611 2018",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-6-sem-production-and-operational-management-hu-611-2018.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Aiml 6 Sem Deep Learning Pccaiml602 2025",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-aiml-6-sem-deep-learning-pccaiml602-2025.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Apm 6 Sem Apparel Marketing And Merchandising Apm 603 2018",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-apm-6-sem-apparel-marketing-and-merchandising-apm-603-2018.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Apm 6 Sem Knitting And Knitwear Technology Apm 604a 2018",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-apm-6-sem-knitting-and-knitwear-technology-apm-604a-2018.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Apm 6 Sem Production Planning And Control In Apparel Industry Apm 602 2018",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-apm-6-sem-production-planning-and-control-in-apparel-industry-apm-602-2018.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 6 Sem Computer Networks Cs 602 2018",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-cs-6-sem-computer-networks-cs-602-2018.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 6 Sem Operating System Cs 603 2018",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-cs-6-sem-operating-system-cs-603-2018.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 6 Sem Operations Research Cs 605a 2018",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-cs-6-sem-operations-research-cs-605a-2018.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Computer Graphics 2015",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-cse-6-sem-computer-graphics-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Computer Graphics 2016",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-cse-6-sem-computer-graphics-2016.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Computer Network 2016",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-cse-6-sem-computer-network-2016.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Computer Networks 2015",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-cse-6-sem-computer-networks-2015.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Computer Networks 2017",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-cse-6-sem-computer-networks-2017.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Data Base Management System 2017",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-cse-6-sem-data-base-management-system-2017.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Multimedia Technology 2015",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-cse-6-sem-multimedia-technology-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Multimedia Technology 2016",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-cse-6-sem-multimedia-technology-2016.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Operating System 2015",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-cse-6-sem-operating-system-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Operating System 2016",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-cse-6-sem-operating-system-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Operating System 2017",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-cse-6-sem-operating-system-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Operating System 2019",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-cse-6-sem-operating-system-2019.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Operations Research 2015",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-cse-6-sem-operations-research-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Operations Research 2016",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-cse-6-sem-operations-research-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Operations Research 2017",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-cse-6-sem-operations-research-2017.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Software Engineering 2015",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-cse-6-sem-software-engineering-2015.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Data Warehousing And Data Mining Pec It602b 2024",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-cse-it-6-sem-data-warehousing-and-data-mining-pec-it602b-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Data Warehousing And Data Mining Pec It602b 2025",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-cse-it-6-sem-data-warehousing-and-data-mining-pec-it602b-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Data Warehousing And Data Mining Pec It602b 2026",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-cse-it-6-sem-data-warehousing-and-data-mining-pec-it602b-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Distributed Systems Pec It601b 2024",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-cse-it-6-sem-distributed-systems-pec-it601b-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Distributed Systems Pec It601b 2025",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-cse-it-6-sem-distributed-systems-pec-it601b-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Distributed Systems Pec It601b 2026",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-cse-it-6-sem-distributed-systems-pec-it601b-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Human Resource Development And Organizational Behavior Oec It601b 2024",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-cse-it-6-sem-human-resource-development-and-organizational-behavior-oec-it601b-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Human Resource Development And Organizational Behavior Oec It601b 2025",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-cse-it-6-sem-human-resource-development-and-organizational-behavior-oec-it601b-2025.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Human Resource Development And Organizational Behaviour Oec It 601b 2024",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-cse-it-6-sem-human-resource-development-and-organizational-behaviour-oec-it-601b-2024.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Image Processing Pec It601d 2024",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-cse-it-6-sem-image-processing-pec-it601d-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Image Processing Pec It601d 2025",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-cse-it-6-sem-image-processing-pec-it601d-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Image Processing Pec It601d 2026",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-cse-it-6-sem-image-processing-pec-it601d-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Numerical Methods Oec It 601a 2024",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-cse-it-6-sem-numerical-methods-oec-it-601a-2024.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Ec Cse 6 Sem Computer Networks Ec602 2024",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-ec-cse-6-sem-computer-networks-ec602-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Ec Cse 6 Sem Computer Networks Ec602 2025",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-ec-cse-6-sem-computer-networks-ec602-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Ec Cse 6 Sem Computer Networks Ec602 2026",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-ec-cse-6-sem-computer-networks-ec602-2026.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Hu 6 Sem Principles Of Management Hu 601 2018",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-hu-6-sem-principles-of-management-hu-601-2018.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Artificial Intelligence 2015",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-it-6-sem-artificial-intelligence-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Artificial Intelligence 2016",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-it-6-sem-artificial-intelligence-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Artificial Intelligence 2017",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-it-6-sem-artificial-intelligence-2017.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Computer Graphics 2015",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-it-6-sem-computer-graphics-2015.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Computer Graphics 2017",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-it-6-sem-computer-graphics-2017.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Image Processing Pec It601d 2023",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-it-6-sem-image-processing-pec-it601d-2023.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Numerical Methods Oec It601a 2025",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-it-6-sem-numerical-methods-oec-it601a-2025.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Software Engineering 2015",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-it-6-sem-software-engineering-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Software Engineering 2016",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-it-6-sem-software-engineering-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Software Engineering 2017",
+                "fileUrl": "pyqs/it/Semester_6/Elective_or_Allied_Subject/btech-it-6-sem-software-engineering-2017.pdf"
+            }
+        ]
+    },
+    {
+        "code": "OEC-IT601",
+        "name": "Numerical Methods",
+        "department": "Information Technology",
+        "stream": "IT",
+        "semester": 6,
+        "credits": 3,
+        "syllabusUrl": "syllabus/it/IT_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Hm Hu 6 Sem Operations Research Hm Hu601 2023",
+                "fileUrl": "pyqs/it/Semester_6/OEC-IT601_Numerical_Methods/btech-hm-hu-6-sem-operations-research-hm-hu601-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Oec It 6 Sem Numerical Methods Oec It601a 2023",
+                "fileUrl": "pyqs/it/Semester_6/OEC-IT601_Numerical_Methods/btech-oec-it-6-sem-numerical-methods-oec-it601a-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Oec It 7 Sem Operations Research Oec It 701a 2023",
+                "fileUrl": "pyqs/it/Semester_6/OEC-IT601_Numerical_Methods/btech-oec-it-7-sem-operations-research-oec-it-701a-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-IT601",
+        "name": "Computer Networks",
+        "department": "Information Technology",
+        "stream": "IT",
+        "semester": 6,
+        "credits": 3,
+        "syllabusUrl": "syllabus/it/IT_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 6 Sem Database Management System Cs 601 2018",
+                "fileUrl": "pyqs/it/Semester_6/PCC-IT601_Computer_Networks/btech-cs-6-sem-database-management-system-cs-601-2018.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Database Management Systems Pcc Cs601 2024",
+                "fileUrl": "pyqs/it/Semester_6/PCC-IT601_Computer_Networks/btech-cse-6-sem-database-management-systems-pcc-cs601-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Database Management Systems Pcc Cs601 2025",
+                "fileUrl": "pyqs/it/Semester_6/PCC-IT601_Computer_Networks/btech-cse-6-sem-database-management-systems-pcc-cs601-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Database Management Systems Pcc Cs601 2026",
+                "fileUrl": "pyqs/it/Semester_6/PCC-IT601_Computer_Networks/btech-cse-6-sem-database-management-systems-pcc-cs601-2026.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Research Methodology Cs601 2025",
+                "fileUrl": "pyqs/it/Semester_6/PCC-IT601_Computer_Networks/btech-cse-6-sem-research-methodology-cs601-2025.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Computer Networking 2015",
+                "fileUrl": "pyqs/it/Semester_6/PCC-IT601_Computer_Networks/btech-it-6-sem-computer-networking-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Computer Networking 2016",
+                "fileUrl": "pyqs/it/Semester_6/PCC-IT601_Computer_Networks/btech-it-6-sem-computer-networking-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Computer Networking 2017",
+                "fileUrl": "pyqs/it/Semester_6/PCC-IT601_Computer_Networks/btech-it-6-sem-computer-networking-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Computer Networking 2019",
+                "fileUrl": "pyqs/it/Semester_6/PCC-IT601_Computer_Networks/btech-it-6-sem-computer-networking-2019.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech It 8 Sem Optical Networking 2016",
+                "fileUrl": "pyqs/it/Semester_6/PCC-IT601_Computer_Networks/btech-it-8-sem-optical-networking-2016.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cs 6 Sem Database Management Systems Pcc Cs601 2024",
+                "fileUrl": "pyqs/it/Semester_6/PCC-IT601_Computer_Networks/btech-pcc-cs-6-sem-database-management-systems-pcc-cs601-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 6 Sem Database Management Systems Pcc Cs601 2023",
+                "fileUrl": "pyqs/it/Semester_6/PCC-IT601_Computer_Networks/btech-pcc-cse-6-sem-database-management-systems-pcc-cs601-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PEC-IT601",
+        "name": "Data Mining and Data Warehousing",
+        "department": "Information Technology",
+        "stream": "IT",
+        "semester": 6,
+        "credits": 3,
+        "syllabusUrl": "syllabus/it/IT_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pec It 6 Sem Data Warehousing And Data Mining Pec It602b 2023",
+                "fileUrl": "pyqs/it/Semester_6/PEC-IT601_Data_Mining_and_Data_Warehousing/btech-pec-it-6-sem-data-warehousing-and-data-mining-pec-it602b-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PEC-IT602",
+        "name": "Distributed Systems",
+        "department": "Information Technology",
+        "stream": "IT",
+        "semester": 6,
+        "credits": 3,
+        "syllabusUrl": "syllabus/it/IT_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Distributed Systems Pec It601b 2023",
+                "fileUrl": "pyqs/it/Semester_6/PEC-IT602_Distributed_Systems/btech-it-6-sem-distributed-systems-pec-it601b-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pec It 6 Sem Distributed Systems Pec It 601b 2023",
+                "fileUrl": "pyqs/it/Semester_6/PEC-IT602_Distributed_Systems/btech-pec-it-6-sem-distributed-systems-pec-it-601b-2023.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Pec It 6 Sem Distributed Systems Pec It601b 2024",
+                "fileUrl": "pyqs/it/Semester_6/PEC-IT602_Distributed_Systems/btech-pec-it-6-sem-distributed-systems-pec-it601b-2024.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PEC-IT603",
+        "name": "Cloud Computing",
+        "department": "Information Technology",
+        "stream": "IT",
+        "semester": 6,
+        "credits": 3,
+        "syllabusUrl": "syllabus/it/IT_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs It 7 Sem Cloud Computing Pec Cs701b 2026",
+                "fileUrl": "pyqs/it/Semester_6/PEC-IT603_Cloud_Computing/btech-cs-it-7-sem-cloud-computing-pec-cs701b-2026.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Cloud Computing 2016",
+                "fileUrl": "pyqs/it/Semester_6/PEC-IT603_Cloud_Computing/btech-cse-7-sem-cloud-computing-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Cloud Computing 2017",
+                "fileUrl": "pyqs/it/Semester_6/PEC-IT603_Cloud_Computing/btech-cse-7-sem-cloud-computing-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Cloud Computing 2019",
+                "fileUrl": "pyqs/it/Semester_6/PEC-IT603_Cloud_Computing/btech-cse-7-sem-cloud-computing-2019.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Cloud Computing Pec Cs701b 2024",
+                "fileUrl": "pyqs/it/Semester_6/PEC-IT603_Cloud_Computing/btech-cse-7-sem-cloud-computing-pec-cs701b-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 7 Sem Cloud Computing Pec Cs701b 2025",
+                "fileUrl": "pyqs/it/Semester_6/PEC-IT603_Cloud_Computing/btech-cse-it-7-sem-cloud-computing-pec-cs701b-2025.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Cloud Computing 2015",
+                "fileUrl": "pyqs/it/Semester_6/PEC-IT603_Cloud_Computing/btech-it-7-sem-cloud-computing-2015.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Cloud Computing 2017",
+                "fileUrl": "pyqs/it/Semester_6/PEC-IT603_Cloud_Computing/btech-it-7-sem-cloud-computing-2017.pdf"
+            }
+        ]
+    },
+    {
+        "code": "Elective or Allied Subject",
+        "name": "Elective or Allied Subject",
+        "department": "Information Technology",
+        "stream": "IT",
+        "semester": 7,
+        "credits": 3,
+        "syllabusUrl": "syllabus/it/IT_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs 7 Sem Multimedia Systems Oeccs701b 2026",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-cs-7-sem-multimedia-systems-oeccs701b-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs Aids 7 Sem Internet Of Things Oecaid701a 2026",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-cs-aids-7-sem-internet-of-things-oecaid701a-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs It 7 Sem Cyber Security Pec Cs702e 2026",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-cs-it-7-sem-cyber-security-pec-cs702e-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs It 7 Sem Machine Learning Pec Cs701e 2026",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-cs-it-7-sem-machine-learning-pec-cs701e-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs It 7 Sem Soft Computing Pec Cs702b 2026",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-cs-it-7-sem-soft-computing-pec-cs702b-2026.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Artificial Intelligence 2015",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-cse-7-sem-artificial-intelligence-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Artificial Intelligence 2016",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-cse-7-sem-artificial-intelligence-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Artificial Intelligence 2017",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-cse-7-sem-artificial-intelligence-2017.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Artificial Intelligence 2018",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-cse-7-sem-artificial-intelligence-2018.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Artificial Intelligence 2019",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-cse-7-sem-artificial-intelligence-2019.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Cyber Security Pec Cs702e 2024",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-cse-7-sem-cyber-security-pec-cs702e-2024.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Internet Technology 2015",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-cse-7-sem-internet-technology-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Internet Technology 2016",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-cse-7-sem-internet-technology-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Internet Technology 2017",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-cse-7-sem-internet-technology-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Internet Technology 2019",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-cse-7-sem-internet-technology-2019.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Machine Learning Pec Cs701e 2024",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-cse-7-sem-machine-learning-pec-cs701e-2024.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Mobile Computing 2015",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-cse-7-sem-mobile-computing-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Mobile Computing 2016",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-cse-7-sem-mobile-computing-2016.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Multimedia Systems Oeccs701b 2025",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-cse-7-sem-multimedia-systems-oeccs701b-2025.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Operations Research Oec It701a 2024",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-cse-7-sem-operations-research-oec-it701a-2024.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Soft Computing 2015",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-cse-7-sem-soft-computing-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Soft Computing 2016",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-cse-7-sem-soft-computing-2016.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Software Engineering 2015",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-cse-7-sem-software-engineering-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Software Engineering 2016",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-cse-7-sem-software-engineering-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Software Engineering 2017",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-cse-7-sem-software-engineering-2017.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Software Engineering 2018",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-cse-7-sem-software-engineering-2018.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Software Engineering 2019",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-cse-7-sem-software-engineering-2019.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse Ee Eee 7 Sem Computer Network Es Cs701 2025",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-cse-ee-eee-7-sem-computer-network-es-cs701-2025.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 7 Sem Cyber Security Pec Cs702e 2025",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-cse-it-7-sem-cyber-security-pec-cs702e-2025.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 7 Sem Machine Learning Pec Cs701e 2025",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-cse-it-7-sem-machine-learning-pec-cs701e-2025.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 7 Sem Operations Research Oec It701a 2025",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-cse-it-7-sem-operations-research-oec-it701a-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse It 7 Sem Soft Computing Pec Cs702b 2026",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-cse-it-7-sem-soft-computing-pec-cs702b-2026.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Advance Data Communication And Coding 2017",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-it-7-sem-advance-data-communication-and-coding-2017.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Advanced Data Communication And Coding 2015",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-it-7-sem-advanced-data-communication-and-coding-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Advanced Data Communication And Coding 2016",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-it-7-sem-advanced-data-communication-and-coding-2016.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Advanced Data Communication And Coding It 705e 2020",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-it-7-sem-advanced-data-communication-and-coding-it-705e-2020.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Control System 2019",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-it-7-sem-control-system-2019.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Data Warehousing And Data Mining 2015",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-it-7-sem-data-warehousing-and-data-mining-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Data Warehousing And Data Mining 2016",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-it-7-sem-data-warehousing-and-data-mining-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Data Warehousing And Data Mining 2017",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-it-7-sem-data-warehousing-and-data-mining-2017.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Distributed Operating System 2015",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-it-7-sem-distributed-operating-system-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Distributed Operating System 2016",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-it-7-sem-distributed-operating-system-2016.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Distributed Operating System 2019",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-it-7-sem-distributed-operating-system-2019.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Distributed Operating System It 704a 2020",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-it-7-sem-distributed-operating-system-it-704a-2020.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Internet Technology 2017",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-it-7-sem-internet-technology-2017.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Internet Technology 2018",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-it-7-sem-internet-technology-2018.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Internet Technology 2019",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-it-7-sem-internet-technology-2019.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Micro Electronics And Vlsi Design 2015",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-it-7-sem-micro-electronics-and-vlsi-design-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Micro Electronics And Vlsi Design 2016",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-it-7-sem-micro-electronics-and-vlsi-design-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Microelectronics And Vlsi Design 2017",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-it-7-sem-microelectronics-and-vlsi-design-2017.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Mobile Computing It 704e 2020",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-it-7-sem-mobile-computing-it-704e-2020.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Multimedia 2015",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-it-7-sem-multimedia-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Multimedia 2016",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-it-7-sem-multimedia-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Multimedia 2017",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-it-7-sem-multimedia-2017.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Multimedia 2018",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-it-7-sem-multimedia-2018.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Multimedia 2019",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-it-7-sem-multimedia-2019.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Soft Computing 2015",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-it-7-sem-soft-computing-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Soft Computing 2016",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-it-7-sem-soft-computing-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Soft Computing 2017",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-it-7-sem-soft-computing-2017.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Oeccs 7 Sem Multimedia Systems Oeccs701b 2023",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-oeccs-7-sem-multimedia-systems-oeccs701b-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pec Cse 7 Sem Cyber Security Pec Cs702e 2023",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-pec-cse-7-sem-cyber-security-pec-cs702e-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pec Cse 7 Sem Soft Computing Pec Cs702b 2023",
+                "fileUrl": "pyqs/it/Semester_7/Elective_or_Allied_Subject/btech-pec-cse-7-sem-soft-computing-pec-cs702b-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "HSMC-701",
+        "name": "Principles of Management",
+        "department": "Information Technology",
+        "stream": "IT",
+        "semester": 7,
+        "credits": 3,
+        "syllabusUrl": "syllabus/it/IT_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech 7 Sem Project Management And Entrepreneurship Hsmc 701 2024",
+                "fileUrl": "pyqs/it/Semester_7/HSMC-701_Principles_of_Management/btech-7-sem-project-management-and-entrepreneurship-hsmc-701-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech 7 Sem Project Management And Entrepreneurship Hsmc 701 2025",
+                "fileUrl": "pyqs/it/Semester_7/HSMC-701_Principles_of_Management/btech-7-sem-project-management-and-entrepreneurship-hsmc-701-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech 7 Sem Project Management And Entrepreneurship Hsmc 701 2026",
+                "fileUrl": "pyqs/it/Semester_7/HSMC-701_Principles_of_Management/btech-7-sem-project-management-and-entrepreneurship-hsmc-701-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Project Management And Entrepreneurship Hsmc 701 2024",
+                "fileUrl": "pyqs/it/Semester_7/HSMC-701_Principles_of_Management/btech-cse-7-sem-project-management-and-entrepreneurship-hsmc-701-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Hm Hu 7 Sem Economics For Engineers Hm Hu701 2023",
+                "fileUrl": "pyqs/it/Semester_7/HSMC-701_Principles_of_Management/btech-hm-hu-7-sem-economics-for-engineers-hm-hu701-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Hm Hu 7 Sem Principles Of Management And Organisation Behaviour Hm Hu 701 2023",
+                "fileUrl": "pyqs/it/Semester_7/HSMC-701_Principles_of_Management/btech-hm-hu-7-sem-principles-of-management-and-organisation-behaviour-hm-hu-701-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Hs Hu 7 Sem Principles Of Management Hs Hu701 2023",
+                "fileUrl": "pyqs/it/Semester_7/HSMC-701_Principles_of_Management/btech-hs-hu-7-sem-principles-of-management-hs-hu701-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Hsmc 7 Sem Project Management And Entrepreneurship Hsmc701 2023",
+                "fileUrl": "pyqs/it/Semester_7/HSMC-701_Principles_of_Management/btech-hsmc-7-sem-project-management-and-entrepreneurship-hsmc701-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PEC-IT701",
+        "name": "Internet of Things IoT",
+        "department": "Information Technology",
+        "stream": "IT",
+        "semester": 7,
+        "credits": 3,
+        "syllabusUrl": "syllabus/it/IT_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Internet Technology It 701 2020",
+                "fileUrl": "pyqs/it/Semester_7/PEC-IT701_Internet_of_Things_IoT/btech-it-7-sem-internet-technology-it-701-2020.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PEC-IT702",
+        "name": "Cryptography and Network Security",
+        "department": "Information Technology",
+        "stream": "IT",
+        "semester": 7,
+        "credits": 3,
+        "syllabusUrl": "syllabus/it/IT_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 8 Sem Cryptography And Network Security 2015",
+                "fileUrl": "pyqs/it/Semester_7/PEC-IT702_Cryptography_and_Network_Security/btech-cse-8-sem-cryptography-and-network-security-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 8 Sem Cryptography And Network Security 2016",
+                "fileUrl": "pyqs/it/Semester_7/PEC-IT702_Cryptography_and_Network_Security/btech-cse-8-sem-cryptography-and-network-security-2016.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Cryptography And Network Security Pec Cs801 B 2025",
+                "fileUrl": "pyqs/it/Semester_7/PEC-IT702_Cryptography_and_Network_Security/btech-cse-it-8-sem-cryptography-and-network-security-pec-cs801-b-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Cryptography And Network Security Pec Cs801 B 2026",
+                "fileUrl": "pyqs/it/Semester_7/PEC-IT702_Cryptography_and_Network_Security/btech-cse-it-8-sem-cryptography-and-network-security-pec-cs801-b-2026.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Multimedia It 702 2020",
+                "fileUrl": "pyqs/it/Semester_7/PEC-IT702_Cryptography_and_Network_Security/btech-it-7-sem-multimedia-it-702-2020.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech It 8 Sem Cryptography And Network Security 2016",
+                "fileUrl": "pyqs/it/Semester_7/PEC-IT702_Cryptography_and_Network_Security/btech-it-8-sem-cryptography-and-network-security-2016.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pec Cse It 8 Sem Cryptography And Network Security Pec Cs801 B 2023",
+                "fileUrl": "pyqs/it/Semester_7/PEC-IT702_Cryptography_and_Network_Security/btech-pec-cse-it-8-sem-cryptography-and-network-security-pec-cs801-b-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PEC-IT703",
+        "name": "Machine Learning",
+        "department": "Information Technology",
+        "stream": "IT",
+        "semester": 7,
+        "credits": 3,
+        "syllabusUrl": "syllabus/it/IT_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pec Cse 7 Sem Machine Learning Pec Cs701e 2023",
+                "fileUrl": "pyqs/it/Semester_7/PEC-IT703_Machine_Learning/btech-pec-cse-7-sem-machine-learning-pec-cs701e-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "Elective or Allied Subject",
+        "name": "Elective or Allied Subject",
+        "department": "Information Technology",
+        "stream": "IT",
+        "semester": 8,
+        "credits": 3,
+        "syllabusUrl": "syllabus/it/IT_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse 8 Sem Big Data Analysis Oec Cs801a 2026",
+                "fileUrl": "pyqs/it/Semester_8/Elective_or_Allied_Subject/btech-cse-8-sem-big-data-analysis-oec-cs801a-2026.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 8 Sem Cyber Law And Security Policy 2016",
+                "fileUrl": "pyqs/it/Semester_8/Elective_or_Allied_Subject/btech-cse-8-sem-cyber-law-and-security-policy-2016.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 8 Sem Cyber Laws And Security Policy 2015",
+                "fileUrl": "pyqs/it/Semester_8/Elective_or_Allied_Subject/btech-cse-8-sem-cyber-laws-and-security-policy-2015.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Cyber Law And Ethics Oec Cs801b 2024",
+                "fileUrl": "pyqs/it/Semester_8/Elective_or_Allied_Subject/btech-cse-it-8-sem-cyber-law-and-ethics-oec-cs801b-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Cyber Law And Ethics Oec Cs801b 2025",
+                "fileUrl": "pyqs/it/Semester_8/Elective_or_Allied_Subject/btech-cse-it-8-sem-cyber-law-and-ethics-oec-cs801b-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Cyber Law And Ethics Oec Cs801b 2026",
+                "fileUrl": "pyqs/it/Semester_8/Elective_or_Allied_Subject/btech-cse-it-8-sem-cyber-law-and-ethics-oec-cs801b-2026.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Cyptography And Network Security Pec Cs801 B 2025",
+                "fileUrl": "pyqs/it/Semester_8/Elective_or_Allied_Subject/btech-cse-it-8-sem-cyptography-and-network-security-pec-cs801-b-2025.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Internet Of Things Cs801e 2024",
+                "fileUrl": "pyqs/it/Semester_8/Elective_or_Allied_Subject/btech-cse-it-8-sem-internet-of-things-cs801e-2024.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Internet Of Things Pec Cs801e 2024",
+                "fileUrl": "pyqs/it/Semester_8/Elective_or_Allied_Subject/btech-cse-it-8-sem-internet-of-things-pec-cs801e-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Web And Internet Technology Pec Cs801d 2025",
+                "fileUrl": "pyqs/it/Semester_8/Elective_or_Allied_Subject/btech-cse-it-8-sem-web-and-internet-technology-pec-cs801d-2025.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech It 8 Sem Advanced Computer Architecture 2016",
+                "fileUrl": "pyqs/it/Semester_8/Elective_or_Allied_Subject/btech-it-8-sem-advanced-computer-architecture-2016.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech It 8 Sem Cyber Law And Security Policy 2015",
+                "fileUrl": "pyqs/it/Semester_8/Elective_or_Allied_Subject/btech-it-8-sem-cyber-law-and-security-policy-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech It 8 Sem Cyber Law And Security Policy 2016",
+                "fileUrl": "pyqs/it/Semester_8/Elective_or_Allied_Subject/btech-it-8-sem-cyber-law-and-security-policy-2016.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Oec Cse It 8 Sem Cyber Law And Ethics Oec Cs801b 2023",
+                "fileUrl": "pyqs/it/Semester_8/Elective_or_Allied_Subject/btech-oec-cse-it-8-sem-cyber-law-and-ethics-oec-cs801b-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "OEC-IT801",
+        "name": "E Commerce and ERP",
+        "department": "Information Technology",
+        "stream": "IT",
+        "semester": 8,
+        "credits": 3,
+        "syllabusUrl": "syllabus/it/IT_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Apm 6 Sem E Commerce Apm 605c 2018",
+                "fileUrl": "pyqs/it/Semester_8/OEC-IT801_E_Commerce_and_ERP/btech-apm-6-sem-e-commerce-apm-605c-2018.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs Aids 7 Sem Ecommerce And Erp Pecaids702a 2026",
+                "fileUrl": "pyqs/it/Semester_8/OEC-IT801_E_Commerce_and_ERP/btech-cs-aids-7-sem-ecommerce-and-erp-pecaids702a-2026.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Erp 2018",
+                "fileUrl": "pyqs/it/Semester_8/OEC-IT801_E_Commerce_and_ERP/btech-cse-6-sem-erp-2018.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Erp 2019",
+                "fileUrl": "pyqs/it/Semester_8/OEC-IT801_E_Commerce_and_ERP/btech-cse-6-sem-erp-2019.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech Cse 8 Sem E Commerce 2015",
+                "fileUrl": "pyqs/it/Semester_8/OEC-IT801_E_Commerce_and_ERP/btech-cse-8-sem-e-commerce-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech Cse 8 Sem E Commerce 2016",
+                "fileUrl": "pyqs/it/Semester_8/OEC-IT801_E_Commerce_and_ERP/btech-cse-8-sem-e-commerce-2016.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem E Commerce And Erp Oec Cs802a 2024",
+                "fileUrl": "pyqs/it/Semester_8/OEC-IT801_E_Commerce_and_ERP/btech-cse-it-8-sem-e-commerce-and-erp-oec-cs802a-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem E Commerce And Erp Oec Cs802a 2025",
+                "fileUrl": "pyqs/it/Semester_8/OEC-IT801_E_Commerce_and_ERP/btech-cse-it-8-sem-e-commerce-and-erp-oec-cs802a-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem E Commerce And Erp Oec Cs802a 2026",
+                "fileUrl": "pyqs/it/Semester_8/OEC-IT801_E_Commerce_and_ERP/btech-cse-it-8-sem-e-commerce-and-erp-oec-cs802a-2026.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Erp 2015",
+                "fileUrl": "pyqs/it/Semester_8/OEC-IT801_E_Commerce_and_ERP/btech-it-6-sem-erp-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Erp 2016",
+                "fileUrl": "pyqs/it/Semester_8/OEC-IT801_E_Commerce_and_ERP/btech-it-6-sem-erp-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Erp 2017",
+                "fileUrl": "pyqs/it/Semester_8/OEC-IT801_E_Commerce_and_ERP/btech-it-6-sem-erp-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Erp 2019",
+                "fileUrl": "pyqs/it/Semester_8/OEC-IT801_E_Commerce_and_ERP/btech-it-6-sem-erp-2019.pdf"
+            },
+            {
+                "year": 2015,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem E Commerce 2015",
+                "fileUrl": "pyqs/it/Semester_8/OEC-IT801_E_Commerce_and_ERP/btech-it-7-sem-e-commerce-2015.pdf"
+            },
+            {
+                "year": 2016,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem E Commerce 2016",
+                "fileUrl": "pyqs/it/Semester_8/OEC-IT801_E_Commerce_and_ERP/btech-it-7-sem-e-commerce-2016.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem E Commerce 2017",
+                "fileUrl": "pyqs/it/Semester_8/OEC-IT801_E_Commerce_and_ERP/btech-it-7-sem-e-commerce-2017.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem E Commerce 2018",
+                "fileUrl": "pyqs/it/Semester_8/OEC-IT801_E_Commerce_and_ERP/btech-it-7-sem-e-commerce-2018.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem E Commerce 2019",
+                "fileUrl": "pyqs/it/Semester_8/OEC-IT801_E_Commerce_and_ERP/btech-it-7-sem-e-commerce-2019.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem E Commerce It 703a 2020",
+                "fileUrl": "pyqs/it/Semester_8/OEC-IT801_E_Commerce_and_ERP/btech-it-7-sem-e-commerce-it-703a-2020.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Oec Cse It 8 Sem E Commerce And Erp Oec Cs802a 2023",
+                "fileUrl": "pyqs/it/Semester_8/OEC-IT801_E_Commerce_and_ERP/btech-oec-cse-it-8-sem-e-commerce-and-erp-oec-cs802a-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "OEC-IT802",
+        "name": "Human Resource Development",
+        "department": "Information Technology",
+        "stream": "IT",
+        "semester": 8,
+        "credits": 3,
+        "syllabusUrl": "syllabus/it/IT_Syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Oec It 6 Sem Human Resource Development And Organizational Behavior Oec It 601b 2023",
+                "fileUrl": "pyqs/it/Semester_8/OEC-IT802_Human_Resource_Development/btech-oec-it-6-sem-human-resource-development-and-organizational-behavior-oec-it-601b-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Oec It 6 Sem Human Resource Development And Organizational Behavior Oec It601b 2023",
+                "fileUrl": "pyqs/it/Semester_8/OEC-IT802_Human_Resource_Development/btech-oec-it-6-sem-human-resource-development-and-organizational-behavior-oec-it601b-2023.pdf"
+            }
+        ]
+    }
 ];
 
 const OFFICIAL_IT_PYQS = OFFICIAL_IT_COURSES.flatMap(c => (c.pyqs || []).map(p => ({
@@ -2709,6 +6735,4711 @@ const OFFICIAL_IT_PYQS = OFFICIAL_IT_COURSES.flatMap(c => (c.pyqs || []).map(p =
 })));
 window.OFFICIAL_IT_COURSES = OFFICIAL_IT_COURSES;
 window.OFFICIAL_IT_PYQS = OFFICIAL_IT_PYQS;
+
+const OFFICIAL_CSCS_COURSES = [
+    {
+        "code": "BSC-301",
+        "name": "Mathematics III Calculus and Linear Algebra",
+        "department": "Computer Science & Cyber Security",
+        "stream": "CSCS",
+        "semester": 3,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cscs/cscs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech 3 Sem Mathematics 3 Bs M301 2025",
+                "fileUrl": "pyqs/cscs/Semester_3/BSC-301_Mathematics_III_Calculus_and_Linear_Algebra/btech-3-sem-mathematics-3-bs-m301-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech 3 Sem Mathematics 3 Bs M301 2026",
+                "fileUrl": "pyqs/cscs/Semester_3/BSC-301_Mathematics_III_Calculus_and_Linear_Algebra/btech-3-sem-mathematics-3-bs-m301-2026.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Mathematics 3 Differential Calculus Bs M301 2025",
+                "fileUrl": "pyqs/cscs/Semester_3/BSC-301_Mathematics_III_Calculus_and_Linear_Algebra/btech-cse-3-sem-mathematics-3-differential-calculus-bs-m301-2025.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Mathematics 3 Differential Calculus Bsc 301 2024",
+                "fileUrl": "pyqs/cscs/Semester_3/BSC-301_Mathematics_III_Calculus_and_Linear_Algebra/btech-cse-3-sem-mathematics-3-differential-calculus-bsc-301-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Mathematics 3 Differential Calculus Bsc301 2023",
+                "fileUrl": "pyqs/cscs/Semester_3/BSC-301_Mathematics_III_Calculus_and_Linear_Algebra/btech-cse-3-sem-mathematics-3-differential-calculus-bsc301-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech It 3 Sem Mathematics 3 Differential Calculus Bsc301 2023",
+                "fileUrl": "pyqs/cscs/Semester_3/BSC-301_Mathematics_III_Calculus_and_Linear_Algebra/btech-it-3-sem-mathematics-3-differential-calculus-bsc301-2023.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech M 302 Mathematics 3 2018",
+                "fileUrl": "pyqs/cscs/Semester_3/BSC-301_Mathematics_III_Calculus_and_Linear_Algebra/btech-m-302-mathematics-3-2018.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech M 401 Mathematics 3 2017",
+                "fileUrl": "pyqs/cscs/Semester_3/BSC-301_Mathematics_III_Calculus_and_Linear_Algebra/btech-m-401-mathematics-3-2017.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech M 402 Mathematics 3 2017",
+                "fileUrl": "pyqs/cscs/Semester_3/BSC-301_Mathematics_III_Calculus_and_Linear_Algebra/btech-m-402-mathematics-3-2017.pdf"
+            }
+        ]
+    },
+    {
+        "code": "ESC-301",
+        "name": "Analog and Digital Electronics",
+        "department": "Computer Science & Cyber Security",
+        "stream": "CSCS",
+        "semester": 3,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cscs/cscs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Analog And Digital Electronics 2017",
+                "fileUrl": "pyqs/cscs/Semester_3/ESC-301_Analog_and_Digital_Electronics/btech-cse-3-sem-analog-and-digital-electronics-2017.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Analog And Digital Electronics 2018",
+                "fileUrl": "pyqs/cscs/Semester_3/ESC-301_Analog_and_Digital_Electronics/btech-cse-3-sem-analog-and-digital-electronics-2018.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Analog And Digital Electronics Esc 301 2024",
+                "fileUrl": "pyqs/cscs/Semester_3/ESC-301_Analog_and_Digital_Electronics/btech-cse-3-sem-analog-and-digital-electronics-esc-301-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Analog And Digital Electronics Esc 301 2025",
+                "fileUrl": "pyqs/cscs/Semester_3/ESC-301_Analog_and_Digital_Electronics/btech-cse-3-sem-analog-and-digital-electronics-esc-301-2025.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Analog And Digital Electronics Esc301 2023",
+                "fileUrl": "pyqs/cscs/Semester_3/ESC-301_Analog_and_Digital_Electronics/btech-cse-3-sem-analog-and-digital-electronics-esc301-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech It 3 Sem Analog And Digital Electronics Esc301 2023",
+                "fileUrl": "pyqs/cscs/Semester_3/ESC-301_Analog_and_Digital_Electronics/btech-it-3-sem-analog-and-digital-electronics-esc301-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "Electives and Allied Cyber Security Subjects",
+        "name": "Electives and Allied Cyber Security Subjects",
+        "department": "Computer Science & Cyber Security",
+        "stream": "CSCS",
+        "semester": 3,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cscs/cscs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech 3 Sem Physics 2 Ph 301 2017",
+                "fileUrl": "pyqs/cscs/Semester_3/Electives_and_Allied_Cyber_Security_Subjects/btech-3-sem-physics-2-ph-301-2017.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Computer Organisation 2017",
+                "fileUrl": "pyqs/cscs/Semester_3/Electives_and_Allied_Cyber_Security_Subjects/btech-cse-3-sem-computer-organisation-2017.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Computer Organisation Pc Ecs302 2025",
+                "fileUrl": "pyqs/cscs/Semester_3/Electives_and_Allied_Cyber_Security_Subjects/btech-cse-3-sem-computer-organisation-pc-ecs302-2025.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Fluid Mechanics 2018",
+                "fileUrl": "pyqs/cscs/Semester_3/Electives_and_Allied_Cyber_Security_Subjects/btech-cse-3-sem-fluid-mechanics-2018.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 3 Sem Computer Organisation Pc Ecs302 2025",
+                "fileUrl": "pyqs/cscs/Semester_3/Electives_and_Allied_Cyber_Security_Subjects/btech-cse-it-3-sem-computer-organisation-pc-ecs302-2025.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Es Au Me 3 Sem Engineering Mechanics Ce Es 301 2025",
+                "fileUrl": "pyqs/cscs/Semester_3/Electives_and_Allied_Cyber_Security_Subjects/btech-es-au-me-3-sem-engineering-mechanics-ce-es-301-2025.pdf"
+            }
+        ]
+    },
+    {
+        "code": "HSMC-301",
+        "name": "Economics for Engineers",
+        "department": "Computer Science & Cyber Security",
+        "stream": "CSCS",
+        "semester": 3,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cscs/cscs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Economics For Engineers Humanities 2 Hm Hu301 2025",
+                "fileUrl": "pyqs/cscs/Semester_3/HSMC-301_Economics_for_Engineers/btech-cse-3-sem-economics-for-engineers-humanities-2-hm-hu301-2025.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Economics For Engineers Humanities 2 Hsmc 301 2024",
+                "fileUrl": "pyqs/cscs/Semester_3/HSMC-301_Economics_for_Engineers/btech-cse-3-sem-economics-for-engineers-humanities-2-hsmc-301-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Economics For Engineers Humanities 2 Hsmc301 2023",
+                "fileUrl": "pyqs/cscs/Semester_3/HSMC-301_Economics_for_Engineers/btech-cse-3-sem-economics-for-engineers-humanities-2-hsmc301-2023.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 3 Sem Economics For Engineers Humanities 3 Hm Hu301 2025",
+                "fileUrl": "pyqs/cscs/Semester_3/HSMC-301_Economics_for_Engineers/btech-cse-it-3-sem-economics-for-engineers-humanities-3-hm-hu301-2025.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech Cse It Apm Ttn 3 Sem Economics For Engineers Hsmc 301 2020",
+                "fileUrl": "pyqs/cscs/Semester_3/HSMC-301_Economics_for_Engineers/btech-cse-it-apm-ttn-3-sem-economics-for-engineers-hsmc-301-2020.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Hu 301 Values And Ethics In Profession 2017",
+                "fileUrl": "pyqs/cscs/Semester_3/HSMC-301_Economics_for_Engineers/btech-hu-301-values-and-ethics-in-profession-2017.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Hu 301 Values And Ethics In Profession 2018",
+                "fileUrl": "pyqs/cscs/Semester_3/HSMC-301_Economics_for_Engineers/btech-hu-301-values-and-ethics-in-profession-2018.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech It 3 Sem Economics For Engineers Humanities 2 Hsmc301 2023",
+                "fileUrl": "pyqs/cscs/Semester_3/HSMC-301_Economics_for_Engineers/btech-it-3-sem-economics-for-engineers-humanities-2-hsmc301-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CSCS301",
+        "name": "Data Structures and Algorithms",
+        "department": "Computer Science & Cyber Security",
+        "stream": "CSCS",
+        "semester": 3,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cscs/cscs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech Cs It Ec 3 Sem Data Structure And Algorithms Pcc Cs 301 2020",
+                "fileUrl": "pyqs/cscs/Semester_3/PCC-CSCS301_Data_Structures_and_Algorithms/btech-cs-it-ec-3-sem-data-structure-and-algorithms-pcc-cs-301-2020.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Data Structure And Algorithms Pcc Cs301 2024",
+                "fileUrl": "pyqs/cscs/Semester_3/PCC-CSCS301_Data_Structures_and_Algorithms/btech-cse-3-sem-data-structure-and-algorithms-pcc-cs301-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Csbs Cse 3 Sem Data Structures And Algorithms Pcc Csbs301 2023",
+                "fileUrl": "pyqs/cscs/Semester_3/PCC-CSCS301_Data_Structures_and_Algorithms/btech-pcc-csbs-cse-3-sem-data-structures-and-algorithms-pcc-csbs301-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CSCS302",
+        "name": "Computer Organization and Architecture",
+        "department": "Computer Science & Cyber Security",
+        "stream": "CSCS",
+        "semester": 3,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cscs/cscs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech Cs It 3 Sem Computer Organisation Pcc Cs 302 2020",
+                "fileUrl": "pyqs/cscs/Semester_3/PCC-CSCS302_Computer_Organization_and_Architecture/btech-cs-it-3-sem-computer-organisation-pcc-cs-302-2020.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Computer Organisation Pcc Cs302 2023",
+                "fileUrl": "pyqs/cscs/Semester_3/PCC-CSCS302_Computer_Organization_and_Architecture/btech-cse-3-sem-computer-organisation-pcc-cs302-2023.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Computer Organisation Pcc Cs302 2024",
+                "fileUrl": "pyqs/cscs/Semester_3/PCC-CSCS302_Computer_Organization_and_Architecture/btech-cse-3-sem-computer-organisation-pcc-cs302-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech It 3 Sem Computer Organisation Pcc Cs302 2023",
+                "fileUrl": "pyqs/cscs/Semester_3/PCC-CSCS302_Computer_Organization_and_Architecture/btech-it-3-sem-computer-organisation-pcc-cs302-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 3 Sem Computer Organisation Pcc Cs302 2023",
+                "fileUrl": "pyqs/cscs/Semester_3/PCC-CSCS302_Computer_Organization_and_Architecture/btech-pcc-cse-3-sem-computer-organisation-pcc-cs302-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "Electives and Allied Cyber Security Subjects",
+        "name": "Electives and Allied Cyber Security Subjects",
+        "department": "Computer Science & Cyber Security",
+        "stream": "CSCS",
+        "semester": 4,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cscs/cscs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Computer Architecture 2017",
+                "fileUrl": "pyqs/cscs/Semester_4/Electives_and_Allied_Cyber_Security_Subjects/btech-cse-4-sem-computer-architecture-2017.pdf"
+            }
+        ]
+    },
+    {
+        "code": "MC-401",
+        "name": "Environmental Sciences",
+        "department": "Computer Science & Cyber Security",
+        "stream": "CSCS",
+        "semester": 4,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cscs/cscs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech 4 Sem Environmental Sciences Mc 401 2024",
+                "fileUrl": "pyqs/cscs/Semester_4/MC-401_Environmental_Sciences/btech-4-sem-environmental-sciences-mc-401-2024.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech 4 Sem Environmental Sciences Mc 401 2026",
+                "fileUrl": "pyqs/cscs/Semester_4/MC-401_Environmental_Sciences/btech-4-sem-environmental-sciences-mc-401-2026.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CSCS401",
+        "name": "Discrete Mathematics",
+        "department": "Computer Science & Cyber Security",
+        "stream": "CSCS",
+        "semester": 4,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cscs/cscs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech 4 Sem Numerical Methods Bs M401 2024",
+                "fileUrl": "pyqs/cscs/Semester_4/PCC-CSCS401_Discrete_Mathematics/btech-4-sem-numerical-methods-bs-m401-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech 4 Sem Numerical Methods Bs M401 2025",
+                "fileUrl": "pyqs/cscs/Semester_4/PCC-CSCS401_Discrete_Mathematics/btech-4-sem-numerical-methods-bs-m401-2025.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Discrete Mathematics Pcc Cs401 2025",
+                "fileUrl": "pyqs/cscs/Semester_4/PCC-CSCS401_Discrete_Mathematics/btech-cse-4-sem-discrete-mathematics-pcc-cs401-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Discrete Mathematics Pcc Cs401 2026",
+                "fileUrl": "pyqs/cscs/Semester_4/PCC-CSCS401_Discrete_Mathematics/btech-cse-4-sem-discrete-mathematics-pcc-cs401-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cs 4 Sem Discrete Mathematics Pcc Cs401 2024",
+                "fileUrl": "pyqs/cscs/Semester_4/PCC-CSCS401_Discrete_Mathematics/btech-pcc-cs-4-sem-discrete-mathematics-pcc-cs401-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 4 Sem Discrete Mathematics Pcc Cs401 2023",
+                "fileUrl": "pyqs/cscs/Semester_4/PCC-CSCS401_Discrete_Mathematics/btech-pcc-cse-4-sem-discrete-mathematics-pcc-cs401-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CSCS402",
+        "name": "Computer Architecture",
+        "department": "Computer Science & Cyber Security",
+        "stream": "CSCS",
+        "semester": 4,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cscs/cscs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Computer Architecture Pcc Cs402 2025",
+                "fileUrl": "pyqs/cscs/Semester_4/PCC-CSCS402_Computer_Architecture/btech-cse-4-sem-computer-architecture-pcc-cs402-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Computer Architecture Pcc Cs402 2026",
+                "fileUrl": "pyqs/cscs/Semester_4/PCC-CSCS402_Computer_Architecture/btech-cse-4-sem-computer-architecture-pcc-cs402-2026.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 4 Sem Design And Analysis Of Algorithms Es Cs401 2025",
+                "fileUrl": "pyqs/cscs/Semester_4/PCC-CSCS402_Computer_Architecture/btech-cse-it-4-sem-design-and-analysis-of-algorithms-es-cs401-2025.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Es 4 Sem Design And Analysis Of Algorithms Es Cs401 2023",
+                "fileUrl": "pyqs/cscs/Semester_4/PCC-CSCS402_Computer_Architecture/btech-es-4-sem-design-and-analysis-of-algorithms-es-cs401-2023.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Es Cs Pcc 4 Sem Design And Analysis Of Algorithms Es Cs401 2024",
+                "fileUrl": "pyqs/cscs/Semester_4/PCC-CSCS402_Computer_Architecture/btech-es-cs-pcc-4-sem-design-and-analysis-of-algorithms-es-cs401-2024.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cs 4 Sem Computer Architecture Pcc Cs402 2024",
+                "fileUrl": "pyqs/cscs/Semester_4/PCC-CSCS402_Computer_Architecture/btech-pcc-cs-4-sem-computer-architecture-pcc-cs402-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 4 Sem Computer Architecture Pcc Cs402 2023",
+                "fileUrl": "pyqs/cscs/Semester_4/PCC-CSCS402_Computer_Architecture/btech-pcc-cse-4-sem-computer-architecture-pcc-cs402-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CSCS403",
+        "name": "Formal Language and Automata Theory",
+        "department": "Computer Science & Cyber Security",
+        "stream": "CSCS",
+        "semester": 4,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cscs/cscs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Formal Language And Automata Theory 2017",
+                "fileUrl": "pyqs/cscs/Semester_4/PCC-CSCS403_Formal_Language_and_Automata_Theory/btech-cse-4-sem-formal-language-and-automata-theory-2017.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Formal Language And Automata Theory Pcc Cs 403 2023",
+                "fileUrl": "pyqs/cscs/Semester_4/PCC-CSCS403_Formal_Language_and_Automata_Theory/btech-cse-4-sem-formal-language-and-automata-theory-pcc-cs-403-2023.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Formal Language And Automata Theory Pcc Cs 403 2025",
+                "fileUrl": "pyqs/cscs/Semester_4/PCC-CSCS403_Formal_Language_and_Automata_Theory/btech-cse-4-sem-formal-language-and-automata-theory-pcc-cs-403-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Formal Language And Automata Theory Pcc Cs 403 2026",
+                "fileUrl": "pyqs/cscs/Semester_4/PCC-CSCS403_Formal_Language_and_Automata_Theory/btech-cse-4-sem-formal-language-and-automata-theory-pcc-cs-403-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cs 4 Sem Formal Language And Automata Theory Pcc Cs 403 2024",
+                "fileUrl": "pyqs/cscs/Semester_4/PCC-CSCS403_Formal_Language_and_Automata_Theory/btech-pcc-cs-4-sem-formal-language-and-automata-theory-pcc-cs-403-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 4 Sem Formal Language And Automata Pcc Cse 403 2023",
+                "fileUrl": "pyqs/cscs/Semester_4/PCC-CSCS403_Formal_Language_and_Automata_Theory/btech-pcc-cse-4-sem-formal-language-and-automata-pcc-cse-403-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 4 Sem Formal Language And Automata Theory Pcc Cse 403 2023",
+                "fileUrl": "pyqs/cscs/Semester_4/PCC-CSCS403_Formal_Language_and_Automata_Theory/btech-pcc-cse-4-sem-formal-language-and-automata-theory-pcc-cse-403-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CSCS404",
+        "name": "Design and Analysis of Algorithms",
+        "department": "Computer Science & Cyber Security",
+        "stream": "CSCS",
+        "semester": 4,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cscs/cscs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Design And Analysis Of Algorithms Cs 501 2018",
+                "fileUrl": "pyqs/cscs/Semester_4/PCC-CSCS404_Design_and_Analysis_of_Algorithms/btech-cs-5-sem-design-and-analysis-of-algorithms-cs-501-2018.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Data Structure And Algorithm 2017",
+                "fileUrl": "pyqs/cscs/Semester_4/PCC-CSCS404_Design_and_Analysis_of_Algorithms/btech-cse-3-sem-data-structure-and-algorithm-2017.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Data Structure And Algorithms Pc Ecs301 2025",
+                "fileUrl": "pyqs/cscs/Semester_4/PCC-CSCS404_Design_and_Analysis_of_Algorithms/btech-cse-3-sem-data-structure-and-algorithms-pc-ecs301-2025.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Data Structure And Algorithms Pcc Csbs301 2023",
+                "fileUrl": "pyqs/cscs/Semester_4/PCC-CSCS404_Design_and_Analysis_of_Algorithms/btech-cse-3-sem-data-structure-and-algorithms-pcc-csbs301-2023.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Design And Analysis Of Algorithms 2017",
+                "fileUrl": "pyqs/cscs/Semester_4/PCC-CSCS404_Design_and_Analysis_of_Algorithms/btech-cse-5-sem-design-and-analysis-of-algorithms-2017.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 3 Sem Data Structure And Algorithms Pc Ecs301 2025",
+                "fileUrl": "pyqs/cscs/Semester_4/PCC-CSCS404_Design_and_Analysis_of_Algorithms/btech-cse-it-3-sem-data-structure-and-algorithms-pc-ecs301-2025.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Advanced Algorithms Pec It 601a 2024",
+                "fileUrl": "pyqs/cscs/Semester_4/PCC-CSCS404_Design_and_Analysis_of_Algorithms/btech-cse-it-6-sem-advanced-algorithms-pec-it-601a-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Advanced Algorithms Pec It601a 2025",
+                "fileUrl": "pyqs/cscs/Semester_4/PCC-CSCS404_Design_and_Analysis_of_Algorithms/btech-cse-it-6-sem-advanced-algorithms-pec-it601a-2025.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech It 3 Sem Data Structure And Algorithms Pcc Csbs301 2023",
+                "fileUrl": "pyqs/cscs/Semester_4/PCC-CSCS404_Design_and_Analysis_of_Algorithms/btech-it-3-sem-data-structure-and-algorithms-pcc-csbs301-2023.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 5 Sem Design And Analysis Of Algorithms 2017",
+                "fileUrl": "pyqs/cscs/Semester_4/PCC-CSCS404_Design_and_Analysis_of_Algorithms/btech-it-5-sem-design-and-analysis-of-algorithms-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech It 5 Sem Design And Analysis Of Algorithms It 501 2019",
+                "fileUrl": "pyqs/cscs/Semester_4/PCC-CSCS404_Design_and_Analysis_of_Algorithms/btech-it-5-sem-design-and-analysis-of-algorithms-it-501-2019.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Csbs Cs 3 Sem Data Structures And Algorithms Pcc Csbs301 2023 Solutions",
+                "fileUrl": "pyqs/cscs/Semester_4/PCC-CSCS404_Design_and_Analysis_of_Algorithms/btech-pcc-csbs-cs-3-sem-data-structures-and-algorithms-pcc-csbs301-2023-solutions.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CSCS405",
+        "name": "Fundamentals of Cyber Security and Secure Coding",
+        "department": "Computer Science & Cyber Security",
+        "stream": "CSCS",
+        "semester": 4,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cscs/cscs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pec Cse 7 Sem Cyber Security Pec Cs702e 2023",
+                "fileUrl": "pyqs/cscs/Semester_4/PCC-CSCS405_Fundamentals_of_Cyber_Security_and_Secure_Coding/btech-pec-cse-7-sem-cyber-security-pec-cs702e-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "Electives and Allied Cyber Security Subjects",
+        "name": "Electives and Allied Cyber Security Subjects",
+        "department": "Computer Science & Cyber Security",
+        "stream": "CSCS",
+        "semester": 5,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cscs/cscs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech 5 Sem Economics For Engineers Hu 501 2019",
+                "fileUrl": "pyqs/cscs/Semester_5/Electives_and_Allied_Cyber_Security_Subjects/btech-5-sem-economics-for-engineers-hu-501-2019.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Ai 5 Sem Probability And Statistics Pcc Ai501 2026",
+                "fileUrl": "pyqs/cscs/Semester_5/Electives_and_Allied_Cyber_Security_Subjects/btech-ai-5-sem-probability-and-statistics-pcc-ai501-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Machine Learning Esc Csbs 502 2026",
+                "fileUrl": "pyqs/cscs/Semester_5/Electives_and_Allied_Cyber_Security_Subjects/btech-cs-5-sem-machine-learning-esc-csbs-502-2026.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Object Oriented Programming Cs 504d 2018",
+                "fileUrl": "pyqs/cscs/Semester_5/Electives_and_Allied_Cyber_Security_Subjects/btech-cs-5-sem-object-oriented-programming-cs-504d-2018.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Object Oriented Programming Cs 504d 2020",
+                "fileUrl": "pyqs/cscs/Semester_5/Electives_and_Allied_Cyber_Security_Subjects/btech-cs-5-sem-object-oriented-programming-cs-504d-2020.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs Ai 5 Sem Cloud Computing Pecai501 2026",
+                "fileUrl": "pyqs/cscs/Semester_5/Electives_and_Allied_Cyber_Security_Subjects/btech-cs-ai-5-sem-cloud-computing-pecai501-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs Aids 5 Sem Social Network Analysis Pecaids701a 2026",
+                "fileUrl": "pyqs/cscs/Semester_5/Electives_and_Allied_Cyber_Security_Subjects/btech-cs-aids-5-sem-social-network-analysis-pecaids701a-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs Esc 5 Sem Software Engineering Esc501 2026",
+                "fileUrl": "pyqs/cscs/Semester_5/Electives_and_Allied_Cyber_Security_Subjects/btech-cs-esc-5-sem-software-engineering-esc501-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cs Pec 5 Sem Artificial Intelligence Pec Csbs 501 B 2024",
+                "fileUrl": "pyqs/cscs/Semester_5/Electives_and_Allied_Cyber_Security_Subjects/btech-cs-pec-5-sem-artificial-intelligence-pec-csbs-501-b-2024.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Discrete Mathematics 2017",
+                "fileUrl": "pyqs/cscs/Semester_5/Electives_and_Allied_Cyber_Security_Subjects/btech-cse-5-sem-discrete-mathematics-2017.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Ds Cse It 5 Sem Theory Of Computation Pec Ds 501a 2025",
+                "fileUrl": "pyqs/cscs/Semester_5/Electives_and_Allied_Cyber_Security_Subjects/btech-ds-cse-it-5-sem-theory-of-computation-pec-ds-501a-2025.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Hu 5 Sem Economics For Engineers Hu 501 2018",
+                "fileUrl": "pyqs/cscs/Semester_5/Electives_and_Allied_Cyber_Security_Subjects/btech-hu-5-sem-economics-for-engineers-hu-501-2018.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech Hu 5 Sem Economics For Engineers Hu 501 2020",
+                "fileUrl": "pyqs/cscs/Semester_5/Electives_and_Allied_Cyber_Security_Subjects/btech-hu-5-sem-economics-for-engineers-hu-501-2020.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 5 Sem Computer Architecture 2017",
+                "fileUrl": "pyqs/cscs/Semester_5/Electives_and_Allied_Cyber_Security_Subjects/btech-it-5-sem-computer-architecture-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech It 5 Sem Computer Architecture 2019",
+                "fileUrl": "pyqs/cscs/Semester_5/Electives_and_Allied_Cyber_Security_Subjects/btech-it-5-sem-computer-architecture-2019.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CS501",
+        "name": "Operating Systems",
+        "department": "Computer Science & Cyber Security",
+        "stream": "CSCS",
+        "semester": 5,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cscs/cscs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Compiler Design Pcc Cs501 2026",
+                "fileUrl": "pyqs/cscs/Semester_5/PCC-CS501_Operating_Systems/btech-cs-5-sem-compiler-design-pcc-cs501-2026.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Microprocessor And Microcontroller Cs 502 2018",
+                "fileUrl": "pyqs/cscs/Semester_5/PCC-CS501_Operating_Systems/btech-cs-5-sem-microprocessor-and-microcontroller-cs-502-2018.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Operating System Pc Cs502 2025",
+                "fileUrl": "pyqs/cscs/Semester_5/PCC-CS501_Operating_Systems/btech-cs-5-sem-operating-system-pc-cs502-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Operating Systems Pcc Cs502 2026",
+                "fileUrl": "pyqs/cscs/Semester_5/PCC-CS501_Operating_Systems/btech-cs-5-sem-operating-systems-pcc-cs502-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Compiler Design Pcc Cs501 2024",
+                "fileUrl": "pyqs/cscs/Semester_5/PCC-CS501_Operating_Systems/btech-cse-5-sem-compiler-design-pcc-cs501-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Compiler Design Pcc Cs501 2025",
+                "fileUrl": "pyqs/cscs/Semester_5/PCC-CS501_Operating_Systems/btech-cse-5-sem-compiler-design-pcc-cs501-2025.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Operating Systems Pcc Cs502 2024",
+                "fileUrl": "pyqs/cscs/Semester_5/PCC-CS501_Operating_Systems/btech-cse-5-sem-operating-systems-pcc-cs502-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Operating Systems Pcc Cs502 2025",
+                "fileUrl": "pyqs/cscs/Semester_5/PCC-CS501_Operating_Systems/btech-cse-5-sem-operating-systems-pcc-cs502-2025.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 5 Sem Compiler Design Pcc Cs501 2023",
+                "fileUrl": "pyqs/cscs/Semester_5/PCC-CS501_Operating_Systems/btech-pcc-cse-5-sem-compiler-design-pcc-cs501-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 5 Sem Operating Systems Pcc Cs502 2023",
+                "fileUrl": "pyqs/cscs/Semester_5/PCC-CS501_Operating_Systems/btech-pcc-cse-5-sem-operating-systems-pcc-cs502-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CS502",
+        "name": "Database Management Systems",
+        "department": "Computer Science & Cyber Security",
+        "stream": "CSCS",
+        "semester": 5,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cscs/cscs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Discrete Mathematics Cs 503 2018",
+                "fileUrl": "pyqs/cscs/Semester_5/PCC-CS502_Database_Management_Systems/btech-cs-5-sem-discrete-mathematics-cs-503-2018.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Discrete Mathematics Cs 503 2020",
+                "fileUrl": "pyqs/cscs/Semester_5/PCC-CS502_Database_Management_Systems/btech-cs-5-sem-discrete-mathematics-cs-503-2020.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Object Oriected Programming Pcc Cs503 2026",
+                "fileUrl": "pyqs/cscs/Semester_5/PCC-CS502_Database_Management_Systems/btech-cs-5-sem-object-oriected-programming-pcc-cs503-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Object Oriented Programming Pcc Cs503 2024",
+                "fileUrl": "pyqs/cscs/Semester_5/PCC-CS502_Database_Management_Systems/btech-cse-5-sem-object-oriented-programming-pcc-cs503-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Object Oriented Programming Pcc Cs503 2025",
+                "fileUrl": "pyqs/cscs/Semester_5/PCC-CS502_Database_Management_Systems/btech-cse-5-sem-object-oriented-programming-pcc-cs503-2025.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Database Management System 2017",
+                "fileUrl": "pyqs/cscs/Semester_5/PCC-CS502_Database_Management_Systems/btech-it-6-sem-database-management-system-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Database Management System 2019",
+                "fileUrl": "pyqs/cscs/Semester_5/PCC-CS502_Database_Management_Systems/btech-it-6-sem-database-management-system-2019.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 5 Sem Object Oriented Programming Pcc Cs503 2023",
+                "fileUrl": "pyqs/cscs/Semester_5/PCC-CS502_Database_Management_Systems/btech-pcc-cse-5-sem-object-oriented-programming-pcc-cs503-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CSCS501",
+        "name": "Cryptography and Network Security",
+        "department": "Computer Science & Cyber Security",
+        "stream": "CSCS",
+        "semester": 5,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cscs/cscs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse Ee Eee 7 Sem Computer Network Es Cs701 2025",
+                "fileUrl": "pyqs/cscs/Semester_5/PCC-CSCS501_Cryptography_and_Network_Security/btech-cse-ee-eee-7-sem-computer-network-es-cs701-2025.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Cryptography And Network Security Pec Cs801 B 2025",
+                "fileUrl": "pyqs/cscs/Semester_5/PCC-CSCS501_Cryptography_and_Network_Security/btech-cse-it-8-sem-cryptography-and-network-security-pec-cs801-b-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Cryptography And Network Security Pec Cs801 B 2026",
+                "fileUrl": "pyqs/cscs/Semester_5/PCC-CSCS501_Cryptography_and_Network_Security/btech-cse-it-8-sem-cryptography-and-network-security-pec-cs801-b-2026.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Multimedia It 702 2020",
+                "fileUrl": "pyqs/cscs/Semester_5/PCC-CSCS501_Cryptography_and_Network_Security/btech-it-7-sem-multimedia-it-702-2020.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pec Cse It 8 Sem Cryptography And Network Security Pec Cs801 B 2023",
+                "fileUrl": "pyqs/cscs/Semester_5/PCC-CSCS501_Cryptography_and_Network_Security/btech-pec-cse-it-8-sem-cryptography-and-network-security-pec-cs801-b-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CSCS502",
+        "name": "Cyber Laws and Information Security Policies",
+        "department": "Computer Science & Cyber Security",
+        "stream": "CSCS",
+        "semester": 5,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cscs/cscs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Oec Cse It 8 Sem Cyber Law And Ethics Oec Cs801b 2023",
+                "fileUrl": "pyqs/cscs/Semester_5/PCC-CSCS502_Cyber_Laws_and_Information_Security_Policies/btech-oec-cse-it-8-sem-cyber-law-and-ethics-oec-cs801b-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "Electives and Allied Cyber Security Subjects",
+        "name": "Electives and Allied Cyber Security Subjects",
+        "department": "Computer Science & Cyber Security",
+        "stream": "CSCS",
+        "semester": 6,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cscs/cscs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 6 Sem Computer Networks Cs 602 2018",
+                "fileUrl": "pyqs/cscs/Semester_6/Electives_and_Allied_Cyber_Security_Subjects/btech-cs-6-sem-computer-networks-cs-602-2018.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 6 Sem Operating System Cs 603 2018",
+                "fileUrl": "pyqs/cscs/Semester_6/Electives_and_Allied_Cyber_Security_Subjects/btech-cs-6-sem-operating-system-cs-603-2018.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 6 Sem Operations Research Cs 605a 2018",
+                "fileUrl": "pyqs/cscs/Semester_6/Electives_and_Allied_Cyber_Security_Subjects/btech-cs-6-sem-operations-research-cs-605a-2018.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Computer Networks 2017",
+                "fileUrl": "pyqs/cscs/Semester_6/Electives_and_Allied_Cyber_Security_Subjects/btech-cse-6-sem-computer-networks-2017.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Ec Cse 6 Sem Computer Networks Ec602 2024",
+                "fileUrl": "pyqs/cscs/Semester_6/Electives_and_Allied_Cyber_Security_Subjects/btech-ec-cse-6-sem-computer-networks-ec602-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Ec Cse 6 Sem Computer Networks Ec602 2025",
+                "fileUrl": "pyqs/cscs/Semester_6/Electives_and_Allied_Cyber_Security_Subjects/btech-ec-cse-6-sem-computer-networks-ec602-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Ec Cse 6 Sem Computer Networks Ec602 2026",
+                "fileUrl": "pyqs/cscs/Semester_6/Electives_and_Allied_Cyber_Security_Subjects/btech-ec-cse-6-sem-computer-networks-ec602-2026.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Compiler Design 2017",
+                "fileUrl": "pyqs/cscs/Semester_6/Electives_and_Allied_Cyber_Security_Subjects/btech-it-6-sem-compiler-design-2017.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Computer Graphics 2017",
+                "fileUrl": "pyqs/cscs/Semester_6/Electives_and_Allied_Cyber_Security_Subjects/btech-it-6-sem-computer-graphics-2017.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Computer Networking 2017",
+                "fileUrl": "pyqs/cscs/Semester_6/Electives_and_Allied_Cyber_Security_Subjects/btech-it-6-sem-computer-networking-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Computer Networking 2019",
+                "fileUrl": "pyqs/cscs/Semester_6/Electives_and_Allied_Cyber_Security_Subjects/btech-it-6-sem-computer-networking-2019.pdf"
+            }
+        ]
+    },
+    {
+        "code": "OEC-CSCS601",
+        "name": "Numerical Methods and Optimization",
+        "department": "Computer Science & Cyber Security",
+        "stream": "CSCS",
+        "semester": 6,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cscs/cscs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Hm Hu 6 Sem Operations Research Hm Hu601 2023",
+                "fileUrl": "pyqs/cscs/Semester_6/OEC-CSCS601_Numerical_Methods_and_Optimization/btech-hm-hu-6-sem-operations-research-hm-hu601-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Oec It 6 Sem Numerical Methods Oec It601a 2023",
+                "fileUrl": "pyqs/cscs/Semester_6/OEC-CSCS601_Numerical_Methods_and_Optimization/btech-oec-it-6-sem-numerical-methods-oec-it601a-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Oec It 7 Sem Operations Research Oec It 701a 2023",
+                "fileUrl": "pyqs/cscs/Semester_6/OEC-CSCS601_Numerical_Methods_and_Optimization/btech-oec-it-7-sem-operations-research-oec-it-701a-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CSCS601",
+        "name": "Computer Networks and Protocol Security",
+        "department": "Computer Science & Cyber Security",
+        "stream": "CSCS",
+        "semester": 6,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cscs/cscs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 6 Sem Database Management System Cs 601 2018",
+                "fileUrl": "pyqs/cscs/Semester_6/PCC-CSCS601_Computer_Networks_and_Protocol_Security/btech-cs-6-sem-database-management-system-cs-601-2018.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Database Management Systems Pcc Cs601 2024",
+                "fileUrl": "pyqs/cscs/Semester_6/PCC-CSCS601_Computer_Networks_and_Protocol_Security/btech-cse-6-sem-database-management-systems-pcc-cs601-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Database Management Systems Pcc Cs601 2025",
+                "fileUrl": "pyqs/cscs/Semester_6/PCC-CSCS601_Computer_Networks_and_Protocol_Security/btech-cse-6-sem-database-management-systems-pcc-cs601-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Database Management Systems Pcc Cs601 2026",
+                "fileUrl": "pyqs/cscs/Semester_6/PCC-CSCS601_Computer_Networks_and_Protocol_Security/btech-cse-6-sem-database-management-systems-pcc-cs601-2026.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Research Methodology Cs601 2025",
+                "fileUrl": "pyqs/cscs/Semester_6/PCC-CSCS601_Computer_Networks_and_Protocol_Security/btech-cse-6-sem-research-methodology-cs601-2025.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cs 6 Sem Database Management Systems Pcc Cs601 2024",
+                "fileUrl": "pyqs/cscs/Semester_6/PCC-CSCS601_Computer_Networks_and_Protocol_Security/btech-pcc-cs-6-sem-database-management-systems-pcc-cs601-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 6 Sem Database Management Systems Pcc Cs601 2023",
+                "fileUrl": "pyqs/cscs/Semester_6/PCC-CSCS601_Computer_Networks_and_Protocol_Security/btech-pcc-cse-6-sem-database-management-systems-pcc-cs601-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "Electives and Allied Cyber Security Subjects",
+        "name": "Electives and Allied Cyber Security Subjects",
+        "department": "Computer Science & Cyber Security",
+        "stream": "CSCS",
+        "semester": 7,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cscs/cscs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs 7 Sem Multimedia Systems Oeccs701b 2026",
+                "fileUrl": "pyqs/cscs/Semester_7/Electives_and_Allied_Cyber_Security_Subjects/btech-cs-7-sem-multimedia-systems-oeccs701b-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs Aids 7 Sem Internet Of Things Oecaid701a 2026",
+                "fileUrl": "pyqs/cscs/Semester_7/Electives_and_Allied_Cyber_Security_Subjects/btech-cs-aids-7-sem-internet-of-things-oecaid701a-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs It 7 Sem Cloud Computing Pec Cs701b 2026",
+                "fileUrl": "pyqs/cscs/Semester_7/Electives_and_Allied_Cyber_Security_Subjects/btech-cs-it-7-sem-cloud-computing-pec-cs701b-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs It 7 Sem Cyber Security Pec Cs702e 2026",
+                "fileUrl": "pyqs/cscs/Semester_7/Electives_and_Allied_Cyber_Security_Subjects/btech-cs-it-7-sem-cyber-security-pec-cs702e-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs It 7 Sem Machine Learning Pec Cs701e 2026",
+                "fileUrl": "pyqs/cscs/Semester_7/Electives_and_Allied_Cyber_Security_Subjects/btech-cs-it-7-sem-machine-learning-pec-cs701e-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs It 7 Sem Soft Computing Pec Cs702b 2026",
+                "fileUrl": "pyqs/cscs/Semester_7/Electives_and_Allied_Cyber_Security_Subjects/btech-cs-it-7-sem-soft-computing-pec-cs702b-2026.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Cloud Computing 2017",
+                "fileUrl": "pyqs/cscs/Semester_7/Electives_and_Allied_Cyber_Security_Subjects/btech-cse-7-sem-cloud-computing-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Cloud Computing 2019",
+                "fileUrl": "pyqs/cscs/Semester_7/Electives_and_Allied_Cyber_Security_Subjects/btech-cse-7-sem-cloud-computing-2019.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Cloud Computing Pec Cs701b 2024",
+                "fileUrl": "pyqs/cscs/Semester_7/Electives_and_Allied_Cyber_Security_Subjects/btech-cse-7-sem-cloud-computing-pec-cs701b-2024.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Compiler Design 2018",
+                "fileUrl": "pyqs/cscs/Semester_7/Electives_and_Allied_Cyber_Security_Subjects/btech-cse-7-sem-compiler-design-2018.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Compiler Design 2019",
+                "fileUrl": "pyqs/cscs/Semester_7/Electives_and_Allied_Cyber_Security_Subjects/btech-cse-7-sem-compiler-design-2019.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Cyber Security Pec Cs702e 2024",
+                "fileUrl": "pyqs/cscs/Semester_7/Electives_and_Allied_Cyber_Security_Subjects/btech-cse-7-sem-cyber-security-pec-cs702e-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 7 Sem Cloud Computing Pec Cs701b 2025",
+                "fileUrl": "pyqs/cscs/Semester_7/Electives_and_Allied_Cyber_Security_Subjects/btech-cse-it-7-sem-cloud-computing-pec-cs701b-2025.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 7 Sem Cyber Security Pec Cs702e 2025",
+                "fileUrl": "pyqs/cscs/Semester_7/Electives_and_Allied_Cyber_Security_Subjects/btech-cse-it-7-sem-cyber-security-pec-cs702e-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse It 7 Sem Soft Computing Pec Cs702b 2026",
+                "fileUrl": "pyqs/cscs/Semester_7/Electives_and_Allied_Cyber_Security_Subjects/btech-cse-it-7-sem-soft-computing-pec-cs702b-2026.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Cloud Computing 2017",
+                "fileUrl": "pyqs/cscs/Semester_7/Electives_and_Allied_Cyber_Security_Subjects/btech-it-7-sem-cloud-computing-2017.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Microelectronics And Vlsi Design 2017",
+                "fileUrl": "pyqs/cscs/Semester_7/Electives_and_Allied_Cyber_Security_Subjects/btech-it-7-sem-microelectronics-and-vlsi-design-2017.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Mobile Computing It 704e 2020",
+                "fileUrl": "pyqs/cscs/Semester_7/Electives_and_Allied_Cyber_Security_Subjects/btech-it-7-sem-mobile-computing-it-704e-2020.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Soft Computing 2017",
+                "fileUrl": "pyqs/cscs/Semester_7/Electives_and_Allied_Cyber_Security_Subjects/btech-it-7-sem-soft-computing-2017.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Oeccs 7 Sem Multimedia Systems Oeccs701b 2023",
+                "fileUrl": "pyqs/cscs/Semester_7/Electives_and_Allied_Cyber_Security_Subjects/btech-oeccs-7-sem-multimedia-systems-oeccs701b-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pec Cse 7 Sem Soft Computing Pec Cs702b 2023",
+                "fileUrl": "pyqs/cscs/Semester_7/Electives_and_Allied_Cyber_Security_Subjects/btech-pec-cse-7-sem-soft-computing-pec-cs702b-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "HSMC-701",
+        "name": "Principles of Management and Ethics",
+        "department": "Computer Science & Cyber Security",
+        "stream": "CSCS",
+        "semester": 7,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cscs/cscs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech 7 Sem Project Management And Entrepreneurship Hsmc 701 2024",
+                "fileUrl": "pyqs/cscs/Semester_7/HSMC-701_Principles_of_Management_and_Ethics/btech-7-sem-project-management-and-entrepreneurship-hsmc-701-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech 7 Sem Project Management And Entrepreneurship Hsmc 701 2025",
+                "fileUrl": "pyqs/cscs/Semester_7/HSMC-701_Principles_of_Management_and_Ethics/btech-7-sem-project-management-and-entrepreneurship-hsmc-701-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech 7 Sem Project Management And Entrepreneurship Hsmc 701 2026",
+                "fileUrl": "pyqs/cscs/Semester_7/HSMC-701_Principles_of_Management_and_Ethics/btech-7-sem-project-management-and-entrepreneurship-hsmc-701-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Project Management And Entrepreneurship Hsmc 701 2024",
+                "fileUrl": "pyqs/cscs/Semester_7/HSMC-701_Principles_of_Management_and_Ethics/btech-cse-7-sem-project-management-and-entrepreneurship-hsmc-701-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Hm Hu 7 Sem Economics For Engineers Hm Hu701 2023",
+                "fileUrl": "pyqs/cscs/Semester_7/HSMC-701_Principles_of_Management_and_Ethics/btech-hm-hu-7-sem-economics-for-engineers-hm-hu701-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Hm Hu 7 Sem Principles Of Management And Organisation Behaviour Hm Hu 701 2023",
+                "fileUrl": "pyqs/cscs/Semester_7/HSMC-701_Principles_of_Management_and_Ethics/btech-hm-hu-7-sem-principles-of-management-and-organisation-behaviour-hm-hu-701-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Hs Hu 7 Sem Principles Of Management Hs Hu701 2023",
+                "fileUrl": "pyqs/cscs/Semester_7/HSMC-701_Principles_of_Management_and_Ethics/btech-hs-hu-7-sem-principles-of-management-hs-hu701-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Hsmc 7 Sem Project Management And Entrepreneurship Hsmc701 2023",
+                "fileUrl": "pyqs/cscs/Semester_7/HSMC-701_Principles_of_Management_and_Ethics/btech-hsmc-7-sem-project-management-and-entrepreneurship-hsmc701-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "Electives and Allied Cyber Security Subjects",
+        "name": "Electives and Allied Cyber Security Subjects",
+        "department": "Computer Science & Cyber Security",
+        "stream": "CSCS",
+        "semester": 8,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cscs/cscs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Cyber Law And Ethics Oec Cs801b 2024",
+                "fileUrl": "pyqs/cscs/Semester_8/Electives_and_Allied_Cyber_Security_Subjects/btech-cse-it-8-sem-cyber-law-and-ethics-oec-cs801b-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Cyber Law And Ethics Oec Cs801b 2025",
+                "fileUrl": "pyqs/cscs/Semester_8/Electives_and_Allied_Cyber_Security_Subjects/btech-cse-it-8-sem-cyber-law-and-ethics-oec-cs801b-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Cyber Law And Ethics Oec Cs801b 2026",
+                "fileUrl": "pyqs/cscs/Semester_8/Electives_and_Allied_Cyber_Security_Subjects/btech-cse-it-8-sem-cyber-law-and-ethics-oec-cs801b-2026.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Cyptography And Network Security Pec Cs801 B 2025",
+                "fileUrl": "pyqs/cscs/Semester_8/Electives_and_Allied_Cyber_Security_Subjects/btech-cse-it-8-sem-cyptography-and-network-security-pec-cs801-b-2025.pdf"
+            }
+        ]
+    },
+    {
+        "code": "OEC-CSCS801",
+        "name": "E Commerce Security and ERP",
+        "department": "Computer Science & Cyber Security",
+        "stream": "CSCS",
+        "semester": 8,
+        "credits": 3,
+        "syllabusUrl": "syllabus/cscs/cscs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs Aids 7 Sem Ecommerce And Erp Pecaids702a 2026",
+                "fileUrl": "pyqs/cscs/Semester_8/OEC-CSCS801_E_Commerce_Security_and_ERP/btech-cs-aids-7-sem-ecommerce-and-erp-pecaids702a-2026.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Erp 2018",
+                "fileUrl": "pyqs/cscs/Semester_8/OEC-CSCS801_E_Commerce_Security_and_ERP/btech-cse-6-sem-erp-2018.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Erp 2019",
+                "fileUrl": "pyqs/cscs/Semester_8/OEC-CSCS801_E_Commerce_Security_and_ERP/btech-cse-6-sem-erp-2019.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem E Commerce And Erp Oec Cs802a 2024",
+                "fileUrl": "pyqs/cscs/Semester_8/OEC-CSCS801_E_Commerce_Security_and_ERP/btech-cse-it-8-sem-e-commerce-and-erp-oec-cs802a-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem E Commerce And Erp Oec Cs802a 2025",
+                "fileUrl": "pyqs/cscs/Semester_8/OEC-CSCS801_E_Commerce_Security_and_ERP/btech-cse-it-8-sem-e-commerce-and-erp-oec-cs802a-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem E Commerce And Erp Oec Cs802a 2026",
+                "fileUrl": "pyqs/cscs/Semester_8/OEC-CSCS801_E_Commerce_Security_and_ERP/btech-cse-it-8-sem-e-commerce-and-erp-oec-cs802a-2026.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Erp 2017",
+                "fileUrl": "pyqs/cscs/Semester_8/OEC-CSCS801_E_Commerce_Security_and_ERP/btech-it-6-sem-erp-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Erp 2019",
+                "fileUrl": "pyqs/cscs/Semester_8/OEC-CSCS801_E_Commerce_Security_and_ERP/btech-it-6-sem-erp-2019.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Oec Cse It 8 Sem E Commerce And Erp Oec Cs802a 2023",
+                "fileUrl": "pyqs/cscs/Semester_8/OEC-CSCS801_E_Commerce_Security_and_ERP/btech-oec-cse-it-8-sem-e-commerce-and-erp-oec-cs802a-2023.pdf"
+            }
+        ]
+    }
+];
+const OFFICIAL_CSCS_PYQS = OFFICIAL_CSCS_COURSES.flatMap(c => (c.pyqs || []).map(p => ({
+    id: p.id || Math.floor(Math.random() * 100000),
+    courseCode: c.code,
+    subjectCode: c.code,
+    stream: c.stream,
+    semester: c.semester,
+    year: p.year,
+    type: p.type,
+    title: p.title,
+    fileUrl: normalizePdfUrl(p.fileUrl),
+    rawUrl: p.fileUrl
+})));
+window.OFFICIAL_CSCS_COURSES = OFFICIAL_CSCS_COURSES;
+window.OFFICIAL_CSCS_PYQS = OFFICIAL_CSCS_PYQS;
+
+const OFFICIAL_CSDS_COURSES = [
+    {
+        "code": "BSC-301",
+        "name": "Mathematics III Linear Algebra and Calculus",
+        "department": "Data Science",
+        "stream": "CSDS",
+        "semester": 3,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csds/csds_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech 3 Sem Mathematics 3 Bs M301 2025",
+                "fileUrl": "pyqs/csds/Semester_3/BSC-301_Mathematics_III_Linear_Algebra_and_Calculus/btech-3-sem-mathematics-3-bs-m301-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech 3 Sem Mathematics 3 Bs M301 2026",
+                "fileUrl": "pyqs/csds/Semester_3/BSC-301_Mathematics_III_Linear_Algebra_and_Calculus/btech-3-sem-mathematics-3-bs-m301-2026.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Mathematics 3 Differential Calculus Bs M301 2025",
+                "fileUrl": "pyqs/csds/Semester_3/BSC-301_Mathematics_III_Linear_Algebra_and_Calculus/btech-cse-3-sem-mathematics-3-differential-calculus-bs-m301-2025.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Mathematics 3 Differential Calculus Bsc 301 2024",
+                "fileUrl": "pyqs/csds/Semester_3/BSC-301_Mathematics_III_Linear_Algebra_and_Calculus/btech-cse-3-sem-mathematics-3-differential-calculus-bsc-301-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Mathematics 3 Differential Calculus Bsc301 2023",
+                "fileUrl": "pyqs/csds/Semester_3/BSC-301_Mathematics_III_Linear_Algebra_and_Calculus/btech-cse-3-sem-mathematics-3-differential-calculus-bsc301-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech It 3 Sem Mathematics 3 Differential Calculus Bsc301 2023",
+                "fileUrl": "pyqs/csds/Semester_3/BSC-301_Mathematics_III_Linear_Algebra_and_Calculus/btech-it-3-sem-mathematics-3-differential-calculus-bsc301-2023.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech M 302 Mathematics 3 2018",
+                "fileUrl": "pyqs/csds/Semester_3/BSC-301_Mathematics_III_Linear_Algebra_and_Calculus/btech-m-302-mathematics-3-2018.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech M 401 Mathematics 3 2017",
+                "fileUrl": "pyqs/csds/Semester_3/BSC-301_Mathematics_III_Linear_Algebra_and_Calculus/btech-m-401-mathematics-3-2017.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech M 402 Mathematics 3 2017",
+                "fileUrl": "pyqs/csds/Semester_3/BSC-301_Mathematics_III_Linear_Algebra_and_Calculus/btech-m-402-mathematics-3-2017.pdf"
+            }
+        ]
+    },
+    {
+        "code": "ESC-301",
+        "name": "Analog and Digital Electronics",
+        "department": "Data Science",
+        "stream": "CSDS",
+        "semester": 3,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csds/csds_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Analog And Digital Electronics 2017",
+                "fileUrl": "pyqs/csds/Semester_3/ESC-301_Analog_and_Digital_Electronics/btech-cse-3-sem-analog-and-digital-electronics-2017.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Analog And Digital Electronics 2018",
+                "fileUrl": "pyqs/csds/Semester_3/ESC-301_Analog_and_Digital_Electronics/btech-cse-3-sem-analog-and-digital-electronics-2018.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Analog And Digital Electronics Esc 301 2024",
+                "fileUrl": "pyqs/csds/Semester_3/ESC-301_Analog_and_Digital_Electronics/btech-cse-3-sem-analog-and-digital-electronics-esc-301-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Analog And Digital Electronics Esc 301 2025",
+                "fileUrl": "pyqs/csds/Semester_3/ESC-301_Analog_and_Digital_Electronics/btech-cse-3-sem-analog-and-digital-electronics-esc-301-2025.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Analog And Digital Electronics Esc301 2023",
+                "fileUrl": "pyqs/csds/Semester_3/ESC-301_Analog_and_Digital_Electronics/btech-cse-3-sem-analog-and-digital-electronics-esc301-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech It 3 Sem Analog And Digital Electronics Esc301 2023",
+                "fileUrl": "pyqs/csds/Semester_3/ESC-301_Analog_and_Digital_Electronics/btech-it-3-sem-analog-and-digital-electronics-esc301-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "Electives and Allied Data Science Subjects",
+        "name": "Electives and Allied Data Science Subjects",
+        "department": "Data Science",
+        "stream": "CSDS",
+        "semester": 3,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csds/csds_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech 3 Sem Physics 2 Ph 301 2017",
+                "fileUrl": "pyqs/csds/Semester_3/Electives_and_Allied_Data_Science_Subjects/btech-3-sem-physics-2-ph-301-2017.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Computer Organisation 2017",
+                "fileUrl": "pyqs/csds/Semester_3/Electives_and_Allied_Data_Science_Subjects/btech-cse-3-sem-computer-organisation-2017.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Computer Organisation Pc Ecs302 2025",
+                "fileUrl": "pyqs/csds/Semester_3/Electives_and_Allied_Data_Science_Subjects/btech-cse-3-sem-computer-organisation-pc-ecs302-2025.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Fluid Mechanics 2018",
+                "fileUrl": "pyqs/csds/Semester_3/Electives_and_Allied_Data_Science_Subjects/btech-cse-3-sem-fluid-mechanics-2018.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 3 Sem Computer Organisation Pc Ecs302 2025",
+                "fileUrl": "pyqs/csds/Semester_3/Electives_and_Allied_Data_Science_Subjects/btech-cse-it-3-sem-computer-organisation-pc-ecs302-2025.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Es Au Me 3 Sem Engineering Mechanics Ce Es 301 2025",
+                "fileUrl": "pyqs/csds/Semester_3/Electives_and_Allied_Data_Science_Subjects/btech-es-au-me-3-sem-engineering-mechanics-ce-es-301-2025.pdf"
+            }
+        ]
+    },
+    {
+        "code": "HSMC-301",
+        "name": "Economics for Engineers",
+        "department": "Data Science",
+        "stream": "CSDS",
+        "semester": 3,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csds/csds_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Economics For Engineers Humanities 2 Hm Hu301 2025",
+                "fileUrl": "pyqs/csds/Semester_3/HSMC-301_Economics_for_Engineers/btech-cse-3-sem-economics-for-engineers-humanities-2-hm-hu301-2025.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Economics For Engineers Humanities 2 Hsmc 301 2024",
+                "fileUrl": "pyqs/csds/Semester_3/HSMC-301_Economics_for_Engineers/btech-cse-3-sem-economics-for-engineers-humanities-2-hsmc-301-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Economics For Engineers Humanities 2 Hsmc301 2023",
+                "fileUrl": "pyqs/csds/Semester_3/HSMC-301_Economics_for_Engineers/btech-cse-3-sem-economics-for-engineers-humanities-2-hsmc301-2023.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 3 Sem Economics For Engineers Humanities 3 Hm Hu301 2025",
+                "fileUrl": "pyqs/csds/Semester_3/HSMC-301_Economics_for_Engineers/btech-cse-it-3-sem-economics-for-engineers-humanities-3-hm-hu301-2025.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech Cse It Apm Ttn 3 Sem Economics For Engineers Hsmc 301 2020",
+                "fileUrl": "pyqs/csds/Semester_3/HSMC-301_Economics_for_Engineers/btech-cse-it-apm-ttn-3-sem-economics-for-engineers-hsmc-301-2020.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Hu 301 Values And Ethics In Profession 2017",
+                "fileUrl": "pyqs/csds/Semester_3/HSMC-301_Economics_for_Engineers/btech-hu-301-values-and-ethics-in-profession-2017.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Hu 301 Values And Ethics In Profession 2018",
+                "fileUrl": "pyqs/csds/Semester_3/HSMC-301_Economics_for_Engineers/btech-hu-301-values-and-ethics-in-profession-2018.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech It 3 Sem Economics For Engineers Humanities 2 Hsmc301 2023",
+                "fileUrl": "pyqs/csds/Semester_3/HSMC-301_Economics_for_Engineers/btech-it-3-sem-economics-for-engineers-humanities-2-hsmc301-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CSDS301",
+        "name": "Data Structures and Algorithms",
+        "department": "Data Science",
+        "stream": "CSDS",
+        "semester": 3,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csds/csds_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech Cs It Ec 3 Sem Data Structure And Algorithms Pcc Cs 301 2020",
+                "fileUrl": "pyqs/csds/Semester_3/PCC-CSDS301_Data_Structures_and_Algorithms/btech-cs-it-ec-3-sem-data-structure-and-algorithms-pcc-cs-301-2020.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Data Structure And Algorithms Pcc Cs301 2024",
+                "fileUrl": "pyqs/csds/Semester_3/PCC-CSDS301_Data_Structures_and_Algorithms/btech-cse-3-sem-data-structure-and-algorithms-pcc-cs301-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Csbs Cse 3 Sem Data Structures And Algorithms Pcc Csbs301 2023",
+                "fileUrl": "pyqs/csds/Semester_3/PCC-CSDS301_Data_Structures_and_Algorithms/btech-pcc-csbs-cse-3-sem-data-structures-and-algorithms-pcc-csbs301-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CSDS302",
+        "name": "Computer Organization and Architecture",
+        "department": "Data Science",
+        "stream": "CSDS",
+        "semester": 3,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csds/csds_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech Cs It 3 Sem Computer Organisation Pcc Cs 302 2020",
+                "fileUrl": "pyqs/csds/Semester_3/PCC-CSDS302_Computer_Organization_and_Architecture/btech-cs-it-3-sem-computer-organisation-pcc-cs-302-2020.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Computer Organisation Pcc Cs302 2023",
+                "fileUrl": "pyqs/csds/Semester_3/PCC-CSDS302_Computer_Organization_and_Architecture/btech-cse-3-sem-computer-organisation-pcc-cs302-2023.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Computer Organisation Pcc Cs302 2024",
+                "fileUrl": "pyqs/csds/Semester_3/PCC-CSDS302_Computer_Organization_and_Architecture/btech-cse-3-sem-computer-organisation-pcc-cs302-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech It 3 Sem Computer Organisation Pcc Cs302 2023",
+                "fileUrl": "pyqs/csds/Semester_3/PCC-CSDS302_Computer_Organization_and_Architecture/btech-it-3-sem-computer-organisation-pcc-cs302-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 3 Sem Computer Organisation Pcc Cs302 2023",
+                "fileUrl": "pyqs/csds/Semester_3/PCC-CSDS302_Computer_Organization_and_Architecture/btech-pcc-cse-3-sem-computer-organisation-pcc-cs302-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "Electives and Allied Data Science Subjects",
+        "name": "Electives and Allied Data Science Subjects",
+        "department": "Data Science",
+        "stream": "CSDS",
+        "semester": 4,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csds/csds_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Computer Architecture 2017",
+                "fileUrl": "pyqs/csds/Semester_4/Electives_and_Allied_Data_Science_Subjects/btech-cse-4-sem-computer-architecture-2017.pdf"
+            }
+        ]
+    },
+    {
+        "code": "MC-401",
+        "name": "Environmental Sciences",
+        "department": "Data Science",
+        "stream": "CSDS",
+        "semester": 4,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csds/csds_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech 4 Sem Environmental Sciences Mc 401 2024",
+                "fileUrl": "pyqs/csds/Semester_4/MC-401_Environmental_Sciences/btech-4-sem-environmental-sciences-mc-401-2024.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech 4 Sem Environmental Sciences Mc 401 2026",
+                "fileUrl": "pyqs/csds/Semester_4/MC-401_Environmental_Sciences/btech-4-sem-environmental-sciences-mc-401-2026.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CSDS401",
+        "name": "Discrete Mathematics",
+        "department": "Data Science",
+        "stream": "CSDS",
+        "semester": 4,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csds/csds_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech 4 Sem Numerical Methods Bs M401 2024",
+                "fileUrl": "pyqs/csds/Semester_4/PCC-CSDS401_Discrete_Mathematics/btech-4-sem-numerical-methods-bs-m401-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech 4 Sem Numerical Methods Bs M401 2025",
+                "fileUrl": "pyqs/csds/Semester_4/PCC-CSDS401_Discrete_Mathematics/btech-4-sem-numerical-methods-bs-m401-2025.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Discrete Mathematics Pcc Cs401 2025",
+                "fileUrl": "pyqs/csds/Semester_4/PCC-CSDS401_Discrete_Mathematics/btech-cse-4-sem-discrete-mathematics-pcc-cs401-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Discrete Mathematics Pcc Cs401 2026",
+                "fileUrl": "pyqs/csds/Semester_4/PCC-CSDS401_Discrete_Mathematics/btech-cse-4-sem-discrete-mathematics-pcc-cs401-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cs 4 Sem Discrete Mathematics Pcc Cs401 2024",
+                "fileUrl": "pyqs/csds/Semester_4/PCC-CSDS401_Discrete_Mathematics/btech-pcc-cs-4-sem-discrete-mathematics-pcc-cs401-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 4 Sem Discrete Mathematics Pcc Cs401 2023",
+                "fileUrl": "pyqs/csds/Semester_4/PCC-CSDS401_Discrete_Mathematics/btech-pcc-cse-4-sem-discrete-mathematics-pcc-cs401-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CSDS402",
+        "name": "Computer Architecture",
+        "department": "Data Science",
+        "stream": "CSDS",
+        "semester": 4,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csds/csds_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Computer Architecture Pcc Cs402 2025",
+                "fileUrl": "pyqs/csds/Semester_4/PCC-CSDS402_Computer_Architecture/btech-cse-4-sem-computer-architecture-pcc-cs402-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Computer Architecture Pcc Cs402 2026",
+                "fileUrl": "pyqs/csds/Semester_4/PCC-CSDS402_Computer_Architecture/btech-cse-4-sem-computer-architecture-pcc-cs402-2026.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 4 Sem Design And Analysis Of Algorithms Es Cs401 2025",
+                "fileUrl": "pyqs/csds/Semester_4/PCC-CSDS402_Computer_Architecture/btech-cse-it-4-sem-design-and-analysis-of-algorithms-es-cs401-2025.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Es 4 Sem Design And Analysis Of Algorithms Es Cs401 2023",
+                "fileUrl": "pyqs/csds/Semester_4/PCC-CSDS402_Computer_Architecture/btech-es-4-sem-design-and-analysis-of-algorithms-es-cs401-2023.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Es Cs Pcc 4 Sem Design And Analysis Of Algorithms Es Cs401 2024",
+                "fileUrl": "pyqs/csds/Semester_4/PCC-CSDS402_Computer_Architecture/btech-es-cs-pcc-4-sem-design-and-analysis-of-algorithms-es-cs401-2024.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cs 4 Sem Computer Architecture Pcc Cs402 2024",
+                "fileUrl": "pyqs/csds/Semester_4/PCC-CSDS402_Computer_Architecture/btech-pcc-cs-4-sem-computer-architecture-pcc-cs402-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 4 Sem Computer Architecture Pcc Cs402 2023",
+                "fileUrl": "pyqs/csds/Semester_4/PCC-CSDS402_Computer_Architecture/btech-pcc-cse-4-sem-computer-architecture-pcc-cs402-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CSDS403",
+        "name": "Formal Language and Automata Theory",
+        "department": "Data Science",
+        "stream": "CSDS",
+        "semester": 4,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csds/csds_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Formal Language And Automata Theory 2017",
+                "fileUrl": "pyqs/csds/Semester_4/PCC-CSDS403_Formal_Language_and_Automata_Theory/btech-cse-4-sem-formal-language-and-automata-theory-2017.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Formal Language And Automata Theory Pcc Cs 403 2023",
+                "fileUrl": "pyqs/csds/Semester_4/PCC-CSDS403_Formal_Language_and_Automata_Theory/btech-cse-4-sem-formal-language-and-automata-theory-pcc-cs-403-2023.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Formal Language And Automata Theory Pcc Cs 403 2025",
+                "fileUrl": "pyqs/csds/Semester_4/PCC-CSDS403_Formal_Language_and_Automata_Theory/btech-cse-4-sem-formal-language-and-automata-theory-pcc-cs-403-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Formal Language And Automata Theory Pcc Cs 403 2026",
+                "fileUrl": "pyqs/csds/Semester_4/PCC-CSDS403_Formal_Language_and_Automata_Theory/btech-cse-4-sem-formal-language-and-automata-theory-pcc-cs-403-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cs 4 Sem Formal Language And Automata Theory Pcc Cs 403 2024",
+                "fileUrl": "pyqs/csds/Semester_4/PCC-CSDS403_Formal_Language_and_Automata_Theory/btech-pcc-cs-4-sem-formal-language-and-automata-theory-pcc-cs-403-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 4 Sem Formal Language And Automata Pcc Cse 403 2023",
+                "fileUrl": "pyqs/csds/Semester_4/PCC-CSDS403_Formal_Language_and_Automata_Theory/btech-pcc-cse-4-sem-formal-language-and-automata-pcc-cse-403-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 4 Sem Formal Language And Automata Theory Pcc Cse 403 2023",
+                "fileUrl": "pyqs/csds/Semester_4/PCC-CSDS403_Formal_Language_and_Automata_Theory/btech-pcc-cse-4-sem-formal-language-and-automata-theory-pcc-cse-403-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CSDS404",
+        "name": "Design and Analysis of Algorithms",
+        "department": "Data Science",
+        "stream": "CSDS",
+        "semester": 4,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csds/csds_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Design And Analysis Of Algorithms Cs 501 2018",
+                "fileUrl": "pyqs/csds/Semester_4/PCC-CSDS404_Design_and_Analysis_of_Algorithms/btech-cs-5-sem-design-and-analysis-of-algorithms-cs-501-2018.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Data Structure And Algorithm 2017",
+                "fileUrl": "pyqs/csds/Semester_4/PCC-CSDS404_Design_and_Analysis_of_Algorithms/btech-cse-3-sem-data-structure-and-algorithm-2017.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Data Structure And Algorithms Pc Ecs301 2025",
+                "fileUrl": "pyqs/csds/Semester_4/PCC-CSDS404_Design_and_Analysis_of_Algorithms/btech-cse-3-sem-data-structure-and-algorithms-pc-ecs301-2025.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Data Structure And Algorithms Pcc Csbs301 2023",
+                "fileUrl": "pyqs/csds/Semester_4/PCC-CSDS404_Design_and_Analysis_of_Algorithms/btech-cse-3-sem-data-structure-and-algorithms-pcc-csbs301-2023.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Design And Analysis Of Algorithms 2017",
+                "fileUrl": "pyqs/csds/Semester_4/PCC-CSDS404_Design_and_Analysis_of_Algorithms/btech-cse-5-sem-design-and-analysis-of-algorithms-2017.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 3 Sem Data Structure And Algorithms Pc Ecs301 2025",
+                "fileUrl": "pyqs/csds/Semester_4/PCC-CSDS404_Design_and_Analysis_of_Algorithms/btech-cse-it-3-sem-data-structure-and-algorithms-pc-ecs301-2025.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Advanced Algorithms Pec It 601a 2024",
+                "fileUrl": "pyqs/csds/Semester_4/PCC-CSDS404_Design_and_Analysis_of_Algorithms/btech-cse-it-6-sem-advanced-algorithms-pec-it-601a-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Advanced Algorithms Pec It601a 2025",
+                "fileUrl": "pyqs/csds/Semester_4/PCC-CSDS404_Design_and_Analysis_of_Algorithms/btech-cse-it-6-sem-advanced-algorithms-pec-it601a-2025.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech It 3 Sem Data Structure And Algorithms Pcc Csbs301 2023",
+                "fileUrl": "pyqs/csds/Semester_4/PCC-CSDS404_Design_and_Analysis_of_Algorithms/btech-it-3-sem-data-structure-and-algorithms-pcc-csbs301-2023.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 5 Sem Design And Analysis Of Algorithms 2017",
+                "fileUrl": "pyqs/csds/Semester_4/PCC-CSDS404_Design_and_Analysis_of_Algorithms/btech-it-5-sem-design-and-analysis-of-algorithms-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech It 5 Sem Design And Analysis Of Algorithms It 501 2019",
+                "fileUrl": "pyqs/csds/Semester_4/PCC-CSDS404_Design_and_Analysis_of_Algorithms/btech-it-5-sem-design-and-analysis-of-algorithms-it-501-2019.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Csbs Cs 3 Sem Data Structures And Algorithms Pcc Csbs301 2023 Solutions",
+                "fileUrl": "pyqs/csds/Semester_4/PCC-CSDS404_Design_and_Analysis_of_Algorithms/btech-pcc-csbs-cs-3-sem-data-structures-and-algorithms-pcc-csbs301-2023-solutions.pdf"
+            }
+        ]
+    },
+    {
+        "code": "Electives and Allied Data Science Subjects",
+        "name": "Electives and Allied Data Science Subjects",
+        "department": "Data Science",
+        "stream": "CSDS",
+        "semester": 5,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csds/csds_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech 5 Sem Economics For Engineers Hu 501 2019",
+                "fileUrl": "pyqs/csds/Semester_5/Electives_and_Allied_Data_Science_Subjects/btech-5-sem-economics-for-engineers-hu-501-2019.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Ai 5 Sem Probability And Statistics Pcc Ai501 2026",
+                "fileUrl": "pyqs/csds/Semester_5/Electives_and_Allied_Data_Science_Subjects/btech-ai-5-sem-probability-and-statistics-pcc-ai501-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Machine Learning Esc Csbs 502 2026",
+                "fileUrl": "pyqs/csds/Semester_5/Electives_and_Allied_Data_Science_Subjects/btech-cs-5-sem-machine-learning-esc-csbs-502-2026.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Object Oriented Programming Cs 504d 2018",
+                "fileUrl": "pyqs/csds/Semester_5/Electives_and_Allied_Data_Science_Subjects/btech-cs-5-sem-object-oriented-programming-cs-504d-2018.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Object Oriented Programming Cs 504d 2020",
+                "fileUrl": "pyqs/csds/Semester_5/Electives_and_Allied_Data_Science_Subjects/btech-cs-5-sem-object-oriented-programming-cs-504d-2020.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs Ai 5 Sem Cloud Computing Pecai501 2026",
+                "fileUrl": "pyqs/csds/Semester_5/Electives_and_Allied_Data_Science_Subjects/btech-cs-ai-5-sem-cloud-computing-pecai501-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs Aids 5 Sem Social Network Analysis Pecaids701a 2026",
+                "fileUrl": "pyqs/csds/Semester_5/Electives_and_Allied_Data_Science_Subjects/btech-cs-aids-5-sem-social-network-analysis-pecaids701a-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs Esc 5 Sem Software Engineering Esc501 2026",
+                "fileUrl": "pyqs/csds/Semester_5/Electives_and_Allied_Data_Science_Subjects/btech-cs-esc-5-sem-software-engineering-esc501-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cs Pec 5 Sem Artificial Intelligence Pec Csbs 501 B 2024",
+                "fileUrl": "pyqs/csds/Semester_5/Electives_and_Allied_Data_Science_Subjects/btech-cs-pec-5-sem-artificial-intelligence-pec-csbs-501-b-2024.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Discrete Mathematics 2017",
+                "fileUrl": "pyqs/csds/Semester_5/Electives_and_Allied_Data_Science_Subjects/btech-cse-5-sem-discrete-mathematics-2017.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Ds Cse It 5 Sem Theory Of Computation Pec Ds 501a 2025",
+                "fileUrl": "pyqs/csds/Semester_5/Electives_and_Allied_Data_Science_Subjects/btech-ds-cse-it-5-sem-theory-of-computation-pec-ds-501a-2025.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Hu 5 Sem Economics For Engineers Hu 501 2018",
+                "fileUrl": "pyqs/csds/Semester_5/Electives_and_Allied_Data_Science_Subjects/btech-hu-5-sem-economics-for-engineers-hu-501-2018.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech Hu 5 Sem Economics For Engineers Hu 501 2020",
+                "fileUrl": "pyqs/csds/Semester_5/Electives_and_Allied_Data_Science_Subjects/btech-hu-5-sem-economics-for-engineers-hu-501-2020.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 5 Sem Computer Architecture 2017",
+                "fileUrl": "pyqs/csds/Semester_5/Electives_and_Allied_Data_Science_Subjects/btech-it-5-sem-computer-architecture-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech It 5 Sem Computer Architecture 2019",
+                "fileUrl": "pyqs/csds/Semester_5/Electives_and_Allied_Data_Science_Subjects/btech-it-5-sem-computer-architecture-2019.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CS501",
+        "name": "Operating Systems",
+        "department": "Data Science",
+        "stream": "CSDS",
+        "semester": 5,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csds/csds_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Compiler Design Pcc Cs501 2026",
+                "fileUrl": "pyqs/csds/Semester_5/PCC-CS501_Operating_Systems/btech-cs-5-sem-compiler-design-pcc-cs501-2026.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Microprocessor And Microcontroller Cs 502 2018",
+                "fileUrl": "pyqs/csds/Semester_5/PCC-CS501_Operating_Systems/btech-cs-5-sem-microprocessor-and-microcontroller-cs-502-2018.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Operating System Pc Cs502 2025",
+                "fileUrl": "pyqs/csds/Semester_5/PCC-CS501_Operating_Systems/btech-cs-5-sem-operating-system-pc-cs502-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Operating Systems Pcc Cs502 2026",
+                "fileUrl": "pyqs/csds/Semester_5/PCC-CS501_Operating_Systems/btech-cs-5-sem-operating-systems-pcc-cs502-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Compiler Design Pcc Cs501 2024",
+                "fileUrl": "pyqs/csds/Semester_5/PCC-CS501_Operating_Systems/btech-cse-5-sem-compiler-design-pcc-cs501-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Compiler Design Pcc Cs501 2025",
+                "fileUrl": "pyqs/csds/Semester_5/PCC-CS501_Operating_Systems/btech-cse-5-sem-compiler-design-pcc-cs501-2025.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Operating Systems Pcc Cs502 2024",
+                "fileUrl": "pyqs/csds/Semester_5/PCC-CS501_Operating_Systems/btech-cse-5-sem-operating-systems-pcc-cs502-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Operating Systems Pcc Cs502 2025",
+                "fileUrl": "pyqs/csds/Semester_5/PCC-CS501_Operating_Systems/btech-cse-5-sem-operating-systems-pcc-cs502-2025.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 5 Sem Compiler Design Pcc Cs501 2023",
+                "fileUrl": "pyqs/csds/Semester_5/PCC-CS501_Operating_Systems/btech-pcc-cse-5-sem-compiler-design-pcc-cs501-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 5 Sem Operating Systems Pcc Cs502 2023",
+                "fileUrl": "pyqs/csds/Semester_5/PCC-CS501_Operating_Systems/btech-pcc-cse-5-sem-operating-systems-pcc-cs502-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CS502",
+        "name": "Database Management Systems",
+        "department": "Data Science",
+        "stream": "CSDS",
+        "semester": 5,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csds/csds_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Discrete Mathematics Cs 503 2018",
+                "fileUrl": "pyqs/csds/Semester_5/PCC-CS502_Database_Management_Systems/btech-cs-5-sem-discrete-mathematics-cs-503-2018.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Discrete Mathematics Cs 503 2020",
+                "fileUrl": "pyqs/csds/Semester_5/PCC-CS502_Database_Management_Systems/btech-cs-5-sem-discrete-mathematics-cs-503-2020.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Object Oriected Programming Pcc Cs503 2026",
+                "fileUrl": "pyqs/csds/Semester_5/PCC-CS502_Database_Management_Systems/btech-cs-5-sem-object-oriected-programming-pcc-cs503-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Object Oriented Programming Pcc Cs503 2024",
+                "fileUrl": "pyqs/csds/Semester_5/PCC-CS502_Database_Management_Systems/btech-cse-5-sem-object-oriented-programming-pcc-cs503-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Object Oriented Programming Pcc Cs503 2025",
+                "fileUrl": "pyqs/csds/Semester_5/PCC-CS502_Database_Management_Systems/btech-cse-5-sem-object-oriented-programming-pcc-cs503-2025.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Database Management System 2017",
+                "fileUrl": "pyqs/csds/Semester_5/PCC-CS502_Database_Management_Systems/btech-it-6-sem-database-management-system-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Database Management System 2019",
+                "fileUrl": "pyqs/csds/Semester_5/PCC-CS502_Database_Management_Systems/btech-it-6-sem-database-management-system-2019.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 5 Sem Object Oriented Programming Pcc Cs503 2023",
+                "fileUrl": "pyqs/csds/Semester_5/PCC-CS502_Database_Management_Systems/btech-pcc-cse-5-sem-object-oriented-programming-pcc-cs503-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CSDS501",
+        "name": "Data Mining and Data Warehousing",
+        "department": "Data Science",
+        "stream": "CSDS",
+        "semester": 5,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csds/csds_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pec It 6 Sem Data Warehousing And Data Mining Pec It602b 2023",
+                "fileUrl": "pyqs/csds/Semester_5/PCC-CSDS501_Data_Mining_and_Data_Warehousing/btech-pec-it-6-sem-data-warehousing-and-data-mining-pec-it602b-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CSDS502",
+        "name": "Machine Learning",
+        "department": "Data Science",
+        "stream": "CSDS",
+        "semester": 5,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csds/csds_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pec Cse 7 Sem Machine Learning Pec Cs701e 2023",
+                "fileUrl": "pyqs/csds/Semester_5/PCC-CSDS502_Machine_Learning/btech-pec-cse-7-sem-machine-learning-pec-cs701e-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "Electives and Allied Data Science Subjects",
+        "name": "Electives and Allied Data Science Subjects",
+        "department": "Data Science",
+        "stream": "CSDS",
+        "semester": 6,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csds/csds_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 6 Sem Computer Networks Cs 602 2018",
+                "fileUrl": "pyqs/csds/Semester_6/Electives_and_Allied_Data_Science_Subjects/btech-cs-6-sem-computer-networks-cs-602-2018.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 6 Sem Operating System Cs 603 2018",
+                "fileUrl": "pyqs/csds/Semester_6/Electives_and_Allied_Data_Science_Subjects/btech-cs-6-sem-operating-system-cs-603-2018.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 6 Sem Operations Research Cs 605a 2018",
+                "fileUrl": "pyqs/csds/Semester_6/Electives_and_Allied_Data_Science_Subjects/btech-cs-6-sem-operations-research-cs-605a-2018.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Computer Networks 2017",
+                "fileUrl": "pyqs/csds/Semester_6/Electives_and_Allied_Data_Science_Subjects/btech-cse-6-sem-computer-networks-2017.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Data Base Management System 2017",
+                "fileUrl": "pyqs/csds/Semester_6/Electives_and_Allied_Data_Science_Subjects/btech-cse-6-sem-data-base-management-system-2017.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Data Warehousing And Data Mining Pec It602b 2024",
+                "fileUrl": "pyqs/csds/Semester_6/Electives_and_Allied_Data_Science_Subjects/btech-cse-it-6-sem-data-warehousing-and-data-mining-pec-it602b-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Data Warehousing And Data Mining Pec It602b 2025",
+                "fileUrl": "pyqs/csds/Semester_6/Electives_and_Allied_Data_Science_Subjects/btech-cse-it-6-sem-data-warehousing-and-data-mining-pec-it602b-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Data Warehousing And Data Mining Pec It602b 2026",
+                "fileUrl": "pyqs/csds/Semester_6/Electives_and_Allied_Data_Science_Subjects/btech-cse-it-6-sem-data-warehousing-and-data-mining-pec-it602b-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Ec Cse 6 Sem Computer Networks Ec602 2024",
+                "fileUrl": "pyqs/csds/Semester_6/Electives_and_Allied_Data_Science_Subjects/btech-ec-cse-6-sem-computer-networks-ec602-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Ec Cse 6 Sem Computer Networks Ec602 2025",
+                "fileUrl": "pyqs/csds/Semester_6/Electives_and_Allied_Data_Science_Subjects/btech-ec-cse-6-sem-computer-networks-ec602-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Ec Cse 6 Sem Computer Networks Ec602 2026",
+                "fileUrl": "pyqs/csds/Semester_6/Electives_and_Allied_Data_Science_Subjects/btech-ec-cse-6-sem-computer-networks-ec602-2026.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Compiler Design 2017",
+                "fileUrl": "pyqs/csds/Semester_6/Electives_and_Allied_Data_Science_Subjects/btech-it-6-sem-compiler-design-2017.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Computer Graphics 2017",
+                "fileUrl": "pyqs/csds/Semester_6/Electives_and_Allied_Data_Science_Subjects/btech-it-6-sem-computer-graphics-2017.pdf"
+            }
+        ]
+    },
+    {
+        "code": "OEC-CSDS601",
+        "name": "Numerical Methods and Optimization",
+        "department": "Data Science",
+        "stream": "CSDS",
+        "semester": 6,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csds/csds_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Hm Hu 6 Sem Operations Research Hm Hu601 2023",
+                "fileUrl": "pyqs/csds/Semester_6/OEC-CSDS601_Numerical_Methods_and_Optimization/btech-hm-hu-6-sem-operations-research-hm-hu601-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Oec It 6 Sem Numerical Methods Oec It601a 2023",
+                "fileUrl": "pyqs/csds/Semester_6/OEC-CSDS601_Numerical_Methods_and_Optimization/btech-oec-it-6-sem-numerical-methods-oec-it601a-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Oec It 7 Sem Operations Research Oec It 701a 2023",
+                "fileUrl": "pyqs/csds/Semester_6/OEC-CSDS601_Numerical_Methods_and_Optimization/btech-oec-it-7-sem-operations-research-oec-it-701a-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CS601",
+        "name": "Computer Networks",
+        "department": "Data Science",
+        "stream": "CSDS",
+        "semester": 6,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csds/csds_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 6 Sem Database Management System Cs 601 2018",
+                "fileUrl": "pyqs/csds/Semester_6/PCC-CS601_Computer_Networks/btech-cs-6-sem-database-management-system-cs-601-2018.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Database Management Systems Pcc Cs601 2024",
+                "fileUrl": "pyqs/csds/Semester_6/PCC-CS601_Computer_Networks/btech-cse-6-sem-database-management-systems-pcc-cs601-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Database Management Systems Pcc Cs601 2025",
+                "fileUrl": "pyqs/csds/Semester_6/PCC-CS601_Computer_Networks/btech-cse-6-sem-database-management-systems-pcc-cs601-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Database Management Systems Pcc Cs601 2026",
+                "fileUrl": "pyqs/csds/Semester_6/PCC-CS601_Computer_Networks/btech-cse-6-sem-database-management-systems-pcc-cs601-2026.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Research Methodology Cs601 2025",
+                "fileUrl": "pyqs/csds/Semester_6/PCC-CS601_Computer_Networks/btech-cse-6-sem-research-methodology-cs601-2025.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Computer Networking 2017",
+                "fileUrl": "pyqs/csds/Semester_6/PCC-CS601_Computer_Networks/btech-it-6-sem-computer-networking-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Computer Networking 2019",
+                "fileUrl": "pyqs/csds/Semester_6/PCC-CS601_Computer_Networks/btech-it-6-sem-computer-networking-2019.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cs 6 Sem Database Management Systems Pcc Cs601 2024",
+                "fileUrl": "pyqs/csds/Semester_6/PCC-CS601_Computer_Networks/btech-pcc-cs-6-sem-database-management-systems-pcc-cs601-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 6 Sem Database Management Systems Pcc Cs601 2023",
+                "fileUrl": "pyqs/csds/Semester_6/PCC-CS601_Computer_Networks/btech-pcc-cse-6-sem-database-management-systems-pcc-cs601-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PEC-CSDS601",
+        "name": "Cloud Computing and Virtualization",
+        "department": "Data Science",
+        "stream": "CSDS",
+        "semester": 6,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csds/csds_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Distributed Systems Pec It601b 2023",
+                "fileUrl": "pyqs/csds/Semester_6/PEC-CSDS601_Cloud_Computing_and_Virtualization/btech-it-6-sem-distributed-systems-pec-it601b-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pec It 6 Sem Distributed Systems Pec It 601b 2023",
+                "fileUrl": "pyqs/csds/Semester_6/PEC-CSDS601_Cloud_Computing_and_Virtualization/btech-pec-it-6-sem-distributed-systems-pec-it-601b-2023.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Pec It 6 Sem Distributed Systems Pec It601b 2024",
+                "fileUrl": "pyqs/csds/Semester_6/PEC-CSDS601_Cloud_Computing_and_Virtualization/btech-pec-it-6-sem-distributed-systems-pec-it601b-2024.pdf"
+            }
+        ]
+    },
+    {
+        "code": "Electives and Allied Data Science Subjects",
+        "name": "Electives and Allied Data Science Subjects",
+        "department": "Data Science",
+        "stream": "CSDS",
+        "semester": 7,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csds/csds_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs 7 Sem Multimedia Systems Oeccs701b 2026",
+                "fileUrl": "pyqs/csds/Semester_7/Electives_and_Allied_Data_Science_Subjects/btech-cs-7-sem-multimedia-systems-oeccs701b-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs Aids 7 Sem Internet Of Things Oecaid701a 2026",
+                "fileUrl": "pyqs/csds/Semester_7/Electives_and_Allied_Data_Science_Subjects/btech-cs-aids-7-sem-internet-of-things-oecaid701a-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs It 7 Sem Cloud Computing Pec Cs701b 2026",
+                "fileUrl": "pyqs/csds/Semester_7/Electives_and_Allied_Data_Science_Subjects/btech-cs-it-7-sem-cloud-computing-pec-cs701b-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs It 7 Sem Cyber Security Pec Cs702e 2026",
+                "fileUrl": "pyqs/csds/Semester_7/Electives_and_Allied_Data_Science_Subjects/btech-cs-it-7-sem-cyber-security-pec-cs702e-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs It 7 Sem Machine Learning Pec Cs701e 2026",
+                "fileUrl": "pyqs/csds/Semester_7/Electives_and_Allied_Data_Science_Subjects/btech-cs-it-7-sem-machine-learning-pec-cs701e-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs It 7 Sem Soft Computing Pec Cs702b 2026",
+                "fileUrl": "pyqs/csds/Semester_7/Electives_and_Allied_Data_Science_Subjects/btech-cs-it-7-sem-soft-computing-pec-cs702b-2026.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Cloud Computing 2017",
+                "fileUrl": "pyqs/csds/Semester_7/Electives_and_Allied_Data_Science_Subjects/btech-cse-7-sem-cloud-computing-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Cloud Computing 2019",
+                "fileUrl": "pyqs/csds/Semester_7/Electives_and_Allied_Data_Science_Subjects/btech-cse-7-sem-cloud-computing-2019.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Cloud Computing Pec Cs701b 2024",
+                "fileUrl": "pyqs/csds/Semester_7/Electives_and_Allied_Data_Science_Subjects/btech-cse-7-sem-cloud-computing-pec-cs701b-2024.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Compiler Design 2018",
+                "fileUrl": "pyqs/csds/Semester_7/Electives_and_Allied_Data_Science_Subjects/btech-cse-7-sem-compiler-design-2018.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Compiler Design 2019",
+                "fileUrl": "pyqs/csds/Semester_7/Electives_and_Allied_Data_Science_Subjects/btech-cse-7-sem-compiler-design-2019.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse Ee Eee 7 Sem Computer Network Es Cs701 2025",
+                "fileUrl": "pyqs/csds/Semester_7/Electives_and_Allied_Data_Science_Subjects/btech-cse-ee-eee-7-sem-computer-network-es-cs701-2025.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 7 Sem Cloud Computing Pec Cs701b 2025",
+                "fileUrl": "pyqs/csds/Semester_7/Electives_and_Allied_Data_Science_Subjects/btech-cse-it-7-sem-cloud-computing-pec-cs701b-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse It 7 Sem Soft Computing Pec Cs702b 2026",
+                "fileUrl": "pyqs/csds/Semester_7/Electives_and_Allied_Data_Science_Subjects/btech-cse-it-7-sem-soft-computing-pec-cs702b-2026.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Advance Data Communication And Coding 2017",
+                "fileUrl": "pyqs/csds/Semester_7/Electives_and_Allied_Data_Science_Subjects/btech-it-7-sem-advance-data-communication-and-coding-2017.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Advanced Data Communication And Coding It 705e 2020",
+                "fileUrl": "pyqs/csds/Semester_7/Electives_and_Allied_Data_Science_Subjects/btech-it-7-sem-advanced-data-communication-and-coding-it-705e-2020.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Cloud Computing 2017",
+                "fileUrl": "pyqs/csds/Semester_7/Electives_and_Allied_Data_Science_Subjects/btech-it-7-sem-cloud-computing-2017.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Data Warehousing And Data Mining 2017",
+                "fileUrl": "pyqs/csds/Semester_7/Electives_and_Allied_Data_Science_Subjects/btech-it-7-sem-data-warehousing-and-data-mining-2017.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Microelectronics And Vlsi Design 2017",
+                "fileUrl": "pyqs/csds/Semester_7/Electives_and_Allied_Data_Science_Subjects/btech-it-7-sem-microelectronics-and-vlsi-design-2017.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Mobile Computing It 704e 2020",
+                "fileUrl": "pyqs/csds/Semester_7/Electives_and_Allied_Data_Science_Subjects/btech-it-7-sem-mobile-computing-it-704e-2020.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Soft Computing 2017",
+                "fileUrl": "pyqs/csds/Semester_7/Electives_and_Allied_Data_Science_Subjects/btech-it-7-sem-soft-computing-2017.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Oeccs 7 Sem Multimedia Systems Oeccs701b 2023",
+                "fileUrl": "pyqs/csds/Semester_7/Electives_and_Allied_Data_Science_Subjects/btech-oeccs-7-sem-multimedia-systems-oeccs701b-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pec Cse 7 Sem Soft Computing Pec Cs702b 2023",
+                "fileUrl": "pyqs/csds/Semester_7/Electives_and_Allied_Data_Science_Subjects/btech-pec-cse-7-sem-soft-computing-pec-cs702b-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "HSMC-701",
+        "name": "Principles of Management and Ethics",
+        "department": "Data Science",
+        "stream": "CSDS",
+        "semester": 7,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csds/csds_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech 7 Sem Project Management And Entrepreneurship Hsmc 701 2024",
+                "fileUrl": "pyqs/csds/Semester_7/HSMC-701_Principles_of_Management_and_Ethics/btech-7-sem-project-management-and-entrepreneurship-hsmc-701-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech 7 Sem Project Management And Entrepreneurship Hsmc 701 2025",
+                "fileUrl": "pyqs/csds/Semester_7/HSMC-701_Principles_of_Management_and_Ethics/btech-7-sem-project-management-and-entrepreneurship-hsmc-701-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech 7 Sem Project Management And Entrepreneurship Hsmc 701 2026",
+                "fileUrl": "pyqs/csds/Semester_7/HSMC-701_Principles_of_Management_and_Ethics/btech-7-sem-project-management-and-entrepreneurship-hsmc-701-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Project Management And Entrepreneurship Hsmc 701 2024",
+                "fileUrl": "pyqs/csds/Semester_7/HSMC-701_Principles_of_Management_and_Ethics/btech-cse-7-sem-project-management-and-entrepreneurship-hsmc-701-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Hm Hu 7 Sem Economics For Engineers Hm Hu701 2023",
+                "fileUrl": "pyqs/csds/Semester_7/HSMC-701_Principles_of_Management_and_Ethics/btech-hm-hu-7-sem-economics-for-engineers-hm-hu701-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Hm Hu 7 Sem Principles Of Management And Organisation Behaviour Hm Hu 701 2023",
+                "fileUrl": "pyqs/csds/Semester_7/HSMC-701_Principles_of_Management_and_Ethics/btech-hm-hu-7-sem-principles-of-management-and-organisation-behaviour-hm-hu-701-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Hs Hu 7 Sem Principles Of Management Hs Hu701 2023",
+                "fileUrl": "pyqs/csds/Semester_7/HSMC-701_Principles_of_Management_and_Ethics/btech-hs-hu-7-sem-principles-of-management-hs-hu701-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Hsmc 7 Sem Project Management And Entrepreneurship Hsmc701 2023",
+                "fileUrl": "pyqs/csds/Semester_7/HSMC-701_Principles_of_Management_and_Ethics/btech-hsmc-7-sem-project-management-and-entrepreneurship-hsmc701-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PEC-CSDS704",
+        "name": "Cryptography and Network Security",
+        "department": "Data Science",
+        "stream": "CSDS",
+        "semester": 7,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csds/csds_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Cryptography And Network Security Pec Cs801 B 2025",
+                "fileUrl": "pyqs/csds/Semester_7/PEC-CSDS704_Cryptography_and_Network_Security/btech-cse-it-8-sem-cryptography-and-network-security-pec-cs801-b-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Cryptography And Network Security Pec Cs801 B 2026",
+                "fileUrl": "pyqs/csds/Semester_7/PEC-CSDS704_Cryptography_and_Network_Security/btech-cse-it-8-sem-cryptography-and-network-security-pec-cs801-b-2026.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pec Cse It 8 Sem Cryptography And Network Security Pec Cs801 B 2023",
+                "fileUrl": "pyqs/csds/Semester_7/PEC-CSDS704_Cryptography_and_Network_Security/btech-pec-cse-it-8-sem-cryptography-and-network-security-pec-cs801-b-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "Electives and Allied Data Science Subjects",
+        "name": "Electives and Allied Data Science Subjects",
+        "department": "Data Science",
+        "stream": "CSDS",
+        "semester": 8,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csds/csds_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse 8 Sem Big Data Analysis Oec Cs801a 2026",
+                "fileUrl": "pyqs/csds/Semester_8/Electives_and_Allied_Data_Science_Subjects/btech-cse-8-sem-big-data-analysis-oec-cs801a-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Cyber Law And Ethics Oec Cs801b 2024",
+                "fileUrl": "pyqs/csds/Semester_8/Electives_and_Allied_Data_Science_Subjects/btech-cse-it-8-sem-cyber-law-and-ethics-oec-cs801b-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Cyber Law And Ethics Oec Cs801b 2025",
+                "fileUrl": "pyqs/csds/Semester_8/Electives_and_Allied_Data_Science_Subjects/btech-cse-it-8-sem-cyber-law-and-ethics-oec-cs801b-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Cyber Law And Ethics Oec Cs801b 2026",
+                "fileUrl": "pyqs/csds/Semester_8/Electives_and_Allied_Data_Science_Subjects/btech-cse-it-8-sem-cyber-law-and-ethics-oec-cs801b-2026.pdf"
+            }
+        ]
+    },
+    {
+        "code": "OEC-CSDS801",
+        "name": "E Commerce and ERP",
+        "department": "Data Science",
+        "stream": "CSDS",
+        "semester": 8,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csds/csds_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Apm 6 Sem E Commerce Apm 605c 2018",
+                "fileUrl": "pyqs/csds/Semester_8/OEC-CSDS801_E_Commerce_and_ERP/btech-apm-6-sem-e-commerce-apm-605c-2018.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs Aids 7 Sem Ecommerce And Erp Pecaids702a 2026",
+                "fileUrl": "pyqs/csds/Semester_8/OEC-CSDS801_E_Commerce_and_ERP/btech-cs-aids-7-sem-ecommerce-and-erp-pecaids702a-2026.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Erp 2018",
+                "fileUrl": "pyqs/csds/Semester_8/OEC-CSDS801_E_Commerce_and_ERP/btech-cse-6-sem-erp-2018.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Erp 2019",
+                "fileUrl": "pyqs/csds/Semester_8/OEC-CSDS801_E_Commerce_and_ERP/btech-cse-6-sem-erp-2019.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem E Commerce And Erp Oec Cs802a 2024",
+                "fileUrl": "pyqs/csds/Semester_8/OEC-CSDS801_E_Commerce_and_ERP/btech-cse-it-8-sem-e-commerce-and-erp-oec-cs802a-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem E Commerce And Erp Oec Cs802a 2025",
+                "fileUrl": "pyqs/csds/Semester_8/OEC-CSDS801_E_Commerce_and_ERP/btech-cse-it-8-sem-e-commerce-and-erp-oec-cs802a-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem E Commerce And Erp Oec Cs802a 2026",
+                "fileUrl": "pyqs/csds/Semester_8/OEC-CSDS801_E_Commerce_and_ERP/btech-cse-it-8-sem-e-commerce-and-erp-oec-cs802a-2026.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Erp 2017",
+                "fileUrl": "pyqs/csds/Semester_8/OEC-CSDS801_E_Commerce_and_ERP/btech-it-6-sem-erp-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Erp 2019",
+                "fileUrl": "pyqs/csds/Semester_8/OEC-CSDS801_E_Commerce_and_ERP/btech-it-6-sem-erp-2019.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem E Commerce 2017",
+                "fileUrl": "pyqs/csds/Semester_8/OEC-CSDS801_E_Commerce_and_ERP/btech-it-7-sem-e-commerce-2017.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem E Commerce 2018",
+                "fileUrl": "pyqs/csds/Semester_8/OEC-CSDS801_E_Commerce_and_ERP/btech-it-7-sem-e-commerce-2018.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem E Commerce 2019",
+                "fileUrl": "pyqs/csds/Semester_8/OEC-CSDS801_E_Commerce_and_ERP/btech-it-7-sem-e-commerce-2019.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem E Commerce It 703a 2020",
+                "fileUrl": "pyqs/csds/Semester_8/OEC-CSDS801_E_Commerce_and_ERP/btech-it-7-sem-e-commerce-it-703a-2020.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Oec Cse It 8 Sem E Commerce And Erp Oec Cs802a 2023",
+                "fileUrl": "pyqs/csds/Semester_8/OEC-CSDS801_E_Commerce_and_ERP/btech-oec-cse-it-8-sem-e-commerce-and-erp-oec-cs802a-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "OEC-CSDS802",
+        "name": "IPR and Cyber Law",
+        "department": "Data Science",
+        "stream": "CSDS",
+        "semester": 8,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csds/csds_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Oec Cse It 8 Sem Cyber Law And Ethics Oec Cs801b 2023",
+                "fileUrl": "pyqs/csds/Semester_8/OEC-CSDS802_IPR_and_Cyber_Law/btech-oec-cse-it-8-sem-cyber-law-and-ethics-oec-cs801b-2023.pdf"
+            }
+        ]
+    }
+];
+const OFFICIAL_CSDS_PYQS = OFFICIAL_CSDS_COURSES.flatMap(c => (c.pyqs || []).map(p => ({
+    id: p.id || Math.floor(Math.random() * 100000),
+    courseCode: c.code,
+    subjectCode: c.code,
+    stream: c.stream,
+    semester: c.semester,
+    year: p.year,
+    type: p.type,
+    title: p.title,
+    fileUrl: normalizePdfUrl(p.fileUrl),
+    rawUrl: p.fileUrl
+})));
+window.OFFICIAL_CSDS_COURSES = OFFICIAL_CSDS_COURSES;
+window.OFFICIAL_CSDS_PYQS = OFFICIAL_CSDS_PYQS;
+
+const OFFICIAL_CSBS_COURSES = [
+    {
+        "code": "BSC-301",
+        "name": "Computational Statistics",
+        "department": "Computer Science & Business Systems",
+        "stream": "CSBS",
+        "semester": 3,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csbs/csbs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Ai 5 Sem Probability And Statistics Pcc Ai501 2026",
+                "fileUrl": "pyqs/csbs/Semester_3/BSC-301_Computational_Statistics/btech-ai-5-sem-probability-and-statistics-pcc-ai501-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Mathematics 3 Differential Calculus Bsc 301 2024",
+                "fileUrl": "pyqs/csbs/Semester_3/BSC-301_Computational_Statistics/btech-cse-3-sem-mathematics-3-differential-calculus-bsc-301-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Mathematics 3 Differential Calculus Bsc301 2023",
+                "fileUrl": "pyqs/csbs/Semester_3/BSC-301_Computational_Statistics/btech-cse-3-sem-mathematics-3-differential-calculus-bsc301-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech It 3 Sem Mathematics 3 Differential Calculus Bsc301 2023",
+                "fileUrl": "pyqs/csbs/Semester_3/BSC-301_Computational_Statistics/btech-it-3-sem-mathematics-3-differential-calculus-bsc301-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "Electives and Allied Business Subjects",
+        "name": "Electives and Allied Business Subjects",
+        "department": "Computer Science & Business Systems",
+        "stream": "CSBS",
+        "semester": 3,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csbs/csbs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech 3 Sem Biology Bs Bio301 2025",
+                "fileUrl": "pyqs/csbs/Semester_3/Electives_and_Allied_Business_Subjects/btech-3-sem-biology-bs-bio301-2025.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech 3 Sem Mathematics 3 Bs M301 2025",
+                "fileUrl": "pyqs/csbs/Semester_3/Electives_and_Allied_Business_Subjects/btech-3-sem-mathematics-3-bs-m301-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech 3 Sem Mathematics 3 Bs M301 2026",
+                "fileUrl": "pyqs/csbs/Semester_3/Electives_and_Allied_Business_Subjects/btech-3-sem-mathematics-3-bs-m301-2026.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech 3 Sem Physics 2 Ph 301 2017",
+                "fileUrl": "pyqs/csbs/Semester_3/Electives_and_Allied_Business_Subjects/btech-3-sem-physics-2-ph-301-2017.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Apm 3 Sem Apparel Production 1 Apm 302 2017",
+                "fileUrl": "pyqs/csbs/Semester_3/Electives_and_Allied_Business_Subjects/btech-apm-3-sem-apparel-production-1-apm-302-2017.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Apm 3 Sem Basic Mechanical Processing Of Textiles Apm 301 2017",
+                "fileUrl": "pyqs/csbs/Semester_3/Electives_and_Allied_Business_Subjects/btech-apm-3-sem-basic-mechanical-processing-of-textiles-apm-301-2017.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech Cs It 3 Sem Computer Organisation Pcc Cs 302 2020",
+                "fileUrl": "pyqs/csbs/Semester_3/Electives_and_Allied_Business_Subjects/btech-cs-it-3-sem-computer-organisation-pcc-cs-302-2020.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Analog And Digital Electronics 2017",
+                "fileUrl": "pyqs/csbs/Semester_3/Electives_and_Allied_Business_Subjects/btech-cse-3-sem-analog-and-digital-electronics-2017.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Analog And Digital Electronics 2018",
+                "fileUrl": "pyqs/csbs/Semester_3/Electives_and_Allied_Business_Subjects/btech-cse-3-sem-analog-and-digital-electronics-2018.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Analog And Digital Electronics Esc 301 2024",
+                "fileUrl": "pyqs/csbs/Semester_3/Electives_and_Allied_Business_Subjects/btech-cse-3-sem-analog-and-digital-electronics-esc-301-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Analog And Digital Electronics Esc 301 2025",
+                "fileUrl": "pyqs/csbs/Semester_3/Electives_and_Allied_Business_Subjects/btech-cse-3-sem-analog-and-digital-electronics-esc-301-2025.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Analog And Digital Electronics Esc301 2023",
+                "fileUrl": "pyqs/csbs/Semester_3/Electives_and_Allied_Business_Subjects/btech-cse-3-sem-analog-and-digital-electronics-esc301-2023.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Chemistry 2 2018",
+                "fileUrl": "pyqs/csbs/Semester_3/Electives_and_Allied_Business_Subjects/btech-cse-3-sem-chemistry-2-2018.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Computer Organisation 2017",
+                "fileUrl": "pyqs/csbs/Semester_3/Electives_and_Allied_Business_Subjects/btech-cse-3-sem-computer-organisation-2017.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Computer Organisation Pc Ecs302 2025",
+                "fileUrl": "pyqs/csbs/Semester_3/Electives_and_Allied_Business_Subjects/btech-cse-3-sem-computer-organisation-pc-ecs302-2025.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Computer Organisation Pcc Cs302 2023",
+                "fileUrl": "pyqs/csbs/Semester_3/Electives_and_Allied_Business_Subjects/btech-cse-3-sem-computer-organisation-pcc-cs302-2023.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Computer Organisation Pcc Cs302 2024",
+                "fileUrl": "pyqs/csbs/Semester_3/Electives_and_Allied_Business_Subjects/btech-cse-3-sem-computer-organisation-pcc-cs302-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Economics For Engineers Humanities 2 Hm Hu301 2025",
+                "fileUrl": "pyqs/csbs/Semester_3/Electives_and_Allied_Business_Subjects/btech-cse-3-sem-economics-for-engineers-humanities-2-hm-hu301-2025.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Fluid Mechanics 2018",
+                "fileUrl": "pyqs/csbs/Semester_3/Electives_and_Allied_Business_Subjects/btech-cse-3-sem-fluid-mechanics-2018.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Industrial Stoichiometry 2018",
+                "fileUrl": "pyqs/csbs/Semester_3/Electives_and_Allied_Business_Subjects/btech-cse-3-sem-industrial-stoichiometry-2018.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Linear Algebra Bscaids301 2025",
+                "fileUrl": "pyqs/csbs/Semester_3/Electives_and_Allied_Business_Subjects/btech-cse-3-sem-linear-algebra-bscaids301-2025.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Mathematics 3 Differential Calculus Bs M301 2025",
+                "fileUrl": "pyqs/csbs/Semester_3/Electives_and_Allied_Business_Subjects/btech-cse-3-sem-mathematics-3-differential-calculus-bs-m301-2025.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 3 Sem Computer Organisation Pc Ecs302 2025",
+                "fileUrl": "pyqs/csbs/Semester_3/Electives_and_Allied_Business_Subjects/btech-cse-it-3-sem-computer-organisation-pc-ecs302-2025.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 3 Sem Economics For Engineers Humanities 3 Hm Hu301 2025",
+                "fileUrl": "pyqs/csbs/Semester_3/Electives_and_Allied_Business_Subjects/btech-cse-it-3-sem-economics-for-engineers-humanities-3-hm-hu301-2025.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Es Au Me 3 Sem Engineering Mechanics Ce Es 301 2025",
+                "fileUrl": "pyqs/csbs/Semester_3/Electives_and_Allied_Business_Subjects/btech-es-au-me-3-sem-engineering-mechanics-ce-es-301-2025.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech It 3 Sem Analog And Digital Electronics Esc301 2023",
+                "fileUrl": "pyqs/csbs/Semester_3/Electives_and_Allied_Business_Subjects/btech-it-3-sem-analog-and-digital-electronics-esc301-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech It 3 Sem Computer Organisation Pcc Cs302 2023",
+                "fileUrl": "pyqs/csbs/Semester_3/Electives_and_Allied_Business_Subjects/btech-it-3-sem-computer-organisation-pcc-cs302-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 3 Sem Computer Organisation Pcc Cs302 2023",
+                "fileUrl": "pyqs/csbs/Semester_3/Electives_and_Allied_Business_Subjects/btech-pcc-cse-3-sem-computer-organisation-pcc-cs302-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "HSMC-301",
+        "name": "Financial and Cost Accounting",
+        "department": "Computer Science & Business Systems",
+        "stream": "CSBS",
+        "semester": 3,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csbs/csbs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Economics For Engineers Humanities 2 Hsmc 301 2024",
+                "fileUrl": "pyqs/csbs/Semester_3/HSMC-301_Financial_and_Cost_Accounting/btech-cse-3-sem-economics-for-engineers-humanities-2-hsmc-301-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Economics For Engineers Humanities 2 Hsmc301 2023",
+                "fileUrl": "pyqs/csbs/Semester_3/HSMC-301_Financial_and_Cost_Accounting/btech-cse-3-sem-economics-for-engineers-humanities-2-hsmc301-2023.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech Cse It Apm Ttn 3 Sem Economics For Engineers Hsmc 301 2020",
+                "fileUrl": "pyqs/csbs/Semester_3/HSMC-301_Financial_and_Cost_Accounting/btech-cse-it-apm-ttn-3-sem-economics-for-engineers-hsmc-301-2020.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech It 3 Sem Economics For Engineers Humanities 2 Hsmc301 2023",
+                "fileUrl": "pyqs/csbs/Semester_3/HSMC-301_Financial_and_Cost_Accounting/btech-it-3-sem-economics-for-engineers-humanities-2-hsmc301-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CSB301",
+        "name": "Formal Language and Automata Theory",
+        "department": "Computer Science & Business Systems",
+        "stream": "CSBS",
+        "semester": 3,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csbs/csbs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Formal Language And Automata Theory 2017",
+                "fileUrl": "pyqs/csbs/Semester_3/PCC-CSB301_Formal_Language_and_Automata_Theory/btech-cse-4-sem-formal-language-and-automata-theory-2017.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Formal Language And Automata Theory Pcc Cs 403 2023",
+                "fileUrl": "pyqs/csbs/Semester_3/PCC-CSB301_Formal_Language_and_Automata_Theory/btech-cse-4-sem-formal-language-and-automata-theory-pcc-cs-403-2023.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Formal Language And Automata Theory Pcc Cs 403 2025",
+                "fileUrl": "pyqs/csbs/Semester_3/PCC-CSB301_Formal_Language_and_Automata_Theory/btech-cse-4-sem-formal-language-and-automata-theory-pcc-cs-403-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Formal Language And Automata Theory Pcc Cs 403 2026",
+                "fileUrl": "pyqs/csbs/Semester_3/PCC-CSB301_Formal_Language_and_Automata_Theory/btech-cse-4-sem-formal-language-and-automata-theory-pcc-cs-403-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cs 4 Sem Formal Language And Automata Theory Pcc Cs 403 2024",
+                "fileUrl": "pyqs/csbs/Semester_3/PCC-CSB301_Formal_Language_and_Automata_Theory/btech-pcc-cs-4-sem-formal-language-and-automata-theory-pcc-cs-403-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 4 Sem Formal Language And Automata Pcc Cse 403 2023",
+                "fileUrl": "pyqs/csbs/Semester_3/PCC-CSB301_Formal_Language_and_Automata_Theory/btech-pcc-cse-4-sem-formal-language-and-automata-pcc-cse-403-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 4 Sem Formal Language And Automata Theory Pcc Cse 403 2023",
+                "fileUrl": "pyqs/csbs/Semester_3/PCC-CSB301_Formal_Language_and_Automata_Theory/btech-pcc-cse-4-sem-formal-language-and-automata-theory-pcc-cse-403-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CSB303",
+        "name": "Object Oriented Programming",
+        "department": "Computer Science & Business Systems",
+        "stream": "CSBS",
+        "semester": 3,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csbs/csbs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Csd 4 Sem Object Oriented Programming And Design Pcc Csd 403 2023",
+                "fileUrl": "pyqs/csbs/Semester_3/PCC-CSB303_Object_Oriented_Programming/btech-pcc-csd-4-sem-object-oriented-programming-and-design-pcc-csd-403-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 5 Sem Object Oriented Programming Pcc Cs503 2023",
+                "fileUrl": "pyqs/csbs/Semester_3/PCC-CSB303_Object_Oriented_Programming/btech-pcc-cse-5-sem-object-oriented-programming-pcc-cs503-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "BSC-401",
+        "name": "Operations Research and Optimization",
+        "department": "Computer Science & Business Systems",
+        "stream": "CSBS",
+        "semester": 4,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csbs/csbs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Hm Hu 6 Sem Operations Research Hm Hu601 2023",
+                "fileUrl": "pyqs/csbs/Semester_4/BSC-401_Operations_Research_and_Optimization/btech-hm-hu-6-sem-operations-research-hm-hu601-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Oec It 7 Sem Operations Research Oec It 701a 2023",
+                "fileUrl": "pyqs/csbs/Semester_4/BSC-401_Operations_Research_and_Optimization/btech-oec-it-7-sem-operations-research-oec-it-701a-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "Electives and Allied Business Subjects",
+        "name": "Electives and Allied Business Subjects",
+        "department": "Computer Science & Business Systems",
+        "stream": "CSBS",
+        "semester": 4,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csbs/csbs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech 4 Sem Biology Bs B401 2024",
+                "fileUrl": "pyqs/csbs/Semester_4/Electives_and_Allied_Business_Subjects/btech-4-sem-biology-bs-b401-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech 4 Sem Biology Bs B401 2025",
+                "fileUrl": "pyqs/csbs/Semester_4/Electives_and_Allied_Business_Subjects/btech-4-sem-biology-bs-b401-2025.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech 4 Sem Environmental Sciences Mc 401 2024",
+                "fileUrl": "pyqs/csbs/Semester_4/Electives_and_Allied_Business_Subjects/btech-4-sem-environmental-sciences-mc-401-2024.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech 4 Sem Environmental Sciences Mc 401 2026",
+                "fileUrl": "pyqs/csbs/Semester_4/Electives_and_Allied_Business_Subjects/btech-4-sem-environmental-sciences-mc-401-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech 4 Sem Numerical Methods Bs M401 2024",
+                "fileUrl": "pyqs/csbs/Semester_4/Electives_and_Allied_Business_Subjects/btech-4-sem-numerical-methods-bs-m401-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech 4 Sem Numerical Methods Bs M401 2025",
+                "fileUrl": "pyqs/csbs/Semester_4/Electives_and_Allied_Business_Subjects/btech-4-sem-numerical-methods-bs-m401-2025.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech 4 Sem Numerical Methods M(cs) 401 2017",
+                "fileUrl": "pyqs/csbs/Semester_4/Electives_and_Allied_Business_Subjects/btech-4-sem-numerical-methods-m(cs)-401-2017.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Communication Engineering And Coding Theory 2017",
+                "fileUrl": "pyqs/csbs/Semester_4/Electives_and_Allied_Business_Subjects/btech-cse-4-sem-communication-engineering-and-coding-theory-2017.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Computer Architecture 2017",
+                "fileUrl": "pyqs/csbs/Semester_4/Electives_and_Allied_Business_Subjects/btech-cse-4-sem-computer-architecture-2017.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Computer Architecture Pcc Cs402 2025",
+                "fileUrl": "pyqs/csbs/Semester_4/Electives_and_Allied_Business_Subjects/btech-cse-4-sem-computer-architecture-pcc-cs402-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Computer Architecture Pcc Cs402 2026",
+                "fileUrl": "pyqs/csbs/Semester_4/Electives_and_Allied_Business_Subjects/btech-cse-4-sem-computer-architecture-pcc-cs402-2026.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Discrete Mathematics Pcc Cs401 2025",
+                "fileUrl": "pyqs/csbs/Semester_4/Electives_and_Allied_Business_Subjects/btech-cse-4-sem-discrete-mathematics-pcc-cs401-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse 4 Sem Discrete Mathematics Pcc Cs401 2026",
+                "fileUrl": "pyqs/csbs/Semester_4/Electives_and_Allied_Business_Subjects/btech-cse-4-sem-discrete-mathematics-pcc-cs401-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cs 4 Sem Computer Architecture Pcc Cs402 2024",
+                "fileUrl": "pyqs/csbs/Semester_4/Electives_and_Allied_Business_Subjects/btech-pcc-cs-4-sem-computer-architecture-pcc-cs402-2024.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cs 4 Sem Discrete Mathematics Pcc Cs401 2024",
+                "fileUrl": "pyqs/csbs/Semester_4/Electives_and_Allied_Business_Subjects/btech-pcc-cs-4-sem-discrete-mathematics-pcc-cs401-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 4 Sem Computer Architecture Pcc Cs402 2023",
+                "fileUrl": "pyqs/csbs/Semester_4/Electives_and_Allied_Business_Subjects/btech-pcc-cse-4-sem-computer-architecture-pcc-cs402-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 4 Sem Discrete Mathematics Pcc Cs401 2023",
+                "fileUrl": "pyqs/csbs/Semester_4/Electives_and_Allied_Business_Subjects/btech-pcc-cse-4-sem-discrete-mathematics-pcc-cs401-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CSB401",
+        "name": "Operating Systems",
+        "department": "Computer Science & Business Systems",
+        "stream": "CSBS",
+        "semester": 4,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csbs/csbs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 5 Sem Operating Systems Pcc Cs502 2023",
+                "fileUrl": "pyqs/csbs/Semester_4/PCC-CSB401_Operating_Systems/btech-pcc-cse-5-sem-operating-systems-pcc-cs502-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CSB402",
+        "name": "Database Management Systems",
+        "department": "Computer Science & Business Systems",
+        "stream": "CSBS",
+        "semester": 4,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csbs/csbs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cs 6 Sem Database Management Systems Pcc Cs601 2024",
+                "fileUrl": "pyqs/csbs/Semester_4/PCC-CSB402_Database_Management_Systems/btech-pcc-cs-6-sem-database-management-systems-pcc-cs601-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 6 Sem Database Management Systems Pcc Cs601 2023",
+                "fileUrl": "pyqs/csbs/Semester_4/PCC-CSB402_Database_Management_Systems/btech-pcc-cse-6-sem-database-management-systems-pcc-cs601-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CSB403",
+        "name": "Software Engineering",
+        "department": "Computer Science & Business Systems",
+        "stream": "CSBS",
+        "semester": 4,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csbs/csbs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Software Engineering Cse 701 2020",
+                "fileUrl": "pyqs/csbs/Semester_4/PCC-CSB403_Software_Engineering/btech-cse-7-sem-software-engineering-cse-701-2020.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Esc 5 Sem Software Engineering Esc501 2023",
+                "fileUrl": "pyqs/csbs/Semester_4/PCC-CSB403_Software_Engineering/btech-esc-5-sem-software-engineering-esc501-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "Electives and Allied Business Subjects",
+        "name": "Electives and Allied Business Subjects",
+        "department": "Computer Science & Business Systems",
+        "stream": "CSBS",
+        "semester": 5,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csbs/csbs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech 5 Sem Economics For Engineers Hu 501 2019",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-5-sem-economics-for-engineers-hu-501-2019.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech 5 Sem Introduction To Industrial Management Hm Hu501 2026",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-5-sem-introduction-to-industrial-management-hm-hu501-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Compiler Design Pcc Cs501 2026",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-cs-5-sem-compiler-design-pcc-cs501-2026.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Discrete Mathematics Cs 503 2018",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-cs-5-sem-discrete-mathematics-cs-503-2018.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Discrete Mathematics Cs 503 2020",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-cs-5-sem-discrete-mathematics-cs-503-2020.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Machine Learning Esc Csbs 502 2026",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-cs-5-sem-machine-learning-esc-csbs-502-2026.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Microprocessor And Microcontroller Cs 502 2018",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-cs-5-sem-microprocessor-and-microcontroller-cs-502-2018.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Object Oriected Programming Pcc Cs503 2026",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-cs-5-sem-object-oriected-programming-pcc-cs503-2026.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Object Oriented Programming Cs 504d 2018",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-cs-5-sem-object-oriented-programming-cs-504d-2018.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Object Oriented Programming Cs 504d 2020",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-cs-5-sem-object-oriented-programming-cs-504d-2020.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Operating System Pc Cs502 2025",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-cs-5-sem-operating-system-pc-cs502-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Operating Systems Pcc Cs502 2026",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-cs-5-sem-operating-systems-pcc-cs502-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs Aids 5 Sem Social Network Analysis Pecaids701a 2026",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-cs-aids-5-sem-social-network-analysis-pecaids701a-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs Esc 5 Sem Software Engineering Esc501 2026",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-cs-esc-5-sem-software-engineering-esc501-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cs Pec 5 Sem Artificial Intelligence Pec Csbs 501 B 2024",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-cs-pec-5-sem-artificial-intelligence-pec-csbs-501-b-2024.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Artificial Intelligence Pec Csbs 501 B 2024",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-cse-5-sem-artificial-intelligence-pec-csbs-501-b-2024.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Compiler Design Pcc Cs501 2024",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-cse-5-sem-compiler-design-pcc-cs501-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Compiler Design Pcc Cs501 2025",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-cse-5-sem-compiler-design-pcc-cs501-2025.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Discrete Mathematics 2017",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-cse-5-sem-discrete-mathematics-2017.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Microprocessor And Microcontroller 2017",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-cse-5-sem-microprocessor-and-microcontroller-2017.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Object Oriented Programming 2017",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-cse-5-sem-object-oriented-programming-2017.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Object Oriented Programming Pcc Cs503 2024",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-cse-5-sem-object-oriented-programming-pcc-cs503-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Object Oriented Programming Pcc Cs503 2025",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-cse-5-sem-object-oriented-programming-pcc-cs503-2025.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Operating Systems Pcc Cs502 2024",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-cse-5-sem-operating-systems-pcc-cs502-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Operating Systems Pcc Cs502 2025",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-cse-5-sem-operating-systems-pcc-cs502-2025.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Software Engineering Esc501 2024",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-cse-5-sem-software-engineering-esc501-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Software Engineering Esc501 2025",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-cse-5-sem-software-engineering-esc501-2025.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 5 Sem Artificial Intelligence Pec Csbs 501 B 2025",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-cse-it-5-sem-artificial-intelligence-pec-csbs-501-b-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse It 5 Sem Artificial Intelligence Pec Csbs 501 B 2026",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-cse-it-5-sem-artificial-intelligence-pec-csbs-501-b-2026.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Ds Cse It 5 Sem Theory Of Computation Pec Ds 501a 2025",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-ds-cse-it-5-sem-theory-of-computation-pec-ds-501a-2025.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Esc 5 Sem Software Engineering Esc501 2023 Solution",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-esc-5-sem-software-engineering-esc501-2023-solution.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Hu 5 Sem Economics For Engineers Hu 501 2018",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-hu-5-sem-economics-for-engineers-hu-501-2018.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech Hu 5 Sem Economics For Engineers Hu 501 2020",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-hu-5-sem-economics-for-engineers-hu-501-2020.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Hu 5 Sem Principles And Practice Of Management Hu 511 2017",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-hu-5-sem-principles-and-practice-of-management-hu-511-2017.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech Hu 5 Sem Principles And Practices Of Management Hu 511 2020",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-hu-5-sem-principles-and-practices-of-management-hu-511-2020.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 5 Sem Computer Architecture 2017",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-it-5-sem-computer-architecture-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech It 5 Sem Computer Architecture 2019",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-it-5-sem-computer-architecture-2019.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 5 Sem Operating System 2017",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-it-5-sem-operating-system-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech It 5 Sem Operating System 2019",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-it-5-sem-operating-system-2019.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 5 Sem Operations Research 2017",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-it-5-sem-operations-research-2017.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 5 Sem Programming Practices Using Cpp 2017",
+                "fileUrl": "pyqs/csbs/Semester_5/Electives_and_Allied_Business_Subjects/btech-it-5-sem-programming-practices-using-cpp-2017.pdf"
+            }
+        ]
+    },
+    {
+        "code": "HSMC-501",
+        "name": "Business Communication and Value Science III",
+        "department": "Computer Science & Business Systems",
+        "stream": "CSBS",
+        "semester": 5,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csbs/csbs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Introducon To Industrial Management Humanities 3 Hsmc 501 2024",
+                "fileUrl": "pyqs/csbs/Semester_5/HSMC-501_Business_Communication_and_Value_Science_III/btech-cse-5-sem-introducon-to-industrial-management-humanities-3-hsmc-501-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Introduction To Industrial Management Humanities 3 Hsmc 501 2025",
+                "fileUrl": "pyqs/csbs/Semester_5/HSMC-501_Business_Communication_and_Value_Science_III/btech-cse-5-sem-introduction-to-industrial-management-humanities-3-hsmc-501-2025.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Hsmc 5 Sem Introduction To Industrial Management Hsmc 501 2023",
+                "fileUrl": "pyqs/csbs/Semester_5/HSMC-501_Business_Communication_and_Value_Science_III/btech-hsmc-5-sem-introduction-to-industrial-management-hsmc-501-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Hsmc 5 Sem Introduction To Industrial Management Humanities 3 Hsmc 501 2023",
+                "fileUrl": "pyqs/csbs/Semester_5/HSMC-501_Business_Communication_and_Value_Science_III/btech-hsmc-5-sem-introduction-to-industrial-management-humanities-3-hsmc-501-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CSB501",
+        "name": "Design and Analysis of Algorithms",
+        "department": "Computer Science & Business Systems",
+        "stream": "CSBS",
+        "semester": 5,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csbs/csbs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 5 Sem Design And Analysis Of Algorithms Cs 501 2018",
+                "fileUrl": "pyqs/csbs/Semester_5/PCC-CSB501_Design_and_Analysis_of_Algorithms/btech-cs-5-sem-design-and-analysis-of-algorithms-cs-501-2018.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech Cs It Ec 3 Sem Data Structure And Algorithms Pcc Cs 301 2020",
+                "fileUrl": "pyqs/csbs/Semester_5/PCC-CSB501_Design_and_Analysis_of_Algorithms/btech-cs-it-ec-3-sem-data-structure-and-algorithms-pcc-cs-301-2020.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Data Structure And Algorithm 2017",
+                "fileUrl": "pyqs/csbs/Semester_5/PCC-CSB501_Design_and_Analysis_of_Algorithms/btech-cse-3-sem-data-structure-and-algorithm-2017.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Data Structure And Algorithms Pc Ecs301 2025",
+                "fileUrl": "pyqs/csbs/Semester_5/PCC-CSB501_Design_and_Analysis_of_Algorithms/btech-cse-3-sem-data-structure-and-algorithms-pc-ecs301-2025.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Data Structure And Algorithms Pcc Cs301 2024",
+                "fileUrl": "pyqs/csbs/Semester_5/PCC-CSB501_Design_and_Analysis_of_Algorithms/btech-cse-3-sem-data-structure-and-algorithms-pcc-cs301-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Cse 3 Sem Data Structure And Algorithms Pcc Csbs301 2023",
+                "fileUrl": "pyqs/csbs/Semester_5/PCC-CSB501_Design_and_Analysis_of_Algorithms/btech-cse-3-sem-data-structure-and-algorithms-pcc-csbs301-2023.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 5 Sem Design And Analysis Of Algorithms 2017",
+                "fileUrl": "pyqs/csbs/Semester_5/PCC-CSB501_Design_and_Analysis_of_Algorithms/btech-cse-5-sem-design-and-analysis-of-algorithms-2017.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 3 Sem Data Structure And Algorithms Pc Ecs301 2025",
+                "fileUrl": "pyqs/csbs/Semester_5/PCC-CSB501_Design_and_Analysis_of_Algorithms/btech-cse-it-3-sem-data-structure-and-algorithms-pc-ecs301-2025.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 4 Sem Design And Analysis Of Algorithms Es Cs401 2025",
+                "fileUrl": "pyqs/csbs/Semester_5/PCC-CSB501_Design_and_Analysis_of_Algorithms/btech-cse-it-4-sem-design-and-analysis-of-algorithms-es-cs401-2025.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Advanced Algorithms Pec It 601a 2024",
+                "fileUrl": "pyqs/csbs/Semester_5/PCC-CSB501_Design_and_Analysis_of_Algorithms/btech-cse-it-6-sem-advanced-algorithms-pec-it-601a-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Advanced Algorithms Pec It601a 2025",
+                "fileUrl": "pyqs/csbs/Semester_5/PCC-CSB501_Design_and_Analysis_of_Algorithms/btech-cse-it-6-sem-advanced-algorithms-pec-it601a-2025.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Es 4 Sem Design And Analysis Of Algorithms Es Cs401 2023",
+                "fileUrl": "pyqs/csbs/Semester_5/PCC-CSB501_Design_and_Analysis_of_Algorithms/btech-es-4-sem-design-and-analysis-of-algorithms-es-cs401-2023.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Es Cs Pcc 4 Sem Design And Analysis Of Algorithms Es Cs401 2024",
+                "fileUrl": "pyqs/csbs/Semester_5/PCC-CSB501_Design_and_Analysis_of_Algorithms/btech-es-cs-pcc-4-sem-design-and-analysis-of-algorithms-es-cs401-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech It 3 Sem Data Structure And Algorithms Pcc Csbs301 2023",
+                "fileUrl": "pyqs/csbs/Semester_5/PCC-CSB501_Design_and_Analysis_of_Algorithms/btech-it-3-sem-data-structure-and-algorithms-pcc-csbs301-2023.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 5 Sem Design And Analysis Of Algorithms 2017",
+                "fileUrl": "pyqs/csbs/Semester_5/PCC-CSB501_Design_and_Analysis_of_Algorithms/btech-it-5-sem-design-and-analysis-of-algorithms-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech It 5 Sem Design And Analysis Of Algorithms It 501 2019",
+                "fileUrl": "pyqs/csbs/Semester_5/PCC-CSB501_Design_and_Analysis_of_Algorithms/btech-it-5-sem-design-and-analysis-of-algorithms-it-501-2019.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Csbs Cs 3 Sem Data Structures And Algorithms Pcc Csbs301 2023 Solutions",
+                "fileUrl": "pyqs/csbs/Semester_5/PCC-CSB501_Design_and_Analysis_of_Algorithms/btech-pcc-csbs-cs-3-sem-data-structures-and-algorithms-pcc-csbs301-2023-solutions.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Csbs Cse 3 Sem Data Structures And Algorithms Pcc Csbs301 2023",
+                "fileUrl": "pyqs/csbs/Semester_5/PCC-CSB501_Design_and_Analysis_of_Algorithms/btech-pcc-csbs-cse-3-sem-data-structures-and-algorithms-pcc-csbs301-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CSB502",
+        "name": "Compiler Design",
+        "department": "Computer Science & Business Systems",
+        "stream": "CSBS",
+        "semester": 5,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csbs/csbs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pcc Cse 5 Sem Compiler Design Pcc Cs501 2023",
+                "fileUrl": "pyqs/csbs/Semester_5/PCC-CSB502_Compiler_Design/btech-pcc-cse-5-sem-compiler-design-pcc-cs501-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "Electives and Allied Business Subjects",
+        "name": "Electives and Allied Business Subjects",
+        "department": "Computer Science & Business Systems",
+        "stream": "CSBS",
+        "semester": 6,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csbs/csbs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech 6 Sem Production And Operational Management Hu 611 2018",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-6-sem-production-and-operational-management-hu-611-2018.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Aiml 6 Sem Deep Learning Pccaiml602 2025",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-aiml-6-sem-deep-learning-pccaiml602-2025.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Apm 6 Sem Apparel Marketing And Merchandising Apm 603 2018",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-apm-6-sem-apparel-marketing-and-merchandising-apm-603-2018.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Apm 6 Sem E Commerce Apm 605c 2018",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-apm-6-sem-e-commerce-apm-605c-2018.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Apm 6 Sem Knitting And Knitwear Technology Apm 604a 2018",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-apm-6-sem-knitting-and-knitwear-technology-apm-604a-2018.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Apm 6 Sem Production Planning And Control In Apparel Industry Apm 602 2018",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-apm-6-sem-production-planning-and-control-in-apparel-industry-apm-602-2018.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 6 Sem Computer Networks Cs 602 2018",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-cs-6-sem-computer-networks-cs-602-2018.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 6 Sem Database Management System Cs 601 2018",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-cs-6-sem-database-management-system-cs-601-2018.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 6 Sem Operating System Cs 603 2018",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-cs-6-sem-operating-system-cs-603-2018.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cs 6 Sem Operations Research Cs 605a 2018",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-cs-6-sem-operations-research-cs-605a-2018.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Computer Networks 2017",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-cse-6-sem-computer-networks-2017.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Data Base Management System 2017",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-cse-6-sem-data-base-management-system-2017.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Database Management Systems Pcc Cs601 2024",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-cse-6-sem-database-management-systems-pcc-cs601-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Database Management Systems Pcc Cs601 2025",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-cse-6-sem-database-management-systems-pcc-cs601-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Database Management Systems Pcc Cs601 2026",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-cse-6-sem-database-management-systems-pcc-cs601-2026.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Operating System 2017",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-cse-6-sem-operating-system-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Operating System 2019",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-cse-6-sem-operating-system-2019.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Operations Research 2017",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-cse-6-sem-operations-research-2017.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Research Methodology Cs601 2025",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-cse-6-sem-research-methodology-cs601-2025.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Data Warehousing And Data Mining Pec It602b 2024",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-cse-it-6-sem-data-warehousing-and-data-mining-pec-it602b-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Data Warehousing And Data Mining Pec It602b 2025",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-cse-it-6-sem-data-warehousing-and-data-mining-pec-it602b-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Data Warehousing And Data Mining Pec It602b 2026",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-cse-it-6-sem-data-warehousing-and-data-mining-pec-it602b-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Distributed Systems Pec It601b 2024",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-cse-it-6-sem-distributed-systems-pec-it601b-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Distributed Systems Pec It601b 2025",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-cse-it-6-sem-distributed-systems-pec-it601b-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Distributed Systems Pec It601b 2026",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-cse-it-6-sem-distributed-systems-pec-it601b-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Human Resource Development And Organizational Behavior Oec It601b 2024",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-cse-it-6-sem-human-resource-development-and-organizational-behavior-oec-it601b-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Human Resource Development And Organizational Behavior Oec It601b 2025",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-cse-it-6-sem-human-resource-development-and-organizational-behavior-oec-it601b-2025.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Human Resource Development And Organizational Behaviour Oec It 601b 2024",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-cse-it-6-sem-human-resource-development-and-organizational-behaviour-oec-it-601b-2024.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Image Processing Pec It601d 2024",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-cse-it-6-sem-image-processing-pec-it601d-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Image Processing Pec It601d 2025",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-cse-it-6-sem-image-processing-pec-it601d-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Image Processing Pec It601d 2026",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-cse-it-6-sem-image-processing-pec-it601d-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 6 Sem Numerical Methods Oec It 601a 2024",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-cse-it-6-sem-numerical-methods-oec-it-601a-2024.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Ec Cse 6 Sem Computer Networks Ec602 2024",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-ec-cse-6-sem-computer-networks-ec602-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Ec Cse 6 Sem Computer Networks Ec602 2025",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-ec-cse-6-sem-computer-networks-ec602-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Ec Cse 6 Sem Computer Networks Ec602 2026",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-ec-cse-6-sem-computer-networks-ec602-2026.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Hu 6 Sem Principles Of Management Hu 601 2018",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-hu-6-sem-principles-of-management-hu-601-2018.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Artificial Intelligence 2017",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-it-6-sem-artificial-intelligence-2017.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Compiler Design 2017",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-it-6-sem-compiler-design-2017.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Computer Graphics 2017",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-it-6-sem-computer-graphics-2017.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Computer Networking 2017",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-it-6-sem-computer-networking-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Computer Networking 2019",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-it-6-sem-computer-networking-2019.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Database Management System 2017",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-it-6-sem-database-management-system-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Database Management System 2019",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-it-6-sem-database-management-system-2019.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Distributed Systems Pec It601b 2023",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-it-6-sem-distributed-systems-pec-it601b-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Image Processing Pec It601d 2023",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-it-6-sem-image-processing-pec-it601d-2023.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Numerical Methods Oec It601a 2025",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-it-6-sem-numerical-methods-oec-it601a-2025.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Software Engineering 2017",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-it-6-sem-software-engineering-2017.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Oec It 6 Sem Human Resource Development And Organizational Behavior Oec It 601b 2023",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-oec-it-6-sem-human-resource-development-and-organizational-behavior-oec-it-601b-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Oec It 6 Sem Human Resource Development And Organizational Behavior Oec It601b 2023",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-oec-it-6-sem-human-resource-development-and-organizational-behavior-oec-it601b-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Oec It 6 Sem Numerical Methods Oec It601a 2023",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-oec-it-6-sem-numerical-methods-oec-it601a-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pec It 6 Sem Data Warehousing And Data Mining Pec It602b 2023",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-pec-it-6-sem-data-warehousing-and-data-mining-pec-it602b-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pec It 6 Sem Distributed Systems Pec It 601b 2023",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-pec-it-6-sem-distributed-systems-pec-it-601b-2023.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Pec It 6 Sem Distributed Systems Pec It601b 2024",
+                "fileUrl": "pyqs/csbs/Semester_6/Electives_and_Allied_Business_Subjects/btech-pec-it-6-sem-distributed-systems-pec-it601b-2024.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CSB602",
+        "name": "Information Security",
+        "department": "Computer Science & Business Systems",
+        "stream": "CSBS",
+        "semester": 6,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csbs/csbs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pec Cse 7 Sem Cyber Security Pec Cs702e 2023",
+                "fileUrl": "pyqs/csbs/Semester_6/PCC-CSB602_Information_Security/btech-pec-cse-7-sem-cyber-security-pec-cs702e-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PEC-CSB601",
+        "name": "Artificial Intelligence and Machine Learning",
+        "department": "Computer Science & Business Systems",
+        "stream": "CSBS",
+        "semester": 6,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csbs/csbs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Ai Aids Aiml 8 Sem Research Methodology Oecai802b 2026",
+                "fileUrl": "pyqs/csbs/Semester_6/PEC-CSB601_Artificial_Intelligence_and_Machine_Learning/btech-ai-aids-aiml-8-sem-research-methodology-oecai802b-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Ai Aids Aiml 8 Sem Software Engineering Oecai801c 2026",
+                "fileUrl": "pyqs/csbs/Semester_6/PEC-CSB601_Artificial_Intelligence_and_Machine_Learning/btech-ai-aids-aiml-8-sem-software-engineering-oecai801c-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs Ai 5 Sem Cloud Computing Pecai501 2026",
+                "fileUrl": "pyqs/csbs/Semester_6/PEC-CSB601_Artificial_Intelligence_and_Machine_Learning/btech-cs-ai-5-sem-cloud-computing-pecai501-2026.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pec Cse 7 Sem Machine Learning Pec Cs701e 2023",
+                "fileUrl": "pyqs/csbs/Semester_6/PEC-CSB601_Artificial_Intelligence_and_Machine_Learning/btech-pec-cse-7-sem-machine-learning-pec-cs701e-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pec It 5 Sem Artificial Intelligence Pec It 501b 2023",
+                "fileUrl": "pyqs/csbs/Semester_6/PEC-CSB601_Artificial_Intelligence_and_Machine_Learning/btech-pec-it-5-sem-artificial-intelligence-pec-it-501b-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pec It 5 Sem Artificial Intelligence Pec It501b 2023",
+                "fileUrl": "pyqs/csbs/Semester_6/PEC-CSB601_Artificial_Intelligence_and_Machine_Learning/btech-pec-it-5-sem-artificial-intelligence-pec-it501b-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "Electives and Allied Business Subjects",
+        "name": "Electives and Allied Business Subjects",
+        "department": "Computer Science & Business Systems",
+        "stream": "CSBS",
+        "semester": 7,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csbs/csbs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs 7 Sem Multimedia Systems Oeccs701b 2026",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-cs-7-sem-multimedia-systems-oeccs701b-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs Aids 7 Sem Internet Of Things Oecaid701a 2026",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-cs-aids-7-sem-internet-of-things-oecaid701a-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs It 7 Sem Cloud Computing Pec Cs701b 2026",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-cs-it-7-sem-cloud-computing-pec-cs701b-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs It 7 Sem Cyber Security Pec Cs702e 2026",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-cs-it-7-sem-cyber-security-pec-cs702e-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs It 7 Sem Machine Learning Pec Cs701e 2026",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-cs-it-7-sem-machine-learning-pec-cs701e-2026.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs It 7 Sem Soft Computing Pec Cs702b 2026",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-cs-it-7-sem-soft-computing-pec-cs702b-2026.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Artificial Intelligence 2017",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-cse-7-sem-artificial-intelligence-2017.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Artificial Intelligence 2018",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-cse-7-sem-artificial-intelligence-2018.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Artificial Intelligence 2019",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-cse-7-sem-artificial-intelligence-2019.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Cloud Computing 2017",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-cse-7-sem-cloud-computing-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Cloud Computing 2019",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-cse-7-sem-cloud-computing-2019.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Cloud Computing Pec Cs701b 2024",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-cse-7-sem-cloud-computing-pec-cs701b-2024.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Compiler Design 2018",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-cse-7-sem-compiler-design-2018.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Compiler Design 2019",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-cse-7-sem-compiler-design-2019.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Cyber Security Pec Cs702e 2024",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-cse-7-sem-cyber-security-pec-cs702e-2024.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Internet Technology 2017",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-cse-7-sem-internet-technology-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Internet Technology 2019",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-cse-7-sem-internet-technology-2019.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Machine Learning Pec Cs701e 2024",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-cse-7-sem-machine-learning-pec-cs701e-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Multimedia Systems Oeccs701b 2025",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-cse-7-sem-multimedia-systems-oeccs701b-2025.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Operations Research Oec It701a 2024",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-cse-7-sem-operations-research-oec-it701a-2024.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Software Engineering 2017",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-cse-7-sem-software-engineering-2017.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Software Engineering 2018",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-cse-7-sem-software-engineering-2018.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Software Engineering 2019",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-cse-7-sem-software-engineering-2019.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse Ee Eee 7 Sem Computer Network Es Cs701 2025",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-cse-ee-eee-7-sem-computer-network-es-cs701-2025.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 7 Sem Cloud Computing Pec Cs701b 2025",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-cse-it-7-sem-cloud-computing-pec-cs701b-2025.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 7 Sem Cyber Security Pec Cs702e 2025",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-cse-it-7-sem-cyber-security-pec-cs702e-2025.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 7 Sem Machine Learning Pec Cs701e 2025",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-cse-it-7-sem-machine-learning-pec-cs701e-2025.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 7 Sem Operations Research Oec It701a 2025",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-cse-it-7-sem-operations-research-oec-it701a-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse It 7 Sem Soft Computing Pec Cs702b 2026",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-cse-it-7-sem-soft-computing-pec-cs702b-2026.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Hm Hu 7 Sem Economics For Engineers Hm Hu701 2023",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-hm-hu-7-sem-economics-for-engineers-hm-hu701-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Hm Hu 7 Sem Principles Of Management And Organisation Behaviour Hm Hu 701 2023",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-hm-hu-7-sem-principles-of-management-and-organisation-behaviour-hm-hu-701-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Hs Hu 7 Sem Principles Of Management Hs Hu701 2023",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-hs-hu-7-sem-principles-of-management-hs-hu701-2023.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Advance Data Communication And Coding 2017",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-it-7-sem-advance-data-communication-and-coding-2017.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Advanced Data Communication And Coding It 705e 2020",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-it-7-sem-advanced-data-communication-and-coding-it-705e-2020.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Cloud Computing 2017",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-it-7-sem-cloud-computing-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Control System 2019",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-it-7-sem-control-system-2019.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Data Warehousing And Data Mining 2017",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-it-7-sem-data-warehousing-and-data-mining-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Distributed Operating System 2019",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-it-7-sem-distributed-operating-system-2019.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Distributed Operating System It 704a 2020",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-it-7-sem-distributed-operating-system-it-704a-2020.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem E Commerce 2017",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-it-7-sem-e-commerce-2017.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem E Commerce 2018",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-it-7-sem-e-commerce-2018.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem E Commerce 2019",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-it-7-sem-e-commerce-2019.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem E Commerce It 703a 2020",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-it-7-sem-e-commerce-it-703a-2020.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Internet Technology 2017",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-it-7-sem-internet-technology-2017.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Internet Technology 2018",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-it-7-sem-internet-technology-2018.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Internet Technology 2019",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-it-7-sem-internet-technology-2019.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Internet Technology It 701 2020",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-it-7-sem-internet-technology-it-701-2020.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Microelectronics And Vlsi Design 2017",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-it-7-sem-microelectronics-and-vlsi-design-2017.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Mobile Computing It 704e 2020",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-it-7-sem-mobile-computing-it-704e-2020.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Multimedia 2017",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-it-7-sem-multimedia-2017.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Multimedia 2018",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-it-7-sem-multimedia-2018.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Multimedia 2019",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-it-7-sem-multimedia-2019.pdf"
+            },
+            {
+                "year": 2020,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Multimedia It 702 2020",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-it-7-sem-multimedia-it-702-2020.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 7 Sem Soft Computing 2017",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-it-7-sem-soft-computing-2017.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Oeccs 7 Sem Multimedia Systems Oeccs701b 2023",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-oeccs-7-sem-multimedia-systems-oeccs701b-2023.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pec Cse 7 Sem Soft Computing Pec Cs702b 2023",
+                "fileUrl": "pyqs/csbs/Semester_7/Electives_and_Allied_Business_Subjects/btech-pec-cse-7-sem-soft-computing-pec-cs702b-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PCC-CSB702",
+        "name": "Financial Management and Enterprise Systems",
+        "department": "Computer Science & Business Systems",
+        "stream": "CSBS",
+        "semester": 7,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csbs/csbs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cs Aids 7 Sem Ecommerce And Erp Pecaids702a 2026",
+                "fileUrl": "pyqs/csbs/Semester_7/PCC-CSB702_Financial_Management_and_Enterprise_Systems/btech-cs-aids-7-sem-ecommerce-and-erp-pecaids702a-2026.pdf"
+            },
+            {
+                "year": 2018,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Erp 2018",
+                "fileUrl": "pyqs/csbs/Semester_7/PCC-CSB702_Financial_Management_and_Enterprise_Systems/btech-cse-6-sem-erp-2018.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech Cse 6 Sem Erp 2019",
+                "fileUrl": "pyqs/csbs/Semester_7/PCC-CSB702_Financial_Management_and_Enterprise_Systems/btech-cse-6-sem-erp-2019.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem E Commerce And Erp Oec Cs802a 2024",
+                "fileUrl": "pyqs/csbs/Semester_7/PCC-CSB702_Financial_Management_and_Enterprise_Systems/btech-cse-it-8-sem-e-commerce-and-erp-oec-cs802a-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem E Commerce And Erp Oec Cs802a 2025",
+                "fileUrl": "pyqs/csbs/Semester_7/PCC-CSB702_Financial_Management_and_Enterprise_Systems/btech-cse-it-8-sem-e-commerce-and-erp-oec-cs802a-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem E Commerce And Erp Oec Cs802a 2026",
+                "fileUrl": "pyqs/csbs/Semester_7/PCC-CSB702_Financial_Management_and_Enterprise_Systems/btech-cse-it-8-sem-e-commerce-and-erp-oec-cs802a-2026.pdf"
+            },
+            {
+                "year": 2017,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Erp 2017",
+                "fileUrl": "pyqs/csbs/Semester_7/PCC-CSB702_Financial_Management_and_Enterprise_Systems/btech-it-6-sem-erp-2017.pdf"
+            },
+            {
+                "year": 2019,
+                "type": "END_SEM",
+                "title": "Btech It 6 Sem Erp 2019",
+                "fileUrl": "pyqs/csbs/Semester_7/PCC-CSB702_Financial_Management_and_Enterprise_Systems/btech-it-6-sem-erp-2019.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Oec Cse It 8 Sem E Commerce And Erp Oec Cs802a 2023",
+                "fileUrl": "pyqs/csbs/Semester_7/PCC-CSB702_Financial_Management_and_Enterprise_Systems/btech-oec-cse-it-8-sem-e-commerce-and-erp-oec-cs802a-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "Electives and Allied Business Subjects",
+        "name": "Electives and Allied Business Subjects",
+        "department": "Computer Science & Business Systems",
+        "stream": "CSBS",
+        "semester": 8,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csbs/csbs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse 8 Sem Big Data Analysis Oec Cs801a 2026",
+                "fileUrl": "pyqs/csbs/Semester_8/Electives_and_Allied_Business_Subjects/btech-cse-8-sem-big-data-analysis-oec-cs801a-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Cyber Law And Ethics Oec Cs801b 2024",
+                "fileUrl": "pyqs/csbs/Semester_8/Electives_and_Allied_Business_Subjects/btech-cse-it-8-sem-cyber-law-and-ethics-oec-cs801b-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Cyber Law And Ethics Oec Cs801b 2025",
+                "fileUrl": "pyqs/csbs/Semester_8/Electives_and_Allied_Business_Subjects/btech-cse-it-8-sem-cyber-law-and-ethics-oec-cs801b-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Cyber Law And Ethics Oec Cs801b 2026",
+                "fileUrl": "pyqs/csbs/Semester_8/Electives_and_Allied_Business_Subjects/btech-cse-it-8-sem-cyber-law-and-ethics-oec-cs801b-2026.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Cyptography And Network Security Pec Cs801 B 2025",
+                "fileUrl": "pyqs/csbs/Semester_8/Electives_and_Allied_Business_Subjects/btech-cse-it-8-sem-cyptography-and-network-security-pec-cs801-b-2025.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Internet Of Things Cs801e 2024",
+                "fileUrl": "pyqs/csbs/Semester_8/Electives_and_Allied_Business_Subjects/btech-cse-it-8-sem-internet-of-things-cs801e-2024.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Internet Of Things Pec Cs801e 2024",
+                "fileUrl": "pyqs/csbs/Semester_8/Electives_and_Allied_Business_Subjects/btech-cse-it-8-sem-internet-of-things-pec-cs801e-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Web And Internet Technology Pec Cs801d 2025",
+                "fileUrl": "pyqs/csbs/Semester_8/Electives_and_Allied_Business_Subjects/btech-cse-it-8-sem-web-and-internet-technology-pec-cs801d-2025.pdf"
+            }
+        ]
+    },
+    {
+        "code": "OEC-CSB801",
+        "name": "Entrepreneurship and Supply Chain Management",
+        "department": "Computer Science & Business Systems",
+        "stream": "CSBS",
+        "semester": 8,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csbs/csbs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech 7 Sem Project Management And Entrepreneurship Hsmc 701 2024",
+                "fileUrl": "pyqs/csbs/Semester_8/OEC-CSB801_Entrepreneurship_and_Supply_Chain_Management/btech-7-sem-project-management-and-entrepreneurship-hsmc-701-2024.pdf"
+            },
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech 7 Sem Project Management And Entrepreneurship Hsmc 701 2025",
+                "fileUrl": "pyqs/csbs/Semester_8/OEC-CSB801_Entrepreneurship_and_Supply_Chain_Management/btech-7-sem-project-management-and-entrepreneurship-hsmc-701-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech 7 Sem Project Management And Entrepreneurship Hsmc 701 2026",
+                "fileUrl": "pyqs/csbs/Semester_8/OEC-CSB801_Entrepreneurship_and_Supply_Chain_Management/btech-7-sem-project-management-and-entrepreneurship-hsmc-701-2026.pdf"
+            },
+            {
+                "year": 2024,
+                "type": "END_SEM",
+                "title": "Btech Cse 7 Sem Project Management And Entrepreneurship Hsmc 701 2024",
+                "fileUrl": "pyqs/csbs/Semester_8/OEC-CSB801_Entrepreneurship_and_Supply_Chain_Management/btech-cse-7-sem-project-management-and-entrepreneurship-hsmc-701-2024.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Hsmc 7 Sem Project Management And Entrepreneurship Hsmc701 2023",
+                "fileUrl": "pyqs/csbs/Semester_8/OEC-CSB801_Entrepreneurship_and_Supply_Chain_Management/btech-hsmc-7-sem-project-management-and-entrepreneurship-hsmc701-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "OEC-CSB802",
+        "name": "Cyber Law and Ethics in Business",
+        "department": "Computer Science & Business Systems",
+        "stream": "CSBS",
+        "semester": 8,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csbs/csbs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Oec Cse It 8 Sem Cyber Law And Ethics Oec Cs801b 2023",
+                "fileUrl": "pyqs/csbs/Semester_8/OEC-CSB802_Cyber_Law_and_Ethics_in_Business/btech-oec-cse-it-8-sem-cyber-law-and-ethics-oec-cs801b-2023.pdf"
+            }
+        ]
+    },
+    {
+        "code": "PEC-CSB802",
+        "name": "Blockchain Technology and Cryptocurrency",
+        "department": "Computer Science & Business Systems",
+        "stream": "CSBS",
+        "semester": 8,
+        "credits": 3,
+        "syllabusUrl": "syllabus/csbs/csbs_syllabus.pdf",
+        "pyqs": [
+            {
+                "year": 2025,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Cryptography And Network Security Pec Cs801 B 2025",
+                "fileUrl": "pyqs/csbs/Semester_8/PEC-CSB802_Blockchain_Technology_and_Cryptocurrency/btech-cse-it-8-sem-cryptography-and-network-security-pec-cs801-b-2025.pdf"
+            },
+            {
+                "year": 2026,
+                "type": "END_SEM",
+                "title": "Btech Cse It 8 Sem Cryptography And Network Security Pec Cs801 B 2026",
+                "fileUrl": "pyqs/csbs/Semester_8/PEC-CSB802_Blockchain_Technology_and_Cryptocurrency/btech-cse-it-8-sem-cryptography-and-network-security-pec-cs801-b-2026.pdf"
+            },
+            {
+                "year": 2023,
+                "type": "END_SEM",
+                "title": "Btech Pec Cse It 8 Sem Cryptography And Network Security Pec Cs801 B 2023",
+                "fileUrl": "pyqs/csbs/Semester_8/PEC-CSB802_Blockchain_Technology_and_Cryptocurrency/btech-pec-cse-it-8-sem-cryptography-and-network-security-pec-cs801-b-2023.pdf"
+            }
+        ]
+    }
+];
+const OFFICIAL_CSBS_PYQS = OFFICIAL_CSBS_COURSES.flatMap(c => (c.pyqs || []).map(p => ({
+    id: p.id || Math.floor(Math.random() * 100000),
+    courseCode: c.code,
+    subjectCode: c.code,
+    stream: c.stream,
+    semester: c.semester,
+    year: p.year,
+    type: p.type,
+    title: p.title,
+    fileUrl: normalizePdfUrl(p.fileUrl),
+    rawUrl: p.fileUrl
+})));
+window.OFFICIAL_CSBS_COURSES = OFFICIAL_CSBS_COURSES;
+window.OFFICIAL_CSBS_PYQS = OFFICIAL_CSBS_PYQS;
+
 
 const STREAM_MASTER_SYLLABI = {
   'cse': {
@@ -2813,8 +11544,38 @@ window.getSubjectDocuments = getSubjectDocuments;
             courses: OFFICIAL_CSE_AIML_COURSES,
             modules: [],
             pyqs: OFFICIAL_CSE_AIML_PYQS
+        },
+        'CSCS': {
+            code: 'CSCS',
+            name: 'Computer Science & Cyber Security',
+            years: [1, 2, 3, 4],
+            semesters: [1, 2, 3, 4, 5, 6, 7, 8],
+            courses: OFFICIAL_CSCS_COURSES,
+            modules: [],
+            pyqs: OFFICIAL_CSCS_PYQS
+        },
+        'CSDS': {
+            code: 'CSDS',
+            name: 'Data Science',
+            years: [1, 2, 3, 4],
+            semesters: [1, 2, 3, 4, 5, 6, 7, 8],
+            courses: OFFICIAL_CSDS_COURSES,
+            modules: [],
+            pyqs: OFFICIAL_CSDS_PYQS
+        },
+        'CSBS': {
+            code: 'CSBS',
+            name: 'Computer Science & Business Systems',
+            years: [1, 2, 3, 4],
+            semesters: [1, 2, 3, 4, 5, 6, 7, 8],
+            courses: OFFICIAL_CSBS_COURSES,
+            modules: [],
+            pyqs: OFFICIAL_CSBS_PYQS
         }
     };
+    DEPARTMENT_STREAMS['cscs'] = DEPARTMENT_STREAMS['CSCS'];
+    DEPARTMENT_STREAMS['csds'] = DEPARTMENT_STREAMS['CSDS'];
+    DEPARTMENT_STREAMS['csbs'] = DEPARTMENT_STREAMS['CSBS'];
     DEPARTMENT_STREAMS['cse'] = DEPARTMENT_STREAMS['CSE'];
     DEPARTMENT_STREAMS['it'] = DEPARTMENT_STREAMS['IT'];
     DEPARTMENT_STREAMS['cse-aiml'] = DEPARTMENT_STREAMS['CSE-AIML'];
@@ -3710,9 +12471,18 @@ window.getSubjectDocuments = getSubjectDocuments;
         subjects = itCourses;
       } else if (fLower === 'cse-aiml' || fLower === 'aiml' || fLower === 'cse_aiml') {
         subjects = aimlCourses;
+      } else if (fLower === 'cscs') {
+        subjects = (typeof DEPARTMENT_STREAMS !== 'undefined' && DEPARTMENT_STREAMS.CSCS && DEPARTMENT_STREAMS.CSCS.courses) ? DEPARTMENT_STREAMS.CSCS.courses : (typeof OFFICIAL_CSCS_COURSES !== 'undefined' ? OFFICIAL_CSCS_COURSES : []);
+      } else if (fLower === 'csds') {
+        subjects = (typeof DEPARTMENT_STREAMS !== 'undefined' && DEPARTMENT_STREAMS.CSDS && DEPARTMENT_STREAMS.CSDS.courses) ? DEPARTMENT_STREAMS.CSDS.courses : (typeof OFFICIAL_CSDS_COURSES !== 'undefined' ? OFFICIAL_CSDS_COURSES : []);
+      } else if (fLower === 'csbs') {
+        subjects = (typeof DEPARTMENT_STREAMS !== 'undefined' && DEPARTMENT_STREAMS.CSBS && DEPARTMENT_STREAMS.CSBS.courses) ? DEPARTMENT_STREAMS.CSBS.courses : (typeof OFFICIAL_CSBS_COURSES !== 'undefined' ? OFFICIAL_CSBS_COURSES : []);
       } else {
         // 'all'
-        subjects = [...commonSubjects, ...cseCourses, ...itCourses, ...aimlCourses];
+        const cscsCourses = (typeof DEPARTMENT_STREAMS !== 'undefined' && DEPARTMENT_STREAMS.CSCS && DEPARTMENT_STREAMS.CSCS.courses) ? DEPARTMENT_STREAMS.CSCS.courses : (typeof OFFICIAL_CSCS_COURSES !== 'undefined' ? OFFICIAL_CSCS_COURSES : []);
+        const csdsCourses = (typeof DEPARTMENT_STREAMS !== 'undefined' && DEPARTMENT_STREAMS.CSDS && DEPARTMENT_STREAMS.CSDS.courses) ? DEPARTMENT_STREAMS.CSDS.courses : (typeof OFFICIAL_CSDS_COURSES !== 'undefined' ? OFFICIAL_CSDS_COURSES : []);
+        const csbsCourses = (typeof DEPARTMENT_STREAMS !== 'undefined' && DEPARTMENT_STREAMS.CSBS && DEPARTMENT_STREAMS.CSBS.courses) ? DEPARTMENT_STREAMS.CSBS.courses : (typeof OFFICIAL_CSBS_COURSES !== 'undefined' ? OFFICIAL_CSBS_COURSES : []);
+        subjects = [...commonSubjects, ...cseCourses, ...itCourses, ...aimlCourses, ...cscsCourses, ...csdsCourses, ...csbsCourses];
       }
 
       const seen = new Set();
@@ -4794,6 +13564,9 @@ window.getSubjectDocuments = getSubjectDocuments;
             window.DEPARTMENT_STREAMS?.['CSE-AIML']?.courses || window.OFFICIAL_CSE_AIML_COURSES,
             window.DEPARTMENT_STREAMS?.['IT']?.courses || window.OFFICIAL_IT_COURSES,
             window.DEPARTMENT_STREAMS?.['CSE']?.courses || window.OFFICIAL_CSE_COURSES,
+            window.DEPARTMENT_STREAMS?.['CSCS']?.courses || window.OFFICIAL_CSCS_COURSES,
+            window.DEPARTMENT_STREAMS?.['CSDS']?.courses || window.OFFICIAL_CSDS_COURSES,
+            window.DEPARTMENT_STREAMS?.['CSBS']?.courses || window.OFFICIAL_CSBS_COURSES,
             window.MAKAUT_CURRICULUM
         ];
 
