@@ -6957,7 +6957,7 @@ html.light .pyq-year-filter-btn.active {
   transition: transform 150ms ease !important;
 }
 
-/* Light Mode Styling for Archive Buttons */
+/* Light Mode Styling for Archive Buttons (100% Parity with Syllabus Blueprint) */
 :root.light-theme #landing-pyqs .btn-preview-paper,
 [data-theme="light"] #landing-pyqs .btn-preview-paper,
 .light-theme #landing-pyqs .btn-preview-paper,
@@ -6982,13 +6982,17 @@ html:not(.dark) .pyq-card .btn-preview-paper,
 .light .archive-access-btn,
 html.light .archive-access-btn,
 html:not(.dark) .archive-access-btn {
-  background: #4f46e5 !important; /* solid bg-indigo-600 */
-  color: #ffffff !important; /* crisp white text */
-  border: 1px solid #4338ca !important;
+  background: #f8fafc !important; /* bg-slate-50 / transparent subtle fill */
+  color: #334155 !important; /* text-slate-700 */
+  border: 1px solid #cbd5e1 !important; /* border-slate-300 */
   border-radius: 0.75rem !important; /* rounded-xl */
   padding: 0.625rem 1rem !important; /* py-2.5 px-4 */
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.06) !important;
-  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+  font-family: inherit !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  line-height: 1.25 !important;
+  transition: all 180ms cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 /* Light Mode Hover State */
@@ -7016,10 +7020,10 @@ html:not(.dark) .pyq-card .btn-preview-paper:hover,
 .light .archive-access-btn:hover,
 html.light .archive-access-btn:hover,
 html:not(.dark) .archive-access-btn:hover {
-  background: #4338ca !important; /* hover:bg-indigo-700 */
-  border-color: #3730a3 !important;
-  color: #ffffff !important;
-  box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2), 0 2px 4px -2px rgba(79, 70, 229, 0.15) !important;
+  background: #f1f5f9 !important; /* hover:bg-slate-100 */
+  border-color: #94a3b8 !important; /* hover:border-slate-400 */
+  color: #0f172a !important; /* hover:text-slate-900 */
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.08) !important;
   transform: translateY(-1px) !important;
 }
 
@@ -7029,7 +7033,7 @@ html:not(.dark) #landing-pyqs .btn-preview-paper:hover .btn-arrow,
 :root.light-theme .archive-access-btn:hover .btn-arrow,
 [data-theme="light"] .archive-access-btn:hover .btn-arrow,
 html:not(.dark) .archive-access-btn:hover .btn-arrow {
-  transform: translateX(3px) !important;
+  transform: translateX(2px) !important;
 }
 
 /* Light Mode Active State */
@@ -7057,8 +7061,8 @@ html:not(.dark) .pyq-card .btn-preview-paper:active,
 .light .archive-access-btn:active,
 html.light .archive-access-btn:active,
 html:not(.dark) .archive-access-btn:active {
-  background: #3730a3 !important;
-  transform: scale(0.99) !important; /* active:scale-[0.99] */
+  background: #e2e8f0 !important;
+  transform: scale(0.99) !important;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
 }
 :root.light-theme .pyq-repo-filter-bar,

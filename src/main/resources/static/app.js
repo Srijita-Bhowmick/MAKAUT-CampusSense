@@ -4700,6 +4700,7 @@ const OFFICIAL_IT_COURSES = [
     },
     {
         "code": "PCC-IT403",
+
         "name": "Formal Language and Automata Theory",
         "department": "Information Technology",
         "stream": "IT",
