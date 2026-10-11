@@ -6381,12 +6381,15 @@ html.light .btn-preview-paper,
   background: #4f46e5 !important;
   color: #ffffff !important;
   border: 1px solid #4338ca !important;
-  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25) !important;
+  border-radius: 0.75rem !important; /* rounded-xl */
+  padding: 0.625rem 1rem !important; /* py-2.5 px-4 */
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.06) !important;
   font-weight: 600 !important;
-  display: inline-flex !important;
+  display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 0.4rem !important;
+  gap: 0.5rem !important;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 :root.light-theme .pyq-card .btn-primary:hover,
 [data-theme="light"] .pyq-card .btn-primary:hover,
@@ -6405,8 +6408,22 @@ html.light .btn-preview-paper:hover,
   background: #4338ca !important;
   color: #ffffff !important;
   border-color: #3730a3 !important;
-  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35) !important;
-  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2), 0 2px 4px -2px rgba(79, 70, 229, 0.15) !important;
+  transform: translateY(-1px) !important;
+}
+:root.light-theme .pyq-card .btn-primary:active,
+[data-theme="light"] .pyq-card .btn-primary:active,
+.light-theme .pyq-card .btn-primary:active,
+.light .pyq-card .btn-primary:active,
+html.light .pyq-card .btn-primary:active,
+:root.light-theme .btn-preview-paper:active,
+[data-theme="light"] .btn-preview-paper:active,
+.light-theme .btn-preview-paper:active,
+.light .btn-preview-paper:active,
+html.light .btn-preview-paper:active {
+  background: #3730a3 !important;
+  transform: scale(0.99) !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
 }
 :root.light-theme .pyq-card,
 [data-theme="light"] .pyq-card,

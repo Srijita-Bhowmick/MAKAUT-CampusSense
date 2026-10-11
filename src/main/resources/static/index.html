@@ -8,7 +8,72 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=20261011_v2">
+    <style>
+      /* Critical Light Mode Archive Action Button Tokens */
+      .archive-btn-container { display: flex !important; width: 100% !important; margin-top: auto !important; }
+      #landing-pyqs .btn-preview-paper,
+      #archives-grid .btn-preview-paper,
+      .pyq-card .btn-preview-paper,
+      .archive-access-btn {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 0.5rem !important;
+        width: 100% !important;
+        padding: 0.625rem 1rem !important; /* py-2.5 px-4 */
+        border-radius: 0.75rem !important; /* rounded-xl */
+        font-family: inherit !important;
+        font-size: 0.925rem !important;
+        font-weight: 600 !important;
+        line-height: 1.25 !important;
+        white-space: nowrap !important;
+        text-decoration: none !important;
+        cursor: pointer !important;
+        box-sizing: border-box !important;
+      }
+      :root.light-theme #landing-pyqs .btn-preview-paper,
+      [data-theme="light"] #landing-pyqs .btn-preview-paper,
+      .light-theme #landing-pyqs .btn-preview-paper,
+      .light #landing-pyqs .btn-preview-paper,
+      html.light #landing-pyqs .btn-preview-paper,
+      html:not(.dark) #landing-pyqs .btn-preview-paper,
+      :root.light-theme .archive-access-btn,
+      [data-theme="light"] .archive-access-btn,
+      .light-theme .archive-access-btn,
+      .light .archive-access-btn,
+      html.light .archive-access-btn,
+      html:not(.dark) .archive-access-btn {
+        background: #4f46e5 !important; /* solid bg-indigo-600 */
+        color: #ffffff !important; /* text-white */
+        border: 1px solid #4338ca !important;
+        border-radius: 0.75rem !important;
+        padding: 0.625rem 1rem !important;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.06) !important;
+        transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+      }
+      :root.light-theme #landing-pyqs .btn-preview-paper:hover,
+      [data-theme="light"] #landing-pyqs .btn-preview-paper:hover,
+      html:not(.dark) #landing-pyqs .btn-preview-paper:hover,
+      :root.light-theme .archive-access-btn:hover,
+      [data-theme="light"] .archive-access-btn:hover,
+      html:not(.dark) .archive-access-btn:hover {
+        background: #4338ca !important; /* hover:bg-indigo-700 */
+        border-color: #3730a3 !important;
+        color: #ffffff !important;
+        box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2), 0 2px 4px -2px rgba(79, 70, 229, 0.15) !important;
+        transform: translateY(-1px) !important;
+      }
+      :root.light-theme #landing-pyqs .btn-preview-paper:active,
+      [data-theme="light"] #landing-pyqs .btn-preview-paper:active,
+      html:not(.dark) #landing-pyqs .btn-preview-paper:active,
+      :root.light-theme .archive-access-btn:active,
+      [data-theme="light"] .archive-access-btn:active,
+      html:not(.dark) .archive-access-btn:active {
+        background: #3730a3 !important;
+        transform: scale(0.99) !important; /* active:scale-[0.99] */
+      }
+    </style>
     <!-- Immediate theme application script to eliminate theme flash -->
     <script>
         (function() {
@@ -766,6 +831,6 @@
     </button>
 
     <!-- Application Script -->
-    <script src="app.js"></script>
+    <script src="app.js?v=20261011_v2"></script>
 </body>
 </html>
