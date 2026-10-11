@@ -12154,9 +12154,9 @@ window.getSubjectDocuments = getSubjectDocuments;
             document.querySelectorAll('#nav-academic-pill, #btn-context-switcher, .academic-context-pill').forEach(p => p.style.display = 'none');
             if (btnNavToLanding) btnNavToLanding.style.display = 'none';
             if (btnNavToDashboard) btnNavToDashboard.style.display = isLoggedIn ? 'inline-flex' : 'none';
-            if (btnOpenPanicNav) btnOpenPanicNav.style.display = 'none';
-            if (btnOpenSavedDeck) btnOpenSavedDeck.style.display = 'none';
-            if (btnOpenFeedback) btnOpenFeedback.style.display = 'none';
+            if (btnOpenPanicNav) btnOpenPanicNav.style.display = 'inline-flex';
+            if (btnOpenSavedDeck) btnOpenSavedDeck.style.display = 'inline-flex';
+            if (btnOpenFeedback) btnOpenFeedback.style.display = 'inline-flex';
             if (btnOpenAiFab) btnOpenAiFab.style.display = 'none';
             if (landingNavLinks) landingNavLinks.style.display = 'flex';
 
@@ -12482,61 +12482,181 @@ window.getSubjectDocuments = getSubjectDocuments;
 
     // ==========================================
     // 5. Landing Page: Curriculum Blueprint & Examination Archives
+    // (Restructured: 1st Year by official division, Streams consolidated into exactly 1 entry each)
     // ==========================================
+
+    const LANDING_1ST_YEAR_SUBJECTS = [
+      {
+        code: '26-BS-PH101',
+        altCode: '26-BS-PH201',
+        stream: 'first-year',
+        group: 'GROUP_A',
+        groupName: 'Group A Foundation',
+        credits: 3,
+        title: 'Physics',
+        description: 'Oscillations and waves, wave optics, electromagnetism, quantum physics, solid-state and modern physics.',
+        syllabusPath: 'assets/resources/1st_year/syllabus/Physics.pdf',
+        pyqYears: ['2026', '2025', '2024', '2023', '2020'],
+        pyqCount: 7
+      },
+      {
+        code: '26-BS-CH101',
+        altCode: '26-BS-CH201',
+        stream: 'first-year',
+        group: 'GROUP_B',
+        groupName: 'Group B Foundation',
+        credits: 3,
+        title: 'Chemistry',
+        description: 'Atomic and molecular structure, thermodynamics, equilibrium and kinetics, electrochemistry and corrosion.',
+        syllabusPath: 'assets/resources/1st_year/syllabus/Chemistry.pdf',
+        pyqYears: ['2025', '2024', '2023', '2020'],
+        pyqCount: 6
+      },
+      {
+        code: '26-BS-M101',
+        stream: 'first-year',
+        group: 'GROUP_A',
+        groupName: 'Group A Foundation',
+        credits: 3,
+        title: 'Mathematics - I',
+        description: 'Calculus of a single variable, calculus of several variables, multiple integrals, and linear algebra matrices.',
+        syllabusPath: 'assets/resources/1st_year/syllabus/Maths-1.pdf',
+        pyqYears: ['2026', '2025', '2023', '2020'],
+        pyqCount: 6
+      },
+      {
+        code: '26-BS-M201',
+        stream: 'first-year',
+        group: 'GROUP_B',
+        groupName: 'Group B Foundation',
+        credits: 3,
+        title: 'Mathematics - II',
+        description: 'Ordinary differential equations, Laplace transform, vector calculus, complex variables and Fourier series.',
+        syllabusPath: 'assets/resources/1st_year/syllabus/Maths-2.pdf',
+        pyqYears: ['2026', '2025', '2024', '2023'],
+        pyqCount: 6
+      },
+      {
+        code: '26-ES-EE101',
+        stream: 'first-year',
+        group: 'GROUP_A',
+        groupName: 'Group A Foundation',
+        credits: 4,
+        title: 'Basic Electrical & Electronics Engineering',
+        description: 'Direct-current and alternating-current circuits, transformers, rotating machines, semiconductor diodes and transistors.',
+        syllabusPath: 'assets/resources/1st_year/syllabus/BEE.pdf',
+        pyqYears: ['2026', '2024', '2023', '2020'],
+        pyqCount: 4
+      },
+      {
+        code: '26-AEC-101',
+        stream: 'first-year',
+        group: 'GROUP_B',
+        groupName: 'Group B Foundation',
+        credits: 2,
+        title: 'English for Communication Skills',
+        description: 'Technical grammar, vocabulary, reading comprehension, report writing, and employability communication.',
+        syllabusPath: 'assets/resources/1st_year/syllabus/English.pdf',
+        pyqYears: ['2025', '2024', '2023'],
+        pyqCount: 3
+      },
+      {
+        code: '26-ES-CS201',
+        stream: 'first-year',
+        group: 'GROUP_B',
+        groupName: 'Group B Foundation',
+        credits: 3,
+        title: 'Programming for Problem Solving & AI',
+        description: 'Computer fundamentals, computational thinking, C programming, algorithms, functions, arrays, pointers, and AI intro.',
+        syllabusPath: 'assets/resources/1st_year/syllabus/PPS.pdf',
+        pyqYears: ['2025', '2024', '2023'],
+        pyqCount: 3
+      }
+    ];
+
+    const LANDING_CONSOLIDATED_STREAMS = [
+      {
+        streamCode: 'cse',
+        badge: 'CSE Core Scheme',
+        scope: 'Semesters 3 to 8',
+        title: 'Computer Science & Engineering (CSE)',
+        description: 'Official consolidated 4-year MAKAUT syllabus covering Data Structures, Algorithms, OS, DBMS, Networks, and departmental electives.',
+        syllabusPath: 'CSE(3rd to 8th sem)/CSE20.pdf',
+        pyqYears: ['2026', '2025', '2024', '2023', '2020'],
+        archiveTitle: 'Computer Science & Engineering Archives',
+        archiveDesc: 'Consolidated stream repository of verified semester question papers across Semesters 3 to 8 (2020–2026).'
+      },
+      {
+        streamCode: 'cse-aiml',
+        badge: 'CSE-AIML Scheme',
+        scope: 'Semesters 3 to 8',
+        title: 'CSE (Artificial Intelligence & Machine Learning)',
+        description: 'Specialized MAKAUT curriculum covering Artificial Intelligence, Machine Learning, Deep Learning, Computer Vision, and Neural Networks.',
+        syllabusPath: 'CSE-AIML(3rd to 8th sem)/CSE_AIML_Syllabus_3rd_to_8th.pdf',
+        pyqYears: ['2026', '2025', '2024', '2023', '2020'],
+        archiveTitle: 'CSE (AI & Machine Learning) Archives',
+        archiveDesc: 'Consolidated stream archive of official question papers across Artificial Intelligence and Machine Learning tracks.'
+      },
+      {
+        streamCode: 'it',
+        badge: 'IT Core Scheme',
+        scope: 'Semesters 3 to 8',
+        title: 'Information Technology (IT)',
+        description: 'Official curriculum covering Software Engineering, Web Technologies, Database Systems, Computer Networks, and Information Security.',
+        syllabusPath: 'IT(3rd to 8th sem)/IT_Syllabus_3rd_to_8th.pdf',
+        pyqYears: ['2026', '2025', '2024', '2023', '2020'],
+        archiveTitle: 'Information Technology Archives',
+        archiveDesc: 'Consolidated repository of verified question papers across Software Systems, Web, Cloud, and Networking.'
+      },
+      {
+        streamCode: 'csbs',
+        badge: 'CSBS Scheme',
+        scope: 'Semesters 3 to 8',
+        title: 'Computer Science & Business Systems (CSBS)',
+        description: 'Industry-integrated curriculum combining core computer science with financial management, business analytics, and cognitive systems.',
+        syllabusPath: 'docs/CSBS(3rd to 8th sem)/csbs_syllabus.pdf',
+        pyqYears: ['2025', '2024', '2023'],
+        archiveTitle: 'CSBS Examination Archives',
+        archiveDesc: 'Consolidated archive of verified examination papers for industry-collaborative computing curriculum.'
+      },
+      {
+        streamCode: 'cscs',
+        badge: 'CSCS Scheme',
+        scope: 'Semesters 3 to 8',
+        title: 'Computer Science & Cyber Security (CSCS)',
+        description: 'Curriculum covering applied cryptography, digital forensics, network defense, ethical hacking, and secure system architectures.',
+        syllabusPath: 'docs/CSCS(3rd to 8th sem)/cscs_syllabus.pdf',
+        pyqYears: ['2025', '2024', '2023'],
+        archiveTitle: 'CSCS Examination Archives',
+        archiveDesc: 'Consolidated archive of verified examination papers covering Cryptography, Network Defense, and Cyber Forensics.'
+      },
+      {
+        streamCode: 'csds',
+        badge: 'CSDS Scheme',
+        scope: 'Semesters 3 to 8',
+        title: 'Data Science (CSDS)',
+        description: 'Curriculum covering applied statistical inference, big data architectures, predictive modeling, machine learning, and visualization.',
+        syllabusPath: 'docs/CSDS(3rd to 8th sem)/csds_syllabus.pdf',
+        pyqYears: ['2025', '2024', '2023'],
+        archiveTitle: 'Data Science Archives',
+        archiveDesc: 'Consolidated archive of verified examination papers covering Big Data, Statistics, and Data Engineering.'
+      }
+    ];
+
     function getFilteredSubjects(filter = 'all') {
       const fLower = (filter || 'all').toLowerCase();
-      let subjects = [];
-
-      const commonSubjects = (typeof MAKAUT_CURRICULUM !== 'undefined') ? MAKAUT_CURRICULUM : [];
-      const cseCourses = (typeof DEPARTMENT_STREAMS !== 'undefined' && DEPARTMENT_STREAMS.CSE && DEPARTMENT_STREAMS.CSE.courses) ? DEPARTMENT_STREAMS.CSE.courses : [];
-      const itCourses = (typeof DEPARTMENT_STREAMS !== 'undefined' && DEPARTMENT_STREAMS.IT && DEPARTMENT_STREAMS.IT.courses) ? DEPARTMENT_STREAMS.IT.courses : (typeof OFFICIAL_IT_COURSES !== 'undefined' ? OFFICIAL_IT_COURSES : []);
-      const aimlCourses = (typeof DEPARTMENT_STREAMS !== 'undefined' && (DEPARTMENT_STREAMS['CSE-AIML'] || DEPARTMENT_STREAMS['cse-aiml']) && (DEPARTMENT_STREAMS['CSE-AIML'] || DEPARTMENT_STREAMS['cse-aiml']).courses) ? (DEPARTMENT_STREAMS['CSE-AIML'] || DEPARTMENT_STREAMS['cse-aiml']).courses : (typeof OFFICIAL_CSE_AIML_COURSES !== 'undefined' ? OFFICIAL_CSE_AIML_COURSES : []);
-
-      if (fLower === 'common' || fLower === '1st year common' || fLower === '1st-year-common' || fLower === 'first-year' || fLower === 'first_year' || fLower === 'fy') {
-        subjects = commonSubjects.filter(s => s.isFirstYear || s.semester === 1 || s.semester === 2 || s.stream === 'GROUP_A' || s.stream === 'GROUP_B' || s.stream === 'COMMON');
-      } else if (fLower === 'cse') {
-        subjects = cseCourses;
-      } else if (fLower === 'it') {
-        subjects = itCourses;
-      } else if (fLower === 'cse-aiml' || fLower === 'aiml' || fLower === 'cse_aiml') {
-        subjects = aimlCourses;
-      } else if (fLower === 'cscs') {
-        subjects = (typeof DEPARTMENT_STREAMS !== 'undefined' && DEPARTMENT_STREAMS.CSCS && DEPARTMENT_STREAMS.CSCS.courses) ? DEPARTMENT_STREAMS.CSCS.courses : (typeof OFFICIAL_CSCS_COURSES !== 'undefined' ? OFFICIAL_CSCS_COURSES : []);
-      } else if (fLower === 'csds') {
-        subjects = (typeof DEPARTMENT_STREAMS !== 'undefined' && DEPARTMENT_STREAMS.CSDS && DEPARTMENT_STREAMS.CSDS.courses) ? DEPARTMENT_STREAMS.CSDS.courses : (typeof OFFICIAL_CSDS_COURSES !== 'undefined' ? OFFICIAL_CSDS_COURSES : []);
-      } else if (fLower === 'csbs') {
-        subjects = (typeof DEPARTMENT_STREAMS !== 'undefined' && DEPARTMENT_STREAMS.CSBS && DEPARTMENT_STREAMS.CSBS.courses) ? DEPARTMENT_STREAMS.CSBS.courses : (typeof OFFICIAL_CSBS_COURSES !== 'undefined' ? OFFICIAL_CSBS_COURSES : []);
-      } else {
-        // 'all'
-        const cscsCourses = (typeof DEPARTMENT_STREAMS !== 'undefined' && DEPARTMENT_STREAMS.CSCS && DEPARTMENT_STREAMS.CSCS.courses) ? DEPARTMENT_STREAMS.CSCS.courses : (typeof OFFICIAL_CSCS_COURSES !== 'undefined' ? OFFICIAL_CSCS_COURSES : []);
-        const csdsCourses = (typeof DEPARTMENT_STREAMS !== 'undefined' && DEPARTMENT_STREAMS.CSDS && DEPARTMENT_STREAMS.CSDS.courses) ? DEPARTMENT_STREAMS.CSDS.courses : (typeof OFFICIAL_CSDS_COURSES !== 'undefined' ? OFFICIAL_CSDS_COURSES : []);
-        const csbsCourses = (typeof DEPARTMENT_STREAMS !== 'undefined' && DEPARTMENT_STREAMS.CSBS && DEPARTMENT_STREAMS.CSBS.courses) ? DEPARTMENT_STREAMS.CSBS.courses : (typeof OFFICIAL_CSBS_COURSES !== 'undefined' ? OFFICIAL_CSBS_COURSES : []);
-        subjects = [...commonSubjects, ...cseCourses, ...itCourses, ...aimlCourses, ...cscsCourses, ...csdsCourses, ...csbsCourses];
+      if (fLower === 'first-year' || fLower === '1st year common' || fLower === 'first_year' || fLower === 'fy') {
+        return LANDING_1ST_YEAR_SUBJECTS;
       }
-
-      // STRICT Filtering: Theory Only AND pyqs.length >= 1
-      subjects = subjects.filter(isQualifiedTheorySubject);
-
-      const seen = new Set();
-      const result = [];
-      subjects.forEach(sub => {
-        const code = sub.code || 'MAKAUT';
-        const key = (fLower === 'all' && sub.stream ? `${sub.stream}_${code}` : code);
-        if (!seen.has(key)) {
-          seen.add(key);
-          const papers = sub.pyqs || sub.papers || [];
-          result.push({
-            code: code,
-            title: sub.title || sub.name || 'Subject Blueprint',
-            credits: sub.credits || 4,
-            papers: papers
-          });
-        }
-      });
-      return result;
+      if (fLower === 'all') {
+        return [...LANDING_1ST_YEAR_SUBJECTS, ...LANDING_CONSOLIDATED_STREAMS];
+      }
+      const matched = LANDING_CONSOLIDATED_STREAMS.filter(s => s.streamCode === fLower);
+      return matched.length > 0 ? matched : [...LANDING_1ST_YEAR_SUBJECTS, ...LANDING_CONSOLIDATED_STREAMS];
     }
 
     function getFilteredPapers(yearFilter = 'all') {
+      const yNorm = (yearFilter || 'all').toString().toLowerCase().replace('all-years', 'all');
       const allPapers = [];
       const seenUrls = new Set();
 
@@ -12571,33 +12691,31 @@ window.getSubjectDocuments = getSubjectDocuments;
         });
       }
 
-      const yStr = (yearFilter || 'all').toString().toLowerCase();
-      if (yStr === 'all' || yStr === 'all-years' || yStr === 'all years') {
-        return allPapers;
-      }
-
-      return allPapers.filter(paper => String(paper.year) === String(yearFilter));
+      if (yNorm === 'all') return allPapers;
+      return allPapers.filter(paper => String(paper.year) === String(yNorm));
     }
 
     function renderLandingCurriculum(filter = 'all') {
       const container = document.getElementById('curriculum-grid') || document.querySelector('.subjects-grid') || document.getElementById('landing-curriculum-grid');
       if (!container) return;
 
-      const subjects = getFilteredSubjects(filter); // Your subject list
-      if (!subjects || subjects.length === 0) {
+      const items = getFilteredSubjects(filter);
+      if (!items || items.length === 0) {
         container.innerHTML = `<div class="empty-state" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-secondary);">Select a stream to preview subjects and blueprints.</div>`;
         return;
       }
 
-      container.innerHTML = subjects.map(sub => `
-        <div class="bento-card subject-card" data-course-code="${sub.code}">
-          <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
-            <span class="badge subject-code-badge" style="font-weight: 700;">${sub.code}</span>
-            <span class="badge credit-badge" style="opacity: 0.85;">${sub.credits || 4} Credits</span>
+      container.innerHTML = items.map(item => `
+        <div class="bento-card subject-card" data-stream="${item.streamCode || 'first-year'}" data-code="${item.code || item.streamCode}">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <span class="badge subject-code-badge" style="font-weight: 700;">${item.groupName || item.badge || item.code}</span>
+            <span class="badge credit-badge" style="opacity: 0.85;">${item.credits ? item.credits + ' Credits' : (item.scope || '3rd–8th Sem')}</span>
           </div>
-          <h3 style="font-size: 1.1rem; margin: 0 0 0.5rem 0;">${sub.title}</h3>
-          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">${sub.papers ? sub.papers.length : 0} Verified PYQ Papers Available</p>
-          <button class="btn btn-outline subject-action-btn" style="width: 100%;" onclick="openSubjectHubByCode('${sub.code}')">View Question Papers →</button>
+          <h3 style="font-size: 1.15rem; font-weight: 700; margin: 0 0 0.5rem 0; color: var(--text-main);">${item.title}</h3>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.25rem; line-height: 1.5; flex: 1;">${item.description}</p>
+          <button class="btn btn-outline subject-action-btn" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;" onclick="viewSyllabusItem('${item.code || item.streamCode}', '${item.syllabusPath}', '${item.title}')">
+            <span>📖</span><span>View Syllabus Blueprint →</span>
+          </button>
         </div>
       `).join('');
     }
@@ -12606,30 +12724,87 @@ window.getSubjectDocuments = getSubjectDocuments;
       const container = document.getElementById('archives-grid') || document.querySelector('.pyq-grid') || document.getElementById('landing-pyq-grid');
       if (!container) return;
 
-      const papers = getFilteredPapers(yearFilter); // Your paper archive list
-      if (!papers || papers.length === 0) {
-        container.innerHTML = `<div class="empty-state" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-secondary);">Select an exam year to view verified questions.</div>`;
+      const yNorm = (yearFilter || 'all').toString().toLowerCase().replace('all-years', 'all');
+
+      // 1. First Year Archives (established division)
+      const firstYearArchives = LANDING_1ST_YEAR_SUBJECTS.map(sub => ({
+        type: 'first-year',
+        code: sub.code,
+        streamCode: 'first-year',
+        badge: sub.groupName,
+        subBadge: sub.code,
+        title: `${sub.title} Examination Archives`,
+        description: `Verified examination papers covering ${sub.groupName} official MAKAUT curriculum with question patterns and solutions.`,
+        years: sub.pyqYears,
+        action: `onclick="openSubjectHubByCode('${sub.code}', 'pyqs')"`
+      }));
+
+      // 2. Stream Consolidated Archives
+      const streamArchives = LANDING_CONSOLIDATED_STREAMS.map(str => ({
+        type: 'stream',
+        streamCode: str.streamCode,
+        badge: str.badge,
+        subBadge: str.scope,
+        title: str.archiveTitle,
+        description: str.archiveDesc,
+        years: str.pyqYears,
+        action: `onclick="openStreamArchiveView('${str.streamCode}')"`
+      }));
+
+      let allEntries = [...firstYearArchives, ...streamArchives];
+
+      if (yNorm !== 'all') {
+        allEntries = allEntries.filter(entry => entry.years && entry.years.includes(yNorm));
+      }
+
+      if (allEntries.length === 0) {
+        container.innerHTML = `<div class="empty-state" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-secondary);">No verified archives found for year ${yearFilter}.</div>`;
         return;
       }
 
-      container.innerHTML = papers.map(paper => `
+      container.innerHTML = allEntries.map(entry => `
         <div class="bento-card pyq-card">
-          <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-            <span class="badge exam-year-badge">${paper.year || 'Verified'}</span>
-            <span class="badge course-code-badge">${paper.subjectCode || 'MAKAUT'}</span>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+            <span class="badge exam-year-badge">${entry.badge}</span>
+            <span class="badge course-code-badge">${entry.subBadge}</span>
           </div>
-          <h4 style="font-size: 1rem; margin: 0 0 0.5rem 0;">${paper.title}</h4>
+          <h4 style="font-size: 1.15rem; font-weight: 700; margin: 0 0 0.5rem 0; color: var(--text-main);">${entry.title}</h4>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.25rem; line-height: 1.5; flex: 1;">${entry.description}</p>
           <div style="display: flex; gap: 0.5rem; margin-top: auto;">
-            <button class="btn btn-primary btn-preview-paper" style="flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;" onclick="previewPdfFile('${paper.url}', '${paper.title}')"><span>📄</span><span>Preview</span></button>
-            <a href="${paper.url}" download class="btn btn-outline btn-download-paper-link" style="flex: 1; text-align: center; display: inline-flex; align-items: center; justify-content: center;">Download</a>
+            <button class="btn btn-primary btn-preview-paper" style="flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;" ${entry.action}>
+              <span>📄</span><span>Access Exam Archives →</span>
+            </button>
           </div>
         </div>
       `).join('');
     }
 
+    window.viewSyllabusItem = function(targetCode, pdfPath, title) {
+      if (pdfPath && typeof window.previewPdfFile === 'function') {
+        window.previewPdfFile(pdfPath, title);
+      } else if (targetCode && typeof window.openSubjectHubByCode === 'function') {
+        window.openSubjectHubByCode(targetCode, 'syllabus');
+      }
+    };
+
+    window.openStreamArchiveView = function(streamCode) {
+      if (typeof requireAuthOrTrigger === 'function' && !requireAuthOrTrigger()) return;
+      const sKey = (streamCode || 'CSE').toUpperCase();
+      const stream = (window.DEPARTMENT_STREAMS && (window.DEPARTMENT_STREAMS[sKey] || window.DEPARTMENT_STREAMS[streamCode])) || null;
+      const courses = (stream && stream.courses) || [];
+      const firstCourse = courses.find(c => isQualifiedTheorySubject(c)) || courses[0];
+      if (firstCourse && firstCourse.code && typeof window.openSubjectHubByCode === 'function') {
+        window.openSubjectHubByCode(firstCourse.code, 'pyqs');
+      } else if (typeof window.openSubjectHubByCode === 'function') {
+        window.openSubjectHubByCode('26-BS-PH101', 'pyqs');
+      }
+    };
+
     const renderLandingCurriculumCards = renderLandingCurriculum;
     const renderLandingPyqCatalog = renderLandingArchives;
     const renderLandingPyqRepo = renderLandingArchives;
+    window.LANDING_1ST_YEAR_SUBJECTS = LANDING_1ST_YEAR_SUBJECTS;
+    window.LANDING_CONSOLIDATED_STREAMS = LANDING_CONSOLIDATED_STREAMS;
     window.getFilteredSubjects = getFilteredSubjects;
     window.getFilteredPapers = getFilteredPapers;
     window.renderLandingCurriculum = renderLandingCurriculum;

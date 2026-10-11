@@ -2877,7 +2877,7 @@ body.is-drawer-resizing .ai-slide-drawer {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.45rem 1.15rem;
+    padding: 0.45rem 1.25rem;
     border-radius: 999px;
     background: rgba(99, 102, 241, 0.12);
     border: 1px solid rgba(99, 102, 241, 0.3);
@@ -2885,17 +2885,17 @@ body.is-drawer-resizing .ai-slide-drawer {
     font-family: var(--font-heading);
     font-weight: 700;
     font-size: 0.82rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
     letter-spacing: 0.02em;
 }
 
 .landing-hero-title {
     font-family: var(--font-heading);
-    font-size: clamp(2.8rem, 6vw, 4.5rem);
+    font-size: clamp(2.25rem, 4.5vw, 3.4rem);
     font-weight: 800;
-    letter-spacing: -0.035em;
-    line-height: 1.1;
-    margin-bottom: 1rem;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    margin-bottom: 1.25rem;
     background: linear-gradient(135deg, #ffffff 25%, #818cf8 65%, #38bdf8 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -3119,6 +3119,18 @@ body.is-drawer-resizing .ai-slide-drawer {
     letter-spacing: 0.1em;
     text-transform: uppercase;
     margin-bottom: 0.45rem;
+}
+
+.why-campussense-pretitle,
+#why-campussense .landing-section-pretitle {
+    font-family: var(--font-heading) !important;
+    font-size: clamp(1.15rem, 2.2vw, 1.45rem) !important;
+    font-weight: 800 !important;
+    color: var(--accent-primary, #818cf8) !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase !important;
+    margin-bottom: 0.85rem !important;
+    display: inline-block !important;
 }
 
 .why-campussense-title,
@@ -6078,7 +6090,7 @@ html.light #btn-explore-curriculum,
   background: #4338ca !important;
   color: #ffffff !important;
   border: 1px solid #3730a3 !important;
-  box-shadow: 0 4px 14px rgba(67, 56, 202, 0.3) !important;
+  box-shadow: 0 2px 6px rgba(67, 56, 202, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05) !important;
 }
 :root.light-theme #btn-explore-curriculum:hover,
 [data-theme="light"] #btn-explore-curriculum:hover,
@@ -6091,7 +6103,7 @@ html.light #btn-explore-curriculum:hover,
   background: #4f46e5 !important;
   color: #ffffff !important;
   border-color: #4338ca !important;
-  box-shadow: 0 8px 24px rgba(79, 70, 229, 0.4) !important;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.22) !important;
   transform: translateY(-2px);
 }
 :root.light-theme #btn-explore-curriculum:active,
@@ -6115,7 +6127,7 @@ html.light #btn-hero-panic-pack,
   background: #ea580c !important;
   color: #ffffff !important;
   border: 1px solid #c2410c !important;
-  box-shadow: 0 4px 14px rgba(234, 88, 12, 0.3) !important;
+  box-shadow: 0 2px 6px rgba(234, 88, 12, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05) !important;
 }
 :root.light-theme #btn-hero-panic-pack:hover,
 [data-theme="light"] #btn-hero-panic-pack:hover,
@@ -6128,7 +6140,7 @@ html.light #btn-hero-panic-pack:hover,
   background: #f97316 !important;
   color: #ffffff !important;
   border-color: #ea580c !important;
-  box-shadow: 0 8px 24px rgba(234, 88, 12, 0.4) !important;
+  box-shadow: 0 4px 12px rgba(234, 88, 12, 0.25) !important;
   transform: translateY(-2px);
 }
 :root.light-theme #btn-hero-panic-pack:active,
@@ -6140,37 +6152,110 @@ html.light #btn-hero-panic-pack:active {
   transform: translateY(0);
 }
 
-/* 4. Access Panic Pack Button */
+/* 4. Unified Feature Cards Button Variant in Light Mode (Standardize all 4 cards) */
+:root.light-theme .feature-card-cta,
+[data-theme="light"] .feature-card-cta,
+.light-theme .feature-card-cta,
+.light .feature-card-cta,
+html.light .feature-card-cta,
+:root.light-theme #btn-feature-syllabus,
+[data-theme="light"] #btn-feature-syllabus,
+.light-theme #btn-feature-syllabus,
+.light #btn-feature-syllabus,
+html.light #btn-feature-syllabus,
+:root.light-theme #btn-feature-pyq,
+[data-theme="light"] #btn-feature-pyq,
+.light-theme #btn-feature-pyq,
+.light #btn-feature-pyq,
+html.light #btn-feature-pyq,
 :root.light-theme #btn-feature-panic,
 [data-theme="light"] #btn-feature-panic,
 .light-theme #btn-feature-panic,
 .light #btn-feature-panic,
 html.light #btn-feature-panic,
+:root.light-theme #btn-feature-ai,
+[data-theme="light"] #btn-feature-ai,
+.light-theme #btn-feature-ai,
+.light #btn-feature-ai,
+html.light #btn-feature-ai,
 :root.light-theme .feature-card-cta.flame,
 [data-theme="light"] .feature-card-cta.flame,
 .light-theme .feature-card-cta.flame,
 .light .feature-card-cta.flame,
-html.light .feature-card-cta.flame {
-  background: #ea580c !important;
-  color: #ffffff !important;
-  border: 1px solid #c2410c !important;
-  box-shadow: 0 2px 8px rgba(234, 88, 12, 0.25) !important;
+html.light .feature-card-cta.flame,
+:root.light-theme .feature-card-cta.emerald,
+[data-theme="light"] .feature-card-cta.emerald,
+.light-theme .feature-card-cta.emerald,
+.light .feature-card-cta.emerald,
+html.light .feature-card-cta.emerald,
+:root.light-theme .feature-card-cta.cyan,
+[data-theme="light"] .feature-card-cta.cyan,
+.light-theme .feature-card-cta.cyan,
+.light .feature-card-cta.cyan,
+html.light .feature-card-cta.cyan {
+  background: #ffffff !important;
+  color: #1e293b !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  font-family: var(--font-heading) !important;
   font-weight: 600 !important;
+  font-size: 0.92rem !important;
+  padding: 0.7rem 1.25rem !important;
+  border-radius: 10px !important;
+  height: 44px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-decoration: none !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
+
+:root.light-theme .feature-card-cta:hover,
+[data-theme="light"] .feature-card-cta:hover,
+.light-theme .feature-card-cta:hover,
+.light .feature-card-cta:hover,
+html.light .feature-card-cta:hover,
+:root.light-theme #btn-feature-syllabus:hover,
+[data-theme="light"] #btn-feature-syllabus:hover,
+.light-theme #btn-feature-syllabus:hover,
+.light #btn-feature-syllabus:hover,
+html.light #btn-feature-syllabus:hover,
+:root.light-theme #btn-feature-pyq:hover,
+[data-theme="light"] #btn-feature-pyq:hover,
+.light-theme #btn-feature-pyq:hover,
+.light #btn-feature-pyq:hover,
+html.light #btn-feature-pyq:hover,
 :root.light-theme #btn-feature-panic:hover,
 [data-theme="light"] #btn-feature-panic:hover,
 .light-theme #btn-feature-panic:hover,
 .light #btn-feature-panic:hover,
 html.light #btn-feature-panic:hover,
+:root.light-theme #btn-feature-ai:hover,
+[data-theme="light"] #btn-feature-ai:hover,
+.light-theme #btn-feature-ai:hover,
+.light #btn-feature-ai:hover,
+html.light #btn-feature-ai:hover,
 :root.light-theme .feature-card-cta.flame:hover,
 [data-theme="light"] .feature-card-cta.flame:hover,
 .light-theme .feature-card-cta.flame:hover,
 .light .feature-card-cta.flame:hover,
-html.light .feature-card-cta.flame:hover {
-  background: #c2410c !important;
+html.light .feature-card-cta.flame:hover,
+:root.light-theme .feature-card-cta.emerald:hover,
+[data-theme="light"] .feature-card-cta.emerald:hover,
+.light-theme .feature-card-cta.emerald:hover,
+.light .feature-card-cta.emerald:hover,
+html.light .feature-card-cta.emerald:hover,
+:root.light-theme .feature-card-cta.cyan:hover,
+[data-theme="light"] .feature-card-cta.cyan:hover,
+.light-theme .feature-card-cta.cyan:hover,
+.light .feature-card-cta.cyan:hover,
+html.light .feature-card-cta.cyan:hover {
+  background: #4f46e5 !important;
   color: #ffffff !important;
-  border-color: #9a3412 !important;
-  box-shadow: 0 4px 14px rgba(234, 88, 12, 0.35) !important;
+  border-color: #4338ca !important;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25) !important;
+  transform: translateY(-2px) !important;
+}
   transform: translateY(-2px);
 }
 
@@ -6429,36 +6514,37 @@ html.light .pyq-year-filter-btn.active {
 }
 
 /* 8. Battle-Tested MAKAUT Examination Archives Button & Section */
-:root.light-theme .feature-card-cta.emerald,
-[data-theme="light"] .feature-card-cta.emerald,
-.light-theme .feature-card-cta.emerald,
-.light .feature-card-cta.emerald,
-html.light .feature-card-cta.emerald,
-:root.light-theme #btn-feature-pyq,
-[data-theme="light"] #btn-feature-pyq,
-.light-theme #btn-feature-pyq,
-.light #btn-feature-pyq,
-html.light #btn-feature-pyq {
-  background: #059669 !important;
+:root.light-theme #landing-pyqs .btn-preview-paper,
+[data-theme="light"] #landing-pyqs .btn-preview-paper,
+.light-theme #landing-pyqs .btn-preview-paper,
+.light #landing-pyqs .btn-preview-paper,
+html.light #landing-pyqs .btn-preview-paper,
+:root.light-theme #landing-pyqs .btn-primary,
+[data-theme="light"] #landing-pyqs .btn-primary,
+.light-theme #landing-pyqs .btn-primary,
+.light #landing-pyqs .btn-primary,
+html.light #landing-pyqs .btn-primary {
+  background: #4f46e5 !important;
   color: #ffffff !important;
-  border: 1px solid #047857 !important;
-  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.25) !important;
+  border: 1px solid #4338ca !important;
+  box-shadow: 0 2px 6px rgba(79, 70, 229, 0.2) !important;
   font-weight: 600 !important;
+  transition: all 0.2s ease !important;
 }
-:root.light-theme .feature-card-cta.emerald:hover,
-[data-theme="light"] .feature-card-cta.emerald:hover,
-.light-theme .feature-card-cta.emerald:hover,
-.light .feature-card-cta.emerald:hover,
-html.light .feature-card-cta.emerald:hover,
-:root.light-theme #btn-feature-pyq:hover,
-[data-theme="light"] #btn-feature-pyq:hover,
-.light-theme #btn-feature-pyq:hover,
-.light #btn-feature-pyq:hover,
-html.light #btn-feature-pyq:hover {
-  background: #047857 !important;
+:root.light-theme #landing-pyqs .btn-preview-paper:hover,
+[data-theme="light"] #landing-pyqs .btn-preview-paper:hover,
+.light-theme #landing-pyqs .btn-preview-paper:hover,
+.light #landing-pyqs .btn-preview-paper:hover,
+html.light #landing-pyqs .btn-preview-paper:hover,
+:root.light-theme #landing-pyqs .btn-primary:hover,
+[data-theme="light"] #landing-pyqs .btn-primary:hover,
+.light-theme #landing-pyqs .btn-primary:hover,
+.light #landing-pyqs .btn-primary:hover,
+html.light #landing-pyqs .btn-primary:hover {
+  background: #4338ca !important;
   color: #ffffff !important;
-  border-color: #065f46 !important;
-  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.35) !important;
+  border-color: #3730a3 !important;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3) !important;
   transform: translateY(-2px);
 }
 :root.light-theme .pyq-repo-filter-bar,
