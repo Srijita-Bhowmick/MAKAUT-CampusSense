@@ -12172,7 +12172,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             if (btnLandingAuth) btnLandingAuth.style.display = 'none';
 
             renderLandingCurriculumCards('all');
-            renderLandingPyqCatalog('all-years');
+            renderLandingPyqCatalog('all');
             bindLandingFilterButtons();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -12494,7 +12494,6 @@ window.getSubjectDocuments = getSubjectDocuments;
         groupName: 'Group A Foundation',
         credits: 3,
         title: 'Physics',
-        description: 'Oscillations and waves, wave optics, electromagnetism, quantum physics, solid-state and modern physics.',
         syllabusPath: 'assets/resources/1st_year/syllabus/Physics.pdf',
         pyqYears: ['2026', '2025', '2024', '2023', '2020'],
         pyqCount: 7
@@ -12507,7 +12506,6 @@ window.getSubjectDocuments = getSubjectDocuments;
         groupName: 'Group B Foundation',
         credits: 3,
         title: 'Chemistry',
-        description: 'Atomic and molecular structure, thermodynamics, equilibrium and kinetics, electrochemistry and corrosion.',
         syllabusPath: 'assets/resources/1st_year/syllabus/Chemistry.pdf',
         pyqYears: ['2025', '2024', '2023', '2020'],
         pyqCount: 6
@@ -12519,7 +12517,6 @@ window.getSubjectDocuments = getSubjectDocuments;
         groupName: 'Group A Foundation',
         credits: 3,
         title: 'Mathematics - I',
-        description: 'Calculus of a single variable, calculus of several variables, multiple integrals, and linear algebra matrices.',
         syllabusPath: 'assets/resources/1st_year/syllabus/Maths-1.pdf',
         pyqYears: ['2026', '2025', '2023', '2020'],
         pyqCount: 6
@@ -12531,7 +12528,6 @@ window.getSubjectDocuments = getSubjectDocuments;
         groupName: 'Group B Foundation',
         credits: 3,
         title: 'Mathematics - II',
-        description: 'Ordinary differential equations, Laplace transform, vector calculus, complex variables and Fourier series.',
         syllabusPath: 'assets/resources/1st_year/syllabus/Maths-2.pdf',
         pyqYears: ['2026', '2025', '2024', '2023'],
         pyqCount: 6
@@ -12543,7 +12539,6 @@ window.getSubjectDocuments = getSubjectDocuments;
         groupName: 'Group A Foundation',
         credits: 4,
         title: 'Basic Electrical & Electronics Engineering',
-        description: 'Direct-current and alternating-current circuits, transformers, rotating machines, semiconductor diodes and transistors.',
         syllabusPath: 'assets/resources/1st_year/syllabus/BEE.pdf',
         pyqYears: ['2026', '2024', '2023', '2020'],
         pyqCount: 4
@@ -12555,7 +12550,6 @@ window.getSubjectDocuments = getSubjectDocuments;
         groupName: 'Group B Foundation',
         credits: 2,
         title: 'English for Communication Skills',
-        description: 'Technical grammar, vocabulary, reading comprehension, report writing, and employability communication.',
         syllabusPath: 'assets/resources/1st_year/syllabus/English.pdf',
         pyqYears: ['2025', '2024', '2023'],
         pyqCount: 3
@@ -12567,7 +12561,6 @@ window.getSubjectDocuments = getSubjectDocuments;
         groupName: 'Group B Foundation',
         credits: 3,
         title: 'Programming for Problem Solving & AI',
-        description: 'Computer fundamentals, computational thinking, C programming, algorithms, functions, arrays, pointers, and AI intro.',
         syllabusPath: 'assets/resources/1st_year/syllabus/PPS.pdf',
         pyqYears: ['2025', '2024', '2023'],
         pyqCount: 3
@@ -12580,66 +12573,54 @@ window.getSubjectDocuments = getSubjectDocuments;
         badge: 'CSE Core Scheme',
         scope: 'Semesters 3 to 8',
         title: 'Computer Science & Engineering (CSE)',
-        description: 'Official consolidated 4-year MAKAUT syllabus covering Data Structures, Algorithms, OS, DBMS, Networks, and departmental electives.',
         syllabusPath: 'CSE(3rd to 8th sem)/CSE20.pdf',
         pyqYears: ['2026', '2025', '2024', '2023', '2020'],
-        archiveTitle: 'Computer Science & Engineering Archives',
-        archiveDesc: 'Consolidated stream repository of verified semester question papers across Semesters 3 to 8 (2020–2026).'
+        archiveTitle: 'Computer Science & Engineering Archives'
       },
       {
         streamCode: 'cse-aiml',
         badge: 'CSE-AIML Scheme',
         scope: 'Semesters 3 to 8',
         title: 'CSE (Artificial Intelligence & Machine Learning)',
-        description: 'Specialized MAKAUT curriculum covering Artificial Intelligence, Machine Learning, Deep Learning, Computer Vision, and Neural Networks.',
         syllabusPath: 'CSE-AIML(3rd to 8th sem)/CSE_AIML_Syllabus_3rd_to_8th.pdf',
         pyqYears: ['2026', '2025', '2024', '2023', '2020'],
-        archiveTitle: 'CSE (AI & Machine Learning) Archives',
-        archiveDesc: 'Consolidated stream archive of official question papers across Artificial Intelligence and Machine Learning tracks.'
+        archiveTitle: 'CSE (AI & Machine Learning) Archives'
       },
       {
         streamCode: 'it',
         badge: 'IT Core Scheme',
         scope: 'Semesters 3 to 8',
         title: 'Information Technology (IT)',
-        description: 'Official curriculum covering Software Engineering, Web Technologies, Database Systems, Computer Networks, and Information Security.',
         syllabusPath: 'IT(3rd to 8th sem)/IT_Syllabus_3rd_to_8th.pdf',
         pyqYears: ['2026', '2025', '2024', '2023', '2020'],
-        archiveTitle: 'Information Technology Archives',
-        archiveDesc: 'Consolidated repository of verified question papers across Software Systems, Web, Cloud, and Networking.'
+        archiveTitle: 'Information Technology Archives'
       },
       {
         streamCode: 'csbs',
         badge: 'CSBS Scheme',
         scope: 'Semesters 3 to 8',
         title: 'Computer Science & Business Systems (CSBS)',
-        description: 'Industry-integrated curriculum combining core computer science with financial management, business analytics, and cognitive systems.',
         syllabusPath: 'docs/CSBS(3rd to 8th sem)/csbs_syllabus.pdf',
         pyqYears: ['2025', '2024', '2023'],
-        archiveTitle: 'CSBS Examination Archives',
-        archiveDesc: 'Consolidated archive of verified examination papers for industry-collaborative computing curriculum.'
+        archiveTitle: 'CSBS Examination Archives'
       },
       {
         streamCode: 'cscs',
         badge: 'CSCS Scheme',
         scope: 'Semesters 3 to 8',
         title: 'Computer Science & Cyber Security (CSCS)',
-        description: 'Curriculum covering applied cryptography, digital forensics, network defense, ethical hacking, and secure system architectures.',
         syllabusPath: 'docs/CSCS(3rd to 8th sem)/cscs_syllabus.pdf',
         pyqYears: ['2025', '2024', '2023'],
-        archiveTitle: 'CSCS Examination Archives',
-        archiveDesc: 'Consolidated archive of verified examination papers covering Cryptography, Network Defense, and Cyber Forensics.'
+        archiveTitle: 'CSCS Examination Archives'
       },
       {
         streamCode: 'csds',
         badge: 'CSDS Scheme',
         scope: 'Semesters 3 to 8',
         title: 'Data Science (CSDS)',
-        description: 'Curriculum covering applied statistical inference, big data architectures, predictive modeling, machine learning, and visualization.',
         syllabusPath: 'docs/CSDS(3rd to 8th sem)/csds_syllabus.pdf',
         pyqYears: ['2025', '2024', '2023'],
-        archiveTitle: 'Data Science Archives',
-        archiveDesc: 'Consolidated archive of verified examination papers covering Big Data, Statistics, and Data Engineering.'
+        archiveTitle: 'Data Science Archives'
       }
     ];
 
@@ -12707,13 +12688,12 @@ window.getSubjectDocuments = getSubjectDocuments;
 
       container.innerHTML = items.map(item => `
         <div class="bento-card subject-card" data-stream="${item.streamCode || 'first-year'}" data-code="${item.code || item.streamCode}">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
             <span class="badge subject-code-badge" style="font-weight: 700;">${item.groupName || item.badge || item.code}</span>
-            <span class="badge credit-badge" style="opacity: 0.85;">${item.credits ? item.credits + ' Credits' : (item.scope || '3rd–8th Sem')}</span>
+            <span class="badge credit-badge" style="opacity: 0.85;">${item.credits ? item.credits + ' Credits' : (item.scope || 'Semesters 3 to 8')}</span>
           </div>
-          <h3 style="font-size: 1.15rem; font-weight: 700; margin: 0 0 0.5rem 0; color: var(--text-main);">${item.title}</h3>
-          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.25rem; line-height: 1.5; flex: 1;">${item.description}</p>
-          <button class="btn btn-outline subject-action-btn" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;" onclick="viewSyllabusItem('${item.code || item.streamCode}', '${item.syllabusPath}', '${item.title}')">
+          <h3 style="font-size: 1.15rem; font-weight: 700; margin: 0 0 1.25rem 0; color: var(--text-main); flex: 1;">${item.title}</h3>
+          <button class="btn btn-outline subject-action-btn" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; margin-top: auto;" onclick="viewSyllabusItem('${item.code || item.streamCode}', '${item.syllabusPath}', '${item.title}')">
             <span>📖</span><span>View Syllabus Blueprint →</span>
           </button>
         </div>
@@ -12724,7 +12704,9 @@ window.getSubjectDocuments = getSubjectDocuments;
       const container = document.getElementById('archives-grid') || document.querySelector('.pyq-grid') || document.getElementById('landing-pyq-grid');
       if (!container) return;
 
-      const yNorm = (yearFilter || 'all').toString().toLowerCase().replace('all-years', 'all');
+      const yNorm = (yearFilter || 'all').toString().toLowerCase().replace('all-years', 'all').trim();
+      const semMatch = yNorm.match(/(?:sem(?:ester)?[-_\s]*(\d))|(?:(\d)(?:st|nd|rd|th)?[-_\s]*sem)/);
+      const semNum = semMatch ? (semMatch[1] || semMatch[2]) : (/^[3-8]$/.test(yNorm) ? yNorm : null);
 
       // 1. First Year Archives (established official division, theory subjects with pyqs.length >= 1)
       const firstYearArchives = LANDING_1ST_YEAR_SUBJECTS.map(sub => ({
@@ -12735,7 +12717,6 @@ window.getSubjectDocuments = getSubjectDocuments;
         badge: sub.groupName,
         subBadge: `${sub.code} • 1st Year`,
         title: `${sub.title} Examination Archives`,
-        description: `Verified examination papers covering ${sub.groupName} official MAKAUT curriculum with question patterns and solutions.`,
         years: sub.pyqYears,
         semesters: ['Sem 1 & 2'],
         activeSems: ['Sem 1 & 2'],
@@ -12743,23 +12724,15 @@ window.getSubjectDocuments = getSubjectDocuments;
       }));
 
       // 2. Stream Consolidated Archives (CSE, AIML, IT, CSBS, CSCS, CSDS)
+      const getOrdinal = n => ({ '3': '3rd', '4': '4th', '5': '5th', '6': '6th', '7': '7th', '8': '8th' }[n] || `${n}th`);
+
       const streamArchives = LANDING_CONSOLIDATED_STREAMS.map(str => {
         let activeSems = [];
-        let subBadgeText = str.scope;
-        let descText = str.archiveDesc;
+        let subBadgeText = str.scope || 'Semesters 3 to 8';
 
-        if (yNorm === '2nd-year' || yNorm === '2nd' || yNorm === 'second-year') {
-          activeSems = ['Sem 3', 'Sem 4'];
-          subBadgeText = '2nd Year (Sem 3–4)';
-          descText = `Official examination papers covering 2nd Year Semesters 3 & 4 core engineering subjects and algorithms.`;
-        } else if (yNorm === '3rd-year' || yNorm === '3rd' || yNorm === 'third-year') {
-          activeSems = ['Sem 5', 'Sem 6'];
-          subBadgeText = '3rd Year (Sem 5–6)';
-          descText = `Official examination papers covering 3rd Year Semesters 5 & 6 advanced departmental specializations and labs.`;
-        } else if (yNorm === '4th-year' || yNorm === '4th' || yNorm === 'fourth-year') {
-          activeSems = ['Sem 7', 'Sem 8'];
-          subBadgeText = '4th Year (Sem 7–8)';
-          descText = `Official examination papers covering 4th Year Semesters 7 & 8 capstone subjects, industry tracks, and electives.`;
+        if (semNum) {
+          activeSems = [`Sem ${semNum}`];
+          subBadgeText = `${getOrdinal(semNum)} Semester Archive`;
         }
 
         return {
@@ -12769,20 +12742,17 @@ window.getSubjectDocuments = getSubjectDocuments;
           badge: str.badge,
           subBadge: subBadgeText,
           title: str.archiveTitle,
-          description: descText,
           years: str.pyqYears,
-          semesters: ['Sem 3', 'Sem 4', 'Sem 5', 'Sem 6', 'Sem 7', 'Sem 8'],
+          semesters: semNum ? [`Sem ${semNum}`] : ['Sem 3', 'Sem 4', 'Sem 5', 'Sem 6', 'Sem 7', 'Sem 8'],
           activeSems: activeSems,
-          action: `onclick="openStreamArchiveView('${str.streamCode}')"`
+          action: `onclick="openStreamArchiveView('${str.streamCode}'${semNum ? `, ${semNum}` : ''})"`
         };
       });
 
       let allEntries = [];
-      if (yNorm === '1st-year' || yNorm === '1st' || yNorm === 'first-year') {
+      if (yNorm === '1st-year' || yNorm === '1st' || yNorm === 'first-year' || yNorm === '1') {
         allEntries = firstYearArchives;
-      } else if (yNorm === '2nd-year' || yNorm === '2nd' || yNorm === 'second-year' ||
-                 yNorm === '3rd-year' || yNorm === '3rd' || yNorm === 'third-year' ||
-                 yNorm === '4th-year' || yNorm === '4th' || yNorm === 'fourth-year') {
+      } else if (semNum) {
         allEntries = streamArchives;
       } else if (yNorm.startsWith('202')) {
         allEntries = [...firstYearArchives, ...streamArchives].filter(entry => entry.years && entry.years.includes(yNorm));
@@ -12798,13 +12768,12 @@ window.getSubjectDocuments = getSubjectDocuments;
 
       container.innerHTML = allEntries.map(entry => `
         <div class="bento-card pyq-card">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
             <span class="badge exam-year-badge">${entry.badge}</span>
             <span class="badge course-code-badge">${entry.subBadge}</span>
           </div>
-          <h4 style="font-size: 1.15rem; font-weight: 700; margin: 0 0 0.5rem 0; color: var(--text-main);">${entry.title}</h4>
-          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.85rem; line-height: 1.5; flex: 1;">${entry.description}</p>
-          <div class="pyq-semesters-row" style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1.15rem;">
+          <h4 style="font-size: 1.15rem; font-weight: 700; margin: 0 0 1rem 0; color: var(--text-main); flex: 1;">${entry.title}</h4>
+          <div class="pyq-semesters-row" style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1.25rem;">
             ${(entry.semesters || []).map(s => {
               const isHighlighted = entry.activeSems && entry.activeSems.includes(s);
               return `<span class="badge sem-tag-pill ${isHighlighted ? 'active-sem' : ''}">${s}</span>`;
@@ -12903,7 +12872,7 @@ window.getSubjectDocuments = getSubjectDocuments;
     function initLandingPage() {
         showLandingView();
         renderLandingCurriculumCards('all');
-        renderLandingPyqCatalog('all-years');
+        renderLandingPyqCatalog('all');
         bindLandingFilterButtons();
     }
 
@@ -12912,7 +12881,7 @@ window.getSubjectDocuments = getSubjectDocuments;
         if (hash.includes('landing') || hash === '#' || hash === '') {
             setAppWorkflowStage(APP_FLOW.LANDING);
             renderLandingCurriculumCards('all');
-            renderLandingPyqCatalog('all-years');
+            renderLandingPyqCatalog('all');
             bindLandingFilterButtons();
             if (hash && hash.startsWith('#landing-')) {
                 const target = document.querySelector(hash);
