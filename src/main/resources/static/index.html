@@ -8,9 +8,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20261011_v2">
+    <link rel="stylesheet" href="styles.css?v=20261011_v3">
     <style>
-      /* Critical Light Mode Archive Action Button Tokens */
+      /* Critical Light Mode Archive Action Button Tokens (Parity with View Syllabus Blueprint) */
       .archive-btn-container { display: flex !important; width: 100% !important; margin-top: auto !important; }
       #landing-pyqs .btn-preview-paper,
       #archives-grid .btn-preview-paper,
@@ -24,8 +24,8 @@
         padding: 0.625rem 1rem !important; /* py-2.5 px-4 */
         border-radius: 0.75rem !important; /* rounded-xl */
         font-family: inherit !important;
-        font-size: 0.925rem !important;
-        font-weight: 600 !important;
+        font-size: 0.875rem !important; /* text-sm */
+        font-weight: 500 !important; /* font-medium */
         line-height: 1.25 !important;
         white-space: nowrap !important;
         text-decoration: none !important;
@@ -38,30 +38,86 @@
       .light #landing-pyqs .btn-preview-paper,
       html.light #landing-pyqs .btn-preview-paper,
       html:not(.dark) #landing-pyqs .btn-preview-paper,
+      :root.light-theme #archives-grid .btn-preview-paper,
+      [data-theme="light"] #archives-grid .btn-preview-paper,
+      .light-theme #archives-grid .btn-preview-paper,
+      .light #archives-grid .btn-preview-paper,
+      html.light #archives-grid .btn-preview-paper,
+      html:not(.dark) #archives-grid .btn-preview-paper,
+      :root.light-theme .pyq-card .btn-primary,
+      [data-theme="light"] .pyq-card .btn-primary,
+      .light-theme .pyq-card .btn-primary,
+      .light .pyq-card .btn-primary,
+      html.light .pyq-card .btn-primary,
+      html:not(.dark) .pyq-card .btn-primary,
       :root.light-theme .archive-access-btn,
       [data-theme="light"] .archive-access-btn,
       .light-theme .archive-access-btn,
       .light .archive-access-btn,
       html.light .archive-access-btn,
-      html:not(.dark) .archive-access-btn {
-        background: #4f46e5 !important; /* solid bg-indigo-600 */
-        color: #ffffff !important; /* text-white */
-        border: 1px solid #4338ca !important;
-        border-radius: 0.75rem !important;
-        padding: 0.625rem 1rem !important;
-        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.06) !important;
+      html:not(.dark) .archive-access-btn,
+      :root.light-theme .btn-preview-paper,
+      [data-theme="light"] .btn-preview-paper,
+      .light-theme .btn-preview-paper,
+      .light .btn-preview-paper,
+      html.light .btn-preview-paper,
+      html:not(.dark) .btn-preview-paper,
+      :root.light-theme .btn-preview-pdf,
+      [data-theme="light"] .btn-preview-pdf,
+      .light-theme .btn-preview-pdf,
+      .light .btn-preview-pdf,
+      html.light .btn-preview-pdf,
+      html:not(.dark) .btn-preview-pdf {
+        background: #f8fafc !important; /* transparent / ultra-light */
+        color: #1e293b !important; /* dark slate/gray, not white */
+        border: 1px solid #cbd5e1 !important; /* subtle, clean border */
+        border-radius: 0.75rem !important; /* rounded-xl */
+        padding: 0.625rem 1rem !important; /* py-2.5 px-4 */
+        font-size: 0.875rem !important; /* text-sm */
+        font-weight: 500 !important; /* font-medium */
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
         transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1) !important;
       }
       :root.light-theme #landing-pyqs .btn-preview-paper:hover,
       [data-theme="light"] #landing-pyqs .btn-preview-paper:hover,
+      .light-theme #landing-pyqs .btn-preview-paper:hover,
+      .light #landing-pyqs .btn-preview-paper:hover,
+      html.light #landing-pyqs .btn-preview-paper:hover,
       html:not(.dark) #landing-pyqs .btn-preview-paper:hover,
+      :root.light-theme #archives-grid .btn-preview-paper:hover,
+      [data-theme="light"] #archives-grid .btn-preview-paper:hover,
+      .light-theme #archives-grid .btn-preview-paper:hover,
+      .light #archives-grid .btn-preview-paper:hover,
+      html.light #archives-grid .btn-preview-paper:hover,
+      html:not(.dark) #archives-grid .btn-preview-paper:hover,
+      :root.light-theme .pyq-card .btn-primary:hover,
+      [data-theme="light"] .pyq-card .btn-primary:hover,
+      .light-theme .pyq-card .btn-primary:hover,
+      .light .pyq-card .btn-primary:hover,
+      html.light .pyq-card .btn-primary:hover,
+      html:not(.dark) .pyq-card .btn-primary:hover,
       :root.light-theme .archive-access-btn:hover,
       [data-theme="light"] .archive-access-btn:hover,
-      html:not(.dark) .archive-access-btn:hover {
-        background: #4338ca !important; /* hover:bg-indigo-700 */
-        border-color: #3730a3 !important;
-        color: #ffffff !important;
-        box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2), 0 2px 4px -2px rgba(79, 70, 229, 0.15) !important;
+      .light-theme .archive-access-btn:hover,
+      .light .archive-access-btn:hover,
+      html.light .archive-access-btn:hover,
+      html:not(.dark) .archive-access-btn:hover,
+      :root.light-theme .btn-preview-paper:hover,
+      [data-theme="light"] .btn-preview-paper:hover,
+      .light-theme .btn-preview-paper:hover,
+      .light .btn-preview-paper:hover,
+      html.light .btn-preview-paper:hover,
+      html:not(.dark) .btn-preview-paper:hover,
+      :root.light-theme .btn-preview-pdf:hover,
+      [data-theme="light"] .btn-preview-pdf:hover,
+      .light-theme .btn-preview-pdf:hover,
+      .light .btn-preview-pdf:hover,
+      html.light .btn-preview-pdf:hover,
+      html:not(.dark) .btn-preview-pdf:hover {
+        background: #f1f5f9 !important; /* hover:bg-slate-100 */
+        border-color: #94a3b8 !important; /* hover:border-slate-300 */
+        color: #0f172a !important; /* text-slate-900 */
+        box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.08) !important;
         transform: translateY(-1px) !important;
       }
       :root.light-theme #landing-pyqs .btn-preview-paper:active,
@@ -70,8 +126,37 @@
       :root.light-theme .archive-access-btn:active,
       [data-theme="light"] .archive-access-btn:active,
       html:not(.dark) .archive-access-btn:active {
-        background: #3730a3 !important;
-        transform: scale(0.99) !important; /* active:scale-[0.99] */
+        background: #e2e8f0 !important;
+        transform: scale(0.99) !important;
+      }
+      /* Dark mode preservation */
+      html.dark #landing-pyqs .btn-preview-paper,
+      [data-theme="dark"] #landing-pyqs .btn-preview-paper,
+      html.dark .archive-access-btn,
+      [data-theme="dark"] .archive-access-btn,
+      html.dark .pyq-card .btn-primary,
+      [data-theme="dark"] .pyq-card .btn-primary {
+        background: #4f46e5 !important;
+        color: #ffffff !important;
+        border: 1px solid transparent !important;
+      }
+      html.dark #landing-pyqs .btn-preview-paper:hover,
+      [data-theme="dark"] #landing-pyqs .btn-preview-paper:hover,
+      html.dark .archive-access-btn:hover,
+      [data-theme="dark"] .archive-access-btn:hover,
+      html.dark .pyq-card .btn-primary:hover,
+      [data-theme="dark"] .pyq-card .btn-primary:hover {
+        background: #4338ca !important;
+        color: #ffffff !important;
+        border: 1px solid transparent !important;
+      }
+      /* Modal options layout stability: prevent bursting scale transforms */
+      #academic-setup-modal .academic-option,
+      #academic-setup-modal .stream-option,
+      #academic-setup-modal .sem-btn,
+      #academic-setup-modal .primary-year-btn,
+      #academic-setup-modal .academic-stage-card {
+        transform: none !important;
       }
     </style>
     <!-- Immediate theme application script to eliminate theme flash -->
@@ -586,11 +671,35 @@
                     <div class="form-group">
                         <label class="form-label">Department / Engineering Stream</label>
                         <div class="stream-select-grid" id="stream-picker-grid">
-                            <!-- Stream selection restricted strictly to CSE -->
                             <button type="button" class="stream-option stream-card stream-pill academic-option active selected" data-stream="CSE">
                                 <span class="stream-icon">💻</span>
                                 <span class="stream-name">Computer Science & Engineering (CSE)</span>
                                 <span class="stream-desc">Official MAKAUT 4-Year B.Tech Curriculum</span>
+                            </button>
+                            <button type="button" class="stream-option stream-card stream-pill academic-option" data-stream="CSE-AIML">
+                                <span class="stream-icon">🤖</span>
+                                <span class="stream-name">CSE (Artificial Intelligence & Machine Learning)</span>
+                                <span class="stream-desc">Specialized AI & Machine Learning Track</span>
+                            </button>
+                            <button type="button" class="stream-option stream-card stream-pill academic-option" data-stream="IT">
+                                <span class="stream-icon">🌐</span>
+                                <span class="stream-name">Information Technology (IT)</span>
+                                <span class="stream-desc">Enterprise Systems & Web Engineering</span>
+                            </button>
+                            <button type="button" class="stream-option stream-card stream-pill academic-option" data-stream="CSCS">
+                                <span class="stream-icon">🛡️</span>
+                                <span class="stream-name">Computer Science & Cyber Security (CSCS)</span>
+                                <span class="stream-desc">Cyber Defense & Security Architecture</span>
+                            </button>
+                            <button type="button" class="stream-option stream-card stream-pill academic-option" data-stream="CSBS">
+                                <span class="stream-icon">📊</span>
+                                <span class="stream-name">Computer Science & Business Systems (CSBS)</span>
+                                <span class="stream-desc">Business Systems & Computing Analytics</span>
+                            </button>
+                            <button type="button" class="stream-option stream-card stream-pill academic-option" data-stream="CSDS">
+                                <span class="stream-icon">🔬</span>
+                                <span class="stream-name">Computer Science and Data Science</span>
+                                <span class="stream-desc">Data Engineering & Applied Intelligence</span>
                             </button>
                         </div>
                     </div>
@@ -831,6 +940,6 @@
     </button>
 
     <!-- Application Script -->
-    <script src="app.js?v=20261011_v2"></script>
+    <script src="app.js?v=20261011_v3"></script>
 </body>
 </html>

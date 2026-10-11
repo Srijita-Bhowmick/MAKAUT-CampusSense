@@ -593,7 +593,7 @@ body:not(.modal-open) {
   border: 2px solid #6366f1 !important;
   background: rgba(99, 102, 241, 0.2) !important;
   box-shadow: 0 0 16px rgba(99, 102, 241, 0.4) !important;
-  transform: scale(1.04);
+  transform: none !important;
 }
 
 .academic-option.selected, .academic-option.active,
@@ -606,7 +606,7 @@ body:not(.modal-open) {
 .academic-stage-card.selected, .academic-stage-card.active,
 .stream-card.selected, .stream-card.active,
 .semester-btn.selected, .semester-btn.active {
-  transform: scale(1.07) !important;
+  transform: none !important;
   border-color: #6366f1 !important;
   background: rgba(99, 102, 241, 0.25) !important;
   box-shadow: 0 0 16px rgba(99, 102, 241, 0.5) !important;
@@ -636,8 +636,28 @@ body:not(.modal-open) {
 [data-theme="light"] .semester-btn.active {
   background: #e0e7ff !important;
   border-color: #4f46e5 !important;
+  border-width: 2px !important;
+  border-style: solid !important;
   color: #1e1b4b !important;
   box-shadow: 0 0 14px rgba(79, 70, 229, 0.3) !important;
+  transform: none !important;
+}
+
+/* Inactive stage and option cards neutral borders */
+[data-theme="light"] .academic-stage-card:not(.selected):not(.active),
+[data-theme="light"] .primary-year-btn:not(.selected):not(.active) {
+  border: 1px solid #cbd5e1 !important;
+  background: #f8fafc !important;
+  color: #1e293b !important;
+  box-shadow: none !important;
+}
+
+[data-theme="dark"] .academic-stage-card:not(.selected):not(.active),
+[data-theme="dark"] .primary-year-btn:not(.selected):not(.active) {
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: var(--text-main) !important;
+  box-shadow: none !important;
 }
 
 /* Ensure the cards themselves are clickable and display pointer cursor */
@@ -5867,7 +5887,7 @@ html.light #landing-pyqs .landing-section-pretitle {
 .semester-btn:active,
 .sem-btn:active,
 .primary-year-btn:active {
-  transform: scale(1.07) !important;
+  transform: none !important;
   border-color: var(--accent-primary) !important;
   background: rgba(99, 102, 241, 0.25) !important;
   box-shadow: 0 0 16px rgba(99, 102, 241, 0.5) !important;
@@ -6339,52 +6359,93 @@ html.light .subject-card:hover {
 [data-theme="light"] .subject-card .btn-outline,
 .light-theme .subject-card .btn-outline,
 .light .subject-card .btn-outline,
+html.light .subject-card .btn-outline,
+html:not(.dark) .subject-card .btn-outline,
 :root.light-theme .subject-action-btn,
 [data-theme="light"] .subject-action-btn,
 .light-theme .subject-action-btn,
-.light .subject-action-btn {
+.light .subject-action-btn,
+html.light .subject-action-btn,
+html:not(.dark) .subject-action-btn {
   background: #f8fafc !important;
-  color: #0f172a !important;
+  color: #1e293b !important;
   border: 1px solid #cbd5e1 !important;
-  font-weight: 600 !important;
+  border-radius: 0.75rem !important;
+  padding: 0.625rem 1rem !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
 }
 :root.light-theme .subject-card .btn-outline:hover,
 [data-theme="light"] .subject-card .btn-outline:hover,
 .light-theme .subject-card .btn-outline:hover,
 .light .subject-card .btn-outline:hover,
+html.light .subject-card .btn-outline:hover,
+html:not(.dark) .subject-card .btn-outline:hover,
 :root.light-theme .subject-action-btn:hover,
 [data-theme="light"] .subject-action-btn:hover,
 .light-theme .subject-action-btn:hover,
-.light .subject-action-btn:hover {
-  background: #4f46e5 !important;
-  color: #ffffff !important;
-  border-color: #4f46e5 !important;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25) !important;
+.light .subject-action-btn:hover,
+html.light .subject-action-btn:hover,
+html:not(.dark) .subject-action-btn:hover {
+  background: #f1f5f9 !important;
+  border-color: #94a3b8 !important;
+  color: #0f172a !important;
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.08) !important;
   transform: translateY(-1px);
 }
 
-/* 6. PYQ Preview Buttons */
+/* 6. PYQ Preview & Archive Action Buttons (Full Parity with Blueprint Buttons) */
 :root.light-theme .pyq-card .btn-primary,
 [data-theme="light"] .pyq-card .btn-primary,
 .light-theme .pyq-card .btn-primary,
 .light .pyq-card .btn-primary,
 html.light .pyq-card .btn-primary,
+html:not(.dark) .pyq-card .btn-primary,
+:root.light-theme #landing-pyqs .btn-preview-paper,
+[data-theme="light"] #landing-pyqs .btn-preview-paper,
+.light-theme #landing-pyqs .btn-preview-paper,
+.light #landing-pyqs .btn-preview-paper,
+html.light #landing-pyqs .btn-preview-paper,
+html:not(.dark) #landing-pyqs .btn-preview-paper,
+:root.light-theme #archives-grid .btn-preview-paper,
+[data-theme="light"] #archives-grid .btn-preview-paper,
+.light-theme #archives-grid .btn-preview-paper,
+.light #archives-grid .btn-preview-paper,
+html.light #archives-grid .btn-preview-paper,
+html:not(.dark) #archives-grid .btn-preview-paper,
+:root.light-theme .pyq-card .btn-preview-paper,
+[data-theme="light"] .pyq-card .btn-preview-paper,
+.light-theme .pyq-card .btn-preview-paper,
+.light .pyq-card .btn-preview-paper,
+html.light .pyq-card .btn-preview-paper,
+html:not(.dark) .pyq-card .btn-preview-paper,
+:root.light-theme .archive-access-btn,
+[data-theme="light"] .archive-access-btn,
+.light-theme .archive-access-btn,
+.light .archive-access-btn,
+html.light .archive-access-btn,
+html:not(.dark) .archive-access-btn,
 :root.light-theme .btn-preview-paper,
 [data-theme="light"] .btn-preview-paper,
 .light-theme .btn-preview-paper,
 .light .btn-preview-paper,
 html.light .btn-preview-paper,
+html:not(.dark) .btn-preview-paper,
 :root.light-theme .btn-preview-pdf,
 [data-theme="light"] .btn-preview-pdf,
 .light-theme .btn-preview-pdf,
-.light .btn-preview-pdf {
-  background: #4f46e5 !important;
-  color: #ffffff !important;
-  border: 1px solid #4338ca !important;
+.light .btn-preview-pdf,
+html.light .btn-preview-pdf,
+html:not(.dark) .btn-preview-pdf {
+  background: #f8fafc !important;
+  color: #1e293b !important;
+  border: 1px solid #cbd5e1 !important;
   border-radius: 0.75rem !important; /* rounded-xl */
   padding: 0.625rem 1rem !important; /* py-2.5 px-4 */
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.06) !important;
-  font-weight: 600 !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -6396,19 +6457,47 @@ html.light .btn-preview-paper,
 .light-theme .pyq-card .btn-primary:hover,
 .light .pyq-card .btn-primary:hover,
 html.light .pyq-card .btn-primary:hover,
+html:not(.dark) .pyq-card .btn-primary:hover,
+:root.light-theme #landing-pyqs .btn-preview-paper:hover,
+[data-theme="light"] #landing-pyqs .btn-preview-paper:hover,
+.light-theme #landing-pyqs .btn-preview-paper:hover,
+.light #landing-pyqs .btn-preview-paper:hover,
+html.light #landing-pyqs .btn-preview-paper:hover,
+html:not(.dark) #landing-pyqs .btn-preview-paper:hover,
+:root.light-theme #archives-grid .btn-preview-paper:hover,
+[data-theme="light"] #archives-grid .btn-preview-paper:hover,
+.light-theme #archives-grid .btn-preview-paper:hover,
+.light #archives-grid .btn-preview-paper:hover,
+html.light #archives-grid .btn-preview-paper:hover,
+html:not(.dark) #archives-grid .btn-preview-paper:hover,
+:root.light-theme .pyq-card .btn-preview-paper:hover,
+[data-theme="light"] .pyq-card .btn-preview-paper:hover,
+.light-theme .pyq-card .btn-preview-paper:hover,
+.light .pyq-card .btn-preview-paper:hover,
+html.light .pyq-card .btn-preview-paper:hover,
+html:not(.dark) .pyq-card .btn-preview-paper:hover,
+:root.light-theme .archive-access-btn:hover,
+[data-theme="light"] .archive-access-btn:hover,
+.light-theme .archive-access-btn:hover,
+.light .archive-access-btn:hover,
+html.light .archive-access-btn:hover,
+html:not(.dark) .archive-access-btn:hover,
 :root.light-theme .btn-preview-paper:hover,
 [data-theme="light"] .btn-preview-paper:hover,
 .light-theme .btn-preview-paper:hover,
 .light .btn-preview-paper:hover,
 html.light .btn-preview-paper:hover,
+html:not(.dark) .btn-preview-paper:hover,
 :root.light-theme .btn-preview-pdf:hover,
 [data-theme="light"] .btn-preview-pdf:hover,
 .light-theme .btn-preview-pdf:hover,
-.light .btn-preview-pdf:hover {
-  background: #4338ca !important;
-  color: #ffffff !important;
-  border-color: #3730a3 !important;
-  box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2), 0 2px 4px -2px rgba(79, 70, 229, 0.15) !important;
+.light .btn-preview-pdf:hover,
+html.light .btn-preview-pdf:hover,
+html:not(.dark) .btn-preview-pdf:hover {
+  background: #f1f5f9 !important;
+  border-color: #94a3b8 !important;
+  color: #0f172a !important;
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.08) !important;
   transform: translateY(-1px) !important;
 }
 :root.light-theme .pyq-card .btn-primary:active,
@@ -6416,12 +6505,20 @@ html.light .btn-preview-paper:hover,
 .light-theme .pyq-card .btn-primary:active,
 .light .pyq-card .btn-primary:active,
 html.light .pyq-card .btn-primary:active,
+html:not(.dark) .pyq-card .btn-primary:active,
 :root.light-theme .btn-preview-paper:active,
 [data-theme="light"] .btn-preview-paper:active,
 .light-theme .btn-preview-paper:active,
 .light .btn-preview-paper:active,
-html.light .btn-preview-paper:active {
-  background: #3730a3 !important;
+html.light .btn-preview-paper:active,
+html:not(.dark) .btn-preview-paper:active,
+:root.light-theme .archive-access-btn:active,
+[data-theme="light"] .archive-access-btn:active,
+.light-theme .archive-access-btn:active,
+.light .archive-access-btn:active,
+html.light .archive-access-btn:active,
+html:not(.dark) .archive-access-btn:active {
+  background: #e2e8f0 !important;
   transform: scale(0.99) !important;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
 }
