@@ -6256,8 +6256,6 @@ html.light .feature-card-cta.cyan:hover {
   box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25) !important;
   transform: translateY(-2px) !important;
 }
-  transform: translateY(-2px);
-}
 
 /* 5. Curriculum and Syllabus Blueprint Subject Cards/Buttons */
 :root.light-theme #curriculum-grid .subject-card,
@@ -6422,6 +6420,64 @@ html.light .pyq-card {
   color: #0f172a !important;
   font-weight: 700 !important;
 }
+:root.light-theme .pyq-card p,
+[data-theme="light"] .pyq-card p,
+.light-theme .pyq-card p,
+.light .pyq-card p {
+  color: #475569 !important;
+}
+:root.light-theme .pyq-card .badge,
+[data-theme="light"] .pyq-card .badge,
+.light-theme .pyq-card .badge,
+.light .pyq-card .badge {
+  background: #f1f5f9 !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #1e293b !important;
+  font-weight: 600 !important;
+}
+:root.light-theme .pyq-card .badge.exam-year-badge,
+[data-theme="light"] .pyq-card .badge.exam-year-badge,
+.light-theme .pyq-card .badge.exam-year-badge,
+.light .pyq-card .badge.exam-year-badge {
+  background: #e0f2fe !important;
+  border: 1px solid #bae6fd !important;
+  color: #0284c7 !important;
+  font-weight: 700 !important;
+}
+:root.light-theme .pyq-card .badge.sem-tag-pill,
+[data-theme="light"] .pyq-card .badge.sem-tag-pill,
+.light-theme .pyq-card .badge.sem-tag-pill,
+.light .pyq-card .badge.sem-tag-pill {
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #334155 !important;
+  font-weight: 600 !important;
+}
+:root.light-theme .pyq-card .badge.sem-tag-pill.active-sem,
+[data-theme="light"] .pyq-card .badge.sem-tag-pill.active-sem,
+.light-theme .pyq-card .badge.sem-tag-pill.active-sem,
+.light .pyq-card .badge.sem-tag-pill.active-sem {
+  background: #e0e7ff !important;
+  border-color: #c7d2fe !important;
+  color: #3730a3 !important;
+  font-weight: 700 !important;
+}
+.pyq-card .sem-tag-pill {
+  font-size: 0.74rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  background: rgba(99, 102, 241, 0.1);
+  color: #a5b4fc;
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  font-weight: 600;
+}
+.pyq-card .sem-tag-pill.active-sem {
+  background: rgba(99, 102, 241, 0.28);
+  color: #e0e7ff;
+  border-color: #818cf8;
+  font-weight: 700;
+}
+
 :root.light-theme .pyq-card .btn-outline,
 [data-theme="light"] .pyq-card .btn-outline,
 .light-theme .pyq-card .btn-outline,

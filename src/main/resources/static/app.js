@@ -12726,39 +12726,73 @@ window.getSubjectDocuments = getSubjectDocuments;
 
       const yNorm = (yearFilter || 'all').toString().toLowerCase().replace('all-years', 'all');
 
-      // 1. First Year Archives (established division)
+      // 1. First Year Archives (established official division, theory subjects with pyqs.length >= 1)
       const firstYearArchives = LANDING_1ST_YEAR_SUBJECTS.map(sub => ({
         type: 'first-year',
         code: sub.code,
         streamCode: 'first-year',
+        stage: '1st-year',
         badge: sub.groupName,
-        subBadge: sub.code,
+        subBadge: `${sub.code} • 1st Year`,
         title: `${sub.title} Examination Archives`,
         description: `Verified examination papers covering ${sub.groupName} official MAKAUT curriculum with question patterns and solutions.`,
         years: sub.pyqYears,
+        semesters: ['Sem 1 & 2'],
+        activeSems: ['Sem 1 & 2'],
         action: `onclick="openSubjectHubByCode('${sub.code}', 'pyqs')"`
       }));
 
-      // 2. Stream Consolidated Archives
-      const streamArchives = LANDING_CONSOLIDATED_STREAMS.map(str => ({
-        type: 'stream',
-        streamCode: str.streamCode,
-        badge: str.badge,
-        subBadge: str.scope,
-        title: str.archiveTitle,
-        description: str.archiveDesc,
-        years: str.pyqYears,
-        action: `onclick="openStreamArchiveView('${str.streamCode}')"`
-      }));
+      // 2. Stream Consolidated Archives (CSE, AIML, IT, CSBS, CSCS, CSDS)
+      const streamArchives = LANDING_CONSOLIDATED_STREAMS.map(str => {
+        let activeSems = [];
+        let subBadgeText = str.scope;
+        let descText = str.archiveDesc;
 
-      let allEntries = [...firstYearArchives, ...streamArchives];
+        if (yNorm === '2nd-year' || yNorm === '2nd' || yNorm === 'second-year') {
+          activeSems = ['Sem 3', 'Sem 4'];
+          subBadgeText = '2nd Year (Sem 3–4)';
+          descText = `Official examination papers covering 2nd Year Semesters 3 & 4 core engineering subjects and algorithms.`;
+        } else if (yNorm === '3rd-year' || yNorm === '3rd' || yNorm === 'third-year') {
+          activeSems = ['Sem 5', 'Sem 6'];
+          subBadgeText = '3rd Year (Sem 5–6)';
+          descText = `Official examination papers covering 3rd Year Semesters 5 & 6 advanced departmental specializations and labs.`;
+        } else if (yNorm === '4th-year' || yNorm === '4th' || yNorm === 'fourth-year') {
+          activeSems = ['Sem 7', 'Sem 8'];
+          subBadgeText = '4th Year (Sem 7–8)';
+          descText = `Official examination papers covering 4th Year Semesters 7 & 8 capstone subjects, industry tracks, and electives.`;
+        }
 
-      if (yNorm !== 'all') {
-        allEntries = allEntries.filter(entry => entry.years && entry.years.includes(yNorm));
+        return {
+          type: 'stream',
+          streamCode: str.streamCode,
+          stage: 'departmental',
+          badge: str.badge,
+          subBadge: subBadgeText,
+          title: str.archiveTitle,
+          description: descText,
+          years: str.pyqYears,
+          semesters: ['Sem 3', 'Sem 4', 'Sem 5', 'Sem 6', 'Sem 7', 'Sem 8'],
+          activeSems: activeSems,
+          action: `onclick="openStreamArchiveView('${str.streamCode}')"`
+        };
+      });
+
+      let allEntries = [];
+      if (yNorm === '1st-year' || yNorm === '1st' || yNorm === 'first-year') {
+        allEntries = firstYearArchives;
+      } else if (yNorm === '2nd-year' || yNorm === '2nd' || yNorm === 'second-year' ||
+                 yNorm === '3rd-year' || yNorm === '3rd' || yNorm === 'third-year' ||
+                 yNorm === '4th-year' || yNorm === '4th' || yNorm === 'fourth-year') {
+        allEntries = streamArchives;
+      } else if (yNorm.startsWith('202')) {
+        allEntries = [...firstYearArchives, ...streamArchives].filter(entry => entry.years && entry.years.includes(yNorm));
+      } else {
+        // Default 'all'
+        allEntries = [...firstYearArchives, ...streamArchives];
       }
 
       if (allEntries.length === 0) {
-        container.innerHTML = `<div class="empty-state" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-secondary);">No verified archives found for year ${yearFilter}.</div>`;
+        container.innerHTML = `<div class="empty-state" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-secondary);">No verified archives found for selection: ${yearFilter}.</div>`;
         return;
       }
 
@@ -12769,9 +12803,15 @@ window.getSubjectDocuments = getSubjectDocuments;
             <span class="badge course-code-badge">${entry.subBadge}</span>
           </div>
           <h4 style="font-size: 1.15rem; font-weight: 700; margin: 0 0 0.5rem 0; color: var(--text-main);">${entry.title}</h4>
-          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.25rem; line-height: 1.5; flex: 1;">${entry.description}</p>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.85rem; line-height: 1.5; flex: 1;">${entry.description}</p>
+          <div class="pyq-semesters-row" style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1.15rem;">
+            ${(entry.semesters || []).map(s => {
+              const isHighlighted = entry.activeSems && entry.activeSems.includes(s);
+              return `<span class="badge sem-tag-pill ${isHighlighted ? 'active-sem' : ''}">${s}</span>`;
+            }).join('')}
+          </div>
           <div style="display: flex; gap: 0.5rem; margin-top: auto;">
-            <button class="btn btn-primary btn-preview-paper" style="flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;" ${entry.action}>
+            <button class="btn btn-primary btn-preview-paper" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;" ${entry.action}>
               <span>📄</span><span>Access Exam Archives →</span>
             </button>
           </div>
@@ -12787,14 +12827,20 @@ window.getSubjectDocuments = getSubjectDocuments;
       }
     };
 
-    window.openStreamArchiveView = function(streamCode) {
+    window.openStreamArchiveView = function(streamCode, targetSem = null) {
       if (typeof requireAuthOrTrigger === 'function' && !requireAuthOrTrigger()) return;
       const sKey = (streamCode || 'CSE').toUpperCase();
       const stream = (window.DEPARTMENT_STREAMS && (window.DEPARTMENT_STREAMS[sKey] || window.DEPARTMENT_STREAMS[streamCode])) || null;
       const courses = (stream && stream.courses) || [];
-      const firstCourse = courses.find(c => isQualifiedTheorySubject(c)) || courses[0];
-      if (firstCourse && firstCourse.code && typeof window.openSubjectHubByCode === 'function') {
-        window.openSubjectHubByCode(firstCourse.code, 'pyqs');
+      let candidate = null;
+      if (targetSem) {
+        candidate = courses.find(c => isQualifiedTheorySubject(c) && String(c.semester) === String(targetSem));
+      }
+      if (!candidate) {
+        candidate = courses.find(c => isQualifiedTheorySubject(c)) || courses[0];
+      }
+      if (candidate && candidate.code && typeof window.openSubjectHubByCode === 'function') {
+        window.openSubjectHubByCode(candidate.code, 'pyqs');
       } else if (typeof window.openSubjectHubByCode === 'function') {
         window.openSubjectHubByCode('26-BS-PH101', 'pyqs');
       }
