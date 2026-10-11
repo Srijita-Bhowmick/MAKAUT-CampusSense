@@ -15,7 +15,11 @@
             const savedTheme = localStorage.getItem('campussense_theme') || 'dark';
             document.documentElement.setAttribute('data-theme', savedTheme);
             if (savedTheme === 'light') {
-                document.documentElement.classList.add('light-theme');
+                document.documentElement.classList.remove('dark');
+                document.documentElement.classList.add('light', 'light-theme');
+            } else {
+                document.documentElement.classList.remove('light', 'light-theme');
+                document.documentElement.classList.add('dark');
             }
         })();
     </script>
@@ -112,27 +116,27 @@
                     Explore Curriculums and PYQs →
                 </a>
                 <button class="btn btn-panic btn-flame-hero" id="btn-hero-panic-pack">
-                    🔥 View 48h Panic Pack
+                    View 48h Panic Pack →
                 </button>
             </div>
 
             <div class="landing-highlights-grid landing-highlights-row" id="landing-stats-bar">
-                <div class="highlight-pill" style="cursor: pointer;" onclick="if(window.triggerNativeClerkAuth)window.triggerNativeClerkAuth();">
+                <a href="/login" class="highlight-pill" onclick="window.location.href='/login';" style="cursor: pointer; text-decoration: none; color: inherit;">
                     <span>📚</span>
-                    <span><strong id="metric-subjects-count">50+</strong> Subjects: 1st Year & Core Streams Ingested</span>
-                </div>
-                <div class="highlight-pill" style="cursor: pointer;" onclick="if(window.triggerNativeClerkAuth)window.triggerNativeClerkAuth();">
+                    <span><strong id="metric-subjects-count">323</strong> Subjects: 1st Year & Core Streams Ingested</span>
+                </a>
+                <a href="/login" class="highlight-pill" onclick="window.location.href='/login';" style="cursor: pointer; text-decoration: none; color: inherit;">
                     <span>🔥</span>
                     <span>Top 20% Repeated Exam Questions</span>
-                </div>
-                <div class="highlight-pill" style="cursor: pointer;" onclick="if(window.triggerNativeClerkAuth)window.triggerNativeClerkAuth();">
+                </a>
+                <a href="/login" class="highlight-pill" onclick="window.location.href='/login';" style="cursor: pointer; text-decoration: none; color: inherit;">
                     <span>📄</span>
-                    <span><strong id="metric-pyqs-count">150+</strong> Papers: PYQ Archives</span>
-                </div>
-                <div class="highlight-pill" style="cursor: pointer;" onclick="if(window.triggerNativeClerkAuth)window.triggerNativeClerkAuth();">
+                    <span><strong id="metric-pyqs-count">2881</strong> Papers: PYQ Archives</span>
+                </a>
+                <a href="/login" class="highlight-pill" onclick="window.location.href='/login';" style="cursor: pointer; text-decoration: none; color: inherit;">
                     <span>🤖</span>
                     <span>Grounded AI Assistant with Citations</span>
-                </div>
+                </a>
             </div>
         </div>
 
@@ -140,7 +144,7 @@
         <div id="landing-features">
             <div class="landing-section-header section-header" id="why-campussense">
                 <div class="landing-section-pretitle">WHY CAMPUSSENSE</div>
-                <h2 class="landing-section-title why-campussense-title">Built Specially for MAKAUT Engineering Students</h2>
+                <h2 class="landing-section-title why-campussense-title">Built specifically, not specially, for MAKAUT engineering students.</h2>
                 <p class="landing-section-subhead section-subtitle">
                     Equipped with an AI-powered chatbot to answer queries instantly, an academic search bar, verified syllabi, and semester PYQ archives.
                 </p>

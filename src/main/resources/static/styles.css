@@ -1,10 +1,11 @@
-:root, [data-theme="dark"] {
+:root, [data-theme="dark"], html.dark, .dark {
     --bg-main: #0b0f19;
     --bg-secondary: #111827;
     --card-bg: rgba(17, 24, 39, 0.85);
     --card-hover: rgba(31, 41, 55, 0.95);
     --card-border: rgba(255, 255, 255, 0.08);
     --card-border-glow: rgba(99, 102, 241, 0.4);
+    --surface-color: #1e293b;
     --text-main: #f3f4f6;
     --text-muted: #9ca3af;
     --text-subtle: #6b7280;
@@ -33,11 +34,12 @@
 }
 
 /* --- PREMIUM HIGH-CONTRAST LIGHT MODE PALETTE --- */
-:root.light-theme, [data-theme="light"] {
+:root.light-theme, [data-theme="light"], html.light, .light, .light-theme {
   --bg-primary: #f8fafc;
   --bg-secondary: #ffffff;
   --bg-tertiary: #f1f5f9;
   --bg-card: #ffffff;
+  --surface-color: #ffffff;
   --border-color: #e2e8f0;
   --border-focus: #6366f1;
   
@@ -674,11 +676,12 @@ body:not(.modal-open) {
         radial-gradient(circle at 20% 80%, rgba(168, 85, 247, 0.07) 0%, transparent 45%);
     pointer-events: none;
     z-index: 0;
-    transition: background 0.4s ease;
 }
 
 :root.light-theme .background-mesh,
-[data-theme="light"] .background-mesh {
+[data-theme="light"] .background-mesh,
+html.light .background-mesh,
+.light .background-mesh {
     background: 
         radial-gradient(circle at 10% 15%, rgba(99, 102, 241, 0.07) 0%, transparent 45%),
         radial-gradient(circle at 85% 20%, rgba(249, 115, 22, 0.05) 0%, transparent 40%),
@@ -694,7 +697,6 @@ body:not(.modal-open) {
     backdrop-filter: blur(18px);
     background: var(--header-bg);
     border-bottom: 1px solid var(--card-border);
-    transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .header-container {
@@ -2944,20 +2946,24 @@ body.is-drawer-resizing .ai-slide-drawer {
 .hero-actions button,
 .landing-hero-actions .btn,
 .landing-hero-actions a,
-.landing-hero-actions button {
-  font-family: inherit !important;
+.landing-hero-actions button,
+#btn-explore-curriculum,
+#btn-hero-panic-pack {
+  font-family: var(--font-heading) !important;
   font-size: 1rem !important;
-  font-weight: 600 !important;
+  font-weight: 700 !important;
   letter-spacing: -0.01em !important;
-  line-height: 1.5 !important;
-  height: 44px !important;
-  padding: 0 1.6rem !important;
+  line-height: 1 !important;
+  height: 48px !important;
+  padding: 0 1.75rem !important;
   border-radius: 12px !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
   gap: 0.5rem !important;
   box-sizing: border-box !important;
+  cursor: pointer !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 .hero-actions .btn-primary,
@@ -2977,6 +2983,12 @@ body.is-drawer-resizing .ai-slide-drawer {
   border-color: #4f46e5 !important;
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(79, 70, 229, 0.45) !important;
+}
+
+.hero-actions .btn-primary:active,
+.landing-hero-actions .btn-primary:active,
+#btn-explore-curriculum:active {
+  transform: translateY(0);
 }
 
 .hero-actions .btn-panic,
@@ -3000,6 +3012,14 @@ body.is-drawer-resizing .ai-slide-drawer {
   border-color: #f97316 !important;
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(234, 88, 12, 0.45) !important;
+}
+
+.hero-actions .btn-panic:active,
+.hero-actions .btn-flame-hero:active,
+.landing-hero-actions .btn-panic:active,
+.landing-hero-actions .btn-flame-hero:active,
+#btn-hero-panic-pack:active {
+  transform: translateY(0);
 }
 
 .landing-highlights-row,
@@ -3104,8 +3124,11 @@ body.is-drawer-resizing .ai-slide-drawer {
 .why-campussense-title,
 #why-campussense h2,
 .section-header h2 {
-  white-space: nowrap !important;
-  font-size: clamp(1.4rem, 2.5vw, 2.15rem) !important;
+  white-space: normal !important;
+  font-size: clamp(1.85rem, 3.4vw, 2.75rem) !important;
+  font-weight: 800 !important;
+  line-height: 1.25 !important;
+  letter-spacing: -0.025em !important;
   text-align: center !important;
 }
 
@@ -3113,7 +3136,7 @@ body.is-drawer-resizing .ai-slide-drawer {
   .why-campussense-title,
   #why-campussense h2,
   .section-header h2 {
-    white-space: normal !important;
+    font-size: clamp(1.5rem, 5vw, 2.1rem) !important;
   }
 }
 
@@ -5978,8 +6001,8 @@ kbd,
   display: flex !important;
   flex-direction: column !important;
   justify-content: space-between !important;
-  background: var(--surface-color, #1e293b) !important;
-  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1)) !important;
+  background: var(--card-bg, #1e293b) !important;
+  border: 1px solid var(--card-border, rgba(255, 255, 255, 0.1)) !important;
   border-radius: 16px !important;
   padding: 1.25rem !important;
   box-sizing: border-box !important;
@@ -6013,4 +6036,463 @@ kbd,
   max-width: 100% !important;
   box-sizing: border-box !important;
   flex-wrap: wrap;
+}
+
+/* ====================================================================
+   LIGHT MODE COMPONENT REPAIRS (COMPREHENSIVE AUDIT FIXES)
+   ==================================================================== */
+
+/* 1. Sign Up Button (Top navigation bar) */
+:root.light-theme #btn-sign-up,
+[data-theme="light"] #btn-sign-up,
+.light-theme #btn-sign-up,
+.light #btn-sign-up,
+html.light #btn-sign-up {
+  background: #4f46e5 !important;
+  color: #ffffff !important;
+  border: 1px solid #4338ca !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25) !important;
+}
+:root.light-theme #btn-sign-up:hover,
+[data-theme="light"] #btn-sign-up:hover,
+.light-theme #btn-sign-up:hover,
+.light #btn-sign-up:hover,
+html.light #btn-sign-up:hover {
+  background: #4338ca !important;
+  border-color: #3730a3 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35) !important;
+  transform: translateY(-1px);
+}
+
+/* 2. Explore Curriculums and PYQs (Hero CTA) */
+:root.light-theme #btn-explore-curriculum,
+[data-theme="light"] #btn-explore-curriculum,
+.light-theme #btn-explore-curriculum,
+.light #btn-explore-curriculum,
+html.light #btn-explore-curriculum,
+[data-theme="light"] .hero-actions #btn-explore-curriculum,
+.light-theme .hero-actions #btn-explore-curriculum,
+.light .hero-actions #btn-explore-curriculum {
+  background: #4338ca !important;
+  color: #ffffff !important;
+  border: 1px solid #3730a3 !important;
+  box-shadow: 0 4px 14px rgba(67, 56, 202, 0.3) !important;
+}
+:root.light-theme #btn-explore-curriculum:hover,
+[data-theme="light"] #btn-explore-curriculum:hover,
+.light-theme #btn-explore-curriculum:hover,
+.light #btn-explore-curriculum:hover,
+html.light #btn-explore-curriculum:hover,
+[data-theme="light"] .hero-actions #btn-explore-curriculum:hover,
+.light-theme .hero-actions #btn-explore-curriculum:hover,
+.light .hero-actions #btn-explore-curriculum:hover {
+  background: #4f46e5 !important;
+  color: #ffffff !important;
+  border-color: #4338ca !important;
+  box-shadow: 0 8px 24px rgba(79, 70, 229, 0.4) !important;
+  transform: translateY(-2px);
+}
+:root.light-theme #btn-explore-curriculum:active,
+[data-theme="light"] #btn-explore-curriculum:active,
+.light-theme #btn-explore-curriculum:active,
+.light #btn-explore-curriculum:active,
+html.light #btn-explore-curriculum:active {
+  background: #3730a3 !important;
+  transform: translateY(0);
+}
+
+/* 3. View 48-Hour Panic Pack (Hero CTA) */
+:root.light-theme #btn-hero-panic-pack,
+[data-theme="light"] #btn-hero-panic-pack,
+.light-theme #btn-hero-panic-pack,
+.light #btn-hero-panic-pack,
+html.light #btn-hero-panic-pack,
+[data-theme="light"] .hero-actions #btn-hero-panic-pack,
+.light-theme .hero-actions #btn-hero-panic-pack,
+.light .hero-actions #btn-hero-panic-pack {
+  background: #ea580c !important;
+  color: #ffffff !important;
+  border: 1px solid #c2410c !important;
+  box-shadow: 0 4px 14px rgba(234, 88, 12, 0.3) !important;
+}
+:root.light-theme #btn-hero-panic-pack:hover,
+[data-theme="light"] #btn-hero-panic-pack:hover,
+.light-theme #btn-hero-panic-pack:hover,
+.light #btn-hero-panic-pack:hover,
+html.light #btn-hero-panic-pack:hover,
+[data-theme="light"] .hero-actions #btn-hero-panic-pack:hover,
+.light-theme .hero-actions #btn-hero-panic-pack:hover,
+.light .hero-actions #btn-hero-panic-pack:hover {
+  background: #f97316 !important;
+  color: #ffffff !important;
+  border-color: #ea580c !important;
+  box-shadow: 0 8px 24px rgba(234, 88, 12, 0.4) !important;
+  transform: translateY(-2px);
+}
+:root.light-theme #btn-hero-panic-pack:active,
+[data-theme="light"] #btn-hero-panic-pack:active,
+.light-theme #btn-hero-panic-pack:active,
+.light #btn-hero-panic-pack:active,
+html.light #btn-hero-panic-pack:active {
+  background: #c2410c !important;
+  transform: translateY(0);
+}
+
+/* 4. Access Panic Pack Button */
+:root.light-theme #btn-feature-panic,
+[data-theme="light"] #btn-feature-panic,
+.light-theme #btn-feature-panic,
+.light #btn-feature-panic,
+html.light #btn-feature-panic,
+:root.light-theme .feature-card-cta.flame,
+[data-theme="light"] .feature-card-cta.flame,
+.light-theme .feature-card-cta.flame,
+.light .feature-card-cta.flame,
+html.light .feature-card-cta.flame {
+  background: #ea580c !important;
+  color: #ffffff !important;
+  border: 1px solid #c2410c !important;
+  box-shadow: 0 2px 8px rgba(234, 88, 12, 0.25) !important;
+  font-weight: 600 !important;
+}
+:root.light-theme #btn-feature-panic:hover,
+[data-theme="light"] #btn-feature-panic:hover,
+.light-theme #btn-feature-panic:hover,
+.light #btn-feature-panic:hover,
+html.light #btn-feature-panic:hover,
+:root.light-theme .feature-card-cta.flame:hover,
+[data-theme="light"] .feature-card-cta.flame:hover,
+.light-theme .feature-card-cta.flame:hover,
+.light .feature-card-cta.flame:hover,
+html.light .feature-card-cta.flame:hover {
+  background: #c2410c !important;
+  color: #ffffff !important;
+  border-color: #9a3412 !important;
+  box-shadow: 0 4px 14px rgba(234, 88, 12, 0.35) !important;
+  transform: translateY(-2px);
+}
+
+/* 5. Curriculum and Syllabus Blueprint Subject Cards/Buttons */
+:root.light-theme #curriculum-grid .subject-card,
+[data-theme="light"] #curriculum-grid .subject-card,
+.light-theme #curriculum-grid .subject-card,
+.light #curriculum-grid .subject-card,
+html.light #curriculum-grid .subject-card,
+:root.light-theme .subject-card,
+[data-theme="light"] .subject-card,
+.light-theme .subject-card,
+.light .subject-card,
+html.light .subject-card {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05) !important;
+  color: #0f172a !important;
+}
+:root.light-theme #curriculum-grid .subject-card:hover,
+[data-theme="light"] #curriculum-grid .subject-card:hover,
+.light-theme #curriculum-grid .subject-card:hover,
+.light #curriculum-grid .subject-card:hover,
+html.light #curriculum-grid .subject-card:hover,
+:root.light-theme .subject-card:hover,
+[data-theme="light"] .subject-card:hover,
+.light-theme .subject-card:hover,
+.light .subject-card:hover,
+html.light .subject-card:hover {
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04) !important;
+  transform: translateY(-2px);
+}
+:root.light-theme .subject-card h3,
+[data-theme="light"] .subject-card h3,
+.light-theme .subject-card h3,
+.light .subject-card h3 {
+  color: #0f172a !important;
+  font-weight: 700 !important;
+}
+:root.light-theme .subject-card p,
+[data-theme="light"] .subject-card p,
+.light-theme .subject-card p,
+.light .subject-card p {
+  color: #475569 !important;
+}
+:root.light-theme .subject-card .badge,
+[data-theme="light"] .subject-card .badge,
+.light-theme .subject-card .badge,
+.light .subject-card .badge {
+  background: #f1f5f9 !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #1e293b !important;
+  font-weight: 600 !important;
+}
+:root.light-theme .subject-card .badge.subject-code-badge,
+[data-theme="light"] .subject-card .badge.subject-code-badge,
+.light-theme .subject-card .badge.subject-code-badge,
+.light .subject-card .badge.subject-code-badge,
+:root.light-theme .subject-code-tag,
+[data-theme="light"] .subject-code-tag,
+.light-theme .subject-code-tag,
+.light .subject-code-tag {
+  background: #e0f2fe !important;
+  border: 1px solid #bae6fd !important;
+  color: #0284c7 !important;
+  font-weight: 700 !important;
+}
+:root.light-theme .subject-card .btn-outline,
+[data-theme="light"] .subject-card .btn-outline,
+.light-theme .subject-card .btn-outline,
+.light .subject-card .btn-outline,
+:root.light-theme .subject-action-btn,
+[data-theme="light"] .subject-action-btn,
+.light-theme .subject-action-btn,
+.light .subject-action-btn {
+  background: #f8fafc !important;
+  color: #0f172a !important;
+  border: 1px solid #cbd5e1 !important;
+  font-weight: 600 !important;
+}
+:root.light-theme .subject-card .btn-outline:hover,
+[data-theme="light"] .subject-card .btn-outline:hover,
+.light-theme .subject-card .btn-outline:hover,
+.light .subject-card .btn-outline:hover,
+:root.light-theme .subject-action-btn:hover,
+[data-theme="light"] .subject-action-btn:hover,
+.light-theme .subject-action-btn:hover,
+.light .subject-action-btn:hover {
+  background: #4f46e5 !important;
+  color: #ffffff !important;
+  border-color: #4f46e5 !important;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25) !important;
+  transform: translateY(-1px);
+}
+
+/* 6. PYQ Preview Buttons */
+:root.light-theme .pyq-card .btn-primary,
+[data-theme="light"] .pyq-card .btn-primary,
+.light-theme .pyq-card .btn-primary,
+.light .pyq-card .btn-primary,
+html.light .pyq-card .btn-primary,
+:root.light-theme .btn-preview-paper,
+[data-theme="light"] .btn-preview-paper,
+.light-theme .btn-preview-paper,
+.light .btn-preview-paper,
+html.light .btn-preview-paper,
+:root.light-theme .btn-preview-pdf,
+[data-theme="light"] .btn-preview-pdf,
+.light-theme .btn-preview-pdf,
+.light .btn-preview-pdf {
+  background: #4f46e5 !important;
+  color: #ffffff !important;
+  border: 1px solid #4338ca !important;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25) !important;
+  font-weight: 600 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.4rem !important;
+}
+:root.light-theme .pyq-card .btn-primary:hover,
+[data-theme="light"] .pyq-card .btn-primary:hover,
+.light-theme .pyq-card .btn-primary:hover,
+.light .pyq-card .btn-primary:hover,
+html.light .pyq-card .btn-primary:hover,
+:root.light-theme .btn-preview-paper:hover,
+[data-theme="light"] .btn-preview-paper:hover,
+.light-theme .btn-preview-paper:hover,
+.light .btn-preview-paper:hover,
+html.light .btn-preview-paper:hover,
+:root.light-theme .btn-preview-pdf:hover,
+[data-theme="light"] .btn-preview-pdf:hover,
+.light-theme .btn-preview-pdf:hover,
+.light .btn-preview-pdf:hover {
+  background: #4338ca !important;
+  color: #ffffff !important;
+  border-color: #3730a3 !important;
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35) !important;
+  transform: translateY(-1px);
+}
+:root.light-theme .pyq-card,
+[data-theme="light"] .pyq-card,
+.light-theme .pyq-card,
+.light .pyq-card,
+html.light .pyq-card {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+  color: #0f172a !important;
+}
+:root.light-theme .pyq-card:hover,
+[data-theme="light"] .pyq-card:hover,
+.light-theme .pyq-card:hover,
+.light .pyq-card:hover {
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08) !important;
+  transform: translateY(-2px);
+}
+:root.light-theme .pyq-card h4,
+[data-theme="light"] .pyq-card h4,
+.light-theme .pyq-card h4,
+.light .pyq-card h4 {
+  color: #0f172a !important;
+  font-weight: 700 !important;
+}
+:root.light-theme .pyq-card .btn-outline,
+[data-theme="light"] .pyq-card .btn-outline,
+.light-theme .pyq-card .btn-outline,
+.light .pyq-card .btn-outline {
+  background: #f8fafc !important;
+  color: #0f172a !important;
+  border: 1px solid #cbd5e1 !important;
+  font-weight: 600 !important;
+}
+:root.light-theme .pyq-card .btn-outline:hover,
+[data-theme="light"] .pyq-card .btn-outline:hover,
+.light-theme .pyq-card .btn-outline:hover,
+.light .pyq-card .btn-outline:hover {
+  background: #eef2ff !important;
+  color: #4338ca !important;
+  border-color: #6366f1 !important;
+  transform: translateY(-1px);
+}
+
+/* 7. Year Selection Buttons / Filter Tabs */
+:root.light-theme .filter-pill-btn,
+[data-theme="light"] .filter-pill-btn,
+.light-theme .filter-pill-btn,
+.light .filter-pill-btn,
+html.light .filter-pill-btn,
+:root.light-theme .curriculum-tab-btn,
+[data-theme="light"] .curriculum-tab-btn,
+.light-theme .curriculum-tab-btn,
+.light .curriculum-tab-btn,
+:root.light-theme .filter-pill,
+[data-theme="light"] .filter-pill,
+.light-theme .filter-pill,
+.light .filter-pill,
+html.light .filter-pill,
+:root.light-theme .pyq-year-filter-btn,
+[data-theme="light"] .pyq-year-filter-btn,
+.light-theme .pyq-year-filter-btn,
+.light .pyq-year-filter-btn,
+html.light .pyq-year-filter-btn {
+  background: #ffffff !important;
+  color: #1e293b !important;
+  border: 1px solid #cbd5e1 !important;
+  font-weight: 600 !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+:root.light-theme .filter-pill-btn:hover,
+[data-theme="light"] .filter-pill-btn:hover,
+.light-theme .filter-pill-btn:hover,
+.light .filter-pill-btn:hover,
+:root.light-theme .curriculum-tab-btn:hover,
+[data-theme="light"] .curriculum-tab-btn:hover,
+.light-theme .curriculum-tab-btn:hover,
+.light .curriculum-tab-btn:hover,
+:root.light-theme .filter-pill:hover,
+[data-theme="light"] .filter-pill:hover,
+.light-theme .filter-pill:hover,
+.light .filter-pill:hover,
+:root.light-theme .pyq-year-filter-btn:hover,
+[data-theme="light"] .pyq-year-filter-btn:hover,
+.light-theme .pyq-year-filter-btn:hover,
+.light .pyq-year-filter-btn:hover {
+  background: #f1f5f9 !important;
+  border-color: #94a3b8 !important;
+  color: #0f172a !important;
+}
+:root.light-theme .filter-pill-btn.active,
+[data-theme="light"] .filter-pill-btn.active,
+.light-theme .filter-pill-btn.active,
+.light .filter-pill-btn.active,
+html.light .filter-pill-btn.active,
+:root.light-theme .curriculum-tab-btn.active,
+[data-theme="light"] .curriculum-tab-btn.active,
+.light-theme .curriculum-tab-btn.active,
+.light .curriculum-tab-btn.active,
+:root.light-theme .filter-pill.active,
+[data-theme="light"] .filter-pill.active,
+.light-theme .filter-pill.active,
+.light .filter-pill.active,
+html.light .filter-pill.active,
+:root.light-theme .pyq-year-filter-btn.active,
+[data-theme="light"] .pyq-year-filter-btn.active,
+.light-theme .pyq-year-filter-btn.active,
+.light .pyq-year-filter-btn.active,
+html.light .pyq-year-filter-btn.active {
+  background: #4f46e5 !important;
+  border-color: #4338ca !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.35) !important;
+}
+
+/* 8. Battle-Tested MAKAUT Examination Archives Button & Section */
+:root.light-theme .feature-card-cta.emerald,
+[data-theme="light"] .feature-card-cta.emerald,
+.light-theme .feature-card-cta.emerald,
+.light .feature-card-cta.emerald,
+html.light .feature-card-cta.emerald,
+:root.light-theme #btn-feature-pyq,
+[data-theme="light"] #btn-feature-pyq,
+.light-theme #btn-feature-pyq,
+.light #btn-feature-pyq,
+html.light #btn-feature-pyq {
+  background: #059669 !important;
+  color: #ffffff !important;
+  border: 1px solid #047857 !important;
+  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.25) !important;
+  font-weight: 600 !important;
+}
+:root.light-theme .feature-card-cta.emerald:hover,
+[data-theme="light"] .feature-card-cta.emerald:hover,
+.light-theme .feature-card-cta.emerald:hover,
+.light .feature-card-cta.emerald:hover,
+html.light .feature-card-cta.emerald:hover,
+:root.light-theme #btn-feature-pyq:hover,
+[data-theme="light"] #btn-feature-pyq:hover,
+.light-theme #btn-feature-pyq:hover,
+.light #btn-feature-pyq:hover,
+html.light #btn-feature-pyq:hover {
+  background: #047857 !important;
+  color: #ffffff !important;
+  border-color: #065f46 !important;
+  box-shadow: 0 4px 14px rgba(5, 150, 105, 0.35) !important;
+  transform: translateY(-2px);
+}
+:root.light-theme .pyq-repo-filter-bar,
+[data-theme="light"] .pyq-repo-filter-bar,
+.light-theme .pyq-repo-filter-bar,
+.light .pyq-repo-filter-bar,
+html.light .pyq-repo-filter-bar {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+}
+:root.light-theme .filter-lbl,
+[data-theme="light"] .filter-lbl,
+.light-theme .filter-lbl,
+.light .filter-lbl {
+  color: #475569 !important;
+  font-weight: 700 !important;
+}
+:root.light-theme #landing-pyqs,
+[data-theme="light"] #landing-pyqs,
+.light-theme #landing-pyqs,
+.light #landing-pyqs {
+  border-top-color: #e2e8f0 !important;
+}
+:root.light-theme #landing-pyqs .section-title,
+[data-theme="light"] #landing-pyqs .section-title,
+.light-theme #landing-pyqs .section-title,
+.light #landing-pyqs .section-title {
+  color: #0f172a !important;
+  font-weight: 800 !important;
+}
+:root.light-theme #landing-pyqs .section-subtitle,
+[data-theme="light"] #landing-pyqs .section-subtitle,
+.light-theme #landing-pyqs .section-subtitle,
+.light #landing-pyqs .section-subtitle {
+  color: #475569 !important;
 }
