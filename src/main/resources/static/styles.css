@@ -3134,6 +3134,20 @@ html.light .landing-section-pretitle {
     color: #4338ca !important;
 }
 
+#landing-pyqs .landing-section-pretitle {
+    font-size: clamp(1.15rem, 2.5vw, 1.45rem) !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.12em !important;
+}
+
+:root.light-theme #landing-pyqs .landing-section-pretitle,
+[data-theme="light"] #landing-pyqs .landing-section-pretitle,
+.light-theme #landing-pyqs .landing-section-pretitle,
+.light #landing-pyqs .landing-section-pretitle,
+html.light #landing-pyqs .landing-section-pretitle {
+    color: #4338ca !important;
+}
+
 .why-campussense-title,
 #why-campussense h2,
 .section-header h2 {

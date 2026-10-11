@@ -637,7 +637,7 @@ window.onClerkLoaded = function() {
         'IT': 'Information Technology',
         'CSE-AIML': 'CSE (Artificial Intelligence & Machine Learning)',
         'CSCS': 'Computer Science & Cyber Security',
-        'CSDS': 'Computer Science & Data Science',
+        'CSDS': 'Computer Science and Data Science',
         'CSBS': 'Computer Science & Business Systems'
     };
 
@@ -8055,7 +8055,7 @@ const OFFICIAL_CSDS_COURSES = [
     {
         "code": "BSC-301",
         "name": "Mathematics III Linear Algebra and Calculus",
-        "department": "Data Science",
+        "department": "Computer Science and Data Science",
         "stream": "CSDS",
         "semester": 3,
         "credits": 3,
@@ -8120,7 +8120,7 @@ const OFFICIAL_CSDS_COURSES = [
     {
         "code": "ESC-301",
         "name": "Analog and Digital Electronics",
-        "department": "Data Science",
+        "department": "Computer Science and Data Science",
         "stream": "CSDS",
         "semester": 3,
         "credits": 3,
@@ -8167,7 +8167,7 @@ const OFFICIAL_CSDS_COURSES = [
     {
         "code": "Electives and Allied Data Science Subjects",
         "name": "Electives and Allied Data Science Subjects",
-        "department": "Data Science",
+        "department": "Computer Science and Data Science",
         "stream": "CSDS",
         "semester": 3,
         "credits": 3,
@@ -8214,7 +8214,7 @@ const OFFICIAL_CSDS_COURSES = [
     {
         "code": "HSMC-301",
         "name": "Economics for Engineers",
-        "department": "Data Science",
+        "department": "Computer Science and Data Science",
         "stream": "CSDS",
         "semester": 3,
         "credits": 3,
@@ -8273,7 +8273,7 @@ const OFFICIAL_CSDS_COURSES = [
     {
         "code": "PCC-CSDS301",
         "name": "Data Structures and Algorithms",
-        "department": "Data Science",
+        "department": "Computer Science and Data Science",
         "stream": "CSDS",
         "semester": 3,
         "credits": 3,
@@ -8302,7 +8302,7 @@ const OFFICIAL_CSDS_COURSES = [
     {
         "code": "PCC-CSDS302",
         "name": "Computer Organization and Architecture",
-        "department": "Data Science",
+        "department": "Computer Science and Data Science",
         "stream": "CSDS",
         "semester": 3,
         "credits": 3,
@@ -8343,7 +8343,7 @@ const OFFICIAL_CSDS_COURSES = [
     {
         "code": "Electives and Allied Data Science Subjects",
         "name": "Electives and Allied Data Science Subjects",
-        "department": "Data Science",
+        "department": "Computer Science and Data Science",
         "stream": "CSDS",
         "semester": 4,
         "credits": 3,
@@ -8360,7 +8360,7 @@ const OFFICIAL_CSDS_COURSES = [
     {
         "code": "MC-401",
         "name": "Environmental Sciences",
-        "department": "Data Science",
+        "department": "Computer Science and Data Science",
         "stream": "CSDS",
         "semester": 4,
         "credits": 3,
@@ -8383,7 +8383,7 @@ const OFFICIAL_CSDS_COURSES = [
     {
         "code": "PCC-CSDS401",
         "name": "Discrete Mathematics",
-        "department": "Data Science",
+        "department": "Computer Science and Data Science",
         "stream": "CSDS",
         "semester": 4,
         "credits": 3,
@@ -8430,7 +8430,7 @@ const OFFICIAL_CSDS_COURSES = [
     {
         "code": "PCC-CSDS402",
         "name": "Computer Architecture",
-        "department": "Data Science",
+        "department": "Computer Science and Data Science",
         "stream": "CSDS",
         "semester": 4,
         "credits": 3,
@@ -8483,7 +8483,7 @@ const OFFICIAL_CSDS_COURSES = [
     {
         "code": "PCC-CSDS403",
         "name": "Formal Language and Automata Theory",
-        "department": "Data Science",
+        "department": "Computer Science and Data Science",
         "stream": "CSDS",
         "semester": 4,
         "credits": 3,
@@ -8536,7 +8536,7 @@ const OFFICIAL_CSDS_COURSES = [
     {
         "code": "PCC-CSDS404",
         "name": "Design and Analysis of Algorithms",
-        "department": "Data Science",
+        "department": "Computer Science and Data Science",
         "stream": "CSDS",
         "semester": 4,
         "credits": 3,
@@ -8619,7 +8619,7 @@ const OFFICIAL_CSDS_COURSES = [
     {
         "code": "Electives and Allied Data Science Subjects",
         "name": "Electives and Allied Data Science Subjects",
-        "department": "Data Science",
+        "department": "Computer Science and Data Science",
         "stream": "CSDS",
         "semester": 5,
         "credits": 3,
@@ -8720,7 +8720,7 @@ const OFFICIAL_CSDS_COURSES = [
     {
         "code": "PCC-CS501",
         "name": "Operating Systems",
-        "department": "Data Science",
+        "department": "Computer Science and Data Science",
         "stream": "CSDS",
         "semester": 5,
         "credits": 3,
@@ -8791,7 +8791,7 @@ const OFFICIAL_CSDS_COURSES = [
     {
         "code": "PCC-CS502",
         "name": "Database Management Systems",
-        "department": "Data Science",
+        "department": "Computer Science and Data Science",
         "stream": "CSDS",
         "semester": 5,
         "credits": 3,
@@ -8850,7 +8850,7 @@ const OFFICIAL_CSDS_COURSES = [
     {
         "code": "PCC-CSDS501",
         "name": "Data Mining and Data Warehousing",
-        "department": "Data Science",
+        "department": "Computer Science and Data Science",
         "stream": "CSDS",
         "semester": 5,
         "credits": 3,
@@ -8867,7 +8867,7 @@ const OFFICIAL_CSDS_COURSES = [
     {
         "code": "PCC-CSDS502",
         "name": "Machine Learning",
-        "department": "Data Science",
+        "department": "Computer Science and Data Science",
         "stream": "CSDS",
         "semester": 5,
         "credits": 3,
@@ -8884,7 +8884,7 @@ const OFFICIAL_CSDS_COURSES = [
     {
         "code": "Electives and Allied Data Science Subjects",
         "name": "Electives and Allied Data Science Subjects",
-        "department": "Data Science",
+        "department": "Computer Science and Data Science",
         "stream": "CSDS",
         "semester": 6,
         "credits": 3,
@@ -8973,7 +8973,7 @@ const OFFICIAL_CSDS_COURSES = [
     {
         "code": "OEC-CSDS601",
         "name": "Numerical Methods and Optimization",
-        "department": "Data Science",
+        "department": "Computer Science and Data Science",
         "stream": "CSDS",
         "semester": 6,
         "credits": 3,
@@ -9002,7 +9002,7 @@ const OFFICIAL_CSDS_COURSES = [
     {
         "code": "PCC-CS601",
         "name": "Computer Networks",
-        "department": "Data Science",
+        "department": "Computer Science and Data Science",
         "stream": "CSDS",
         "semester": 6,
         "credits": 3,
@@ -9067,7 +9067,7 @@ const OFFICIAL_CSDS_COURSES = [
     {
         "code": "PEC-CSDS601",
         "name": "Cloud Computing and Virtualization",
-        "department": "Data Science",
+        "department": "Computer Science and Data Science",
         "stream": "CSDS",
         "semester": 6,
         "credits": 3,
@@ -9096,7 +9096,7 @@ const OFFICIAL_CSDS_COURSES = [
     {
         "code": "Electives and Allied Data Science Subjects",
         "name": "Electives and Allied Data Science Subjects",
-        "department": "Data Science",
+        "department": "Computer Science and Data Science",
         "stream": "CSDS",
         "semester": 7,
         "credits": 3,
@@ -9245,7 +9245,7 @@ const OFFICIAL_CSDS_COURSES = [
     {
         "code": "HSMC-701",
         "name": "Principles of Management and Ethics",
-        "department": "Data Science",
+        "department": "Computer Science and Data Science",
         "stream": "CSDS",
         "semester": 7,
         "credits": 3,
@@ -9304,7 +9304,7 @@ const OFFICIAL_CSDS_COURSES = [
     {
         "code": "PEC-CSDS704",
         "name": "Cryptography and Network Security",
-        "department": "Data Science",
+        "department": "Computer Science and Data Science",
         "stream": "CSDS",
         "semester": 7,
         "credits": 3,
@@ -9333,7 +9333,7 @@ const OFFICIAL_CSDS_COURSES = [
     {
         "code": "Electives and Allied Data Science Subjects",
         "name": "Electives and Allied Data Science Subjects",
-        "department": "Data Science",
+        "department": "Computer Science and Data Science",
         "stream": "CSDS",
         "semester": 8,
         "credits": 3,
@@ -9368,7 +9368,7 @@ const OFFICIAL_CSDS_COURSES = [
     {
         "code": "OEC-CSDS801",
         "name": "E Commerce and ERP",
-        "department": "Data Science",
+        "department": "Computer Science and Data Science",
         "stream": "CSDS",
         "semester": 8,
         "credits": 3,
@@ -9463,7 +9463,7 @@ const OFFICIAL_CSDS_COURSES = [
     {
         "code": "OEC-CSDS802",
         "name": "IPR and Cyber Law",
-        "department": "Data Science",
+        "department": "Computer Science and Data Science",
         "stream": "CSDS",
         "semester": 8,
         "credits": 3,
@@ -11585,7 +11585,7 @@ window.getSubjectDocuments = getSubjectDocuments;
         },
         'CSDS': {
             code: 'CSDS',
-            name: 'Data Science',
+            name: 'Computer Science and Data Science',
             years: [1, 2, 3, 4],
             semesters: [1, 2, 3, 4, 5, 6, 7, 8],
             courses: OFFICIAL_CSDS_COURSES,
@@ -12617,10 +12617,10 @@ window.getSubjectDocuments = getSubjectDocuments;
         streamCode: 'csds',
         badge: 'CSDS Scheme',
         scope: 'Semesters 3 to 8',
-        title: 'Data Science (CSDS)',
+        title: 'Computer Science and Data Science',
         syllabusPath: 'docs/CSDS(3rd to 8th sem)/csds_syllabus.pdf',
         pyqYears: ['2025', '2024', '2023'],
-        archiveTitle: 'Data Science Archives'
+        archiveTitle: 'Computer Science and Data Science Archives'
       }
     ];
 
