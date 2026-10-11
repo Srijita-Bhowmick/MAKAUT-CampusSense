@@ -4018,37 +4018,28 @@ html.light #landing-pyqs .section-subtitle,
     margin: 0;
 }
 
-.footer-univ-name {
-    font-weight: 600;
-    color: var(--text-main);
-    letter-spacing: 0.01em;
-}
-
-/* "Campus Sense" Natural Brand Inline Highlight Token */
-.footer-brand-highlight {
-    font-weight: 700;
-    color: #4f46e5;
+/* "MAKAUT Campus Sense" Unified High-Contrast Platform Title */
+.footer-platform-title {
+    font-weight: 700 !important;
     letter-spacing: -0.01em;
     display: inline-block;
-    transition: color 0.2s ease, text-shadow 0.2s ease;
+    transition: color 0.2s ease;
 }
 
-/* Dark Mode: Natural indigo-400 with soft subtle ambient glow */
-[data-theme="dark"] .footer-brand-highlight,
-:root:not(.light-theme) .footer-brand-highlight,
-html.dark .footer-brand-highlight,
-.dark .footer-brand-highlight {
-    color: #818cf8;
-    text-shadow: 0 0 14px rgba(129, 140, 248, 0.35);
+[data-theme="dark"] .footer-platform-title,
+:root:not(.light-theme) .footer-platform-title,
+html.dark .footer-platform-title,
+.dark .footer-platform-title {
+    color: #ffffff !important;
+    text-shadow: none !important;
 }
 
-/* Light Mode: High-contrast rich indigo-600 */
-:root.light-theme .footer-brand-highlight,
-[data-theme="light"] .footer-brand-highlight,
-html.light .footer-brand-highlight,
-html:not(.dark) .footer-brand-highlight {
-    color: #4338ca;
-    text-shadow: none;
+:root.light-theme .footer-platform-title,
+[data-theme="light"] .footer-platform-title,
+html.light .footer-platform-title,
+html:not(.dark) .footer-platform-title {
+    color: #0f172a !important;
+    text-shadow: none !important;
 }
 
 .footer-separator {
@@ -4062,45 +4053,39 @@ html:not(.dark) .footer-brand-highlight {
     color: var(--text-muted);
 }
 
-/* "Srijita Bhowmick" Natural High-Contrast Maintainer Highlight & Accent Underline */
-.footer-maintainer-highlight {
-    font-weight: 700;
-    color: #0f172a;
-    text-decoration: underline;
-    text-decoration-color: rgba(99, 102, 241, 0.55);
-    text-underline-offset: 4px;
-    text-decoration-thickness: 1.5px;
+/* "Srijita Bhowmick" Maintainer Credit - Bold without underline */
+.footer-maintainer {
+    font-weight: 700 !important;
+    text-decoration: none !important;
     display: inline-block;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: color 0.2s ease;
 }
 
-/* Dark Mode: Crisp slate-50 / white with soft violet-indigo underline */
-[data-theme="dark"] .footer-maintainer-highlight,
-:root:not(.light-theme) .footer-maintainer-highlight,
-html.dark .footer-maintainer-highlight,
-.dark .footer-maintainer-highlight {
-    color: #f8fafc;
-    text-decoration-color: rgba(129, 140, 248, 0.65);
+[data-theme="dark"] .footer-maintainer,
+:root:not(.light-theme) .footer-maintainer,
+html.dark .footer-maintainer,
+.dark .footer-maintainer {
+    color: #ffffff !important;
+    text-decoration: none !important;
 }
 
-/* Light Mode: Deep slate-900 with rich indigo underline */
-:root.light-theme .footer-maintainer-highlight,
-[data-theme="light"] .footer-maintainer-highlight,
-html.light .footer-maintainer-highlight,
-html:not(.dark) .footer-maintainer-highlight {
-    color: #0f172a;
-    text-decoration-color: rgba(79, 70, 229, 0.55);
+:root.light-theme .footer-maintainer,
+[data-theme="light"] .footer-maintainer,
+html.light .footer-maintainer,
+html:not(.dark) .footer-maintainer {
+    color: #0f172a !important;
+    text-decoration: none !important;
 }
 
-.footer-maintainer-highlight:hover {
-    color: #6366f1;
-    text-decoration-color: #6366f1;
+.footer-maintainer:hover {
+    color: #6366f1 !important;
+    text-decoration: none !important;
 }
 
-[data-theme="dark"] .footer-maintainer-highlight:hover,
-html.dark .footer-maintainer-highlight:hover {
-    color: #a5b4fc;
-    text-decoration-color: #a5b4fc;
+[data-theme="dark"] .footer-maintainer:hover,
+html.dark .footer-maintainer:hover {
+    color: #a5b4fc !important;
+    text-decoration: none !important;
 }
 
 :root.light-theme .landing-footer-primary,
@@ -6583,12 +6568,12 @@ html:not(.dark) .subject-card .btn-outline,
 html.light .subject-action-btn,
 html:not(.dark) .subject-action-btn {
   background: #f8fafc !important;
-  color: #1e293b !important;
+  color: #334155 !important;
   border: 1px solid #cbd5e1 !important;
   border-radius: 0.75rem !important;
   padding: 0.625rem 1rem !important;
   font-size: 0.875rem !important;
-  font-weight: 500 !important;
+  font-weight: 600 !important;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
 }
 :root.light-theme .subject-card .btn-outline:hover,
@@ -6654,13 +6639,13 @@ html:not(.dark) .btn-preview-paper,
 html.light .btn-preview-pdf,
 html:not(.dark) .btn-preview-pdf {
   background: #f8fafc !important;
-  color: #1e293b !important;
+  color: #334155 !important;
   border: 1px solid #cbd5e1 !important;
   border-radius: 0.75rem !important; /* rounded-xl */
   padding: 0.625rem 1rem !important; /* py-2.5 px-4 */
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
   font-size: 0.875rem !important;
-  font-weight: 500 !important;
+  font-weight: 600 !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -6825,7 +6810,7 @@ html.light .pyq-card {
 .light-theme .pyq-card .btn-outline,
 .light .pyq-card .btn-outline {
   background: #f8fafc !important;
-  color: #0f172a !important;
+  color: #334155 !important;
   border: 1px solid #cbd5e1 !important;
   font-weight: 600 !important;
 }
@@ -6833,9 +6818,9 @@ html.light .pyq-card {
 [data-theme="light"] .pyq-card .btn-outline:hover,
 .light-theme .pyq-card .btn-outline:hover,
 .light .pyq-card .btn-outline:hover {
-  background: #eef2ff !important;
-  color: #4338ca !important;
-  border-color: #6366f1 !important;
+  background: #f1f5f9 !important;
+  border-color: #94a3b8 !important;
+  color: #0f172a !important;
   transform: translateY(-1px);
 }
 

@@ -12735,8 +12735,8 @@ window.getSubjectDocuments = getSubjectDocuments;
             <span class="badge credit-badge" style="opacity: 0.85;">${item.credits ? item.credits + ' Credits' : (item.scope || 'Semesters 3 to 8')}</span>
           </div>
           <h3 style="font-size: 1.15rem; font-weight: 700; margin: 0 0 1.25rem 0; color: var(--text-main); flex: 1;">${item.title}</h3>
-          <button class="btn btn-outline subject-action-btn" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; margin-top: auto;" onclick="viewSyllabusItem('${item.code || item.streamCode}', '${item.syllabusPath}', '${item.title}')">
-            <span>📖</span><span>View Syllabus Blueprint →</span>
+          <button class="btn btn-outline card-action-btn subject-action-btn" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: auto;" onclick="viewSyllabusItem('${item.code || item.streamCode}', '${item.syllabusPath}', '${item.title}')" aria-label="View Syllabus Blueprint for ${item.title}">
+            <span class="card-btn-icon btn-icon">📖</span><span class="card-btn-text btn-text">View Syllabus Blueprint</span><span class="card-btn-arrow btn-arrow">→</span>
           </button>
         </div>
       `).join('');
@@ -12834,8 +12834,8 @@ window.getSubjectDocuments = getSubjectDocuments;
             }).join('')}
           </div>
           <div class="archive-btn-container" style="display: flex; width: 100%; margin-top: auto;">
-            <button class="btn btn-outline btn-preview-paper archive-access-btn" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.5rem;" ${entry.action} aria-label="Access ${entry.title}">
-              <span class="btn-icon">📄</span><span class="btn-text">Access Exam Archives</span><span class="btn-arrow">→</span>
+            <button class="btn btn-outline card-action-btn archive-access-btn btn-preview-paper" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: auto;" ${entry.action} aria-label="Access ${entry.title}">
+              <span class="card-btn-icon btn-icon">📄</span><span class="card-btn-text btn-text">Access Exam Archives</span><span class="card-btn-arrow btn-arrow">→</span>
             </button>
           </div>
         </div>

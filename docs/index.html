@@ -10,46 +10,91 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css?v=20261011_v3">
     <style>
-      /* Critical Light Mode Archive Action Button Tokens (Parity with View Syllabus Blueprint) */
-      .archive-btn-container { display: flex !important; width: 100% !important; margin-top: auto !important; }
-      #landing-pyqs .btn-preview-paper,
-      #archives-grid .btn-preview-paper,
-      .pyq-card .btn-preview-paper,
-      .archive-access-btn {
+      /* 100% FONT & BUTTON PARITY: "View Syllabus Blueprint →" & "Access Exam Archives →" */
+      .archive-btn-container {
         display: flex !important;
+        width: 100% !important;
+        margin-top: auto !important;
+      }
+
+      .subject-action-btn,
+      .archive-access-btn,
+      .card-action-btn,
+      #curriculum-grid .subject-action-btn,
+      #landing-curriculum .subject-action-btn,
+      #landing-curriculum .subject-card .btn-outline,
+      #archives-grid .archive-access-btn,
+      #archives-grid .btn-preview-paper,
+      #landing-pyqs .archive-access-btn,
+      #landing-pyqs .btn-preview-paper,
+      .pyq-card .archive-access-btn,
+      .pyq-card .btn-preview-paper,
+      .pyq-card .btn-outline {
+        display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
-        gap: 0.5rem !important;
+        gap: 0.5rem !important; /* gap-2 */
         width: 100% !important;
+        box-sizing: border-box !important;
+        margin-top: auto !important;
         padding: 0.625rem 1rem !important; /* py-2.5 px-4 */
         border-radius: 0.75rem !important; /* rounded-xl */
-        font-family: inherit !important;
+        font-family: var(--font-body), 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
         font-size: 0.875rem !important; /* text-sm */
-        font-weight: 500 !important; /* font-medium */
-        line-height: 1.25 !important;
+        font-weight: 600 !important; /* font-semibold */
+        line-height: 1.25 !important; /* leading-tight */
+        letter-spacing: -0.01em !important;
         white-space: nowrap !important;
         text-decoration: none !important;
         cursor: pointer !important;
-        box-sizing: border-box !important;
+        transition: all 180ms cubic-bezier(0.4, 0, 0.2, 1) !important;
       }
-      :root.light-theme #landing-pyqs .btn-preview-paper,
-      [data-theme="light"] #landing-pyqs .btn-preview-paper,
-      .light-theme #landing-pyqs .btn-preview-paper,
-      .light #landing-pyqs .btn-preview-paper,
-      html.light #landing-pyqs .btn-preview-paper,
-      html:not(.dark) #landing-pyqs .btn-preview-paper,
-      :root.light-theme #archives-grid .btn-preview-paper,
-      [data-theme="light"] #archives-grid .btn-preview-paper,
-      .light-theme #archives-grid .btn-preview-paper,
-      .light #archives-grid .btn-preview-paper,
-      html.light #archives-grid .btn-preview-paper,
-      html:not(.dark) #archives-grid .btn-preview-paper,
-      :root.light-theme .pyq-card .btn-primary,
-      [data-theme="light"] .pyq-card .btn-primary,
-      .light-theme .pyq-card .btn-primary,
-      .light .pyq-card .btn-primary,
-      html.light .pyq-card .btn-primary,
-      html:not(.dark) .pyq-card .btn-primary,
+
+      .subject-action-btn .card-btn-icon,
+      .archive-access-btn .card-btn-icon,
+      .subject-action-btn .btn-icon,
+      .archive-access-btn .btn-icon {
+        font-size: 1rem !important;
+        line-height: 1 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+      }
+
+      .subject-action-btn .card-btn-text,
+      .archive-access-btn .card-btn-text,
+      .subject-action-btn .btn-text,
+      .archive-access-btn .btn-text {
+        font-size: 0.875rem !important;
+        font-weight: 600 !important;
+        line-height: 1.25 !important;
+      }
+
+      .subject-action-btn .card-btn-arrow,
+      .archive-access-btn .card-btn-arrow,
+      .subject-action-btn .btn-arrow,
+      .archive-access-btn .btn-arrow {
+        font-size: 0.95rem !important;
+        line-height: 1 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        transition: transform 0.2s ease !important;
+      }
+
+      .subject-action-btn:hover .card-btn-arrow,
+      .archive-access-btn:hover .card-btn-arrow,
+      .subject-action-btn:hover .btn-arrow,
+      .archive-access-btn:hover .btn-arrow {
+        transform: translateX(2px) !important;
+      }
+
+      /* LIGHT MODE: Synchronized subtle clean outline with slate-700 / hover slate-900 */
+      :root.light-theme .subject-action-btn,
+      [data-theme="light"] .subject-action-btn,
+      .light-theme .subject-action-btn,
+      .light .subject-action-btn,
+      html.light .subject-action-btn,
+      html:not(.dark) .subject-action-btn,
       :root.light-theme .archive-access-btn,
       [data-theme="light"] .archive-access-btn,
       .light-theme .archive-access-btn,
@@ -62,40 +107,24 @@
       .light .btn-preview-paper,
       html.light .btn-preview-paper,
       html:not(.dark) .btn-preview-paper,
-      :root.light-theme .btn-preview-pdf,
-      [data-theme="light"] .btn-preview-pdf,
-      .light-theme .btn-preview-pdf,
-      .light .btn-preview-pdf,
-      html.light .btn-preview-pdf,
-      html:not(.dark) .btn-preview-pdf {
-        background: #f8fafc !important; /* transparent / ultra-light */
-        color: #1e293b !important; /* dark slate/gray, not white */
-        border: 1px solid #cbd5e1 !important; /* subtle, clean border */
-        border-radius: 0.75rem !important; /* rounded-xl */
-        padding: 0.625rem 1rem !important; /* py-2.5 px-4 */
-        font-size: 0.875rem !important; /* text-sm */
-        font-weight: 500 !important; /* font-medium */
+      :root.light-theme .card-action-btn,
+      [data-theme="light"] .card-action-btn,
+      html.light .card-action-btn,
+      html:not(.dark) .card-action-btn,
+      :root.light-theme .pyq-card .btn-primary,
+      [data-theme="light"] .pyq-card .btn-primary {
+        background: #f8fafc !important; /* bg-slate-50 */
+        border: 1px solid #cbd5e1 !important; /* border-slate-300 */
+        color: #334155 !important; /* text-slate-700 */
         box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
-        transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1) !important;
       }
-      :root.light-theme #landing-pyqs .btn-preview-paper:hover,
-      [data-theme="light"] #landing-pyqs .btn-preview-paper:hover,
-      .light-theme #landing-pyqs .btn-preview-paper:hover,
-      .light #landing-pyqs .btn-preview-paper:hover,
-      html.light #landing-pyqs .btn-preview-paper:hover,
-      html:not(.dark) #landing-pyqs .btn-preview-paper:hover,
-      :root.light-theme #archives-grid .btn-preview-paper:hover,
-      [data-theme="light"] #archives-grid .btn-preview-paper:hover,
-      .light-theme #archives-grid .btn-preview-paper:hover,
-      .light #archives-grid .btn-preview-paper:hover,
-      html.light #archives-grid .btn-preview-paper:hover,
-      html:not(.dark) #archives-grid .btn-preview-paper:hover,
-      :root.light-theme .pyq-card .btn-primary:hover,
-      [data-theme="light"] .pyq-card .btn-primary:hover,
-      .light-theme .pyq-card .btn-primary:hover,
-      .light .pyq-card .btn-primary:hover,
-      html.light .pyq-card .btn-primary:hover,
-      html:not(.dark) .pyq-card .btn-primary:hover,
+
+      :root.light-theme .subject-action-btn:hover,
+      [data-theme="light"] .subject-action-btn:hover,
+      .light-theme .subject-action-btn:hover,
+      .light .subject-action-btn:hover,
+      html.light .subject-action-btn:hover,
+      html:not(.dark) .subject-action-btn:hover,
       :root.light-theme .archive-access-btn:hover,
       [data-theme="light"] .archive-access-btn:hover,
       .light-theme .archive-access-btn:hover,
@@ -108,47 +137,93 @@
       .light .btn-preview-paper:hover,
       html.light .btn-preview-paper:hover,
       html:not(.dark) .btn-preview-paper:hover,
-      :root.light-theme .btn-preview-pdf:hover,
-      [data-theme="light"] .btn-preview-pdf:hover,
-      .light-theme .btn-preview-pdf:hover,
-      .light .btn-preview-pdf:hover,
-      html.light .btn-preview-pdf:hover,
-      html:not(.dark) .btn-preview-pdf:hover {
+      :root.light-theme .card-action-btn:hover,
+      [data-theme="light"] .card-action-btn:hover,
+      html.light .card-action-btn:hover,
+      html:not(.dark) .card-action-btn:hover,
+      :root.light-theme .pyq-card .btn-primary:hover,
+      [data-theme="light"] .pyq-card .btn-primary:hover {
         background: #f1f5f9 !important; /* hover:bg-slate-100 */
-        border-color: #94a3b8 !important; /* hover:border-slate-300 */
-        color: #0f172a !important; /* text-slate-900 */
+        border-color: #94a3b8 !important; /* hover:border-slate-400 */
+        color: #0f172a !important; /* hover:text-slate-900 */
         box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.08) !important;
         transform: translateY(-1px) !important;
       }
-      :root.light-theme #landing-pyqs .btn-preview-paper:active,
-      [data-theme="light"] #landing-pyqs .btn-preview-paper:active,
-      html:not(.dark) #landing-pyqs .btn-preview-paper:active,
+
+      :root.light-theme .subject-action-btn:active,
+      [data-theme="light"] .subject-action-btn:active,
+      html:not(.dark) .subject-action-btn:active,
       :root.light-theme .archive-access-btn:active,
       [data-theme="light"] .archive-access-btn:active,
-      html:not(.dark) .archive-access-btn:active {
+      html:not(.dark) .archive-access-btn:active,
+      :root.light-theme .card-action-btn:active,
+      [data-theme="light"] .card-action-btn:active,
+      html:not(.dark) .card-action-btn:active {
         background: #e2e8f0 !important;
         transform: scale(0.99) !important;
       }
-      /* Dark mode preservation */
-      html.dark #landing-pyqs .btn-preview-paper,
-      [data-theme="dark"] #landing-pyqs .btn-preview-paper,
-      html.dark .archive-access-btn,
+
+      /* DARK MODE: Synchronized sleek outline with white text and glass background */
+      [data-theme="dark"] .subject-action-btn,
+      html.dark .subject-action-btn,
+      .dark .subject-action-btn,
+      :root:not(.light-theme) .subject-action-btn,
       [data-theme="dark"] .archive-access-btn,
-      html.dark .pyq-card .btn-primary,
-      [data-theme="dark"] .pyq-card .btn-primary {
-        background: #4f46e5 !important;
+      html.dark .archive-access-btn,
+      .dark .archive-access-btn,
+      :root:not(.light-theme) .archive-access-btn,
+      [data-theme="dark"] .btn-preview-paper,
+      html.dark .btn-preview-paper,
+      .dark .btn-preview-paper,
+      :root:not(.light-theme) .btn-preview-paper,
+      [data-theme="dark"] .card-action-btn,
+      html.dark .card-action-btn,
+      .dark .card-action-btn,
+      :root:not(.light-theme) .card-action-btn,
+      [data-theme="dark"] .pyq-card .btn-primary,
+      html.dark .pyq-card .btn-primary {
+        background: rgba(255, 255, 255, 0.04) !important;
+        border: 1px solid rgba(255, 255, 255, 0.14) !important;
         color: #ffffff !important;
-        border: 1px solid transparent !important;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2) !important;
       }
-      html.dark #landing-pyqs .btn-preview-paper:hover,
-      [data-theme="dark"] #landing-pyqs .btn-preview-paper:hover,
-      html.dark .archive-access-btn:hover,
+
+      [data-theme="dark"] .subject-action-btn:hover,
+      html.dark .subject-action-btn:hover,
+      .dark .subject-action-btn:hover,
+      :root:not(.light-theme) .subject-action-btn:hover,
       [data-theme="dark"] .archive-access-btn:hover,
-      html.dark .pyq-card .btn-primary:hover,
-      [data-theme="dark"] .pyq-card .btn-primary:hover {
-        background: #4338ca !important;
+      html.dark .archive-access-btn:hover,
+      .dark .archive-access-btn:hover,
+      :root:not(.light-theme) .archive-access-btn:hover,
+      [data-theme="dark"] .btn-preview-paper:hover,
+      html.dark .btn-preview-paper:hover,
+      .dark .btn-preview-paper:hover,
+      :root:not(.light-theme) .btn-preview-paper:hover,
+      [data-theme="dark"] .card-action-btn:hover,
+      html.dark .card-action-btn:hover,
+      .dark .card-action-btn:hover,
+      :root:not(.light-theme) .card-action-btn:hover,
+      [data-theme="dark"] .pyq-card .btn-primary:hover,
+      html.dark .pyq-card .btn-primary:hover {
+        background: rgba(99, 102, 241, 0.15) !important;
+        border-color: #6366f1 !important;
         color: #ffffff !important;
-        border: 1px solid transparent !important;
+        box-shadow: 0 4px 14px rgba(99, 102, 241, 0.25) !important;
+        transform: translateY(-1px) !important;
+      }
+
+      [data-theme="dark"] .subject-action-btn:active,
+      html.dark .subject-action-btn:active,
+      .dark .subject-action-btn:active,
+      [data-theme="dark"] .archive-access-btn:active,
+      html.dark .archive-access-btn:active,
+      .dark .archive-access-btn:active,
+      [data-theme="dark"] .card-action-btn:active,
+      html.dark .card-action-btn:active,
+      .dark .card-action-btn:active {
+        background: rgba(99, 102, 241, 0.25) !important;
+        transform: scale(0.99) !important;
       }
       /* Modal options layout stability: prevent bursting scale transforms */
       #academic-setup-modal .academic-option,
@@ -237,57 +312,54 @@
         letter-spacing: 0.1em !important;
       }
 
-      /* Footer Attribution & Highlight Tokens */
-      .footer-brand-highlight {
+      /* Footer Attribution: Unified Platform Title & No Author Underline */
+      .footer-platform-title {
         font-weight: 700 !important;
-        color: #4f46e5;
-        letter-spacing: -0.01em;
-        transition: color 0.2s ease, text-shadow 0.2s ease;
+        letter-spacing: -0.01em !important;
+        display: inline-block;
+        transition: color 0.2s ease;
       }
-      [data-theme="dark"] .footer-brand-highlight,
-      html.dark .footer-brand-highlight,
-      .dark .footer-brand-highlight {
-        color: #818cf8 !important;
-        text-shadow: 0 0 14px rgba(129, 140, 248, 0.35);
+      [data-theme="dark"] .footer-platform-title,
+      html.dark .footer-platform-title,
+      .dark .footer-platform-title {
+        color: #ffffff !important;
+        text-shadow: none !important;
       }
-      :root.light-theme .footer-brand-highlight,
-      [data-theme="light"] .footer-brand-highlight,
-      html.light .footer-brand-highlight,
-      html:not(.dark) .footer-brand-highlight {
-        color: #4338ca !important;
-        text-shadow: none;
+      :root.light-theme .footer-platform-title,
+      [data-theme="light"] .footer-platform-title,
+      html.light .footer-platform-title,
+      html:not(.dark) .footer-platform-title {
+        color: #0f172a !important;
+        text-shadow: none !important;
       }
 
-      .footer-maintainer-highlight {
+      .footer-maintainer {
         font-weight: 700 !important;
-        color: #0f172a;
-        text-decoration: underline !important;
-        text-decoration-color: rgba(99, 102, 241, 0.55) !important;
-        text-underline-offset: 4px !important;
-        text-decoration-thickness: 1.5px !important;
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        text-decoration: none !important;
+        display: inline-block;
+        transition: color 0.2s ease;
       }
-      [data-theme="dark"] .footer-maintainer-highlight,
-      html.dark .footer-maintainer-highlight,
-      .dark .footer-maintainer-highlight {
-        color: #f8fafc !important;
-        text-decoration-color: rgba(129, 140, 248, 0.65) !important;
+      [data-theme="dark"] .footer-maintainer,
+      html.dark .footer-maintainer,
+      .dark .footer-maintainer {
+        color: #ffffff !important;
+        text-decoration: none !important;
       }
-      :root.light-theme .footer-maintainer-highlight,
-      [data-theme="light"] .footer-maintainer-highlight,
-      html.light .footer-maintainer-highlight,
-      html:not(.dark) .footer-maintainer-highlight {
+      :root.light-theme .footer-maintainer,
+      [data-theme="light"] .footer-maintainer,
+      html.light .footer-maintainer,
+      html:not(.dark) .footer-maintainer {
         color: #0f172a !important;
-        text-decoration-color: rgba(79, 70, 229, 0.55) !important;
+        text-decoration: none !important;
       }
-      .footer-maintainer-highlight:hover {
+      .footer-maintainer:hover {
         color: #6366f1 !important;
-        text-decoration-color: #6366f1 !important;
+        text-decoration: none !important;
       }
-      [data-theme="dark"] .footer-maintainer-highlight:hover,
-      html.dark .footer-maintainer-highlight:hover {
+      [data-theme="dark"] .footer-maintainer:hover,
+      html.dark .footer-maintainer:hover {
         color: #a5b4fc !important;
-        text-decoration-color: #a5b4fc !important;
+        text-decoration: none !important;
       }
     </style>
     <!-- Immediate theme application script to eliminate theme flash -->
@@ -549,10 +621,10 @@
         <footer class="landing-footer" role="contentinfo">
             <div class="landing-footer-container">
                 <p class="landing-footer-primary">
-                    <span class="footer-univ-name">MAKAUT</span> <span class="footer-brand-highlight font-bold text-indigo-600 dark:text-indigo-400">Campus Sense</span> <span class="footer-separator" aria-hidden="true">&mdash;</span> <span class="footer-tagline">Academic Resource Aggregator &amp; Conversational RAG Engine</span>
+                    <span class="footer-platform-title font-bold text-slate-900 dark:text-white">MAKAUT Campus Sense</span> <span class="footer-separator" aria-hidden="true">&mdash;</span> <span class="footer-tagline">Academic Resource Aggregator &amp; Conversational RAG Engine</span>
                 </p>
                 <p class="landing-footer-secondary">
-                    Curated for Maulana Abul Kalam Azad University of Technology affiliated colleges. Maintained by <span class="footer-maintainer-highlight font-bold text-slate-900 dark:text-white underline decoration-indigo-500/50 underline-offset-4">Srijita Bhowmick</span>.
+                    Curated for Maulana Abul Kalam Azad University of Technology affiliated colleges. Maintained by <span class="footer-maintainer font-bold text-slate-900 dark:text-white">Srijita Bhowmick</span>.
                 </p>
             </div>
         </footer>
