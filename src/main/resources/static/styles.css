@@ -312,15 +312,13 @@
   background: var(--accent-hover) !important;
 }
 
-[data-theme="light"] .btn-secondary,
-[data-theme="light"] .btn-preview-paper {
+[data-theme="light"] .btn-secondary {
   background: var(--btn-secondary-bg) !important;
   color: var(--btn-secondary-text) !important;
   border: 1px solid var(--btn-secondary-border) !important;
 }
 
-[data-theme="light"] .btn-secondary:hover,
-[data-theme="light"] .btn-preview-paper:hover {
+[data-theme="light"] .btn-secondary:hover {
   background: var(--btn-secondary-hover) !important;
   border-color: #94a3b8 !important;
 }
@@ -6585,38 +6583,169 @@ html.light .pyq-year-filter-btn.active {
 }
 
 /* 8. MAKAUT Examination Archives Button & Section */
+.archive-btn-container {
+  display: flex !important;
+  width: 100% !important;
+  margin-top: auto !important;
+}
+
+#landing-pyqs .btn-preview-paper,
+#archives-grid .btn-preview-paper,
+.pyq-card .btn-preview-paper,
+.archive-access-btn {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem !important;
+  width: 100% !important;
+  padding: 0.625rem 1rem !important; /* py-2.5 px-4 */
+  border-radius: 0.75rem !important; /* rounded-xl */
+  font-family: inherit !important;
+  font-size: 0.925rem !important;
+  font-weight: 600 !important;
+  line-height: 1.25 !important;
+  white-space: nowrap !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  box-sizing: border-box !important;
+  outline: none !important;
+  text-align: center !important;
+}
+
+#landing-pyqs .btn-preview-paper .btn-icon,
+#landing-pyqs .btn-preview-paper .btn-text,
+#landing-pyqs .btn-preview-paper .btn-arrow,
+.archive-access-btn .btn-icon,
+.archive-access-btn .btn-text,
+.archive-access-btn .btn-arrow {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  vertical-align: middle !important;
+  line-height: 1 !important;
+}
+
+#landing-pyqs .btn-preview-paper .btn-icon,
+.archive-access-btn .btn-icon {
+  font-size: 1rem !important;
+}
+
+#landing-pyqs .btn-preview-paper .btn-text,
+.archive-access-btn .btn-text {
+  font-size: 0.925rem !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+}
+
+#landing-pyqs .btn-preview-paper .btn-arrow,
+.archive-access-btn .btn-arrow {
+  font-size: 1rem !important;
+  transition: transform 150ms ease !important;
+}
+
+/* Light Mode Styling for Archive Buttons */
 :root.light-theme #landing-pyqs .btn-preview-paper,
 [data-theme="light"] #landing-pyqs .btn-preview-paper,
 .light-theme #landing-pyqs .btn-preview-paper,
 .light #landing-pyqs .btn-preview-paper,
 html.light #landing-pyqs .btn-preview-paper,
-:root.light-theme #landing-pyqs .btn-primary,
-[data-theme="light"] #landing-pyqs .btn-primary,
-.light-theme #landing-pyqs .btn-primary,
-.light #landing-pyqs .btn-primary,
-html.light #landing-pyqs .btn-primary {
-  background: #4f46e5 !important;
-  color: #ffffff !important;
+html:not(.dark) #landing-pyqs .btn-preview-paper,
+:root.light-theme #archives-grid .btn-preview-paper,
+[data-theme="light"] #archives-grid .btn-preview-paper,
+.light-theme #archives-grid .btn-preview-paper,
+.light #archives-grid .btn-preview-paper,
+html.light #archives-grid .btn-preview-paper,
+html:not(.dark) #archives-grid .btn-preview-paper,
+:root.light-theme .pyq-card .btn-preview-paper,
+[data-theme="light"] .pyq-card .btn-preview-paper,
+.light-theme .pyq-card .btn-preview-paper,
+.light .pyq-card .btn-preview-paper,
+html.light .pyq-card .btn-preview-paper,
+html:not(.dark) .pyq-card .btn-preview-paper,
+:root.light-theme .archive-access-btn,
+[data-theme="light"] .archive-access-btn,
+.light-theme .archive-access-btn,
+.light .archive-access-btn,
+html.light .archive-access-btn,
+html:not(.dark) .archive-access-btn {
+  background: #4f46e5 !important; /* solid bg-indigo-600 */
+  color: #ffffff !important; /* crisp white text */
   border: 1px solid #4338ca !important;
-  box-shadow: 0 2px 6px rgba(79, 70, 229, 0.2) !important;
-  font-weight: 600 !important;
-  transition: all 0.2s ease !important;
+  border-radius: 0.75rem !important; /* rounded-xl */
+  padding: 0.625rem 1rem !important; /* py-2.5 px-4 */
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.06) !important;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
+
+/* Light Mode Hover State */
 :root.light-theme #landing-pyqs .btn-preview-paper:hover,
 [data-theme="light"] #landing-pyqs .btn-preview-paper:hover,
 .light-theme #landing-pyqs .btn-preview-paper:hover,
 .light #landing-pyqs .btn-preview-paper:hover,
 html.light #landing-pyqs .btn-preview-paper:hover,
-:root.light-theme #landing-pyqs .btn-primary:hover,
-[data-theme="light"] #landing-pyqs .btn-primary:hover,
-.light-theme #landing-pyqs .btn-primary:hover,
-.light #landing-pyqs .btn-primary:hover,
-html.light #landing-pyqs .btn-primary:hover {
-  background: #4338ca !important;
-  color: #ffffff !important;
+html:not(.dark) #landing-pyqs .btn-preview-paper:hover,
+:root.light-theme #archives-grid .btn-preview-paper:hover,
+[data-theme="light"] #archives-grid .btn-preview-paper:hover,
+.light-theme #archives-grid .btn-preview-paper:hover,
+.light #archives-grid .btn-preview-paper:hover,
+html.light #archives-grid .btn-preview-paper:hover,
+html:not(.dark) #archives-grid .btn-preview-paper:hover,
+:root.light-theme .pyq-card .btn-preview-paper:hover,
+[data-theme="light"] .pyq-card .btn-preview-paper:hover,
+.light-theme .pyq-card .btn-preview-paper:hover,
+.light .pyq-card .btn-preview-paper:hover,
+html.light .pyq-card .btn-preview-paper:hover,
+html:not(.dark) .pyq-card .btn-preview-paper:hover,
+:root.light-theme .archive-access-btn:hover,
+[data-theme="light"] .archive-access-btn:hover,
+.light-theme .archive-access-btn:hover,
+.light .archive-access-btn:hover,
+html.light .archive-access-btn:hover,
+html:not(.dark) .archive-access-btn:hover {
+  background: #4338ca !important; /* hover:bg-indigo-700 */
   border-color: #3730a3 !important;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3) !important;
-  transform: translateY(-2px);
+  color: #ffffff !important;
+  box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2), 0 2px 4px -2px rgba(79, 70, 229, 0.15) !important;
+  transform: translateY(-1px) !important;
+}
+
+:root.light-theme #landing-pyqs .btn-preview-paper:hover .btn-arrow,
+[data-theme="light"] #landing-pyqs .btn-preview-paper:hover .btn-arrow,
+html:not(.dark) #landing-pyqs .btn-preview-paper:hover .btn-arrow,
+:root.light-theme .archive-access-btn:hover .btn-arrow,
+[data-theme="light"] .archive-access-btn:hover .btn-arrow,
+html:not(.dark) .archive-access-btn:hover .btn-arrow {
+  transform: translateX(3px) !important;
+}
+
+/* Light Mode Active State */
+:root.light-theme #landing-pyqs .btn-preview-paper:active,
+[data-theme="light"] #landing-pyqs .btn-preview-paper:active,
+.light-theme #landing-pyqs .btn-preview-paper:active,
+.light #landing-pyqs .btn-preview-paper:active,
+html.light #landing-pyqs .btn-preview-paper:active,
+html:not(.dark) #landing-pyqs .btn-preview-paper:active,
+:root.light-theme #archives-grid .btn-preview-paper:active,
+[data-theme="light"] #archives-grid .btn-preview-paper:active,
+.light-theme #archives-grid .btn-preview-paper:active,
+.light #archives-grid .btn-preview-paper:active,
+html.light #archives-grid .btn-preview-paper:active,
+html:not(.dark) #archives-grid .btn-preview-paper:active,
+:root.light-theme .pyq-card .btn-preview-paper:active,
+[data-theme="light"] .pyq-card .btn-preview-paper:active,
+.light-theme .pyq-card .btn-preview-paper:active,
+.light .pyq-card .btn-preview-paper:active,
+html.light .pyq-card .btn-preview-paper:active,
+html:not(.dark) .pyq-card .btn-preview-paper:active,
+:root.light-theme .archive-access-btn:active,
+[data-theme="light"] .archive-access-btn:active,
+.light-theme .archive-access-btn:active,
+.light .archive-access-btn:active,
+html.light .archive-access-btn:active,
+html:not(.dark) .archive-access-btn:active {
+  background: #3730a3 !important;
+  transform: scale(0.99) !important; /* active:scale-[0.99] */
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
 }
 :root.light-theme .pyq-repo-filter-bar,
 [data-theme="light"] .pyq-repo-filter-bar,

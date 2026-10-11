@@ -12755,10 +12755,10 @@ window.getSubjectDocuments = getSubjectDocuments;
       } else if (semNum) {
         allEntries = streamArchives;
       } else if (yNorm.startsWith('202')) {
-        allEntries = [...firstYearArchives, ...streamArchives].filter(entry => entry.years && entry.years.includes(yNorm));
+        allEntries = [...streamArchives].filter(entry => entry.years && entry.years.includes(yNorm));
       } else {
-        // Default 'all'
-        allEntries = [...firstYearArchives, ...streamArchives];
+        // Default: Render the 6 consolidated stream cards
+        allEntries = streamArchives;
       }
 
       if (allEntries.length === 0) {
@@ -12767,7 +12767,7 @@ window.getSubjectDocuments = getSubjectDocuments;
       }
 
       container.innerHTML = allEntries.map(entry => `
-        <div class="bento-card pyq-card">
+        <div class="bento-card pyq-card" data-stream="${entry.streamCode || ''}">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
             <span class="badge exam-year-badge">${entry.badge}</span>
             <span class="badge course-code-badge">${entry.subBadge}</span>
@@ -12779,9 +12779,9 @@ window.getSubjectDocuments = getSubjectDocuments;
               return `<span class="badge sem-tag-pill ${isHighlighted ? 'active-sem' : ''}">${s}</span>`;
             }).join('')}
           </div>
-          <div style="display: flex; gap: 0.5rem; margin-top: auto;">
-            <button class="btn btn-primary btn-preview-paper" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;" ${entry.action}>
-              <span>📄</span><span>Access Exam Archives →</span>
+          <div class="archive-btn-container" style="display: flex; width: 100%; margin-top: auto;">
+            <button class="btn btn-primary btn-preview-paper archive-access-btn" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.5rem;" ${entry.action} aria-label="Access ${entry.title}">
+              <span class="btn-icon">📄</span><span class="btn-text">Access Exam Archives</span><span class="btn-arrow">→</span>
             </button>
           </div>
         </div>
@@ -12860,12 +12860,16 @@ window.getSubjectDocuments = getSubjectDocuments;
     // Ensure both are called on initial boot:
     document.addEventListener('DOMContentLoaded', () => {
       renderLandingCurriculum('all');
-      renderLandingArchives('all');
+      const activeYearBtn = document.querySelector('#pyq-year-pills .active') || document.querySelector('.pyq-year-filter-btn.active');
+      const initialYear = activeYearBtn ? (activeYearBtn.getAttribute('data-year-filter') || activeYearBtn.getAttribute('data-year')) : 'sem-3';
+      renderLandingArchives(initialYear || 'sem-3');
       bindLandingFilterButtons();
     });
     if (document.readyState !== 'loading') {
       renderLandingCurriculum('all');
-      renderLandingArchives('all');
+      const activeYearBtn = document.querySelector('#pyq-year-pills .active') || document.querySelector('.pyq-year-filter-btn.active');
+      const initialYear = activeYearBtn ? (activeYearBtn.getAttribute('data-year-filter') || activeYearBtn.getAttribute('data-year')) : 'sem-3';
+      renderLandingArchives(initialYear || 'sem-3');
       bindLandingFilterButtons();
     }
 
