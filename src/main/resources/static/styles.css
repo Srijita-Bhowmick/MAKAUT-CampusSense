@@ -2895,7 +2895,7 @@ body.is-drawer-resizing .ai-slide-drawer {
     font-weight: 800;
     letter-spacing: -0.035em;
     line-height: 1.1;
-    margin-bottom: 1.35rem;
+    margin-bottom: 1rem;
     background: linear-gradient(135deg, #ffffff 25%, #818cf8 65%, #38bdf8 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -6494,5 +6494,94 @@ html.light .pyq-repo-filter-bar {
 [data-theme="light"] #landing-pyqs .section-subtitle,
 .light-theme #landing-pyqs .section-subtitle,
 .light #landing-pyqs .section-subtitle {
+  color: #475569 !important;
+}
+
+/* Repository Badge in Light Mode */
+:root.light-theme .landing-badge-pill,
+[data-theme="light"] .landing-badge-pill,
+.light-theme .landing-badge-pill,
+.light .landing-badge-pill,
+html.light .landing-badge-pill {
+  background: #eef2ff !important;
+  border: 1px solid #c7d2fe !important;
+  color: #4338ca !important;
+  box-shadow: 0 1px 3px rgba(67, 56, 202, 0.08) !important;
+}
+
+/* Metric Cards in Light Mode */
+:root.light-theme .highlight-pill,
+[data-theme="light"] .highlight-pill,
+.light-theme .highlight-pill,
+.light .highlight-pill,
+html.light .highlight-pill {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #1e293b !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+}
+:root.light-theme .highlight-pill:hover,
+[data-theme="light"] .highlight-pill:hover,
+.light-theme .highlight-pill:hover,
+.light .highlight-pill:hover,
+html.light .highlight-pill:hover {
+  background: #f8fafc !important;
+  border-color: #6366f1 !important;
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.15) !important;
+  transform: translateY(-2px);
+}
+
+/* Year & Academic Stage Selection Buttons in Light Mode */
+:root.light-theme .primary-year-btn,
+[data-theme="light"] .primary-year-btn,
+.light-theme .primary-year-btn,
+.light .primary-year-btn,
+html.light .primary-year-btn,
+:root.light-theme .academic-option,
+[data-theme="light"] .academic-option,
+.light-theme .academic-option,
+.light .academic-option,
+html.light .academic-option {
+  background: #ffffff !important;
+  color: #1e293b !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+}
+:root.light-theme .primary-year-btn.active,
+:root.light-theme .primary-year-btn.selected,
+[data-theme="light"] .primary-year-btn.active,
+[data-theme="light"] .primary-year-btn.selected,
+.light-theme .primary-year-btn.active,
+.light-theme .primary-year-btn.selected,
+.light .primary-year-btn.active,
+.light .primary-year-btn.selected,
+html.light .primary-year-btn.active,
+html.light .primary-year-btn.selected,
+:root.light-theme .academic-option.active,
+:root.light-theme .academic-option.selected,
+[data-theme="light"] .academic-option.active,
+[data-theme="light"] .academic-option.selected,
+.light-theme .academic-option.active,
+.light-theme .academic-option.selected,
+.light .academic-option.active,
+.light .academic-option.selected,
+html.light .academic-option.active,
+html.light .academic-option.selected {
+  background: #eef2ff !important;
+  border-color: #6366f1 !important;
+  color: #312e81 !important;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2) !important;
+}
+:root.light-theme .year-btn-title,
+[data-theme="light"] .year-btn-title,
+.light-theme .year-btn-title,
+.light .year-btn-title {
+  color: #0f172a !important;
+  font-weight: 700 !important;
+}
+:root.light-theme .year-btn-sub,
+[data-theme="light"] .year-btn-sub,
+.light-theme .year-btn-sub,
+.light .year-btn-sub {
   color: #475569 !important;
 }
