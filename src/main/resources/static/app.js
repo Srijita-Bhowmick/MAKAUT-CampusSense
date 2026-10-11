@@ -12264,13 +12264,15 @@ window.getSubjectDocuments = getSubjectDocuments;
                 if (dashboardViewEl) dashboardViewEl.style.display = 'none';
                 switchView('landing');
                 if (academicModal) {
+                    const isAlreadyOpen = academicModal.style.display === 'flex' && academicModal.classList.contains('active');
                     academicModal.style.display = 'flex';
                     academicModal.classList.add('active');
-                    if (typeof openScopeModal === 'function') {
-                        openScopeModal();
-                    }
-                    if (typeof bindAcademicContextModal === 'function') {
-                        bindAcademicContextModal();
+                    if (!isAlreadyOpen) {
+                        if (typeof openScopeModal === 'function') {
+                            openScopeModal();
+                        } else if (typeof bindAcademicContextModal === 'function') {
+                            bindAcademicContextModal();
+                        }
                     }
                 }
                 break;
@@ -12304,6 +12306,14 @@ window.getSubjectDocuments = getSubjectDocuments;
     window.loadStoredProfile = loadStoredProfile;
 
     function evaluateWorkflowProgression() {
+        const academicModal = document.getElementById('academic-setup-modal') || document.querySelector('.academic-setup-modal') || document.getElementById('scope-modal');
+        const isModalActive = academicModal && academicModal.style.display === 'flex' && academicModal.classList.contains('active');
+
+        // Interaction guard: If the modal is currently open or user has already interacted, do not overwrite or disrupt in-flight selection
+        if (isModalActive || window.isAcademicModalUserDirty) {
+            return;
+        }
+
         const user = window.Clerk?.user || (window.isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true' ? { id: 'auth-user' } : null);
         let storedAcademic = localStorage.getItem('campussense_academic_profile');
 
@@ -13165,10 +13175,20 @@ window.getSubjectDocuments = getSubjectDocuments;
     }
     window.closeAcademicModal = closeAcademicModal;
 
+    // Global Academic Context Modal Interaction Guards & State
+    let isAcademicModalUserDirty = false;
+    window.isAcademicModalUserDirty = isAcademicModalUserDirty;
+
     function populateDynamicStreamPicker() {
         const grid = document.getElementById('stream-picker-grid');
         if (!grid) return;
-        const current = (currentStream || 'CSE').toUpperCase();
+        // If stream options are already rendered, preserve existing DOM to prevent unmounting/flicker
+        if (grid.children && grid.children.length >= 6) {
+            bindStreamOptionEvents(grid);
+            return;
+        }
+        const savedStream = sessionStorage.getItem('academic_modal_active_stream');
+        const current = (savedStream || currentStream || 'CSE').toUpperCase();
         grid.innerHTML = `
             <button type="button" class="stream-option stream-card stream-pill academic-option ${current === 'CSE' ? 'active selected' : ''}" data-stream="CSE">
                 <span class="stream-icon">💻</span>
@@ -13213,9 +13233,11 @@ window.getSubjectDocuments = getSubjectDocuments;
             btn.onclick = function(e) {
                 e.preventDefault();
                 e.stopPropagation();
+                window.isAcademicModalUserDirty = true;
                 streamBtns.forEach(b => b.classList.remove('selected', 'active'));
                 btn.classList.add('selected', 'active');
                 const streamCode = btn.getAttribute('data-stream') || 'CSE';
+                sessionStorage.setItem('academic_modal_active_stream', streamCode);
                 if (modal) modal.setAttribute('data-selected-stream', streamCode);
                 const streamInput = document.getElementById('select-stream');
                 if (streamInput) streamInput.value = streamCode;
@@ -13233,8 +13255,12 @@ window.getSubjectDocuments = getSubjectDocuments;
         const btnDept = modal.querySelector('#btn-scope-departmental-years, .stage-departmental, [data-stage="departmental"]');
         const deptControls = modal.querySelector('#departmental-years-controls, .departmental-options-container');
 
-        function setModalStage(stage) {
+        function setModalStage(stage, isUserAction = false) {
+            if (isUserAction) {
+                window.isAcademicModalUserDirty = true;
+            }
             const isDept = (stage === 'departmental');
+            sessionStorage.setItem('academic_modal_active_stage', isDept ? 'departmental' : 'first-year');
             modal.setAttribute('data-selected-stage', isDept ? 'departmental' : 'first-year');
 
             if (btnFirstYear) {
@@ -13267,7 +13293,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             btnFirstYear.onclick = function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                setModalStage('first-year');
+                setModalStage('first-year', true);
             };
         }
 
@@ -13275,7 +13301,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             btnDept.onclick = function(e) {
                 e.preventDefault();
                 e.stopPropagation();
-                setModalStage('departmental');
+                setModalStage('departmental', true);
             };
         }
 
@@ -13291,9 +13317,11 @@ window.getSubjectDocuments = getSubjectDocuments;
             pill.onclick = function(e) {
                 e.preventDefault();
                 e.stopPropagation();
+                window.isAcademicModalUserDirty = true;
                 semPills.forEach(p => p.classList.remove('selected', 'active'));
                 pill.classList.add('selected', 'active');
                 const chosenSem = pill.getAttribute('data-sem') || pill.textContent.trim().replace(/\D/g, '') || '3';
+                sessionStorage.setItem('academic_modal_active_sem', String(chosenSem));
                 modal.setAttribute('data-selected-sem', chosenSem);
                 const semInput = document.getElementById('select-semester');
                 if (semInput) semInput.value = String(chosenSem);
@@ -13342,6 +13370,12 @@ window.getSubjectDocuments = getSubjectDocuments;
             localStorage.setItem('campussense_academic_profile', JSON.stringify(profile));
             localStorage.setItem('campussense_logged_in', 'true');
             window.isLoggedIn = true;
+
+            // Clear transient session staging keys and interaction dirty flag
+            window.isAcademicModalUserDirty = false;
+            sessionStorage.removeItem('academic_modal_active_stage');
+            sessionStorage.removeItem('academic_modal_active_stream');
+            sessionStorage.removeItem('academic_modal_active_sem');
 
             // Persist legacy keys
             const effectiveYearMode = (profile.stage === 'first-year' || parseInt(profile.semester, 10) <= 2) ? 'FIRST_YEAR' : 'DEPARTMENTAL_YEARS';
@@ -13402,11 +13436,22 @@ window.getSubjectDocuments = getSubjectDocuments;
     }
     window.initAcademicModalStageSelector = initAcademicModalStageSelector;
 
-    function updateAcademicStageUI(stage) {
+    function updateAcademicStageUI(stage, isUserAction = false) {
         const modal = document.getElementById('academic-setup-modal') || document.getElementById('scope-modal') || document.getElementById('academic-modal');
         if (!modal) return;
 
-        const isDept = stage === 'departmental';
+        // Interaction guard: If user has already interacted or explicitly selected departmental, preserve their choice!
+        if (!isUserAction) {
+            const activeSessionStage = sessionStorage.getItem('academic_modal_active_stage') || modal.getAttribute('data-selected-stage');
+            if (window.isAcademicModalUserDirty && activeSessionStage) {
+                stage = activeSessionStage;
+            } else if (activeSessionStage === 'departmental') {
+                stage = 'departmental';
+            }
+        }
+
+        const isDept = (stage === 'departmental');
+        sessionStorage.setItem('academic_modal_active_stage', isDept ? 'departmental' : 'first-year');
         modal.setAttribute('data-selected-stage', isDept ? 'departmental' : 'first-year');
 
         const btnFirstYear = modal.querySelector('#btn-scope-first-year, .stage-first-year, [data-stage="first-year"]');
@@ -13452,6 +13497,8 @@ window.getSubjectDocuments = getSubjectDocuments;
             return;
         }
 
+        const isAlreadyOpen = modal.style.display === 'flex' && modal.classList.contains('active');
+
         // Ensure modal is visible and unblocked
         modal.style.display = 'flex';
         modal.classList.add('active');
@@ -13461,31 +13508,55 @@ window.getSubjectDocuments = getSubjectDocuments;
 
         initAcademicModalStageSelector();
 
-        // Sync existing profile selection if available
+        // If modal was ALREADY open and the user has actively made a selection, DO NOT overwrite or reset in-flight state!
+        if (isAlreadyOpen && window.isAcademicModalUserDirty) {
+            return;
+        }
+
+        // Sync existing profile selection or persistent session stage
         try {
-            const rawProfile = localStorage.getItem('academic_context') || localStorage.getItem('campussense_academic_profile');
-            const profile = rawProfile ? JSON.parse(rawProfile) : {};
-            const isDept = profile.stage === 'departmental' || (profile.semester && parseInt(profile.semester, 10) >= 3);
+            const savedSessionStage = sessionStorage.getItem('academic_modal_active_stage');
+            let isDept = false;
+
+            if (savedSessionStage) {
+                isDept = (savedSessionStage === 'departmental');
+            } else {
+                const rawProfile = localStorage.getItem('academic_context') || localStorage.getItem('campussense_academic_profile');
+                const profile = rawProfile ? JSON.parse(rawProfile) : {};
+                isDept = profile.stage === 'departmental' || (profile.semester && parseInt(profile.semester, 10) >= 3);
+            }
+
             updateAcademicStageUI(isDept ? 'departmental' : 'first-year');
 
             if (isDept) {
-                if (profile.stream) {
-                    modal.setAttribute('data-selected-stream', profile.stream);
+                const activeStream = sessionStorage.getItem('academic_modal_active_stream') || modal.getAttribute('data-selected-stream') || (function() {
+                    const raw = localStorage.getItem('academic_context') || localStorage.getItem('campussense_academic_profile');
+                    return raw ? JSON.parse(raw).stream : 'CSE';
+                })();
+
+                if (activeStream) {
+                    modal.setAttribute('data-selected-stream', activeStream);
                     const streamInput = document.getElementById('select-stream');
-                    if (streamInput) streamInput.value = profile.stream;
+                    if (streamInput) streamInput.value = activeStream;
                     modal.querySelectorAll('#stream-picker-grid .stream-option').forEach(s => {
-                        const isMatch = s.getAttribute('data-stream') === profile.stream;
+                        const isMatch = s.getAttribute('data-stream') === activeStream;
                         s.classList.toggle('selected', isMatch);
                         s.classList.toggle('active', isMatch);
                     });
                 }
-                if (profile.semester) {
-                    modal.setAttribute('data-selected-sem', String(profile.semester));
+
+                const activeSem = sessionStorage.getItem('academic_modal_active_sem') || modal.getAttribute('data-selected-sem') || (function() {
+                    const raw = localStorage.getItem('academic_context') || localStorage.getItem('campussense_academic_profile');
+                    return raw ? JSON.parse(raw).semester : '3';
+                })();
+
+                if (activeSem) {
+                    modal.setAttribute('data-selected-sem', String(activeSem));
                     const semInput = document.getElementById('select-semester');
-                    if (semInput) semInput.value = String(profile.semester);
+                    if (semInput) semInput.value = String(activeSem);
                     modal.querySelectorAll('.sem-pill, [data-sem], .sem-btn, .semester-btn').forEach(p => {
                         const semVal = p.getAttribute('data-sem') || p.textContent.trim().replace(/\D/g, '');
-                        const isMatch = semVal === String(profile.semester);
+                        const isMatch = semVal === String(activeSem);
                         p.classList.toggle('selected', isMatch);
                         p.classList.toggle('active', isMatch);
                     });
