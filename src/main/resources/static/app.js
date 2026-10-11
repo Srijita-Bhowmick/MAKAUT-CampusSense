@@ -589,16 +589,51 @@ window.onClerkLoaded = function() {
     }
     window.getActiveAcademicSubject = getActiveAcademicSubject;
 
-    function updateLandingLiveMetrics() {
+    async function updateLandingLiveMetrics() {
         try {
             const subjectsEl = document.getElementById('metric-subjects-count') || document.getElementById('stat-subjects-count');
             const pyqsEl = document.getElementById('metric-pyqs-count') || document.getElementById('stat-pyqs-count');
 
+            let subjectsCount = 122;
+            let pyqsCount = 1459;
+
+            if (window._catalogResources && Array.isArray(window._catalogResources)) {
+                const pyqs = window._catalogResources.filter(r => r.resourceType === 'PYQ');
+                if (pyqs.length > 0) {
+                    pyqsCount = pyqs.length;
+                    const uniqueSubs = new Set(pyqs.map(r => r.subjectCode).filter(Boolean));
+                    if (uniqueSubs.size > 0) subjectsCount = uniqueSubs.size;
+                }
+            } else if (typeof fetch === 'function') {
+                try {
+                    const res = await fetch('resources.json');
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data && data.summary && typeof data.summary.pyqCount === 'number') {
+                            pyqsCount = data.summary.pyqCount;
+                        }
+                        if (data && Array.isArray(data.resources)) {
+                            window._catalogResources = data.resources;
+                            const pyqs = data.resources.filter(r => r.resourceType === 'PYQ');
+                            if (pyqs.length > 0) {
+                                pyqsCount = pyqs.length;
+                                const uniqueSubs = new Set(pyqs.map(r => r.subjectCode).filter(Boolean));
+                                if (uniqueSubs.size > 0) subjectsCount = uniqueSubs.size;
+                            }
+                        }
+                    }
+                } catch (e) {
+                    // Fallback to verified theory subjects count
+                    subjectsCount = 122;
+                    pyqsCount = 1459;
+                }
+            }
+
             if (subjectsEl) {
-                subjectsEl.textContent = '323';
+                subjectsEl.textContent = String(subjectsCount);
             }
             if (pyqsEl) {
-                pyqsEl.textContent = '2881';
+                pyqsEl.textContent = String(pyqsCount);
             }
         } catch (err) {
             console.warn("Could not calculate dynamic landing metrics:", err);
@@ -632,10 +667,10 @@ window.onClerkLoaded = function() {
         'MULTIDISCIPLINARY': '1st Year Multidisciplinary',
         'CSE': 'Computer Science & Engineering',
         'IT': 'Information Technology',
-        'CSE-AIML': 'CSE (Artificial Intelligence & Machine Learning)',
-        'CSCS': 'Computer Science & Cyber Security',
+        'CSE-AIML': 'Computer Science and Artificial Intelligence and Machine Learning',
+        'CSCS': 'Computer Science and Cyber Security',
         'CSDS': 'Computer Science and Data Science',
-        'CSBS': 'Computer Science & Business Systems'
+        'CSBS': 'Computer Science and Business Systems'
     };
 
     // =========================================================================
@@ -11564,7 +11599,7 @@ window.getSubjectDocuments = getSubjectDocuments;
         },
         'CSE-AIML': {
             code: 'CSE-AIML',
-            name: 'CSE (Artificial Intelligence & Machine Learning)',
+            name: 'Computer Science and Artificial Intelligence and Machine Learning',
             years: [1, 2, 3, 4],
             semesters: [1, 2, 3, 4, 5, 6, 7, 8],
             courses: OFFICIAL_CSE_AIML_COURSES,
@@ -11573,7 +11608,7 @@ window.getSubjectDocuments = getSubjectDocuments;
         },
         'CSCS': {
             code: 'CSCS',
-            name: 'Computer Science & Cyber Security',
+            name: 'Computer Science and Cyber Security',
             years: [1, 2, 3, 4],
             semesters: [1, 2, 3, 4, 5, 6, 7, 8],
             courses: OFFICIAL_CSCS_COURSES,
@@ -11591,7 +11626,7 @@ window.getSubjectDocuments = getSubjectDocuments;
         },
         'CSBS': {
             code: 'CSBS',
-            name: 'Computer Science & Business Systems',
+            name: 'Computer Science and Business Systems',
             years: [1, 2, 3, 4],
             semesters: [1, 2, 3, 4, 5, 6, 7, 8],
             courses: OFFICIAL_CSBS_COURSES,
@@ -12567,52 +12602,52 @@ window.getSubjectDocuments = getSubjectDocuments;
     const LANDING_CONSOLIDATED_STREAMS = [
       {
         streamCode: 'cse',
-        badge: 'CSE Core Scheme',
+        badge: 'CSE',
         scope: 'Semesters 3 to 8',
-        title: 'Computer Science & Engineering (CSE)',
+        title: 'Computer Science & Engineering',
         syllabusPath: 'CSE(3rd to 8th sem)/CSE20.pdf',
         pyqYears: ['2026', '2025', '2024', '2023', '2020'],
         archiveTitle: 'Computer Science & Engineering Archives'
       },
       {
         streamCode: 'cse-aiml',
-        badge: 'CSE-AIML Scheme',
+        badge: 'CSE-AIML',
         scope: 'Semesters 3 to 8',
-        title: 'CSE (Artificial Intelligence & Machine Learning)',
+        title: 'Computer Science and Artificial Intelligence and Machine Learning',
         syllabusPath: 'CSE-AIML(3rd to 8th sem)/CSE_AIML_Syllabus_3rd_to_8th.pdf',
         pyqYears: ['2026', '2025', '2024', '2023', '2020'],
-        archiveTitle: 'CSE (AI & Machine Learning) Archives'
+        archiveTitle: 'Computer Science and Artificial Intelligence and Machine Learning Archives'
       },
       {
         streamCode: 'it',
-        badge: 'IT Core Scheme',
+        badge: 'IT',
         scope: 'Semesters 3 to 8',
-        title: 'Information Technology (IT)',
+        title: 'Information Technology',
         syllabusPath: 'IT(3rd to 8th sem)/IT_Syllabus_3rd_to_8th.pdf',
         pyqYears: ['2026', '2025', '2024', '2023', '2020'],
         archiveTitle: 'Information Technology Archives'
       },
       {
         streamCode: 'csbs',
-        badge: 'CSBS Scheme',
+        badge: 'CSBS',
         scope: 'Semesters 3 to 8',
-        title: 'Computer Science & Business Systems (CSBS)',
+        title: 'Computer Science and Business Systems',
         syllabusPath: 'docs/CSBS(3rd to 8th sem)/csbs_syllabus.pdf',
         pyqYears: ['2025', '2024', '2023'],
-        archiveTitle: 'CSBS Examination Archives'
+        archiveTitle: 'Computer Science and Business Systems Archives'
       },
       {
         streamCode: 'cscs',
-        badge: 'CSCS Scheme',
+        badge: 'CSCS',
         scope: 'Semesters 3 to 8',
-        title: 'Computer Science & Cyber Security (CSCS)',
+        title: 'Computer Science and Cyber Security',
         syllabusPath: 'docs/CSCS(3rd to 8th sem)/cscs_syllabus.pdf',
         pyqYears: ['2025', '2024', '2023'],
-        archiveTitle: 'CSCS Examination Archives'
+        archiveTitle: 'Computer Science and Cyber Security Archives'
       },
       {
         streamCode: 'csds',
-        badge: 'CSDS Scheme',
+        badge: 'CSDS',
         scope: 'Semesters 3 to 8',
         title: 'Computer Science and Data Science',
         syllabusPath: 'docs/CSDS(3rd to 8th sem)/csds_syllabus.pdf',
@@ -12697,11 +12732,21 @@ window.getSubjectDocuments = getSubjectDocuments;
       `).join('');
     }
 
-    function renderLandingArchives(yearFilter = 'all') {
+    function renderLandingArchives(yearFilter = null) {
       const container = document.getElementById('archives-grid') || document.querySelector('.pyq-grid') || document.getElementById('landing-pyq-grid');
       if (!container) return;
 
-      const yNorm = (yearFilter || 'all').toString().toLowerCase().replace('all-years', 'all').trim();
+      let filterVal = yearFilter;
+      if (!filterVal || filterVal === 'all') {
+        const activeBtn = document.querySelector('#pyq-year-pills .active') || document.querySelector('.pyq-year-filter-btn.active');
+        if (activeBtn) {
+          filterVal = activeBtn.getAttribute('data-year-filter') || activeBtn.getAttribute('data-year') || 'sem-3';
+        } else {
+          filterVal = 'sem-3';
+        }
+      }
+
+      const yNorm = filterVal.toString().toLowerCase().trim();
       const semMatch = yNorm.match(/(?:sem(?:ester)?[-_\s]*(\d))|(?:(\d)(?:st|nd|rd|th)?[-_\s]*sem)/);
       const semNum = semMatch ? (semMatch[1] || semMatch[2]) : (/^[3-8]$/.test(yNorm) ? yNorm : null);
 
@@ -12711,8 +12756,8 @@ window.getSubjectDocuments = getSubjectDocuments;
         code: sub.code,
         streamCode: 'first-year',
         stage: '1st-year',
-        badge: sub.groupName,
-        subBadge: `${sub.code} • 1st Year`,
+        badge: '1st Year Common',
+        subBadge: '1st Year Archive',
         title: `${sub.title} Examination Archives`,
         years: sub.pyqYears,
         semesters: ['Sem 1 & 2'],
@@ -12726,10 +12771,12 @@ window.getSubjectDocuments = getSubjectDocuments;
       const streamArchives = LANDING_CONSOLIDATED_STREAMS.map(str => {
         let activeSems = [];
         let subBadgeText = str.scope || 'Semesters 3 to 8';
+        let cardSemesters = ['Sem 3', 'Sem 4', 'Sem 5', 'Sem 6', 'Sem 7', 'Sem 8'];
 
         if (semNum) {
           activeSems = [`Sem ${semNum}`];
           subBadgeText = `${getOrdinal(semNum)} Semester Archive`;
+          cardSemesters = [`Sem ${semNum}`];
         }
 
         return {
@@ -12740,7 +12787,7 @@ window.getSubjectDocuments = getSubjectDocuments;
           subBadge: subBadgeText,
           title: str.archiveTitle,
           years: str.pyqYears,
-          semesters: semNum ? [`Sem ${semNum}`] : ['Sem 3', 'Sem 4', 'Sem 5', 'Sem 6', 'Sem 7', 'Sem 8'],
+          semesters: cardSemesters,
           activeSems: activeSems,
           action: `onclick="openStreamArchiveView('${str.streamCode}'${semNum ? `, ${semNum}` : ''})"`
         };
@@ -12754,7 +12801,7 @@ window.getSubjectDocuments = getSubjectDocuments;
       } else if (yNorm.startsWith('202')) {
         allEntries = [...streamArchives].filter(entry => entry.years && entry.years.includes(yNorm));
       } else {
-        // Default: Render the 6 consolidated stream cards
+        // Default: Render the 6 consolidated stream cards with selected semester
         allEntries = streamArchives;
       }
 
@@ -13125,27 +13172,27 @@ window.getSubjectDocuments = getSubjectDocuments;
         grid.innerHTML = `
             <button type="button" class="stream-option stream-card stream-pill academic-option ${current === 'CSE' ? 'active selected' : ''}" data-stream="CSE">
                 <span class="stream-icon">💻</span>
-                <span class="stream-name">Computer Science & Engineering (CSE)</span>
+                <span class="stream-name">Computer Science & Engineering</span>
                 <span class="stream-desc">Official MAKAUT 4-Year B.Tech Curriculum</span>
             </button>
             <button type="button" class="stream-option stream-card stream-pill academic-option ${current === 'CSE-AIML' ? 'active selected' : ''}" data-stream="CSE-AIML">
                 <span class="stream-icon">🤖</span>
-                <span class="stream-name">CSE (Artificial Intelligence & Machine Learning)</span>
+                <span class="stream-name">Computer Science and Artificial Intelligence and Machine Learning</span>
                 <span class="stream-desc">Specialized AI & Machine Learning Track</span>
             </button>
             <button type="button" class="stream-option stream-card stream-pill academic-option ${current === 'IT' ? 'active selected' : ''}" data-stream="IT">
                 <span class="stream-icon">🌐</span>
-                <span class="stream-name">Information Technology (IT)</span>
+                <span class="stream-name">Information Technology</span>
                 <span class="stream-desc">Enterprise Systems & Web Engineering</span>
             </button>
             <button type="button" class="stream-option stream-card stream-pill academic-option ${current === 'CSCS' ? 'active selected' : ''}" data-stream="CSCS">
                 <span class="stream-icon">🛡️</span>
-                <span class="stream-name">Computer Science & Cyber Security (CSCS)</span>
+                <span class="stream-name">Computer Science and Cyber Security</span>
                 <span class="stream-desc">Cyber Defense & Security Architecture</span>
             </button>
             <button type="button" class="stream-option stream-card stream-pill academic-option ${current === 'CSBS' ? 'active selected' : ''}" data-stream="CSBS">
                 <span class="stream-icon">📊</span>
-                <span class="stream-name">Computer Science & Business Systems (CSBS)</span>
+                <span class="stream-name">Computer Science and Business Systems</span>
                 <span class="stream-desc">Business Systems & Computing Analytics</span>
             </button>
             <button type="button" class="stream-option stream-card stream-pill academic-option ${current === 'CSDS' ? 'active selected' : ''}" data-stream="CSDS">
@@ -17160,7 +17207,11 @@ window.getSubjectDocuments = getSubjectDocuments;
       document.body.classList.remove('modal-open');
       document.body.style.overflow = '';
       safeExecute('curriculumCards', () => renderLandingCurriculum('all'));
-      safeExecute('pyqCatalog', () => renderLandingArchives('all'));
+      safeExecute('pyqCatalog', () => {
+        const activeBtn = document.querySelector('#pyq-year-pills .active') || document.querySelector('.pyq-year-filter-btn.active');
+        const sem = activeBtn ? (activeBtn.getAttribute('data-year-filter') || activeBtn.getAttribute('data-year')) : 'sem-3';
+        renderLandingArchives(sem || 'sem-3');
+      });
       safeExecute('filterButtons', bindLandingFilterButtons);
       safeExecute('liveMetrics', updateLandingLiveMetrics);
       safeExecute('academicSetupOptions', bindAcademicSetupOptions);
@@ -17175,7 +17226,11 @@ window.getSubjectDocuments = getSubjectDocuments;
 
     if (document.readyState === 'interactive' || document.readyState === 'complete') {
       safeExecute('curriculumCards', () => renderLandingCurriculum('all'));
-      safeExecute('pyqCatalog', () => renderLandingArchives('all'));
+      safeExecute('pyqCatalog', () => {
+        const activeBtn = document.querySelector('#pyq-year-pills .active') || document.querySelector('.pyq-year-filter-btn.active');
+        const sem = activeBtn ? (activeBtn.getAttribute('data-year-filter') || activeBtn.getAttribute('data-year')) : 'sem-3';
+        renderLandingArchives(sem || 'sem-3');
+      });
       safeExecute('filterButtons', bindLandingFilterButtons);
       safeExecute('liveMetrics', updateLandingLiveMetrics);
       safeExecute('academicSetupOptions', bindAcademicSetupOptions);

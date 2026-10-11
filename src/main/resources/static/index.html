@@ -158,6 +158,84 @@
       #academic-setup-modal .academic-stage-card {
         transform: none !important;
       }
+
+      /* Why CampusSense Single-Line Desktop Typography */
+      #why-campussense,
+      .landing-section-header#why-campussense {
+        max-width: 1100px !important;
+        width: 100% !important;
+      }
+      .why-campussense-title,
+      #why-campussense h2 {
+        font-weight: 800 !important;
+        letter-spacing: -0.025em !important;
+        line-height: 1.25 !important;
+        text-align: center !important;
+      }
+      @media (min-width: 768px) {
+        .why-campussense-title,
+        #why-campussense h2 {
+          white-space: nowrap !important;
+          font-size: clamp(1.75rem, 2.75vw, 2.45rem) !important;
+        }
+      }
+      @media (max-width: 767px) {
+        .why-campussense-title,
+        #why-campussense h2 {
+          white-space: normal !important;
+          font-size: clamp(1.35rem, 4.5vw, 1.85rem) !important;
+        }
+      }
+
+      /* Section Headings & Subtitle Typography Scale */
+      #landing-curriculum .landing-section-header,
+      #landing-pyqs .landing-section-header {
+        max-width: 860px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+      #landing-curriculum .landing-section-title,
+      #landing-pyqs .landing-section-title,
+      #landing-pyqs .section-title {
+        font-size: clamp(1.85rem, 3.2vw, 2.5rem) !important;
+        font-weight: 800 !important;
+        letter-spacing: -0.02em !important;
+        line-height: 1.25 !important;
+        margin-bottom: 0.85rem !important;
+      }
+      #landing-curriculum .landing-section-subhead,
+      #landing-pyqs .landing-section-subhead,
+      #landing-pyqs .section-subtitle {
+        font-size: clamp(1rem, 1.35vw, 1.15rem) !important;
+        line-height: 1.65 !important;
+        max-width: 800px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+      [data-theme="dark"] #landing-curriculum .landing-section-subhead,
+      [data-theme="dark"] #landing-pyqs .landing-section-subhead,
+      [data-theme="dark"] #landing-pyqs .section-subtitle,
+      html.dark #landing-curriculum .landing-section-subhead,
+      html.dark #landing-pyqs .landing-section-subhead,
+      html.dark #landing-pyqs .section-subtitle {
+        color: #cbd5e1 !important;
+      }
+      [data-theme="light"] #landing-curriculum .landing-section-subhead,
+      [data-theme="light"] #landing-pyqs .landing-section-subhead,
+      [data-theme="light"] #landing-pyqs .section-subtitle,
+      html.light #landing-curriculum .landing-section-subhead,
+      html.light #landing-pyqs .landing-section-subhead,
+      html.light #landing-pyqs .section-subtitle,
+      :root.light-theme #landing-curriculum .landing-section-subhead,
+      :root.light-theme #landing-pyqs .landing-section-subhead,
+      :root.light-theme #landing-pyqs .section-subtitle {
+        color: #475569 !important;
+      }
+      .landing-section-pretitle {
+        font-weight: 800 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.1em !important;
+      }
     </style>
     <!-- Immediate theme application script to eliminate theme flash -->
     <script>
@@ -273,7 +351,7 @@
             <div class="landing-highlights-grid landing-highlights-row" id="landing-stats-bar">
                 <a href="/login" class="highlight-pill" onclick="window.location.href='/login';" style="cursor: pointer; text-decoration: none; color: inherit;">
                     <span>📚</span>
-                    <span><strong id="metric-subjects-count">323</strong> Subjects: 1st Year & Core Streams Ingested</span>
+                    <span><strong id="metric-subjects-count">122</strong> Subjects: 1st Year & Core Streams Ingested</span>
                 </a>
                 <a href="/login" class="highlight-pill" onclick="window.location.href='/login';" style="cursor: pointer; text-decoration: none; color: inherit;">
                     <span>🔥</span>
@@ -281,7 +359,7 @@
                 </a>
                 <a href="/login" class="highlight-pill" onclick="window.location.href='/login';" style="cursor: pointer; text-decoration: none; color: inherit;">
                     <span>📄</span>
-                    <span><strong id="metric-pyqs-count">2881</strong> Papers: PYQ Archives</span>
+                    <span><strong id="metric-pyqs-count">1459</strong> Papers: PYQ Archives</span>
                 </a>
                 <a href="/login" class="highlight-pill" onclick="window.location.href='/login';" style="cursor: pointer; text-decoration: none; color: inherit;">
                     <span>🤖</span>
@@ -370,7 +448,7 @@
               <button class="filter-pill-btn" data-stream="it">IT</button>
               <button class="filter-pill-btn" data-stream="cse-aiml">CSE-AIML</button>
               <button class="filter-pill-btn" data-stream="cscs">CSCS</button>
-              <button class="filter-pill-btn" data-stream="csds">Computer Science and Data Science</button>
+              <button class="filter-pill-btn" data-stream="csds">CSDS</button>
               <button class="filter-pill-btn" data-stream="csbs">CSBS</button>
             </div>
 
@@ -395,7 +473,7 @@
             <!-- PYQ Filter Bar: 1st Year & Semesters 3rd to 8th -->
             <div class="pyq-repo-filter-bar">
                 <div class="filter-group">
-                    <span class="filter-lbl">Semester / Stage:</span>
+                    <span class="filter-lbl">Semesters:</span>
                     <div class="filter-pills" id="pyq-year-pills">
                         <button class="filter-pill pyq-year-filter-btn" data-year-filter="1st-year" data-pyq-year="1st-year" data-year="1st-year">1st Year</button>
                         <button class="filter-pill pyq-year-filter-btn active" data-year-filter="sem-3" data-pyq-year="sem-3" data-year="sem-3">3rd Sem</button>
@@ -673,27 +751,27 @@
                         <div class="stream-select-grid" id="stream-picker-grid">
                             <button type="button" class="stream-option stream-card stream-pill academic-option active selected" data-stream="CSE">
                                 <span class="stream-icon">💻</span>
-                                <span class="stream-name">Computer Science & Engineering (CSE)</span>
+                                <span class="stream-name">Computer Science & Engineering</span>
                                 <span class="stream-desc">Official MAKAUT 4-Year B.Tech Curriculum</span>
                             </button>
                             <button type="button" class="stream-option stream-card stream-pill academic-option" data-stream="CSE-AIML">
                                 <span class="stream-icon">🤖</span>
-                                <span class="stream-name">CSE (Artificial Intelligence & Machine Learning)</span>
+                                <span class="stream-name">Computer Science and Artificial Intelligence and Machine Learning</span>
                                 <span class="stream-desc">Specialized AI & Machine Learning Track</span>
                             </button>
                             <button type="button" class="stream-option stream-card stream-pill academic-option" data-stream="IT">
                                 <span class="stream-icon">🌐</span>
-                                <span class="stream-name">Information Technology (IT)</span>
+                                <span class="stream-name">Information Technology</span>
                                 <span class="stream-desc">Enterprise Systems & Web Engineering</span>
                             </button>
                             <button type="button" class="stream-option stream-card stream-pill academic-option" data-stream="CSCS">
                                 <span class="stream-icon">🛡️</span>
-                                <span class="stream-name">Computer Science & Cyber Security (CSCS)</span>
+                                <span class="stream-name">Computer Science and Cyber Security</span>
                                 <span class="stream-desc">Cyber Defense & Security Architecture</span>
                             </button>
                             <button type="button" class="stream-option stream-card stream-pill academic-option" data-stream="CSBS">
                                 <span class="stream-icon">📊</span>
-                                <span class="stream-name">Computer Science & Business Systems (CSBS)</span>
+                                <span class="stream-name">Computer Science and Business Systems</span>
                                 <span class="stream-desc">Business Systems & Computing Analytics</span>
                             </button>
                             <button type="button" class="stream-option stream-card stream-pill academic-option" data-stream="CSDS">

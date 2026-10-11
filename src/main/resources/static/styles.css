@@ -3125,8 +3125,14 @@ body.is-drawer-resizing .ai-slide-drawer {
 /* Feature Showcase Grid */
 .landing-section-header {
     text-align: center;
-    max-width: 720px;
+    max-width: 860px;
     margin: 0 auto 2.5rem;
+}
+
+#why-campussense,
+.landing-section-header#why-campussense {
+    max-width: 1100px !important;
+    width: 100% !important;
 }
 
 .landing-section-pretitle,
@@ -3169,25 +3175,71 @@ html.light #landing-pyqs .landing-section-pretitle {
 .why-campussense-title,
 #why-campussense h2,
 .section-header h2 {
-  white-space: normal !important;
-  font-size: clamp(1.85rem, 3.4vw, 2.75rem) !important;
   font-weight: 800 !important;
   line-height: 1.25 !important;
   letter-spacing: -0.025em !important;
   text-align: center !important;
 }
 
-@media (max-width: 800px) {
+@media (min-width: 768px) {
   .why-campussense-title,
-  #why-campussense h2,
-  .section-header h2 {
-    font-size: clamp(1.5rem, 5vw, 2.1rem) !important;
+  #why-campussense h2 {
+    white-space: nowrap !important;
+    font-size: clamp(1.75rem, 2.75vw, 2.45rem) !important;
   }
 }
 
-.landing-section-subhead {
-    font-size: 0.95rem;
-    color: var(--text-muted);
+@media (max-width: 767px) {
+  .why-campussense-title,
+  #why-campussense h2,
+  .section-header h2 {
+    white-space: normal !important;
+    font-size: clamp(1.35rem, 4.5vw, 1.85rem) !important;
+  }
+}
+
+/* Section Headings & Subtitle Scale: Curriculum & Examination Archives */
+#landing-curriculum .landing-section-title,
+#landing-pyqs .landing-section-title,
+#landing-pyqs .section-title {
+  font-size: clamp(1.85rem, 3.2vw, 2.5rem) !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.25 !important;
+  margin-bottom: 0.85rem !important;
+}
+
+.landing-section-subhead,
+#landing-curriculum .landing-section-subhead,
+#landing-pyqs .landing-section-subhead,
+#landing-pyqs .section-subtitle {
+  font-size: clamp(1rem, 1.35vw, 1.15rem) !important;
+  line-height: 1.65 !important;
+  max-width: 800px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  color: var(--text-muted);
+}
+
+[data-theme="dark"] #landing-curriculum .landing-section-subhead,
+[data-theme="dark"] #landing-pyqs .landing-section-subhead,
+[data-theme="dark"] #landing-pyqs .section-subtitle,
+html.dark #landing-curriculum .landing-section-subhead,
+html.dark #landing-pyqs .landing-section-subhead,
+html.dark #landing-pyqs .section-subtitle {
+  color: #cbd5e1 !important;
+}
+
+[data-theme="light"] #landing-curriculum .landing-section-subhead,
+[data-theme="light"] #landing-pyqs .landing-section-subhead,
+[data-theme="light"] #landing-pyqs .section-subtitle,
+html.light #landing-curriculum .landing-section-subhead,
+html.light #landing-pyqs .landing-section-subhead,
+html.light #landing-pyqs .section-subtitle,
+:root.light-theme #landing-curriculum .landing-section-subhead,
+:root.light-theme #landing-pyqs .landing-section-subhead,
+:root.light-theme #landing-pyqs .section-subtitle {
+  color: #475569 !important;
 }
 
 .features-grid,
