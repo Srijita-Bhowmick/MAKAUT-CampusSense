@@ -263,8 +263,13 @@ window.onClerkLoaded = function() {
       if (!rawPath) return '';
       let clean = rawPath.trim().replace(/^\/+/, '');
       if (clean === 'CSE20.pdf' || clean === '/CSE20.pdf' || clean.includes('IT_Syllabus_3rd_to_8th.pdf') || clean.includes('CSE_AIML_Syllabus_3rd_to_8th.pdf')) {
-        clean = 'CSE(3rd to 8th sem)/CSE20.pdf';
+        clean = 'CSE(3rd to 8th sem)/syllabus/CSE20.pdf';
       }
+      clean = clean.replace(/^([^/]+\(3rd to 8th sem\))\/([^/]+\.pdf)$/i, '$1/syllabus/$2');
+      clean = clean.replace(/\/PYQs\//g, '/pyqs/');
+      const sfx = { '3': '3rd', '4': '4th', '5': '5th', '6': '6th', '7': '7th', '8': '8th' };
+      clean = clean.replace(/(\([^)]+\)\/pyqs)\/([3-8])(?:rd|th|st|nd)?\s*sem\//gi, (m, p, s) => p + '/' + (sfx[s] || s) + '/');
+      clean = clean.replace(/(\([^)]+\)\/pyqs)\/Semester_([3-8])\//gi, (m, p, s) => p + '/' + (sfx[s] || s) + '/');
       const encodedSegments = clean.split('/').map(seg => encodeURIComponent(decodeURIComponent(seg)));
       return '/' + encodedSegments.join('/');
     }

@@ -3,7 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sign In — MAKAUT CampusSense</title>
+  <title>Sign In & Sign Up — MAKAUT CampusSense</title>
+
+  <!-- Dynamic Clerk Configuration Resolver -->
+  <script>
+    window.__CLERK_CONFIG__ = window.__CLERK_CONFIG__ || {};
+    window.CLERK_PUBLISHABLE_KEY = window.__CLERK_CONFIG__.publishableKey || 
+      window.CLERK_PUBLISHABLE_KEY || 
+      'pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk';
+    window.__CLERK_CONFIG__.publishableKey = window.CLERK_PUBLISHABLE_KEY;
+  </script>
 
   <!-- Clerk Core & UI -->
   <script defer crossorigin="anonymous" src="https://flying-lioness-4717.clerk.accounts.dev/npm/@clerk/ui@1/dist/ui.browser.js"></script>
@@ -31,21 +40,121 @@
     }
     .back:hover { color: #ffffff; }
     h1 { font-size: 1.6rem; margin-bottom: 0.4rem; text-align: center; }
-    p { color: #94a3b8; margin-bottom: 1.5rem; text-align: center; font-size: 0.9rem; }
-    #clerk-mount { display: flex; justify-content: center; min-height: 380px; }
+    p { color: #94a3b8; margin-bottom: 1.25rem; text-align: center; font-size: 0.9rem; }
+    
+    .auth-tabs {
+      display: inline-flex;
+      background: #111827;
+      padding: 4px;
+      border-radius: 0.6rem;
+      border: 1px solid #1f2937;
+      margin-bottom: 1.25rem;
+      gap: 4px;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 6px 18px;
+      border-radius: 0.45rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .tab-btn.active {
+      background: #1f2937;
+      color: #ffffff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    .tab-btn:hover:not(.active) {
+      color: #ffffff;
+    }
+    
+    #clerk-mount { display: flex; justify-content: center; min-height: 380px; width: 100%; max-width: 440px; }
   </style>
 </head>
 <body>
 
   <a href="/" class="back">← Back to CampusSense</a>
-  <h1>Sign in to MAKAUT CampusSense</h1>
-  <p>Access verified syllabus blueprints, semester PYQs, and panic packs.</p>
+  <h1 id="auth-title">Sign in to MAKAUT CampusSense</h1>
+  <p id="auth-desc">Access verified syllabus blueprints, semester PYQs, and panic packs.</p>
+
+  <div class="auth-tabs" id="auth-tabs">
+    <button class="tab-btn active" id="tab-sign-in" type="button">Sign In</button>
+    <button class="tab-btn" id="tab-sign-up" type="button">Sign Up</button>
+  </div>
 
   <div id="clerk-mount"></div>
 
   <script>
+    // Resolve dynamic Clerk configuration
+    const clerkConfig = window.__CLERK_CONFIG__ || {};
+    const publishableKey = clerkConfig.publishableKey || 
+      window.CLERK_PUBLISHABLE_KEY || 
+      document.querySelector('script[data-clerk-publishable-key]')?.getAttribute('data-clerk-publishable-key') || 
+      'pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk';
+
+    function renderAuth(mode = 'signIn') {
+      const mountDiv = document.getElementById('clerk-mount');
+      if (!mountDiv || !window.Clerk) return;
+
+      const tabSignIn = document.getElementById('tab-sign-in');
+      const tabSignUp = document.getElementById('tab-sign-up');
+      const titleEl = document.getElementById('auth-title');
+      const descEl = document.getElementById('auth-desc');
+
+      if (mode === 'signUp') {
+        if (tabSignIn) tabSignIn.classList.remove('active');
+        if (tabSignUp) tabSignUp.classList.add('active');
+        if (titleEl) titleEl.innerText = 'Sign up for MAKAUT CampusSense';
+        if (descEl) descEl.innerText = 'Create an account to save high-yield questions, revision decks, and blueprints.';
+      } else {
+        if (tabSignIn) tabSignIn.classList.add('active');
+        if (tabSignUp) tabSignUp.classList.remove('active');
+        if (titleEl) titleEl.innerText = 'Sign in to MAKAUT CampusSense';
+        if (descEl) descEl.innerText = 'Access verified syllabus blueprints, semester PYQs, and panic packs.';
+      }
+
+      if (typeof window.Clerk.unmountSignIn === 'function') window.Clerk.unmountSignIn(mountDiv);
+      if (typeof window.Clerk.unmountSignUp === 'function') window.Clerk.unmountSignUp(mountDiv);
+      mountDiv.innerHTML = '';
+
+      const authAppearance = {
+        layout: {
+          socialButtonsVariant: 'blockButton',
+          socialButtonsPlacement: 'top'
+        },
+        variables: {
+          colorPrimary: '#6366f1',
+          colorBackground: '#111827',
+          colorText: '#ffffff',
+          colorInputBackground: '#1f2937',
+          colorInputText: '#ffffff',
+          borderRadius: '0.75rem'
+        }
+      };
+
+      if (mode === 'signUp') {
+        window.Clerk.mountSignUp(mountDiv, {
+          fallbackRedirectUrl: '/',
+          signInFallbackRedirectUrl: '/',
+          appearance: authAppearance
+        });
+      } else {
+        window.Clerk.mountSignIn(mountDiv, {
+          fallbackRedirectUrl: '/',
+          signUpFallbackRedirectUrl: '/',
+          appearance: authAppearance
+        });
+      }
+    }
+
     async function initAuth() {
-      await window.Clerk.load();
+      if (!window.Clerk) return;
+      if (!window.Clerk.loaded && typeof window.Clerk.load === 'function') {
+        await window.Clerk.load({ publishableKey: publishableKey });
+      }
 
       // Wipe login page from back-button trail if session exists
       if (window.Clerk.user) {
@@ -53,23 +162,19 @@
         return;
       }
 
-      const mountDiv = document.getElementById('clerk-mount');
-      if (mountDiv && !mountDiv.hasChildNodes()) {
-        window.Clerk.mountSignIn(mountDiv, {
-          fallbackRedirectUrl: '/',
-          signUpFallbackRedirectUrl: '/',
-          appearance: {
-            variables: {
-              colorPrimary: '#6366f1',
-              colorBackground: '#111827',
-              colorText: '#ffffff',
-              colorInputBackground: '#1f2937',
-              colorInputText: '#ffffff',
-              borderRadius: '0.75rem',
-            }
-          }
-        });
-      }
+      const urlParams = new URLSearchParams(window.location.search);
+      const initialMode = urlParams.get('mode') === 'signUp' || window.location.hash.includes('signup') ? 'signUp' : 'signIn';
+      renderAuth(initialMode);
+
+      document.getElementById('tab-sign-in')?.addEventListener('click', () => {
+        history.replaceState(null, '', window.location.pathname + '?mode=signIn');
+        renderAuth('signIn');
+      });
+
+      document.getElementById('tab-sign-up')?.addEventListener('click', () => {
+        history.replaceState(null, '', window.location.pathname + '?mode=signUp');
+        renderAuth('signUp');
+      });
     }
 
     window.addEventListener('load', initAuth);
