@@ -46,6 +46,7 @@
       display: flex;
       justify-content: center;
       width: 100%;
+      min-height: 480px;
     }
   </style>
 </head>
@@ -59,8 +60,27 @@
   <div id="clerk-sign-in"></div>
 
   <script>
-    window.addEventListener('load', async () => {
-      await window.Clerk.load();
+    async function initClerkSignIn() {
+      // Robust retry loop to wait for Clerk and UI constructor to be ready
+      let attempts = 0;
+      while ((!window.Clerk || !window.__internal_ClerkUICtor) && attempts < 60) {
+        await new Promise(r => setTimeout(r, 50));
+        attempts++;
+      }
+
+      if (!window.Clerk) {
+        console.error("ClerkJS failed to load");
+        return;
+      }
+
+      if (!window.Clerk.loaded && typeof window.Clerk.load === 'function') {
+        await window.Clerk.load({
+          publishableKey: 'pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk',
+          ui: {
+            ClerkUI: window.__internal_ClerkUICtor
+          }
+        });
+      }
 
       if (window.Clerk.user) {
         window.location.replace('/');
@@ -89,7 +109,13 @@
           }
         });
       }
-    });
+    }
+
+    if (document.readyState === 'loading') {
+      window.addEventListener('load', initClerkSignIn);
+    } else {
+      initClerkSignIn();
+    }
 
     window.addEventListener('pageshow', (e) => {
       if (e.persisted && window.Clerk && window.Clerk.user) {
