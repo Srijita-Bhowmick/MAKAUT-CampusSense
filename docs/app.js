@@ -340,9 +340,12 @@ window.onClerkLoaded = function() {
     document.addEventListener('click', (e) => {
       const trigger = e.target.closest('#btn-sign-in, #btn-sign-up, .btn-auth-trigger, [data-action="login"], [data-action="signup"]');
       if (trigger) {
+        const href = trigger.getAttribute('href');
+        if (href && href !== '#' && !href.startsWith('javascript:')) {
+          return;
+        }
         e.preventDefault();
-        const isSignUp = trigger.id === 'btn-sign-up' || trigger.getAttribute('data-action') === 'signup';
-        triggerAppAuthentication(isSignUp);
+        window.location.href = '/login.html';
       }
     });
 

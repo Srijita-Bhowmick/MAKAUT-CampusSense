@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In — MAKAUT CampusSense</title>
+
+  <!-- Clerk Core & UI -->
+  <script defer crossorigin="anonymous" src="https://flying-lioness-4717.clerk.accounts.dev/npm/@clerk/ui@1/dist/ui.browser.js"></script>
+  <script defer crossorigin="anonymous" data-clerk-publishable-key="pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk" src="https://flying-lioness-4717.clerk.accounts.dev/npm/@clerk/clerk-js@6/dist/clerk.browser.js"></script>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #0b0f19;
+      color: #ffffff;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 1.5rem;
+    }
+    .back {
+      color: #94a3b8;
+      text-decoration: none;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    .back:hover { color: #ffffff; }
+    h1 { font-size: 1.6rem; margin-bottom: 0.4rem; text-align: center; }
+    p { color: #94a3b8; margin-bottom: 1.5rem; text-align: center; font-size: 0.9rem; }
+    #clerk-mount { display: flex; justify-content: center; min-height: 380px; }
+  </style>
+</head>
+<body>
+
+  <a href="/" class="back">← Back to CampusSense</a>
+  <h1>Sign in to MAKAUT CampusSense</h1>
+  <p>Access verified syllabus blueprints, semester PYQs, and panic packs.</p>
+
+  <div id="clerk-mount"></div>
+
+  <script>
+    async function initAuth() {
+      await window.Clerk.load();
+
+      // Wipe login page from back-button trail if session exists
+      if (window.Clerk.user) {
+        window.location.replace('/');
+        return;
+      }
+
+      const mountDiv = document.getElementById('clerk-mount');
+      if (mountDiv && !mountDiv.hasChildNodes()) {
+        window.Clerk.mountSignIn(mountDiv, {
+          fallbackRedirectUrl: '/',
+          signUpFallbackRedirectUrl: '/',
+          appearance: {
+            variables: {
+              colorPrimary: '#6366f1',
+              colorBackground: '#111827',
+              colorText: '#ffffff',
+              colorInputBackground: '#1f2937',
+              colorInputText: '#ffffff',
+              borderRadius: '0.75rem',
+            }
+          }
+        });
+      }
+    }
+
+    window.addEventListener('load', initAuth);
+
+    // Bypasses browser BFCache freeze when clicking back
+    window.addEventListener('pageshow', (event) => {
+      if (event.persisted && window.Clerk && window.Clerk.user) {
+        window.location.replace('/');
+      }
+    });
+  </script>
+</body>
+</html>
