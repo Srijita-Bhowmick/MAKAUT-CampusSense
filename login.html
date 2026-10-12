@@ -3,13 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sign in — MAKAUT CampusSense</title>
+  <title>Sign In — MAKAUT CampusSense</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <!-- Clerk UI and Core JS -->
+  <!-- Load existing workspace Clerk scripts dynamically -->
   <script defer crossorigin="anonymous" src="https://flying-lioness-4717.clerk.accounts.dev/npm/@clerk/ui@1/dist/ui.browser.js"></script>
   <script defer crossorigin="anonymous" data-clerk-publishable-key="pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk" src="https://flying-lioness-4717.clerk.accounts.dev/npm/@clerk/clerk-js@6/dist/clerk.browser.js"></script>
 
@@ -22,324 +18,112 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background-color: #0b0f19;
+      background-color: #000000;
       color: #ffffff;
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      padding: 2rem 1.5rem;
-      position: relative;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 1.5rem;
     }
 
-    .top-nav {
-      position: absolute;
-      top: 1.5rem;
-      left: 1.5rem;
-      right: 1.5rem;
-      max-width: 900px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      width: calc(100% - 3rem);
-      z-index: 10;
-    }
-
-    .back-link {
+    .back-btn {
       color: #94a3b8;
       text-decoration: none;
       font-size: 0.875rem;
-      font-weight: 500;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      padding: 0.45rem 0.85rem;
-      border-radius: 9999px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      transition: all 0.2s ease;
+      margin-bottom: 1.25rem;
+      transition: color 0.2s ease;
     }
-    .back-link:hover {
-      color: #ffffff;
-      background: rgba(255, 255, 255, 0.1);
-      transform: translateX(-2px);
-    }
+    .back-btn:hover { color: #ffffff; }
 
-    .header-section {
-      text-align: center;
-      margin-bottom: 1.75rem;
-      margin-top: 1.5rem;
-    }
-
+    /* ONLY "Sign In" title above the card */
     .page-title {
-      font-family: 'Outfit', sans-serif;
-      font-size: 2rem;
+      font-size: 1.75rem;
       font-weight: 700;
-      margin-bottom: 0.4rem;
+      margin-bottom: 1.5rem;
       text-align: center;
-      color: #ffffff;
       letter-spacing: -0.02em;
     }
 
-    .page-desc {
-      color: #94a3b8;
-      font-size: 0.95rem;
-      text-align: center;
-      max-width: 440px;
-      margin: 0 auto;
-      line-height: 1.5;
-    }
-
+    /* Outer mount container: Zero border, zero background to prevent double boxes */
     #clerk-sign-in {
       display: flex;
       justify-content: center;
       width: 100%;
-      min-height: 480px;
-      position: relative;
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      padding: 0 !important;
     }
 
-    /* ========================================================
-       StockPulse Seamless Dark Theme Overrides
-       ======================================================== */
-    .cl-rootBox {
-      width: 100% !important;
-      max-width: 440px !important;
+    /* Strip outer Clerk wrapper borders */
+    .cl-rootBox,
+    .cl-cardBox {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
     }
 
-    .cl-card,
-    [class*="cl-card"] {
+    /* The ONE and ONLY card container */
+    .cl-card {
       background-color: #16181f !important;
       background: #16181f !important;
       border: 1px solid rgba(255, 255, 255, 0.08) !important;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5) !important;
-      border-radius: 0.875rem !important;
-      padding: 2rem !important;
-      color: #ffffff !important;
+      border-radius: 0.75rem !important;
+      box-shadow: none !important;
     }
 
-    /* Force seamless footer container — eliminate white footer bug */
+    /* Seamless footer matching card */
     .cl-footer,
     .cl-footerAction,
-    .cl-footerPages,
-    .cl-footerPagesLink,
-    .cl-footerItem,
-    [class*="cl-footer"],
-    [class*="cl-footerAction"],
-    [class*="cl-footerPages"],
-    [class*="cl-footerItem"] {
+    [class*="cl-footer"] {
       background-color: #16181f !important;
       background: #16181f !important;
-      border-color: rgba(255, 255, 255, 0.08) !important;
+      border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
       box-shadow: none !important;
+    }
+
+    /* High contrast primary button (Solid white, bold black text) */
+    [class*="cl-formButtonPrimary"] {
+      background-color: #ffffff !important;
+      color: #000000 !important;
+      font-weight: 700 !important;
+      border-radius: 0.5rem !important;
+    }
+    [class*="cl-formButtonPrimary"] * {
+      color: #000000 !important;
+      font-weight: 700 !important;
+    }
+
+    /* Ensure Clerk logo and branding are visible against dark theme */
+    [class*="cl-footer"] svg,
+    [class*="cl-footer"] img,
+    .cl-internal-logo,
+    [class*="cl-securedBy"] svg,
+    [class*="cl-securedBy"] img {
+      filter: brightness(0) invert(1) !important;
+      opacity: 0.85 !important;
     }
 
     [class*="cl-footerText"],
     [class*="cl-footerActionText"],
-    .cl-footerActionText,
-    .cl-footerItem p {
+    [class*="cl-securedBy"] {
       color: #94a3b8 !important;
     }
-
-    [class*="cl-footerActionLink"],
-    .cl-footerActionLink {
+    [class*="cl-footerActionLink"] {
       color: #ffffff !important;
       font-weight: 600 !important;
-      text-decoration: none !important;
-    }
-    [class*="cl-footerActionLink"]:hover,
-    .cl-footerActionLink:hover {
-      text-decoration: underline !important;
-    }
-
-    .cl-headerTitle,
-    [class*="cl-headerTitle"] {
-      color: #ffffff !important;
-      font-family: 'Outfit', sans-serif !important;
-      font-weight: 700 !important;
-      font-size: 1.35rem !important;
-    }
-
-    .cl-headerSubtitle,
-    [class*="cl-headerSubtitle"] {
-      color: #94a3b8 !important;
-      font-size: 0.875rem !important;
-    }
-
-    .cl-socialButtonsBlockButton,
-    [class*="cl-socialButtonsBlockButton"] {
-      background-color: rgba(255, 255, 255, 0.05) !important;
-      background: rgba(255, 255, 255, 0.05) !important;
-      border: 1px solid rgba(255, 255, 255, 0.12) !important;
-      color: #ffffff !important;
-      border-radius: 0.625rem !important;
-      font-weight: 600 !important;
-      transition: background-color 0.2s ease, border-color 0.2s ease !important;
-    }
-    .cl-socialButtonsBlockButton:hover,
-    [class*="cl-socialButtonsBlockButton"]:hover {
-      background-color: rgba(255, 255, 255, 0.08) !important;
-      background: rgba(255, 255, 255, 0.08) !important;
-    }
-
-    .cl-socialButtonsBlockButtonText,
-    [class*="cl-socialButtonsBlockButtonText"] {
-      color: #ffffff !important;
-      font-weight: 600 !important;
-    }
-
-    .cl-dividerLine,
-    [class*="cl-dividerLine"] {
-      background-color: rgba(255, 255, 255, 0.08) !important;
-    }
-
-    .cl-dividerText,
-    [class*="cl-dividerText"] {
-      color: #94a3b8 !important;
-      font-size: 0.8rem !important;
-      font-weight: 500 !important;
-    }
-
-    .cl-formFieldLabel,
-    [class*="cl-formFieldLabel"] {
-      color: #ffffff !important;
-      font-size: 0.875rem !important;
-      font-weight: 600 !important;
-      margin-bottom: 0.35rem !important;
-    }
-
-    .cl-formFieldInput,
-    .cl-input,
-    [class*="cl-formFieldInput"],
-    [class*="cl-input"] {
-      background-color: #1e212b !important;
-      background: #1e212b !important;
-      border: 1px solid rgba(255, 255, 255, 0.12) !important;
-      color: #ffffff !important;
-      border-radius: 0.625rem !important;
-      padding: 0.75rem 1rem !important;
-      font-size: 0.925rem !important;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
-    }
-    .cl-formFieldInput:focus,
-    .cl-input:focus,
-    [class*="cl-formFieldInput"]:focus,
-    [class*="cl-input"]:focus {
-      border-color: #ffffff !important;
-      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2) !important;
-      outline: none !important;
-    }
-
-    .cl-formFieldInput::placeholder,
-    .cl-input::placeholder,
-    [class*="cl-formFieldInput"]::placeholder,
-    [class*="cl-input"]::placeholder {
-      color: #64748b !important;
-      opacity: 0.8 !important;
-    }
-
-    /* StockPulse High-contrast solid white button with bold black text */
-    .cl-formButtonPrimary,
-    [class*="cl-formButtonPrimary"] {
-      background-color: #ffffff !important;
-      background: #ffffff !important;
-      color: #000000 !important;
-      border-radius: 0.625rem !important;
-      font-weight: 600 !important;
-      font-size: 0.95rem !important;
-      padding: 0.75rem 1.25rem !important;
-      box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15) !important;
-      transition: background-color 0.2s ease, transform 0.15s ease !important;
-      border: none !important;
-    }
-    .cl-formButtonPrimary:hover,
-    [class*="cl-formButtonPrimary"]:hover {
-      background-color: #e2e8f0 !important;
-      background: #e2e8f0 !important;
-      color: #000000 !important;
-      transform: translateY(-1px) !important;
-    }
-
-    .cl-identityPreviewText {
-      color: #ffffff !important;
-    }
-
-    .cl-identityPreviewEditButton {
-      color: #ffffff !important;
-    }
-
-    .cl-otpCodeFieldInput,
-    .cl-otpCodeInput {
-      background-color: #1e212b !important;
-      border: 1px solid rgba(255, 255, 255, 0.12) !important;
-      color: #ffffff !important;
-    }
-
-    .cl-backLink,
-    .cl-backButton {
-      color: #94a3b8 !important;
-    }
-    .cl-backLink:hover,
-    .cl-backButton:hover {
-      color: #ffffff !important;
-    }
-
-    .cl-formFieldErrorText,
-    .cl-alertText {
-      color: #ef4444 !important;
-    }
-    .cl-formFieldSuccessText,
-    .cl-formFieldHintText,
-    .cl-formFieldInfoText {
-      color: #94a3b8 !important;
-    }
-    .cl-formFieldCheckboxLabel,
-    .cl-checkboxLabel {
-      color: #94a3b8 !important;
-    }
-
-    .cl-developmentBadge,
-    [data-localization-key="developmentMode"] {
-      background: rgba(255, 255, 255, 0.04) !important;
-      border-color: rgba(255, 255, 255, 0.08) !important;
     }
   </style>
 </head>
 <body>
 
-  <nav class="top-nav">
-    <a href="/" class="back-link">← Back to CampusSense</a>
-  </nav>
+  <a href="/" class="back-btn">← Back to CampusSense</a>
+  <h1 class="page-title">Sign In</h1>
 
-  <div class="header-section">
-    <h1 class="page-title">Sign in to MAKAUT CampusSense</h1>
-    <p class="page-desc">Access syllabus blueprints, semester PYQs, model answers, and panic packs.</p>
-  </div>
-
+  <!-- Single mount target -->
   <div id="clerk-sign-in"></div>
 
   <script>
-    async function initClerkSignIn() {
-      let attempts = 0;
-      while ((!window.Clerk || !window.__internal_ClerkUICtor) && attempts < 80) {
-        await new Promise(r => setTimeout(r, 50));
-        attempts++;
-      }
-
-      if (!window.Clerk) {
-        console.error("ClerkJS failed to load");
-        const container = document.getElementById('clerk-sign-in');
-        if (container) {
-          container.innerHTML = '<div style="color:#ef4444;text-align:center;padding:2rem;">Unable to connect to authentication server. Please check your internet connection and refresh.</div>';
-        }
-        return;
-      }
-
-      if (!window.Clerk.loaded && typeof window.Clerk.load === 'function') {
-        await window.Clerk.load({
-          publishableKey: 'pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk',
-          ui: {
-            ClerkUI: window.__internal_ClerkUICtor
-          }
-        });
-      }
+    window.addEventListener('load', async () => {
+      await window.Clerk.load();
 
       if (window.Clerk.user) {
         window.location.replace('/');
@@ -352,10 +136,6 @@
           fallbackRedirectUrl: '/',
           signUpFallbackRedirectUrl: '/',
           appearance: {
-            layout: {
-              socialButtonsVariant: 'blockButton',
-              socialButtonsPlacement: 'top'
-            },
             variables: {
               colorPrimary: '#ffffff',
               colorTextOnPrimaryBackground: '#000000',
@@ -366,46 +146,14 @@
               colorTextSecondary: '#94a3b8',
               borderRadius: '0.75rem'
             },
-            elements: {
-              card: {
-                backgroundColor: '#16181f',
-                border: '1px solid rgba(255, 255, 255, 0.08)'
-              },
-              footer: {
-                backgroundColor: '#16181f'
-              },
-              footerAction: {
-                backgroundColor: '#16181f'
-              },
-              formButtonPrimary: {
-                backgroundColor: '#ffffff',
-                color: '#000000',
-                fontWeight: '600',
-                '&:hover': {
-                  backgroundColor: '#e2e8f0'
-                }
-              },
-              socialButtonsBlockButton: {
-                backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                border: '1px solid rgba(255, 255, 255, 0.12)',
-                color: '#ffffff'
-              },
-              formFieldInput: {
-                backgroundColor: '#1e212b',
-                border: '1px solid rgba(255, 255, 255, 0.12)',
-                color: '#ffffff'
-              }
+            layout: {
+              socialButtonsVariant: 'blockButton',
+              socialButtonsPlacement: 'top'
             }
           }
         });
       }
-    }
-
-    if (document.readyState === 'loading') {
-      window.addEventListener('load', initClerkSignIn);
-    } else {
-      initClerkSignIn();
-    }
+    });
 
     window.addEventListener('pageshow', (e) => {
       if (e.persisted && window.Clerk && window.Clerk.user) {
