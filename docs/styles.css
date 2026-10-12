@@ -4018,6 +4018,53 @@ html.light #landing-pyqs .section-subtitle,
     margin: 0;
 }
 
+.landing-footer p.text-xs,
+.landing-footer .text-slate-500 {
+    font-size: 0.75rem;
+    line-height: 1.625;
+    max-width: 48rem;
+    margin-top: 0.75rem;
+    color: #64748b;
+}
+
+[data-theme="dark"] .landing-footer .text-slate-500,
+html.dark .landing-footer .text-slate-500 {
+    color: #64748b;
+}
+
+:root.light-theme .landing-footer .text-slate-500,
+[data-theme="light"] .landing-footer .text-slate-500,
+html.light .landing-footer .text-slate-500 {
+    color: #64748b;
+}
+
+.landing-footer div.mt-4 {
+    margin-top: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    font-size: 0.75rem;
+    color: #94a3b8;
+}
+
+.landing-footer a[href*="privacy.html"] {
+    color: #94a3b8;
+    text-decoration: none;
+    text-underline-offset: 4px;
+    transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+.landing-footer a[href*="privacy.html"]:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+:root.light-theme .landing-footer a[href*="privacy.html"]:hover,
+[data-theme="light"] .landing-footer a[href*="privacy.html"]:hover {
+    color: #0f172a;
+}
+
 /* "MAKAUT Campus Sense" Unified High-Contrast Platform Title */
 .footer-platform-title {
     font-weight: 700 !important;
