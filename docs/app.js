@@ -91,52 +91,13 @@ window.CLERK_PUBLISHABLE_KEY = "pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2Nv
 
 // Defensive global Clerk native trigger accessible immediately
 window.openAppAuthModal = function() {
-  const modal = document.getElementById('app-auth-modal');
-  if (modal) {
-    modal.style.display = 'flex';
-    modal.classList.add('active');
-    if (typeof lockBodyScroll === 'function') {
-      lockBodyScroll(true);
-    }
-  } else {
-    if (typeof window.completeAuthentication === 'function') {
-      window.completeAuthentication('Student User', 'student@makaut.edu.in');
-    } else if (typeof window.updateUIAfterLogin === 'function') {
-      window.updateUIAfterLogin({
-        fullName: 'Student User',
-        primaryEmailAddress: { emailAddress: 'student@makaut.edu.in' }
-      });
-    }
-  }
+  window.location.href = '/login.html';
 };
 
-window.closeAppAuthModal = function() {
-  const modal = document.getElementById('app-auth-modal');
-  if (modal) {
-    modal.style.display = 'none';
-    modal.classList.remove('active');
-    if (typeof lockBodyScroll === 'function') {
-      lockBodyScroll(false);
-    }
-  }
-};
+window.closeAppAuthModal = function() {};
 
 window.submitFallbackAuth = function() {
-  const nameInput = document.getElementById('auth-student-name');
-  const emailInput = document.getElementById('auth-student-email');
-  const name = (nameInput && nameInput.value.trim()) || 'Student User';
-  const email = (emailInput && emailInput.value.trim()) || 'student@makaut.edu.in';
-
-  window.closeAppAuthModal();
-
-  if (typeof window.completeAuthentication === 'function') {
-    window.completeAuthentication(name, email);
-  } else if (typeof window.updateUIAfterLogin === 'function') {
-    window.updateUIAfterLogin({
-      fullName: name,
-      primaryEmailAddress: { emailAddress: email }
-    });
-  }
+  window.location.href = '/login.html';
 };
 
 window.triggerNativeClerkAuth = async function(pendingAction = null, mode = 'signIn') {
@@ -176,9 +137,9 @@ window.triggerNativeClerkAuth = async function(pendingAction = null, mode = 'sig
   } catch (err) {
     console.warn("[Clerk] Auth modal error:", err);
   }
-  console.warn("[Clerk] Authentication modal could not open. Using in-app fallback modal.");
+  console.warn("[Clerk] Authentication modal could not open. Navigating to login page.");
   if (!window.Clerk?.user && !window.isLoggedIn) {
-    window.openAppAuthModal();
+    window.location.href = '/login.html';
   }
 };
 window.triggerNativeClerkSignUp = function() {
@@ -300,50 +261,12 @@ window.onClerkLoaded = function() {
     window.isUserAuthenticated = isUserAuthenticated;
 
     function triggerAppAuthentication(isSignUp = false) {
-      if (window.Clerk && typeof window.Clerk.openSignIn === 'function') {
-        if (isSignUp && typeof window.Clerk.openSignUp === 'function') {
-          window.Clerk.openSignUp();
-        } else {
-          window.Clerk.openSignIn();
-        }
-        return;
-      }
-
-      let fallbackModal = document.getElementById('app-auth-modal');
-      if (!fallbackModal) {
-        fallbackModal = document.createElement('div');
-        fallbackModal.id = 'app-auth-modal';
-        fallbackModal.className = 'modal active';
-        fallbackModal.style.cssText = 'position:fixed;inset:0;background:rgba(15,23,42,0.75);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;z-index:99999;';
-        fallbackModal.innerHTML = `
-          <div class="bento-card" style="max-width:420px;width:90%;padding:2rem;text-align:center;background:var(--surface-color,#ffffff);border-radius:16px;">
-            <h3 style="margin-bottom:0.5rem;font-size:1.25rem;">Sign In to CampusSense</h3>
-            <p style="color:var(--text-secondary,#64748b);font-size:0.875rem;margin-bottom:1.5rem;">Access verified MAKAUT syllabi, PYQs, and semester archives.</p>
-            <button id="btn-mock-auth-confirm" class="btn btn-primary" style="width:100%;margin-bottom:0.75rem;">Continue with Student Session</button>
-            <button id="btn-mock-auth-cancel" class="btn btn-secondary" style="width:100%;">Cancel</button>
-          </div>
-        `;
-        document.body.appendChild(fallbackModal);
-
-        document.getElementById('btn-mock-auth-confirm').onclick = () => {
-          window.isLoggedIn = true;
-          localStorage.setItem('campussense_user_session', JSON.stringify({ role: 'student', active: true }));
-          fallbackModal.style.display = 'none';
-          if (typeof updateAuthUIState === 'function') updateAuthUIState();
-          window.location.reload();
-        };
-
-        document.getElementById('btn-mock-auth-cancel').onclick = () => {
-          fallbackModal.style.display = 'none';
-        };
-      } else {
-        fallbackModal.style.display = 'flex';
-      }
+      window.location.href = '/login.html';
     }
     window.triggerAppAuthentication = triggerAppAuthentication;
 
     document.addEventListener('click', (e) => {
-      const trigger = e.target.closest('#btn-sign-in, #btn-sign-up, .btn-auth-trigger, [data-action="login"], [data-action="signup"]');
+      const trigger = e.target.closest('.btn-auth-trigger, [data-action="login"], [data-action="signup"]');
       if (trigger) {
         const href = trigger.getAttribute('href');
         if (href && href !== '#' && !href.startsWith('javascript:')) {
@@ -13086,54 +13009,16 @@ window.getSubjectDocuments = getSubjectDocuments;
         });
     });
 
-    // Wire dedicated Sign In / Sign Up buttons
-    const btnSignIn = document.getElementById('btn-sign-in') || btnNavSignIn;
-    if (btnSignIn) {
-        btnSignIn.addEventListener('click', (e) => {
-            if (e) e.preventDefault();
-            window.triggerNativeClerkAuth(null, 'signIn');
-        });
-    }
-    if (btnNavSignIn && btnNavSignIn !== btnSignIn) {
-        btnNavSignIn.addEventListener('click', (e) => {
-            if (e) e.preventDefault();
-            window.triggerNativeClerkAuth(null, 'signIn');
-        });
-    }
-
-    const btnSignUp = document.getElementById('btn-sign-up') || btnNavSignUp;
-    if (btnSignUp) {
-        btnSignUp.addEventListener('click', (e) => {
-            if (e) e.preventDefault();
-            window.triggerNativeClerkAuth(null, 'signUp');
-        });
-    }
-    if (btnNavSignUp && btnNavSignUp !== btnSignUp) {
-        btnNavSignUp.addEventListener('click', (e) => {
-            if (e) e.preventDefault();
-            window.triggerNativeClerkAuth(null, 'signUp');
-        });
-    }
-
-    document.querySelectorAll('.btn-auth-trigger, [data-action="login"]').forEach(el => {
+    // Ensure non-anchor auth triggers redirect directly to /login.html
+    document.querySelectorAll('.btn-auth-trigger, [data-action="login"], [data-action="signup"]').forEach(el => {
         el.addEventListener('click', (e) => {
-            if (e) e.preventDefault();
-            window.triggerNativeClerkAuth(null, 'signIn');
+            const href = el.getAttribute('href');
+            if (!href || href === '#' || href.startsWith('javascript:')) {
+                if (e) e.preventDefault();
+                window.location.href = '/login.html';
+            }
         });
     });
-    document.querySelectorAll('[data-action="signup"]').forEach(el => {
-        el.addEventListener('click', (e) => {
-            if (e) e.preventDefault();
-            window.triggerNativeClerkAuth(null, 'signUp');
-        });
-    });
-
-    const btnCloseAuthModal = document.getElementById('btn-close-auth-modal');
-    if (btnCloseAuthModal) {
-        btnCloseAuthModal.addEventListener('click', () => {
-            window.closeAppAuthModal();
-        });
-    }
 
     if (btnLandingAuth) {
         btnLandingAuth.addEventListener('click', (e) => {
@@ -16975,37 +16860,19 @@ window.getSubjectDocuments = getSubjectDocuments;
                 }
             });
 
-            const btnSignIn = document.getElementById('btn-sign-in') || document.getElementById('btn-nav-signin');
-            if (btnSignIn) {
-                btnSignIn.onclick = () => window.triggerNativeClerkAuth(null, 'signIn');
-            }
-            const btnNavSignIn = document.getElementById('btn-nav-signin');
-            if (btnNavSignIn && btnNavSignIn !== btnSignIn) {
-                btnNavSignIn.onclick = () => window.triggerNativeClerkAuth(null, 'signIn');
-            }
-
-            const btnSignUp = document.getElementById('btn-sign-up') || document.getElementById('btn-nav-signup');
-            if (btnSignUp) {
-                btnSignUp.onclick = () => window.triggerNativeClerkAuth(null, 'signUp');
-            }
-            const btnNavSignUp = document.getElementById('btn-nav-signup');
-            if (btnNavSignUp && btnNavSignUp !== btnSignUp) {
-                btnNavSignUp.onclick = () => window.triggerNativeClerkAuth(null, 'signUp');
-            }
-
             const btnLandingAuth = document.getElementById('btn-landing-auth');
             if (btnLandingAuth) {
-                btnLandingAuth.onclick = () => window.triggerNativeClerkAuth();
+                btnLandingAuth.onclick = () => { window.location.href = '/login.html'; };
             }
 
             const authTriggerBtn = document.getElementById('auth-trigger-btn');
             if (authTriggerBtn) {
-                authTriggerBtn.onclick = () => window.triggerNativeClerkAuth();
+                authTriggerBtn.onclick = () => { window.location.href = '/login.html'; };
             }
 
             document.querySelectorAll('.auth-trigger-btn').forEach(btn => {
                 if (btn) {
-                    btn.onclick = () => window.triggerNativeClerkAuth();
+                    btn.onclick = () => { window.location.href = '/login.html'; };
                 }
             });
         } catch (err) {

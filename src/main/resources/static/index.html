@@ -1050,33 +1050,6 @@
       </div>
     </div>
 
-    <!-- In-App Student Authentication Fallback Modal (Dual-Engine Support) -->
-    <div class="modal-backdrop" id="app-auth-modal" style="display: none;">
-        <div class="modal-card auth-modal-card" style="max-width: 440px;">
-            <div class="modal-header">
-                <div>
-                    <h2 class="modal-title" id="auth-modal-title">Student Sign In</h2>
-                    <p class="modal-subtitle">Access MAKAUT syllabi, PYQs, and Panic Pack</p>
-                </div>
-                <button class="modal-close-btn" id="btn-close-auth-modal" title="Close">✕</button>
-            </div>
-            <form id="fallback-auth-form" class="auth-form" onsubmit="event.preventDefault(); if(window.submitFallbackAuth) window.submitFallbackAuth();">
-                <div class="form-group">
-                    <label class="form-label" for="auth-student-name">Full Name</label>
-                    <input type="text" id="auth-student-name" class="custom-input" placeholder="e.g. Student User" value="Student User" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="auth-student-email">College Email or Roll</label>
-                    <input type="text" id="auth-student-email" class="custom-input" placeholder="student@makaut.edu.in" value="student@makaut.edu.in" required>
-                </div>
-                <div class="form-actions" style="margin-top: 1.25rem;">
-                    <button type="submit" class="btn btn-primary" id="btn-submit-fallback-auth" style="width: 100%;">
-                        Continue to CampusSense ➔
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
 
     <!-- Feedback & Support Modal -->
     <div class="modal-backdrop" id="feedback-modal" style="display: none;">

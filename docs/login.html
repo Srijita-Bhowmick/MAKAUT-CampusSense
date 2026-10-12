@@ -3,18 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sign in to MAKAUT CampusSense</title>
+  <title>Sign in — MAKAUT CampusSense</title>
 
-  <!-- Dynamic Clerk Configuration Resolver -->
-  <script>
-    window.__CLERK_CONFIG__ = window.__CLERK_CONFIG__ || {};
-    window.CLERK_PUBLISHABLE_KEY = window.__CLERK_CONFIG__.publishableKey || 
-      window.CLERK_PUBLISHABLE_KEY || 
-      'pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk';
-    window.__CLERK_CONFIG__.publishableKey = window.CLERK_PUBLISHABLE_KEY;
-  </script>
-
-  <!-- Clerk Core & UI -->
+  <!-- Dynamically detect and include existing workspace Clerk scripts -->
   <script defer crossorigin="anonymous" src="https://flying-lioness-4717.clerk.accounts.dev/npm/@clerk/ui@1/dist/ui.browser.js"></script>
   <script defer crossorigin="anonymous" data-clerk-publishable-key="pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk" src="https://flying-lioness-4717.clerk.accounts.dev/npm/@clerk/clerk-js@6/dist/clerk.browser.js"></script>
 
@@ -26,40 +17,51 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: #0b0f19;
+      background-color: #000000;
       color: #ffffff;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       padding: 1.5rem;
     }
-    .back-link {
+    .back-btn {
       color: #94a3b8;
       text-decoration: none;
-      margin-bottom: 1.5rem;
-      font-size: 0.9rem;
-      transition: color 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
+      font-size: 0.875rem;
+      margin-bottom: 1.25rem;
+      transition: color 0.2s;
     }
-    .back-link:hover { color: #ffffff; }
-    h1 { font-size: 1.6rem; margin-bottom: 0.4rem; text-align: center; }
-    p { color: #94a3b8; margin-bottom: 1.5rem; text-align: center; font-size: 0.9rem; }
-    #clerk-sign-in { display: flex; justify-content: center; min-height: 480px; width: 100%; max-width: 440px; }
+    .back-btn:hover { color: #ffffff; }
+    .page-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+      text-align: center;
+    }
+    .page-desc {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    #clerk-sign-in {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
   </style>
 </head>
 <body>
 
-  <a href="/" class="back-link">← Back to CampusSense</a>
-  <h1>Sign in to MAKAUT CampusSense</h1>
-  <p>Access syllabus blueprints, semester PYQs, and panic packs.</p>
+  <a href="/" class="back-btn">← Back to CampusSense</a>
+  <h1 class="page-title">Sign in to MAKAUT CampusSense</h1>
+  <p class="page-desc">Access syllabus blueprints, semester PYQs, and panic packs.</p>
 
+  <!-- Official Clerk component mounts here -->
   <div id="clerk-sign-in"></div>
 
   <script>
     window.addEventListener('load', async () => {
       await window.Clerk.load();
 
-      // If already logged in, redirect home and remove login from history
       if (window.Clerk.user) {
         window.location.replace('/');
         return;
@@ -70,32 +72,25 @@
         window.Clerk.mountSignIn(container, {
           fallbackRedirectUrl: '/',
           signUpFallbackRedirectUrl: '/',
-          routing: 'hash',
           appearance: {
-            layout: {
-              socialButtonsVariant: 'blockButton',
-              socialButtonsPlacement: 'top',
-              showOptionalFields: false
-            },
             variables: {
-              colorPrimary: '#6366f1',
-              colorBackground: '#111827',
+              colorPrimary: '#ffffff',
+              colorBackground: '#111318',
               colorText: '#ffffff',
-              colorInputBackground: '#1f2937',
+              colorInputBackground: '#1a1d24',
               colorInputText: '#ffffff',
               colorTextSecondary: '#94a3b8',
               borderRadius: '0.75rem'
             },
-            elements: {
-              card: 'shadow-2xl border border-gray-800',
-              footerAction: 'text-gray-400'
+            layout: {
+              socialButtonsVariant: 'blockButton',
+              socialButtonsPlacement: 'top'
             }
           }
         });
       }
     });
 
-    // Prevent back-button caching loop
     window.addEventListener('pageshow', (e) => {
       if (e.persisted && window.Clerk && window.Clerk.user) {
         window.location.replace('/');
