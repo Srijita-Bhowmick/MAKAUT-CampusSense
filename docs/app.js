@@ -12647,15 +12647,112 @@ window.getSubjectDocuments = getSubjectDocuments;
     ];
 
     function getFilteredSubjects(filter = 'all') {
-      const fLower = (filter || 'all').toLowerCase();
-      if (fLower === 'first-year' || fLower === '1st year common' || fLower === 'first_year' || fLower === 'fy') {
-        return LANDING_1ST_YEAR_SUBJECTS;
+      const fLower = (filter || 'all').toLowerCase().trim();
+
+      const formatFirstYearItem = sub => ({
+        code: sub.code,
+        title: sub.name || sub.title,
+        credits: sub.credits,
+        contactHours: sub.contactHours || (sub.credits * 12),
+        badge: sub.code,
+        streamCode: 'first-year',
+        groupName: sub.category === 'GROUP_A' ? 'Group A Foundation' : (sub.category === 'GROUP_B' ? 'Group B Foundation' : 'Core Foundation'),
+        syllabusPath: sub.syllabusUrl || sub.syllabusPath || 'assets/resources/1st_year/syllabus/Physics.pdf',
+        units: sub.units || [],
+        semester: sub.semester || 1
+      });
+
+      // 1. First Year Common
+      if (fLower === 'first-year' || fLower === '1st year common' || fLower === 'first_year' || fLower === 'fy' || fLower === '1st-year') {
+        if (typeof MAKAUT_CURRICULUM !== 'undefined' && Array.isArray(MAKAUT_CURRICULUM) && MAKAUT_CURRICULUM.length > 0) {
+          return MAKAUT_CURRICULUM.map(formatFirstYearItem);
+        }
+        return LANDING_1ST_YEAR_SUBJECTS.map(s => ({
+          code: s.code,
+          title: s.title,
+          credits: s.credits,
+          contactHours: s.credits * 12,
+          badge: s.code,
+          streamCode: 'first-year',
+          groupName: s.groupName,
+          syllabusPath: s.syllabusPath,
+          units: [],
+          semester: 1
+        }));
       }
-      if (fLower === 'all') {
-        return [...LANDING_1ST_YEAR_SUBJECTS, ...LANDING_CONSOLIDATED_STREAMS];
+
+      // 2. Departmental Streams: cse, it, cse-aiml, cscs, csds, csbs
+      const sKey = fLower.toUpperCase();
+      const streamObj = (typeof DEPARTMENT_STREAMS !== 'undefined' && (DEPARTMENT_STREAMS[sKey] || DEPARTMENT_STREAMS[fLower])) || null;
+      const consolidatedBlueprint = LANDING_CONSOLIDATED_STREAMS.find(s => s.streamCode === fLower || s.streamCode.toUpperCase() === sKey);
+
+      if (streamObj && streamObj.courses && streamObj.courses.length > 0) {
+        const streamCourses = streamObj.courses.map(c => ({
+          code: c.code,
+          title: c.name || c.title,
+          credits: c.credits || 3,
+          contactHours: c.contactHours || ((c.credits || 3) * 12),
+          badge: c.code,
+          streamCode: fLower,
+          groupName: `${streamObj.code || sKey} • Sem ${c.semester || 3}`,
+          syllabusPath: c.syllabusUrl || (consolidatedBlueprint ? consolidatedBlueprint.syllabusPath : ''),
+          units: c.units || [],
+          semester: c.semester || 3
+        }));
+
+        if (consolidatedBlueprint) {
+          return [
+            {
+              code: consolidatedBlueprint.badge,
+              title: consolidatedBlueprint.title,
+              credits: null,
+              scope: consolidatedBlueprint.scope || 'Semesters 3 to 8',
+              badge: consolidatedBlueprint.badge,
+              groupName: `${consolidatedBlueprint.badge} Master Blueprint`,
+              streamCode: fLower,
+              syllabusPath: consolidatedBlueprint.syllabusPath,
+              units: [],
+              isBlueprintCard: true
+            },
+            ...streamCourses
+          ];
+        }
+        return streamCourses;
       }
-      const matched = LANDING_CONSOLIDATED_STREAMS.filter(s => s.streamCode === fLower);
-      return matched.length > 0 ? matched : [...LANDING_1ST_YEAR_SUBJECTS, ...LANDING_CONSOLIDATED_STREAMS];
+
+      // 3. 'all' Subjects: Return 1st Year Foundation Subjects (with unit accordions) + Consolidated Department Blueprint Cards
+      let firstYearItems = [];
+      if (typeof MAKAUT_CURRICULUM !== 'undefined' && Array.isArray(MAKAUT_CURRICULUM) && MAKAUT_CURRICULUM.length > 0) {
+        firstYearItems = MAKAUT_CURRICULUM.map(formatFirstYearItem);
+      } else {
+        firstYearItems = LANDING_1ST_YEAR_SUBJECTS.map(s => ({
+          code: s.code,
+          title: s.title,
+          credits: s.credits,
+          contactHours: s.credits * 12,
+          badge: s.code,
+          streamCode: 'first-year',
+          groupName: s.groupName,
+          syllabusPath: s.syllabusPath,
+          units: [],
+          semester: 1
+        }));
+      }
+
+      const streamBlueprints = LANDING_CONSOLIDATED_STREAMS.map(s => ({
+        code: s.badge,
+        title: s.title,
+        credits: null,
+        scope: s.scope || 'Semesters 3 to 8',
+        badge: s.badge,
+        groupName: `${s.badge} Blueprint`,
+        streamCode: s.streamCode,
+        syllabusPath: s.syllabusPath,
+        units: [],
+        isBlueprintCard: true
+      }));
+
+      return [...firstYearItems, ...streamBlueprints];
     }
 
     function getFilteredPapers(yearFilter = 'all') {
@@ -12708,18 +12805,50 @@ window.getSubjectDocuments = getSubjectDocuments;
         return;
       }
 
-      container.innerHTML = items.map(item => `
-        <div class="bento-card subject-card" data-stream="${item.streamCode || 'first-year'}" data-code="${item.code || item.streamCode}">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
-            <span class="badge subject-code-badge" style="font-weight: 700;">${item.groupName || item.badge || item.code}</span>
-            <span class="badge credit-badge" style="opacity: 0.85;">${item.credits ? item.credits + ' Credits' : (item.scope || 'Semesters 3 to 8')}</span>
+      container.innerHTML = items.map(item => {
+        const hasUnits = Array.isArray(item.units) && item.units.length > 0;
+        const lectureHours = item.contactHours ? `${item.contactHours} Contact Hrs` : (item.credits ? `${item.credits * 12} Lecture Hrs` : '');
+        const creditsText = item.credits ? `${item.credits} Credits` : (item.scope || 'Semesters 3 to 8');
+        const metaRight = lectureHours ? `${creditsText} • ${lectureHours}` : creditsText;
+
+        const safeTitle = (item.title || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        const safeCode = (item.code || item.streamCode || '').replace(/'/g, "\\'");
+        const safePath = (item.syllabusPath || '').replace(/'/g, "\\'");
+
+        const unitsAccordionHtml = hasUnits ? `
+          <details class="curriculum-modules-accordion" style="margin-bottom: 1.15rem; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 0.6rem 0.85rem; background: rgba(0, 0, 0, 0.25);">
+            <summary style="cursor: pointer; font-size: 0.82rem; font-weight: 600; color: #818cf8; list-style: none; display: flex; justify-content: space-between; align-items: center; user-select: none;">
+              <span>📚 Expand Modules (${item.units.length} Units • ${item.contactHours || 36}h)</span>
+              <span style="font-size: 0.75rem; opacity: 0.8;">▼</span>
+            </summary>
+            <div class="modules-list" style="margin-top: 0.65rem; display: flex; flex-direction: column; gap: 0.5rem;">
+              ${item.units.map(u => `
+                <div class="module-unit-item" style="font-size: 0.78rem; border-top: 1px solid rgba(255, 255, 255, 0.06); padding-top: 0.45rem;">
+                  <div style="font-weight: 600; color: #f1f5f9; display: flex; justify-content: space-between;">
+                    <span>${u.title || `Unit ${u.unitNumber}`}</span>
+                    ${u.hours ? `<span style="color: #94a3b8; font-size: 0.75rem;">${u.hours} hrs</span>` : ''}
+                  </div>
+                  ${u.subtopics ? `<div style="font-size: 0.74rem; color: #94a3b8; margin-top: 0.25rem; line-height: 1.4;">${u.subtopics}</div>` : ''}
+                </div>
+              `).join('')}
+            </div>
+          </details>
+        ` : '';
+
+        return `
+          <div class="bento-card subject-card" data-stream="${item.streamCode || 'first-year'}" data-code="${safeCode}">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
+              <span class="badge subject-code-badge" style="font-weight: 700;">${item.groupName || item.badge || item.code}</span>
+              <span class="badge credit-badge" style="opacity: 0.85;">${metaRight}</span>
+            </div>
+            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 0 0 ${hasUnits ? '0.75rem' : '1.25rem'} 0; color: var(--text-main); flex: 1;">${item.title}</h3>
+            ${unitsAccordionHtml}
+            <button class="btn btn-outline card-action-btn subject-action-btn" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: auto;" onclick="viewSyllabusItem('${safeCode}', '${safePath}', '${safeTitle}')" aria-label="View Syllabus Blueprint for ${item.title.replace(/"/g, '&quot;')}">
+              <span class="card-btn-icon btn-icon">📖</span><span class="card-btn-text btn-text">View Syllabus Blueprint</span><span class="card-btn-arrow btn-arrow">→</span>
+            </button>
           </div>
-          <h3 style="font-size: 1.15rem; font-weight: 700; margin: 0 0 1.25rem 0; color: var(--text-main); flex: 1;">${item.title}</h3>
-          <button class="btn btn-outline card-action-btn subject-action-btn" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: auto;" onclick="viewSyllabusItem('${item.code || item.streamCode}', '${item.syllabusPath}', '${item.title}')" aria-label="View Syllabus Blueprint for ${item.title}">
-            <span class="card-btn-icon btn-icon">📖</span><span class="card-btn-text btn-text">View Syllabus Blueprint</span><span class="card-btn-arrow btn-arrow">→</span>
-          </button>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
 
     function renderLandingArchives(yearFilter = null) {
@@ -12872,33 +13001,37 @@ window.getSubjectDocuments = getSubjectDocuments;
     // Wire All Landing Filter Buttons & PYQ Year Filters (Item 6: Debounced)
     function bindLandingFilterButtons() {
         try {
-            const filterPills = document.querySelectorAll('#curriculum-filter-group .filter-pill-btn, .curriculum-filter-tabs button, [data-curriculum-filter], [data-stream]');
+            const filterPills = document.querySelectorAll('#curriculum-filter-group .filter-pill-btn, #curriculum-filter-group button');
             let filterDebounce = null;
             filterPills.forEach(btn => {
+              if (btn.dataset.bound === 'true') return;
+              btn.dataset.bound = 'true';
               btn.addEventListener('click', (e) => {
                 e.preventDefault();
-                const stream = btn.getAttribute('data-stream') || btn.getAttribute('data-curriculum-filter') || 'all';
+                const stream = btn.getAttribute('data-stream') || 'all';
                 filterPills.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 if (filterDebounce) clearTimeout(filterDebounce);
                 filterDebounce = setTimeout(() => {
                   renderLandingCurriculum(stream);
-                }, 120);
+                }, 80);
               });
             });
 
-            const yearPills = document.querySelectorAll('[data-year-filter], .pyq-year-filter-btn');
+            const yearPills = document.querySelectorAll('#pyq-year-pills .filter-pill, #pyq-year-pills button, .pyq-year-filter-btn');
             let yearDebounce = null;
             yearPills.forEach(btn => {
+              if (btn.dataset.bound === 'true') return;
+              btn.dataset.bound = 'true';
               btn.addEventListener('click', (e) => {
                 e.preventDefault();
-                const year = btn.getAttribute('data-year-filter') || btn.getAttribute('data-year') || 'all';
+                const year = btn.getAttribute('data-year-filter') || btn.getAttribute('data-year') || 'sem-3';
                 yearPills.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 if (yearDebounce) clearTimeout(yearDebounce);
                 yearDebounce = setTimeout(() => {
                   renderLandingArchives(year);
-                }, 120);
+                }, 80);
               });
             });
         } catch (err) {

@@ -9,8 +9,7 @@
   <link rel="preconnect" href="https://flying-lioness-4717.clerk.accounts.dev" crossorigin>
   <link rel="dns-prefetch" href="https://flying-lioness-4717.clerk.accounts.dev">
 
-  <!-- Clerk Core and UI Bundle (Async Non-Blocking) -->
-  <script async crossorigin="anonymous" src="https://flying-lioness-4717.clerk.accounts.dev/npm/@clerk/ui@1/dist/ui.browser.js"></script>
+  <!-- Official Clerk JS Distribution Script -->
   <script async crossorigin="anonymous" data-clerk-publishable-key="pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk" src="https://flying-lioness-4717.clerk.accounts.dev/npm/@clerk/clerk-js@6/dist/clerk.browser.js"></script>
 
   <style>
@@ -327,13 +326,10 @@
   </div>
 
   <script>
-    let clerkInitCalled = false;
-
     async function initStockPulseAuth() {
-      if (clerkInitCalled) return;
-
       const mountPoint = document.getElementById('clerk-mount');
       if (!mountPoint) return;
+      if (mountPoint.dataset.mounted === 'true') return;
 
       const publishableKey = 'pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk';
 
@@ -350,14 +346,9 @@
         return;
       }
 
-      clerkInitCalled = true;
-
-      // Ensure Clerk.load() is called exactly once
+      // Ensure Clerk.load() is called strictly once
       if (!window.Clerk.loaded && typeof window.Clerk.load === 'function') {
-        const uiCtor = window.__internal_ClerkUICtor || window.ClerkUI;
-        const loadConfig = { publishableKey };
-        if (uiCtor) loadConfig.ui = { ClerkUI: uiCtor };
-        await window.Clerk.load(loadConfig);
+        await window.Clerk.load({ publishableKey });
       }
 
       // If user is already authenticated, redirect cleanly to '/'
@@ -366,94 +357,97 @@
         return;
       }
 
-      // Mount SignIn Component with StockPulse 1:1 Theme Appearance
-      mountPoint.innerHTML = '';
-      window.Clerk.mountSignIn(mountPoint, {
-        fallbackRedirectUrl: '/',
-        signUpFallbackRedirectUrl: '/',
-        appearance: {
-          variables: {
-            colorPrimary: '#ffffff',
-            colorTextOnPrimaryBackground: '#000000',
-            colorBackground: '#16181f',
-            colorInputBackground: '#1e222d',
-            colorInputText: '#ffffff',
-            colorText: '#ffffff',
-            colorTextSecondary: '#cbd5e1',
-            borderRadius: '0.75rem'
-          },
-          layout: {
-            socialButtonsVariant: 'blockButton',
-            socialButtonsPlacement: 'top'
-          },
-          elements: {
-            rootBox: { background: 'transparent', border: 'none', boxShadow: 'none', padding: '0', margin: '0 auto' },
-            cardBox: { background: 'transparent', border: 'none', boxShadow: 'none', padding: '0', margin: '0 auto' },
-            card: {
-              backgroundColor: '#16181f',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              borderRadius: '0.75rem',
-              boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.6)'
+      // Mount Idempotency & Lifecycle Guard: strictly once
+      if (mountPoint && !mountPoint.dataset.mounted) {
+        mountPoint.dataset.mounted = 'true';
+        mountPoint.innerHTML = '';
+        window.Clerk.mountSignIn(mountPoint, {
+          fallbackRedirectUrl: '/',
+          signUpFallbackRedirectUrl: '/',
+          appearance: {
+            variables: {
+              colorPrimary: '#ffffff',
+              colorTextOnPrimaryBackground: '#000000',
+              colorBackground: '#16181f',
+              colorInputBackground: '#1e222d',
+              colorInputText: '#ffffff',
+              colorText: '#ffffff',
+              colorTextSecondary: '#cbd5e1',
+              borderRadius: '0.75rem'
             },
-            headerTitle: { color: '#ffffff', fontWeight: '700' },
-            headerSubtitle: { color: '#cbd5e1' },
-            formHeaderSubtitle: { color: '#cbd5e1' },
-            dividerLine: { backgroundColor: 'rgba(255, 255, 255, 0.08)' },
-            dividerText: { color: '#94a3b8' },
-            formFieldLabel: { color: '#e2e8f0', fontWeight: '600' },
-            formFieldInput: {
-              backgroundColor: '#1e222d',
-              color: '#ffffff',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
-              borderRadius: '0.5rem'
+            layout: {
+              socialButtonsVariant: 'blockButton',
+              socialButtonsPlacement: 'top'
             },
-            otpCodeFieldInputs: {
-              border: 'none',
-              background: 'transparent',
-              boxShadow: 'none',
-              padding: '0',
-              margin: '0 auto'
-            },
-            otpCodeField: {
-              border: 'none',
-              background: 'transparent',
-              boxShadow: 'none'
-            },
-            otpCodeFieldInput: {
-              backgroundColor: '#1e222d',
-              color: '#ffffff',
-              border: '1px solid rgba(255, 255, 255, 0.25)',
-              borderRadius: '0.5rem',
-              fontWeight: '700'
-            },
-            alternativeMethods: { display: 'none' },
-            alternativeMethodsBlockButton: { display: 'none' },
-            socialButtonsBlockButton: {
-              backgroundColor: 'rgba(255, 255, 255, 0.05)',
-              border: '1px solid rgba(255, 255, 255, 0.15)',
-              color: '#ffffff'
-            },
-            socialButtonsBlockButtonText: { color: '#ffffff', fontWeight: '600' },
-            formButtonPrimary: {
-              backgroundColor: '#ffffff',
-              color: '#000000',
-              fontWeight: '700',
-              borderRadius: '0.5rem'
-            },
-            footer: {
-              backgroundColor: '#16181f',
-              borderTop: '1px solid rgba(255, 255, 255, 0.08)'
-            },
-            footerAction: { backgroundColor: '#16181f' },
-            footerActionText: { color: '#94a3b8' },
-            footerActionLink: { color: '#ffffff', fontWeight: '600' },
-            footerText: { color: '#94a3b8' },
-            identityPreviewText: { color: '#cbd5e1' },
-            identityPreviewEditButton: { color: '#cbd5e1' },
-            logoImage: { filter: 'brightness(0) invert(1)', opacity: '0.9' }
+            elements: {
+              rootBox: { background: 'transparent', border: 'none', boxShadow: 'none', padding: '0', margin: '0 auto' },
+              cardBox: { background: 'transparent', border: 'none', boxShadow: 'none', padding: '0', margin: '0 auto' },
+              card: {
+                backgroundColor: '#16181f',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                borderRadius: '0.75rem',
+                boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.6)'
+              },
+              headerTitle: { color: '#ffffff', fontWeight: '700' },
+              headerSubtitle: { color: '#cbd5e1' },
+              formHeaderSubtitle: { color: '#cbd5e1' },
+              dividerLine: { backgroundColor: 'rgba(255, 255, 255, 0.08)' },
+              dividerText: { color: '#94a3b8' },
+              formFieldLabel: { color: '#e2e8f0', fontWeight: '600' },
+              formFieldInput: {
+                backgroundColor: '#1e222d',
+                color: '#ffffff',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                borderRadius: '0.5rem'
+              },
+              otpCodeFieldInputs: {
+                border: 'none',
+                background: 'transparent',
+                boxShadow: 'none',
+                padding: '0',
+                margin: '0 auto'
+              },
+              otpCodeField: {
+                border: 'none',
+                background: 'transparent',
+                boxShadow: 'none'
+              },
+              otpCodeFieldInput: {
+                backgroundColor: '#1e222d',
+                color: '#ffffff',
+                border: '1px solid rgba(255, 255, 255, 0.25)',
+                borderRadius: '0.5rem',
+                fontWeight: '700'
+              },
+              alternativeMethods: { display: 'none' },
+              alternativeMethodsBlockButton: { display: 'none' },
+              socialButtonsBlockButton: {
+                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                border: '1px solid rgba(255, 255, 255, 0.15)',
+                color: '#ffffff'
+              },
+              socialButtonsBlockButtonText: { color: '#ffffff', fontWeight: '600' },
+              formButtonPrimary: {
+                backgroundColor: '#ffffff',
+                color: '#000000',
+                fontWeight: '700',
+                borderRadius: '0.5rem'
+              },
+              footer: {
+                backgroundColor: '#16181f',
+                borderTop: '1px solid rgba(255, 255, 255, 0.08)'
+              },
+              footerAction: { backgroundColor: '#16181f' },
+              footerActionText: { color: '#94a3b8' },
+              footerActionLink: { color: '#ffffff', fontWeight: '600' },
+              footerText: { color: '#94a3b8' },
+              identityPreviewText: { color: '#cbd5e1' },
+              identityPreviewEditButton: { color: '#cbd5e1' },
+              logoImage: { filter: 'brightness(0) invert(1) !important', opacity: '0.9' }
+            }
           }
-        }
-      });
+        });
+      }
     }
 
     const clerkScript = document.querySelector('script[data-clerk-publishable-key]');
