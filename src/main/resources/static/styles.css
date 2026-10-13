@@ -367,19 +367,19 @@
 }
 
 /* --- NATIVE VIEWPORT & FLUID TOUCHPAD SCROLLING --- */
-html {
+html, body {
   min-height: 100vh !important;
   height: auto !important;
-  scrollbar-gutter: stable both-edges !important;
   overflow-y: scroll !important;
+  scrollbar-gutter: stable !important;
+}
+
+html {
   overflow-x: hidden !important;
   scroll-behavior: smooth !important;
 }
 
 body {
-  min-height: 100vh !important;
-  height: auto !important;
-  overflow-y: visible !important;
   overflow-x: hidden !important;
   position: relative;
   overscroll-behavior: auto !important;
@@ -483,7 +483,7 @@ body {
 
 body.modal-open {
   overflow-y: scroll !important;
-  scrollbar-gutter: stable both-edges !important;
+  scrollbar-gutter: stable !important;
 }
 
 /* Stabilize scrollbar thumb to prevent collapse and runaway jumps */
@@ -545,7 +545,7 @@ button,
 /* Maintain stable scrollbar track without layout jumps */
 body:not(.modal-open) {
   overflow-y: scroll !important;
-  scrollbar-gutter: stable both-edges !important;
+  scrollbar-gutter: stable !important;
 }
 
 /* Modals must only absorb clicks when explicitly visible */
@@ -7448,3 +7448,48 @@ fieldset:has([class*="otpCodeFieldInput"]) {
 [class*="alternativeMethodsBlockButton"] {
   display: none !important;
 }
+
+/* ==========================================================================
+   ACADEMIC SETUP MODAL STABILIZATION & HIGHLIGHTS (STEP 3)
+   ========================================================================== */
+.modal-backdrop.academic-setup-modal .modal-card,
+#academic-setup-modal .modal-card,
+#academic-setup-modal .onboarding-card {
+  width: 100% !important;
+  max-width: 600px !important;
+  min-height: 420px !important;
+  border-radius: 1rem !important;
+}
+
+#academic-setup-modal .academic-option,
+#academic-setup-modal .stream-option,
+#academic-setup-modal .stream-card,
+#academic-setup-modal .stage-card,
+#academic-setup-modal .primary-year-btn,
+#academic-setup-modal .academic-stage-card {
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+}
+
+#academic-setup-modal .academic-option:hover,
+#academic-setup-modal .stream-option:hover,
+#academic-setup-modal .stream-card:hover,
+#academic-setup-modal .stage-card:hover,
+#academic-setup-modal .primary-year-btn:hover,
+#academic-setup-modal .academic-stage-card:hover {
+  background-color: #1e222d !important;
+  border-color: #6366f1 !important;
+}
+
+#academic-setup-modal .academic-option.selected,
+#academic-setup-modal .stream-option.selected,
+#academic-setup-modal .stream-card.selected,
+#academic-setup-modal .stage-card.selected,
+#academic-setup-modal .primary-year-btn.selected,
+#academic-setup-modal .academic-stage-card.selected,
+#academic-setup-modal .academic-option:active,
+#academic-setup-modal .stream-option:active {
+  border-color: #6366f1 !important;
+  transform: scale(0.99) !important;
+}
+

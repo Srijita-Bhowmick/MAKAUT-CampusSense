@@ -1,25 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sign In — MAKAUT CampusSense</title>
 
-  <!-- Performance Acceleration: DNS Preconnect & Prefetch -->
-  <link rel="preconnect" href="https://flying-lioness-4717.clerk.accounts.dev">
+  <!-- Performance Acceleration: Preconnect & Prefetch -->
+  <link rel="preconnect" href="https://flying-lioness-4717.clerk.accounts.dev" crossorigin>
   <link rel="dns-prefetch" href="https://flying-lioness-4717.clerk.accounts.dev">
 
-  <!-- Instant Non-FOUC Theme Initialization -->
-  <script>
-    (function() {
-      const savedTheme = localStorage.getItem('campussense_theme') || 'dark';
-      document.documentElement.setAttribute('data-theme', savedTheme);
-    })();
-  </script>
-
-  <!-- Official Clerk Core & UI scripts loaded dynamically from project configuration -->
+  <!-- Clerk Core and UI Bundle -->
   <script async crossorigin="anonymous" src="https://flying-lioness-4717.clerk.accounts.dev/npm/@clerk/ui@1/dist/ui.browser.js"></script>
-  <script async crossorigin="anonymous" data-clerk-publishable-key="pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk" src="https://flying-lioness-4717.clerk.accounts.dev/npm/@clerk/clerk-js@6/dist/clerk.browser.js" onload="if(window.initAuth) window.initAuth();"></script>
+  <script async crossorigin="anonymous" data-clerk-publishable-key="pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk" src="https://flying-lioness-4717.clerk.accounts.dev/npm/@clerk/clerk-js@6/dist/clerk.browser.js"></script>
 
   <style>
     * {
@@ -28,174 +20,115 @@
       padding: 0;
     }
 
-    /* Stabilize Viewport to Eliminate Jitter & Scrollbar Flickering */
-    html {
+    /* Stable Viewport to Eliminate Jitter & Recalculation Thrashing */
+    html, body {
       min-height: 100vh;
       height: auto;
-      scrollbar-gutter: stable both-edges;
       overflow-y: scroll;
+      scrollbar-gutter: stable;
+      background-color: #000000;
+      color: #ffffff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
     body {
-      min-height: 100vh;
-      height: auto;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      padding: 1.5rem 1rem;
-      transition: background-color 0.2s ease, color 0.2s ease;
+      padding: 2rem 1rem;
     }
 
-    /* Theme Variables & Body Colors */
-    [data-theme="dark"] body {
-      background-color: #000000;
-      color: #ffffff;
-    }
-
-    [data-theme="light"] body {
-      background-color: #f8fafc;
-      color: #0f172a;
-    }
-
-    /* Top Navigation Bar with Persistent Theme Toggle */
-    .top-nav-bar {
-      width: 100%;
-      max-width: 460px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2rem;
-      padding: 0 0.25rem;
-    }
-
+    /* Top Return Link: ONLY element above the card */
     .back-link {
+      display: inline-block;
+      width: 100%;
+      max-width: 440px;
+      margin-bottom: 1.5rem;
+      color: #94a3b8;
       text-decoration: none;
       font-size: 0.875rem;
       font-weight: 500;
-      transition: color 0.2s ease;
+      transition: color 0.15s ease;
     }
 
-    [data-theme="dark"] .back-link {
-      color: #94a3b8;
-    }
-    [data-theme="dark"] .back-link:hover {
+    .back-link:hover {
       color: #ffffff;
     }
 
-    [data-theme="light"] .back-link {
-      color: #475569;
-    }
-    [data-theme="light"] .back-link:hover {
-      color: #0f172a;
-    }
-
-    /* High-Contrast Theme Toggle Button */
-    .theme-toggle-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      padding: 0.45rem 0.85rem;
-      border-radius: 9999px;
-      font-size: 0.825rem;
-      font-weight: 600;
-      cursor: pointer;
-      outline: none;
-      transition: all 0.2s ease;
-    }
-
-    [data-theme="dark"] .theme-toggle-btn {
-      background-color: #16181f;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: #ffffff;
-    }
-    [data-theme="dark"] .theme-toggle-btn:hover {
-      background-color: #1e222d;
-      border-color: rgba(255, 255, 255, 0.3);
-    }
-
-    [data-theme="light"] .theme-toggle-btn {
-      background-color: #ffffff;
-      border: 1px solid #cbd5e1;
-      color: #0f172a;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-    }
-    [data-theme="light"] .theme-toggle-btn:hover {
-      background-color: #f8fafc;
-      border-color: #94a3b8;
-    }
-
-    /* Stabilized Clerk Mount Container */
+    /* Single-Card Mount Target: Zero Double Borders */
     #clerk-mount {
       min-height: 520px;
       width: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
-      contain: layout style;
       background: transparent !important;
       border: none !important;
       box-shadow: none !important;
       padding: 0 !important;
+      margin: 0 auto !important;
     }
 
-    /* Single Card Boundary & Transparent Wrappers */
     .cl-rootBox,
     .cl-cardBox {
       background: transparent !important;
       border: none !important;
       box-shadow: none !important;
+      padding: 0 !important;
+      margin: 0 auto !important;
     }
 
-    [data-theme="dark"] .cl-card {
+    /* StockPulse 1:1 Theme - Card Styling */
+    .cl-card {
       background-color: #16181f !important;
-      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      border: 1px solid rgba(255, 255, 255, 0.08) !important;
       border-radius: 0.75rem !important;
       box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.6) !important;
-    }
-
-    [data-theme="light"] .cl-card {
-      background-color: #ffffff !important;
-      border: 1px solid #cbd5e1 !important;
-      border-radius: 0.75rem !important;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08) !important;
-      color: #0f172a !important;
-    }
-
-    [data-theme="light"] .cl-formFieldInput {
-      background-color: #f8fafc !important;
-      color: #0f172a !important;
-      border: 1px solid #94a3b8 !important;
-    }
-
-    [data-theme="light"] .cl-formButtonPrimary {
-      background-color: #0f172a !important;
       color: #ffffff !important;
+    }
+
+    /* Primary Action Button: Solid White with Bold Black Text */
+    .cl-formButtonPrimary {
+      background-color: #ffffff !important;
+      color: #000000 !important;
       font-weight: 700 !important;
+      border: none !important;
+      border-radius: 0.5rem !important;
+      box-shadow: none !important;
     }
 
-    /* High-contrast Clerk branding in dark mode */
-    [data-theme="dark"] [class*="cl-footer"] svg,
-    [data-theme="dark"] [class*="cl-footer"] img,
-    [data-theme="dark"] .cl-internal-logo,
-    [data-theme="dark"] [class*="cl-securedBy"] svg,
-    [data-theme="dark"] [class*="cl-securedBy"] img {
-      filter: brightness(0) invert(1) !important;
-      opacity: 0.9 !important;
+    .cl-formButtonPrimary:hover {
+      background-color: #e2e8f0 !important;
+      color: #000000 !important;
     }
 
-    [data-theme="dark"] [class*="cl-footerText"],
-    [data-theme="dark"] [class*="cl-footerActionText"],
-    [data-theme="dark"] [class*="cl-securedByText"],
-    [data-theme="dark"] [class*="cl-securedBy"] {
-      color: #94a3b8 !important;
-      opacity: 1 !important;
-      visibility: visible !important;
+    /* Inputs: Dark Slate with Subtle Border */
+    .cl-formFieldInput {
+      background-color: #1e222d !important;
+      border: 1px solid rgba(255, 255, 255, 0.15) !important;
+      color: #ffffff !important;
+      border-radius: 0.5rem !important;
     }
 
-    /* STEP 3: OTP Verification Screen Overhaul (Match Specifications) */
-    /* 1. Remove Outer Rectangle Box */
+    .cl-formFieldInput:focus {
+      border-color: rgba(255, 255, 255, 0.4) !important;
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1) !important;
+    }
+
+    /* Social Buttons: Block at Top */
+    .cl-socialButtonsBlockButton {
+      background-color: rgba(255, 255, 255, 0.05) !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      color: #ffffff !important;
+      border-radius: 0.5rem !important;
+    }
+
+    .cl-socialButtonsBlockButton:hover {
+      background-color: rgba(255, 255, 255, 0.08) !important;
+    }
+
+    /* OTP Screen: Remove Outer Box, Style 6 Digit Boxes */
     .cl-otpCodeFieldInputs,
     .cl-otpCodeField,
     [class*="otpCodeFieldInputs"],
@@ -211,9 +144,8 @@
       margin: 0 auto !important;
     }
 
-    /* 2. Preserve Only the 6 Individual Digit Boxes */
-    [data-theme="dark"] .cl-otpCodeFieldInput,
-    [data-theme="dark"] [class*="otpCodeFieldInput"] {
+    .cl-otpCodeFieldInput,
+    [class*="otpCodeFieldInput"] {
       border: 1px solid rgba(255, 255, 255, 0.25) !important;
       background-color: #1e222d !important;
       color: #ffffff !important;
@@ -222,335 +154,190 @@
       font-weight: 700 !important;
     }
 
-    [data-theme="light"] .cl-otpCodeFieldInput,
-    [data-theme="light"] [class*="otpCodeFieldInput"] {
-      border: 1px solid #cbd5e1 !important;
-      background-color: #ffffff !important;
-      color: #0f172a !important;
-      border-radius: 0.5rem !important;
-      box-shadow: none !important;
-      font-weight: 700 !important;
+    .cl-otpCodeFieldInput:focus,
+    [class*="otpCodeFieldInput"]:focus {
+      border-color: #6366f1 !important;
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25) !important;
     }
 
-    /* 3. Remove "Use Another Method" */
+    /* Hide "Use another method" Link via CSS */
     [class*="alternativeMethods"],
     [data-localization-key*="useAnotherMethod"],
     [data-localization-key*="alternativeMethods"],
     .cl-alternativeMethodsBlockButton,
     [class*="alternativeMethodsBlockButton"],
-    button:has-text("Use another method"),
-    a:has-text("Use another method") {
+    button[data-localization-key*="useAnotherMethod"],
+    a[data-localization-key*="useAnotherMethod"] {
       display: none !important;
     }
 
-    /* Keyframe animation for placeholder spinner */
-    @keyframes clerk-mount-spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
+    /* Footer & Clerk Branding Visibility */
+    .cl-footer,
+    .cl-footerAction,
+    [class*="cl-footer"] {
+      background-color: #16181f !important;
+      border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
     }
 
-    [data-theme="light"] [class*="cl-footer"] svg,
-    [data-theme="light"] [class*="cl-footer"] img,
-    [data-theme="light"] .cl-internal-logo,
-    [data-theme="light"] [class*="cl-securedBy"] svg,
-    [data-theme="light"] [class*="cl-securedBy"] img {
-      filter: none !important;
-      opacity: 0.85 !important;
+    [class*="cl-footerText"],
+    [class*="cl-footerActionText"],
+    [class*="cl-securedByText"],
+    [class*="cl-securedBy"] {
+      color: #94a3b8 !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+
+    [class*="cl-footer"] svg,
+    [class*="cl-footer"] img,
+    .cl-internal-logo,
+    [class*="cl-securedBy"] svg,
+    [class*="cl-securedBy"] img {
+      filter: brightness(0) invert(1) !important;
+      opacity: 0.9 !important;
     }
   </style>
 </head>
 <body>
 
-  <!-- Top Navigation with Back Link and Persistent Theme Toggle -->
-  <div class="top-nav-bar">
-    <a href="/" class="back-link">← Back to CampusSense</a>
-    <button id="theme-toggle-btn" class="theme-toggle-btn" type="button" aria-label="Toggle theme">
-      <span id="theme-icon">🌙</span>
-      <span id="theme-label">Dark Mode</span>
-    </button>
-  </div>
-
-  <!-- Single Clerk mount container with stabilized dimensions & non-empty placeholder -->
-  <div id="clerk-mount">
-    <div id="clerk-mount-placeholder" style="width: 400px; max-width: 90vw; height: 500px; border-radius: 0.75rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.85rem; background: rgba(22, 24, 31, 0.5); border: 1px solid rgba(255, 255, 255, 0.08);">
-      <div style="width: 28px; height: 28px; border: 3px solid rgba(99, 102, 241, 0.2); border-top-color: #6366f1; border-radius: 50%; animation: clerk-mount-spin 0.8s linear infinite;"></div>
-      <span style="font-size: 0.85rem; color: #94a3b8; font-weight: 500;">Loading secure authentication...</span>
-    </div>
-  </div>
+  <!-- Only Two Elements Outside the Card: Return Link and Mount Target -->
+  <a href="/" class="back-link">← Back to CampusSense</a>
+  <div id="clerk-mount"></div>
 
   <script>
-    function getClerkAppearance(theme) {
-      const isDark = theme === 'dark';
-      return {
-        variables: isDark ? {
-          colorPrimary: '#ffffff',
-          colorTextOnPrimaryBackground: '#000000',
-          colorBackground: '#16181f',
-          colorInputBackground: '#1e222d',
-          colorInputText: '#ffffff',
-          colorText: '#ffffff',
-          colorTextSecondary: '#cbd5e1',
-          borderRadius: '0.75rem'
-        } : {
-          colorPrimary: '#0f172a',
-          colorTextOnPrimaryBackground: '#ffffff',
-          colorBackground: '#ffffff',
-          colorInputBackground: '#f8fafc',
-          colorInputText: '#0f172a',
-          colorText: '#0f172a',
-          colorTextSecondary: '#334155',
-          borderRadius: '0.75rem'
-        },
-        layout: {
-          socialButtonsVariant: 'blockButton',
-          socialButtonsPlacement: 'top'
-        },
-        elements: isDark ? {
-          rootBox: { background: 'transparent', border: 'none', boxShadow: 'none' },
-          cardBox: { background: 'transparent', border: 'none', boxShadow: 'none' },
-          card: {
-            backgroundColor: '#16181f',
-            border: '1px solid rgba(255, 255, 255, 0.12)',
-            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.6)'
-          },
-          headerTitle: { color: '#ffffff', fontWeight: '700' },
-          headerSubtitle: { color: '#cbd5e1' },
-          formHeaderSubtitle: { color: '#cbd5e1' },
-          dividerLine: { backgroundColor: 'rgba(255, 255, 255, 0.12)' },
-          dividerText: { color: '#94a3b8' },
-          formFieldLabel: { color: '#cbd5e1', fontWeight: '600' },
-          formFieldInput: {
-            backgroundColor: '#1e222d',
-            color: '#ffffff',
-            border: '1px solid rgba(255, 255, 255, 0.2)'
-          },
-          otpCodeFieldInputs: {
-            border: 'none',
-            background: 'transparent',
-            boxShadow: 'none',
-            padding: '0',
-            margin: '0 auto'
-          },
-          otpCodeField: {
-            border: 'none',
-            background: 'transparent',
-            boxShadow: 'none'
-          },
-          otpCodeFieldInput: {
-            backgroundColor: '#1e222d',
-            color: '#ffffff',
-            border: '1px solid rgba(255, 255, 255, 0.25)',
-            borderRadius: '0.5rem',
-            fontWeight: '700'
-          },
-          alternativeMethods: { display: 'none' },
-          alternativeMethodsBlockButton: { display: 'none' },
-          socialButtonsBlockButton: {
-            backgroundColor: '#1e222d',
-            border: '1px solid rgba(255, 255, 255, 0.12)',
-            color: '#ffffff'
-          },
-          socialButtonsBlockButtonText: { color: '#ffffff', fontWeight: '600' },
-          formButtonPrimary: {
-            backgroundColor: '#ffffff',
-            color: '#000000',
-            fontWeight: '700'
-          },
-          footer: {
-            backgroundColor: '#16181f',
-            borderTop: '1px solid rgba(255, 255, 255, 0.08)'
-          },
-          footerAction: { backgroundColor: '#16181f' },
-          footerActionText: { color: '#94a3b8' },
-          footerActionLink: { color: '#ffffff', fontWeight: '600' },
-          footerText: { color: '#94a3b8' },
-          identityPreviewText: { color: '#cbd5e1' },
-          identityPreviewEditButton: { color: '#cbd5e1' },
-          logoImage: { filter: 'brightness(0) invert(1)', opacity: '0.9' }
-        } : {
-          rootBox: { background: 'transparent', border: 'none', boxShadow: 'none' },
-          cardBox: { background: 'transparent', border: 'none', boxShadow: 'none' },
-          card: {
-            backgroundColor: '#ffffff',
-            border: '1px solid #cbd5e1',
-            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.08)',
-            color: '#0f172a'
-          },
-          headerTitle: { color: '#0f172a', fontWeight: '700' },
-          headerSubtitle: { color: '#334155' },
-          formHeaderSubtitle: { color: '#334155' },
-          dividerLine: { backgroundColor: '#e2e8f0' },
-          dividerText: { color: '#64748b' },
-          formFieldLabel: { color: '#334155', fontWeight: '600' },
-          formFieldInput: {
-            backgroundColor: '#f8fafc',
-            color: '#0f172a',
-            border: '1px solid #94a3b8'
-          },
-          otpCodeFieldInputs: {
-            border: 'none',
-            background: 'transparent',
-            boxShadow: 'none',
-            padding: '0',
-            margin: '0 auto'
-          },
-          otpCodeField: {
-            border: 'none',
-            background: 'transparent',
-            boxShadow: 'none'
-          },
-          otpCodeFieldInput: {
-            backgroundColor: '#ffffff',
-            color: '#0f172a',
-            border: '1px solid #cbd5e1',
-            borderRadius: '0.5rem',
-            fontWeight: '700'
-          },
-          alternativeMethods: { display: 'none' },
-          alternativeMethodsBlockButton: { display: 'none' },
-          socialButtonsBlockButton: {
-            backgroundColor: '#ffffff',
-            border: '1px solid #cbd5e1',
-            color: '#0f172a'
-          },
-          socialButtonsBlockButtonText: { color: '#0f172a', fontWeight: '600' },
-          formButtonPrimary: {
-            backgroundColor: '#0f172a',
-            color: '#ffffff',
-            fontWeight: '700'
-          },
-          footer: {
-            backgroundColor: '#ffffff',
-            borderTop: '1px solid #f1f5f9'
-          },
-          footerAction: { backgroundColor: '#ffffff' },
-          footerActionText: { color: '#64748b' },
-          footerActionLink: { color: '#0f172a', fontWeight: '600' },
-          footerText: { color: '#64748b' },
-          identityPreviewText: { color: '#334155' },
-          identityPreviewEditButton: { color: '#334155' },
-          logoImage: { filter: 'none', opacity: '0.85' }
-        }
-      };
-    }
+    let clerkInitCalled = false;
 
-    function updateThemeToggleUI(theme) {
-      const icon = document.getElementById('theme-icon');
-      const label = document.getElementById('theme-label');
-      if (theme === 'light') {
-        if (icon) icon.textContent = '☀️';
-        if (label) label.textContent = 'Light Mode';
-      } else {
-        if (icon) icon.textContent = '🌙';
-        if (label) label.textContent = 'Dark Mode';
-      }
-    }
+    async function initStockPulseAuth() {
+      if (clerkInitCalled) return;
+      clerkInitCalled = true;
 
-    function observeAndCleanOtpScreen() {
-      const container = document.getElementById('clerk-mount');
-      if (!container) return;
-      const hideAltMethod = () => {
-        const els = container.querySelectorAll('button, a, p, span, div');
-        els.forEach(el => {
-          if (el.textContent && el.textContent.trim().toLowerCase() === 'use another method') {
-            const btn = el.closest('button, a') || el;
-            btn.style.display = 'none';
-          }
-        });
-      };
-      hideAltMethod();
-      const observer = new MutationObserver(hideAltMethod);
-      observer.observe(container, { childList: true, subtree: true });
-    }
-
-    function mountClerk(theme) {
-      const container = document.getElementById('clerk-mount');
-      if (!container || !window.Clerk || typeof window.Clerk.mountSignIn !== 'function') return;
-
-      container.innerHTML = '';
-      window.Clerk.mountSignIn(container, {
-        fallbackRedirectUrl: '/',
-        signUpFallbackRedirectUrl: '/',
-        appearance: getClerkAppearance(theme)
-      });
-      observeAndCleanOtpScreen();
-    }
-
-    function handleThemeToggle() {
-      const currentTheme = localStorage.getItem('campussense_theme') || 'dark';
-      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      localStorage.setItem('campussense_theme', newTheme);
-      document.documentElement.setAttribute('data-theme', newTheme);
-      updateThemeToggleUI(newTheme);
-      mountClerk(newTheme);
-    }
-
-    let isInitialized = false;
-    async function initAuth() {
-      if (isInitialized) return;
+      const mountPoint = document.getElementById('clerk-mount');
+      if (!mountPoint) return;
 
       const publishableKey = 'pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk';
-      const currentTheme = localStorage.getItem('campussense_theme') || 'dark';
-      updateThemeToggleUI(currentTheme);
 
-      // Fast non-blocking poll loop (15ms) waiting for Clerk
+      // Poll non-blockingly until window.Clerk is present (up to 2 seconds)
       let attempts = 0;
       while (!window.Clerk && attempts < 100) {
-        await new Promise(r => setTimeout(r, 15));
+        await new Promise(r => setTimeout(r, 20));
         attempts++;
       }
 
       if (!window.Clerk) {
-        console.error("ClerkJS failed to load");
-        const container = document.getElementById('clerk-mount');
-        if (container) {
-          container.innerHTML = '<div style="color:#94a3b8;text-align:center;padding:2rem;">Unable to load authentication component. Please refresh the page.</div>';
-        }
+        console.error("Clerk SDK failed to load");
+        mountPoint.innerHTML = '<div style="color: #94a3b8; text-align: center; padding: 2rem;">Authentication is loading. Please refresh if card does not appear.</div>';
         return;
       }
 
-      const uiCtor = window.__internal_ClerkUICtor || window.ClerkUI;
-      const loadConfig = { publishableKey };
-      if (uiCtor) {
-        loadConfig.ui = { ClerkUI: uiCtor };
-      }
-
+      // Ensure Clerk.load() is called exactly once
       if (!window.Clerk.loaded && typeof window.Clerk.load === 'function') {
+        const uiCtor = window.__internal_ClerkUICtor || window.ClerkUI;
+        const loadConfig = { publishableKey };
+        if (uiCtor) loadConfig.ui = { ClerkUI: uiCtor };
         await window.Clerk.load(loadConfig);
       }
 
+      // If user is already authenticated, redirect cleanly to '/'
       if (window.Clerk.user) {
         window.location.replace('/');
         return;
       }
 
-      isInitialized = true;
-      mountClerk(currentTheme);
+      // Mount SignIn Component with StockPulse 1:1 Theme Appearance
+      mountPoint.innerHTML = '';
+      window.Clerk.mountSignIn(mountPoint, {
+        fallbackRedirectUrl: '/',
+        signUpFallbackRedirectUrl: '/',
+        appearance: {
+          variables: {
+            colorPrimary: '#ffffff',
+            colorTextOnPrimaryBackground: '#000000',
+            colorBackground: '#16181f',
+            colorInputBackground: '#1e222d',
+            colorInputText: '#ffffff',
+            colorText: '#ffffff',
+            colorTextSecondary: '#cbd5e1',
+            borderRadius: '0.75rem'
+          },
+          layout: {
+            socialButtonsVariant: 'blockButton',
+            socialButtonsPlacement: 'top'
+          },
+          elements: {
+            rootBox: { background: 'transparent', border: 'none', boxShadow: 'none', padding: '0', margin: '0 auto' },
+            cardBox: { background: 'transparent', border: 'none', boxShadow: 'none', padding: '0', margin: '0 auto' },
+            card: {
+              backgroundColor: '#16181f',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              borderRadius: '0.75rem',
+              boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.6)'
+            },
+            headerTitle: { color: '#ffffff', fontWeight: '700' },
+            headerSubtitle: { color: '#cbd5e1' },
+            formHeaderSubtitle: { color: '#cbd5e1' },
+            dividerLine: { backgroundColor: 'rgba(255, 255, 255, 0.08)' },
+            dividerText: { color: '#94a3b8' },
+            formFieldLabel: { color: '#cbd5e1', fontWeight: '600' },
+            formFieldInput: {
+              backgroundColor: '#1e222d',
+              color: '#ffffff',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
+              borderRadius: '0.5rem'
+            },
+            otpCodeFieldInputs: {
+              border: 'none',
+              background: 'transparent',
+              boxShadow: 'none',
+              padding: '0',
+              margin: '0 auto'
+            },
+            otpCodeField: {
+              border: 'none',
+              background: 'transparent',
+              boxShadow: 'none'
+            },
+            otpCodeFieldInput: {
+              backgroundColor: '#1e222d',
+              color: '#ffffff',
+              border: '1px solid rgba(255, 255, 255, 0.25)',
+              borderRadius: '0.5rem',
+              fontWeight: '700'
+            },
+            alternativeMethods: { display: 'none' },
+            alternativeMethodsBlockButton: { display: 'none' },
+            socialButtonsBlockButton: {
+              backgroundColor: 'rgba(255, 255, 255, 0.05)',
+              border: '1px solid rgba(255, 255, 255, 0.12)',
+              color: '#ffffff'
+            },
+            socialButtonsBlockButtonText: { color: '#ffffff', fontWeight: '600' },
+            formButtonPrimary: {
+              backgroundColor: '#ffffff',
+              color: '#000000',
+              fontWeight: '700',
+              borderRadius: '0.5rem'
+            },
+            footer: {
+              backgroundColor: '#16181f',
+              borderTop: '1px solid rgba(255, 255, 255, 0.08)'
+            },
+            footerAction: { backgroundColor: '#16181f' },
+            footerActionText: { color: '#94a3b8' },
+            footerActionLink: { color: '#ffffff', fontWeight: '600' },
+            footerText: { color: '#94a3b8' },
+            identityPreviewText: { color: '#cbd5e1' },
+            identityPreviewEditButton: { color: '#cbd5e1' },
+            logoImage: { filter: 'brightness(0) invert(1)', opacity: '0.9' }
+          }
+        }
+      });
     }
-    window.initAuth = initAuth;
 
-    // Attach theme toggle button listener immediately
-    document.addEventListener('DOMContentLoaded', () => {
-      const toggleBtn = document.getElementById('theme-toggle-btn');
-      if (toggleBtn) {
-        toggleBtn.addEventListener('click', handleThemeToggle);
-      }
-      initAuth();
-    });
-
-    if (document.readyState !== 'loading') {
-      const toggleBtn = document.getElementById('theme-toggle-btn');
-      if (toggleBtn) {
-        toggleBtn.addEventListener('click', handleThemeToggle);
-      }
-      initAuth();
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initStockPulseAuth);
+    } else {
+      initStockPulseAuth();
     }
-
-    window.addEventListener('pageshow', (e) => {
-      if (e.persisted && window.Clerk && window.Clerk.user) {
-        window.location.replace('/');
-      }
-    });
   </script>
 </body>
 </html>
