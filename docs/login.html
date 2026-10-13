@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sign In — MAKAUT CampusSense</title>
 
-  <!-- Dynamic Clerk SDK scripts loaded from workspace configuration -->
+  <!-- Official Clerk Core & UI scripts loaded dynamically from project configuration -->
   <script defer crossorigin="anonymous" src="https://flying-lioness-4717.clerk.accounts.dev/npm/@clerk/ui@1/dist/ui.browser.js"></script>
   <script defer crossorigin="anonymous" data-clerk-publishable-key="pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk" src="https://flying-lioness-4717.clerk.accounts.dev/npm/@clerk/clerk-js@6/dist/clerk.browser.js"></script>
 
@@ -39,18 +39,20 @@
       color: #ffffff;
     }
 
-    /* Mount container: transparent with zero borders to eliminate nested boxes */
+    /* Mount container with explicit dimensions to guarantee rendering */
     #clerk-mount {
       display: flex;
       justify-content: center;
+      align-items: center;
       width: 100%;
+      min-height: 480px;
       background: transparent !important;
       border: none !important;
       box-shadow: none !important;
       padding: 0 !important;
     }
 
-    /* Remove outer wrapper borders and boxes from Clerk */
+    /* Keep outer wrapper transparent and single-bordered without destructive overrides */
     .cl-rootBox,
     .cl-cardBox {
       background: transparent !important;
@@ -58,7 +60,6 @@
       box-shadow: none !important;
     }
 
-    /* The single card styling matching StockPulse */
     .cl-card {
       background-color: #16181f !important;
       background: #16181f !important;
@@ -67,7 +68,6 @@
       box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.6) !important;
     }
 
-    /* Seamless footer with zero white box leakage */
     .cl-footer,
     .cl-footerAction,
     [class*="cl-footer"] {
@@ -77,19 +77,14 @@
       box-shadow: none !important;
     }
 
-    /* Primary Continue button: solid white with bold black text */
     [class*="cl-formButtonPrimary"] {
       background-color: #ffffff !important;
       color: #000000 !important;
       font-weight: 700 !important;
       border-radius: 0.5rem !important;
     }
-    [class*="cl-formButtonPrimary"] * {
-      color: #000000 !important;
-      font-weight: 700 !important;
-    }
 
-    /* Make Clerk logo and footer text clearly visible in dark mode */
+    /* Ensure Clerk branding / Secured by Clerk is clearly visible */
     [class*="cl-footer"] svg,
     [class*="cl-footer"] img,
     .cl-internal-logo,
@@ -98,28 +93,44 @@
       filter: brightness(0) invert(1) !important;
       opacity: 0.9 !important;
     }
-
-    [class*="cl-footerText"],
-    [class*="cl-footerActionText"],
-    [class*="cl-securedBy"] {
-      color: #94a3b8 !important;
-    }
-    [class*="cl-footerActionLink"] {
-      color: #ffffff !important;
-      font-weight: 600 !important;
-    }
   </style>
 </head>
 <body>
 
   <a href="/" class="back-link">← Back to CampusSense</a>
 
-  <!-- Single Clerk mount container -->
+  <!-- Single Clerk mount container with explicit dimensions -->
   <div id="clerk-mount"></div>
 
   <script>
-    window.addEventListener('load', async () => {
-      await window.Clerk.load();
+    async function initClerkMount() {
+      const publishableKey = 'pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk';
+
+      // Robust poll loop to wait for Clerk and ClerkUI constructor to initialize
+      let attempts = 0;
+      while ((!window.Clerk || (!window.__internal_ClerkUICtor && !window.ClerkUI)) && attempts < 100) {
+        await new Promise(resolve => setTimeout(resolve, 50));
+        attempts++;
+      }
+
+      if (!window.Clerk) {
+        console.error("ClerkJS failed to load");
+        const container = document.getElementById('clerk-mount');
+        if (container) {
+          container.innerHTML = '<div style="color:#94a3b8;text-align:center;padding:2rem;">Unable to load authentication component. Please refresh the page.</div>';
+        }
+        return;
+      }
+
+      const uiCtor = window.__internal_ClerkUICtor || window.ClerkUI;
+      const loadConfig = { publishableKey };
+      if (uiCtor) {
+        loadConfig.ui = { ClerkUI: uiCtor };
+      }
+
+      if (!window.Clerk.loaded && typeof window.Clerk.load === 'function') {
+        await window.Clerk.load(loadConfig);
+      }
 
       if (window.Clerk.user) {
         window.location.replace('/');
@@ -145,11 +156,49 @@
             layout: {
               socialButtonsVariant: 'blockButton',
               socialButtonsPlacement: 'top'
+            },
+            elements: {
+              rootBox: { background: 'transparent', border: 'none', boxShadow: 'none' },
+              cardBox: { background: 'transparent', border: 'none', boxShadow: 'none' },
+              card: {
+                backgroundColor: '#16181f',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.6)'
+              },
+              footer: {
+                backgroundColor: '#16181f',
+                borderTop: '1px solid rgba(255, 255, 255, 0.06)'
+              },
+              footerAction: {
+                backgroundColor: '#16181f'
+              },
+              formButtonPrimary: {
+                backgroundColor: '#ffffff',
+                color: '#000000',
+                fontWeight: '700'
+              },
+              footerActionText: {
+                color: '#94a3b8'
+              },
+              footerActionLink: {
+                color: '#ffffff',
+                fontWeight: '600'
+              },
+              logoImage: {
+                filter: 'brightness(0) invert(1)',
+                opacity: '0.9'
+              }
             }
           }
         });
       }
-    });
+    }
+
+    if (document.readyState === 'loading') {
+      window.addEventListener('load', initClerkMount);
+    } else {
+      initClerkMount();
+    }
 
     window.addEventListener('pageshow', (e) => {
       if (e.persisted && window.Clerk && window.Clerk.user) {

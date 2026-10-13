@@ -12081,8 +12081,8 @@ window.getSubjectDocuments = getSubjectDocuments;
     const userProfileWrapper = document.getElementById('user-profile-wrapper');
     const btnOpenAiFab = document.getElementById('btn-open-ai-fab');
     const landingNavLinks = document.getElementById('landing-nav-links');
-    const btnNavSignIn = document.getElementById('btn-nav-signin');
-    const btnNavSignUp = document.getElementById('btn-nav-signup');
+    const btnNavSignIn = document.getElementById('btn-nav-signin') || document.getElementById('btn-sign-in');
+    const btnNavSignUp = document.getElementById('btn-nav-signup') || document.getElementById('btn-sign-up');
     const btnLandingAuth = document.getElementById('btn-landing-auth');
     const btnNavToLanding = document.getElementById('btn-nav-to-landing');
     const btnNavToDashboard = document.getElementById('btn-nav-to-dashboard');
@@ -13023,7 +13023,7 @@ window.getSubjectDocuments = getSubjectDocuments;
     if (btnLandingAuth) {
         btnLandingAuth.addEventListener('click', (e) => {
             if (e) e.preventDefault();
-            window.triggerNativeClerkAuth();
+            window.location.href = '/login.html';
         });
     }
 
@@ -13031,14 +13031,14 @@ window.getSubjectDocuments = getSubjectDocuments;
     if (authTriggerBtn) {
         authTriggerBtn.addEventListener('click', (e) => {
             if (e) e.preventDefault();
-            window.triggerNativeClerkAuth();
+            window.location.href = '/login.html';
         });
     }
 
     document.querySelectorAll('.auth-trigger-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             if (e) e.preventDefault();
-            window.triggerNativeClerkAuth();
+            window.location.href = '/login.html';
         });
     });
 

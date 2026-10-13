@@ -466,19 +466,19 @@
             </div>
 
             <div class="landing-highlights-grid landing-highlights-row" id="landing-stats-bar">
-                <a href="/login" class="highlight-pill" onclick="window.location.href='/login';" style="cursor: pointer; text-decoration: none; color: inherit;">
+                <a href="/login.html" class="highlight-pill" style="cursor: pointer; text-decoration: none; color: inherit;">
                     <span>📚</span>
                     <span><strong id="metric-subjects-count">122</strong> Subjects: 1st Year & Core Streams Ingested</span>
                 </a>
-                <a href="/login" class="highlight-pill" onclick="window.location.href='/login';" style="cursor: pointer; text-decoration: none; color: inherit;">
+                <a href="/login.html" class="highlight-pill" style="cursor: pointer; text-decoration: none; color: inherit;">
                     <span>🔥</span>
                     <span>Top 20% Repeated Exam Questions</span>
                 </a>
-                <a href="/login" class="highlight-pill" onclick="window.location.href='/login';" style="cursor: pointer; text-decoration: none; color: inherit;">
+                <a href="/login.html" class="highlight-pill" style="cursor: pointer; text-decoration: none; color: inherit;">
                     <span>📄</span>
                     <span><strong id="metric-pyqs-count">1459</strong> Papers: PYQ Archives</span>
                 </a>
-                <a href="/login" class="highlight-pill" onclick="window.location.href='/login';" style="cursor: pointer; text-decoration: none; color: inherit;">
+                <a href="/login.html" class="highlight-pill" style="cursor: pointer; text-decoration: none; color: inherit;">
                     <span>🤖</span>
                     <span>Grounded AI Assistant with Citations</span>
                 </a>
@@ -1127,20 +1127,27 @@
     <script defer crossorigin="anonymous" data-clerk-publishable-key="pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk" src="https://flying-lioness-4717.clerk.accounts.dev/npm/@clerk/clerk-js@6/dist/clerk.browser.js"></script>
     <script>
       window.addEventListener('load', async () => {
-        await window.Clerk.load();
-        if (window.Clerk.user) {
-          document.querySelectorAll('a[href*="login"], a[href*="signup"], #btn-sign-in, #btn-sign-up').forEach(btn => btn.style.display = 'none');
-          const nav = document.querySelector('.nav-actions') || document.querySelector('header') || document.querySelector('nav');
-          if (nav) {
-            const signOut = document.createElement('button');
-            signOut.innerText = 'Sign Out';
-            signOut.style.cssText = 'background:#ef4444; color:#fff; border:none; padding:7px 14px; border-radius:8px; cursor:pointer; font-weight:600; font-size:0.85rem; margin-left:8px;';
-            signOut.onclick = async () => {
-              await window.Clerk.signOut();
-              window.location.reload();
-            };
-            nav.appendChild(signOut);
+        try {
+          if (window.Clerk) {
+            await window.Clerk.load();
+            if (window.Clerk.user) {
+              document.querySelectorAll('#btn-sign-in, #btn-sign-up, #btn-nav-signin, #btn-nav-signup').forEach(btn => btn.style.display = 'none');
+              const nav = document.querySelector('.nav-actions') || document.querySelector('header') || document.querySelector('nav');
+              if (nav && !document.getElementById('clerk-sign-out-btn')) {
+                const signOut = document.createElement('button');
+                signOut.id = 'clerk-sign-out-btn';
+                signOut.innerText = 'Sign Out';
+                signOut.style.cssText = 'background:#ef4444; color:#fff; border:none; padding:7px 14px; border-radius:8px; cursor:pointer; font-weight:600; font-size:0.85rem; margin-left:8px;';
+                signOut.onclick = async () => {
+                  await window.Clerk.signOut();
+                  window.location.reload();
+                };
+                nav.appendChild(signOut);
+              }
+            }
           }
+        } catch (err) {
+          console.warn("[Clerk] Session sync error:", err);
         }
       });
     </script>
