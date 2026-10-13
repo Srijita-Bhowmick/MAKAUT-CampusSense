@@ -15,6 +15,18 @@
     <link rel="dns-prefetch" href="https://flying-lioness-4717.clerk.accounts.dev">
     <link rel="prefetch" href="/login.html">
     <style>
+      /* ITEM 1: Global Viewport Stability */
+      html {
+        min-height: 100vh !important;
+        height: auto !important;
+        scrollbar-gutter: stable both-edges !important;
+        overflow-y: scroll !important;
+      }
+      body {
+        min-height: 100vh !important;
+        height: auto !important;
+      }
+
       /* 100% FONT & BUTTON PARITY: "View Syllabus Blueprint →" & "Access Exam Archives →" */
       .archive-btn-container {
         display: flex !important;
@@ -424,11 +436,6 @@
                 <button id="theme-toggle" class="nav-icon-btn" aria-label="Toggle theme">🌙</button>
 
                 <!-- Action Buttons (Only render these, NO empty sibling tags) -->
-                <button id="btn-panic-pack" class="nav-action-pill pill-panic">
-                    <span>🔥 Panic Pack</span>
-                    <span class="badge">16 High-Yield</span>
-                </button>
-                
                 <button id="btn-saved-deck" class="nav-action-pill pill-deck">
                     <span>🔖 Saved Deck</span>
                     <span class="badge">0</span>
@@ -915,19 +922,6 @@
                                 <span class="stream-name">Computer Science and Data Science</span>
                                 <span class="stream-desc">Data Engineering & Applied Intelligence</span>
                             </button>
-                        </div>
-                    </div>
-
-                    <!-- Semester Selector (Semesters 3 to 8) -->
-                    <div class="form-group">
-                        <label class="form-label">Current Semester (Semesters 3 to 8)</label>
-                        <div class="sem-pills-selector" id="sem-picker-row">
-                            <button type="button" class="sem-btn semester-btn sem-pill academic-option active selected" data-sem="3">Sem 3</button>
-                            <button type="button" class="sem-btn semester-btn sem-pill academic-option" data-sem="4">Sem 4</button>
-                            <button type="button" class="sem-btn semester-btn sem-pill academic-option" data-sem="5">Sem 5</button>
-                            <button type="button" class="sem-btn semester-btn sem-pill academic-option" data-sem="6">Sem 6</button>
-                            <button type="button" class="sem-btn semester-btn sem-pill academic-option" data-sem="7">Sem 7</button>
-                            <button type="button" class="sem-btn semester-btn sem-pill academic-option" data-sem="8">Sem 8</button>
                         </div>
                     </div>
                 </div>

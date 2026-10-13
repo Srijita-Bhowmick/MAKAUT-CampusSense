@@ -368,18 +368,19 @@
 
 /* --- NATIVE VIEWPORT & FLUID TOUCHPAD SCROLLING --- */
 html {
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  scrollbar-gutter: auto !important;
-  scroll-behavior: smooth !important;
+  min-height: 100vh !important;
   height: auto !important;
-  min-height: 100%;
+  scrollbar-gutter: stable both-edges !important;
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
+  scroll-behavior: smooth !important;
 }
 
 body {
+  min-height: 100vh !important;
+  height: auto !important;
   overflow-y: visible !important;
   overflow-x: hidden !important;
-  min-height: 100vh;
   position: relative;
   overscroll-behavior: auto !important;
   touch-action: auto !important;
@@ -7235,4 +7236,114 @@ html.light .academic-option.selected {
 .light-theme .year-btn-sub,
 .light .year-btn-sub {
   color: #475569 !important;
+}
+
+/* ==========================================================================
+   ITEM 6: ACADEMIC TABLE INTERACTION, HOVER HIGHLIGHTS & STABILITY
+   ========================================================================== */
+.stream-card,
+.stage-card,
+.academic-stage-card,
+.academic-option,
+.stream-option,
+.bento-card,
+.subject-card,
+.pyq-card,
+.subject-item-card,
+.primary-year-btn {
+  cursor: pointer !important;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease !important;
+}
+
+[data-theme="dark"] .stream-card:hover,
+[data-theme="dark"] .stage-card:hover,
+[data-theme="dark"] .academic-stage-card:hover,
+[data-theme="dark"] .academic-option:hover,
+[data-theme="dark"] .stream-option:hover,
+[data-theme="dark"] .subject-item-card:hover,
+[data-theme="dark"] .primary-year-btn:hover {
+  background-color: #1e293b !important;
+  border-color: #6366f1 !important;
+}
+
+:root.light-theme .stream-card:hover,
+:root.light-theme .stage-card:hover,
+:root.light-theme .academic-stage-card:hover,
+:root.light-theme .academic-option:hover,
+:root.light-theme .stream-option:hover,
+:root.light-theme .subject-item-card:hover,
+:root.light-theme .primary-year-btn:hover,
+[data-theme="light"] .stream-card:hover,
+[data-theme="light"] .stage-card:hover,
+[data-theme="light"] .academic-stage-card:hover,
+[data-theme="light"] .academic-option:hover,
+[data-theme="light"] .stream-option:hover,
+[data-theme="light"] .subject-item-card:hover,
+[data-theme="light"] .primary-year-btn:hover {
+  background-color: #e2e8f0 !important;
+  border-color: #4f46e5 !important;
+}
+
+.stream-card:active,
+.stage-card:active,
+.academic-stage-card:active,
+.academic-option:active,
+.stream-option:active,
+.subject-item-card:active,
+.primary-year-btn:active {
+  transform: scale(0.99) !important;
+}
+
+/* Eliminate Table Glitching / Fluctuation */
+#curriculum-grid,
+#archives-grid,
+#active-subjects-grid,
+#stream-picker-grid,
+.subjects-grid,
+.pyq-grid,
+.stream-select-grid {
+  width: 100% !important;
+  min-height: 280px;
+}
+
+/* ==========================================================================
+   ITEM 8: REFINE "SAVED REVISION DECK" SLIDE-OVER DRAWER
+   ========================================================================== */
+.saved-deck-drawer,
+aside#saved-deck-drawer {
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  height: 100vh !important;
+  width: 380px !important;
+  max-width: 90vw !important;
+  z-index: 9999 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  background: #0f172a !important;
+  border-left: 1px solid #1e293b !important;
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5) !important;
+}
+
+.deck-empty-state-card,
+.saved-deck-body .deck-empty-state-card {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  padding: 2rem !important;
+  gap: 0.75rem !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.deck-empty-state-card p,
+.saved-deck-body .deck-empty-state-card p {
+  font-size: 0.9rem !important;
+  color: #94a3b8 !important;
+  line-height: 1.5 !important;
+  margin: 0 auto !important;
+  max-width: 320px !important;
+  white-space: normal !important;
 }

@@ -32,7 +32,7 @@
     html {
       min-height: 100vh;
       height: auto;
-      scrollbar-gutter: stable;
+      scrollbar-gutter: stable both-edges;
       overflow-y: scroll;
     }
 
@@ -55,7 +55,7 @@
     }
 
     [data-theme="light"] body {
-      background-color: #f1f5f9;
+      background-color: #f8fafc;
       color: #0f172a;
     }
 
@@ -128,11 +128,12 @@
 
     /* Stabilized Clerk Mount Container */
     #clerk-mount {
+      min-height: 520px;
+      width: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 100%;
-      min-height: 480px;
+      contain: layout style;
       background: transparent !important;
       border: none !important;
       box-shadow: none !important;
@@ -159,6 +160,19 @@
       border: 1px solid #cbd5e1 !important;
       border-radius: 0.75rem !important;
       box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08) !important;
+      color: #0f172a !important;
+    }
+
+    [data-theme="light"] .cl-formFieldInput {
+      background-color: #f8fafc !important;
+      color: #0f172a !important;
+      border: 1px solid #94a3b8 !important;
+    }
+
+    [data-theme="light"] .cl-formButtonPrimary {
+      background-color: #0f172a !important;
+      color: #ffffff !important;
+      font-weight: 700 !important;
     }
 
     /* High-contrast Clerk branding in dark mode */
@@ -169,6 +183,32 @@
     [data-theme="dark"] [class*="cl-securedBy"] img {
       filter: brightness(0) invert(1) !important;
       opacity: 0.9 !important;
+    }
+
+    [data-theme="dark"] [class*="cl-footerText"],
+    [data-theme="dark"] [class*="cl-footerActionText"],
+    [data-theme="dark"] [class*="cl-securedByText"],
+    [data-theme="dark"] [class*="cl-securedBy"] {
+      color: #94a3b8 !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+
+    /* ITEM 9: OTP Verification Screen Contrast */
+    [data-theme="dark"] .cl-otpCodeFieldInput,
+    [data-theme="dark"] [class*="otpCodeFieldInput"] {
+      background-color: #1e222d !important;
+      color: #ffffff !important;
+      border: 2px solid rgba(255, 255, 255, 0.25) !important;
+      font-weight: 700 !important;
+    }
+
+    [data-theme="light"] .cl-otpCodeFieldInput,
+    [data-theme="light"] [class*="otpCodeFieldInput"] {
+      background-color: #ffffff !important;
+      color: #0f172a !important;
+      border: 2px solid #cbd5e1 !important;
+      font-weight: 700 !important;
     }
 
     [data-theme="light"] [class*="cl-footer"] svg,
@@ -232,6 +272,7 @@
           },
           headerTitle: { color: '#ffffff', fontWeight: '700' },
           headerSubtitle: { color: '#cbd5e1' },
+          formHeaderSubtitle: { color: '#cbd5e1' },
           dividerLine: { backgroundColor: 'rgba(255, 255, 255, 0.12)' },
           dividerText: { color: '#94a3b8' },
           formFieldLabel: { color: '#cbd5e1', fontWeight: '600' },
@@ -239,6 +280,12 @@
             backgroundColor: '#1e222d',
             color: '#ffffff',
             border: '1px solid rgba(255, 255, 255, 0.2)'
+          },
+          otpCodeFieldInput: {
+            backgroundColor: '#1e222d',
+            color: '#ffffff',
+            border: '2px solid rgba(255, 255, 255, 0.25)',
+            fontWeight: '700'
           },
           socialButtonsBlockButton: {
             backgroundColor: '#1e222d',
@@ -258,7 +305,8 @@
           footerAction: { backgroundColor: '#16181f' },
           footerActionText: { color: '#94a3b8' },
           footerActionLink: { color: '#ffffff', fontWeight: '600' },
-          identityPreviewText: { color: '#ffffff' },
+          footerText: { color: '#94a3b8' },
+          identityPreviewText: { color: '#cbd5e1' },
           identityPreviewEditButton: { color: '#cbd5e1' },
           logoImage: { filter: 'brightness(0) invert(1)', opacity: '0.9' }
         } : {
@@ -267,10 +315,12 @@
           card: {
             backgroundColor: '#ffffff',
             border: '1px solid #cbd5e1',
-            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.08)'
+            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.08)',
+            color: '#0f172a'
           },
           headerTitle: { color: '#0f172a', fontWeight: '700' },
           headerSubtitle: { color: '#334155' },
+          formHeaderSubtitle: { color: '#334155' },
           dividerLine: { backgroundColor: '#e2e8f0' },
           dividerText: { color: '#64748b' },
           formFieldLabel: { color: '#334155', fontWeight: '600' },
@@ -278,6 +328,12 @@
             backgroundColor: '#f8fafc',
             color: '#0f172a',
             border: '1px solid #94a3b8'
+          },
+          otpCodeFieldInput: {
+            backgroundColor: '#ffffff',
+            color: '#0f172a',
+            border: '2px solid #cbd5e1',
+            fontWeight: '700'
           },
           socialButtonsBlockButton: {
             backgroundColor: '#ffffff',
@@ -297,7 +353,8 @@
           footerAction: { backgroundColor: '#ffffff' },
           footerActionText: { color: '#64748b' },
           footerActionLink: { color: '#0f172a', fontWeight: '600' },
-          identityPreviewText: { color: '#0f172a' },
+          footerText: { color: '#64748b' },
+          identityPreviewText: { color: '#334155' },
           identityPreviewEditButton: { color: '#334155' },
           logoImage: { filter: 'none', opacity: '0.85' }
         }

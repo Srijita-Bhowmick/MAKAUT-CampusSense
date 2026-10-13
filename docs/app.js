@@ -340,25 +340,27 @@ window.onClerkLoaded = function() {
         catchBanner.classList.add('active');
     };
 
-    // Phase 3: Auth Interceptor Listener for All Feature Cards
+    // Phase 3: Auth Interceptor Listener for All Feature Cards & Preview Buttons (Item 4)
     document.addEventListener('click', function(e) {
-        const gateTarget = e.target.closest('.feature-gate-card, .gate-action-btn');
-        if (gateTarget) {
-            const user = window.Clerk?.user || window.isLoggedIn || isUserAuthenticated();
+        const previewTarget = e.target.closest('.btn-preview-paper, .btn-preview-pdf, .btn-subject-syllabus-view, .archive-access-btn, .subject-action-btn, [data-pdf], [data-preview]');
+        if (previewTarget) {
+            const user = window.Clerk?.user;
             if (!user) {
                 e.preventDefault();
                 e.stopPropagation();
+                window.location.href = '/login.html';
+                return;
+            }
+        }
 
-                const isPanic = gateTarget.closest('[data-gate-target="panic"]') || gateTarget.classList.contains('panic-pack-card');
-                if (isPanic) {
-                    window.triggerPanicPackConversionAuth();
-                } else {
-                    if (typeof triggerNativeClerkAuth === 'function') {
-                        triggerNativeClerkAuth();
-                    } else if (window.triggerNativeClerkAuth) {
-                        window.triggerNativeClerkAuth();
-                    }
-                }
+        const gateTarget = e.target.closest('.feature-gate-card, .gate-action-btn');
+        if (gateTarget) {
+            const user = window.Clerk?.user;
+            if (!user) {
+                e.preventDefault();
+                e.stopPropagation();
+                window.location.href = '/login.html';
+                return;
             }
         }
     }, true);
@@ -368,10 +370,10 @@ window.onClerkLoaded = function() {
         const navPanicLink = document.querySelector('a[href="#panic-pack"], a[href="#landing-panic-drill"], .nav-panic-link, [data-nav="panic-pack"]');
         if (navPanicLink) {
             navPanicLink.onclick = function(e) {
-                const user = window.Clerk?.user || window.isLoggedIn || isUserAuthenticated();
+                const user = window.Clerk?.user;
                 if (!user) {
                     e.preventDefault();
-                    window.triggerPanicPackConversionAuth();
+                    window.location.href = '/login.html';
                 }
             };
         }
@@ -383,12 +385,8 @@ window.onClerkLoaded = function() {
     }
 
     window.previewPdfFile = function(rawUrl, title) {
-      if (!requireAuthOrTrigger()) return;
-      const isAuth = (window.Clerk && window.Clerk.user) || localStorage.getItem('campussense_user_session');
-      if (!isAuth) {
-        if (typeof triggerAppAuthentication === 'function') {
-          triggerAppAuthentication(false);
-        }
+      if (!window.Clerk || !window.Clerk.user) {
+        window.location.href = '/login.html';
         return;
       }
 
@@ -12313,10 +12311,8 @@ window.getSubjectDocuments = getSubjectDocuments;
         const collegeSelect = document.getElementById('select-college');
 
         const activeStreamBtn = document.querySelector('.stream-option.active');
-        const activeSemBtn = document.querySelector('.sem-btn.active');
-
         let stream = streamSelect?.value || activeStreamBtn?.getAttribute('data-stream') || currentStream || 'CSE';
-        let semester = semSelect?.value || (activeSemBtn ? activeSemBtn.getAttribute('data-sem') : null) || (currentYearMode === 'FIRST_YEAR' ? '1' : '3');
+        let semester = (modalYearMode === 'FIRST_YEAR' || currentYearMode === 'FIRST_YEAR' || stream === 'FIRST_YEAR') ? '1' : '3';
         let college = collegeSelect?.value || 'In-House';
 
         if (modalYearMode === 'FIRST_YEAR' && (!streamSelect?.value || streamSelect.value === 'FIRST_YEAR')) {
@@ -12775,6 +12771,10 @@ window.getSubjectDocuments = getSubjectDocuments;
     }
 
     window.viewSyllabusItem = function(targetCode, pdfPath, title) {
+      if (!window.Clerk || !window.Clerk.user) {
+        window.location.href = '/login.html';
+        return;
+      }
       if (pdfPath && typeof window.previewPdfFile === 'function') {
         window.previewPdfFile(pdfPath, title);
       } else if (targetCode && typeof window.openSubjectHubByCode === 'function') {
@@ -12783,7 +12783,10 @@ window.getSubjectDocuments = getSubjectDocuments;
     };
 
     window.openStreamArchiveView = function(streamCode, targetSem = null) {
-      if (typeof requireAuthOrTrigger === 'function' && !requireAuthOrTrigger()) return;
+      if (!window.Clerk || !window.Clerk.user) {
+        window.location.href = '/login.html';
+        return;
+      }
       const sKey = (streamCode || 'CSE').toUpperCase();
       const stream = (window.DEPARTMENT_STREAMS && (window.DEPARTMENT_STREAMS[sKey] || window.DEPARTMENT_STREAMS[streamCode])) || null;
       const courses = (stream && stream.courses) || [];
@@ -12814,28 +12817,36 @@ window.getSubjectDocuments = getSubjectDocuments;
     window.renderLandingPyqCatalog = renderLandingArchives;
     window.renderLandingPyqRepo = renderLandingArchives;
 
-    // Wire All Landing Filter Buttons & PYQ Year Filters
+    // Wire All Landing Filter Buttons & PYQ Year Filters (Item 6: Debounced)
     function bindLandingFilterButtons() {
         try {
             const filterPills = document.querySelectorAll('#curriculum-filter-group .filter-pill-btn, .curriculum-filter-tabs button, [data-curriculum-filter], [data-stream]');
+            let filterDebounce = null;
             filterPills.forEach(btn => {
               btn.addEventListener('click', (e) => {
                 e.preventDefault();
                 const stream = btn.getAttribute('data-stream') || btn.getAttribute('data-curriculum-filter') || 'all';
                 filterPills.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                renderLandingCurriculum(stream);
+                if (filterDebounce) clearTimeout(filterDebounce);
+                filterDebounce = setTimeout(() => {
+                  renderLandingCurriculum(stream);
+                }, 120);
               });
             });
 
             const yearPills = document.querySelectorAll('[data-year-filter], .pyq-year-filter-btn');
+            let yearDebounce = null;
             yearPills.forEach(btn => {
               btn.addEventListener('click', (e) => {
                 e.preventDefault();
                 const year = btn.getAttribute('data-year-filter') || btn.getAttribute('data-year') || 'all';
                 yearPills.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-                renderLandingArchives(year);
+                if (yearDebounce) clearTimeout(yearDebounce);
+                yearDebounce = setTimeout(() => {
+                  renderLandingArchives(year);
+                }, 120);
               });
             });
         } catch (err) {
@@ -13205,23 +13216,6 @@ window.getSubjectDocuments = getSubjectDocuments;
             bindStreamOptionEvents(streamGrid);
         }
 
-        // Semester selector pills in departmental section (Semesters 3 to 8)
-        const semPills = modal.querySelectorAll('.sem-pill, [data-sem], .sem-btn, .semester-btn');
-        semPills.forEach(pill => {
-            pill.onclick = function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                window.isAcademicModalUserDirty = true;
-                semPills.forEach(p => p.classList.remove('selected', 'active'));
-                pill.classList.add('selected', 'active');
-                const chosenSem = pill.getAttribute('data-sem') || pill.textContent.trim().replace(/\D/g, '') || '3';
-                sessionStorage.setItem('academic_modal_active_sem', String(chosenSem));
-                modal.setAttribute('data-selected-sem', chosenSem);
-                const semInput = document.getElementById('select-semester');
-                if (semInput) semInput.value = String(chosenSem);
-            };
-        });
-
         // Close button handler (✕)
         const closeBtn = modal.querySelector('.modal-close-btn, #btn-close-scope-modal');
         if (closeBtn) {
@@ -13252,8 +13246,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             const activeStreamBtn = modal.querySelector('#stream-picker-grid .stream-option.active, #stream-picker-grid .stream-option.selected');
             const chosenStream = (modal.getAttribute('data-selected-stream')) || activeStreamBtn?.getAttribute('data-stream') || document.getElementById('select-stream')?.value || 'CSE';
 
-            const activeSemBtn = modal.querySelector('#sem-picker-row .sem-btn.active, #sem-picker-row .sem-btn.selected');
-            const chosenSem = (modal.getAttribute('data-selected-sem')) || activeSemBtn?.getAttribute('data-sem') || document.getElementById('select-semester')?.value || (isDept ? '3' : '1');
+            const chosenSem = isDept ? '3' : '1';
 
             const profile = isDept 
                 ? { stage: 'departmental', stream: chosenStream, semester: String(chosenSem), college: 'In-House' }
@@ -13439,22 +13432,6 @@ window.getSubjectDocuments = getSubjectDocuments;
                     });
                 }
 
-                const activeSem = sessionStorage.getItem('academic_modal_active_sem') || modal.getAttribute('data-selected-sem') || (function() {
-                    const raw = localStorage.getItem('academic_context') || localStorage.getItem('campussense_academic_profile');
-                    return raw ? JSON.parse(raw).semester : '3';
-                })();
-
-                if (activeSem) {
-                    modal.setAttribute('data-selected-sem', String(activeSem));
-                    const semInput = document.getElementById('select-semester');
-                    if (semInput) semInput.value = String(activeSem);
-                    modal.querySelectorAll('.sem-pill, [data-sem], .sem-btn, .semester-btn').forEach(p => {
-                        const semVal = p.getAttribute('data-sem') || p.textContent.trim().replace(/\D/g, '');
-                        const isMatch = semVal === String(activeSem);
-                        p.classList.toggle('selected', isMatch);
-                        p.classList.toggle('active', isMatch);
-                    });
-                }
             }
         } catch (e) {}
     };
@@ -13903,7 +13880,10 @@ window.getSubjectDocuments = getSubjectDocuments;
     window.resolveSubjectData = resolveSubjectData;
 
     window.openSubjectHubByCode = function(targetCode, defaultTab = 'pyqs', targetModNum = null) {
-        if (!requireAuthOrTrigger()) return;
+        if (!window.Clerk || !window.Clerk.user) {
+            window.location.href = '/login.html';
+            return;
+        }
         if (!targetCode) return;
         const cleanTarget = targetCode.toString().trim().toLowerCase().replace(/[^a-z0-9]/g, '');
 
@@ -14556,7 +14536,8 @@ window.getSubjectDocuments = getSubjectDocuments;
         let targetUrl = url || '';
 
         // Security Gate: Strict Auth-Wall for all academic syllabi, master schemes, and PYQs
-        if (!requireAuthOrTrigger()) {
+        if (!window.Clerk || !window.Clerk.user) {
+            window.location.href = '/login.html';
             return;
         }
 
@@ -14780,10 +14761,10 @@ window.getSubjectDocuments = getSubjectDocuments;
 
         if (savedBookmarks.length === 0) {
             body.innerHTML = `
-                <div class="deck-empty-state-card" style="padding: 3rem 1.5rem; text-align: center; color: var(--text-muted);">
-                    <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">🔖</div>
-                    <h4 style="color: var(--text-primary); margin-bottom: 0.5rem; font-size: 1.1rem;">No saved items yet</h4>
-                    <p style="font-size: 0.88rem; line-height: 1.5; max-width: 300px; margin: 0 auto; color: var(--text-secondary);">
+                <div class="deck-empty-state-card" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem; gap: 0.75rem; width: 100%; box-sizing: border-box;">
+                    <div style="font-size: 2.5rem; margin-bottom: 0.25rem;">🔖</div>
+                    <h4 style="color: var(--text-primary); margin: 0; font-size: 1.1rem; font-weight: 700;">No saved items yet</h4>
+                    <p style="font-size: 0.9rem; color: #94a3b8; line-height: 1.5; margin: 0 auto; max-width: 320px;">
                         Click "Save to Deck" on any high-yield question or open paper in the PDF viewer to save it here.
                     </p>
                 </div>
