@@ -11590,6 +11590,17 @@ window.getSubjectDocuments = getSubjectDocuments;
         if (userDisplayEl) {
             userDisplayEl.textContent = userName;
         }
+
+        const isAuth = !!(window.Clerk?.user || window.isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true');
+        const signOutBtn = document.getElementById('btn-dashboard-sign-out') || document.getElementById('clerk-sign-out-btn');
+        if (signOutBtn) {
+            signOutBtn.style.display = isAuth ? 'inline-flex' : 'none';
+            signOutBtn.onclick = window.handleSignOut;
+        }
+        const signInBtn = document.getElementById('btn-sign-in');
+        const signUpBtn = document.getElementById('btn-sign-up');
+        if (signInBtn) signInBtn.style.display = isAuth ? 'none' : '';
+        if (signUpBtn) signUpBtn.style.display = isAuth ? 'none' : '';
     }
     window.updateContextUI = updateContextUI;
     updateContextUI();
@@ -12248,8 +12259,15 @@ window.getSubjectDocuments = getSubjectDocuments;
         let storedAcademic = localStorage.getItem('campussense_academic_profile');
 
         if (!user) {
-            // Stage 1: Unauthenticated -> Stay on Landing Page
+            // Stage 1: Unauthenticated -> Stay on Landing Page and suppress any modal prompts
+            if (typeof closeAcademicModal === 'function') closeAcademicModal();
+            const modals = document.querySelectorAll('.academic-setup-modal, #academic-setup-modal, .modal-backdrop');
+            modals.forEach(m => {
+                m.style.display = 'none';
+                m.classList.remove('active');
+            });
             setAppWorkflowStage(APP_FLOW.LANDING);
+            return;
         } else if (!storedAcademic) {
             // Stage 2: Authenticated but Academic Context missing -> Open Set Academic Modal
             setAppWorkflowStage(APP_FLOW.ACADEMIC_SETUP);
@@ -12380,10 +12398,19 @@ window.getSubjectDocuments = getSubjectDocuments;
     }
     window.handleAcademicSetupSubmit = handleAcademicSetupSubmit;
 
-    window.logoutUser = function() {
-        if (window.Clerk && typeof window.Clerk.signOut === 'function') {
-            window.Clerk.signOut().catch(e => console.warn('[Clerk] Sign out warning:', e));
+    window.handleSignOut = async function(e) {
+        if (e && e.preventDefault) {
+            e.preventDefault();
+            e.stopPropagation();
         }
+        try {
+            if (window.Clerk && typeof window.Clerk.signOut === 'function') {
+                await window.Clerk.signOut();
+            }
+        } catch (err) {
+            console.warn('[Clerk] Sign out warning:', err);
+        }
+
         window.isLoggedIn = false;
         isLoggedIn = false;
         localStorage.removeItem('campussense_logged_in');
@@ -12394,8 +12421,26 @@ window.getSubjectDocuments = getSubjectDocuments;
         localStorage.removeItem('campussense_semester');
         localStorage.removeItem('campussense_stage');
         localStorage.removeItem('campussense_year_mode');
-        setAppWorkflowStage(APP_FLOW.LANDING);
+        localStorage.removeItem('academic_context');
+        sessionStorage.clear();
+
+        // Suppress and close any modal triggers (specifically #landing-curriculum / "Set Academic Context")
+        if (typeof closeAcademicModal === 'function') closeAcademicModal();
+        const modals = document.querySelectorAll('.academic-setup-modal, #academic-setup-modal, .modal-backdrop, #pdf-viewer-modal');
+        modals.forEach(m => {
+            m.style.display = 'none';
+            m.classList.remove('active');
+        });
+
+        // Explicitly remove any URL hash and redirect cleanly to '/'
+        if (window.location.hash) {
+            window.location.hash = '';
+            history.replaceState(null, '', '/');
+        }
+
+        window.location.href = '/';
     };
+    window.logoutUser = window.handleSignOut;
 
     // Bidirectional Navigation Listeners
     if (btnNavToLanding) {
@@ -13520,8 +13565,13 @@ window.getSubjectDocuments = getSubjectDocuments;
         btnMenuSignOut.addEventListener('click', (e) => {
             e.preventDefault();
             if (userDropdownMenu) userDropdownMenu.style.display = 'none';
-            window.logoutUser();
+            window.handleSignOut(e);
         });
+    }
+
+    const btnDashboardSignOut = document.getElementById('btn-dashboard-sign-out') || document.getElementById('clerk-sign-out-btn');
+    if (btnDashboardSignOut) {
+        btnDashboardSignOut.addEventListener('click', window.handleSignOut);
     }
 
     // ==========================================
@@ -16921,8 +16971,13 @@ window.getSubjectDocuments = getSubjectDocuments;
                 btnMenuSignOut.onclick = (e) => {
                     if (e) e.preventDefault();
                     if (userDropdownMenu) userDropdownMenu.style.display = 'none';
-                    window.logoutUser();
+                    window.handleSignOut(e);
                 };
+            }
+
+            const btnDashboardSignOut2 = document.getElementById('btn-dashboard-sign-out') || document.getElementById('clerk-sign-out-btn');
+            if (btnDashboardSignOut2) {
+                btnDashboardSignOut2.onclick = window.handleSignOut;
             }
         } catch (err) {
             console.warn("[Events] Profile dropdown binding error:", err);

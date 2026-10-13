@@ -18,8 +18,8 @@
   </script>
 
   <!-- Official Clerk Core & UI scripts loaded dynamically from project configuration -->
-  <script defer crossorigin="anonymous" src="https://flying-lioness-4717.clerk.accounts.dev/npm/@clerk/ui@1/dist/ui.browser.js"></script>
-  <script defer crossorigin="anonymous" data-clerk-publishable-key="pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk" src="https://flying-lioness-4717.clerk.accounts.dev/npm/@clerk/clerk-js@6/dist/clerk.browser.js"></script>
+  <script async crossorigin="anonymous" src="https://flying-lioness-4717.clerk.accounts.dev/npm/@clerk/ui@1/dist/ui.browser.js"></script>
+  <script async crossorigin="anonymous" data-clerk-publishable-key="pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk" src="https://flying-lioness-4717.clerk.accounts.dev/npm/@clerk/clerk-js@6/dist/clerk.browser.js" onload="if(window.initAuth) window.initAuth();"></script>
 
   <style>
     * {
@@ -194,21 +194,59 @@
       visibility: visible !important;
     }
 
-    /* ITEM 9: OTP Verification Screen Contrast */
+    /* STEP 3: OTP Verification Screen Overhaul (Match Specifications) */
+    /* 1. Remove Outer Rectangle Box */
+    .cl-otpCodeFieldInputs,
+    .cl-otpCodeField,
+    [class*="otpCodeFieldInputs"],
+    [class*="otpCodeFieldInputs"] fieldset,
+    [class*="otpCodeField"] fieldset,
+    .cl-formField-otpCode fieldset,
+    fieldset:has([class*="otpCodeFieldInput"]) {
+      border: none !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      outline: none !important;
+      padding: 0 !important;
+      margin: 0 auto !important;
+    }
+
+    /* 2. Preserve Only the 6 Individual Digit Boxes */
     [data-theme="dark"] .cl-otpCodeFieldInput,
     [data-theme="dark"] [class*="otpCodeFieldInput"] {
+      border: 1px solid rgba(255, 255, 255, 0.25) !important;
       background-color: #1e222d !important;
       color: #ffffff !important;
-      border: 2px solid rgba(255, 255, 255, 0.25) !important;
+      border-radius: 0.5rem !important;
+      box-shadow: none !important;
       font-weight: 700 !important;
     }
 
     [data-theme="light"] .cl-otpCodeFieldInput,
     [data-theme="light"] [class*="otpCodeFieldInput"] {
+      border: 1px solid #cbd5e1 !important;
       background-color: #ffffff !important;
       color: #0f172a !important;
-      border: 2px solid #cbd5e1 !important;
+      border-radius: 0.5rem !important;
+      box-shadow: none !important;
       font-weight: 700 !important;
+    }
+
+    /* 3. Remove "Use Another Method" */
+    [class*="alternativeMethods"],
+    [data-localization-key*="useAnotherMethod"],
+    [data-localization-key*="alternativeMethods"],
+    .cl-alternativeMethodsBlockButton,
+    [class*="alternativeMethodsBlockButton"],
+    button:has-text("Use another method"),
+    a:has-text("Use another method") {
+      display: none !important;
+    }
+
+    /* Keyframe animation for placeholder spinner */
+    @keyframes clerk-mount-spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
 
     [data-theme="light"] [class*="cl-footer"] svg,
@@ -232,8 +270,13 @@
     </button>
   </div>
 
-  <!-- Single Clerk mount container with stabilized dimensions -->
-  <div id="clerk-mount"></div>
+  <!-- Single Clerk mount container with stabilized dimensions & non-empty placeholder -->
+  <div id="clerk-mount">
+    <div id="clerk-mount-placeholder" style="width: 400px; max-width: 90vw; height: 500px; border-radius: 0.75rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.85rem; background: rgba(22, 24, 31, 0.5); border: 1px solid rgba(255, 255, 255, 0.08);">
+      <div style="width: 28px; height: 28px; border: 3px solid rgba(99, 102, 241, 0.2); border-top-color: #6366f1; border-radius: 50%; animation: clerk-mount-spin 0.8s linear infinite;"></div>
+      <span style="font-size: 0.85rem; color: #94a3b8; font-weight: 500;">Loading secure authentication...</span>
+    </div>
+  </div>
 
   <script>
     function getClerkAppearance(theme) {
@@ -281,12 +324,27 @@
             color: '#ffffff',
             border: '1px solid rgba(255, 255, 255, 0.2)'
           },
+          otpCodeFieldInputs: {
+            border: 'none',
+            background: 'transparent',
+            boxShadow: 'none',
+            padding: '0',
+            margin: '0 auto'
+          },
+          otpCodeField: {
+            border: 'none',
+            background: 'transparent',
+            boxShadow: 'none'
+          },
           otpCodeFieldInput: {
             backgroundColor: '#1e222d',
             color: '#ffffff',
-            border: '2px solid rgba(255, 255, 255, 0.25)',
+            border: '1px solid rgba(255, 255, 255, 0.25)',
+            borderRadius: '0.5rem',
             fontWeight: '700'
           },
+          alternativeMethods: { display: 'none' },
+          alternativeMethodsBlockButton: { display: 'none' },
           socialButtonsBlockButton: {
             backgroundColor: '#1e222d',
             border: '1px solid rgba(255, 255, 255, 0.12)',
@@ -329,12 +387,27 @@
             color: '#0f172a',
             border: '1px solid #94a3b8'
           },
+          otpCodeFieldInputs: {
+            border: 'none',
+            background: 'transparent',
+            boxShadow: 'none',
+            padding: '0',
+            margin: '0 auto'
+          },
+          otpCodeField: {
+            border: 'none',
+            background: 'transparent',
+            boxShadow: 'none'
+          },
           otpCodeFieldInput: {
             backgroundColor: '#ffffff',
             color: '#0f172a',
-            border: '2px solid #cbd5e1',
+            border: '1px solid #cbd5e1',
+            borderRadius: '0.5rem',
             fontWeight: '700'
           },
+          alternativeMethods: { display: 'none' },
+          alternativeMethodsBlockButton: { display: 'none' },
           socialButtonsBlockButton: {
             backgroundColor: '#ffffff',
             border: '1px solid #cbd5e1',
@@ -373,6 +446,23 @@
       }
     }
 
+    function observeAndCleanOtpScreen() {
+      const container = document.getElementById('clerk-mount');
+      if (!container) return;
+      const hideAltMethod = () => {
+        const els = container.querySelectorAll('button, a, p, span, div');
+        els.forEach(el => {
+          if (el.textContent && el.textContent.trim().toLowerCase() === 'use another method') {
+            const btn = el.closest('button, a') || el;
+            btn.style.display = 'none';
+          }
+        });
+      };
+      hideAltMethod();
+      const observer = new MutationObserver(hideAltMethod);
+      observer.observe(container, { childList: true, subtree: true });
+    }
+
     function mountClerk(theme) {
       const container = document.getElementById('clerk-mount');
       if (!container || !window.Clerk || typeof window.Clerk.mountSignIn !== 'function') return;
@@ -383,6 +473,7 @@
         signUpFallbackRedirectUrl: '/',
         appearance: getClerkAppearance(theme)
       });
+      observeAndCleanOtpScreen();
     }
 
     function handleThemeToggle() {
@@ -402,10 +493,10 @@
       const currentTheme = localStorage.getItem('campussense_theme') || 'dark';
       updateThemeToggleUI(currentTheme);
 
-      // Fast non-blocking poll loop (25ms) waiting for Clerk & UI bundle
+      // Fast non-blocking poll loop (15ms) waiting for Clerk
       let attempts = 0;
-      while ((!window.Clerk || (!window.__internal_ClerkUICtor && !window.ClerkUI)) && attempts < 120) {
-        await new Promise(r => setTimeout(r, 25));
+      while (!window.Clerk && attempts < 100) {
+        await new Promise(r => setTimeout(r, 15));
         attempts++;
       }
 
@@ -436,6 +527,7 @@
       isInitialized = true;
       mountClerk(currentTheme);
     }
+    window.initAuth = initAuth;
 
     // Attach theme toggle button listener immediately
     document.addEventListener('DOMContentLoaded', () => {

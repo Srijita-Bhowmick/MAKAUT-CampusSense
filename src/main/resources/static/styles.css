@@ -482,7 +482,8 @@ body {
 }
 
 body.modal-open {
-  overflow: hidden !important;
+  overflow-y: scroll !important;
+  scrollbar-gutter: stable both-edges !important;
 }
 
 /* Stabilize scrollbar thumb to prevent collapse and runaway jumps */
@@ -541,9 +542,10 @@ button,
   -webkit-overflow-scrolling: touch;
 }
 
-/* Remove body freeze if leftover */
+/* Maintain stable scrollbar track without layout jumps */
 body:not(.modal-open) {
-  overflow: visible !important;
+  overflow-y: scroll !important;
+  scrollbar-gutter: stable both-edges !important;
 }
 
 /* Modals must only absorb clicks when explicitly visible */
@@ -7346,4 +7348,103 @@ aside#saved-deck-drawer {
   margin: 0 auto !important;
   max-width: 320px !important;
   white-space: normal !important;
+}
+
+/* ==========================================================================
+   ACADEMIC TABLE & MODAL STABILIZATION (STEP 4)
+   ========================================================================== */
+#landing-curriculum {
+  width: 100% !important;
+  min-height: 480px !important;
+}
+
+#landing-curriculum .subjects-grid,
+#curriculum-grid,
+#archives-grid,
+#active-subjects-grid,
+#stream-picker-grid,
+.academic-stage-card,
+.stream-option {
+  width: 100% !important;
+  min-height: 280px;
+}
+
+/* ==========================================================================
+   DEDICATED DASHBOARD RED SIGN OUT BUTTON (STEP 2)
+   ========================================================================== */
+#btn-dashboard-sign-out,
+.btn-dashboard-sign-out,
+#clerk-sign-out-btn {
+  background-color: #ef4444 !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 0.5rem !important;
+  border: none !important;
+  cursor: pointer !important;
+  font-size: 0.875rem !important;
+  line-height: 1.25 !important;
+  transition: background-color 0.15s ease, transform 0.1s ease !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.4rem !important;
+}
+
+#btn-dashboard-sign-out:hover,
+.btn-dashboard-sign-out:hover,
+#clerk-sign-out-btn:hover {
+  background-color: #dc2626 !important;
+  transform: translateY(-1px) !important;
+}
+
+#btn-dashboard-sign-out:active,
+.btn-dashboard-sign-out:active,
+#clerk-sign-out-btn:active {
+  transform: scale(0.98) !important;
+}
+
+/* ==========================================================================
+   CLERK OTP VERIFICATION SCREEN OVERHAUL (STEP 3)
+   ========================================================================== */
+.cl-otpCodeFieldInputs,
+.cl-otpCodeField,
+[class*="otpCodeFieldInputs"],
+[class*="otpCodeFieldInputs"] fieldset,
+[class*="otpCodeField"] fieldset,
+.cl-formField-otpCode fieldset,
+fieldset:has([class*="otpCodeFieldInput"]) {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+  padding: 0 !important;
+  margin: 0 auto !important;
+}
+
+[data-theme="dark"] .cl-otpCodeFieldInput,
+[data-theme="dark"] [class*="otpCodeFieldInput"] {
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  background-color: #1e222d !important;
+  color: #ffffff !important;
+  border-radius: 0.5rem !important;
+  box-shadow: none !important;
+  font-weight: 700 !important;
+}
+
+[data-theme="light"] .cl-otpCodeFieldInput,
+[data-theme="light"] [class*="otpCodeFieldInput"] {
+  border: 1px solid #cbd5e1 !important;
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-radius: 0.5rem !important;
+  box-shadow: none !important;
+  font-weight: 700 !important;
+}
+
+[class*="alternativeMethods"],
+[data-localization-key*="useAnotherMethod"],
+[data-localization-key*="alternativeMethods"],
+.cl-alternativeMethodsBlockButton,
+[class*="alternativeMethodsBlockButton"] {
+  display: none !important;
 }

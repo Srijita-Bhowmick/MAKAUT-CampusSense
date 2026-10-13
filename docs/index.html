@@ -15,16 +15,27 @@
     <link rel="dns-prefetch" href="https://flying-lioness-4717.clerk.accounts.dev">
     <link rel="prefetch" href="/login.html">
     <style>
-      /* ITEM 1: Global Viewport Stability */
-      html {
+      /* Global Viewport & Scrollbar Stability (STEP 4) */
+      html, body {
         min-height: 100vh !important;
         height: auto !important;
         scrollbar-gutter: stable both-edges !important;
         overflow-y: scroll !important;
       }
-      body {
-        min-height: 100vh !important;
-        height: auto !important;
+      body.modal-open {
+        overflow-y: scroll !important;
+        scrollbar-gutter: stable both-edges !important;
+      }
+      #landing-curriculum {
+        width: 100% !important;
+        min-height: 480px !important;
+      }
+      #curriculum-grid,
+      #archives-grid,
+      #active-subjects-grid,
+      #stream-picker-grid {
+        width: 100% !important;
+        min-height: 280px;
       }
 
       /* 100% FONT & BUTTON PARITY: "View Syllabus Blueprint →" & "Access Exam Archives →" */
@@ -445,6 +456,7 @@
                     <span>💬 Feedback</span>
                 </button>
 
+                <button id="btn-dashboard-sign-out" class="btn-sign-out" style="display: none; background-color: #ef4444; color: #ffffff; font-weight: 600; padding: 0.5rem 1rem; border-radius: 0.5rem; border: none; cursor: pointer;">Sign Out</button>
                 <a href="/login.html" id="btn-sign-in" class="btn btn-outline" style="text-decoration: none;">Sign In</a>
                 <a href="/login.html" id="btn-sign-up" class="btn btn-primary" style="text-decoration: none;">Sign Up</a>
             </div>
@@ -1129,20 +1141,25 @@
         try {
           if (window.Clerk) {
             await window.Clerk.load();
+            const signOutBtn = document.getElementById('btn-dashboard-sign-out');
             if (window.Clerk.user) {
               document.querySelectorAll('#btn-sign-in, #btn-sign-up, #btn-nav-signin, #btn-nav-signup').forEach(btn => btn.style.display = 'none');
-              const nav = document.querySelector('.nav-actions') || document.querySelector('header') || document.querySelector('nav');
-              if (nav && !document.getElementById('clerk-sign-out-btn')) {
-                const signOut = document.createElement('button');
-                signOut.id = 'clerk-sign-out-btn';
-                signOut.innerText = 'Sign Out';
-                signOut.style.cssText = 'background:#ef4444; color:#fff; border:none; padding:7px 14px; border-radius:8px; cursor:pointer; font-weight:600; font-size:0.85rem; margin-left:8px;';
-                signOut.onclick = async () => {
-                  await window.Clerk.signOut();
-                  window.location.reload();
+              if (signOutBtn) {
+                signOutBtn.style.display = 'inline-flex';
+                signOutBtn.onclick = async (e) => {
+                  if (typeof window.handleSignOut === 'function') {
+                    await window.handleSignOut(e);
+                  } else {
+                    await window.Clerk.signOut();
+                    window.location.hash = '';
+                    history.replaceState(null, '', '/');
+                    window.location.href = '/';
+                  }
                 };
-                nav.appendChild(signOut);
               }
+            } else {
+              if (signOutBtn) signOutBtn.style.display = 'none';
+              document.querySelectorAll('#btn-sign-in, #btn-sign-up').forEach(btn => btn.style.display = '');
             }
           }
         } catch (err) {
