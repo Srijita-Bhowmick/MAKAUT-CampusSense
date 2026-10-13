@@ -1,9 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sign In — MAKAUT CampusSense</title>
+
+  <!-- Performance Acceleration: DNS Preconnect & Prefetch -->
+  <link rel="preconnect" href="https://flying-lioness-4717.clerk.accounts.dev">
+  <link rel="dns-prefetch" href="https://flying-lioness-4717.clerk.accounts.dev">
+
+  <!-- Instant Non-FOUC Theme Initialization -->
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('campussense_theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    })();
+  </script>
 
   <!-- Official Clerk Core & UI scripts loaded dynamically from project configuration -->
   <script defer crossorigin="anonymous" src="https://flying-lioness-4717.clerk.accounts.dev/npm/@clerk/ui@1/dist/ui.browser.js"></script>
@@ -16,30 +28,105 @@
       padding: 0;
     }
 
+    /* Stabilize Viewport to Eliminate Jitter & Scrollbar Flickering */
+    html {
+      min-height: 100vh;
+      height: auto;
+      scrollbar-gutter: stable;
+      overflow-y: scroll;
+    }
+
     body {
       min-height: 100vh;
+      height: auto;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 1.5rem 1rem;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    /* Theme Variables & Body Colors */
+    [data-theme="dark"] body {
       background-color: #000000;
       color: #ffffff;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      padding: 1.5rem;
+    }
+
+    [data-theme="light"] body {
+      background-color: #f1f5f9;
+      color: #0f172a;
+    }
+
+    /* Top Navigation Bar with Persistent Theme Toggle */
+    .top-nav-bar {
+      width: 100%;
+      max-width: 460px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding: 0 0.25rem;
     }
 
     .back-link {
-      color: #94a3b8;
       text-decoration: none;
       font-size: 0.875rem;
-      margin-bottom: 1.75rem;
+      font-weight: 500;
       transition: color 0.2s ease;
     }
-    .back-link:hover {
+
+    [data-theme="dark"] .back-link {
+      color: #94a3b8;
+    }
+    [data-theme="dark"] .back-link:hover {
       color: #ffffff;
     }
 
-    /* Mount container with explicit dimensions to guarantee rendering */
+    [data-theme="light"] .back-link {
+      color: #475569;
+    }
+    [data-theme="light"] .back-link:hover {
+      color: #0f172a;
+    }
+
+    /* High-Contrast Theme Toggle Button */
+    .theme-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.45rem 0.85rem;
+      border-radius: 9999px;
+      font-size: 0.825rem;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    [data-theme="dark"] .theme-toggle-btn {
+      background-color: #16181f;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+    }
+    [data-theme="dark"] .theme-toggle-btn:hover {
+      background-color: #1e222d;
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    [data-theme="light"] .theme-toggle-btn {
+      background-color: #ffffff;
+      border: 1px solid #cbd5e1;
+      color: #0f172a;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+    [data-theme="light"] .theme-toggle-btn:hover {
+      background-color: #f8fafc;
+      border-color: #94a3b8;
+    }
+
+    /* Stabilized Clerk Mount Container */
     #clerk-mount {
       display: flex;
       justify-content: center;
@@ -52,7 +139,7 @@
       padding: 0 !important;
     }
 
-    /* Keep outer wrapper transparent and single-bordered without destructive overrides */
+    /* Single Card Boundary & Transparent Wrappers */
     .cl-rootBox,
     .cl-cardBox {
       background: transparent !important;
@@ -60,56 +147,208 @@
       box-shadow: none !important;
     }
 
-    .cl-card {
+    [data-theme="dark"] .cl-card {
       background-color: #16181f !important;
-      background: #16181f !important;
-      border: 1px solid rgba(255, 255, 255, 0.08) !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
       border-radius: 0.75rem !important;
       box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.6) !important;
     }
 
-    .cl-footer,
-    .cl-footerAction,
-    [class*="cl-footer"] {
-      background-color: #16181f !important;
-      background: #16181f !important;
-      border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
-      box-shadow: none !important;
-    }
-
-    [class*="cl-formButtonPrimary"] {
+    [data-theme="light"] .cl-card {
       background-color: #ffffff !important;
-      color: #000000 !important;
-      font-weight: 700 !important;
-      border-radius: 0.5rem !important;
+      border: 1px solid #cbd5e1 !important;
+      border-radius: 0.75rem !important;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08) !important;
     }
 
-    /* Ensure Clerk branding / Secured by Clerk is clearly visible */
-    [class*="cl-footer"] svg,
-    [class*="cl-footer"] img,
-    .cl-internal-logo,
-    [class*="cl-securedBy"] svg,
-    [class*="cl-securedBy"] img {
+    /* High-contrast Clerk branding in dark mode */
+    [data-theme="dark"] [class*="cl-footer"] svg,
+    [data-theme="dark"] [class*="cl-footer"] img,
+    [data-theme="dark"] .cl-internal-logo,
+    [data-theme="dark"] [class*="cl-securedBy"] svg,
+    [data-theme="dark"] [class*="cl-securedBy"] img {
       filter: brightness(0) invert(1) !important;
       opacity: 0.9 !important;
+    }
+
+    [data-theme="light"] [class*="cl-footer"] svg,
+    [data-theme="light"] [class*="cl-footer"] img,
+    [data-theme="light"] .cl-internal-logo,
+    [data-theme="light"] [class*="cl-securedBy"] svg,
+    [data-theme="light"] [class*="cl-securedBy"] img {
+      filter: none !important;
+      opacity: 0.85 !important;
     }
   </style>
 </head>
 <body>
 
-  <a href="/" class="back-link">← Back to CampusSense</a>
+  <!-- Top Navigation with Back Link and Persistent Theme Toggle -->
+  <div class="top-nav-bar">
+    <a href="/" class="back-link">← Back to CampusSense</a>
+    <button id="theme-toggle-btn" class="theme-toggle-btn" type="button" aria-label="Toggle theme">
+      <span id="theme-icon">🌙</span>
+      <span id="theme-label">Dark Mode</span>
+    </button>
+  </div>
 
-  <!-- Single Clerk mount container with explicit dimensions -->
+  <!-- Single Clerk mount container with stabilized dimensions -->
   <div id="clerk-mount"></div>
 
   <script>
-    async function initClerkMount() {
-      const publishableKey = 'pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk';
+    function getClerkAppearance(theme) {
+      const isDark = theme === 'dark';
+      return {
+        variables: isDark ? {
+          colorPrimary: '#ffffff',
+          colorTextOnPrimaryBackground: '#000000',
+          colorBackground: '#16181f',
+          colorInputBackground: '#1e222d',
+          colorInputText: '#ffffff',
+          colorText: '#ffffff',
+          colorTextSecondary: '#cbd5e1',
+          borderRadius: '0.75rem'
+        } : {
+          colorPrimary: '#0f172a',
+          colorTextOnPrimaryBackground: '#ffffff',
+          colorBackground: '#ffffff',
+          colorInputBackground: '#f8fafc',
+          colorInputText: '#0f172a',
+          colorText: '#0f172a',
+          colorTextSecondary: '#334155',
+          borderRadius: '0.75rem'
+        },
+        layout: {
+          socialButtonsVariant: 'blockButton',
+          socialButtonsPlacement: 'top'
+        },
+        elements: isDark ? {
+          rootBox: { background: 'transparent', border: 'none', boxShadow: 'none' },
+          cardBox: { background: 'transparent', border: 'none', boxShadow: 'none' },
+          card: {
+            backgroundColor: '#16181f',
+            border: '1px solid rgba(255, 255, 255, 0.12)',
+            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.6)'
+          },
+          headerTitle: { color: '#ffffff', fontWeight: '700' },
+          headerSubtitle: { color: '#cbd5e1' },
+          dividerLine: { backgroundColor: 'rgba(255, 255, 255, 0.12)' },
+          dividerText: { color: '#94a3b8' },
+          formFieldLabel: { color: '#cbd5e1', fontWeight: '600' },
+          formFieldInput: {
+            backgroundColor: '#1e222d',
+            color: '#ffffff',
+            border: '1px solid rgba(255, 255, 255, 0.2)'
+          },
+          socialButtonsBlockButton: {
+            backgroundColor: '#1e222d',
+            border: '1px solid rgba(255, 255, 255, 0.12)',
+            color: '#ffffff'
+          },
+          socialButtonsBlockButtonText: { color: '#ffffff', fontWeight: '600' },
+          formButtonPrimary: {
+            backgroundColor: '#ffffff',
+            color: '#000000',
+            fontWeight: '700'
+          },
+          footer: {
+            backgroundColor: '#16181f',
+            borderTop: '1px solid rgba(255, 255, 255, 0.08)'
+          },
+          footerAction: { backgroundColor: '#16181f' },
+          footerActionText: { color: '#94a3b8' },
+          footerActionLink: { color: '#ffffff', fontWeight: '600' },
+          identityPreviewText: { color: '#ffffff' },
+          identityPreviewEditButton: { color: '#cbd5e1' },
+          logoImage: { filter: 'brightness(0) invert(1)', opacity: '0.9' }
+        } : {
+          rootBox: { background: 'transparent', border: 'none', boxShadow: 'none' },
+          cardBox: { background: 'transparent', border: 'none', boxShadow: 'none' },
+          card: {
+            backgroundColor: '#ffffff',
+            border: '1px solid #cbd5e1',
+            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.08)'
+          },
+          headerTitle: { color: '#0f172a', fontWeight: '700' },
+          headerSubtitle: { color: '#334155' },
+          dividerLine: { backgroundColor: '#e2e8f0' },
+          dividerText: { color: '#64748b' },
+          formFieldLabel: { color: '#334155', fontWeight: '600' },
+          formFieldInput: {
+            backgroundColor: '#f8fafc',
+            color: '#0f172a',
+            border: '1px solid #94a3b8'
+          },
+          socialButtonsBlockButton: {
+            backgroundColor: '#ffffff',
+            border: '1px solid #cbd5e1',
+            color: '#0f172a'
+          },
+          socialButtonsBlockButtonText: { color: '#0f172a', fontWeight: '600' },
+          formButtonPrimary: {
+            backgroundColor: '#0f172a',
+            color: '#ffffff',
+            fontWeight: '700'
+          },
+          footer: {
+            backgroundColor: '#ffffff',
+            borderTop: '1px solid #f1f5f9'
+          },
+          footerAction: { backgroundColor: '#ffffff' },
+          footerActionText: { color: '#64748b' },
+          footerActionLink: { color: '#0f172a', fontWeight: '600' },
+          identityPreviewText: { color: '#0f172a' },
+          identityPreviewEditButton: { color: '#334155' },
+          logoImage: { filter: 'none', opacity: '0.85' }
+        }
+      };
+    }
 
-      // Robust poll loop to wait for Clerk and ClerkUI constructor to initialize
+    function updateThemeToggleUI(theme) {
+      const icon = document.getElementById('theme-icon');
+      const label = document.getElementById('theme-label');
+      if (theme === 'light') {
+        if (icon) icon.textContent = '☀️';
+        if (label) label.textContent = 'Light Mode';
+      } else {
+        if (icon) icon.textContent = '🌙';
+        if (label) label.textContent = 'Dark Mode';
+      }
+    }
+
+    function mountClerk(theme) {
+      const container = document.getElementById('clerk-mount');
+      if (!container || !window.Clerk || typeof window.Clerk.mountSignIn !== 'function') return;
+
+      container.innerHTML = '';
+      window.Clerk.mountSignIn(container, {
+        fallbackRedirectUrl: '/',
+        signUpFallbackRedirectUrl: '/',
+        appearance: getClerkAppearance(theme)
+      });
+    }
+
+    function handleThemeToggle() {
+      const currentTheme = localStorage.getItem('campussense_theme') || 'dark';
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('campussense_theme', newTheme);
+      document.documentElement.setAttribute('data-theme', newTheme);
+      updateThemeToggleUI(newTheme);
+      mountClerk(newTheme);
+    }
+
+    let isInitialized = false;
+    async function initAuth() {
+      if (isInitialized) return;
+
+      const publishableKey = 'pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk';
+      const currentTheme = localStorage.getItem('campussense_theme') || 'dark';
+      updateThemeToggleUI(currentTheme);
+
+      // Fast non-blocking poll loop (25ms) waiting for Clerk & UI bundle
       let attempts = 0;
-      while ((!window.Clerk || (!window.__internal_ClerkUICtor && !window.ClerkUI)) && attempts < 100) {
-        await new Promise(resolve => setTimeout(resolve, 50));
+      while ((!window.Clerk || (!window.__internal_ClerkUICtor && !window.ClerkUI)) && attempts < 120) {
+        await new Promise(r => setTimeout(r, 25));
         attempts++;
       }
 
@@ -137,67 +376,25 @@
         return;
       }
 
-      const container = document.getElementById('clerk-mount');
-      if (container && !container.hasChildNodes()) {
-        window.Clerk.mountSignIn(container, {
-          fallbackRedirectUrl: '/',
-          signUpFallbackRedirectUrl: '/',
-          appearance: {
-            variables: {
-              colorPrimary: '#ffffff',
-              colorTextOnPrimaryBackground: '#000000',
-              colorBackground: '#16181f',
-              colorInputBackground: '#1e212b',
-              colorInputText: '#ffffff',
-              colorText: '#ffffff',
-              colorTextSecondary: '#94a3b8',
-              borderRadius: '0.75rem'
-            },
-            layout: {
-              socialButtonsVariant: 'blockButton',
-              socialButtonsPlacement: 'top'
-            },
-            elements: {
-              rootBox: { background: 'transparent', border: 'none', boxShadow: 'none' },
-              cardBox: { background: 'transparent', border: 'none', boxShadow: 'none' },
-              card: {
-                backgroundColor: '#16181f',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.6)'
-              },
-              footer: {
-                backgroundColor: '#16181f',
-                borderTop: '1px solid rgba(255, 255, 255, 0.06)'
-              },
-              footerAction: {
-                backgroundColor: '#16181f'
-              },
-              formButtonPrimary: {
-                backgroundColor: '#ffffff',
-                color: '#000000',
-                fontWeight: '700'
-              },
-              footerActionText: {
-                color: '#94a3b8'
-              },
-              footerActionLink: {
-                color: '#ffffff',
-                fontWeight: '600'
-              },
-              logoImage: {
-                filter: 'brightness(0) invert(1)',
-                opacity: '0.9'
-              }
-            }
-          }
-        });
-      }
+      isInitialized = true;
+      mountClerk(currentTheme);
     }
 
-    if (document.readyState === 'loading') {
-      window.addEventListener('load', initClerkMount);
-    } else {
-      initClerkMount();
+    // Attach theme toggle button listener immediately
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggleBtn = document.getElementById('theme-toggle-btn');
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', handleThemeToggle);
+      }
+      initAuth();
+    });
+
+    if (document.readyState !== 'loading') {
+      const toggleBtn = document.getElementById('theme-toggle-btn');
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', handleThemeToggle);
+      }
+      initAuth();
     }
 
     window.addEventListener('pageshow', (e) => {

@@ -9,6 +9,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css?v=20261011_v3">
+
+    <!-- Clerk Performance Acceleration: Preconnect & Prefetch -->
+    <link rel="preconnect" href="https://flying-lioness-4717.clerk.accounts.dev">
+    <link rel="dns-prefetch" href="https://flying-lioness-4717.clerk.accounts.dev">
+    <link rel="prefetch" href="/login.html">
     <style>
       /* 100% FONT & BUTTON PARITY: "View Syllabus Blueprint →" & "Access Exam Archives →" */
       .archive-btn-container {
@@ -1126,7 +1131,7 @@
     <!-- Clerk session sync -->
     <script defer crossorigin="anonymous" data-clerk-publishable-key="pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk" src="https://flying-lioness-4717.clerk.accounts.dev/npm/@clerk/clerk-js@6/dist/clerk.browser.js"></script>
     <script>
-      window.addEventListener('load', async () => {
+      async function syncClerkSession() {
         try {
           if (window.Clerk) {
             await window.Clerk.load();
@@ -1149,7 +1154,12 @@
         } catch (err) {
           console.warn("[Clerk] Session sync error:", err);
         }
-      });
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', syncClerkSession);
+      } else {
+        syncClerkSession();
+      }
     </script>
 </body>
 </html>
