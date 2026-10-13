@@ -12096,7 +12096,10 @@ window.getSubjectDocuments = getSubjectDocuments;
     const btnNavToLanding = document.getElementById('btn-nav-to-landing');
     const btnNavToDashboard = document.getElementById('btn-nav-to-dashboard');
 
-    function switchView(targetView) {
+    let currentAppView = null;
+    function switchView(targetView, shouldScroll = false) {
+        if (currentAppView === targetView) return;
+        currentAppView = targetView;
         const dashboardWorkspace = document.getElementById('dashboard-workspace') || document.getElementById('main-viewport-container');
         if (targetView === 'dashboard') {
             if (landingView) landingView.style.display = 'none';
@@ -12119,7 +12122,9 @@ window.getSubjectDocuments = getSubjectDocuments;
             renderActiveSubjects();
             renderPanicPackPreview();
             renderSavedDeckPreview();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (shouldScroll) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
         } else {
             if (landingView) landingView.style.display = 'block';
             if (dashboardWorkspace) dashboardWorkspace.style.display = 'none';
@@ -12147,7 +12152,9 @@ window.getSubjectDocuments = getSubjectDocuments;
             renderLandingCurriculumCards('all');
             renderLandingPyqCatalog('all');
             bindLandingFilterButtons();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (shouldScroll) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
         }
     }
 
@@ -12926,14 +12933,17 @@ window.getSubjectDocuments = getSubjectDocuments;
         const hash = window.location.hash || '#landing';
         if (hash.includes('landing') || hash === '#' || hash === '') {
             setAppWorkflowStage(APP_FLOW.LANDING);
-            renderLandingCurriculumCards('all');
-            renderLandingPyqCatalog('all');
-            bindLandingFilterButtons();
-            if (hash && hash.startsWith('#landing-')) {
+            if (hash && hash.startsWith('#landing-') && hash !== '#landing') {
                 const target = document.querySelector(hash);
                 if (target) {
-                    setTimeout(() => target.scrollIntoView({ behavior: 'smooth' }), 60);
+                    target.scrollIntoView({ behavior: 'smooth' });
                 }
+            }
+        } else if (hash.includes('panic-pack')) {
+            setAppWorkflowStage(APP_FLOW.LANDING);
+            const target = document.querySelector('#panic-pack') || document.querySelector('.bento-card-panic');
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
             }
         } else if (hash.includes('academic') || hash.includes('setup')) {
             setAppWorkflowStage(APP_FLOW.ACADEMIC_SETUP);
@@ -12950,7 +12960,7 @@ window.getSubjectDocuments = getSubjectDocuments;
     if (btnHeroPanicPack) {
         btnHeroPanicPack.addEventListener('click', (e) => {
             e.preventDefault();
-            if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
+            if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true' || window.Clerk?.user) {
                 const storedAcademic = localStorage.getItem('campussense_academic_profile');
                 if (!storedAcademic) {
                     setAppWorkflowStage(APP_FLOW.ACADEMIC_SETUP);
@@ -12959,7 +12969,19 @@ window.getSubjectDocuments = getSubjectDocuments;
                     openFullPanicMode();
                 }
             } else {
-                showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
+                window.location.href = '/login.html';
+            }
+        });
+    }
+
+    // Hero Explore Curriculum Button
+    const btnExploreCurriculum = document.getElementById('btn-explore-curriculum');
+    if (btnExploreCurriculum) {
+        btnExploreCurriculum.addEventListener('click', (e) => {
+            const target = document.getElementById('landing-curriculum');
+            if (target) {
+                e.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth' });
             }
         });
     }
@@ -16808,7 +16830,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             if (btnHeroPanicPack) {
                 btnHeroPanicPack.onclick = (e) => {
                     e.preventDefault();
-                    if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
+                    if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true' || window.Clerk?.user) {
                         const storedAcademic = localStorage.getItem('campussense_academic_profile');
                         if (!storedAcademic) {
                             setAppWorkflowStage(APP_FLOW.ACADEMIC_SETUP);
@@ -16817,7 +16839,7 @@ window.getSubjectDocuments = getSubjectDocuments;
                             openFullPanicMode();
                         }
                     } else {
-                        window.triggerNativeClerkAuth();
+                        window.location.href = '/login.html';
                     }
                 };
             }
@@ -17185,8 +17207,11 @@ window.getSubjectDocuments = getSubjectDocuments;
     }
     window.bindInteractiveButtons = bindInteractiveButtons;
 
-    // Bulletproof initialization wrapper with try-catch as strictly required
-    document.addEventListener('DOMContentLoaded', () => {
+    // Bulletproof idempotent initialization wrapper
+    let isAppInitialized = false;
+    function runInitialSetup() {
+      if (isAppInitialized) return;
+      isAppInitialized = true;
       document.body.classList.remove('modal-open');
       document.body.style.overflow = '';
       safeExecute('curriculumCards', () => renderLandingCurriculum('all'));
@@ -17205,25 +17230,12 @@ window.getSubjectDocuments = getSubjectDocuments;
       } catch (err) {
         console.error("Critical initialization error prevented:", err);
       }
-    });
+    }
 
-    if (document.readyState === 'interactive' || document.readyState === 'complete') {
-      safeExecute('curriculumCards', () => renderLandingCurriculum('all'));
-      safeExecute('pyqCatalog', () => {
-        const activeBtn = document.querySelector('#pyq-year-pills .active') || document.querySelector('.pyq-year-filter-btn.active');
-        const sem = activeBtn ? (activeBtn.getAttribute('data-year-filter') || activeBtn.getAttribute('data-year')) : 'sem-3';
-        renderLandingArchives(sem || 'sem-3');
-      });
-      safeExecute('filterButtons', bindLandingFilterButtons);
-      safeExecute('liveMetrics', updateLandingLiveMetrics);
-      safeExecute('academicSetupOptions', bindAcademicSetupOptions);
-      safeExecute('academicContextModal', bindAcademicContextModal);
-      safeExecute('bindButtons', bindInteractiveButtons);
-      try {
-        initializeApp();
-      } catch (err) {
-        console.error("Critical initialization error prevented:", err);
-      }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', runInitialSetup);
+    } else {
+      runInitialSetup();
     }
 })();
 
@@ -17243,12 +17255,6 @@ window.addEventListener('DOMContentLoaded', async () => {
         } catch (e) {
             console.warn('[Clerk] DOMContentLoaded initialization warning:', e);
         }
-    }
-    if (typeof window.evaluateWorkflowProgression === 'function') {
-        window.evaluateWorkflowProgression();
-    }
-    if (typeof window.handleRouting === 'function') {
-        window.handleRouting();
     }
 });
 

@@ -15,16 +15,31 @@
     <link rel="dns-prefetch" href="https://flying-lioness-4717.clerk.accounts.dev">
     <link rel="prefetch" href="/login.html">
     <style>
-      /* Global Viewport & Scrollbar Stability (STEP 4) */
+      /* Global Viewport & Scrollbar Stability */
       html, body {
         min-height: 100vh !important;
         height: auto !important;
-        scrollbar-gutter: stable !important;
         overflow-y: scroll !important;
+        overflow-x: hidden !important;
+        scrollbar-gutter: stable !important;
       }
       body.modal-open {
+        min-height: 100vh !important;
+        height: auto !important;
         overflow-y: scroll !important;
+        overflow-x: hidden !important;
         scrollbar-gutter: stable !important;
+      }
+      /* Clean Repaint Containment: Purge Ghosting Cascade & Repaint Trails */
+      .landing-hero,
+      .hero-section,
+      #landing-view,
+      #landing-features,
+      .landing-features,
+      #landing-curriculum,
+      #landing-pyqs {
+        contain: paint;
+        isolation: isolate;
       }
       #landing-curriculum {
         width: 100% !important;
@@ -482,10 +497,10 @@
 
             <div class="landing-hero-actions hero-actions">
                 <a href="#landing-curriculum" class="btn btn-primary btn-hero-cta" id="btn-explore-curriculum">
-                    Explore Curriculums and PYQs →
+                    Explore Curriculums and PYQs
                 </a>
                 <button class="btn btn-panic btn-flame-hero" id="btn-hero-panic-pack">
-                    View 48h Panic Pack →
+                    View 16+ Panic Pack →
                 </button>
             </div>
 
@@ -1137,10 +1152,15 @@
     <!-- Clerk session sync -->
     <script defer crossorigin="anonymous" data-clerk-publishable-key="pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk" src="https://flying-lioness-4717.clerk.accounts.dev/npm/@clerk/clerk-js@6/dist/clerk.browser.js"></script>
     <script>
+      let clerkSessionSynced = false;
       async function syncClerkSession() {
+        if (clerkSessionSynced) return;
         try {
           if (window.Clerk) {
-            await window.Clerk.load();
+            clerkSessionSynced = true;
+            if (!window.Clerk.loaded && typeof window.Clerk.load === 'function') {
+              await window.Clerk.load();
+            }
             const signOutBtn = document.getElementById('btn-dashboard-sign-out');
             if (window.Clerk.user) {
               document.querySelectorAll('#btn-sign-in, #btn-sign-up, #btn-nav-signin, #btn-nav-signup').forEach(btn => btn.style.display = 'none');
@@ -1166,10 +1186,16 @@
           console.warn("[Clerk] Session sync error:", err);
         }
       }
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', syncClerkSession);
-      } else {
+      if (window.Clerk) {
         syncClerkSession();
+      } else {
+        const clerkScript = document.querySelector('script[data-clerk-publishable-key]');
+        if (clerkScript) clerkScript.addEventListener('load', syncClerkSession);
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', syncClerkSession);
+        } else {
+          syncClerkSession();
+        }
       }
     </script>
 </body>

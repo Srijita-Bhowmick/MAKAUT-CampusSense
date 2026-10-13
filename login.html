@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://flying-lioness-4717.clerk.accounts.dev" crossorigin>
   <link rel="dns-prefetch" href="https://flying-lioness-4717.clerk.accounts.dev">
 
-  <!-- Clerk Core and UI Bundle -->
+  <!-- Clerk Core and UI Bundle (Async Non-Blocking) -->
   <script async crossorigin="anonymous" src="https://flying-lioness-4717.clerk.accounts.dev/npm/@clerk/ui@1/dist/ui.browser.js"></script>
   <script async crossorigin="anonymous" data-clerk-publishable-key="pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk" src="https://flying-lioness-4717.clerk.accounts.dev/npm/@clerk/clerk-js@6/dist/clerk.browser.js"></script>
 
@@ -22,10 +22,11 @@
 
     /* Stable Viewport to Eliminate Jitter & Recalculation Thrashing */
     html, body {
-      min-height: 100vh;
-      height: auto;
-      overflow-y: scroll;
-      scrollbar-gutter: stable;
+      min-height: 100vh !important;
+      height: auto !important;
+      overflow-y: scroll !important;
+      overflow-x: hidden !important;
+      scrollbar-gutter: stable !important;
       background-color: #000000;
       color: #ffffff;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -70,6 +71,97 @@
       margin: 0 auto !important;
     }
 
+    /* Instant CSS Loading Skeleton Inside #clerk-mount (Eliminates 7-Second Void) */
+    .auth-skeleton-card {
+      width: 100%;
+      max-width: 440px;
+      min-height: 500px;
+      background-color: #16181f;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 0.75rem;
+      padding: 2rem 1.75rem;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+      gap: 1.15rem;
+    }
+
+    .skeleton-shimmer {
+      background: linear-gradient(90deg, #1e222d 25%, #2a3142 50%, #1e222d 75%);
+      background-size: 200% 100%;
+      animation: shimmer-load 1.6s infinite;
+      border-radius: 0.5rem;
+    }
+
+    @keyframes shimmer-load {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .skeleton-social-btn {
+      height: 42px;
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .skeleton-divider-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 0.25rem 0;
+    }
+
+    .skeleton-divider-line {
+      flex: 1;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .skeleton-divider-text {
+      color: #64748b;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .skeleton-title {
+      height: 28px;
+      width: 58%;
+    }
+
+    .skeleton-subtitle {
+      height: 16px;
+      width: 82%;
+      margin-top: -0.4rem;
+    }
+
+    .skeleton-label {
+      height: 14px;
+      width: 32%;
+      margin-top: 0.4rem;
+    }
+
+    .skeleton-input {
+      height: 42px;
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .skeleton-btn-primary {
+      height: 42px;
+      width: 100%;
+      background: #ffffff !important;
+      opacity: 0.95;
+      margin-top: 0.4rem;
+      border-radius: 0.5rem;
+    }
+
+    .skeleton-footer {
+      height: 16px;
+      width: 48%;
+      margin: 1rem auto 0;
+    }
+
     .cl-rootBox,
     .cl-cardBox {
       background: transparent !important;
@@ -88,8 +180,37 @@
       color: #ffffff !important;
     }
 
-    /* Primary Action Button: Solid White with Bold Black Text */
-    .cl-formButtonPrimary {
+    /* Section 5: Card Header, Subtitles & Labels */
+    .cl-headerTitle, [class*="headerTitle"] {
+      color: #ffffff !important;
+      font-weight: 700 !important;
+      font-size: 1.35rem !important;
+    }
+
+    .cl-headerSubtitle, [class*="headerSubtitle"] {
+      color: #cbd5e1 !important;
+      opacity: 1 !important;
+    }
+
+    .cl-formFieldLabel, [class*="formFieldLabel"] {
+      color: #e2e8f0 !important;
+      font-weight: 600 !important;
+    }
+
+    /* Section 5: Form Controls & Buttons */
+    .cl-formFieldInput, [class*="formFieldInput"] {
+      background-color: #1e222d !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+      color: #ffffff !important;
+      border-radius: 0.5rem !important;
+    }
+
+    .cl-formFieldInput:focus, [class*="formFieldInput"]:focus {
+      border-color: rgba(255, 255, 255, 0.4) !important;
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .cl-formButtonPrimary, [class*="formButtonPrimary"] {
       background-color: #ffffff !important;
       color: #000000 !important;
       font-weight: 700 !important;
@@ -98,33 +219,19 @@
       box-shadow: none !important;
     }
 
-    .cl-formButtonPrimary:hover {
+    .cl-formButtonPrimary:hover, [class*="formButtonPrimary"]:hover {
       background-color: #e2e8f0 !important;
       color: #000000 !important;
     }
 
-    /* Inputs: Dark Slate with Subtle Border */
-    .cl-formFieldInput {
-      background-color: #1e222d !important;
+    .cl-socialButtonsBlockButton, [class*="socialButtonsBlockButton"] {
+      background-color: rgba(255, 255, 255, 0.05) !important;
       border: 1px solid rgba(255, 255, 255, 0.15) !important;
       color: #ffffff !important;
       border-radius: 0.5rem !important;
     }
 
-    .cl-formFieldInput:focus {
-      border-color: rgba(255, 255, 255, 0.4) !important;
-      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1) !important;
-    }
-
-    /* Social Buttons: Block at Top */
-    .cl-socialButtonsBlockButton {
-      background-color: rgba(255, 255, 255, 0.05) !important;
-      border: 1px solid rgba(255, 255, 255, 0.12) !important;
-      color: #ffffff !important;
-      border-radius: 0.5rem !important;
-    }
-
-    .cl-socialButtonsBlockButton:hover {
+    .cl-socialButtonsBlockButton:hover, [class*="socialButtonsBlockButton"]:hover {
       background-color: rgba(255, 255, 255, 0.08) !important;
     }
 
@@ -171,7 +278,7 @@
       display: none !important;
     }
 
-    /* Footer & Clerk Branding Visibility */
+    /* Section 5: Footer & Clerk Branding Visibility */
     .cl-footer,
     .cl-footerAction,
     [class*="cl-footer"] {
@@ -202,24 +309,38 @@
 
   <!-- Only Two Elements Outside the Card: Return Link and Mount Target -->
   <a href="/" class="back-link">← Back to CampusSense</a>
-  <div id="clerk-mount"></div>
+  <div id="clerk-mount">
+    <div class="auth-skeleton-card" id="clerk-skeleton">
+      <div class="skeleton-shimmer skeleton-social-btn"></div>
+      <div class="skeleton-divider-row">
+        <span class="skeleton-divider-line"></span>
+        <span class="skeleton-divider-text">or</span>
+        <span class="skeleton-divider-line"></span>
+      </div>
+      <div class="skeleton-shimmer skeleton-title"></div>
+      <div class="skeleton-shimmer skeleton-subtitle"></div>
+      <div class="skeleton-shimmer skeleton-label"></div>
+      <div class="skeleton-shimmer skeleton-input"></div>
+      <div class="skeleton-btn-primary"></div>
+      <div class="skeleton-shimmer skeleton-footer"></div>
+    </div>
+  </div>
 
   <script>
     let clerkInitCalled = false;
 
     async function initStockPulseAuth() {
       if (clerkInitCalled) return;
-      clerkInitCalled = true;
 
       const mountPoint = document.getElementById('clerk-mount');
       if (!mountPoint) return;
 
       const publishableKey = 'pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk';
 
-      // Poll non-blockingly until window.Clerk is present (up to 2 seconds)
+      // Poll non-blockingly until window.Clerk is present (up to 12 seconds)
       let attempts = 0;
-      while (!window.Clerk && attempts < 100) {
-        await new Promise(r => setTimeout(r, 20));
+      while (!window.Clerk && attempts < 400) {
+        await new Promise(r => setTimeout(r, 30));
         attempts++;
       }
 
@@ -228,6 +349,8 @@
         mountPoint.innerHTML = '<div style="color: #94a3b8; text-align: center; padding: 2rem;">Authentication is loading. Please refresh if card does not appear.</div>';
         return;
       }
+
+      clerkInitCalled = true;
 
       // Ensure Clerk.load() is called exactly once
       if (!window.Clerk.loaded && typeof window.Clerk.load === 'function') {
@@ -277,11 +400,11 @@
             formHeaderSubtitle: { color: '#cbd5e1' },
             dividerLine: { backgroundColor: 'rgba(255, 255, 255, 0.08)' },
             dividerText: { color: '#94a3b8' },
-            formFieldLabel: { color: '#cbd5e1', fontWeight: '600' },
+            formFieldLabel: { color: '#e2e8f0', fontWeight: '600' },
             formFieldInput: {
               backgroundColor: '#1e222d',
               color: '#ffffff',
-              border: '1px solid rgba(255, 255, 255, 0.15)',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
               borderRadius: '0.5rem'
             },
             otpCodeFieldInputs: {
@@ -307,7 +430,7 @@
             alternativeMethodsBlockButton: { display: 'none' },
             socialButtonsBlockButton: {
               backgroundColor: 'rgba(255, 255, 255, 0.05)',
-              border: '1px solid rgba(255, 255, 255, 0.12)',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
               color: '#ffffff'
             },
             socialButtonsBlockButtonText: { color: '#ffffff', fontWeight: '600' },
@@ -331,6 +454,13 @@
           }
         }
       });
+    }
+
+    const clerkScript = document.querySelector('script[data-clerk-publishable-key]');
+    if (window.Clerk) {
+      initStockPulseAuth();
+    } else if (clerkScript) {
+      clerkScript.addEventListener('load', initStockPulseAuth);
     }
 
     if (document.readyState === 'loading') {

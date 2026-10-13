@@ -371,7 +371,20 @@ html, body {
   min-height: 100vh !important;
   height: auto !important;
   overflow-y: scroll !important;
+  overflow-x: hidden !important;
   scrollbar-gutter: stable !important;
+}
+
+/* Clean Repaint Containment: Purge Ghosting Cascade & Repaint Trails */
+.landing-hero,
+.hero-section,
+#landing-view,
+#landing-features,
+.landing-features,
+#landing-curriculum,
+#landing-pyqs {
+  contain: paint;
+  isolation: isolate;
 }
 
 html {
@@ -482,7 +495,10 @@ body {
 }
 
 body.modal-open {
+  min-height: 100vh !important;
+  height: auto !important;
   overflow-y: scroll !important;
+  overflow-x: hidden !important;
   scrollbar-gutter: stable !important;
 }
 
@@ -544,7 +560,10 @@ button,
 
 /* Maintain stable scrollbar track without layout jumps */
 body:not(.modal-open) {
+  min-height: 100vh !important;
+  height: auto !important;
   overflow-y: scroll !important;
+  overflow-x: hidden !important;
   scrollbar-gutter: stable !important;
 }
 
