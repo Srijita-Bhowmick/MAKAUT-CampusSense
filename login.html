@@ -5,12 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sign In — MAKAUT CampusSense</title>
 
-  <!-- Load existing workspace Clerk scripts dynamically -->
+  <!-- Dynamic Clerk SDK scripts loaded from workspace configuration -->
   <script defer crossorigin="anonymous" src="https://flying-lioness-4717.clerk.accounts.dev/npm/@clerk/ui@1/dist/ui.browser.js"></script>
   <script defer crossorigin="anonymous" data-clerk-publishable-key="pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk" src="https://flying-lioness-4717.clerk.accounts.dev/npm/@clerk/clerk-js@6/dist/clerk.browser.js"></script>
 
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       min-height: 100vh;
@@ -24,26 +28,19 @@
       padding: 1.5rem;
     }
 
-    .back-btn {
+    .back-link {
       color: #94a3b8;
       text-decoration: none;
       font-size: 0.875rem;
-      margin-bottom: 1.25rem;
+      margin-bottom: 1.75rem;
       transition: color 0.2s ease;
     }
-    .back-btn:hover { color: #ffffff; }
-
-    /* ONLY "Sign In" title above the card */
-    .page-title {
-      font-size: 1.75rem;
-      font-weight: 700;
-      margin-bottom: 1.5rem;
-      text-align: center;
-      letter-spacing: -0.02em;
+    .back-link:hover {
+      color: #ffffff;
     }
 
-    /* Outer mount container: Zero border, zero background to prevent double boxes */
-    #clerk-sign-in {
+    /* Mount container: transparent with zero borders to eliminate nested boxes */
+    #clerk-mount {
       display: flex;
       justify-content: center;
       width: 100%;
@@ -53,7 +50,7 @@
       padding: 0 !important;
     }
 
-    /* Strip outer Clerk wrapper borders */
+    /* Remove outer wrapper borders and boxes from Clerk */
     .cl-rootBox,
     .cl-cardBox {
       background: transparent !important;
@@ -61,26 +58,26 @@
       box-shadow: none !important;
     }
 
-    /* The ONE and ONLY card container */
+    /* The single card styling matching StockPulse */
     .cl-card {
       background-color: #16181f !important;
       background: #16181f !important;
       border: 1px solid rgba(255, 255, 255, 0.08) !important;
       border-radius: 0.75rem !important;
-      box-shadow: none !important;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.6) !important;
     }
 
-    /* Seamless footer matching card */
+    /* Seamless footer with zero white box leakage */
     .cl-footer,
     .cl-footerAction,
     [class*="cl-footer"] {
       background-color: #16181f !important;
       background: #16181f !important;
-      border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+      border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
       box-shadow: none !important;
     }
 
-    /* High contrast primary button (Solid white, bold black text) */
+    /* Primary Continue button: solid white with bold black text */
     [class*="cl-formButtonPrimary"] {
       background-color: #ffffff !important;
       color: #000000 !important;
@@ -92,14 +89,14 @@
       font-weight: 700 !important;
     }
 
-    /* Ensure Clerk logo and branding are visible against dark theme */
+    /* Make Clerk logo and footer text clearly visible in dark mode */
     [class*="cl-footer"] svg,
     [class*="cl-footer"] img,
     .cl-internal-logo,
     [class*="cl-securedBy"] svg,
     [class*="cl-securedBy"] img {
       filter: brightness(0) invert(1) !important;
-      opacity: 0.85 !important;
+      opacity: 0.9 !important;
     }
 
     [class*="cl-footerText"],
@@ -115,11 +112,10 @@
 </head>
 <body>
 
-  <a href="/" class="back-btn">← Back to CampusSense</a>
-  <h1 class="page-title">Sign In</h1>
+  <a href="/" class="back-link">← Back to CampusSense</a>
 
-  <!-- Single mount target -->
-  <div id="clerk-sign-in"></div>
+  <!-- Single Clerk mount container -->
+  <div id="clerk-mount"></div>
 
   <script>
     window.addEventListener('load', async () => {
@@ -130,7 +126,7 @@
         return;
       }
 
-      const container = document.getElementById('clerk-sign-in');
+      const container = document.getElementById('clerk-mount');
       if (container && !container.hasChildNodes()) {
         window.Clerk.mountSignIn(container, {
           fallbackRedirectUrl: '/',
