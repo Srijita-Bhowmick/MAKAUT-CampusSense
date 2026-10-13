@@ -342,7 +342,7 @@ window.onClerkLoaded = function() {
 
     // Phase 3: Auth Interceptor Listener for All Feature Cards & Preview Buttons (Item 4)
     document.addEventListener('click', function(e) {
-        const previewTarget = e.target.closest('.btn-preview-paper, .btn-preview-pdf, .btn-subject-syllabus-view, .archive-access-btn, .subject-action-btn, [data-pdf], [data-preview]');
+        const previewTarget = e.target.closest('.btn-preview-paper, .btn-preview-pdf, .btn-subject-syllabus-view, .archive-access-btn, .subject-action-btn, .card-action-btn, .btn-preview-syllabus, .btn-pyq-preview, .btn-view-blueprint, .btn-download, .btn-download-pdf, .btn-download-paper, [data-pdf], [data-preview], [data-action="download"]');
         if (previewTarget) {
             const user = window.Clerk?.user;
             if (!user) {
@@ -437,6 +437,10 @@ window.onClerkLoaded = function() {
     };
 
     async function downloadPdfFile(fileUrl, preferredName) {
+        if (!window.Clerk || !window.Clerk.user) {
+            window.location.href = '/login.html';
+            return;
+        }
         if (!requireAuthOrTrigger()) return;
         const resolved = resolveAssetPath(fileUrl);
         try {
@@ -13093,16 +13097,9 @@ window.getSubjectDocuments = getSubjectDocuments;
     if (btnHeroPanicPack) {
         btnHeroPanicPack.addEventListener('click', (e) => {
             e.preventDefault();
-            if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true' || window.Clerk?.user) {
-                const storedAcademic = localStorage.getItem('campussense_academic_profile');
-                if (!storedAcademic) {
-                    setAppWorkflowStage(APP_FLOW.ACADEMIC_SETUP);
-                } else {
-                    setAppWorkflowStage(APP_FLOW.DASHBOARD);
-                    openFullPanicMode();
-                }
-            } else {
-                window.location.href = '/login.html';
+            const target = document.getElementById('landing-panic-drill') || document.getElementById('landing-pyqs');
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
             }
         });
     }
@@ -16533,9 +16530,9 @@ window.getSubjectDocuments = getSubjectDocuments;
     if (feedbackForm) {
         feedbackForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const category = document.getElementById('feedback-category').value;
-            const subject = document.getElementById('feedback-subject').value;
-            const message = document.getElementById('feedback-message').value;
+            const category = document.getElementById('feedback-category')?.value || 'General';
+            const subject = document.getElementById('feedback-subject')?.value || '';
+            const message = document.getElementById('feedback-message')?.value || '';
 
             try {
                 const res = await fetch('/api/v1/feedback', {
@@ -16963,16 +16960,20 @@ window.getSubjectDocuments = getSubjectDocuments;
             if (btnHeroPanicPack) {
                 btnHeroPanicPack.onclick = (e) => {
                     e.preventDefault();
-                    if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true' || window.Clerk?.user) {
-                        const storedAcademic = localStorage.getItem('campussense_academic_profile');
-                        if (!storedAcademic) {
-                            setAppWorkflowStage(APP_FLOW.ACADEMIC_SETUP);
-                        } else {
-                            setAppWorkflowStage(APP_FLOW.DASHBOARD);
-                            openFullPanicMode();
-                        }
-                    } else {
-                        window.location.href = '/login.html';
+                    const target = document.getElementById('landing-panic-drill') || document.getElementById('landing-pyqs');
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                };
+            }
+
+            const btnExploreCurriculum = document.getElementById('btn-explore-curriculum');
+            if (btnExploreCurriculum) {
+                btnExploreCurriculum.onclick = (e) => {
+                    e.preventDefault();
+                    const target = document.getElementById('landing-curriculum');
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
                     }
                 };
             }
@@ -17341,10 +17342,10 @@ window.getSubjectDocuments = getSubjectDocuments;
     window.bindInteractiveButtons = bindInteractiveButtons;
 
     // Bulletproof idempotent initialization wrapper
-    let isAppInitialized = false;
+    let isInitialSetupRun = false;
     function runInitialSetup() {
-      if (isAppInitialized) return;
-      isAppInitialized = true;
+      if (isInitialSetupRun) return;
+      isInitialSetupRun = true;
       document.body.classList.remove('modal-open');
       document.body.style.overflow = '';
       safeExecute('curriculumCards', () => renderLandingCurriculum('all'));

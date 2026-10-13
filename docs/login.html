@@ -41,12 +41,16 @@
 
     /* Top Return Link: ONLY element above the card */
     .back-link {
-      display: inline-block;
+      display: inline-block !important;
+      position: relative !important;
+      z-index: 999 !important;
+      pointer-events: auto !important;
+      text-decoration: none !important;
+      cursor: pointer !important;
       width: 100%;
       max-width: 440px;
       margin-bottom: 1.5rem;
       color: #94a3b8;
-      text-decoration: none;
       font-size: 0.875rem;
       font-weight: 500;
       transition: color 0.15s ease;
@@ -307,7 +311,7 @@
 <body>
 
   <!-- Only Two Elements Outside the Card: Return Link and Mount Target -->
-  <a href="/" class="back-link">← Back to CampusSense</a>
+  <a href="/" class="back-link" style="pointer-events: auto !important; position: relative !important; z-index: 999 !important; text-decoration: none !important; display: inline-block !important;">← Back to CampusSense</a>
   <div id="clerk-mount">
     <div class="auth-skeleton-card" id="clerk-skeleton">
       <div class="skeleton-shimmer skeleton-social-btn"></div>
