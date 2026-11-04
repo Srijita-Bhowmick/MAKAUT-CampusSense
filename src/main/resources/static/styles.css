@@ -440,7 +440,7 @@ html, body {
   height: auto !important;
   overflow-y: scroll !important;
   overflow-x: hidden !important;
-  scrollbar-gutter: stable !important;
+  scrollbar-gutter: stable both-edges !important;
 }
 
 /* Clean Repaint Containment: Purge Ghosting Cascade & Repaint Trails */
@@ -458,7 +458,7 @@ html, body {
 html {
   min-height: 100vh !important;
   overflow-y: scroll !important;
-  scrollbar-gutter: stable !important;
+  scrollbar-gutter: stable both-edges !important;
   overflow-x: hidden !important;
   scroll-behavior: smooth !important;
 }
@@ -607,7 +607,7 @@ body.modal-open {
   height: auto !important;
   overflow-y: scroll !important;
   overflow-x: hidden !important;
-  scrollbar-gutter: stable !important;
+  scrollbar-gutter: stable both-edges !important;
 }
 
 /* Stabilize scrollbar thumb to prevent collapse and runaway jumps */
@@ -672,7 +672,7 @@ body:not(.modal-open) {
   height: auto !important;
   overflow-y: scroll !important;
   overflow-x: hidden !important;
-  scrollbar-gutter: stable !important;
+  scrollbar-gutter: stable both-edges !important;
 }
 
 /* Modals must only absorb clicks when explicitly visible */
@@ -7812,7 +7812,6 @@ fieldset:has([class*="otpCodeFieldInput"]) {
 #academic-setup-modal .stream-option:active {
   border: 1px solid #526B58 !important;
   background-color: #1e222d !important;
-}
   transform: scale(0.99) !important;
 }
 
