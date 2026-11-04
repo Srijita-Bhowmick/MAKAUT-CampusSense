@@ -2,27 +2,21 @@
 // Maintained by Srijita Bhowmick (srijitabhowmick42@gmail.com)
 // --- INDEPENDENT GLOBAL CONTROLLER ---
 (function initThemeSingleton() {
-  const saved = localStorage.getItem('campussense_theme') || 'dark';
   const docEl = document.documentElement;
-  docEl.setAttribute('data-theme', saved);
-  if (saved === 'light') {
-    docEl.classList.remove('dark');
-    docEl.classList.add('light', 'light-theme');
-  } else {
-    docEl.classList.remove('light', 'light-theme');
-    docEl.classList.add('dark');
-  }
+  docEl.setAttribute('data-theme', 'light');
+  docEl.classList.remove('dark');
+  docEl.classList.add('light', 'light-theme');
 
   function updateIcons(theme) {
     const sun = document.getElementById('theme-toggle-sun');
     const moon = document.getElementById('theme-toggle-moon');
     if (sun && moon) {
-      sun.style.display = theme === 'light' ? 'block' : 'none';
-      moon.style.display = theme === 'light' ? 'none' : 'block';
+      sun.style.display = 'block';
+      moon.style.display = 'none';
     } else {
       const btn = document.getElementById('theme-toggle');
       if (btn) {
-        btn.textContent = theme === 'light' ? '☀️' : '🌙';
+        btn.textContent = '☀️';
       }
     }
   }
@@ -32,20 +26,13 @@
       e.preventDefault();
       e.stopImmediatePropagation();
     }
-    const current = docEl.getAttribute('data-theme') || (docEl.classList.contains('light') ? 'light' : 'dark');
-    const next = current === 'dark' ? 'light' : 'dark';
-    docEl.setAttribute('data-theme', next);
-    if (next === 'light') {
-      docEl.classList.remove('dark');
-      docEl.classList.add('light', 'light-theme');
-    } else {
-      docEl.classList.remove('light', 'light-theme');
-      docEl.classList.add('dark');
-    }
+    docEl.setAttribute('data-theme', 'light');
+    docEl.classList.remove('dark');
+    docEl.classList.add('light', 'light-theme');
     try {
-      localStorage.setItem('campussense_theme', next);
+      localStorage.setItem('campussense_theme', 'light');
     } catch (err) {}
-    updateIcons(next);
+    updateIcons('light');
   };
 
   function setupThemeToggle() {
@@ -55,8 +42,7 @@
     if (btn) {
       btn.onclick = window.toggleTheme;
     }
-    const cur = docEl.getAttribute('data-theme') || 'dark';
-    updateIcons(cur);
+    updateIcons('light');
   }
 
   if (document.readyState === 'loading') {
@@ -166,29 +152,24 @@ window.onClerkLoaded = function() {
     // ==========================================
     // 1. Theme Engine Integration (Delegated to Isolated Controller)
     // ==========================================
-    let currentTheme = document.documentElement.getAttribute('data-theme') || localStorage.getItem('campussense_theme') || 'dark';
+    let currentTheme = 'light';
     function applyTheme(theme) {
-        currentTheme = theme;
+        currentTheme = 'light';
         const docEl = document.documentElement;
-        docEl.setAttribute('data-theme', theme);
-        if (theme === 'light') {
-            docEl.classList.remove('dark');
-            docEl.classList.add('light', 'light-theme');
-        } else {
-            docEl.classList.remove('light', 'light-theme');
-            docEl.classList.add('dark');
-        }
+        docEl.setAttribute('data-theme', 'light');
+        docEl.classList.remove('dark');
+        docEl.classList.add('light', 'light-theme');
         try {
-            localStorage.setItem('campussense_theme', theme);
+            localStorage.setItem('campussense_theme', 'light');
         } catch (e) {}
         const sun = document.getElementById('theme-toggle-sun');
         const moon = document.getElementById('theme-toggle-moon');
         if (sun && moon) {
-            sun.style.display = theme === 'light' ? 'block' : 'none';
-            moon.style.display = theme === 'light' ? 'none' : 'block';
+            sun.style.display = 'block';
+            moon.style.display = 'none';
         } else {
             const btn = document.getElementById('theme-toggle');
-            if (btn) btn.textContent = theme === 'light' ? '☀️' : '🌙';
+            if (btn) btn.textContent = '☀️';
         }
     }
     window.applyTheme = applyTheme;
@@ -20852,3 +20833,19 @@ if (document.readyState !== 'loading') {
   initCursorSpotlight();
 }
 
+
+// =====================================================================
+// FLOATING ASK-AI BUTTON NEUTRALIZER (Directive 2 Enforcement)
+// =====================================================================
+function initFloatingAskAi() {
+  const askAiBtn = document.getElementById('floating-ask-ai');
+  if (askAiBtn) {
+    askAiBtn.textContent = 'Ask AI';
+    askAiBtn.onclick = () => { window.location.href = '/login.html'; };
+  }
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initFloatingAskAi);
+} else {
+  initFloatingAskAi();
+}

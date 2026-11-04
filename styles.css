@@ -42,20 +42,20 @@
 /* Code & Course IDs:  JetBrains Mono, 0.85rem                                 */
 
 [data-theme="dark"], html.dark, .dark {
-    --surface-canvas: #0b0f19;
-    --surface-card: #16181f;
-    --surface-elevated: #1e222d;
-    --surface-border: rgba(255, 255, 255, 0.08);
+    --surface-canvas: #F9EBD7;
+    --surface-card: #FFFFFF;
+    --surface-elevated: #F2E3CD;
+    --surface-border: rgba(4, 106, 56, 0.18);
     --surface-border-focus: #046A38;
-    --text-primary: #FFFFFF;
-    --text-secondary: #CBD5E1;
-    --text-tertiary: #94A3B8;
+    --text-primary: #1A2218;
+    --text-secondary: #485446;
+    --text-tertiary: #7A8678;
     --emerald-primary: #046A38;
     --emerald-hover: #03522B;
-    --emerald-surface: rgba(4, 106, 56, 0.15);
+    --emerald-surface: rgba(4, 106, 56, 0.08);
     --vermilion-primary: #E34222;
     --vermilion-hover: #C93619;
-    --vermilion-surface: rgba(227, 66, 34, 0.15);
+    --vermilion-surface: rgba(227, 66, 34, 0.10);
     --btn-primary-bg: #E34222;
     --btn-primary-text: #FFFFFF;
     --btn-secondary-bg: #046A38;
@@ -64,56 +64,32 @@
     --pill-active-text: #FFFFFF;
     --danger-action: #EF4444;
 
-    --bg-main: #0b0f19;
-    --bg-primary: #0b0f19;
-    --bg-secondary: #16181f;
-    --bg-tertiary: #1e222d;
-    --bg-surface-elevated: #1e222d;
-    --bg-surface-highest: #282e3e;
-    --bg-card: #16181f;
-    --card-bg: #16181f;
-    --card-hover: #1e222d;
-    --card-border: rgba(255, 255, 255, 0.08);
-    --border-color: rgba(255, 255, 255, 0.08);
-    --border-hairline: rgba(255, 255, 255, 0.08);
-    --border-subtle: rgba(255, 255, 255, 0.08);
-    --bg-header: rgba(11, 15, 25, 0.95);
-    --header-bg: rgba(11, 15, 25, 0.95);
-    --surface-color: #16181f;
-    --surface-glass: rgba(22, 24, 31, 0.9);
-    --text-main: #FFFFFF;
-    --text-muted: #CBD5E1;
-    --text-subtle: #94A3B8;
-    --text-outline: #94A3B8;
-    --font-mono-color: #CBD5E1;
-    --btn-primary-bg: #E34222;
-    --accent-primary: #818CF8;
-    --accent-indigo: #818CF8;
-    --accent-hover: #A5B4FC;
-    --accent-cobalt: #4F46E5;
-    --accent-active-ring: #4F46E5;
-    --accent-ring: #4F46E5;
-    --accent-cyan: #06B6D4;
-    --accent-emerald: #10B981;
-    --accent-amber: #F59E0B;
-    --accent-rose: #F43F5E;
-    --accent-flame: #F97316;
-    
-    --font-heading: 'Manrope', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-    
-    --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    --radius-sm: 4px;
-    --radius-md: 6px;
-    --radius-lg: 8px;
-    --radius-xl: 12px;
-    --header-bg: rgba(9, 10, 15, 0.95);
-    --input-bg: #090A0F;
-    --input-border: #232734;
-    --modal-bg: #111319;
-    --card-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+    --bg-main: #F9EBD7;
+    --bg-primary: #F9EBD7;
+    --bg-secondary: #F2E3CD;
+    --bg-tertiary: #FFFFFF;
+    --bg-surface-elevated: #F2E3CD;
+    --bg-surface-highest: #EAE7DC;
+    --bg-card: #FFFFFF;
+    --card-bg: #FFFFFF;
+    --card-hover: #F2E3CD;
+    --card-border: rgba(4, 106, 56, 0.18);
+    --border-color: rgba(4, 106, 56, 0.18);
+    --border-hairline: rgba(4, 106, 56, 0.18);
+    --border-subtle: rgba(4, 106, 56, 0.18);
+    --bg-header: rgba(249, 235, 215, 0.95);
+    --header-bg: rgba(249, 235, 215, 0.95);
+    --surface-color: #FFFFFF;
+    --surface-glass: rgba(255, 255, 255, 0.9);
+    --text-main: #1A2218;
+    --text-muted: #485446;
+    --text-subtle: #7A8678;
+    --text-outline: #7A8678;
+    --font-mono-color: #1A2218;
+    --input-bg: #FFFFFF;
+    --input-border: rgba(4, 106, 56, 0.18);
+    --modal-bg: #FFFFFF;
+    --card-shadow: 0 4px 16px rgba(4, 106, 56, 0.08);
 }
 
 /* --- EDITORIAL ARCHITECTURAL LIGHT MODE PALETTE (Geist / Linear Parity) --- */
@@ -204,15 +180,7 @@ html, body {
 }
 
 /* Theme-Scoped Modal Contrast (Dark Theme) */
-[data-theme="dark"] .modal-card,
-[data-theme="dark"] .onboarding-card,
-[data-theme="dark"] .subject-hub-card,
-[data-theme="dark"] .panic-mode-card,
-[data-theme="dark"] .feedback-modal-card {
-    background: #111319 !important;
-    border: 1px solid #232734 !important;
-    color: #F8FAFC !important;
-}
+/* purged dark bg rule */
 
 [data-theme="dark"] .modal-title,
 [data-theme="dark"] #scope-modal h2,
@@ -234,16 +202,7 @@ html, body {
     color: #e2e8f0 !important;
 }
 
-[data-theme="dark"] #scope-modal .primary-year-btn,
-[data-theme="dark"] #scope-modal .stream-option,
-[data-theme="dark"] #scope-modal .sem-btn,
-[data-theme="dark"] #academic-setup-modal .primary-year-btn,
-[data-theme="dark"] #academic-setup-modal .stream-option,
-[data-theme="dark"] #academic-setup-modal .sem-btn {
-    background: #1e293b !important;
-    border: 1px solid #334155 !important;
-    color: #f8fafc !important;
-}
+/* purged dark bg rule */
 
 [data-theme="dark"] #scope-modal .year-btn-title,
 [data-theme="dark"] #scope-modal .stream-name,
@@ -7624,16 +7583,7 @@ html.light .academic-option.selected {
   transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease !important;
 }
 
-[data-theme="dark"] .stream-card:hover,
-[data-theme="dark"] .stage-card:hover,
-[data-theme="dark"] .academic-stage-card:hover,
-[data-theme="dark"] .academic-option:hover,
-[data-theme="dark"] .stream-option:hover,
-[data-theme="dark"] .subject-item-card:hover,
-[data-theme="dark"] .primary-year-btn:hover {
-  background-color: #1e293b !important;
-  border-color: #1d4ed8 !important;
-}
+/* purged dark bg rule */
 
 :root.light-theme .stream-card:hover,
 :root.light-theme .stage-card:hover,
@@ -7786,15 +7736,7 @@ fieldset:has([class*="otpCodeFieldInput"]) {
   margin: 0 auto !important;
 }
 
-[data-theme="dark"] .cl-otpCodeFieldInput,
-[data-theme="dark"] [class*="otpCodeFieldInput"] {
-  border: 1px solid rgba(255, 255, 255, 0.25) !important;
-  background-color: #1e222d !important;
-  color: #ffffff !important;
-  border-radius: 0.5rem !important;
-  box-shadow: none !important;
-  font-weight: 700 !important;
-}
+/* purged dark bg rule */
 
 [data-theme="light"] .cl-otpCodeFieldInput,
 [data-theme="light"] [class*="otpCodeFieldInput"] {
@@ -8040,14 +7982,7 @@ fieldset:has([class*="otpCodeFieldInput"]) {
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease !important;
 }
 
-[data-theme="dark"] .subject-card,
-[data-theme="dark"] .archive-card,
-[data-theme="dark"] .pyq-card,
-[data-theme="dark"] .blueprint-card {
-  background: #16181f !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
-}
+/* purged dark bg rule */
 
 [data-theme="dark"] .subject-card:hover,
 [data-theme="dark"] .archive-card:hover,
@@ -9281,14 +9216,7 @@ html.dark .feature-icon-badge {
 }
 
 /* DARK MODE SPECIFICATION (#16181f card surface, white text, slate-400 secondary) */
-[data-theme="dark"] .ai-chat-drawer,
-html.dark .ai-chat-drawer,
-:root.dark-theme .ai-chat-drawer {
-  background: #16181f !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  color: #ffffff !important;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.05) !important;
-}
+/* purged dark bg rule */
 
 /* LIGHT MODE SPECIFICATION (#ffffff card surface, deep slate text #0f172a, high-contrast) */
 [data-theme="light"] .ai-chat-drawer,
@@ -9559,11 +9487,7 @@ html:not(.dark) .starter-chip:hover {
   line-height: 1.6 !important;
 }
 
-[data-theme="dark"] .chat-msg.assistant .chat-msg-bubble {
-  background: #1e2230 !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  color: #f1f5f9 !important;
-}
+/* purged dark bg rule */
 
 [data-theme="light"] .chat-msg.assistant .chat-msg-bubble,
 html:not(.dark) .chat-msg.assistant .chat-msg-bubble {
@@ -9655,11 +9579,7 @@ html:not(.dark) .citation-badge {
   font-size: 0.8rem !important;
 }
 
-[data-theme="dark"] .typing-bubble {
-  background: #1e2230 !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  color: #94a3b8 !important;
-}
+/* purged dark bg rule */
 
 [data-theme="light"] .typing-bubble,
 html:not(.dark) .typing-bubble {
@@ -11540,12 +11460,7 @@ a, button {
 html.dark #sgpa-calc-table {
     color: #F8FAFC !important;
 }
-[data-theme="dark"] #sgpa-calc-table th,
-html.dark #sgpa-calc-table th {
-    background: #090A0F !important;
-    color: #94A3B8 !important;
-    border-bottom: 1px solid #232734 !important;
-}
+/* purged dark bg rule */
 [data-theme="dark"] #sgpa-calc-table td,
 html.dark #sgpa-calc-table td {
     color: #F8FAFC !important;
@@ -11738,16 +11653,8 @@ svg.h-full, .h-full { height: 100% !important; }
 .pt-space-sm { padding-top: 0.5rem !important; }
 
 /* Dashboard Surface Containers - Dark Mode */
-[data-theme="dark"] .bg-surface-container-low,
-html.dark .bg-surface-container-low,
-:root:not(.light-theme) .bg-surface-container-low {
-    background-color: #111319 !important;
-}
-[data-theme="dark"] .bg-surface-container-lowest,
-html.dark .bg-surface-container-lowest,
-:root:not(.light-theme) .bg-surface-container-lowest {
-    background-color: #090A0F !important;
-}
+/* purged dark bg rule */
+/* purged dark bg rule */
 [data-theme="dark"] .bg-surface-container,
 html.dark .bg-surface-container,
 :root:not(.light-theme) .bg-surface-container {
@@ -15250,4 +15157,64 @@ a.preview-btn:hover,
   font-size: 0.85rem !important;
   line-height: 1.45 !important;
   margin-bottom: 1.25rem !important;
+}
+
+/* ===================================================================
+   PALETTE LOCK & FORCED WARM IVORY HIGH-CONTRAST CANVAS
+   =================================================================== */
+html, body, #app, main, header, nav, section, .hero-section, #features-section, #syllabus-section, #pyq-section, footer, .landing-footer {
+  background-color: #F9EBD7 !important;
+  background: #F9EBD7 !important;
+  color: #1A2218 !important;
+}
+
+/* Force High Contrast on All Text Elements */
+h1, h2, h3, h4, p, span:not(.btn-text-white), a:not(.btn-vermilion):not(.btn-emerald) {
+  color: #1A2218 !important;
+}
+
+/* Fix Card Badges (Monospace Code Tags) */
+.card-badge, .course-badge, .badge, span.code, .subject-code, .cute-card-code {
+  background-color: #F2E3CD !important;
+  color: #1A2218 !important;
+  border: 1px solid rgba(4, 106, 56, 0.25) !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  padding: 0.2rem 0.5rem !important;
+  border-radius: 0.25rem !important;
+  display: inline-block !important;
+}
+
+/* Card Surfaces */
+.syllabus-card, .pyq-card, .feature-card, .bento-card, .cute-subject-card, .dept-master-card, .feature-bento-card {
+  background-color: #FFFFFF !important;
+  border: 1px solid rgba(4, 106, 56, 0.18) !important;
+}
+
+/* Card Action Buttons */
+.btn-preview, button.preview-btn, a.preview-btn, .btn-card-preview {
+  background-color: #FFFFFF !important;
+  color: #1A2218 !important;
+  border: 1.5px solid rgba(4, 106, 56, 0.25) !important;
+  font-weight: 700 !important;
+}
+.btn-download-emerald, .btn-card-download-emerald, .btn-download-master {
+  background-color: #046A38 !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  border: none !important;
+}
+.btn-download-vermilion, .btn-card-download-vermilion {
+  background-color: #E34222 !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  border: none !important;
+}
+
+/* Solid Button Typography Protections */
+.btn-vermilion, .btn-emerald, .hero-btn-explore, .hero-btn-panic, .nav-signup-btn, #btn-sign-up,
+.btn-download-emerald, .btn-download-vermilion, .btn-card-download-emerald, .btn-card-download-vermilion,
+.btn-download-master, #floating-ask-ai, .floating-ask-ai, .btn-text-white {
+  color: #FFFFFF !important;
 }
