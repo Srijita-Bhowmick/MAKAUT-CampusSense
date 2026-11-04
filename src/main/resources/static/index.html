@@ -66,7 +66,14 @@
 
         <!-- Right-Hand Controls: Feedback, Sign In, Sign Up -->
         <div class="nav-actions" style="display: flex; align-items: center;">
-            <button onclick="document.getElementById('feedback-modal').style.display='flex';" class="nav-feedback-btn" id="btn-feedback" style="color: #000000 !important; font-weight: 700; text-decoration: none; margin-right: 1.25rem; cursor: pointer; background: transparent; border: none; font-size: 0.95rem;">Feedback</button>
+            <button 
+              type="button" 
+              id="nav-feedback-btn" 
+              onclick="openFeedbackModal()" 
+              style="color: #F5B69E !important; font-weight: 700 !important; font-size: 0.95rem !important; background: transparent !important; border: none !important; cursor: pointer !important; padding: 0.5rem 0.85rem !important; margin-right: 0.75rem !important; text-decoration: none !important; transition: opacity 0.15s ease;"
+            >
+              Feedback
+            </button>
             <a href="/login.html" id="btn-sign-in" class="nav-auth-link" style="color: #0F172A !important; font-weight: 600; margin-right: 1.25rem; text-decoration: none; font-size: 0.95rem;">Sign In</a>
             <a href="/login.html#/sign-up" id="btn-sign-up" class="nav-signup-btn" style="background-color: #F5B69E !important; color: #0F172A !important; font-weight: 700; padding: 0.5rem 1.25rem; border-radius: 0.5rem; text-decoration: none; border: none; font-size: 0.95rem; display: inline-flex; align-items: center; justify-content: center;">Sign Up</a>
 
@@ -1168,9 +1175,9 @@
     </footer>
 
         <!-- 2. Self-Contained Feedback Modal (Section 2) -->
-    <div id="feedback-modal" style="display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.55); backdrop-filter: blur(4px); z-index: 10000; align-items: center; justify-content: center; padding: 1.25rem;" onclick="if(event.target === this) this.style.display='none';">
-  <div style="background: #FFFFFF; border: 1.5px solid rgba(141, 185, 240, 0.5); border-radius: 1.15rem; padding: 2rem; width: 100%; max-width: 460px; box-shadow: 0 20px 45px rgba(0,0,0,0.2); box-sizing: border-box;" onclick="event.stopPropagation();">
-    <h3 style="margin: 0 0 0.35rem 0; font-size: 1.3rem; font-weight: 800; color: #0F172A; font-family: 'Manrope', sans-serif;">
+    <div id="feedback-modal" class="modal-overlay modal-hidden" onclick="handleFeedbackBackdropClick(event)">
+  <div class="feedback-card" style="background: #FFFFFF !important; border: 2px solid #8DB9F0 !important; border-radius: 1.25rem !important; padding: 2rem !important; width: 100% !important; max-width: 480px !important; box-shadow: 0 25px 50px rgba(0,0,0,0.2) !important; box-sizing: border-box !important; text-align: left !important;" onclick="event.stopPropagation();">
+    <h3 style="margin: 0 0 0.35rem 0; font-size: 1.35rem; font-weight: 800; color: #0F172A; font-family: 'Manrope', sans-serif;">
       Share Academic Feedback
     </h3>
     <p style="margin: 0 0 1rem 0; font-size: 0.85rem; color: #64748B;">
@@ -1185,15 +1192,15 @@
       <button type="button" class="feedback-chip" onclick="this.classList.toggle('active')">Bug Report</button>
     </div>
 
-    <!-- Notes Box -->
-    <textarea id="feedback-desc" placeholder="Specify subject codes, missing years, or suggestions..." style="width: 100%; height: 95px; border: 1.5px solid rgba(141, 185, 240, 0.5); border-radius: 0.5rem; padding: 0.75rem; font-family: inherit; font-size: 0.875rem; color: #0F172A; background: #E9E8F8; box-sizing: border-box; resize: none; outline: none; margin-bottom: 1.25rem;"></textarea>
+    <!-- Notes Textarea -->
+    <textarea id="feedback-desc" placeholder="Specify subject codes, missing years, or suggestions..." style="width: 100% !important; height: 95px !important; border: 1.5px solid rgba(141, 185, 240, 0.5) !important; border-radius: 0.5rem !important; padding: 0.75rem !important; font-family: inherit !important; font-size: 0.875rem !important; color: #0F172A !important; background: #E9E8F8 !important; box-sizing: border-box !important; resize: none !important; outline: none !important; margin-bottom: 1.25rem !important;"></textarea>
 
-    <!-- Actions (NO X BUTTON) -->
+    <!-- Bottom Actions: Cancel & Submit (NO 'X' BUTTON) -->
     <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
-      <button type="button" onclick="document.getElementById('feedback-modal').style.display='none';" style="background: #FFFFFF; color: #0F172A; border: 1.5px solid #8DB9F0; padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: 600; cursor: pointer;">
+      <button type="button" id="feedback-cancel-btn" onclick="closeFeedbackModal()" style="background: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; padding: 0.55rem 1.15rem !important; border-radius: 0.5rem !important; font-weight: 600 !important; cursor: pointer !important;">
         Cancel
       </button>
-      <button type="button" onclick="alert('Feedback received. Thank you!'); document.getElementById('feedback-modal').style.display='none';" style="background: #F5B69E; color: #0F172A; border: none; padding: 0.5rem 1.25rem; border-radius: 0.5rem; font-weight: 700; cursor: pointer; box-shadow: 0 2px 8px rgba(245, 182, 158, 0.4);">
+      <button type="button" id="feedback-submit-btn" onclick="submitFeedbackForm()" style="background: #F5B69E !important; color: #0F172A !important; border: none !important; padding: 0.55rem 1.35rem !important; border-radius: 0.5rem !important; font-weight: 700 !important; cursor: pointer !important; box-shadow: 0 2px 8px rgba(245, 182, 158, 0.4) !important;">
         Submit Feedback
       </button>
     </div>
@@ -1433,49 +1440,7 @@
     </div>
 
 
-    <!-- Feedback & Support Modal -->
-    <div class="modal-backdrop" id="feedback-modal" style="display: none;">
-        <div class="modal-card feedback-modal-card">
-            <div class="modal-header">
-                <div>
-                    <h2 class="modal-title">Feedback & Academic Help Desk</h2>
-                    <p class="modal-subtitle">Report a broken paper link, submit missing question papers, or request model answers.</p>
-                </div>
-                <button class="modal-close-btn" id="btn-close-feedback-modal" title="Close" aria-label="Close feedback modal">✕</button>
-            </div>
-
-            <form id="feedback-form" class="feedback-form">
-                <div class="form-group">
-                    <label class="form-label">Category</label>
-                    <select id="feedback-category" class="custom-select" required>
-                        <option value="BROKEN_PDF">🔗 Broken / Missing PDF Paper Link</option>
-                        <option value="MISSING_PYQ">📄 Submit / Request Missing Year PYQ</option>
-                        <option value="MODEL_ANSWER">💡 Request Model Answer for Question</option>
-                        <option value="FEATURE_REQUEST">✨ Feature Request / UI Suggestion</option>
-                        <option value="BUG">🐛 Bug Report</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Subject Code (Optional)</label>
-                    <input type="text" id="feedback-subject" class="custom-input" placeholder="e.g. BS-M101, ES-CS101, BS-PH101">
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Your Message or Issue Details</label>
-                    <textarea id="feedback-message" rows="5" class="custom-textarea"
-                              placeholder="Describe the issue, specify the year/paper, or paste Google Drive links..." required></textarea>
-                </div>
-
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary" id="btn-submit-feedback">
-                        Submit Feedback ✉️
-                    </button>
-                </div>
-                <div id="feedback-result-msg" class="result-box" style="display: none;"></div>
-            </form>
-        </div>
-    </div>
+    <!-- Feedback & Support Modal (Replaced by #feedback-modal) -->
 
 
 

@@ -98,8 +98,8 @@ window.onClerkLoaded = function() {
             if (id === 'saved-deck-drawer' || id === 'drawer-saved-deck') {
                 return _origGetElementById('drawer-saved-deck') || _origGetElementById('saved-deck-drawer') || _origGetElementById(id);
             }
-            if (id === 'btn-open-feedback' || id === 'btn-feedback') {
-                return _origGetElementById('btn-feedback') || _origGetElementById('btn-open-feedback') || _origGetElementById(id);
+            if (id === 'btn-open-feedback' || id === 'btn-feedback' || id === 'nav-feedback-btn') {
+                return _origGetElementById('nav-feedback-btn') || _origGetElementById('btn-feedback') || _origGetElementById('btn-open-feedback') || _origGetElementById(id);
             }
             if (id === 'curriculum-grid' || id === 'landing-curriculum-grid') {
                 return _origGetElementById('curriculum-grid') || _origGetElementById('landing-curriculum-grid') || _origGetElementById(id);
@@ -20824,21 +20824,51 @@ if (document.readyState === 'loading') {
 // =====================================================================
 
 // =====================================================================
-// INTERACTIVE FEEDBACK & PANIC PACK MODAL CONTROLLER (Directives 2 & 3)
+// FEEDBACK MODAL CONTROL LOGIC (Directive Section 3.C)
 // =====================================================================
+window.openFeedbackModal = function() {
+  const modal = document.getElementById('feedback-modal');
+  if (modal) {
+    modal.classList.remove('modal-hidden');
+    modal.style.display = 'flex';
+  }
+};
+
+window.closeFeedbackModal = function() {
+  const modal = document.getElementById('feedback-modal');
+  if (modal) {
+    modal.classList.add('modal-hidden');
+    modal.style.display = 'none';
+  }
+};
+
+window.handleFeedbackBackdropClick = function(event) {
+  if (event.target.id === 'feedback-modal') {
+    closeFeedbackModal();
+  }
+};
+
+window.submitFeedbackForm = function() {
+  const desc = document.getElementById('feedback-desc');
+  alert('Feedback received. Thank you for helping keep CampusSense updated!');
+  if (desc) desc.value = '';
+  document.querySelectorAll('.feedback-chip.active').forEach(chip => chip.classList.remove('active'));
+  closeFeedbackModal();
+};
+
 function initInteractiveModals() {
   const feedbackModal = document.getElementById('feedback-modal');
-  const feedbackBtn = document.getElementById('btn-feedback');
+  const feedbackBtn = document.getElementById('nav-feedback-btn') || document.getElementById('btn-feedback');
   if (feedbackBtn && feedbackModal) {
     feedbackBtn.onclick = function(e) {
       e.preventDefault();
-      feedbackModal.style.display = 'flex';
+      window.openFeedbackModal();
     };
   }
   if (feedbackModal) {
     feedbackModal.addEventListener('click', function(e) {
       if (e.target === feedbackModal) {
-        feedbackModal.style.display = 'none';
+        window.closeFeedbackModal();
       }
     });
   }

@@ -616,7 +616,7 @@ body:not(.modal-open) {
 }
 
 /* Modals must only absorb clicks when explicitly visible */
-.modal, .modal-backdrop, #academic-setup-modal, #subject-hub-modal, #pdf-preview-modal, #scope-modal, #panic-mode-modal, #feedback-modal, .drawer-backdrop {
+.modal, .modal-backdrop, #academic-setup-modal, #subject-hub-modal, #pdf-preview-modal, #scope-modal, #panic-mode-modal, .drawer-backdrop {
   pointer-events: none;
 }
 
@@ -628,7 +628,6 @@ body:not(.modal-open) {
 #scope-modal:not(.active),
 #academic-setup-modal:not(.active),
 #panic-mode-modal:not(.active),
-#feedback-modal:not(.active),
 .drawer-backdrop:not(.active) {
   display: none !important;
   pointer-events: none !important;
@@ -642,7 +641,6 @@ body:not(.modal-open) {
 #pdf-viewer-modal.active,
 #scope-modal.active,
 #panic-mode-modal.active,
-#feedback-modal.active,
 .drawer-backdrop.active,
 .modal[style*="display: flex"],
 .modal[style*="display: block"] {
@@ -15918,4 +15916,22 @@ main, section, header, nav, .hero-section, .features-container, #features-sectio
    =================================================================== */
 .hero-section h1, .brand-link {
   text-shadow: 0 1px 12px rgba(255, 255, 255, 0.8);
+}
+
+/* Ensure modal visibility can be toggled without CSS !important conflicts */
+.modal-overlay {
+  display: flex !important;
+  position: fixed !important;
+  inset: 0 !important;
+  background: rgba(15, 23, 42, 0.65) !important;
+  backdrop-filter: blur(5px) !important;
+  z-index: 10000 !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 1.25rem !important;
+  box-sizing: border-box !important;
+}
+
+.modal-hidden {
+  display: none !important;
 }

@@ -83,6 +83,8 @@ public class SecurityConfig {
                                 "/v3/api-docs/**",
                                 "/api/resources",
                                 "/api/resources/**",
+                                "/api/feedback",
+                                "/api/feedback/**",
                                 "/api/v1/**"
                         ).permitAll()
                         .anyRequest().authenticated()
