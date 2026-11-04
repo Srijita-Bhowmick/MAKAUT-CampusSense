@@ -15646,3 +15646,78 @@ footer .footer-badges a, footer .footer-badges span, footer .badge-item {
 #floating-ask-ai * { display: none !important; }
 #floating-ask-ai::before, #floating-ask-ai::after { display: none !important; content: none !important; }
 #chat-fab, .chat-fab-launcher { display: none !important; }
+
+/* ===================================================================
+   DEFINITIVE STABILIZATION & AUTH OTP GRID FIXES
+   =================================================================== */
+
+/* Auth Page Viewport Centering */
+.auth-page-container, body.auth-body {
+  min-height: 100vh !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background-color: #E9E8F8 !important;
+  padding: 1.5rem !important;
+  box-sizing: border-box !important;
+}
+
+.cl-card, .auth-card {
+  width: 100% !important;
+  max-width: 440px !important;
+  background: #FFFFFF !important;
+  border: 1.5px solid rgba(141, 185, 240, 0.45) !important;
+  border-radius: 1rem !important;
+  padding: 2.25rem !important;
+  box-shadow: 0 10px 30px rgba(141, 185, 240, 0.2) !important;
+  box-sizing: border-box !important;
+  margin: 0 auto !important;
+}
+
+/* Discrete OTP Inputs Fix (Eliminate Full-Width Horizontal Stretch) */
+.otp-container, .discrete-otp-group, [data-otp-container], .otp-grid, .cl-otpCodeFieldInputs, .cl-otpCodeField {
+  display: grid !important;
+  grid-template-columns: repeat(6, 1fr) !important;
+  gap: 8px !important;
+  max-width: 320px !important;
+  margin: 1.5rem auto !important;
+  box-sizing: border-box !important;
+  justify-content: center !important;
+  width: 100% !important;
+}
+
+.otp-input, input[data-otp-input], .otp-box, .cl-otpCodeFieldInput {
+  width: 44px !important;
+  height: 50px !important;
+  max-width: 44px !important;
+  text-align: center !important;
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  color: #0F172A !important;
+  background-color: #D4E3F7 !important;
+  border: 1.5px solid rgba(141, 185, 240, 0.6) !important;
+  border-radius: 0.5rem !important;
+  outline: none !important;
+  box-sizing: border-box !important;
+}
+
+.otp-input:focus, .otp-box:focus, .cl-otpCodeFieldInput:focus {
+  border-color: #8DB9F0 !important;
+  box-shadow: 0 0 0 3px rgba(141, 185, 240, 0.3) !important;
+}
+
+/* Hard-Strip Safeguards for Floating Ask AI */
+#floating-ask-ai * { display: none !important; }
+#floating-ask-ai::before, #floating-ask-ai::after { display: none !important; content: none !important; }
+#chat-fab, .chat-fab-launcher { display: none !important; }
+
+/* Modals */
+#feedback-modal, #panic-pack-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  align-items: center;
+  justify-content: center;
+}

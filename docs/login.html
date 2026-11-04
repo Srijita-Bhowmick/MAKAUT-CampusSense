@@ -613,9 +613,61 @@
         font-size: 1.2rem;
       }
     }
-  </style>
+  
+    /* Viewport Centering & Discrete OTP Grid */
+    body.auth-body {
+      min-height: 100vh !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      background-color: #E9E8F8 !important;
+      padding: 1.5rem !important;
+      box-sizing: border-box !important;
+    }
+    .auth-card, .cl-card {
+      width: 100% !important;
+      max-width: 440px !important;
+      background: #FFFFFF !important;
+      border: 1.5px solid rgba(141, 185, 240, 0.45) !important;
+      border-radius: 1rem !important;
+      padding: 2.25rem !important;
+      box-shadow: 0 10px 30px rgba(141, 185, 240, 0.2) !important;
+      box-sizing: border-box !important;
+      margin: 0 auto !important;
+    }
+    .otp-grid, .otp-container, [data-otp-container], .cl-otpCodeFieldInputs {
+      display: grid !important;
+      grid-template-columns: repeat(6, 1fr) !important;
+      gap: 8px !important;
+      max-width: 320px !important;
+      margin: 1.5rem auto !important;
+      box-sizing: border-box !important;
+      justify-content: center !important;
+      width: 100% !important;
+    }
+    .otp-box, .otp-input, .cl-otpCodeFieldInput {
+      width: 44px !important;
+      height: 50px !important;
+      max-width: 44px !important;
+      text-align: center !important;
+      font-size: 1.25rem !important;
+      font-weight: 700 !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      color: #0F172A !important;
+      background-color: #D4E3F7 !important;
+      border: 1.5px solid rgba(141, 185, 240, 0.6) !important;
+      border-radius: 0.5rem !important;
+      outline: none !important;
+      box-sizing: border-box !important;
+    }
+    .otp-box:focus, .otp-input:focus, .cl-otpCodeFieldInput:focus {
+      border-color: #8DB9F0 !important;
+      box-shadow: 0 0 0 3px rgba(141, 185, 240, 0.3) !important;
+    }
+
+</style>
 </head>
-<body>
+<body class="auth-body">
 
   <!-- Top Fixed Return Link -->
   <a href="/" class="back-link" title="Return to MAKAUT CampusSense">
@@ -859,18 +911,8 @@
 
     // Check if already authenticated via Clerk or local session
     async function checkExistingAuth() {
-      if (localStorage.getItem("campussense_logged_in") === "true") {
-        window.location.replace("/#dashboard");
-        return;
-      }
-      try {
-        await ensureClerkInitialized();
-        if (window.Clerk && window.Clerk.user) {
-          localStorage.setItem("campussense_logged_in", "true");
-          localStorage.setItem("campussense_auth_provider", "clerk");
-          window.location.replace("/#dashboard");
-        }
-      } catch (e) {}
+      // Intentional session check: Do not auto-redirect on arrival to avoid flicker loops.
+      // Authentication is evaluated upon deliberate user actions.
     }
 
     // Clerk Google OAuth Handler
@@ -1271,7 +1313,7 @@
 
       showAlert("success", "Verification successful! Redirecting to Student Workspace...");
       setTimeout(() => {
-        window.location.replace("/#dashboard");
+        window.location.replace("/dashboard.html");
       }, 350);
     }
 
