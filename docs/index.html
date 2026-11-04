@@ -1168,60 +1168,60 @@
     </footer>
 
         <!-- 2. Self-Contained Feedback Modal (Section 2) -->
-    <div id="feedback-modal" style="display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.55); backdrop-filter: blur(4px); z-index: 10000; align-items: center; justify-content: center; padding: 1.25rem;">
-      <div style="background: #FFFFFF; border: 1.5px solid rgba(141, 185, 240, 0.5); border-radius: 1.15rem; padding: 2rem; width: 100%; max-width: 480px; box-shadow: 0 20px 45px rgba(0,0,0,0.2); box-sizing: border-box;" onclick="event.stopPropagation();">
-        <h3 style="margin: 0 0 0.5rem 0; font-size: 1.35rem; font-weight: 800; color: #0F172A; font-family: 'Manrope', sans-serif;">
-          Share Academic Feedback
-        </h3>
-        <p style="margin: 0 0 1.25rem 0; font-size: 0.85rem; color: #64748B;">
-          Select an issue or resource category to help us update the vault:
-        </p>
+    <div id="feedback-modal" style="display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.55); backdrop-filter: blur(4px); z-index: 10000; align-items: center; justify-content: center; padding: 1.25rem;" onclick="if(event.target === this) this.style.display='none';">
+  <div style="background: #FFFFFF; border: 1.5px solid rgba(141, 185, 240, 0.5); border-radius: 1.15rem; padding: 2rem; width: 100%; max-width: 460px; box-shadow: 0 20px 45px rgba(0,0,0,0.2); box-sizing: border-box;" onclick="event.stopPropagation();">
+    <h3 style="margin: 0 0 0.35rem 0; font-size: 1.3rem; font-weight: 800; color: #0F172A; font-family: 'Manrope', sans-serif;">
+      Share Academic Feedback
+    </h3>
+    <p style="margin: 0 0 1rem 0; font-size: 0.85rem; color: #64748B;">
+      Select an issue or resource category:
+    </p>
 
-        <!-- Category Selector Chips -->
-        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem;">
-          <button type="button" class="feedback-chip" onclick="this.classList.toggle('active')">Missing PYQs</button>
-          <button type="button" class="feedback-chip" onclick="this.classList.toggle('active')">Syllabus Discrepancy</button>
-          <button type="button" class="feedback-chip" onclick="this.classList.toggle('active')">Panic Pack Request</button>
-          <button type="button" class="feedback-chip" onclick="this.classList.toggle('active')">Bug Report</button>
-        </div>
-
-        <!-- Detailed Notes Box -->
-        <textarea id="feedback-desc" placeholder="Tell us specific subject codes, missing years, or improvements..." style="width: 100%; height: 110px; border: 1.5px solid rgba(141, 185, 240, 0.5); border-radius: 0.5rem; padding: 0.75rem; font-family: inherit; font-size: 0.9rem; color: #0F172A; background: #E9E8F8; box-sizing: border-box; resize: none; outline: none; margin-bottom: 1.5rem;"></textarea>
-
-        <!-- Action Buttons -->
-        <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
-          <button type="button" id="feedback-cancel-btn" onclick="document.getElementById('feedback-modal').style.display='none';" style="background: #FFFFFF; color: #0F172A; border: 1.5px solid #8DB9F0; padding: 0.55rem 1.15rem; border-radius: 0.5rem; font-weight: 600; cursor: pointer;">
-            Cancel
-          </button>
-          <button type="button" onclick="alert('Feedback received. Thanks for keeping CampusSense sharp!'); document.getElementById('feedback-modal').style.display='none';" style="background: #F5B69E; color: #0F172A; border: none; padding: 0.55rem 1.35rem; border-radius: 0.5rem; font-weight: 700; cursor: pointer; box-shadow: 0 2px 8px rgba(245, 182, 158, 0.4);">
-            Submit Feedback
-          </button>
-        </div>
-      </div>
+    <!-- Category Selector Chips -->
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
+      <button type="button" class="feedback-chip" onclick="this.classList.toggle('active')">Missing PYQs</button>
+      <button type="button" class="feedback-chip" onclick="this.classList.toggle('active')">Syllabus Discrepancy</button>
+      <button type="button" class="feedback-chip" onclick="this.classList.toggle('active')">Panic Pack Request</button>
+      <button type="button" class="feedback-chip" onclick="this.classList.toggle('active')">Bug Report</button>
     </div>
+
+    <!-- Notes Box -->
+    <textarea id="feedback-desc" placeholder="Specify subject codes, missing years, or suggestions..." style="width: 100%; height: 95px; border: 1.5px solid rgba(141, 185, 240, 0.5); border-radius: 0.5rem; padding: 0.75rem; font-family: inherit; font-size: 0.875rem; color: #0F172A; background: #E9E8F8; box-sizing: border-box; resize: none; outline: none; margin-bottom: 1.25rem;"></textarea>
+
+    <!-- Actions (NO X BUTTON) -->
+    <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+      <button type="button" onclick="document.getElementById('feedback-modal').style.display='none';" style="background: #FFFFFF; color: #0F172A; border: 1.5px solid #8DB9F0; padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: 600; cursor: pointer;">
+        Cancel
+      </button>
+      <button type="button" onclick="alert('Feedback received. Thank you!'); document.getElementById('feedback-modal').style.display='none';" style="background: #F5B69E; color: #0F172A; border: none; padding: 0.5rem 1.25rem; border-radius: 0.5rem; font-weight: 700; cursor: pointer; box-shadow: 0 2px 8px rgba(245, 182, 158, 0.4);">
+        Submit Feedback
+      </button>
+    </div>
+  </div>
+</div>
 
         <!-- 1. Spiced-Up Gen-Z Panic Pack Modal (Section 1) -->
-    <div id="panic-pack-modal" style="display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(6px); z-index: 10000; align-items: center; justify-content: center; padding: 1.25rem;">
-      <div style="background: #FFFFFF; border: 2px solid #8DB9F0; border-radius: 1.25rem; padding: 2.25rem; width: 100%; max-width: 520px; box-shadow: 0 25px 50px rgba(0,0,0,0.25); box-sizing: border-box; text-align: left;">
-        <span style="font-size: 0.8rem; font-weight: 800; color: #0F172A; background: #F5B69E; padding: 0.3rem 0.75rem; border-radius: 9999px; display: inline-block; margin-bottom: 1rem; letter-spacing: 0.04em;">
-          🚨 ACADEMIC EMERGENCY · CODE RED
-        </span>
-        <h3 style="font-family: 'Manrope', sans-serif; font-size: 1.55rem; font-weight: 800; color: #0F172A; line-height: 1.3; margin: 0 0 1rem 0;">
-          POV: It’s the night before the exam and you’re running on 2% battery and pure delusion.
-        </h3>
-        <p style="font-size: 0.95rem; font-weight: 500; color: #334155; line-height: 1.65; margin: 0 0 1.75rem 0;">
-          Be so for real right now. That ₹200 MAKAUT review form won’t save your CGPA, and praying to the bell curve isn't a revision strategy. We dumped 80% of the textbook yapping and kept ONLY the 20% high-yield derivations, numericals, and repeated questions that actually appear on tomorrow's paper. 10 seconds to sign in. Save your DGPA before you get humbled in the exam hall.
-        </p>
-        <div style="display: flex; flex-direction: column; gap: 0.85rem;">
-          <button type="button" onclick="window.location.href='/login.html'" style="background: #F5B69E; color: #0F172A; font-weight: 800; font-size: 1rem; padding: 0.9rem 1.5rem; border-radius: 0.5rem; border: none; cursor: pointer; text-align: center; box-shadow: 0 4px 14px rgba(245, 182, 158, 0.45); transition: transform 0.15s ease;">
-            Unlock Panic Pack & Lock In →
-          </button>
-          <button type="button" onclick="document.getElementById('panic-pack-modal').style.display='none'" style="background: transparent; color: #64748B; font-weight: 600; font-size: 0.875rem; padding: 0.5rem; border: none; cursor: pointer; text-align: center;">
-            I'll manage on my own (praying for a miracle)
-          </button>
-        </div>
-      </div>
+    <div id="panic-pack-modal" style="display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(6px); z-index: 10000; align-items: center; justify-content: center; padding: 1.25rem;" onclick="if(event.target === this) this.style.display='none';">
+  <div style="background: #FFFFFF; border: 2px solid #8DB9F0; border-radius: 1.25rem; padding: 2rem; width: 100%; max-width: 480px; box-shadow: 0 25px 50px rgba(0,0,0,0.25); box-sizing: border-box; text-align: left;" onclick="event.stopPropagation();">
+    <span style="font-size: 0.75rem; font-weight: 800; color: #0F172A; background: #F5B69E; padding: 0.25rem 0.65rem; border-radius: 9999px; display: inline-block; margin-bottom: 0.75rem;">
+      🚨 CODE RED
+    </span>
+    <h3 style="font-family: 'Manrope', sans-serif; font-size: 1.35rem; font-weight: 800; color: #0F172A; line-height: 1.3; margin: 0 0 0.65rem 0;">
+      POV: Night before the exam and running on pure delusion.
+    </h3>
+    <p style="font-size: 0.95rem; font-weight: 500; color: #334155; line-height: 1.5; margin: 0 0 1.5rem 0;">
+      Textbook filler deleted—here is the 20% repeated high-yield material that will actually save your DGPA tomorrow.
+    </p>
+    <div style="display: flex; flex-direction: column; gap: 0.65rem;">
+      <button type="button" onclick="window.location.href='/login.html'" style="background: #F5B69E; color: #0F172A; font-weight: 800; font-size: 0.95rem; padding: 0.85rem 1.25rem; border-radius: 0.5rem; border: none; cursor: pointer; text-align: center; box-shadow: 0 4px 14px rgba(245, 182, 158, 0.45);">
+        Unlock Panic Pack & Lock In →
+      </button>
+      <button type="button" onclick="document.getElementById('panic-pack-modal').style.display='none'" style="background: transparent; color: #64748B; font-weight: 600; font-size: 0.85rem; padding: 0.4rem; border: none; cursor: pointer; text-align: center;">
+        I'll manage on my own
+      </button>
     </div>
+  </div>
+</div>
 
 <!-- Academic Scope Onboarding Modal (#academic-setup-modal / #scope-modal) -->
     <div class="modal-backdrop academic-setup-modal" id="academic-setup-modal" data-modal="academic-setup-modal" style="display: none;">

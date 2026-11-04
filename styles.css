@@ -15886,3 +15886,29 @@ footer,
   border-color: #8DB9F0 !important;
   color: #0F172A !important;
 }
+
+/* ===================================================================
+   CRITICAL BACKEND & FRONTEND DIRECTIVE (SECTION 2: REMOVE OPAQUE SECTION BACKGROUNDS)
+   =================================================================== */
+html, body {
+  min-height: 100vh !important;
+  width: 100% !important;
+  background-color: #E9E8F8 !important;
+  background-image: 
+    linear-gradient(rgba(233, 232, 248, 0.88), rgba(233, 232, 248, 0.88)),
+    url('/images/makaut-haringhata-boulevard.jpg') !important;
+  background-position: center top !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+}
+
+main, section, header, nav, .hero-section, .features-container, #features-section, #syllabus-section, #pyq-section, .landing-wrapper, .dashboard-wrapper {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+.cute-academic-card, .feature-card, .bento-card, .cl-card {
+  background-color: #FFFFFF !important;
+  background: #FFFFFF !important;
+}
