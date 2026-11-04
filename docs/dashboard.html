@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
@@ -12,7 +12,7 @@
   <script>
     (function () {
       try {
-        const theme = localStorage.getItem('campussense_theme') || 'dark';
+        const theme = localStorage.getItem('campussense_theme') || 'light';
         document.documentElement.setAttribute('data-theme', theme);
         if (theme === 'dark') document.documentElement.classList.add('dark');
         else document.documentElement.classList.remove('dark');
@@ -153,7 +153,7 @@
       top: 0; left: 0; right: 0;
       height: var(--header-height);
       z-index: 1000;
-      background: rgba(11,15,25,0.92);
+      background: rgba(249, 235, 215, 0.95);
       border-bottom: 1px solid var(--border-hairline);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
@@ -163,7 +163,8 @@
       gap: 1rem;
       padding: 0 1.25rem;
     }
-    [data-theme="light"] #dash-header { background: rgba(248,250,252,0.92); }
+    [data-theme="light"] #dash-header { background: rgba(249, 235, 215, 0.95); }
+    [data-theme="dark"] #dash-header { background: rgba(11, 15, 25, 0.95); }
 
     /* Wordmark */
     .header-wordmark {
@@ -875,8 +876,9 @@
   <!-- Left: Wordmark + hamburger -->
   <div style="display:flex;align-items:center;gap:0.6rem;flex-shrink:0;">
     <button id="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">☰</button>
-    <a href="/" class="header-wordmark" aria-label="MAKAUT CampusSense home" style="text-decoration:none;">
+    <a href="/" class="header-wordmark" aria-label="MAKAUT CampusSense home" style="text-decoration:none; display:flex; flex-direction:column; line-height: 1.2;">
       <span class="header-wordmark-name" style="font-family:'Manrope',sans-serif;font-weight:700;color:var(--text-primary);font-size:1.15rem;display:inline-flex;align-items:center;gap:6px;">📐 MAKAUT CampusSense</span>
+      <span class="brand-subtitle" style="font-size:0.75rem;color:#485446;display:block;font-weight:500;">Curated Academic Engine</span>
     </a>
     <span class="header-branch-badge" id="branch-badge" style="background:var(--emerald-surface);color:var(--emerald-primary);border:1px solid var(--surface-border);border-radius:9999px;font-weight:600;padding:3px 10px;font-size:12px;">B.Tech CSE · Sem 5</span>
   </div>
@@ -905,7 +907,7 @@
       <div class="user-avatar" id="user-avatar">?</div>
       <span class="user-name" id="user-name">Loading…</span>
     </div>
-    <button id="signout-btn" type="button">Sign Out</button>
+    <button id="signout-btn" type="button" style="background-color: var(--danger-action) !important; color: #FFFFFF !important; border-radius: 0.5rem; font-weight: 600; padding: 0.5rem 1rem; border: none; cursor: pointer;">Sign Out</button>
   </div>
 </header>
 

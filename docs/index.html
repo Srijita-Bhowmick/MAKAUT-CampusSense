@@ -734,7 +734,7 @@
             };
 
             const savedTheme = (function() {
-                try { return localStorage.getItem('campussense_theme') || 'dark'; } catch(e) { return 'dark'; }
+                try { return localStorage.getItem('campussense_theme') || 'light'; } catch(e) { return 'light'; }
             })();
             applyThemeState(savedTheme);
 
@@ -759,7 +759,10 @@
     <header class="app-header" id="main-header">
         <!-- Left: Wordmark: 📐 MAKAUT CampusSense -->
         <a href="#portal" id="nav-brand-logo" class="navbar-brand brand-group" title="📐 MAKAUT CampusSense">
-            <span class="brand-title" style="font-family: 'Manrope', sans-serif; font-weight: 700; color: var(--text-primary); text-decoration: none; font-size: 1.15rem; display: inline-flex; align-items: center; gap: 6px;">📐 MAKAUT CampusSense</span>
+            <div style="display: flex; flex-direction: column; line-height: 1.2;">
+                <span class="brand-title" style="font-family: 'Manrope', sans-serif; font-weight: 700; color: var(--text-primary); text-decoration: none; font-size: 1.15rem; display: inline-flex; align-items: center; gap: 6px;">📐 MAKAUT CampusSense</span>
+                <span class="brand-subtitle" style="font-size: 0.75rem; color: #485446; display: block; font-weight: 500;">Curated Academic Engine</span>
+            </div>
             <div id="btn-brand-home" style="display:none;" aria-hidden="true"></div>
         </a>
 
@@ -841,29 +844,29 @@
         <!-- Screen 1: Editorial Hero & Command-K Bar -->
         <section class="editorial-hero-section" id="portal-hero" style="position: relative; overflow: hidden;">
             <canvas id="ambient-shader-canvas"></canvas>
-            <div class="editorial-hero-grid" style="position: relative; z-index: 1;">
-                <!-- Left Column: Search -->
-                <div class="editorial-hero-left">
-                    <div class="hero-pill-badge" style="background: var(--emerald-surface); color: var(--emerald-primary); border: 1px solid var(--surface-border); border-radius: 9999px; padding: 0.35rem 1rem; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">🏛️ University Curricula · Verified PYQ Vault</div>
-                    <h1 class="editorial-hero-heading editorial-hero-title" style="font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 3.25rem; letter-spacing: -0.03em; color: var(--text-primary); margin: 0.75rem 0 0.5rem;">
+            <div class="editorial-hero-grid" style="position: relative; z-index: 1; max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; text-align: center;">
+                <!-- Centered Hero Search & CTAs -->
+                <div class="editorial-hero-left" style="width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center;">
+                    <div class="hero-pill-badge" style="background: var(--emerald-surface); color: var(--emerald-primary); border: 1px solid var(--surface-border); border-radius: 9999px; padding: 0.35rem 1rem; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; margin: 0 auto;">🏛️ University Curricula · Verified PYQ Vault</div>
+                    <h1 class="editorial-hero-heading editorial-hero-title" style="font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 3.5rem; letter-spacing: -0.03em; color: var(--text-primary); margin: 0.75rem auto 0.5rem; text-align: center;">
                         MAKAUT CampusSense
                     </h1>
-                    <p class="editorial-hero-lead editorial-hero-desc" style="color: var(--text-secondary); font-size: 1.15rem; max-width: 650px; margin: 1rem 0; line-height: 1.6;">
+                    <p class="editorial-hero-lead editorial-hero-desc" style="color: var(--text-secondary); font-size: 1.2rem; max-width: 720px; margin: 1rem auto; line-height: 1.6; text-align: center;">
                         Curated syllabi, subject-wise PYQs, and exam-ready revisions for MAKAUT students.
                     </p>
 
                     <!-- Hero Action CTAs -->
-                    <div class="hero-action-ctas" style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 1.25rem; margin-bottom: 1.5rem;">
+                    <div class="hero-action-ctas" style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 1.25rem; margin-bottom: 1.5rem; justify-content: center;">
                         <a href="#curriculum-section" class="hero-btn-explore" style="background: var(--vermilion-primary); color: #FFFFFF; font-weight: 700; padding: 0.85rem 1.75rem; border-radius: 0.5rem; border: none; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
-                            <span>Explore Curriculums and PYQs</span>
+                            <span>Explore Curriculums and PYQs →</span>
                         </a>
                         <a href="#panic-pack-section" class="hero-btn-panic" style="background: transparent; border: 1.5px solid var(--emerald-primary); color: var(--emerald-primary); font-weight: 700; padding: 0.85rem 1.75rem; border-radius: 0.5rem; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
-                            <span>View 16+ Panic Pack →</span>
+                            <span>View 16+ Panic Pack 🔥</span>
                         </a>
                     </div>
 
                     <!-- Academic Command-K Input -->
-                    <div class="command-k-box">
+                    <div class="command-k-box" style="width: 100%; max-width: 760px; margin: 0 auto;">
                         <div class="command-k-input-row">
                             <span class="search-lens" aria-hidden="true">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
@@ -875,16 +878,18 @@
                                 <kbd class="search-shortcut-badge" title="Press ⌘K or / to search">⌘K</kbd>
                                 <button type="button" class="search-clear-btn" aria-label="Clear search query" style="display: none;">✕</button>
                             </div>
-                            <button class="search-submit-btn" id="btn-landing-search" type="button" aria-label="Perform search">Search</button>
+                            <button class="search-submit-btn" id="btn-landing-search" type="button" aria-label="Perform search" style="background: var(--emerald-primary); color: #FFFFFF; font-weight: 600; border-radius: 0.5rem;">Search</button>
                         </div>
-                        <div class="command-k-filter-pills">
-                            <span class="filter-index-label">Filter Index:</span>
+                        <div class="command-k-filter-pills" style="justify-content: center; display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px;">
+                            <span class="filter-index-label" style="color: var(--text-secondary); font-size: 0.85rem; align-self: center;">Filter Index:</span>
                             <button type="button" class="cmd-filter-pill active" data-filter="all">All</button>
                             <button type="button" class="cmd-filter-pill" data-filter="1st Year Common">1st Year Common</button>
                             <button type="button" class="cmd-filter-pill" data-filter="CSE">CSE</button>
                             <button type="button" class="cmd-filter-pill" data-filter="IT">IT</button>
-                            <button type="button" class="cmd-filter-pill" data-filter="ECE">ECE</button>
-                            <button type="button" class="cmd-filter-pill" data-filter="EE">EE</button>
+                            <button type="button" class="cmd-filter-pill" data-filter="CSE-AIML">CSE-AIML</button>
+                            <button type="button" class="cmd-filter-pill" data-filter="CSCS">CSCS</button>
+                            <button type="button" class="cmd-filter-pill" data-filter="CSDS">CSDS</button>
+                            <button type="button" class="cmd-filter-pill" data-filter="CSBS">CSBS</button>
                         </div>
                         <!-- Keep the live results inside the positioned search surface. -->
                         <div class="search-results-overlay" id="landing-search-results" style="display: none;" role="region" aria-live="polite">
@@ -895,29 +900,6 @@
                             <div class="search-results-list" id="landing-results-list"></div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Right Column: Study shortcuts -->
-                <div class="editorial-hero-right">
-                    <aside class="academic-pulse-card pulse-card study-start-card" aria-label="Start studying">
-                        <h2 class="study-start-title">Start studying</h2>
-                        <p class="study-start-copy">Use course codes, subjects, semesters, or years to find the material you need.</p>
-                        <nav class="study-start-links" aria-label="Study shortcuts">
-                            <a href="#curriculum" class="vector-item-link">
-                                <span class="vector-text">Browse your syllabus</span>
-                                <span aria-hidden="true">→</span>
-                            </a>
-                            <a href="#archives" class="vector-item-link">
-                                <span class="vector-text">Find past question papers</span>
-                                <span aria-hidden="true">→</span>
-                            </a>
-                            <a href="#panic-pack" class="vector-item-link">
-                                <span class="vector-text">Open the 48-hour revision pack</span>
-                                <span aria-hidden="true">→</span>
-                            </a>
-                        </nav>
-                        <p class="study-source-note">Search results identify their source so you can check the syllabus or paper before you study.</p>
-                    </aside>
                 </div>
             </div>
 
@@ -3004,8 +2986,8 @@
     </script>
 
     <!-- 380px Slide-Over "Saved Revision Deck" Drawer -->
-    <div class="drawer-backdrop" id="saved-deck-backdrop" style="display: none;"></div>
-    <aside class="saved-deck-drawer" id="drawer-saved-deck" style="display: none;">
+    <div class="drawer-backdrop" id="saved-deck-backdrop" style="display: none;" onclick="if(window.closeSavedDeckDrawer){window.closeSavedDeckDrawer();}else{document.querySelectorAll('#drawer-saved-deck, #saved-deck-drawer, .saved-deck-drawer').forEach(el=>el.classList.remove('open','is-open'));}"></div>
+    <aside class="saved-deck-drawer" id="drawer-saved-deck" role="dialog" aria-modal="true" aria-label="Saved Revision Deck">
         <div class="drawer-header">
             <div class="flex items-center gap-space-xs">
                 <svg width="16" height="16" class="w-4 h-4 text-secondary shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
@@ -3019,7 +3001,8 @@
                     <svg width="14" height="14" class="w-3.5 h-3.5 text-current shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                     <span>Clear</span>
                 </button>
-                <button class="drawer-close-btn" id="btn-close-saved-deck" title="Close Drawer (Esc)" aria-label="Close saved revision deck drawer">✕</button>
+                <button class="drawer-close-btn" id="btn-close-saved-deck" onclick="if(window.closeSavedDeckDrawer){window.closeSavedDeckDrawer();}else{document.querySelectorAll('#drawer-saved-deck, #saved-deck-drawer, .saved-deck-drawer').forEach(el=>el.classList.remove('open','is-open'));}" title="Close Drawer (Esc)" aria-label="Close saved revision deck drawer">✕</button>
+                <button id="btn-close-saved-deck-drawer" style="display:none;" aria-hidden="true"></button>
             </div>
         </div>
 

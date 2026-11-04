@@ -80,31 +80,52 @@ body {
 /* Metadata/Micro:     Inter Medium, weight 500, 0.75rem, ls 0.04em, uppercase  */
 /* Code & Course IDs:  JetBrains Mono, 0.85rem                                 */
 
-:root, [data-theme="dark"], html.dark, .dark {
-    --bg-main: #090A0F;
-    --bg-primary: #090A0F;
-    --bg-secondary: #111319;
-    --bg-tertiary: #171A23;
-    --bg-surface-elevated: #171A23;
-    --bg-surface-highest: #1F2330;
-    --card-bg: #111319;
-    --card-hover: #171A23;
-    --card-border: #232734;
-    --border-hairline: #232734;
-    --bg-header: rgba(17, 19, 25, 0.85);
-    --card-border-glow: transparent;
-    --surface-color: #111319;
-    --surface-glass: rgba(17, 19, 25, 0.85);
-    
-    --text-main: #F8FAFC;
-    --text-primary: #F8FAFC;
-    --text-secondary: #94A3B8;
-    --text-muted: #94A3B8;
+[data-theme="dark"], html.dark, .dark {
+    --surface-canvas: #0b0f19;
+    --surface-card: #16181f;
+    --surface-elevated: #1e222d;
+    --surface-border: rgba(255, 255, 255, 0.08);
+    --surface-border-focus: #046A38;
+    --text-primary: #FFFFFF;
+    --text-secondary: #CBD5E1;
+    --text-tertiary: #94A3B8;
+    --emerald-primary: #046A38;
+    --emerald-hover: #03522B;
+    --emerald-surface: rgba(4, 106, 56, 0.15);
+    --vermilion-primary: #E34222;
+    --vermilion-hover: #C93619;
+    --vermilion-surface: rgba(227, 66, 34, 0.15);
+    --btn-primary-bg: #E34222;
+    --btn-primary-text: #FFFFFF;
+    --btn-secondary-bg: #046A38;
+    --btn-secondary-text: #FFFFFF;
+    --pill-active-bg: #046A38;
+    --pill-active-text: #FFFFFF;
+    --danger-action: #EF4444;
+
+    --bg-main: #0b0f19;
+    --bg-primary: #0b0f19;
+    --bg-secondary: #16181f;
+    --bg-tertiary: #1e222d;
+    --bg-surface-elevated: #1e222d;
+    --bg-surface-highest: #282e3e;
+    --bg-card: #16181f;
+    --card-bg: #16181f;
+    --card-hover: #1e222d;
+    --card-border: rgba(255, 255, 255, 0.08);
+    --border-color: rgba(255, 255, 255, 0.08);
+    --border-hairline: rgba(255, 255, 255, 0.08);
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --bg-header: rgba(11, 15, 25, 0.95);
+    --header-bg: rgba(11, 15, 25, 0.95);
+    --surface-color: #16181f;
+    --surface-glass: rgba(22, 24, 31, 0.9);
+    --text-main: #FFFFFF;
+    --text-muted: #CBD5E1;
     --text-subtle: #94A3B8;
     --text-outline: #94A3B8;
     --font-mono-color: #CBD5E1;
-    
-    --btn-primary-bg: #4F46E5;
+    --btn-primary-bg: #E34222;
     --accent-primary: #818CF8;
     --accent-indigo: #818CF8;
     --accent-hover: #A5B4FC;
@@ -135,29 +156,51 @@ body {
 }
 
 /* --- EDITORIAL ARCHITECTURAL LIGHT MODE PALETTE (Geist / Linear Parity) --- */
-:root.light-theme, [data-theme="light"], html.light, .light, .light-theme {
-    --bg-main: #F8FAFC;
-    --bg-primary: #F8FAFC;
-    --bg-secondary: #FFFFFF;
-    --bg-tertiary: #F1F5F9;
-    --bg-surface-elevated: #F1F5F9;
-    --bg-surface-highest: #E2E8F0;
+:root, :root.light-theme, [data-theme="light"], html.light, .light, .light-theme {
+    --surface-canvas: #F9EBD7;
+    --surface-card: #FFFFFF;
+    --surface-elevated: #F2E3CD;
+    --surface-border: rgba(4, 106, 56, 0.18);
+    --surface-border-focus: #046A38;
+    --text-primary: #1A2218;
+    --text-secondary: #485446;
+    --text-tertiary: #7A8678;
+    --emerald-primary: #046A38;
+    --emerald-hover: #03522B;
+    --emerald-surface: rgba(4, 106, 56, 0.08);
+    --vermilion-primary: #E34222;
+    --vermilion-hover: #C93619;
+    --vermilion-surface: rgba(227, 66, 34, 0.10);
+    --btn-primary-bg: #E34222;
+    --btn-primary-text: #FFFFFF;
+    --btn-secondary-bg: #046A38;
+    --btn-secondary-text: #FFFFFF;
+    --pill-active-bg: #046A38;
+    --pill-active-text: #FFFFFF;
+    --danger-action: #EF4444;
+
+    --bg-main: #F9EBD7;
+    --bg-primary: #F9EBD7;
+    --bg-secondary: #F2E3CD;
+    --bg-tertiary: #FFFFFF;
+    --bg-surface-elevated: #F2E3CD;
+    --bg-surface-highest: #EAE7DC;
     --bg-card: #FFFFFF;
     --surface-color: #FFFFFF;
-    --border-color: #E2E8F0;
-    --border-hairline: #E2E8F0;
-    --bg-header: rgba(255, 255, 255, 0.9);
-    --border-focus: #4F46E5;
+    --border-color: rgba(4, 106, 56, 0.18);
+    --border-hairline: rgba(4, 106, 56, 0.18);
+    --bg-header: rgba(249, 235, 215, 0.95);
+    --border-focus: #046A38;
     
-    --text-main: #0F172A;
-    --text-primary: #0F172A;
-    --text-secondary: #475569;
-    --text-muted: #475569;
-    --text-subtle: #475569;
-    --text-outline: #475569;
-    --font-mono-color: #334155;
+    --text-main: #1A2218;
+    --text-primary: #1A2218;
+    --text-secondary: #485446;
+    --text-muted: #485446;
+    --text-subtle: #7A8678;
+    --text-outline: #7A8678;
+    --font-mono-color: #485446;
     
-    --btn-primary-bg: #4F46E5;
+    --btn-primary-bg: #E34222;
     --accent-primary: #4F46E5;
     --accent-hover: #4338CA;
     --accent-indigo: #4F46E5;
@@ -6706,11 +6749,11 @@ article.pyq-card,
 .light-theme #btn-sign-up,
 .light #btn-sign-up,
 html.light #btn-sign-up {
-  background: #1e40af !important;
+  background: var(--vermilion-primary, #E34222) !important;
   color: #ffffff !important;
-  border: 1px solid #1d4ed8 !important;
-  font-weight: 700 !important;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28) !important;
+  border: none !important;
+  font-weight: 600 !important;
+  box-shadow: 0 2px 8px rgba(227, 66, 34, 0.25) !important;
 }
 :root.light-theme #btn-sign-up:hover,
 [data-theme="light"] #btn-sign-up:hover,
@@ -6733,9 +6776,9 @@ html.light #btn-explore-curriculum,
 [data-theme="light"] .hero-actions #btn-explore-curriculum,
 .light-theme .hero-actions #btn-explore-curriculum,
 .light .hero-actions #btn-explore-curriculum {
-  background: #1d4ed8 !important;
+  background: var(--vermilion-primary, #E34222) !important;
   color: #ffffff !important;
-  border: 1px solid #1e40af !important;
+  border: none !important;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.05) !important;
 }
 :root.light-theme #btn-explore-curriculum:hover,
@@ -13942,7 +13985,9 @@ a[data-nav="feedback"]:hover {
 
 /* 6. Saved Revision Deck Slide-Over Drawer */
 .saved-deck-drawer,
-#drawer-saved-deck {
+#drawer-saved-deck,
+#saved-deck-drawer,
+.revision-drawer {
   width: 380px !important;
   max-width: 90vw !important;
   position: fixed !important;
@@ -13950,11 +13995,37 @@ a[data-nav="feedback"]:hover {
   top: 0 !important;
   height: 100vh !important;
   z-index: 9999 !important;
-  background: var(--surface-card) !important;
+  background: var(--surface-card, #FFFFFF) !important;
   border-left: 1px solid var(--surface-border) !important;
   display: flex !important;
   flex-direction: column !important;
-  box-shadow: -4px 0 30px rgba(0, 0, 0, 0.12) !important;
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.12) !important;
+  transform: translateX(100%) !important;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  pointer-events: none;
+}
+
+#saved-deck-drawer.open,
+#saved-deck-drawer.is-open,
+#drawer-saved-deck.open,
+#drawer-saved-deck.is-open,
+.saved-deck-drawer.open,
+.saved-deck-drawer.is-open,
+.revision-drawer.open,
+.revision-drawer.is-open {
+  transform: translateX(0) !important;
+  pointer-events: auto !important;
+  visibility: visible !important;
+}
+
+.drawer-backdrop {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: rgba(0, 0, 0, 0.4) !important;
+  z-index: 9998 !important;
 }
 
 /* 7. "Set Academic Context" Modal Specification */
@@ -14017,3 +14088,579 @@ a[data-nav="feedback"]:hover {
 
 
 
+
+/* ====================================================================
+   MASTER AUTHORITATIVE SYSTEM OVERRIDES (4-VIEW FIDELITY ENFORCEMENT)
+   ==================================================================== */
+
+/* Global Viewport Stability */
+html, body {
+  min-height: 100vh !important;
+  height: auto !important;
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
+  scrollbar-gutter: stable both-edges !important;
+  background-color: var(--surface-canvas, #F9EBD7) !important;
+  color: var(--text-primary, #1A2218) !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+/* Universal Text High-Contrast Rules (Eliminate Ghost White Text) */
+h1, h2, h3, h4, h5, h6,
+.editorial-hero-heading,
+.editorial-hero-title,
+.landing-hero-title,
+.landing-section-title,
+.section-title,
+.feature-card-title,
+.why-campussense-title,
+.modal-title,
+.subject-card-title,
+.paper-title,
+.brand-title {
+  color: var(--text-primary, #1A2218) !important;
+}
+
+.editorial-hero-lead,
+.editorial-hero-desc,
+.landing-hero-subtitle,
+.landing-section-subtitle,
+.section-subtitle,
+.feature-card-desc,
+.modal-subtitle,
+.subject-card-desc,
+.paper-subtitle,
+.brand-subtitle {
+  color: var(--text-secondary, #485446) !important;
+}
+
+/* 1. Universal Top Navigation Bar */
+.app-header,
+#main-header {
+  height: 56px !important;
+  background: rgba(249, 235, 215, 0.95) !important;
+  border-bottom: 1px solid var(--surface-border) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+}
+
+.brand-title {
+  font-family: 'Manrope', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 1.15rem !important;
+  color: var(--text-primary, #1A2218) !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+.brand-subtitle {
+  font-size: 0.75rem !important;
+  color: #485446 !important;
+  display: block !important;
+  font-weight: 500 !important;
+  line-height: 1.2 !important;
+}
+
+/* Navbar Uniformity Rule: identical typography, neutral color, hover emerald */
+.landing-nav-links a,
+.landing-nav-link,
+a[data-nav="features"],
+a[data-nav="curriculum"],
+a[data-nav="archives"],
+a[data-nav="panic-pack"],
+a[data-nav="saved-deck"],
+a[data-nav="feedback"],
+.nav-panic-link,
+.nav-link-deck {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.95rem !important;
+  font-weight: 500 !important;
+  color: var(--text-primary, #1A2218) !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0.45rem 0.75rem !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  transition: color 0.15s ease !important;
+}
+
+.landing-nav-links a:hover,
+.landing-nav-link:hover,
+a[data-nav="features"]:hover,
+a[data-nav="curriculum"]:hover,
+a[data-nav="archives"]:hover,
+a[data-nav="panic-pack"]:hover,
+a[data-nav="saved-deck"]:hover,
+a[data-nav="feedback"]:hover,
+.nav-panic-link:hover,
+.nav-link-deck:hover {
+  color: var(--emerald-primary, #046A38) !important;
+  background: transparent !important;
+}
+
+/* Nav Auth: Sign In & Sign Up */
+#btn-sign-in,
+.nav-actions #btn-sign-in,
+.nav-auth-link {
+  color: var(--text-primary, #1A2218) !important;
+  font-weight: 600 !important;
+  margin-right: 1.25rem !important;
+  font-size: 0.95rem !important;
+  background: transparent !important;
+  border: none !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  transition: color 0.15s ease !important;
+}
+
+#btn-sign-in:hover,
+.nav-actions #btn-sign-in:hover,
+.nav-auth-link:hover {
+  color: var(--emerald-primary, #046A38) !important;
+}
+
+#btn-sign-up,
+.nav-actions #btn-sign-up,
+.nav-signup-btn {
+  background: var(--vermilion-primary, #E34222) !important;
+  color: #FFFFFF !important;
+  padding: 0.5rem 1.25rem !important;
+  border-radius: 0.5rem !important;
+  font-weight: 600 !important;
+  font-size: 0.95rem !important;
+  border: none !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: background 0.15s ease, transform 0.15s ease !important;
+}
+
+#btn-sign-up:hover,
+.nav-actions #btn-sign-up:hover,
+.nav-signup-btn:hover {
+  background: var(--vermilion-hover, #C93619) !important;
+  color: #FFFFFF !important;
+  transform: translateY(-1px);
+}
+
+/* 2. Centered Editorial Hero */
+.editorial-hero-section {
+  padding: 3.5rem 1.5rem 2.5rem 1.5rem !important;
+}
+
+.editorial-hero-grid {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  max-width: 900px !important;
+  margin: 0 auto !important;
+  width: 100% !important;
+}
+
+.editorial-hero-left {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+}
+
+/* Displaced Hero Right Box: Permanently Purged */
+.editorial-hero-right,
+.study-start-card {
+  display: none !important;
+}
+
+.hero-pill-badge {
+  background: var(--emerald-surface, rgba(4, 106, 56, 0.08)) !important;
+  color: var(--emerald-primary, #046A38) !important;
+  border: 1px solid var(--surface-border) !important;
+  border-radius: 9999px !important;
+  padding: 0.35rem 1rem !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  margin: 0 auto !important;
+}
+
+.editorial-hero-heading,
+.editorial-hero-title {
+  font-family: 'Manrope', sans-serif !important;
+  font-weight: 800 !important;
+  font-size: 3.5rem !important;
+  letter-spacing: -0.03em !important;
+  color: var(--text-primary, #1A2218) !important;
+  margin: 0.75rem auto 0.5rem auto !important;
+  text-align: center !important;
+  line-height: 1.15 !important;
+}
+
+.editorial-hero-lead,
+.editorial-hero-desc {
+  color: var(--text-secondary, #485446) !important;
+  font-size: 1.2rem !important;
+  max-width: 720px !important;
+  margin: 1rem auto !important;
+  line-height: 1.6 !important;
+  text-align: center !important;
+}
+
+.hero-action-ctas {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 12px !important;
+  margin: 1.25rem auto 1.5rem auto !important;
+  justify-content: center !important;
+}
+
+.hero-btn-explore,
+.hero-action-ctas .btn-primary {
+  background: var(--vermilion-primary, #E34222) !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  padding: 0.85rem 1.75rem !important;
+  border-radius: 0.5rem !important;
+  border: none !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  transition: background 0.15s ease, transform 0.15s ease !important;
+}
+
+.hero-btn-explore:hover,
+.hero-action-ctas .btn-primary:hover {
+  background: var(--vermilion-hover, #C93619) !important;
+  color: #FFFFFF !important;
+  transform: translateY(-1px);
+}
+
+.hero-btn-panic,
+.hero-action-ctas .btn-outline {
+  background: transparent !important;
+  border: 1.5px solid var(--emerald-primary, #046A38) !important;
+  color: var(--emerald-primary, #046A38) !important;
+  font-weight: 700 !important;
+  padding: 0.85rem 1.75rem !important;
+  border-radius: 0.5rem !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  transition: all 0.15s ease !important;
+}
+
+.hero-btn-panic:hover,
+.hero-action-ctas .btn-outline:hover {
+  background: var(--emerald-surface, rgba(4, 106, 56, 0.08)) !important;
+  transform: translateY(-1px);
+}
+
+/* 3. Command-K Search & Elimination of Rogue Blue */
+.command-k-box {
+  width: 100% !important;
+  max-width: 760px !important;
+  margin: 0 auto !important;
+}
+
+.command-k-input-row {
+  display: flex !important;
+  align-items: center !important;
+  background: #FFFFFF !important;
+  border: 1.5px solid var(--surface-border) !important;
+  border-radius: 0.75rem !important;
+  padding: 0.35rem 0.5rem 0.35rem 1rem !important;
+  box-shadow: 0 4px 20px rgba(4, 106, 56, 0.06) !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+.command-k-input-row:focus-within {
+  border-color: var(--emerald-primary, #046A38) !important;
+  box-shadow: 0 4px 20px rgba(4, 106, 56, 0.12) !important;
+}
+
+.hero-search-input,
+.global-search-input {
+  flex: 1 !important;
+  border: none !important;
+  outline: none !important;
+  background: transparent !important;
+  color: var(--text-primary, #1A2218) !important;
+  font-size: 0.95rem !important;
+  padding: 0.5rem !important;
+}
+
+.hero-search-input::placeholder,
+.global-search-input::placeholder {
+  color: var(--text-tertiary, #7A8678) !important;
+}
+
+/* SEARCH BUTTON: MUST BE EMERALD GREEN, NEVER BLUE */
+#btn-landing-search,
+.search-submit-btn,
+.command-k-input-row .search-submit-btn {
+  background: var(--emerald-primary, #046A38) !important;
+  color: #FFFFFF !important;
+  font-weight: 600 !important;
+  border-radius: 0.5rem !important;
+  border: none !important;
+  padding: 0.65rem 1.4rem !important;
+  cursor: pointer !important;
+  font-size: 0.9rem !important;
+  transition: background 0.15s ease, transform 0.15s ease !important;
+}
+
+#btn-landing-search:hover,
+.search-submit-btn:hover,
+.command-k-input-row .search-submit-btn:hover {
+  background: var(--emerald-hover, #03522B) !important;
+  color: #FFFFFF !important;
+  transform: translateY(-1px);
+}
+
+/* Paper Download and Preview Buttons */
+.paper-download-btn,
+.pyq-download-btn,
+.btn-paper-download,
+.paper-action-btn,
+.btn-view-paper {
+  background: var(--emerald-primary, #046A38) !important;
+  color: #FFFFFF !important;
+  border-radius: 0.375rem !important;
+  border: none !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+}
+
+.paper-download-btn:hover,
+.pyq-download-btn:hover,
+.btn-paper-download:hover,
+.paper-action-btn:hover,
+.btn-view-paper:hover {
+  background: var(--emerald-hover, #03522B) !important;
+  color: #FFFFFF !important;
+}
+
+/* 4. Stream Filter Tabs */
+.command-k-filter-pills {
+  justify-content: center !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 6px !important;
+  margin-top: 10px !important;
+}
+
+.cmd-filter-pill,
+.filter-pill-btn,
+#curriculum-filter-group .filter-pill-btn,
+#stream-tabs .filter-pill-btn {
+  background: #FFFFFF !important;
+  color: var(--text-primary, #1A2218) !important;
+  border: 1px solid var(--surface-border) !important;
+  border-radius: 9999px !important;
+  padding: 0.35rem 0.85rem !important;
+  font-weight: 500 !important;
+  font-size: 0.85rem !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+}
+
+.cmd-filter-pill:hover,
+.filter-pill-btn:hover,
+#curriculum-filter-group .filter-pill-btn:hover,
+#stream-tabs .filter-pill-btn:hover {
+  border-color: var(--emerald-primary, #046A38) !important;
+  color: var(--emerald-primary, #046A38) !important;
+}
+
+.cmd-filter-pill.active,
+.filter-pill-btn.active,
+#curriculum-filter-group .filter-pill-btn.active,
+#stream-tabs .filter-pill-btn.active {
+  background: var(--emerald-primary, #046A38) !important;
+  color: #FFFFFF !important;
+  border-color: var(--emerald-primary, #046A38) !important;
+  font-weight: 600 !important;
+}
+
+/* 5. 4 Metrics Bento Grid */
+.landing-highlights-grid,
+#landing-stats-bar {
+  margin-top: 2rem !important;
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
+  gap: 1rem !important;
+}
+
+.landing-highlights-grid .highlight-pill,
+.highlight-pill {
+  background: #FFFFFF !important;
+  border: 1px solid var(--surface-border) !important;
+  border-radius: 0.75rem !important;
+  padding: 1.5rem !important;
+  box-shadow: 0 4px 15px rgba(4, 106, 56, 0.04) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 4px !important;
+  text-decoration: none !important;
+  transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+.landing-highlights-grid .highlight-pill:hover,
+.highlight-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(4, 106, 56, 0.08) !important;
+}
+
+.highlight-pill div:first-child {
+  color: var(--text-primary, #1A2218) !important;
+  font-family: 'Manrope', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 1.25rem !important;
+}
+
+.highlight-pill div:last-child {
+  color: var(--text-secondary, #485446) !important;
+  font-size: 0.82rem !important;
+}
+
+/* 6. Feature and Curriculum Cards on Pure White */
+.feature-card,
+.feature-bento-card,
+.subject-card,
+.card {
+  background: #FFFFFF !important;
+  border: 1px solid var(--surface-border) !important;
+  color: var(--text-primary, #1A2218) !important;
+}
+
+/* 7. View 3: Academic Setup Modal Locked Option 2 */
+#academic-setup-modal .modal-card,
+#scope-modal .modal-card {
+  max-width: 600px !important;
+  width: 100% !important;
+  min-height: 420px !important;
+  border-radius: 1rem !important;
+  background: var(--surface-card, #FFFFFF) !important;
+  border: 1px solid var(--surface-border) !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1) !important;
+  color: var(--text-primary, #1A2218) !important;
+}
+
+#academic-setup-modal .primary-year-btn,
+#academic-setup-modal .academic-stage-card,
+#academic-setup-modal .stage-card {
+  background: #FFFFFF !important;
+  border: 1px solid var(--surface-border) !important;
+  border-radius: 0.75rem !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  color: var(--text-primary, #1A2218) !important;
+}
+
+#academic-setup-modal .primary-year-btn:hover,
+#academic-setup-modal .academic-stage-card:hover,
+#academic-setup-modal .stage-card:hover {
+  background: var(--surface-elevated, #F2E3CD) !important;
+  border: 2px solid var(--emerald-primary, #046A38) !important;
+}
+
+#academic-setup-modal .primary-year-btn.selected,
+#academic-setup-modal .primary-year-btn.active,
+#academic-setup-modal .academic-stage-card.selected,
+#academic-setup-modal .academic-stage-card.active,
+#academic-setup-modal .stage-card.selected,
+#academic-setup-modal .stage-card.active {
+  background: var(--surface-elevated, #F2E3CD) !important;
+  border: 2px solid var(--emerald-primary, #046A38) !important;
+}
+
+#academic-setup-modal .btn-enter-dashboard,
+#academic-setup-modal #btn-confirm-scope {
+  background: var(--vermilion-primary, #E34222) !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  border-radius: 0.5rem !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: background 0.15s ease, transform 0.15s ease !important;
+}
+
+#academic-setup-modal .btn-enter-dashboard:hover,
+#academic-setup-modal #btn-confirm-scope:hover {
+  background: var(--vermilion-hover, #C93619) !important;
+  transform: translateY(-1px);
+}
+
+/* 8. View 4: Student Intelligence Dashboard Workspace */
+#signout-btn,
+#btn-dashboard-sign-out {
+  background-color: var(--danger-action, #EF4444) !important;
+  color: #FFFFFF !important;
+  border-radius: 0.5rem !important;
+  font-weight: 600 !important;
+  border: none !important;
+  cursor: pointer !important;
+  padding: 0.45rem 1rem !important;
+  transition: background 0.15s ease, transform 0.15s ease !important;
+}
+
+#signout-btn:hover,
+#btn-dashboard-sign-out:hover {
+  background-color: #DC2626 !important;
+  transform: translateY(-1px);
+}
+
+.dash-nav-item.active,
+.sidebar-link.active,
+.sidebar-nav-item.active {
+  background: var(--emerald-primary, #046A38) !important;
+  color: #FFFFFF !important;
+  border-radius: 0.5rem !important;
+  font-weight: 600 !important;
+}
+
+.panic-badge,
+.tag-repeated-question,
+.high-yield-tag {
+  background: var(--vermilion-surface, rgba(227, 66, 34, 0.10)) !important;
+  color: var(--vermilion-primary, #E34222) !important;
+  border: 1px solid rgba(227, 66, 34, 0.3) !important;
+  font-weight: 700 !important;
+  font-size: 0.75rem !important;
+  padding: 0.25rem 0.6rem !important;
+  border-radius: 0.35rem !important;
+}
+
+#btn-export-saved-deck,
+.btn-export-deck {
+  background: var(--emerald-primary, #046A38) !important;
+  color: #FFFFFF !important;
+  border: none !important;
+  border-radius: 0.5rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+}
+
+#btn-export-saved-deck:hover,
+.btn-export-deck:hover {
+  background: var(--emerald-hover, #03522B) !important;
+}
