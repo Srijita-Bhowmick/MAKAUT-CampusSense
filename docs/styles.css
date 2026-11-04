@@ -15188,8 +15188,8 @@ html, body {
 }
 
 html, body, #app, main, header, nav, section, .hero-section, #features-section, #syllabus-section, #pyq-section, footer, .landing-footer {
-  background-color: #E9E8F8 !important;
-  background: #E9E8F8 !important;
+  background-color: transparent !important;
+  background: transparent !important;
   color: #0F172A !important;
 }
 
@@ -15409,8 +15409,8 @@ h1, h2, h3, h4, .editorial-hero-heading, .landing-section-heading, .dept-master-
 
 /* Footer Styling */
 footer, .landing-footer {
-  background-color: #E9E8F8 !important;
-  background: #E9E8F8 !important;
+  background-color: transparent !important;
+  background: transparent !important;
   color: #0F172A !important;
   border-top: 1px solid rgba(141, 185, 240, 0.45) !important;
   width: 100% !important;
@@ -15817,4 +15817,72 @@ body.dashboard-body,
 /* Permanently Hide Any Legacy Theme Toggle Elements */
 #theme-toggle, .theme-toggle-btn, .theme-switch {
   display: none !important;
+}
+
+
+/* ===================================================================
+   CAMPUS PHOTO BACKDROP VISIBILITY & FEEDBACK CHIPS (DIRECTIVE 3 & 2)
+   =================================================================== */
+html, body {
+  min-height: 100vh !important;
+  width: 100% !important;
+  background: 
+    linear-gradient(rgba(233, 232, 248, 0.88), rgba(233, 232, 248, 0.88)), 
+    url('/images/makaut-haringhata-boulevard.jpg') center top / cover no-repeat fixed !important;
+  background-color: #E9E8F8 !important;
+}
+
+body.landing-body, 
+body.dashboard-body, 
+.landing-wrapper, 
+.dashboard-wrapper,
+.page-wrapper {
+  background: 
+    linear-gradient(rgba(233, 232, 248, 0.88), rgba(233, 232, 248, 0.88)), 
+    url('/images/makaut-haringhata-boulevard.jpg') center top / cover no-repeat fixed !important;
+  background-color: #E9E8F8 !important;
+}
+
+main, 
+section, 
+header, 
+nav, 
+.hero-section, 
+.features-container, 
+#features-section, 
+#syllabus-section, 
+#pyq-section, 
+footer,
+.landing-footer,
+.landing-wrapper, 
+.dashboard-wrapper {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+/* Maintain solid white surfaces for card legibility */
+.cute-academic-card, 
+.feature-card, 
+.bento-card, 
+.cl-card {
+  background-color: #FFFFFF !important;
+  background: #FFFFFF !important;
+}
+
+.feedback-chip {
+  background: #FFFFFF;
+  border: 1.5px solid #8DB9F0;
+  color: #0F172A;
+  border-radius: 9999px;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.feedback-chip.active {
+  background-color: #8DB9F0 !important;
+  border-color: #8DB9F0 !important;
+  color: #0F172A !important;
 }

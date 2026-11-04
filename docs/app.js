@@ -20822,87 +20822,30 @@ if (document.readyState === 'loading') {
 }
 
 // =====================================================================
+
+// =====================================================================
 // INTERACTIVE FEEDBACK & PANIC PACK MODAL CONTROLLER (Directives 2 & 3)
 // =====================================================================
 function initInteractiveModals() {
-  // Feedback Modal
   const feedbackModal = document.getElementById('feedback-modal');
   const feedbackBtn = document.getElementById('btn-feedback');
-  const feedbackClose = document.getElementById('feedback-close-btn');
-  const feedbackCancel = document.getElementById('feedback-cancel-btn');
-  const feedbackSubmit = document.getElementById('feedback-submit-btn');
-
   if (feedbackBtn && feedbackModal) {
     feedbackBtn.onclick = function(e) {
       e.preventDefault();
       feedbackModal.style.display = 'flex';
     };
   }
-  if (feedbackClose && feedbackModal) {
-    feedbackClose.onclick = function(e) {
-      e.preventDefault();
-      feedbackModal.style.display = 'none';
-    };
-  }
-  if (feedbackCancel && feedbackModal) {
-    feedbackCancel.onclick = function(e) {
-      e.preventDefault();
-      feedbackModal.style.display = 'none';
-    };
-  }
-  if (feedbackSubmit && feedbackModal) {
-    feedbackSubmit.onclick = function(e) {
-      e.preventDefault();
-      const desc = document.getElementById('feedback-desc-input')?.value || '';
-      const cat = document.getElementById('feedback-selected-category')?.value || 'General';
-      alert('Feedback submitted: [' + cat + '] Thank you for contributing to MAKAUT CampusSense!');
-      if (document.getElementById('feedback-desc-input')) {
-        document.getElementById('feedback-desc-input').value = '';
-      }
-      feedbackModal.style.display = 'none';
-    };
-  }
   if (feedbackModal) {
-    window.addEventListener('click', function(e) {
+    feedbackModal.addEventListener('click', function(e) {
       if (e.target === feedbackModal) {
         feedbackModal.style.display = 'none';
       }
     });
   }
 
-  // Feedback Category Chips Interaction
-  const chips = document.querySelectorAll('.feedback-chip');
-  const catInput = document.getElementById('feedback-selected-category');
-  chips.forEach(function(chip) {
-    chip.onclick = function(e) {
-      e.preventDefault();
-      chips.forEach(function(c) {
-        c.classList.remove('active');
-        c.style.background = '#FFFFFF';
-        c.style.color = '#0F172A';
-        c.style.borderColor = '#8DB9F0';
-      });
-      chip.classList.add('active');
-      chip.style.background = '#8DB9F0';
-      chip.style.color = '#0F172A';
-      chip.style.borderColor = '#8DB9F0';
-      if (catInput) {
-        catInput.value = chip.getAttribute('data-category') || chip.textContent.trim();
-      }
-    };
-  });
-
-  // Panic Pack Modal
   const panicModal = document.getElementById('panic-pack-modal');
-  const panicDismiss = document.getElementById('panic-pack-dismiss-btn');
-  if (panicDismiss && panicModal) {
-    panicDismiss.onclick = function(e) {
-      e.preventDefault();
-      panicModal.style.display = 'none';
-    };
-  }
   if (panicModal) {
-    window.addEventListener('click', function(e) {
+    panicModal.addEventListener('click', function(e) {
       if (e.target === panicModal) {
         panicModal.style.display = 'none';
       }
