@@ -27,7 +27,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Plus+Jakarta+Sans:wght@600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20261104_v3">
+    <link rel="stylesheet" href="styles.css?v=20261104_v4">
 
     <!-- Schema.org EducationalOrganization -->
     <script type="application/ld+json">
@@ -67,9 +67,9 @@
 
         <!-- Right-Hand Controls: Feedback, Sign In, Sign Up -->
         <div class="nav-actions" style="display: flex; align-items: center;">
-            <a href="mailto:feedback@campussense.pages.dev?subject=CampusSense+Feedback" class="nav-feedback-btn" id="btn-feedback" style="color: #000000 !important; font-weight: 700; text-decoration: none; margin-right: 1.25rem; cursor: pointer; font-size: 0.95rem;">Feedback</a>
-            <a href="/login.html" id="btn-sign-in" class="nav-auth-link" style="color: #1A2218 !important; font-weight: 600; text-decoration: none; margin-right: 1.25rem; font-size: 0.95rem;">Sign In</a>
-            <a href="/login.html#/sign-up" id="btn-sign-up" class="nav-signup-btn" style="background: var(--vermilion-primary, #E34222) !important; color: #FFFFFF !important; padding: 0.5rem 1.25rem; border-radius: 0.5rem; font-weight: 700; text-decoration: none; border: none; font-size: 0.95rem; display: inline-flex; align-items: center; justify-content: center;">Sign Up</a>
+            <a href="mailto:feedback@campussense.pages.dev?subject=CampusSense+Feedback" class="nav-feedback-btn" id="btn-feedback" style="color: #000000 !important; font-weight: 700; margin-right: 1.25rem; cursor: pointer; text-decoration: none; font-size: 0.95rem;">Feedback</a>
+            <a href="/login.html" id="btn-sign-in" class="nav-auth-link" style="color: #1A2218 !important; font-weight: 600; margin-right: 1.25rem; text-decoration: none; font-size: 0.95rem;">Sign In</a>
+            <a href="/login.html#/sign-up" id="btn-sign-up" class="nav-signup-btn" style="background: #E34222 !important; color: #FFFFFF !important; font-weight: 700; border-radius: 0.5rem; padding: 0.5rem 1.25rem; border: none; text-decoration: none; font-size: 0.95rem; display: inline-flex; align-items: center; justify-content: center;">Sign Up</a>
 
             <!-- Hidden compatibility anchors for runtime scripts -->
             <button id="theme-toggle" style="display:none;" aria-hidden="true"></button>
@@ -150,38 +150,41 @@
         <section class="features-section" id="features-section" style="padding: 3rem 1.5rem; max-width: 1200px; margin: 0 auto; width: 100%; box-sizing: border-box;">
             <div class="features-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; width: 100%;">
                 <!-- Card 1 -->
-                <div class="feature-bento-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF; border: 1px solid var(--surface-border); border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 15px rgba(4, 106, 56, 0.04); cursor: pointer; text-align: left; display: flex; flex-direction: column; gap: 0.4rem;">
+                <div class="feature-bento-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF; border: 1px solid rgba(4, 106, 56, 0.18); border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 15px rgba(4, 106, 56, 0.04); cursor: pointer; text-align: left; display: flex; flex-direction: column; gap: 0.4rem;">
                     <div class="feature-bento-val" style="font-family: 'Manrope', sans-serif; font-size: 1.5rem; font-weight: 800; color: #1A2218;">134 Subjects</div>
                     <div class="feature-bento-desc" style="font-size: 0.88rem; color: #485446;">Ingested Syllabi across 1st Year & Core Departmental Streams</div>
                 </div>
                 <!-- Card 2 -->
-                <div class="feature-bento-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF; border: 1px solid var(--surface-border); border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 15px rgba(4, 106, 56, 0.04); cursor: pointer; text-align: left; display: flex; flex-direction: column; gap: 0.4rem;">
+                <div class="feature-bento-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF; border: 1px solid rgba(4, 106, 56, 0.18); border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 15px rgba(4, 106, 56, 0.04); cursor: pointer; text-align: left; display: flex; flex-direction: column; gap: 0.4rem;">
                     <div class="feature-bento-val" style="font-family: 'Manrope', sans-serif; font-size: 1.5rem; font-weight: 800; color: #1A2218;">Top 20%</div>
                     <div class="feature-bento-desc" style="font-size: 0.88rem; color: #485446;">Repeated Exam Questions driving 80% of university test papers</div>
                 </div>
                 <!-- Card 3 -->
-                <div class="feature-bento-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF; border: 1px solid var(--surface-border); border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 15px rgba(4, 106, 56, 0.04); cursor: pointer; text-align: left; display: flex; flex-direction: column; gap: 0.4rem;">
+                <div class="feature-bento-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF; border: 1px solid rgba(4, 106, 56, 0.18); border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 15px rgba(4, 106, 56, 0.04); cursor: pointer; text-align: left; display: flex; flex-direction: column; gap: 0.4rem;">
                     <div class="feature-bento-val" style="font-family: 'Manrope', sans-serif; font-size: 1.5rem; font-weight: 800; color: #1A2218;">1,489 PYQ Papers</div>
                     <div class="feature-bento-desc" style="font-size: 0.88rem; color: #485446;">Verified Archives from 2018 through 2024 with full solutions</div>
                 </div>
                 <!-- Card 4 -->
-                <div class="feature-bento-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF; border: 1px solid var(--surface-border); border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 15px rgba(4, 106, 56, 0.04); cursor: pointer; text-align: left; display: flex; flex-direction: column; gap: 0.4rem;">
+                <div class="feature-bento-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF; border: 1px solid rgba(4, 106, 56, 0.18); border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 15px rgba(4, 106, 56, 0.04); cursor: pointer; text-align: left; display: flex; flex-direction: column; gap: 0.4rem;">
                     <div class="feature-bento-val" style="font-family: 'Manrope', sans-serif; font-size: 1.5rem; font-weight: 800; color: #1A2218;">Grounded AI</div>
                     <div class="feature-bento-desc" style="font-size: 0.88rem; color: #485446;">Curriculum Citations referencing exact module codes and years</div>
                 </div>
             </div>
         </section>
 
-        <!-- E. The Syllabus Section ("Cute Little White Boxes" Grounded in Real Files) -->
+        <!-- E. Syllabus Blueprint Section: TWO-TIER RECONSTRUCTION -->
         <section class="landing-content-section" id="syllabus-section" style="padding: 3rem 1.5rem; max-width: 1200px; margin: 0 auto; width: 100%; box-sizing: border-box;">
             <div style="display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 2rem;">
                 <h2 class="landing-section-heading" style="font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 2rem; color: #1A2218; margin: 0;">Verified University Curriculums</h2>
-                <p class="landing-section-subhead" style="font-size: 1rem; color: #485446; margin: 0;">Official MAKAUT curriculum syllabi with verified credit structures and module breakdowns.</p>
+                <p class="landing-section-subhead" style="font-size: 1rem; color: #485446; margin: 0;">Official MAKAUT foundation blueprints and complete departmental master curriculum schemes.</p>
             </div>
 
-            <!-- Group 1: 1st Year Common Curriculum -->
-            <div style="margin-bottom: 3rem;">
-                <h3 style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1.35rem; color: #1A2218; margin: 0 0 1.25rem 0;">🏛️ 1st Year Common Curriculum (Semesters 1 &amp; 2)</h3>
+            <!-- Tier 1: 1st Year Common Curriculum (Subject-by-Subject Boxes) -->
+            <div style="margin-bottom: 3.5rem;">
+                <div style="margin-bottom: 1.25rem;">
+                    <h3 style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1.35rem; color: #1A2218; margin: 0 0 0.35rem 0;">🏛️ 1st Year Common Curriculum (Semesters 1 &amp; 2)</h3>
+                    <p style="font-size: 0.9rem; color: #485446; margin: 0;">Official MAKAUT foundation course blueprints for all engineering streams.</p>
+                </div>
                 <div class="cute-subject-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem;">
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
                     <div class="cute-card-header" style="display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem;">
@@ -190,8 +193,8 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Calculus, Linear Algebra & Differential Equations · 4 Credits · Basic Sciences</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #046A38 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -201,8 +204,8 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Advanced Calculus, Vector Spaces & Complex Variables · 4 Credits · Basic Sciences</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #046A38 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -212,8 +215,8 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Optics, Electromagnetism & Quantum Mechanics · 4 Credits · Basic Sciences</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #046A38 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -223,8 +226,8 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Thermodynamics, Spectroscopy & Stereochemistry · 4 Credits · Basic Sciences</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #046A38 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -234,8 +237,8 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">DC/AC Circuits, Transformers & Machines · 4 Credits · Engineering Sciences</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #046A38 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -245,19 +248,19 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">C Programming, Data Structures & Algorithms · 3 Credits · Engineering Sciences</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #046A38 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
                     <div class="cute-card-header" style="display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem;">
                         <span class="cute-card-code" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #1A2218; background: var(--surface-elevated, #F2E3CD); padding: 0.2rem 0.5rem; border-radius: 0.25rem; display: inline-block; width: fit-content;">HM-HU201</span>
-                        <div class="cute-card-title" style="color: #1A2218 !important; font-weight: 700; font-size: 1.05rem; margin: 0.4rem 0 0.1rem 0; font-family: 'Manrope', sans-serif;">English</div>
+                        <div class="cute-card-title" style="color: #1A2218 !important; font-weight: 700; font-size: 1.05rem; margin: 0.4rem 0 0.1rem 0; font-family: 'Manrope', sans-serif;">English / Professional Communication</div>
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Professional Communication & Technical Writing · 2 Credits · Humanities</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #046A38 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -267,8 +270,8 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Ecology, Sustainability & Pollution Control · Mandatory Non-Credit</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #046A38 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -278,8 +281,8 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">CAD, Orthographic Projections & Isometric Views · 3 Credits · Engineering Sciences</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #046A38 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -289,231 +292,85 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Macromolecules, Cellular Biology & Genetics · 2 Credits · Basic Sciences</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #046A38 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 </div>
             </div>
 
-            <!-- Group 2: Departmental Syllabi (Higher Years: Semesters 3 – 8) -->
+            <!-- Tier 2: Departmental Syllabi (EXACTLY 6 COMPLETE DEPARTMENTAL PDF CARDS) -->
             <div>
-                <h3 style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1.35rem; color: #1A2218; margin: 0 0 1.25rem 0;">🎓 Departmental Syllabi (Higher Years: Semesters 3 – 8)</h3>
-                <div class="cute-subject-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem;">
-                <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
-                    <div class="cute-card-header" style="display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem;">
-                        <span class="cute-card-code" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #1A2218; background: var(--surface-elevated, #F2E3CD); padding: 0.2rem 0.5rem; border-radius: 0.25rem; display: inline-block; width: fit-content;">PCC-CS301</span>
-                        <div class="cute-card-title" style="color: #1A2218 !important; font-weight: 700; font-size: 1.05rem; margin: 0.4rem 0 0.1rem 0; font-family: 'Manrope', sans-serif;">Data Structures & Algorithms</div>
-                        <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Sem 3 · Trees, Graphs, Sorting & Hashing · 4 Credits · Professional Core</div>
-                    </div>
-                    <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #046A38 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                <div style="margin-bottom: 1.25rem;">
+                    <h3 style="font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1.35rem; color: #1A2218; margin: 0 0 0.35rem 0;">🎓 Departmental Curricula (Semesters 3 – 8)</h3>
+                    <p style="font-size: 0.9rem; color: #485446; margin: 0;">Comprehensive departmental core and elective syllabus master blueprints.</p>
+                </div>
+                <div class="dept-master-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem;">
+                <div class="dept-master-card" onclick="window.location.href='/login.html'">
+                    <span class="dept-stream-badge">DEPT-CSE-MASTER</span>
+                    <div class="dept-master-title">Computer Science & Engineering (CSE)</div>
+                    <div style="color: #046A38; font-size: 0.88rem; font-weight: 700; margin-bottom: 0.35rem;">Complete 4-Year B.Tech Syllabus Blueprint (Semesters 3–8)</div>
+                    <div class="dept-master-subtext">Official MAKAUT Master Syllabus (Sem 3 to Sem 8 Full Scheme & Syllabus)</div>
+                    <div style="display: flex; align-items: center; gap: 0.6rem; margin-top: auto;">
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview Blueprint</button>
+                        <button class="btn-download-master btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();">Download Master PDF</button>
                     </div>
                 </div>
-                <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
-                    <div class="cute-card-header" style="display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem;">
-                        <span class="cute-card-code" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #1A2218; background: var(--surface-elevated, #F2E3CD); padding: 0.2rem 0.5rem; border-radius: 0.25rem; display: inline-block; width: fit-content;">PCC-CS302</span>
-                        <div class="cute-card-title" style="color: #1A2218 !important; font-weight: 700; font-size: 1.05rem; margin: 0.4rem 0 0.1rem 0; font-family: 'Manrope', sans-serif;">Computer Organization & Architecture</div>
-                        <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Sem 3 · Instruction Sets, Processor Design, Memory Hierarchy · 3 Credits · Professional Core</div>
-                    </div>
-                    <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #046A38 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
-                    </div>
-                </div>
-                <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
-                    <div class="cute-card-header" style="display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem;">
-                        <span class="cute-card-code" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #1A2218; background: var(--surface-elevated, #F2E3CD); padding: 0.2rem 0.5rem; border-radius: 0.25rem; display: inline-block; width: fit-content;">ESC-301</span>
-                        <div class="cute-card-title" style="color: #1A2218 !important; font-weight: 700; font-size: 1.05rem; margin: 0.4rem 0 0.1rem 0; font-family: 'Manrope', sans-serif;">Analog & Digital Electronics</div>
-                        <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Sem 3 · Boolean Logic, Combinational & Sequential Circuits · 3 Credits · Engineering Sciences</div>
-                    </div>
-                    <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #046A38 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                <div class="dept-master-card" onclick="window.location.href='/login.html'">
+                    <span class="dept-stream-badge">DEPT-IT-MASTER</span>
+                    <div class="dept-master-title">Information Technology (IT)</div>
+                    <div style="color: #046A38; font-size: 0.88rem; font-weight: 700; margin-bottom: 0.35rem;">Complete 4-Year B.Tech Syllabus Blueprint (Semesters 3–8)</div>
+                    <div class="dept-master-subtext">Official MAKAUT Master Syllabus (Sem 3 to Sem 8 Full Scheme & Syllabus)</div>
+                    <div style="display: flex; align-items: center; gap: 0.6rem; margin-top: auto;">
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview Blueprint</button>
+                        <button class="btn-download-master btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();">Download Master PDF</button>
                     </div>
                 </div>
-                <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
-                    <div class="cute-card-header" style="display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem;">
-                        <span class="cute-card-code" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #1A2218; background: var(--surface-elevated, #F2E3CD); padding: 0.2rem 0.5rem; border-radius: 0.25rem; display: inline-block; width: fit-content;">PCC-CS401</span>
-                        <div class="cute-card-title" style="color: #1A2218 !important; font-weight: 700; font-size: 1.05rem; margin: 0.4rem 0 0.1rem 0; font-family: 'Manrope', sans-serif;">Discrete Mathematics</div>
-                        <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Sem 4 · Propositional Logic, Relations, Graph Theory · 4 Credits · Professional Core</div>
-                    </div>
-                    <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #046A38 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
-                    </div>
-                </div>
-                <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
-                    <div class="cute-card-header" style="display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem;">
-                        <span class="cute-card-code" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #1A2218; background: var(--surface-elevated, #F2E3CD); padding: 0.2rem 0.5rem; border-radius: 0.25rem; display: inline-block; width: fit-content;">PCC-CS402</span>
-                        <div class="cute-card-title" style="color: #1A2218 !important; font-weight: 700; font-size: 1.05rem; margin: 0.4rem 0 0.1rem 0; font-family: 'Manrope', sans-serif;">Computer Architecture</div>
-                        <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Sem 4 · Pipelining, Instruction-Level Parallelism, Superscalar · 3 Credits · Professional Core</div>
-                    </div>
-                    <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #046A38 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                <div class="dept-master-card" onclick="window.location.href='/login.html'">
+                    <span class="dept-stream-badge">DEPT-AIML-MASTER</span>
+                    <div class="dept-master-title">Computer Science & Engineering (AI & ML)</div>
+                    <div style="color: #046A38; font-size: 0.88rem; font-weight: 700; margin-bottom: 0.35rem;">Complete 4-Year B.Tech Syllabus Blueprint (Semesters 3–8)</div>
+                    <div class="dept-master-subtext">Official MAKAUT Master Syllabus (Sem 3 to Sem 8 Full Scheme & Syllabus)</div>
+                    <div style="display: flex; align-items: center; gap: 0.6rem; margin-top: auto;">
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview Blueprint</button>
+                        <button class="btn-download-master btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();">Download Master PDF</button>
                     </div>
                 </div>
-                <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
-                    <div class="cute-card-header" style="display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem;">
-                        <span class="cute-card-code" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #1A2218; background: var(--surface-elevated, #F2E3CD); padding: 0.2rem 0.5rem; border-radius: 0.25rem; display: inline-block; width: fit-content;">PCC-CS403</span>
-                        <div class="cute-card-title" style="color: #1A2218 !important; font-weight: 700; font-size: 1.05rem; margin: 0.4rem 0 0.1rem 0; font-family: 'Manrope', sans-serif;">Formal Language & Automata Theory</div>
-                        <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Sem 4 · Finite Automata, Context-Free Grammars, Turing Machines · 3 Credits · Professional Core</div>
-                    </div>
-                    <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #046A38 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
-                    </div>
-                </div>
-                <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
-                    <div class="cute-card-header" style="display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem;">
-                        <span class="cute-card-code" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #1A2218; background: var(--surface-elevated, #F2E3CD); padding: 0.2rem 0.5rem; border-radius: 0.25rem; display: inline-block; width: fit-content;">PCC-CS404</span>
-                        <div class="cute-card-title" style="color: #1A2218 !important; font-weight: 700; font-size: 1.05rem; margin: 0.4rem 0 0.1rem 0; font-family: 'Manrope', sans-serif;">Design & Analysis of Algorithms</div>
-                        <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Sem 4 · Dynamic Programming, Greedy Algorithms, NP-Completeness · 4 Credits · Professional Core</div>
-                    </div>
-                    <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #046A38 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                <div class="dept-master-card" onclick="window.location.href='/login.html'">
+                    <span class="dept-stream-badge">DEPT-CSCS-MASTER</span>
+                    <div class="dept-master-title">Computer Science & Cyber Security (CSCS)</div>
+                    <div style="color: #046A38; font-size: 0.88rem; font-weight: 700; margin-bottom: 0.35rem;">Complete 4-Year B.Tech Syllabus Blueprint (Semesters 3–8)</div>
+                    <div class="dept-master-subtext">Official MAKAUT Master Syllabus (Sem 3 to Sem 8 Full Scheme & Syllabus)</div>
+                    <div style="display: flex; align-items: center; gap: 0.6rem; margin-top: auto;">
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview Blueprint</button>
+                        <button class="btn-download-master btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();">Download Master PDF</button>
                     </div>
                 </div>
-                <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
-                    <div class="cute-card-header" style="display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem;">
-                        <span class="cute-card-code" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #1A2218; background: var(--surface-elevated, #F2E3CD); padding: 0.2rem 0.5rem; border-radius: 0.25rem; display: inline-block; width: fit-content;">BSC-401</span>
-                        <div class="cute-card-title" style="color: #1A2218 !important; font-weight: 700; font-size: 1.05rem; margin: 0.4rem 0 0.1rem 0; font-family: 'Manrope', sans-serif;">Biology for Engineers</div>
-                        <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Sem 4 · Biomolecules, Genetics & Molecular Biology · 2 Credits · Basic Sciences</div>
-                    </div>
-                    <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #046A38 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
-                    </div>
-                </div>
-                <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
-                    <div class="cute-card-header" style="display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem;">
-                        <span class="cute-card-code" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #1A2218; background: var(--surface-elevated, #F2E3CD); padding: 0.2rem 0.5rem; border-radius: 0.25rem; display: inline-block; width: fit-content;">PCC-CS501</span>
-                        <div class="cute-card-title" style="color: #1A2218 !important; font-weight: 700; font-size: 1.05rem; margin: 0.4rem 0 0.1rem 0; font-family: 'Manrope', sans-serif;">Operating Systems</div>
-                        <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Sem 5 · Process Scheduling, Memory Management, File Systems · 3 Credits · Professional Core</div>
-                    </div>
-                    <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #046A38 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                <div class="dept-master-card" onclick="window.location.href='/login.html'">
+                    <span class="dept-stream-badge">DEPT-CSDS-MASTER</span>
+                    <div class="dept-master-title">Computer Science & Data Science (CSDS)</div>
+                    <div style="color: #046A38; font-size: 0.88rem; font-weight: 700; margin-bottom: 0.35rem;">Complete 4-Year B.Tech Syllabus Blueprint (Semesters 3–8)</div>
+                    <div class="dept-master-subtext">Official MAKAUT Master Syllabus (Sem 3 to Sem 8 Full Scheme & Syllabus)</div>
+                    <div style="display: flex; align-items: center; gap: 0.6rem; margin-top: auto;">
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview Blueprint</button>
+                        <button class="btn-download-master btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();">Download Master PDF</button>
                     </div>
                 </div>
-                <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
-                    <div class="cute-card-header" style="display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem;">
-                        <span class="cute-card-code" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #1A2218; background: var(--surface-elevated, #F2E3CD); padding: 0.2rem 0.5rem; border-radius: 0.25rem; display: inline-block; width: fit-content;">PCC-CS502</span>
-                        <div class="cute-card-title" style="color: #1A2218 !important; font-weight: 700; font-size: 1.05rem; margin: 0.4rem 0 0.1rem 0; font-family: 'Manrope', sans-serif;">Database Management Systems</div>
-                        <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Sem 5 · Relational Algebra, SQL, Normalization, Transactions · 4 Credits · Professional Core</div>
-                    </div>
-                    <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #046A38 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
-                    </div>
-                </div>
-                <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
-                    <div class="cute-card-header" style="display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem;">
-                        <span class="cute-card-code" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #1A2218; background: var(--surface-elevated, #F2E3CD); padding: 0.2rem 0.5rem; border-radius: 0.25rem; display: inline-block; width: fit-content;">PCC-CS503</span>
-                        <div class="cute-card-title" style="color: #1A2218 !important; font-weight: 700; font-size: 1.05rem; margin: 0.4rem 0 0.1rem 0; font-family: 'Manrope', sans-serif;">Object-Oriented Programming</div>
-                        <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Sem 5 · Java/C++, Polymorphism, Design Patterns, Streams · 3 Credits · Professional Core</div>
-                    </div>
-                    <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #046A38 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
-                    </div>
-                </div>
-                <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
-                    <div class="cute-card-header" style="display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem;">
-                        <span class="cute-card-code" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #1A2218; background: var(--surface-elevated, #F2E3CD); padding: 0.2rem 0.5rem; border-radius: 0.25rem; display: inline-block; width: fit-content;">PEC-CS701B</span>
-                        <div class="cute-card-title" style="color: #1A2218 !important; font-weight: 700; font-size: 1.05rem; margin: 0.4rem 0 0.1rem 0; font-family: 'Manrope', sans-serif;">Cyber Security Principles</div>
-                        <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Sem 5/7 · Cryptography, Network Defense, Ethical Hacking · 3 Credits · Professional Elective</div>
-                    </div>
-                    <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #046A38 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
-                    </div>
-                </div>
-                <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
-                    <div class="cute-card-header" style="display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem;">
-                        <span class="cute-card-code" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #1A2218; background: var(--surface-elevated, #F2E3CD); padding: 0.2rem 0.5rem; border-radius: 0.25rem; display: inline-block; width: fit-content;">HSMC-501</span>
-                        <div class="cute-card-title" style="color: #1A2218 !important; font-weight: 700; font-size: 1.05rem; margin: 0.4rem 0 0.1rem 0; font-family: 'Manrope', sans-serif;">Industrial Management</div>
-                        <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Sem 5 · Operations Research, Cost Accounting, Project Management · 3 Credits · Humanities</div>
-                    </div>
-                    <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #046A38 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
-                    </div>
-                </div>
-                <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
-                    <div class="cute-card-header" style="display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem;">
-                        <span class="cute-card-code" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #1A2218; background: var(--surface-elevated, #F2E3CD); padding: 0.2rem 0.5rem; border-radius: 0.25rem; display: inline-block; width: fit-content;">PCC-CS601</span>
-                        <div class="cute-card-title" style="color: #1A2218 !important; font-weight: 700; font-size: 1.05rem; margin: 0.4rem 0 0.1rem 0; font-family: 'Manrope', sans-serif;">Computer Networks</div>
-                        <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Sem 6 · OSI / TCP-IP Models, Routing Protocols, Sockets · 3 Credits · Professional Core</div>
-                    </div>
-                    <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #046A38 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
-                    </div>
-                </div>
-                <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
-                    <div class="cute-card-header" style="display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem;">
-                        <span class="cute-card-code" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #1A2218; background: var(--surface-elevated, #F2E3CD); padding: 0.2rem 0.5rem; border-radius: 0.25rem; display: inline-block; width: fit-content;">PCC-CS602</span>
-                        <div class="cute-card-title" style="color: #1A2218 !important; font-weight: 700; font-size: 1.05rem; margin: 0.4rem 0 0.1rem 0; font-family: 'Manrope', sans-serif;">Compiler Design</div>
-                        <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Sem 6 · Lexical Analysis, Parsing, Intermediate Code Generation · 3 Credits · Professional Core</div>
-                    </div>
-                    <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #046A38 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
-                    </div>
-                </div>
-                <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
-                    <div class="cute-card-header" style="display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem;">
-                        <span class="cute-card-code" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #1A2218; background: var(--surface-elevated, #F2E3CD); padding: 0.2rem 0.5rem; border-radius: 0.25rem; display: inline-block; width: fit-content;">PCC-CS603</span>
-                        <div class="cute-card-title" style="color: #1A2218 !important; font-weight: 700; font-size: 1.05rem; margin: 0.4rem 0 0.1rem 0; font-family: 'Manrope', sans-serif;">Software Engineering</div>
-                        <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Sem 6 · Agile, SDLC, UML Modeling, Testing & QA · 3 Credits · Professional Core</div>
-                    </div>
-                    <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #046A38 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
-                    </div>
-                </div>
-                <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
-                    <div class="cute-card-header" style="display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem;">
-                        <span class="cute-card-code" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #1A2218; background: var(--surface-elevated, #F2E3CD); padding: 0.2rem 0.5rem; border-radius: 0.25rem; display: inline-block; width: fit-content;">PEC-CS701A</span>
-                        <div class="cute-card-title" style="color: #1A2218 !important; font-weight: 700; font-size: 1.05rem; margin: 0.4rem 0 0.1rem 0; font-family: 'Manrope', sans-serif;">Cloud Computing</div>
-                        <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Sem 7 · Virtualization, AWS/GCP, Distributed Microservices · 3 Credits · Professional Elective</div>
-                    </div>
-                    <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #046A38 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
-                    </div>
-                </div>
-                <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
-                    <div class="cute-card-header" style="display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem;">
-                        <span class="cute-card-code" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #1A2218; background: var(--surface-elevated, #F2E3CD); padding: 0.2rem 0.5rem; border-radius: 0.25rem; display: inline-block; width: fit-content;">PEC-CS601A</span>
-                        <div class="cute-card-title" style="color: #1A2218 !important; font-weight: 700; font-size: 1.05rem; margin: 0.4rem 0 0.1rem 0; font-family: 'Manrope', sans-serif;">Artificial Intelligence</div>
-                        <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Sem 6/7 · Heuristic Search, Knowledge Representation, NLP · 3 Credits · Professional Elective</div>
-                    </div>
-                    <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #046A38 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
-                    </div>
-                </div>
-                <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
-                    <div class="cute-card-header" style="display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem;">
-                        <span class="cute-card-code" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #1A2218; background: var(--surface-elevated, #F2E3CD); padding: 0.2rem 0.5rem; border-radius: 0.25rem; display: inline-block; width: fit-content;">PEC-CS702A</span>
-                        <div class="cute-card-title" style="color: #1A2218 !important; font-weight: 700; font-size: 1.05rem; margin: 0.4rem 0 0.1rem 0; font-family: 'Manrope', sans-serif;">Machine Learning</div>
-                        <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Sem 7 · Supervised Learning, Neural Networks, Deep Learning · 3 Credits · Professional Elective</div>
-                    </div>
-                    <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #046A38 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                <div class="dept-master-card" onclick="window.location.href='/login.html'">
+                    <span class="dept-stream-badge">DEPT-CSBS-MASTER</span>
+                    <div class="dept-master-title">Computer Science & Business Systems (CSBS)</div>
+                    <div style="color: #046A38; font-size: 0.88rem; font-weight: 700; margin-bottom: 0.35rem;">Complete 4-Year B.Tech Syllabus Blueprint (Semesters 3–8)</div>
+                    <div class="dept-master-subtext">Official MAKAUT Master Syllabus (Sem 3 to Sem 8 Full Scheme & Syllabus)</div>
+                    <div style="display: flex; align-items: center; gap: 0.6rem; margin-top: auto;">
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview Blueprint</button>
+                        <button class="btn-download-master btn-card-download-emerald" onclick="window.location.href='/login.html'; event.stopPropagation();">Download Master PDF</button>
                     </div>
                 </div>
                 </div>
             </div>
         </section>
 
-        <!-- F. The PYQ Archives Section (Comprehensive Real Subject Catalog in Cute White Boxes) -->
+        <!-- F. PYQ Archives Section (Comprehensive Real Subject Catalog in Cute White Boxes) -->
         <section class="landing-content-section" id="pyq-section" style="padding: 3rem 1.5rem; max-width: 1200px; margin: 0 auto; width: 100%; box-sizing: border-box;">
             <div style="display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 2rem;">
                 <h2 class="landing-section-heading" style="font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 2rem; color: #1A2218; margin: 0;">Verified Past Year Question (PYQ) Archives</h2>
@@ -528,8 +385,8 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Verified Papers Archive · 2020–2026</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #E34222 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -539,8 +396,8 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Verified Papers Archive · 2023–2026</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #E34222 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -550,8 +407,8 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Verified Papers Archive · 2020–2026</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #E34222 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -561,8 +418,8 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Verified Papers Archive · 2020–2025</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #E34222 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -572,8 +429,8 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Verified Papers Archive · 2020–2026</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #E34222 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -583,19 +440,19 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Verified Papers Archive · 2023–2025</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #E34222 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
                     <div class="cute-card-header" style="display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem;">
                         <span class="cute-card-code" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #1A2218; background: var(--surface-elevated, #F2E3CD); padding: 0.2rem 0.5rem; border-radius: 0.25rem; display: inline-block; width: fit-content;">HM-HU201</span>
-                        <div class="cute-card-title" style="color: #1A2218 !important; font-weight: 700; font-size: 1.05rem; margin: 0.4rem 0 0.1rem 0; font-family: 'Manrope', sans-serif;">English Language & Communication</div>
+                        <div class="cute-card-title" style="color: #1A2218 !important; font-weight: 700; font-size: 1.05rem; margin: 0.4rem 0 0.1rem 0; font-family: 'Manrope', sans-serif;">English / Professional Communication</div>
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Verified Papers Archive · 2023–2025</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #E34222 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -605,8 +462,8 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Verified Papers Archive · 2015–2026</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #E34222 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -616,8 +473,8 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Verified Papers Archive · 2015–2025</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #E34222 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -627,8 +484,8 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Verified Papers Archive · 2020–2025</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #E34222 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -638,8 +495,8 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Verified Papers Archive · 2020–2025</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #E34222 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -649,8 +506,8 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Verified Papers Archive · 2015–2026</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #E34222 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -660,8 +517,8 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Verified Papers Archive · 2023–2026</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #E34222 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -671,8 +528,8 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Verified Papers Archive · 2015–2026</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #E34222 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -682,8 +539,8 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Verified Papers Archive · 2015–2025</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #E34222 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -693,8 +550,8 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Verified Papers Archive · 2018–2026</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #E34222 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -704,8 +561,8 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Verified Papers Archive · 2015–2026</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #E34222 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -715,8 +572,8 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Verified Papers Archive · 2023–2026</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #E34222 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -726,8 +583,8 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Verified Papers Archive · 2015–2026</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #E34222 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -737,8 +594,8 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Verified Papers Archive · 2015–2026</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #E34222 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -748,8 +605,8 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Verified Papers Archive · 2015–2019</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #E34222 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -759,8 +616,8 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Verified Papers Archive · 2015–2026</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #E34222 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -770,8 +627,8 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Verified Papers Archive · 2019–2026</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #E34222 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -781,8 +638,8 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Verified Papers Archive · 2020–2025</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #E34222 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -792,8 +649,8 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Verified Papers Archive · 2015–2026</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #E34222 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -803,8 +660,8 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Verified Papers Archive · 2024–2026</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #E34222 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -814,8 +671,8 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Verified Papers Archive · 2023–2026</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #E34222 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
                 <div class="cute-subject-card" onclick="window.location.href='/login.html'" style="background: #FFFFFF !important; border: 1px solid rgba(4, 106, 56, 0.18) !important; border-radius: 0.75rem; padding: 1.25rem; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: 0 4px 12px rgba(4, 106, 56, 0.05); cursor: pointer; text-align: left; display: flex; flex-direction: column;">
@@ -825,20 +682,20 @@
                         <div class="cute-card-sub" style="color: #485446; font-size: 0.8rem; line-height: 1.4;">Verified Papers Archive · 2024–2024</div>
                     </div>
                     <div class="cute-card-actions" style="display: flex; align-items: center; gap: 0.5rem; margin-top: auto;">
-                        <button class="btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #FFFFFF !important; color: #1A2218 !important; border: 1.5px solid rgba(4, 106, 56, 0.25) !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important;">Preview</button>
-                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();" style="background-color: #E34222 !important; color: #FFFFFF !important; font-size: 0.8rem !important; padding: 0.4rem 0.85rem !important; border-radius: 0.375rem !important; font-weight: 700 !important; cursor: pointer !important; border: none !important;">Download</button>
+                        <button class="btn-preview preview-btn btn-card-preview" onclick="window.location.href='/login.html'; event.stopPropagation();">Preview</button>
+                        <button class="btn-card-download-vermilion" onclick="window.location.href='/login.html'; event.stopPropagation();">Download</button>
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- G. Floating Bottom-Right "Ask AI" Button (Strictly Plain Text, No Emojis, No Badges) -->
+    <!-- G. Floating Bottom-Right "Ask AI" Button (Pure Plain Text Pill) -->
     <button id="floating-ask-ai" class="floating-ask-ai" onclick="window.location.href='/login.html'">
         Ask AI
     </button>
 
-    <!-- H. High-Contrast Footer & Attribution Markup (DESTROY BLACK VOID) -->
+    <!-- H. High-Contrast Legal Footer & Attribution Markup (DESTROY BLACK VOID) -->
     <footer class="landing-footer" style="background-color: #F9EBD7 !important; background: #F9EBD7 !important; color: #1A2218 !important; border-top: 1px solid rgba(4, 106, 56, 0.18) !important; width: 100% !important; max-width: 100vw !important; box-sizing: border-box !important; padding: 3.5rem 1.5rem !important; margin: 0 !important;">
       <div class="footer-content" style="max-width: 900px; margin: 0 auto; text-align: center;">
         <h4 id="footer-brand-title" style="color: #000000 !important; font-weight: 800; font-size: 1.15rem; margin-bottom: 0.5rem;">MAKAUT CampusSense Academic Resource Aggregator and Conversational RAG Engine</h4>
@@ -1364,6 +1221,7 @@
     </script>
 
     
+
 
 </body>
 </html>
