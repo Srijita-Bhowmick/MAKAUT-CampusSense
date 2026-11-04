@@ -4,11 +4,7 @@
    Emerald Green (#046A38), High-Voltage Vermilion (#E34222)
    =================================================================== */
 
-:root,
-[data-theme="light"],
-[data-theme="dark"],
-html,
-body {
+:root {
   /* Core Tri-Color Palette */
   --surface-canvas: #F9EBD7;           /* Warm Ivory: Glare-free 60% editorial base */
   --surface-card: #FFFFFF;             /* Pure White: High-contrast elevated cards */
@@ -6563,7 +6559,7 @@ html:not(.dark) .landing-footer-secondary {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
   display: flex !important;
   align-items: center !important;
-  padding: 0.35rem 0.75rem !important;
+  padding: 0.4rem 0.85rem !important;
 }
 
 kbd,
@@ -13970,7 +13966,7 @@ a[data-nav="feedback"]:hover {
   color: var(--text-primary) !important;
   font-weight: 500 !important;
   border-radius: 0.375rem !important;
-  padding: 0.35rem 0.75rem !important;
+  padding: 0.4rem 0.85rem !important;
   cursor: pointer !important;
   transition: all 0.15s ease !important;
 }
@@ -14924,8 +14920,9 @@ html, body {
   margin: 0 auto !important;
 }
 
-.hero-btn-explore {
-  background: var(--vermilion-primary, #E34222) !important;
+.hero-btn-explore,
+.hero-btn-panic {
+  background: var(--emerald-primary, #046A38) !important;
   color: #FFFFFF !important;
   font-weight: 700 !important;
   padding: 0.85rem 1.85rem !important;
@@ -14942,32 +14939,10 @@ html, body {
   transition: background 0.15s ease, transform 0.15s ease !important;
 }
 
-.hero-btn-explore:hover {
-  background: var(--vermilion-hover, #C93619) !important;
-  color: #FFFFFF !important;
-  transform: translateY(-1px);
-}
-
-.hero-btn-panic {
-  background: transparent !important;
-  border: 2px solid var(--emerald-primary, #046A38) !important;
-  color: var(--emerald-primary, #046A38) !important;
-  font-weight: 700 !important;
-  padding: 0.85rem 1.85rem !important;
-  border-radius: 0.5rem !important;
-  cursor: pointer !important;
-  text-decoration: none !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  height: 48px !important;
-  box-sizing: border-box !important;
-  font-size: 0.95rem !important;
-  transition: all 0.15s ease !important;
-}
-
+.hero-btn-explore:hover,
 .hero-btn-panic:hover {
-  background: var(--emerald-surface, rgba(4, 106, 56, 0.08)) !important;
+  background: var(--emerald-hover, #03522B) !important;
+  color: #FFFFFF !important;
   transform: translateY(-1px);
 }
 
@@ -15098,7 +15073,7 @@ html, body {
   color: #1A2218 !important;
   border: 1px solid var(--surface-border) !important;
   font-size: 0.8rem !important;
-  padding: 0.35rem 0.75rem !important;
+  padding: 0.4rem 0.85rem !important;
   border-radius: 0.375rem !important;
   font-weight: 600 !important;
   cursor: pointer !important;
@@ -15113,7 +15088,7 @@ html, body {
   background: var(--emerald-primary, #046A38) !important;
   color: #FFFFFF !important;
   font-size: 0.8rem !important;
-  padding: 0.35rem 0.75rem !important;
+  padding: 0.4rem 0.85rem !important;
   border-radius: 0.375rem !important;
   font-weight: 600 !important;
   cursor: pointer !important;
@@ -15129,7 +15104,7 @@ html, body {
   background: var(--vermilion-primary, #E34222) !important;
   color: #FFFFFF !important;
   font-size: 0.8rem !important;
-  padding: 0.35rem 0.75rem !important;
+  padding: 0.4rem 0.85rem !important;
   border-radius: 0.375rem !important;
   font-weight: 600 !important;
   cursor: pointer !important;
