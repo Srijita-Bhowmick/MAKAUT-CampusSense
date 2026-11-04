@@ -205,29 +205,9 @@
       transform: translateX(-2px);
     }
 
-    .theme-toggle-btn {
-      position: fixed;
-      top: 24px;
-      right: 24px;
-      z-index: 9999;
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 9999px;
-      padding: 8px 14px;
-      color: var(--text-secondary);
-      font-size: 0.85rem;
-      font-weight: 500;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.15s ease;
-    }
+    
 
-    .theme-toggle-btn:hover {
-      color: var(--text-primary);
-      border-color: var(--accent);
-    }
+    
 
     /* Main Auth Card */
     .auth-card-wrapper {
@@ -592,12 +572,7 @@
         padding: 6px 12px;
         font-size: 0.78rem;
       }
-      .theme-toggle-btn {
-        top: 12px;
-        right: 12px;
-        padding: 6px 10px;
-        font-size: 0.78rem;
-      }
+      
       .auth-card-wrapper {
         padding: 1.5rem 1.15rem;
         border-radius: 12px;
@@ -621,7 +596,7 @@
       align-items: center !important;
       justify-content: center !important;
       background: linear-gradient(rgba(233, 232, 248, 0.94), rgba(233, 232, 248, 0.94)),
-                  url('/assets/images/makaut-haringhata-boulevard.jpg') center center / cover no-repeat fixed !important;
+                  url('/images/makaut-haringhata-boulevard.jpg') center center / cover no-repeat fixed !important;
       padding: 1.5rem !important;
       box-sizing: border-box !important;
     }
@@ -677,10 +652,7 @@
   </a>
 
   <!-- Theme Toggle -->
-  <button type="button" class="theme-toggle-btn" id="theme-toggle" title="Toggle Dark/Light Mode">
-    <span id="theme-icon">☀️</span>
-    <span id="theme-text">Theme</span>
-  </button>
+  
 
   <main class="auth-card-wrapper">
     <!-- View 2: High-Contrast 1:1 StockPulse Clerk Authentication Mount -->
@@ -829,25 +801,7 @@
     let resendInterval = null;
 
     // Theme Toggle Initialization
-    const themeBtn = document.getElementById("theme-toggle");
-    const themeIcon = document.getElementById("theme-icon");
-    function updateThemeUI(t) {
-      document.documentElement.setAttribute("data-theme", t);
-      if (t === "light") {
-        themeIcon.textContent = "🌙";
-        document.getElementById("theme-text").textContent = "Dark";
-      } else {
-        themeIcon.textContent = "☀️";
-        document.getElementById("theme-text").textContent = "Light";
-      }
-    }
-    const currentTheme = localStorage.getItem("campussense_theme") || "light";
-    updateThemeUI(currentTheme);
-    themeBtn.addEventListener("click", () => {
-      const nextTheme = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
-      localStorage.setItem("campussense_theme", nextTheme);
-      updateThemeUI(nextTheme);
-    });
+    
 
     // Dynamic Clerk Key Resolver & Loader
     async function getClerkPublishableKey() {

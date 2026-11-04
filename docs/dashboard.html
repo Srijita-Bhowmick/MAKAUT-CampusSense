@@ -12,10 +12,7 @@
   <script>
     (function () {
       try {
-        const theme = localStorage.getItem('campussense_theme') || 'light';
-        document.documentElement.setAttribute('data-theme', theme);
-        if (theme === 'dark') document.documentElement.classList.add('dark');
-        else document.documentElement.classList.remove('dark');
+        document.documentElement.setAttribute('data-theme', 'light'); document.documentElement.classList.remove('dark');
       } catch (e) {}
     })();
   </script>
@@ -858,7 +855,7 @@
 
 </style>
 </head>
-<body class="dashboard-body" style="background: linear-gradient(rgba(233, 232, 248, 0.92), rgba(233, 232, 248, 0.92)), url('/assets/images/makaut-haringhata-boulevard.jpg') center center / cover no-repeat fixed !important; min-height: 100vh !important;">
+<body class="dashboard-body" style="background: linear-gradient(rgba(233, 232, 248, 0.92), rgba(233, 232, 248, 0.92)), url('/images/makaut-haringhata-boulevard.jpg') center center / cover no-repeat fixed !important; min-height: 100vh !important;">
 
 <!-- Auth Guard Veil -->
 <div id="auth-veil">
@@ -1387,35 +1384,7 @@
       </div>
       <div style="background:var(--surface-card);border:1px solid var(--border-hairline);border-radius:var(--radius-md);padding:1.25rem;">
         <div class="pref-group">
-          <div class="pref-item">
-            <label class="pref-label" for="pref-darkmode">Dark Mode</label>
-            <label class="toggle-switch">
-              <input type="checkbox" id="pref-darkmode" checked onchange="toggleTheme(this.checked)" />
-              <span class="toggle-slider"></span>
-            </label>
           </div>
-          <div class="pref-item">
-            <label class="pref-label" for="pref-animations">Reduce Motion</label>
-            <label class="toggle-switch">
-              <input type="checkbox" id="pref-animations" onchange="toggleReduceMotion(this.checked)" />
-              <span class="toggle-slider"></span>
-            </label>
-          </div>
-          <div class="pref-item">
-            <label class="pref-label" for="pref-notifications">Exam Reminders</label>
-            <label class="toggle-switch">
-              <input type="checkbox" id="pref-notifications" onchange="savePref('exam_reminders', this.checked)" />
-              <span class="toggle-slider"></span>
-            </label>
-          </div>
-          <div class="pref-item">
-            <label class="pref-label" for="pref-compact">Compact View</label>
-            <label class="toggle-switch">
-              <input type="checkbox" id="pref-compact" onchange="savePref('compact_view', this.checked)" />
-              <span class="toggle-slider"></span>
-            </label>
-          </div>
-        </div>
         <div style="margin-top:1.25rem;display:flex;gap:0.75rem;flex-wrap:wrap;">
           <button class="course-action-btn secondary" onclick="clearDeck()" style="font-size:12px;">🗑️ Clear Revision Deck</button>
           <button class="course-action-btn secondary" onclick="clearBookmarks()" style="font-size:12px;">🔖 Clear All Bookmarks</button>
@@ -1424,6 +1393,19 @@
       </div>
     </section>
 
+      <footer class="dashboard-footer" style="background-color: transparent !important; color: #0F172A !important; border-top: 1px solid rgba(141, 185, 240, 0.45) !important; width: 100% !important; padding: 2rem 1rem !important; margin: 3rem 0 0 0 !important; box-sizing: border-box !important; text-align: center;">
+      <p style="color: #0F172A !important; font-weight: 700; font-size: 0.9rem; text-decoration: none !important; margin: 0 0 0.5rem 0;">
+        Curated for MAKAUT-affiliated colleges, maintained by Srijita Bhowmick
+      </p>
+      <p style="color: #334155 !important; font-size: 0.8rem; max-width: 650px; margin: 0 auto 0.75rem auto; line-height: 1.5; text-decoration: none !important;">
+        MAKAUT CampusSense is an independent, nonprofit student academic resources platform built solely for educational and research purposes.
+      </p>
+      <div>
+        <a href="/privacy.html" style="color: #0F172A !important; font-weight: 700; font-size: 0.825rem; text-decoration: underline !important;">
+          Privacy Policy & Educational Terms
+        </a>
+      </div>
+    </footer>
   </main><!-- /#dash-workspace -->
 
   <!-- ── Right Dock: Revision Deck ── -->
@@ -1839,9 +1821,7 @@ function clearBookmarks() {
 
 // ── Preferences ──────────────────────────────────
 function loadPrefs() {
-  const theme = lsGet('campussense_theme', 'dark');
-  const darkmodeEl = document.getElementById('pref-darkmode');
-  if (darkmodeEl) darkmodeEl.checked = (theme === 'dark');
+  // Theme permanently light
 
   const reduceMotion = lsGet('campussense_reduce_motion') === 'true';
   const rmEl = document.getElementById('pref-animations');
@@ -1856,13 +1836,7 @@ function loadPrefs() {
   if (cmEl) cmEl.checked = compact;
 }
 
-function toggleTheme(isDark) {
-  const theme = isDark ? 'dark' : 'light';
-  lsSet('campussense_theme', theme);
-  document.documentElement.setAttribute('data-theme', theme);
-  if (isDark) document.documentElement.classList.add('dark');
-  else document.documentElement.classList.remove('dark');
-  showToast(`Switched to ${isDark ? 'dark' : 'light'} mode`, 'success', 2000);
+function toggleTheme() { /* Theme toggle permanently removed */ } mode`, 'success', 2000);
 }
 
 function toggleReduceMotion(enabled) {

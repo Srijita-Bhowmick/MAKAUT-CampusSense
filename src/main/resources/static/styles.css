@@ -2954,26 +2954,9 @@ body.is-drawer-resizing .ai-slide-drawer {
 }
 
 /* Theme Toggle Button */
-.theme-toggle-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 38px;
-    height: 38px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--card-border);
-    color: var(--text-main);
-    cursor: pointer;
-    font-size: 1.15rem;
-    transition: var(--transition-fast);
-}
 
-.theme-toggle-btn:hover {
-    background: rgba(29, 78, 216, 0.15);
-    border-color: var(--accent-primary);
-    transform: rotate(15deg);
-}
+
+
 
 /* User Profile Dropdown */
 .user-profile-menu-wrapper {
@@ -13402,8 +13385,6 @@ html.light .bg-\[\#1E222D\],
     box-sizing: border-box !important;
 }
 
-#theme-toggle,
-.app-header #theme-toggle,
 #btn-mobile-nav,
 .app-header #btn-mobile-nav {
     width: 36px !important;
@@ -13425,9 +13406,6 @@ html.light .bg-\[\#1E222D\],
     cursor: pointer;
 }
 
-[data-theme="light"] #theme-toggle,
-.light-theme #theme-toggle,
-html.light #theme-toggle,
 [data-theme="light"] #btn-mobile-nav,
 .light-theme #btn-mobile-nav,
 html.light #btn-mobile-nav {
@@ -15778,5 +15756,65 @@ body.landing-body, body.dashboard-body, .page-wrapper {
 }
 
 .course-credit-pill {
+  display: none !important;
+}
+
+
+/* ===================================================================
+   MAKAUT HARINGHATA CAMPUS BACKDROP & ENHANCED FEEDBACK (DIRECTIVE 4 & 2)
+   =================================================================== */
+body.landing-body, 
+body.dashboard-body, 
+.landing-wrapper, 
+.dashboard-wrapper,
+.page-wrapper {
+  background: 
+    linear-gradient(rgba(233, 232, 248, 0.90), rgba(233, 232, 248, 0.90)), 
+    url('/images/makaut-haringhata-boulevard.jpg') center center / cover no-repeat fixed !important;
+  background-color: var(--surface-canvas, #E9E8F8) !important;
+}
+
+.auth-page-container, body.auth-body {
+  min-height: 100vh !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: linear-gradient(rgba(233, 232, 248, 0.92), rgba(233, 232, 248, 0.92)),
+              url('/images/makaut-haringhata-boulevard.jpg') center center / cover no-repeat fixed !important;
+  padding: 1.5rem !important;
+  box-sizing: border-box !important;
+}
+
+#app, main, section, .hero-section, #features-section, #syllabus-section, #pyq-section, footer, .landing-footer, .workspace-section {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+.cute-academic-card, .cl-card, .auth-card, .bento-card, .feature-bento-card, .course-accordion {
+  background-color: #FFFFFF !important;
+  background: #FFFFFF !important;
+}
+
+/* Enhanced Feedback Category Chips */
+.feedback-chip {
+  background: #FFFFFF;
+  border: 1.5px solid #8DB9F0;
+  color: #0F172A;
+  border-radius: 9999px;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.feedback-chip.active, .feedback-chip:hover {
+  background: #8DB9F0;
+  color: #0F172A;
+  border-color: #8DB9F0;
+}
+
+/* Permanently Hide Any Legacy Theme Toggle Elements */
+#theme-toggle, .theme-toggle-btn, .theme-switch {
   display: none !important;
 }

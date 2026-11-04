@@ -1,55 +1,17 @@
 // MAKAUT-CampusSense — End-to-End Academic Engine & Conversational RAG
 // Maintained by Srijita Bhowmick (srijitabhowmick42@gmail.com)
 // --- INDEPENDENT GLOBAL CONTROLLER ---
-(function initThemeSingleton() {
+// MAKAUT-CampusSense — End-to-End Academic Engine & Conversational RAG
+// Maintained by Srijita Bhowmick (srijitabhowmick42@gmail.com)
+// --- PERMANENT LIGHT PALETTE CONTROLLER ---
+(function lockLightPalette() {
   const docEl = document.documentElement;
   docEl.setAttribute('data-theme', 'light');
   docEl.classList.remove('dark');
   docEl.classList.add('light', 'light-theme');
-
-  function updateIcons(theme) {
-    const sun = document.getElementById('theme-toggle-sun');
-    const moon = document.getElementById('theme-toggle-moon');
-    if (sun && moon) {
-      sun.style.display = 'block';
-      moon.style.display = 'none';
-    } else {
-      const btn = document.getElementById('theme-toggle');
-      if (btn) {
-        btn.textContent = '☀️';
-      }
-    }
-  }
-
-  window.toggleTheme = function(e) {
-    if (e) {
-      e.preventDefault();
-      e.stopImmediatePropagation();
-    }
-    docEl.setAttribute('data-theme', 'light');
-    docEl.classList.remove('dark');
-    docEl.classList.add('light', 'light-theme');
-    try {
-      localStorage.setItem('campussense_theme', 'light');
-    } catch (err) {}
-    updateIcons('light');
-  };
-
-  function setupThemeToggle() {
-    document.body.classList.remove('modal-open');
-    document.body.style.overflow = '';
-    const btn = document.getElementById('theme-toggle');
-    if (btn) {
-      btn.onclick = window.toggleTheme;
-    }
-    updateIcons('light');
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', setupThemeToggle);
-  } else {
-    setupThemeToggle();
-  }
+  try {
+    localStorage.removeItem('campussense_theme');
+  } catch (err) {}
 })();
 
 function lockBodyScroll(lock) {
@@ -400,13 +362,20 @@ window.onClerkLoaded = function() {
 
     // Wire Navbar "Panic Pack" Link
     const wireNavPanicLink = () => {
-        const navPanicLink = document.querySelector('a[href="#panic-pack"], a[href="#landing-panic-drill"], .nav-panic-link, [data-nav="panic-pack"]');
+        const navPanicLink = document.querySelector('a[href="#panic-pack"], a[href="#landing-panic-drill"], .nav-panic-link, [data-nav="panic-pack"], #nav-panic-link');
         if (navPanicLink) {
             navPanicLink.onclick = function(e) {
-                if (!isUserAuthenticated()) {
-                    e.preventDefault();
-                    window.location.href = '/login.html';
-                }
+                e.preventDefault();
+                const modal = document.getElementById('panic-pack-modal');
+                if (modal) modal.style.display = 'flex';
+            };
+        }
+        const heroPanicBtn = document.querySelector('.hero-btn-panic, #btn-hero-panic, #btn-hero-panic-pack');
+        if (heroPanicBtn) {
+            heroPanicBtn.onclick = function(e) {
+                e.preventDefault();
+                const modal = document.getElementById('panic-pack-modal');
+                if (modal) modal.style.display = 'flex';
             };
         }
     };
@@ -20850,4 +20819,99 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initFloatingAskAi);
 } else {
   initFloatingAskAi();
+}
+
+// =====================================================================
+// INTERACTIVE FEEDBACK & PANIC PACK MODAL CONTROLLER (Directives 2 & 3)
+// =====================================================================
+function initInteractiveModals() {
+  // Feedback Modal
+  const feedbackModal = document.getElementById('feedback-modal');
+  const feedbackBtn = document.getElementById('btn-feedback');
+  const feedbackClose = document.getElementById('feedback-close-btn');
+  const feedbackCancel = document.getElementById('feedback-cancel-btn');
+  const feedbackSubmit = document.getElementById('feedback-submit-btn');
+
+  if (feedbackBtn && feedbackModal) {
+    feedbackBtn.onclick = function(e) {
+      e.preventDefault();
+      feedbackModal.style.display = 'flex';
+    };
+  }
+  if (feedbackClose && feedbackModal) {
+    feedbackClose.onclick = function(e) {
+      e.preventDefault();
+      feedbackModal.style.display = 'none';
+    };
+  }
+  if (feedbackCancel && feedbackModal) {
+    feedbackCancel.onclick = function(e) {
+      e.preventDefault();
+      feedbackModal.style.display = 'none';
+    };
+  }
+  if (feedbackSubmit && feedbackModal) {
+    feedbackSubmit.onclick = function(e) {
+      e.preventDefault();
+      const desc = document.getElementById('feedback-desc-input')?.value || '';
+      const cat = document.getElementById('feedback-selected-category')?.value || 'General';
+      alert('Feedback submitted: [' + cat + '] Thank you for contributing to MAKAUT CampusSense!');
+      if (document.getElementById('feedback-desc-input')) {
+        document.getElementById('feedback-desc-input').value = '';
+      }
+      feedbackModal.style.display = 'none';
+    };
+  }
+  if (feedbackModal) {
+    window.addEventListener('click', function(e) {
+      if (e.target === feedbackModal) {
+        feedbackModal.style.display = 'none';
+      }
+    });
+  }
+
+  // Feedback Category Chips Interaction
+  const chips = document.querySelectorAll('.feedback-chip');
+  const catInput = document.getElementById('feedback-selected-category');
+  chips.forEach(function(chip) {
+    chip.onclick = function(e) {
+      e.preventDefault();
+      chips.forEach(function(c) {
+        c.classList.remove('active');
+        c.style.background = '#FFFFFF';
+        c.style.color = '#0F172A';
+        c.style.borderColor = '#8DB9F0';
+      });
+      chip.classList.add('active');
+      chip.style.background = '#8DB9F0';
+      chip.style.color = '#0F172A';
+      chip.style.borderColor = '#8DB9F0';
+      if (catInput) {
+        catInput.value = chip.getAttribute('data-category') || chip.textContent.trim();
+      }
+    };
+  });
+
+  // Panic Pack Modal
+  const panicModal = document.getElementById('panic-pack-modal');
+  const panicDismiss = document.getElementById('panic-pack-dismiss-btn');
+  if (panicDismiss && panicModal) {
+    panicDismiss.onclick = function(e) {
+      e.preventDefault();
+      panicModal.style.display = 'none';
+    };
+  }
+  if (panicModal) {
+    window.addEventListener('click', function(e) {
+      if (e.target === panicModal) {
+        panicModal.style.display = 'none';
+      }
+    });
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initInteractiveModals);
+} else {
+  initInteractiveModals();
 }

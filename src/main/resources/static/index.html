@@ -61,7 +61,7 @@
             <a href="#features-section" class="landing-nav-link" data-nav="features" style="color: #0F172A !important; font-weight: 600; font-size: 0.95rem; text-decoration: none; margin: 0 1rem;">Features</a>
             <a href="#syllabus-section" class="landing-nav-link" data-nav="syllabus" style="color: #0F172A !important; font-weight: 600; font-size: 0.95rem; text-decoration: none; margin: 0 1rem;">Syllabus</a>
             <a href="#pyq-section" class="landing-nav-link" data-nav="archives" style="color: #0F172A !important; font-weight: 600; font-size: 0.95rem; text-decoration: none; margin: 0 1rem;">PYQ Archives</a>
-            <a href="javascript:void(0)" onclick="document.getElementById('panic-pack-modal').style.display='flex';" class="landing-nav-link nav-panic-link" data-nav="panic-pack" style="color: #0F172A !important; font-weight: 600; font-size: 0.95rem; text-decoration: none; margin: 0 1rem; background: transparent !important; border: none !important; cursor: pointer;">🔥 Panic Pack</a>
+            <a href="javascript:void(0)" id="nav-panic-link" class="landing-nav-link nav-panic-link" data-nav="panic-pack" style="color: #0F172A !important; font-weight: 600; font-size: 0.95rem; text-decoration: none; margin: 0 1rem; background: transparent !important; border: none !important; cursor: pointer;">🔥 Panic Pack</a>
         </nav>
 
         <!-- Right-Hand Controls: Feedback, Sign In, Sign Up -->
@@ -71,7 +71,7 @@
             <a href="/login.html#/sign-up" id="btn-sign-up" class="nav-signup-btn" style="background-color: #F5B69E !important; color: #0F172A !important; font-weight: 700; padding: 0.5rem 1.25rem; border-radius: 0.5rem; text-decoration: none; border: none; font-size: 0.95rem; display: inline-flex; align-items: center; justify-content: center;">Sign Up</a>
 
             <!-- Hidden compatibility anchors for runtime scripts -->
-            <button id="theme-toggle" style="display:none;" aria-hidden="true"></button>
+            
             <button id="btn-saved-deck" style="display:none;" aria-hidden="true"></button>
             <div id="nav-portal-switcher" style="display:none;" aria-hidden="true"></div>
             <button id="nav-academic-pill" style="display:none;" aria-hidden="true"></button>
@@ -139,9 +139,7 @@
                 <a href="#syllabus-section" class="hero-btn-explore" style="background: #8DB9F0 !important; color: #0F172A !important; font-weight: 700; padding: 0.85rem 1.85rem; border-radius: 0.5rem; border: none !important; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; height: 48px; box-sizing: border-box;">
                     Explore Curriculums and PYQs →
                 </a>
-                <button onclick="document.getElementById('panic-pack-modal').style.display='flex';" class="hero-btn-panic" style="background: #8DB9F0 !important; color: #0F172A !important; font-weight: 700; padding: 0.85rem 1.85rem; border-radius: 0.5rem; border: none !important; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; height: 48px; box-sizing: border-box;">
-                    View 16+ Panic Pack →
-                </button>
+                <button type="button" id="btn-hero-panic" class="hero-btn-panic" style="background: #8DB9F0 !important; color: #0F172A !important; font-weight: 700; padding: 0.85rem 1.85rem; border-radius: 0.5rem; border: none !important; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; height: 48px; box-sizing: border-box;">View 16+ Panic Pack →</button>
             </div>
         </section>
 
@@ -1170,21 +1168,40 @@
     </footer>
 
     <!-- I. Interactive Feedback Modal (Section 4A) -->
+        <!-- Enhanced Interactive Feedback Modal (Section 2) -->
     <div id="feedback-modal" style="display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(4px); z-index: 10000; align-items: center; justify-content: center;">
-      <div style="background: #FFFFFF; border: 1.5px solid rgba(141, 185, 240, 0.5); border-radius: 1rem; padding: 2rem; width: 100%; max-width: 480px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); box-sizing: border-box;">
+      <div style="background: #FFFFFF; border: 1.5px solid rgba(141, 185, 240, 0.5); border-radius: 1rem; padding: 2rem; width: 100%; max-width: 500px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); box-sizing: border-box;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
-          <h3 style="margin: 0; font-size: 1.25rem; font-weight: 700; color: #0F172A;">Share Academic Feedback</h3>
-          <button onclick="document.getElementById('feedback-modal').style.display='none'" style="background: none; border: none; font-size: 1.25rem; cursor: pointer; color: #64748B;">✕</button>
+          <h3 style="margin: 0; font-size: 1.25rem; font-weight: 700; color: #0F172A; font-family: 'Manrope', sans-serif;">Share Academic Feedback</h3>
+          <button type="button" id="feedback-close-btn" style="background: none; border: none; font-size: 1.35rem; cursor: pointer; color: #64748B; padding: 0.25rem; line-height: 1;">✕</button>
         </div>
-        <textarea placeholder="Tell us what resources or features you need..." style="width: 100%; height: 110px; border: 1.5px solid rgba(141, 185, 240, 0.5); border-radius: 0.5rem; padding: 0.75rem; font-family: inherit; font-size: 0.9rem; color: #0F172A; background: #E9E8F8; box-sizing: border-box; resize: none; outline: none; margin-bottom: 1.25rem;"></textarea>
+        
+        <!-- Category Selector Chips -->
+        <div style="margin-bottom: 1rem;">
+          <label style="display: block; font-size: 0.825rem; font-weight: 700; color: #334155; margin-bottom: 0.5rem;">Select Feedback Category:</label>
+          <div id="feedback-chips-container" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+            <button type="button" class="feedback-chip active" data-category="Missing PYQ Papers" style="background: #8DB9F0; border: 1.5px solid #8DB9F0; color: #0F172A; border-radius: 9999px; padding: 0.35rem 0.85rem; font-size: 0.8rem; font-weight: 600; cursor: pointer;">Missing PYQ Papers</button>
+            <button type="button" class="feedback-chip" data-category="Syllabus Discrepancy" style="background: #FFFFFF; border: 1.5px solid #8DB9F0; color: #0F172A; border-radius: 9999px; padding: 0.35rem 0.85rem; font-size: 0.8rem; font-weight: 600; cursor: pointer;">Syllabus Discrepancy</button>
+            <button type="button" class="feedback-chip" data-category="Panic Pack Request" style="background: #FFFFFF; border: 1.5px solid #8DB9F0; color: #0F172A; border-radius: 9999px; padding: 0.35rem 0.85rem; font-size: 0.8rem; font-weight: 600; cursor: pointer;">Panic Pack Request</button>
+            <button type="button" class="feedback-chip" data-category="Bug Report" style="background: #FFFFFF; border: 1.5px solid #8DB9F0; color: #0F172A; border-radius: 9999px; padding: 0.35rem 0.85rem; font-size: 0.8rem; font-weight: 600; cursor: pointer;">Bug Report</button>
+            <button type="button" class="feedback-chip" data-category="Feature Suggestion" style="background: #FFFFFF; border: 1.5px solid #8DB9F0; color: #0F172A; border-radius: 9999px; padding: 0.35rem 0.85rem; font-size: 0.8rem; font-weight: 600; cursor: pointer;">Feature Suggestion</button>
+          </div>
+          <input type="hidden" id="feedback-selected-category" value="Missing PYQ Papers" />
+        </div>
+
+        <!-- Detailed Description Box -->
+        <textarea id="feedback-desc-input" placeholder="Describe what resources, subject years, or fixes are needed..." style="width: 100%; height: 110px; border: 1.5px solid rgba(141, 185, 240, 0.5); border-radius: 0.5rem; padding: 0.75rem; font-family: inherit; font-size: 0.9rem; color: #0F172A; background: #E9E8F8; box-sizing: border-box; resize: none; outline: none; margin-bottom: 1.25rem;"></textarea>
+        
+        <!-- Action Buttons -->
         <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
-          <button onclick="document.getElementById('feedback-modal').style.display='none'" style="background: #FFFFFF; color: #0F172A; border: 1.5px solid #8DB9F0; padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: 600; cursor: pointer;">Cancel</button>
-          <button onclick="alert('Feedback sent! Thank you.'); document.getElementById('feedback-modal').style.display='none';" style="background: #F5B69E; color: #0F172A; border: none; padding: 0.5rem 1.25rem; border-radius: 0.5rem; font-weight: 700; cursor: pointer;">Submit Feedback</button>
+          <button type="button" id="feedback-cancel-btn" style="background: #FFFFFF; color: #0F172A; border: 1.5px solid #8DB9F0; padding: 0.5rem 1.15rem; border-radius: 0.5rem; font-weight: 600; cursor: pointer;">Cancel</button>
+          <button type="button" id="feedback-submit-btn" style="background: #F5B69E; color: #0F172A; border: none; padding: 0.5rem 1.35rem; border-radius: 0.5rem; font-weight: 700; cursor: pointer;">Submit Feedback</button>
         </div>
       </div>
     </div>
 
     <!-- J. Quirky Gen-Z Panic Pack Modal (Section 4C) -->
+        <!-- Gen-Z Night-Before Panic Pack Modal (Section 3) -->
     <div id="panic-pack-modal" style="display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(5px); z-index: 10000; align-items: center; justify-content: center;">
       <div style="background: #FFFFFF; border: 2px solid #8DB9F0; border-radius: 1.25rem; padding: 2.25rem; width: 100%; max-width: 500px; box-shadow: 0 25px 50px rgba(0,0,0,0.2); box-sizing: border-box; text-align: left;">
         <span style="font-size: 0.8rem; font-weight: 700; color: #0F172A; background: #D4E3F7; padding: 0.25rem 0.65rem; border-radius: 9999px; display: inline-block; margin-bottom: 0.85rem;">
@@ -1200,7 +1217,7 @@
           <button onclick="window.location.href='/login.html'" style="background: #F5B69E; color: #0F172A; font-weight: 800; font-size: 1rem; padding: 0.85rem 1.5rem; border-radius: 0.5rem; border: none; cursor: pointer; text-align: center; box-shadow: 0 4px 14px rgba(245, 182, 158, 0.45);">
             Unlock Panic Pack →
           </button>
-          <button onclick="document.getElementById('panic-pack-modal').style.display='none'" style="background: transparent; color: #64748B; font-weight: 600; font-size: 0.875rem; padding: 0.5rem; border: none; cursor: pointer; text-align: center;">
+          <button type="button" id="panic-pack-dismiss-btn" style="background: transparent; color: #64748B; font-weight: 600; font-size: 0.875rem; padding: 0.5rem; border: none; cursor: pointer; text-align: center;">
             I'll manage on my own
           </button>
         </div>
