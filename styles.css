@@ -15460,3 +15460,189 @@ footer p.footer-disclaimer {
 footer .footer-badges a, footer .footer-badges span, footer .badge-item {
   color: #0F172A !important;
 }
+
+/* ===================================================================
+   SURGICAL REFINEMENT: BRAND, PEACH ACCENT POPS & TYPOGRAPHIC HIERARCHY
+   =================================================================== */
+
+/* Hero Badge with Black Text (#000000 !important) */
+.hero-badge, .institution-pill, .hero-pill-badge {
+  background-color: #D4E3F7 !important;
+  color: #000000 !important;
+  border: 1px solid rgba(141, 185, 240, 0.6) !important;
+  font-weight: 700 !important;
+  font-size: 0.85rem !important;
+  padding: 0.35rem 1rem !important;
+  border-radius: 9999px !important;
+  display: inline-flex !important;
+  margin-bottom: 1.25rem !important;
+}
+
+/* Section Typographic Hierarchy */
+.section-super-heading, .landing-section-heading {
+  font-family: 'Manrope', sans-serif !important;
+  font-size: 2.25rem !important;
+  font-weight: 800 !important;
+  color: #0F172A !important;
+  letter-spacing: -0.025em !important;
+  margin-bottom: 0.5rem !important;
+  text-align: center !important;
+}
+
+.section-lead-subtitle, .landing-section-subhead {
+  font-size: 1.05rem !important;
+  font-weight: 400 !important;
+  color: #475569 !important;
+  max-width: 720px !important;
+  margin: 0 auto 2.5rem auto !important;
+  line-height: 1.6 !important;
+  text-align: center !important;
+}
+
+.sub-tier-heading, .tier-heading {
+  font-family: 'Manrope', sans-serif !important;
+  font-size: 1.45rem !important;
+  font-weight: 700 !important;
+  color: #0F172A !important;
+  margin: 2rem 0 0.35rem 0 !important;
+}
+
+.sub-tier-desc, .tier-desc {
+  font-size: 0.9rem !important;
+  font-weight: 400 !important;
+  color: #64748B !important;
+  margin-bottom: 1.5rem !important;
+}
+
+/* Standardized Cute Card Typographic Hierarchy */
+.cute-academic-card h3, .card-subject-title {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  color: #0F172A !important;
+  line-height: 1.35 !important;
+  margin: 0.65rem 0 0.45rem 0 !important;
+}
+
+.cute-academic-card p, .card-course-subtext {
+  font-size: 0.8rem !important;
+  font-weight: 500 !important;
+  color: #64748B !important;
+  line-height: 1.5 !important;
+  min-height: 2.4rem !important;
+  margin-bottom: 1.25rem !important;
+}
+
+.card-code-badge, .card-badge, .course-badge, .badge, span.code, .subject-code, .cute-card-code, .dept-stream-badge {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  color: #0F172A !important;
+  background-color: #D4E3F7 !important;
+  border: 1px solid rgba(141, 185, 240, 0.5) !important;
+  padding: 0.2rem 0.55rem !important;
+  border-radius: 0.35rem !important;
+  display: inline-block !important;
+}
+
+/* Standardized Cute Academic Card Surface */
+.cute-academic-card {
+  background-color: #FFFFFF !important;
+  border: 1.5px solid rgba(141, 185, 240, 0.45) !important;
+  border-radius: 0.85rem !important;
+  padding: 1.35rem !important;
+  box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.cute-academic-card:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 25px rgba(141, 185, 240, 0.18) !important;
+}
+
+/* Standardized Cute Card Buttons */
+.cute-academic-card .btn-preview, .btn-preview {
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
+  border: 1.5px solid #8DB9F0 !important;
+  font-size: 0.825rem !important;
+  font-weight: 700 !important;
+  padding: 0.45rem 0.95rem !important;
+  border-radius: 0.4rem !important;
+  cursor: pointer !important;
+  flex: 1 !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.15s ease !important;
+}
+
+.cute-academic-card .btn-preview:hover, .btn-preview:hover {
+  background-color: #D4E3F7 !important;
+  border-color: #6BA3E3 !important;
+}
+
+.cute-academic-card .btn-download, .btn-download, .btn-download-peach, .btn-card-download-peach {
+  background-color: #F5B69E !important;
+  color: #0F172A !important;
+  border: none !important;
+  font-size: 0.825rem !important;
+  font-weight: 700 !important;
+  padding: 0.45rem 0.95rem !important;
+  border-radius: 0.4rem !important;
+  cursor: pointer !important;
+  flex: 1 !important;
+  text-align: center !important;
+  box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4) !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: background-color 0.15s ease !important;
+}
+
+.cute-academic-card .btn-download:hover, .btn-download:hover {
+  background-color: #E39474 !important;
+}
+
+/* Bento Top 20% Warm Sunset Peach Tint */
+.bento-peach-tint {
+  background-color: #FDF1EC !important;
+  border-color: rgba(245, 182, 158, 0.6) !important;
+}
+
+/* Floating Action Button in Warm Sunset Peach */
+#floating-ask-ai, .floating-ask-ai {
+  position: fixed !important;
+  bottom: 1.5rem !important;
+  right: 1.5rem !important;
+  z-index: 9999 !important;
+  background-color: #F5B69E !important;
+  color: #0F172A !important;
+  font-weight: 700 !important;
+  font-size: 0.95rem !important;
+  padding: 0.75rem 1.4rem !important;
+  border-radius: 9999px !important;
+  border: none !important;
+  box-shadow: 0 4px 18px rgba(245, 182, 158, 0.5) !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-decoration: none !important;
+}
+
+#floating-ask-ai:hover, .floating-ask-ai:hover {
+  background-color: #E39474 !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Hard-Strip Safeguards */
+#floating-ask-ai * { display: none !important; }
+#floating-ask-ai::before, #floating-ask-ai::after { display: none !important; content: none !important; }
+#chat-fab, .chat-fab-launcher { display: none !important; }

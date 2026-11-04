@@ -20843,6 +20843,8 @@ function initFloatingAskAi() {
     askAiBtn.textContent = 'Ask AI';
     askAiBtn.onclick = () => { window.location.href = '/login.html'; };
   }
+};
+  }
 }
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initFloatingAskAi);
