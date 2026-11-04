@@ -1,7 +1,11 @@
+# ==============================================================================
+# MAKAUT CampusSense - Git Attributes & Cross-Platform Line Ending Enforcement
+# ==============================================================================
+
 # Auto detect text files and perform LF normalization
 * text=auto
 
-# Source code
+# Source code (Always LF across Mac, Linux, and Windows)
 *.java text diff=java eol=lf
 *.xml text eol=lf
 *.yml text eol=lf
@@ -12,12 +16,41 @@
 *.html text eol=lf
 *.css text eol=lf
 *.js text eol=lf
+*.py text eol=lf
 
-# Shell scripts
+# Shell scripts (Must strictly be LF for POSIX execution on macOS and Linux)
 *.sh text eol=lf
 mvnw text eol=lf
 
-# Windows scripts
+# Windows scripts (Must be CRLF for native Windows CMD / PowerShell interpreters)
 *.bat text eol=crlf
 *.cmd text eol=crlf
 mvnw.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Configuration, properties and metadata
+*.properties text eol=lf
+*.prefs text eol=lf
+*.example text eol=lf
+*.txt text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf
+.env* text eol=lf
+
+# Binary Assets (Prevent any CRLF/LF line-ending conversion or file corruption)
+*.pdf binary
+*.jar binary
+*.war binary
+*.zip binary
+*.tar.gz binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.svg text eol=lf
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary

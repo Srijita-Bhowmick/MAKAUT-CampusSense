@@ -1,0 +1,10 @@
+# MAKAUT CampusSense - Python Dependencies
+# Environment and configuration
+python-dotenv>=1.0.0
+
+# HTTP and scraping utilities
+requests>=2.32.3
+beautifulsoup4>=4.12.0
+
+# PDF text extraction and document parsing
+pypdf>=4.0.0

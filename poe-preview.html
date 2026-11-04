@@ -1,0 +1,4474 @@
+<!DOCTYPE html><html lang="en" data-theme="dark"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <title>MAKAUT CampusSense — Academic Intelligence</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --canvas: #090A0F;
+      --surface-1: #111319;
+      --surface-2: #171A23;
+      --surface-3: #20232D;
+      --border: #232734;
+      --hairline: rgba(255, 255, 255, 0.08);
+      --text: #F8FAFC;
+      --muted: #94A3B8;
+      --mono: #CBD5E1;
+      --accent: #6366F1;
+      --accent-solid: #4F46E5;
+      --accent-soft: rgba(99, 102, 241, 0.13);
+      --verified: #34D399;
+      --verified-soft: rgba(16, 185, 129, 0.12);
+      --warning: #FBBF24;
+      --warning-soft: rgba(245, 158, 11, 0.12);
+      --danger: #FDA4AF;
+      --danger-soft: rgba(244, 63, 94, 0.10);
+      --shadow: 0 18px 52px rgba(0, 0, 0, 0.34);
+      --focus-ring: 0 0 0 3px rgba(99, 102, 241, 0.32);
+      --font-sans: "Geist", "Inter", ui-sans-serif, system-ui, -apple-system,
+        BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-mono: "Geist Mono", "JetBrains Mono", ui-monospace,
+        "SFMono-Regular", Menlo, Consolas, monospace;
+    }
+
+    html[data-theme="light"] {
+      color-scheme: light;
+      --canvas: #F8FAFC;
+      --surface-1: #FFFFFF;
+      --surface-2: #F1F5F9;
+      --surface-3: #EAF0F6;
+      --border: #E2E8F0;
+      --hairline: #E2E8F0;
+      --text: #0F172A;
+      --muted: #475569;
+      --mono: #334155;
+      --accent: #4F46E5;
+      --accent-solid: #4F46E5;
+      --accent-soft: rgba(79, 70, 229, 0.08);
+      --verified: #047857;
+      --verified-soft: rgba(16, 185, 129, 0.10);
+      --warning: #92400E;
+      --warning-soft: rgba(245, 158, 11, 0.12);
+      --danger: #BE123C;
+      --danger-soft: rgba(244, 63, 94, 0.08);
+      --shadow: 0 18px 52px rgba(15, 23, 42, 0.10);
+      --focus-ring: 0 0 0 3px rgba(79, 70, 229, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scrollbar-gutter: stable;
+      scroll-padding-top: 110px;
+    }
+
+    body {
+      min-width: 320px;
+      margin: 0;
+      background: var(--canvas);
+      color: var(--text);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      line-height: 1.5;
+      text-rendering: optimizeLegibility;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button,
+    a,
+    summary,
+    select,
+    input {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button {
+      color: inherit;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    summary:focus-visible {
+      outline: none;
+      box-shadow: var(--focus-ring);
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    .icon-defs {
+      position: absolute;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+    }
+
+    .icon {
+      width: 16px;
+      height: 16px;
+      flex: 0 0 auto;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.7;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .mono {
+      color: var(--mono);
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .page-width {
+      width: min(1280px, calc(100% - 40px));
+      margin-inline: auto;
+    }
+
+    .topbar {
+      position: sticky;
+      z-index: 100;
+      top: 0;
+      height: 56px;
+      border-bottom: 1px solid var(--border);
+      background: color-mix(in srgb, var(--surface-1) 92%, transparent);
+      backdrop-filter: blur(18px);
+    }
+
+    .topbar-inner {
+      display: flex;
+      width: min(1440px, 100%);
+      height: 56px;
+      margin-inline: auto;
+      padding-inline: 20px;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: nowrap;
+      overflow: hidden;
+    }
+
+    .brand {
+      display: flex;
+      min-width: 0;
+      flex: 0 0 auto;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 29px;
+      height: 29px;
+      flex: 0 0 auto;
+      place-items: center;
+      border: 1px solid rgba(99, 102, 241, 0.42);
+      border-radius: 8px;
+      background: var(--accent-soft);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: -0.05em;
+    }
+
+    .brand-name {
+      overflow: hidden;
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 650;
+      letter-spacing: -0.035em;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .version-pill {
+      padding: 2px 6px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      line-height: 1.5;
+    }
+
+    .desktop-nav {
+      display: flex;
+      min-width: 0;
+      flex: 1 1 auto;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .nav-link {
+      display: inline-flex;
+      min-height: 32px;
+      padding: 0 10px;
+      align-items: center;
+      border-radius: 7px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 530;
+      white-space: nowrap;
+      transition: color 140ms ease, background 140ms ease;
+    }
+
+    .nav-link:hover {
+      background: var(--surface-2);
+      color: var(--text);
+    }
+
+    .header-actions {
+      display: flex;
+      flex: 0 0 auto;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .search-trigger,
+    .icon-button,
+    .auth-button,
+    .join-button,
+    .mobile-nav-trigger {
+      display: inline-flex;
+      min-height: 32px;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface-1);
+      color: var(--muted);
+      cursor: pointer;
+      transition: background 140ms ease, border-color 140ms ease,
+        color 140ms ease, transform 140ms ease;
+    }
+
+    .search-trigger {
+      padding: 0 9px;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .search-trigger:hover,
+    .icon-button:hover,
+    .auth-button:hover,
+    .mobile-nav-trigger:hover {
+      border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+      background: var(--surface-2);
+      color: var(--text);
+    }
+
+    .search-trigger kbd {
+      padding: 2px 5px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--mono);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      line-height: 1.2;
+    }
+
+    .icon-button,
+    .mobile-nav-trigger {
+      width: 33px;
+      padding: 0;
+    }
+
+    .auth-button {
+      padding: 0 10px;
+      color: var(--text);
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .join-button {
+      padding: 0 11px;
+      border-color: var(--accent-solid);
+      background: var(--accent-solid);
+      color: #FFFFFF;
+      font-size: 11px;
+      font-weight: 650;
+      white-space: nowrap;
+    }
+
+    .join-button:hover {
+      background: #4338CA;
+      transform: translateY(-1px);
+    }
+
+    .mobile-nav-trigger {
+      display: none;
+    }
+
+    .theme-sun {
+      display: block;
+    }
+
+    .theme-moon {
+      display: none;
+    }
+
+    html[data-theme="light"] .theme-sun {
+      display: none;
+    }
+
+    html[data-theme="light"] .theme-moon {
+      display: block;
+    }
+
+    .status-strip {
+      position: sticky;
+      z-index: 90;
+      top: 56px;
+      height: 34px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface-1);
+    }
+
+    .status-scroll {
+      width: 100%;
+      height: 33px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .status-scroll::-webkit-scrollbar,
+    .filter-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .status-line {
+      display: flex;
+      width: max-content;
+      min-width: 100%;
+      height: 33px;
+      padding-inline: max(20px, calc((100vw - 1280px) / 2));
+      align-items: center;
+      gap: 12px;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.015em;
+      white-space: nowrap;
+    }
+
+    .status-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .status-dot,
+    .verified-dot {
+      width: 6px;
+      height: 6px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: var(--verified);
+    }
+
+    .status-separator {
+      color: color-mix(in srgb, var(--muted) 55%, transparent);
+    }
+
+    .mobile-nav-panel {
+      position: fixed;
+      z-index: 105;
+      top: 96px;
+      right: 12px;
+      left: 12px;
+      display: grid;
+      max-width: 420px;
+      margin-left: auto;
+      padding: 8px;
+      gap: 3px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface-1);
+      box-shadow: var(--shadow);
+    }
+
+    .mobile-nav-panel a {
+      display: flex;
+      min-height: 40px;
+      padding: 0 12px;
+      align-items: center;
+      border-radius: 7px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .mobile-nav-panel a:hover {
+      background: var(--surface-2);
+      color: var(--text);
+    }
+
+    main {
+      padding-block: 26px 56px;
+    }
+
+    .hero {
+      position: relative;
+      isolation: isolate;
+      display: grid;
+      min-height: 344px;
+      padding: 30px;
+      grid-template-columns: minmax(0, 1.25fr) minmax(310px, 0.75fr);
+      align-items: stretch;
+      gap: 28px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background:
+        linear-gradient(120deg, var(--surface-1), color-mix(in srgb, var(--surface-1) 76%, var(--surface-2)));
+    }
+
+    .hero::before {
+      position: absolute;
+      z-index: -1;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, color-mix(in srgb, var(--border) 45%, transparent) 1px, transparent 1px),
+        linear-gradient(to bottom, color-mix(in srgb, var(--border) 36%, transparent) 1px, transparent 1px);
+      background-size: 42px 42px;
+      content: "";
+      opacity: 0.22;
+      mask-image: linear-gradient(90deg, #000, transparent 78%);
+      pointer-events: none;
+    }
+
+    #shaderCanvas {
+      position: absolute;
+      z-index: -1;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.54;
+      pointer-events: none;
+    }
+
+    .hero-copy,
+    .focus-card {
+      position: relative;
+      z-index: 1;
+      min-width: 0;
+    }
+
+    .hero-kicker,
+    .section-index,
+    .panel-kicker,
+    .micro-label {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    .hero-kicker {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hero h1 {
+      max-width: 760px;
+      margin: 18px 0 13px;
+      color: var(--text);
+      font-size: clamp(39px, 5.2vw, 66px);
+      font-weight: 590;
+      letter-spacing: -0.067em;
+      line-height: 0.99;
+    }
+
+    .hero h1 em {
+      color: color-mix(in srgb, var(--text) 62%, var(--accent));
+      font-style: normal;
+    }
+
+    .hero-subtitle {
+      max-width: 590px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .hero-search {
+      display: flex;
+      width: min(580px, 100%);
+      min-height: 46px;
+      margin-top: 22px;
+      padding: 5px 6px 5px 13px;
+      align-items: center;
+      gap: 9px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: color-mix(in srgb, var(--surface-1) 88%, transparent);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    .hero-search:focus-within {
+      border-color: color-mix(in srgb, var(--accent) 62%, var(--border));
+      box-shadow: var(--focus-ring);
+    }
+
+    .hero-search .icon {
+      color: var(--muted);
+    }
+
+    .hero-search input {
+      width: 100%;
+      min-width: 0;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--text);
+      font-size: 12px;
+    }
+
+    .hero-search input::placeholder {
+      color: var(--muted);
+      opacity: 0.82;
+    }
+
+    .hero-search kbd {
+      flex: 0 0 auto;
+      padding: 3px 6px;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      color: var(--mono);
+      font-family: var(--font-mono);
+      font-size: 9px;
+    }
+
+    .hero-actions {
+      display: flex;
+      margin-top: 13px;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .button {
+      display: inline-flex;
+      min-height: 35px;
+      padding: 0 12px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface-1);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 620;
+      transition: transform 140ms ease, background 140ms ease,
+        border-color 140ms ease, box-shadow 140ms ease;
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+      border-color: color-mix(in srgb, var(--accent) 44%, var(--border));
+      background: var(--surface-2);
+    }
+
+    .button-primary {
+      border-color: var(--accent-solid);
+      background: var(--accent-solid);
+      color: #FFFFFF;
+    }
+
+    .button-primary:hover {
+      border-color: #4338CA;
+      background: #4338CA;
+    }
+
+    .button .icon {
+      width: 14px;
+      height: 14px;
+    }
+
+    .hero-note {
+      display: flex;
+      margin-top: 17px;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .hero-note .icon {
+      width: 13px;
+      height: 13px;
+      color: var(--verified);
+    }
+
+    .focus-card {
+      display: flex;
+      padding: 17px;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: color-mix(in srgb, var(--surface-1) 90%, transparent);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.10);
+      backdrop-filter: blur(10px);
+    }
+
+    .focus-head,
+    .focus-course-line,
+    .focus-footer,
+    .panel-heading,
+    .card-topline,
+    .card-footer,
+    .section-heading,
+    .resource-heading,
+    .ledger-head,
+    .meter-head,
+    .chat-header,
+    .chat-input-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .focus-head {
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .focus-status,
+    .snapshot-pill,
+    .verified-pill {
+      display: inline-flex;
+      min-height: 22px;
+      padding: 0 7px;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid color-mix(in srgb, var(--verified) 25%, var(--border));
+      border-radius: 999px;
+      background: var(--verified-soft);
+      color: var(--verified);
+      font-family: var(--font-mono);
+      font-size: 8px;
+      white-space: nowrap;
+    }
+
+    .focus-course-line {
+      margin-top: 14px;
+      align-items: flex-start;
+    }
+
+    .focus-course-line h2 {
+      margin: 3px 0 0;
+      font-size: 17px;
+      font-weight: 590;
+      letter-spacing: -0.04em;
+    }
+
+    .focus-course-line p {
+      margin: 0;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 9px;
+    }
+
+    .focus-units {
+      display: grid;
+      margin-top: 13px;
+      gap: 0;
+    }
+
+    .focus-unit {
+      display: grid;
+      min-height: 38px;
+      grid-template-columns: 26px 1fr auto;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .focus-unit:last-child {
+      border-bottom: 0;
+    }
+
+    .focus-unit-index {
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-size: 9px;
+    }
+
+    .focus-unit-name {
+      color: var(--text);
+      font-size: 10px;
+      font-weight: 540;
+    }
+
+    .focus-unit-meta {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 8px;
+    }
+
+    .focus-footer {
+      margin-top: 12px;
+      padding-top: 11px;
+      border-top: 1px solid var(--border);
+    }
+
+    .focus-footer span {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 8px;
+    }
+
+    .text-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--text);
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .text-link:hover {
+      color: var(--accent);
+    }
+
+    .text-link .icon {
+      width: 12px;
+      height: 12px;
+    }
+
+    .section {
+      margin-top: 52px;
+      scroll-margin-top: 112px;
+    }
+
+    .section-heading {
+      margin-bottom: 16px;
+      align-items: flex-end;
+    }
+
+    .section-heading h2 {
+      margin: 5px 0 0;
+      font-size: clamp(23px, 2.8vw, 32px);
+      font-weight: 570;
+      letter-spacing: -0.06em;
+      line-height: 1.1;
+    }
+
+    .section-heading p {
+      max-width: 560px;
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .snapshot-pill {
+      min-height: 24px;
+      border-color: var(--border);
+      background: var(--surface-2);
+      color: var(--muted);
+      font-size: 8px;
+    }
+
+    .filter-panel {
+      display: grid;
+      margin-bottom: 12px;
+      padding: 9px 11px;
+      gap: 9px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface-1);
+    }
+
+    .filter-row {
+      display: flex;
+      min-width: 0;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .filter-label {
+      width: 54px;
+      flex: 0 0 auto;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 8px;
+      font-weight: 650;
+      letter-spacing: 0.08em;
+    }
+
+    .filter-scroll {
+      display: flex;
+      min-width: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+      gap: 5px;
+    }
+
+    .filter-chip {
+      display: inline-flex;
+      min-height: 26px;
+      padding: 0 9px;
+      flex: 0 0 auto;
+      align-items: center;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 9px;
+      white-space: nowrap;
+      transition: color 120ms ease, border-color 120ms ease,
+        background 120ms ease;
+    }
+
+    .filter-chip:hover {
+      background: var(--surface-2);
+      color: var(--text);
+    }
+
+    .filter-chip.is-active {
+      border-color: color-mix(in srgb, var(--accent) 32%, var(--border));
+      background: var(--accent-soft);
+      color: var(--text);
+    }
+
+    .curriculum-meta {
+      display: flex;
+      min-height: 25px;
+      margin: 2px 1px 8px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 9px;
+    }
+
+    .curriculum-meta strong {
+      color: var(--mono);
+      font-weight: 600;
+    }
+
+    .course-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      align-items: stretch;
+      gap: 13px;
+    }
+
+    .course-card {
+      position: relative;
+      isolation: isolate;
+      display: flex;
+      min-width: 0;
+      min-height: 274px;
+      padding: 15px;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: var(--surface-1);
+      transition: transform 150ms ease, border-color 150ms ease,
+        background 150ms ease;
+    }
+
+    .course-card:hover {
+      transform: translateY(-2px);
+      border-color: color-mix(in srgb, var(--accent) 36%, var(--border));
+      background: color-mix(in srgb, var(--surface-1) 92%, var(--accent-soft));
+    }
+
+    .course-card::before {
+      position: absolute;
+      z-index: 2;
+      inset: -1px;
+      padding: 1px;
+      border: 1px solid transparent;
+      border-radius: inherit;
+      background: radial-gradient(
+        600px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+        rgba(99, 102, 241, 0.68),
+        transparent 42%
+      );
+      content: "";
+      opacity: var(--spot-alpha, 0);
+      pointer-events: none;
+      -webkit-mask: linear-gradient(#fff 0 0) padding-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+    }
+
+    .course-card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-topline {
+      min-height: 23px;
+    }
+
+    .course-code {
+      color: var(--mono);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 650;
+      letter-spacing: -0.01em;
+    }
+
+    .verified-pill {
+      min-height: 19px;
+      padding-inline: 6px;
+      font-size: 7px;
+    }
+
+    .verified-pill .verified-dot {
+      width: 5px;
+      height: 5px;
+    }
+
+    .course-card h3 {
+      margin: 11px 0 6px;
+      color: var(--text);
+      font-size: 16px;
+      font-weight: 590;
+      letter-spacing: -0.045em;
+      line-height: 1.22;
+    }
+
+    .course-description {
+      min-height: 31px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.5;
+    }
+
+    .course-metadata {
+      display: flex;
+      margin-top: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .semester-tag,
+    .credit-badge,
+    .contact-tag,
+    .topic-tag {
+      display: inline-flex;
+      min-height: 21px;
+      padding: 0 7px;
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      background: var(--surface-2);
+      color: var(--mono);
+      font-family: var(--font-mono);
+      font-size: 8px;
+      white-space: nowrap;
+    }
+
+    .semester-tag {
+      color: var(--accent);
+    }
+
+    .course-contact {
+      display: flex;
+      margin-top: 8px;
+      justify-content: space-between;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 9px;
+    }
+
+    .course-contact strong {
+      color: var(--mono);
+      font-family: var(--font-mono);
+      font-size: 8px;
+      font-weight: 600;
+    }
+
+    .module-details {
+      margin-top: 10px;
+      border-top: 1px solid var(--border);
+    }
+
+    .module-details summary {
+      display: flex;
+      min-height: 34px;
+      align-items: center;
+      gap: 7px;
+      color: var(--text);
+      cursor: pointer;
+      font-size: 9px;
+      font-weight: 590;
+      list-style: none;
+    }
+
+    .module-details summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .summary-count {
+      margin-left: auto;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 8px;
+      font-weight: 450;
+    }
+
+    .module-details[open] summary .chevron {
+      transform: rotate(180deg);
+    }
+
+    .chevron {
+      width: 13px;
+      height: 13px;
+      color: var(--muted);
+      transition: transform 140ms ease;
+    }
+
+    .module-checklist {
+      display: grid;
+      padding: 2px 0 4px;
+      gap: 2px;
+    }
+
+    .unit-check {
+      display: grid;
+      min-height: 32px;
+      padding: 4px 3px;
+      grid-template-columns: 14px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 7px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .unit-check:hover {
+      background: var(--surface-2);
+    }
+
+    .unit-check input {
+      width: 13px;
+      height: 13px;
+      margin: 0;
+      accent-color: var(--accent);
+    }
+
+    .unit-title {
+      color: var(--text);
+      font-size: 8px;
+      line-height: 1.35;
+    }
+
+    .unit-hours {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 7px;
+      white-space: nowrap;
+    }
+
+    .module-progress {
+      display: grid;
+      margin-top: 4px;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .progress-readout {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 7px;
+      white-space: nowrap;
+    }
+
+    .progress-track,
+    .target-track,
+    .sgpa-track {
+      height: 4px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: var(--surface-3);
+    }
+
+    .progress-track span,
+    .target-track span,
+    .sgpa-track span {
+      display: block;
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--accent);
+      transition: width 180ms ease;
+    }
+
+    .module-footnote {
+      margin: 7px 0 0;
+      color: var(--muted);
+      font-size: 7px;
+      line-height: 1.4;
+    }
+
+    .companion-note {
+      margin-top: 8px;
+      padding: 6px 7px;
+      border-left: 2px solid var(--accent);
+      background: var(--accent-soft);
+      color: var(--muted);
+      font-size: 8px;
+      line-height: 1.4;
+    }
+
+    .card-footer {
+      margin-top: auto;
+      padding-top: 12px;
+    }
+
+    .card-footer .button {
+      width: 100%;
+      min-height: 31px;
+      justify-content: space-between;
+      font-size: 9px;
+    }
+
+    .card-footer .button .icon {
+      width: 12px;
+      height: 12px;
+    }
+
+    .empty-state {
+      margin-top: 10px;
+      padding: 18px;
+      border: 1px dashed var(--border);
+      border-radius: 11px;
+      background: var(--surface-1);
+      text-align: center;
+    }
+
+    .empty-state strong {
+      display: block;
+      font-size: 13px;
+    }
+
+    .empty-state p {
+      margin: 5px 0 12px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .quick-filter-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .quick-filter {
+      min-height: 26px;
+      padding: 0 9px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface-2);
+      color: var(--mono);
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 8px;
+    }
+
+    .workspace-context {
+      display: flex;
+      flex: 0 0 auto;
+      align-items: flex-end;
+      gap: 7px;
+    }
+
+    .context-field {
+      display: grid;
+      gap: 4px;
+    }
+
+    .context-field label {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 7px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .context-field select {
+      min-width: 92px;
+      height: 30px;
+      padding: 0 8px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: var(--surface-1);
+      color: var(--text);
+      font-size: 9px;
+    }
+
+    .workspace-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.55fr) minmax(270px, 0.72fr);
+      align-items: start;
+      gap: 13px;
+    }
+
+    .ledger-panel,
+    .workspace-card,
+    .meter-card,
+    .resource-card {
+      min-width: 0;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface-1);
+    }
+
+    .ledger-panel {
+      padding: 14px;
+    }
+
+    .ledger-head {
+      margin-bottom: 10px;
+      align-items: flex-start;
+    }
+
+    .ledger-head h3,
+    .workspace-card h3,
+    .meter-card h3,
+    .resource-card h3 {
+      margin: 0;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+    }
+
+    .ledger-head p,
+    .workspace-card p,
+    .meter-card p,
+    .resource-card p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 9px;
+      line-height: 1.5;
+    }
+
+    .demo-pill {
+      display: inline-flex;
+      min-height: 20px;
+      padding: 0 7px;
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface-2);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 7px;
+      white-space: nowrap;
+    }
+
+    .table-scroll {
+      width: 100%;
+      overflow-x: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+
+    .grade-table {
+      width: 100%;
+      min-width: 720px;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .grade-table th {
+      padding: 8px 7px;
+      border-bottom: 1px solid var(--border);
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 7px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+    }
+
+    .grade-table td {
+      padding: 7px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      font-size: 9px;
+      vertical-align: middle;
+    }
+
+    .grade-table tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .grade-table tbody tr:hover td {
+      background: color-mix(in srgb, var(--surface-2) 72%, transparent);
+    }
+
+    .grade-table td:first-child {
+      color: var(--mono);
+      font-family: var(--font-mono);
+      font-size: 8px;
+      white-space: nowrap;
+    }
+
+    .grade-table .subject-cell {
+      min-width: 150px;
+      font-weight: 520;
+    }
+
+    .ledger-input,
+    .grade-select {
+      width: 100%;
+      min-width: 44px;
+      height: 27px;
+      padding: 0 5px;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      background: var(--canvas);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .grade-select {
+      min-width: 64px;
+    }
+
+    .point-cell {
+      color: var(--accent) !important;
+      font-family: var(--font-mono);
+      font-weight: 700;
+    }
+
+    .ledger-footnote {
+      margin-top: 9px;
+      color: var(--muted);
+      font-size: 8px;
+      line-height: 1.5;
+    }
+
+    .workspace-aside {
+      display: grid;
+      gap: 10px;
+    }
+
+    .workspace-card {
+      padding: 14px;
+    }
+
+    .projected-card {
+      padding: 14px;
+      border: 1px solid color-mix(in srgb, var(--accent) 32%, var(--border));
+      border-radius: 12px;
+      background:
+        linear-gradient(145deg, var(--accent-soft), transparent 80%),
+        var(--surface-1);
+    }
+
+    .projected-number-row {
+      display: flex;
+      margin: 6px 0 8px;
+      align-items: baseline;
+      gap: 7px;
+    }
+
+    .projected-number {
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 37px;
+      font-weight: 600;
+      letter-spacing: -0.07em;
+      line-height: 1;
+    }
+
+    .projected-caption {
+      color: var(--muted);
+      font-size: 9px;
+    }
+
+    .projected-meta {
+      display: flex;
+      margin-bottom: 7px;
+      justify-content: space-between;
+      gap: 8px;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 7px;
+    }
+
+    .sgpa-track span {
+      background: var(--accent);
+    }
+
+    .target-inputs {
+      display: grid;
+      margin-top: 10px;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .target-inputs label {
+      display: grid;
+      gap: 4px;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 7px;
+      text-transform: uppercase;
+    }
+
+    .target-inputs input {
+      width: 100%;
+      height: 28px;
+      padding: 0 7px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--canvas);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 10px;
+    }
+
+    .target-summary {
+      display: flex;
+      margin-top: 9px;
+      justify-content: space-between;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 8px;
+    }
+
+    .target-summary strong {
+      color: var(--mono);
+      font-family: var(--font-mono);
+    }
+
+    .target-track {
+      height: 5px;
+      margin-top: 7px;
+    }
+
+    .target-track span {
+      background: var(--verified);
+    }
+
+    .latex-block {
+      margin-top: 10px;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface-2);
+    }
+
+    .latex-block-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 8px;
+    }
+
+    .copy-button {
+      display: inline-flex;
+      min-height: 24px;
+      padding: 0 7px;
+      align-items: center;
+      gap: 5px;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      background: var(--surface-1);
+      color: var(--mono);
+      cursor: pointer;
+      font-size: 8px;
+    }
+
+    .copy-button:hover {
+      border-color: var(--accent);
+      color: var(--text);
+    }
+
+    .latex-source {
+      display: block;
+      margin-top: 7px;
+      overflow-wrap: anywhere;
+      color: var(--mono);
+      font-family: var(--font-mono);
+      font-size: 8px;
+      line-height: 1.6;
+    }
+
+    .meter-grid {
+      display: grid;
+      margin-top: 12px;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .meter-card {
+      display: grid;
+      padding: 13px;
+      grid-template-columns: 82px 1fr;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .meter-visual {
+      position: relative;
+      display: grid;
+      width: 78px;
+      height: 78px;
+      place-items: center;
+    }
+
+    .meter-visual svg {
+      position: absolute;
+      inset: 0;
+      width: 78px;
+      height: 78px;
+      transform: rotate(-90deg);
+    }
+
+    .meter-track-circle,
+    .meter-progress-circle {
+      fill: none;
+      stroke-width: 4;
+    }
+
+    .meter-track-circle {
+      stroke: var(--surface-3);
+    }
+
+    .meter-progress-circle {
+      stroke: var(--accent);
+      stroke-dasharray: 289.03;
+      stroke-dashoffset: 289.03;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 220ms ease;
+    }
+
+    .meter-card[data-meter="moocs"] .meter-progress-circle {
+      stroke: var(--verified);
+    }
+
+    .meter-number {
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 15px;
+      font-weight: 650;
+      letter-spacing: -0.05em;
+    }
+
+    .meter-info {
+      min-width: 0;
+    }
+
+    .meter-info h3 {
+      font-size: 11px;
+    }
+
+    .meter-info p {
+      margin: 3px 0 8px;
+      font-size: 8px;
+    }
+
+    .meter-action {
+      min-height: 24px;
+      padding: 0 7px;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      background: var(--surface-2);
+      color: var(--mono);
+      cursor: pointer;
+      font-size: 8px;
+    }
+
+    .meter-action:hover {
+      border-color: var(--accent);
+      color: var(--text);
+    }
+
+    .resource-grid {
+      display: grid;
+      margin-top: 13px;
+      grid-template-columns: 1fr 1fr;
+      gap: 13px;
+    }
+
+    .resource-card {
+      padding: 16px;
+    }
+
+    .resource-heading {
+      margin-bottom: 10px;
+    }
+
+    .resource-heading .panel-kicker {
+      color: var(--muted);
+    }
+
+    .resource-stat-line {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .resource-count {
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 29px;
+      font-weight: 600;
+      letter-spacing: -0.07em;
+      line-height: 1;
+    }
+
+    .resource-count-label {
+      color: var(--muted);
+      font-size: 9px;
+    }
+
+    .resource-card > p {
+      max-width: 470px;
+      margin-block: 8px 12px;
+    }
+
+    .resource-filters {
+      display: flex;
+      margin-bottom: 11px;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .topic-tag {
+      min-height: 20px;
+      color: var(--muted);
+      font-size: 7px;
+    }
+
+    .resource-card .button {
+      min-height: 30px;
+    }
+
+    .panic-steps {
+      display: grid;
+      margin: 8px 0 11px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 7px;
+    }
+
+    .panic-step {
+      min-height: 66px;
+      padding: 8px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: var(--surface-2);
+    }
+
+    .panic-step time {
+      display: block;
+      color: var(--warning);
+      font-family: var(--font-mono);
+      font-size: 8px;
+      font-weight: 650;
+    }
+
+    .panic-step strong {
+      display: block;
+      margin-top: 5px;
+      color: var(--text);
+      font-size: 8px;
+      font-weight: 550;
+      line-height: 1.35;
+    }
+
+    .resource-disclaimer {
+      margin-top: 7px !important;
+      font-size: 8px !important;
+    }
+
+    footer {
+      display: flex;
+      min-height: 68px;
+      padding-block: 15px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 8px;
+    }
+
+    footer .mono {
+      font-size: 8px;
+    }
+
+    .command-dialog {
+      width: min(600px, calc(100vw - 24px));
+      max-width: 600px;
+      padding: 0;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface-1);
+      color: var(--text);
+      box-shadow: var(--shadow);
+    }
+
+    .command-dialog::backdrop {
+      background: rgba(0, 0, 0, 0.54);
+      backdrop-filter: blur(3px);
+    }
+
+    .command-panel {
+      padding: 12px;
+    }
+
+    .command-search-row {
+      display: flex;
+      min-height: 44px;
+      padding: 0 8px;
+      align-items: center;
+      gap: 9px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: var(--canvas);
+    }
+
+    .command-search-row .icon {
+      color: var(--muted);
+    }
+
+    .command-search-row input {
+      width: 100%;
+      min-width: 0;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--text);
+      font-size: 12px;
+    }
+
+    .command-search-row input::placeholder {
+      color: var(--muted);
+    }
+
+    .command-close {
+      display: grid;
+      width: 26px;
+      height: 26px;
+      flex: 0 0 auto;
+      place-items: center;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--surface-1);
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .command-caption {
+      margin: 11px 4px 6px;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 8px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .command-results {
+      display: grid;
+      max-height: 330px;
+      overflow: auto;
+      gap: 3px;
+    }
+
+    .command-result {
+      display: grid;
+      min-height: 43px;
+      padding: 6px 9px;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid transparent;
+      border-radius: 7px;
+      color: var(--text);
+    }
+
+    .command-result:hover,
+    .command-result.is-selected {
+      border-color: var(--border);
+      background: var(--surface-2);
+    }
+
+    .command-result-title {
+      display: block;
+      font-size: 10px;
+      font-weight: 580;
+    }
+
+    .command-result-subtitle {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 7px;
+    }
+
+    .command-result-code {
+      color: var(--mono);
+      font-family: var(--font-mono);
+      font-size: 8px;
+      white-space: nowrap;
+    }
+
+    .command-empty {
+      padding: 13px 9px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .chat-window {
+      position: fixed;
+      z-index: 1200;
+      right: 24px;
+      bottom: 24px;
+      display: flex;
+      width: min(400px, calc(100vw - 24px));
+      height: min(560px, calc(100dvh - 24px));
+      min-width: min(320px, calc(100vw - 24px));
+      min-height: min(420px, calc(100dvh - 24px));
+      max-width: min(800px, calc(100vw - 24px));
+      max-height: min(850px, calc(100dvh - 24px));
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: var(--surface-1);
+      box-shadow: 0 20px 64px rgba(0, 0, 0, 0.34);
+      resize: none;
+    }
+
+    .chat-window.is-pinned {
+      border-color: color-mix(in srgb, var(--accent) 42%, var(--border));
+    }
+
+    .chat-window.is-minimized {
+      height: 44px !important;
+      min-height: 44px !important;
+      max-height: 44px !important;
+      resize: none;
+    }
+
+    .chat-header {
+      min-height: 44px;
+      height: 44px;
+      padding: 0 8px 0 7px;
+      flex: 0 0 44px;
+      justify-content: flex-start;
+      gap: 7px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface-1);
+      touch-action: none;
+      user-select: none;
+    }
+
+    .drag-handle {
+      display: grid;
+      width: 17px;
+      height: 28px;
+      flex: 0 0 auto;
+      place-items: center;
+      color: var(--muted);
+      cursor: grab;
+    }
+
+    .drag-handle:active {
+      cursor: grabbing;
+    }
+
+    .drag-dots {
+      display: grid;
+      width: 10px;
+      height: 14px;
+      grid-template-columns: repeat(2, 3px);
+      grid-template-rows: repeat(3, 3px);
+      gap: 2px;
+    }
+
+    .drag-dots i {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .chat-title-wrap {
+      display: flex;
+      min-width: 0;
+      flex: 1 1 auto;
+      align-items: center;
+      gap: 7px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .chat-title {
+      overflow: hidden;
+      color: var(--text);
+      font-size: 10px;
+      font-weight: 640;
+      letter-spacing: -0.02em;
+      text-overflow: ellipsis;
+    }
+
+    .chat-badge {
+      display: inline-flex;
+      min-height: 19px;
+      padding: 0 6px;
+      flex: 0 1 auto;
+      align-items: center;
+      overflow: hidden;
+      border: 1px solid color-mix(in srgb, var(--verified) 25%, var(--border));
+      border-radius: 999px;
+      background: var(--verified-soft);
+      color: var(--verified);
+      font-family: var(--font-mono);
+      font-size: 7px;
+      text-overflow: ellipsis;
+    }
+
+    .chat-controls {
+      display: flex;
+      flex: 0 0 auto;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .chat-control {
+      display: grid;
+      width: 25px;
+      height: 25px;
+      padding: 0;
+      place-items: center;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .chat-control .icon {
+      width: 13px;
+      height: 13px;
+    }
+
+    .chat-control:hover {
+      border-color: var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+    }
+
+    .chat-control[aria-pressed="true"] {
+      color: var(--accent);
+    }
+
+    .chat-body {
+      display: flex;
+      min-height: 0;
+      flex: 1 1 auto;
+      flex-direction: column;
+    }
+
+    .chat-window.is-minimized .chat-body,
+    .chat-window.is-minimized .resize-grip {
+      display: none;
+    }
+
+    .chat-feed {
+      display: flex;
+      min-height: 0;
+      padding: 12px;
+      flex: 1 1 auto;
+      flex-direction: column;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+      gap: 10px;
+    }
+
+    .chat-date-line {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 7px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .chat-date-line::before,
+    .chat-date-line::after {
+      width: 28px;
+      height: 1px;
+      background: var(--border);
+      content: "";
+    }
+
+    .chat-message {
+      display: flex;
+      max-width: 92%;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .chat-message.user {
+      margin-left: auto;
+      align-items: flex-end;
+    }
+
+    .chat-message.assistant {
+      margin-right: auto;
+      align-items: flex-start;
+    }
+
+    .message-label {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 7px;
+    }
+
+    .message-bubble {
+      padding: 9px 10px;
+      border: 1px solid var(--border);
+      border-radius: 10px 10px 10px 3px;
+      background: var(--surface-2);
+      color: var(--text);
+      font-size: 9px;
+      line-height: 1.55;
+    }
+
+    .chat-message.user .message-bubble {
+      border-color: var(--accent-solid);
+      border-radius: 10px 10px 3px 10px;
+      background: var(--accent-solid);
+      color: #FFFFFF;
+    }
+
+    .message-bubble p {
+      margin: 0;
+    }
+
+    .citation-row {
+      display: flex;
+      margin-top: 7px;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .citation-pill {
+      display: inline-flex;
+      min-height: 21px;
+      padding: 0 7px;
+      align-items: center;
+      gap: 5px;
+      border: 1px solid color-mix(in srgb, var(--verified) 28%, var(--border));
+      border-radius: 999px;
+      background: var(--verified-soft);
+      color: var(--verified);
+      font-family: var(--font-mono);
+      font-size: 7px;
+      transition: background 130ms ease;
+    }
+
+    .citation-pill:hover {
+      background: color-mix(in srgb, var(--verified-soft) 70%, var(--surface-2));
+    }
+
+    .citation-pill .icon {
+      width: 10px;
+      height: 10px;
+    }
+
+    .chat-latex {
+      width: 100%;
+      margin-top: 7px;
+      padding: 7px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: var(--canvas);
+    }
+
+    .chat-latex-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 7px;
+    }
+
+    .chat-latex .latex-source {
+      margin-top: 5px;
+      font-size: 7px;
+    }
+
+    .grounding-alert {
+      display: flex;
+      margin: 0 10px 8px;
+      padding: 8px;
+      align-items: flex-start;
+      gap: 7px;
+      border: 1px solid color-mix(in srgb, var(--warning) 25%, var(--border));
+      border-radius: 7px;
+      background: var(--warning-soft);
+      color: var(--warning);
+      font-size: 8px;
+      line-height: 1.45;
+    }
+
+    .grounding-alert .icon {
+      width: 12px;
+      height: 12px;
+      flex: 0 0 auto;
+    }
+
+    .chat-console {
+      padding: 8px 9px 9px;
+      border-top: 1px solid var(--border);
+      background: var(--surface-1);
+    }
+
+    .chat-input-row {
+      min-height: 38px;
+      padding: 4px;
+      gap: 5px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--canvas);
+    }
+
+    .chat-input-row:focus-within {
+      border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+    }
+
+    .chat-input-row input {
+      width: 100%;
+      min-width: 0;
+      padding-inline: 5px;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--text);
+      font-size: 9px;
+    }
+
+    .chat-input-row input::placeholder {
+      color: var(--muted);
+    }
+
+    .chat-input-action {
+      display: grid;
+      width: 27px;
+      height: 27px;
+      flex: 0 0 auto;
+      place-items: center;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .chat-input-action:hover {
+      background: var(--surface-2);
+      color: var(--text);
+    }
+
+    .chat-input-action.send {
+      border-color: var(--accent-solid);
+      background: var(--accent-solid);
+      color: #FFFFFF;
+    }
+
+    .chat-input-action .icon {
+      width: 13px;
+      height: 13px;
+    }
+
+    .chat-console-note {
+      display: flex;
+      margin-top: 6px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 7px;
+    }
+
+    .resize-grip {
+      position: absolute;
+      right: 2px;
+      bottom: 2px;
+      z-index: 5;
+      width: 18px;
+      height: 18px;
+      border-radius: 3px;
+      background:
+        repeating-linear-gradient(135deg, transparent 0 3px, var(--muted) 3px 4px);
+      opacity: 0.6;
+      cursor: nwse-resize;
+      touch-action: none;
+    }
+
+    .chat-launcher {
+      position: fixed;
+      z-index: 1199;
+      right: 20px;
+      bottom: 20px;
+      display: inline-flex;
+      min-height: 42px;
+      padding: 0 13px;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--accent-solid);
+      border-radius: 999px;
+      background: var(--accent-solid);
+      color: #FFFFFF;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      font-size: 10px;
+      font-weight: 620;
+    }
+
+    .chat-launcher .icon {
+      width: 15px;
+      height: 15px;
+    }
+
+    .toast {
+      position: fixed;
+      z-index: 1500;
+      right: 18px;
+      bottom: 18px;
+      max-width: min(360px, calc(100vw - 36px));
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface-2);
+      color: var(--text);
+      box-shadow: var(--shadow);
+      font-size: 10px;
+    }
+
+    @media (max-width: 1080px) {
+      .topbar-inner {
+        gap: 12px;
+      }
+
+      .desktop-nav .nav-link {
+        padding-inline: 7px;
+        font-size: 11px;
+      }
+
+      .hero {
+        grid-template-columns: minmax(0, 1.1fr) minmax(290px, 0.9fr);
+        gap: 18px;
+      }
+
+      .workspace-grid {
+        grid-template-columns: minmax(0, 1.35fr) minmax(255px, 0.75fr);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .desktop-nav {
+        display: none;
+      }
+
+      .mobile-nav-trigger {
+        display: inline-flex;
+      }
+
+      .topbar-inner {
+        justify-content: space-between;
+      }
+
+      .hero {
+        grid-template-columns: minmax(0, 1fr) minmax(270px, 0.8fr);
+      }
+
+      .course-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .workspace-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .workspace-aside {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .projected-card {
+        grid-row: span 2;
+      }
+    }
+
+    @media (max-width: 680px) {
+      html {
+        scroll-padding-top: 100px;
+      }
+
+      .page-width {
+        width: calc(100% - 28px);
+      }
+
+      .topbar-inner {
+        padding-inline: 12px;
+        gap: 8px;
+      }
+
+      .brand {
+        gap: 7px;
+      }
+
+      .brand-name {
+        max-width: 112px;
+        font-size: 12px;
+      }
+
+      .version-pill {
+        display: none;
+      }
+
+      .header-actions {
+        gap: 5px;
+      }
+
+      .search-trigger {
+        width: 33px;
+        padding: 0;
+      }
+
+      .search-trigger .search-label,
+      .search-trigger kbd,
+      .join-button {
+        display: none;
+      }
+
+      .auth-button {
+        min-height: 31px;
+        padding-inline: 8px;
+        font-size: 9px;
+      }
+
+      .status-line {
+        padding-inline: 14px;
+        gap: 9px;
+        font-size: 8px;
+      }
+
+      .mobile-nav-panel {
+        top: 94px;
+      }
+
+      main {
+        padding-top: 16px;
+      }
+
+      .hero {
+        min-height: 0;
+        padding: 20px 16px 15px;
+        grid-template-columns: 1fr;
+        gap: 17px;
+        border-radius: 14px;
+      }
+
+      .hero h1 {
+        margin-top: 14px;
+        font-size: clamp(39px, 12vw, 52px);
+      }
+
+      .hero-subtitle {
+        font-size: 12px;
+      }
+
+      .hero-search {
+        min-height: 43px;
+        margin-top: 17px;
+      }
+
+      .hero-search kbd {
+        display: none;
+      }
+
+      .focus-card {
+        padding: 13px;
+      }
+
+      .section {
+        margin-top: 38px;
+      }
+
+      .section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .section-heading h2 {
+        font-size: 25px;
+      }
+
+      .section-heading p {
+        font-size: 10px;
+      }
+
+      .filter-panel {
+        padding: 8px;
+      }
+
+      .filter-row {
+        gap: 7px;
+      }
+
+      .filter-label {
+        width: 48px;
+        font-size: 7px;
+      }
+
+      .filter-chip {
+        min-height: 25px;
+        padding-inline: 8px;
+        font-size: 8px;
+      }
+
+      .curriculum-meta {
+        font-size: 8px;
+      }
+
+      .course-grid {
+        grid-template-columns: 1fr;
+        gap: 9px;
+      }
+
+      .course-card {
+        min-height: 0;
+        padding: 13px;
+      }
+
+      .course-card h3 {
+        font-size: 15px;
+      }
+
+      .course-description {
+        min-height: 0;
+      }
+
+      .workspace-context {
+        width: 100%;
+        flex-wrap: wrap;
+      }
+
+      .context-field {
+        flex: 1;
+      }
+
+      .context-field select {
+        width: 100%;
+      }
+
+      .workspace-aside {
+        grid-template-columns: 1fr;
+      }
+
+      .projected-card {
+        grid-row: auto;
+      }
+
+      .grade-table {
+        min-width: 0;
+        width: 100%;
+      }
+
+      .table-scroll {
+        overflow: visible;
+      }
+
+      .grade-table thead {
+        display: none;
+      }
+
+      .grade-table,
+      .grade-table tbody {
+        display: block;
+      }
+
+      .grade-table tbody {
+        display: grid;
+        gap: 8px;
+      }
+
+      .grade-table tr {
+        display: grid;
+        padding: 8px;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--surface-1);
+      }
+
+      .grade-table td {
+        display: flex;
+        min-width: 0;
+        padding: 5px 4px;
+        flex-direction: column;
+        justify-content: center;
+        border: 0;
+        background: transparent !important;
+        gap: 4px;
+      }
+
+      .grade-table td::before {
+        color: var(--muted);
+        content: attr(data-label);
+        font-family: var(--font-mono);
+        font-size: 6px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+      }
+
+      .grade-table td[data-label="CODE"] {
+        grid-column: span 1;
+      }
+
+      .grade-table td[data-label="SUBJECT"] {
+        grid-column: span 3;
+      }
+
+      .grade-table .subject-cell {
+        min-width: 0;
+        font-size: 8px;
+      }
+
+      .grade-table td:first-child {
+        font-size: 7px;
+      }
+
+      .ledger-input,
+      .grade-select {
+        height: 26px;
+        min-width: 0;
+        padding-inline: 4px;
+        font-size: 8px;
+      }
+
+      .grade-select {
+        width: 100%;
+      }
+
+      .meter-grid,
+      .resource-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .meter-card {
+        grid-template-columns: 72px 1fr;
+      }
+
+      .meter-visual,
+      .meter-visual svg {
+        width: 68px;
+        height: 68px;
+      }
+
+      .panic-steps {
+        gap: 5px;
+      }
+
+      .panic-step {
+        padding: 7px 6px;
+      }
+
+      footer {
+        align-items: flex-start;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .chat-window {
+        right: 12px;
+        bottom: 12px;
+      }
+
+      .chat-title {
+        max-width: 132px;
+      }
+
+      .chat-badge {
+        max-width: 86px;
+      }
+
+      .chat-launcher {
+        right: 12px;
+        bottom: 12px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <svg class="icon-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="i-search" viewBox="0 0 24 24">
+      <circle cx="10.8" cy="10.8" r="6.7"></circle>
+      <path d="m16 16 4.5 4.5"></path>
+    </symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="4"></circle>
+      <path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"></path>
+    </symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24">
+      <path d="M20.5 14.1A8.4 8.4 0 0 1 9.9 3.5 8.6 8.6 0 1 0 20.5 14.1Z"></path>
+    </symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24">
+      <path d="M4 7h16M4 12h16M4 17h16"></path>
+    </symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24">
+      <path d="M4 12h15m-6-6 6 6-6 6"></path>
+    </symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24">
+      <path d="m6 9 6 6 6-6"></path>
+    </symbol>
+    <symbol id="i-external" viewBox="0 0 24 24">
+      <path d="M13 5h6v6M19 5l-9 9"></path>
+      <path d="M18 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"></path>
+    </symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24">
+      <path d="m8 4 8 0m-6 0v5l-4 4v2h12v-2l-4-4V4"></path>
+      <path d="M12 15v6"></path>
+    </symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24">
+      <path d="M5 12h14"></path>
+    </symbol>
+    <symbol id="i-close" viewBox="0 0 24 24">
+      <path d="m6 6 12 12M18 6 6 18"></path>
+    </symbol>
+    <symbol id="i-paperclip" viewBox="0 0 24 24">
+      <path d="m8 12.5 6.7-6.7a3.5 3.5 0 0 1 5 5l-8.5 8.5a5 5 0 0 1-7.1-7.1l8.2-8.2"></path>
+    </symbol>
+    <symbol id="i-send" viewBox="0 0 24 24">
+      <path d="m21 3-7.2 18-3.7-7.1L3 10.2 21 3Z"></path>
+      <path d="M10.1 13.9 21 3"></path>
+    </symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24">
+      <path d="M12 3 2.7 20h18.6L12 3Z"></path>
+      <path d="M12 9v5m0 3h.01"></path>
+    </symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24">
+      <rect x="8" y="8" width="12" height="12" rx="2"></rect>
+      <path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"></path>
+    </symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24">
+      <path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H6l-3 2v-5.5A7.5 7.5 0 1 1 20 11.5Z"></path>
+      <path d="M8 11h8m-8 3h5"></path>
+    </symbol>
+    <symbol id="i-check" viewBox="0 0 24 24">
+      <path d="m5 12 4 4L19 6"></path>
+    </symbol>
+  </svg>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#overview" aria-label="CampusSense home">
+        <span class="brand-mark">CS</span>
+        <span class="brand-name">MAKAUT CampusSense</span>
+        <span class="version-pill">v2.6</span>
+      </a>
+
+      <nav class="desktop-nav" aria-label="Main navigation">
+        <a class="nav-link" href="#overview">Features</a>
+        <a class="nav-link" href="#curriculum">Curriculum</a>
+        <a class="nav-link" href="#archives">PYQ Archives</a>
+        <a class="nav-link" href="#panic">Panic Pack</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="search-trigger" id="openCommand" type="button" aria-label="Open search, Command or Control K">
+          <svg class="icon" aria-hidden="true"><use href="#i-search"></use></svg>
+          <span class="search-label">Search</span>
+          <kbd>⌘ K</kbd>
+        </button>
+
+        <button class="icon-button" id="themeToggle" type="button" aria-label="Switch to light theme" title="Switch theme">
+          <svg class="icon theme-sun" aria-hidden="true"><use href="#i-sun"></use></svg>
+          <svg class="icon theme-moon" aria-hidden="true"><use href="#i-moon"></use></svg>
+        </button>
+
+        <button class="mobile-nav-trigger" id="mobileNavToggle" type="button" aria-label="Open navigation menu" aria-expanded="false">
+          <svg class="icon" aria-hidden="true"><use href="#i-menu"></use></svg>
+        </button>
+
+        <button class="auth-button" id="signInButton" type="button">Sign in</button>
+        <button class="join-button" id="joinButton" type="button">Get started</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="status-strip" aria-label="CampusSense index status">
+    <div class="status-scroll">
+      <div class="status-line">
+        <span class="status-item"><span class="status-dot"></span>134 Subjects Indexed</span>
+        <span class="status-separator">•</span>
+        <span class="status-item">2,924 PYQ Papers</span>
+        <span class="status-separator">•</span>
+        <span class="status-item">6 Engineering Streams</span>
+        <span class="status-separator">•</span>
+        <span class="status-item">Independent Student Initiative</span>
+      </div>
+    </div>
+  </div>
+
+  <nav class="mobile-nav-panel" id="mobileNavPanel" aria-label="Mobile navigation" hidden="">
+    <a href="#overview">Features</a>
+    <a href="#curriculum">Curriculum</a>
+    <a href="#archives">PYQ Archives</a>
+    <a href="#panic">Panic Pack</a>
+    <a href="#dashboard">Student Workspace</a>
+  </nav>
+
+  <dialog class="command-dialog" id="commandDialog" aria-label="CampusSense search">
+    <div class="command-panel">
+      <div class="command-search-row">
+        <svg class="icon" aria-hidden="true"><use href="#i-search"></use></svg>
+        <input id="paletteSearch" type="search" autocomplete="off" placeholder="Search codes, subjects, modules..." aria-label="Search curriculum">
+        <button class="command-close" id="closeCommand" type="button" aria-label="Close search">
+          <svg class="icon" aria-hidden="true"><use href="#i-close"></use></svg>
+        </button>
+      </div>
+      <div class="command-caption">Curriculum matches from this source snapshot</div>
+      <div class="command-results" id="commandResults" role="listbox" aria-label="Curriculum search results"></div>
+    </div>
+  </dialog>
+
+  <main class="page-width">
+    <section class="hero" id="overview" aria-labelledby="heroTitle">
+      <canvas id="shaderCanvas" aria-hidden="true"></canvas>
+
+      <div class="hero-copy">
+        <div class="hero-kicker">
+          <span class="status-dot"></span>
+          <span>ACADEMIC INTELLIGENCE / WEST BENGAL</span>
+        </div>
+        <h1 id="heroTitle">Know what’s official.<br><em>Know what to do next.</em></h1>
+        <p class="hero-subtitle">
+          A curriculum-first desk for MAKAUT engineering students:
+          verified syllabus maps, past papers, and focused revision in one place.
+        </p>
+
+        <form class="hero-search" id="heroSearchForm" role="search">
+          <svg class="icon" aria-hidden="true"><use href="#i-search"></use></svg>
+          <input id="heroSearch" type="search" autocomplete="off" placeholder="Search course code, subject, or module..." aria-label="Search courses and modules">
+          <kbd>/</kbd>
+        </form>
+
+        <div class="hero-actions">
+          <a class="button button-primary" href="#curriculum">
+            Browse curriculum
+            <svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg>
+          </a>
+          <button class="button" id="heroChatOpen" type="button">
+            Ask CampusSense
+            <svg class="icon" aria-hidden="true"><use href="#i-chat"></use></svg>
+          </button>
+        </div>
+
+        <div class="hero-note">
+          <svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg>
+          <span>Academic answers stay inside verified MAKAUT source material.</span>
+        </div>
+      </div>
+
+      <aside class="focus-card" aria-label="Current verified syllabus focus">
+        <div class="focus-head">
+          <span class="panel-kicker">SEM 05 / COURSE BRIEF</span>
+          <span class="focus-status"><span class="verified-dot"></span>Source linked</span>
+        </div>
+
+        <div class="focus-course-line">
+          <div>
+            <p class="mono">PCC-CS502 · CSE</p>
+            <h2>Operating Systems</h2>
+          </div>
+          <span class="snapshot-pill">3L / WEEK</span>
+        </div>
+
+        <div class="focus-units">
+          <div class="focus-unit">
+            <span class="focus-unit-index">01</span>
+            <span class="focus-unit-name">OS services, system calls, structure</span>
+            <span class="focus-unit-meta">3L</span>
+          </div>
+          <div class="focus-unit">
+            <span class="focus-unit-index">02</span>
+            <span class="focus-unit-name">Processes, threads, scheduling</span>
+            <span class="focus-unit-meta">10L</span>
+          </div>
+          <div class="focus-unit">
+            <span class="focus-unit-index">03</span>
+            <span class="focus-unit-name">IPC, synchronization, semaphores</span>
+            <span class="focus-unit-meta">5L</span>
+          </div>
+        </div>
+
+        <div class="focus-footer">
+          <span>2023–24 CSE source snapshot</span>
+          <a class="text-link" href="#curriculum">
+            Open course map
+            <svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg>
+          </a>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section" id="curriculum" aria-labelledby="curriculumTitle">
+      <div class="section-heading">
+        <div>
+          <div class="section-index">01 / CURRICULUM EXPLORER</div>
+          <h2 id="curriculumTitle">The syllabus, without the noise.</h2>
+          <p>Course cards expose source-backed unit previews, contact hours, and a checklist.</p>
+        </div>
+        <span class="snapshot-pill">CSE · 2023–24 source snapshot</span>
+      </div>
+
+      <div class="filter-panel" aria-label="Curriculum filters">
+        <div class="filter-row">
+          <span class="filter-label">STREAM</span>
+          <div class="filter-scroll" id="streamFilters">
+            <button class="filter-chip is-active" type="button" data-stream-filter="all">All Streams</button>
+            <button class="filter-chip" type="button" data-stream-filter="1st Year Common">1st Year Common</button>
+            <button class="filter-chip" type="button" data-stream-filter="CSE">CSE</button>
+            <button class="filter-chip" type="button" data-stream-filter="IT">IT</button>
+            <button class="filter-chip" type="button" data-stream-filter="CSE-AIML">CSE-AIML</button>
+            <button class="filter-chip" type="button" data-stream-filter="CSCS">CSCS</button>
+            <button class="filter-chip" type="button" data-stream-filter="CSDS">CSDS</button>
+            <button class="filter-chip" type="button" data-stream-filter="CSBS">CSBS</button>
+          </div>
+        </div>
+
+        <div class="filter-row">
+          <span class="filter-label">SEMESTER</span>
+          <div class="filter-scroll" id="semesterFilters">
+            <button class="filter-chip is-active" type="button" data-sem-filter="all">All Semesters</button>
+            <button class="filter-chip" type="button" data-sem-filter="1">Sem 1</button>
+            <button class="filter-chip" type="button" data-sem-filter="2">Sem 2</button>
+            <button class="filter-chip" type="button" data-sem-filter="3">Sem 3</button>
+            <button class="filter-chip" type="button" data-sem-filter="4">Sem 4</button>
+            <button class="filter-chip" type="button" data-sem-filter="5">Sem 5</button>
+            <button class="filter-chip" type="button" data-sem-filter="6">Sem 6</button>
+            <button class="filter-chip" type="button" data-sem-filter="7">Sem 7</button>
+            <button class="filter-chip" type="button" data-sem-filter="8">Sem 8</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="curriculum-meta">
+        <span><strong id="courseResultCount">9 courses</strong> in this preview</span>
+        <span>Search filters the rendered cards</span>
+      </div>
+
+      <!-- Production seam: render these cards from the verified cohort catalog.
+           Search operates on the rendered card DOM, not a parallel course array. -->
+      <div class="course-grid" id="courseGrid">
+        <article class="course-card" data-stream="CSE" data-sem="4">
+          <div class="card-topline">
+            <span class="course-code">PCC-CS403</span>
+            <span class="verified-pill"><span class="verified-dot"></span>Verified snapshot</span>
+          </div>
+          <h3>Formal Language &amp; Automata Theory</h3>
+          <p class="course-description">Languages, finite machines, grammars, and computability.</p>
+          <div class="course-metadata">
+            <span class="semester-tag">SEM 04</span>
+            <span class="credit-badge">3L:0T:0P · 3.0 Credits</span>
+          </div>
+          <div class="course-contact"><span>Contact hours</span><strong>3L / WEEK</strong></div>
+          <details class="module-details">
+            <summary>
+              <span>Unit checklist</span><span class="summary-count">3 unit previews</span>
+              <svg class="icon chevron" aria-hidden="true"><use href="#i-chevron"></use></svg>
+            </summary>
+            <div class="module-checklist">
+              <label class="unit-check"><input type="checkbox"><span class="unit-title">Alphabet, languages &amp; grammars</span><span class="unit-hours">6L</span></label>
+              <label class="unit-check"><input type="checkbox"><span class="unit-title">Regular languages &amp; finite automata</span><span class="unit-hours">7L</span></label>
+              <label class="unit-check"><input type="checkbox"><span class="unit-title">Context-free languages &amp; pushdown automata</span><span class="unit-hours">6L</span></label>
+            </div>
+            <div class="module-progress"><span class="progress-readout">0 / 3 reviewed</span><div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0"><span></span></div></div>
+            <p class="module-footnote">Unit previews only. Open the linked syllabus for the full outline.</p>
+          </details>
+          <div class="card-footer">
+            <a class="button" href="https://makautexam.net/aicte_details/Syllabus/CSE/AllSem23.pdf" target="_blank" rel="noopener">
+              View Syllabus Blueprint <svg class="icon" aria-hidden="true"><use href="#i-external"></use></svg>
+            </a>
+          </div>
+        </article>
+
+        <article class="course-card" data-stream="CSE" data-sem="5">
+          <div class="card-topline">
+            <span class="course-code">PCC-CS501</span>
+            <span class="verified-pill"><span class="verified-dot"></span>Verified snapshot</span>
+          </div>
+          <h3>Compiler Design</h3>
+          <p class="course-description">A structured route from source analysis to code generation.</p>
+          <div class="course-metadata">
+            <span class="semester-tag">SEM 05</span>
+            <span class="credit-badge">3L:0T:0P · 3.0 Credits</span>
+          </div>
+          <div class="course-contact"><span>Contact hours</span><strong>3L / WEEK</strong></div>
+          <details class="module-details">
+            <summary>
+              <span>Unit checklist</span><span class="summary-count">3 unit previews</span>
+              <svg class="icon chevron" aria-hidden="true"><use href="#i-chevron"></use></svg>
+            </summary>
+            <div class="module-checklist">
+              <label class="unit-check"><input type="checkbox"><span class="unit-title">Introduction to compiling</span><span class="unit-hours">3L</span></label>
+              <label class="unit-check"><input type="checkbox"><span class="unit-title">Lexical analysis</span><span class="unit-hours">6L</span></label>
+              <label class="unit-check"><input type="checkbox"><span class="unit-title">Syntax analysis</span><span class="unit-hours">9L</span></label>
+            </div>
+            <div class="module-progress"><span class="progress-readout">0 / 3 reviewed</span><div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0"><span></span></div></div>
+            <p class="module-footnote">Unit previews only. Open the linked syllabus for the full outline.</p>
+          </details>
+          <div class="card-footer">
+            <a class="button" href="https://makautexam.net/aicte_details/Syllabus/CSE/AllSem23.pdf" target="_blank" rel="noopener">
+              View Syllabus Blueprint <svg class="icon" aria-hidden="true"><use href="#i-external"></use></svg>
+            </a>
+          </div>
+        </article>
+
+        <article class="course-card" data-stream="CSE" data-sem="5">
+          <div class="card-topline">
+            <span class="course-code">PCC-CS502</span>
+            <span class="verified-pill"><span class="verified-dot"></span>Verified snapshot</span>
+          </div>
+          <h3>Operating Systems</h3>
+          <p class="course-description">Processes, synchronization, memory, I/O, and file management.</p>
+          <div class="course-metadata">
+            <span class="semester-tag">SEM 05</span>
+            <span class="credit-badge">3L:0T:0P · 3.0 Credits</span>
+          </div>
+          <div class="course-contact"><span>Contact hours</span><strong>3L / WEEK</strong></div>
+          <details class="module-details">
+            <summary>
+              <span>Unit checklist</span><span class="summary-count">3 unit previews</span>
+              <svg class="icon chevron" aria-hidden="true"><use href="#i-chevron"></use></svg>
+            </summary>
+            <div class="module-checklist">
+              <label class="unit-check"><input type="checkbox"><span class="unit-title">OS services, calls &amp; structure</span><span class="unit-hours">3L</span></label>
+              <label class="unit-check"><input type="checkbox"><span class="unit-title">Processes, threads &amp; scheduling</span><span class="unit-hours">10L</span></label>
+              <label class="unit-check"><input type="checkbox"><span class="unit-title">IPC &amp; synchronization</span><span class="unit-hours">5L</span></label>
+            </div>
+            <div class="module-progress"><span class="progress-readout">0 / 3 reviewed</span><div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0"><span></span></div></div>
+            <p class="module-footnote">Unit previews only. Open the linked syllabus for the full outline.</p>
+          </details>
+          <div class="card-footer">
+            <a class="button" href="https://makautexam.net/aicte_details/Syllabus/CSE/AllSem23.pdf" target="_blank" rel="noopener">
+              View Syllabus Blueprint <svg class="icon" aria-hidden="true"><use href="#i-external"></use></svg>
+            </a>
+          </div>
+        </article>
+
+        <article class="course-card" data-stream="CSE" data-sem="5">
+          <div class="card-topline">
+            <span class="course-code">PCC-CS503</span>
+            <span class="verified-pill"><span class="verified-dot"></span>Verified snapshot</span>
+          </div>
+          <h3>Object Oriented Programming</h3>
+          <p class="course-description">Abstract data types, object identity, inheritance, and design patterns.</p>
+          <div class="course-metadata">
+            <span class="semester-tag">SEM 05</span>
+            <span class="credit-badge">3L:0T:0P · 3.0 Credits</span>
+          </div>
+          <div class="course-contact"><span>Contact hours</span><strong>3L / WEEK</strong></div>
+          <details class="module-details">
+            <summary>
+              <span>Unit checklist</span><span class="summary-count">3 unit previews</span>
+              <svg class="icon chevron" aria-hidden="true"><use href="#i-chevron"></use></svg>
+            </summary>
+            <div class="module-checklist">
+              <label class="unit-check"><input type="checkbox"><span class="unit-title">Abstract data types &amp; specification</span><span class="unit-hours">8L</span></label>
+              <label class="unit-check"><input type="checkbox"><span class="unit-title">Encapsulation, identity &amp; polymorphism</span><span class="unit-hours">8L</span></label>
+              <label class="unit-check"><input type="checkbox"><span class="unit-title">Inheritance &amp; design patterns</span><span class="unit-hours">6L</span></label>
+            </div>
+            <div class="module-progress"><span class="progress-readout">0 / 3 reviewed</span><div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0"><span></span></div></div>
+            <p class="module-footnote">Unit previews only. Open the linked syllabus for the full outline.</p>
+          </details>
+          <div class="companion-note">Java is specified in the companion OOP lab: PCC-CS593.</div>
+          <div class="card-footer">
+            <a class="button" href="https://makautexam.net/aicte_details/Syllabus/CSE/AllSem23.pdf" target="_blank" rel="noopener">
+              View Syllabus Blueprint <svg class="icon" aria-hidden="true"><use href="#i-external"></use></svg>
+            </a>
+          </div>
+        </article>
+
+        <article class="course-card" data-stream="CSE" data-sem="5">
+          <div class="card-topline">
+            <span class="course-code">ESC501</span>
+            <span class="verified-pill"><span class="verified-dot"></span>Verified snapshot</span>
+          </div>
+          <h3>Software Engineering</h3>
+          <p class="course-description">Lifecycle models, system design, testing, and project management.</p>
+          <div class="course-metadata">
+            <span class="semester-tag">SEM 05</span>
+            <span class="credit-badge">3L:0T:0P · 3.0 Credits</span>
+          </div>
+          <div class="course-contact"><span>Contact hours</span><strong>3L / WEEK</strong></div>
+          <details class="module-details">
+            <summary>
+              <span>Unit checklist</span><span class="summary-count">3 unit previews</span>
+              <svg class="icon chevron" aria-hidden="true"><use href="#i-chevron"></use></svg>
+            </summary>
+            <div class="module-checklist">
+              <label class="unit-check"><input type="checkbox"><span class="unit-title">System analysis &amp; development lifecycle</span><span class="unit-hours">10L</span></label>
+              <label class="unit-check"><input type="checkbox"><span class="unit-title">System design, context diagrams &amp; DFD</span><span class="unit-hours">5L</span></label>
+              <label class="unit-check"><input type="checkbox"><span class="unit-title">Coding, documentation &amp; testing</span><span class="unit-hours">12L</span></label>
+            </div>
+            <div class="module-progress"><span class="progress-readout">0 / 3 reviewed</span><div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0"><span></span></div></div>
+            <p class="module-footnote">Unit previews only. Open the linked syllabus for the full outline.</p>
+          </details>
+          <div class="card-footer">
+            <a class="button" href="https://makautexam.net/aicte_details/Syllabus/CSE/AllSem23.pdf" target="_blank" rel="noopener">
+              View Syllabus Blueprint <svg class="icon" aria-hidden="true"><use href="#i-external"></use></svg>
+            </a>
+          </div>
+        </article>
+
+        <article class="course-card" data-stream="CSE" data-sem="5">
+          <div class="card-topline">
+            <span class="course-code">HSMC-501</span>
+            <span class="verified-pill"><span class="verified-dot"></span>Verified snapshot</span>
+          </div>
+          <h3>Introduction to Industrial Management</h3>
+          <p class="course-description">Organization, project networks, materials, and production planning.</p>
+          <div class="course-metadata">
+            <span class="semester-tag">SEM 05</span>
+            <span class="credit-badge">3L:0T:0P · 3.0 Credits</span>
+          </div>
+          <div class="course-contact"><span>Contact hours</span><strong>3L / WEEK</strong></div>
+          <details class="module-details">
+            <summary>
+              <span>Unit checklist</span><span class="summary-count">3 unit previews</span>
+              <svg class="icon chevron" aria-hidden="true"><use href="#i-chevron"></use></svg>
+            </summary>
+            <div class="module-checklist">
+              <label class="unit-check"><input type="checkbox"><span class="unit-title">Management &amp; organization structure</span><span class="unit-hours">6L</span></label>
+              <label class="unit-check"><input type="checkbox"><span class="unit-title">CPM &amp; PERT</span><span class="unit-hours">8L</span></label>
+              <label class="unit-check"><input type="checkbox"><span class="unit-title">Materials management</span><span class="unit-hours">6L</span></label>
+            </div>
+            <div class="module-progress"><span class="progress-readout">0 / 3 reviewed</span><div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0"><span></span></div></div>
+            <p class="module-footnote">Unit previews only. Open the linked syllabus for the full outline.</p>
+          </details>
+          <div class="card-footer">
+            <a class="button" href="https://makautexam.net/aicte_details/Syllabus/CSE/AllSem23.pdf" target="_blank" rel="noopener">
+              View Syllabus Blueprint <svg class="icon" aria-hidden="true"><use href="#i-external"></use></svg>
+            </a>
+          </div>
+        </article>
+
+        <article class="course-card" data-stream="CSE" data-sem="5">
+          <div class="card-topline">
+            <span class="course-code">MC-CS501</span>
+            <span class="verified-pill"><span class="verified-dot"></span>Verified snapshot</span>
+          </div>
+          <h3>Constitution of India</h3>
+          <p class="course-description">Constitutional foundations and Union, state, and local administration.</p>
+          <div class="course-metadata">
+            <span class="semester-tag">SEM 05</span>
+            <span class="credit-badge">3L:0T:0P · 3.0 Credits</span>
+          </div>
+          <div class="course-contact"><span>Contact hours</span><strong>3L / WEEK</strong></div>
+          <details class="module-details">
+            <summary>
+              <span>Unit checklist</span><span class="summary-count">3 unit previews</span>
+              <svg class="icon chevron" aria-hidden="true"><use href="#i-chevron"></use></svg>
+            </summary>
+            <div class="module-checklist">
+              <label class="unit-check"><input type="checkbox"><span class="unit-title">Sources, citizenship &amp; fundamental rights</span><span class="unit-hours">3L</span></label>
+              <label class="unit-check"><input type="checkbox"><span class="unit-title">Union government &amp; administration</span><span class="unit-hours">6L</span></label>
+              <label class="unit-check"><input type="checkbox"><span class="unit-title">State government &amp; administration</span><span class="unit-hours">6L</span></label>
+            </div>
+            <div class="module-progress"><span class="progress-readout">0 / 3 reviewed</span><div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0"><span></span></div></div>
+            <p class="module-footnote">Unit previews only. Open the linked syllabus for the full outline.</p>
+          </details>
+          <div class="card-footer">
+            <a class="button" href="https://makautexam.net/aicte_details/Syllabus/CSE/AllSem23.pdf" target="_blank" rel="noopener">
+              View Syllabus Blueprint <svg class="icon" aria-hidden="true"><use href="#i-external"></use></svg>
+            </a>
+          </div>
+        </article>
+
+        <article class="course-card" data-stream="CSE" data-sem="6">
+          <div class="card-topline">
+            <span class="course-code">PCC-CS601</span>
+            <span class="verified-pill"><span class="verified-dot"></span>Verified snapshot</span>
+          </div>
+          <h3>Database Management Systems</h3>
+          <p class="course-description">Data models, relational design, query processing, storage, and transactions.</p>
+          <div class="course-metadata">
+            <span class="semester-tag">SEM 06</span>
+            <span class="credit-badge">3L:0T:0P · 3.0 Credits</span>
+          </div>
+          <div class="course-contact"><span>Contact hours</span><strong>3L / WEEK</strong></div>
+          <details class="module-details">
+            <summary>
+              <span>Unit checklist</span><span class="summary-count">3 unit previews</span>
+              <svg class="icon chevron" aria-hidden="true"><use href="#i-chevron"></use></svg>
+            </summary>
+            <div class="module-checklist">
+              <label class="unit-check"><input type="checkbox"><span class="unit-title">Database architecture &amp; data models</span><span class="unit-hours">9L</span></label>
+              <label class="unit-check"><input type="checkbox"><span class="unit-title">Relational query languages &amp; design</span><span class="unit-hours">13L</span></label>
+              <label class="unit-check"><input type="checkbox"><span class="unit-title">Storage: indexes, B-trees &amp; hashing</span><span class="unit-hours">3L</span></label>
+            </div>
+            <div class="module-progress"><span class="progress-readout">0 / 3 reviewed</span><div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0"><span></span></div></div>
+            <p class="module-footnote">Unit previews only. Open the linked syllabus for the full outline.</p>
+          </details>
+          <div class="card-footer">
+            <a class="button" href="https://makautexam.net/aicte_details/Syllabus/CSE/AllSem23.pdf" target="_blank" rel="noopener">
+              View Syllabus Blueprint <svg class="icon" aria-hidden="true"><use href="#i-external"></use></svg>
+            </a>
+          </div>
+        </article>
+
+        <article class="course-card" data-stream="CSE" data-sem="6">
+          <div class="card-topline">
+            <span class="course-code">PCC-CS602</span>
+            <span class="verified-pill"><span class="verified-dot"></span>Verified snapshot</span>
+          </div>
+          <h3>Computer Networks</h3>
+          <p class="course-description">Data communication, link control, network layers, and routing.</p>
+          <div class="course-metadata">
+            <span class="semester-tag">SEM 06</span>
+            <span class="credit-badge">3L:0T:0P · 3.0 Credits</span>
+          </div>
+          <div class="course-contact"><span>Contact hours</span><strong>3L / WEEK</strong></div>
+          <details class="module-details">
+            <summary>
+              <span>Unit checklist</span><span class="summary-count">3 unit previews</span>
+              <svg class="icon chevron" aria-hidden="true"><use href="#i-chevron"></use></svg>
+            </summary>
+            <div class="module-checklist">
+              <label class="unit-check"><input type="checkbox"><span class="unit-title">Data communication, OSI &amp; topology</span><span class="unit-hours">9L</span></label>
+              <label class="unit-check"><input type="checkbox"><span class="unit-title">Data link &amp; MAC sublayer</span><span class="unit-hours">8L</span></label>
+              <label class="unit-check"><input type="checkbox"><span class="unit-title">Network layer &amp; addressing</span><span class="unit-hours">14L</span></label>
+            </div>
+            <div class="module-progress"><span class="progress-readout">0 / 3 reviewed</span><div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0"><span></span></div></div>
+            <p class="module-footnote">Unit previews only. Open the linked syllabus for the full outline.</p>
+          </details>
+          <div class="card-footer">
+            <a class="button" href="https://makautexam.net/aicte_details/Syllabus/CSE/AllSem23.pdf" target="_blank" rel="noopener">
+              View Syllabus Blueprint <svg class="icon" aria-hidden="true"><use href="#i-external"></use></svg>
+            </a>
+          </div>
+        </article>
+      </div>
+
+      <div class="empty-state" id="curriculumEmpty" hidden="">
+        <strong>No course cards in this source preview.</strong>
+        <p>The live catalog should provide the selected stream and cohort’s verified records.</p>
+        <div class="quick-filter-row">
+          <button class="quick-filter" type="button" data-quick-sem="4">CSE · Sem 4</button>
+          <button class="quick-filter" type="button" data-quick-sem="5">CSE · Sem 5</button>
+          <button class="quick-filter" type="button" data-quick-sem="6">CSE · Sem 6</button>
+          <button class="quick-filter" type="button" data-quick-query="automata">Automata</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="dashboard" aria-labelledby="dashboardTitle">
+      <div class="section-heading">
+        <div>
+          <div class="section-index">02 / STUDENT WORKSPACE</div>
+          <h2 id="dashboardTitle">A working view of the semester.</h2>
+          <p>Preview ledger values are editable; production data belongs to the authenticated student profile.</p>
+        </div>
+
+        <div class="workspace-context">
+          <div class="context-field">
+            <label for="contextStream">Stream</label>
+            <select id="contextStream">
+              <option>CSE</option>
+              <option>IT</option>
+              <option>CSE-AIML</option>
+              <option>CSCS</option>
+              <option>CSDS</option>
+              <option>CSBS</option>
+            </select>
+          </div>
+          <div class="context-field">
+            <label for="contextSemester">Semester</label>
+            <select id="contextSemester">
+              <option>Semester 6</option>
+              <option>Semester 5</option>
+              <option>Semester 4</option>
+              <option>Semester 3</option>
+              <option>Semester 7</option>
+              <option>Semester 8</option>
+            </select>
+          </div>
+          <span class="demo-pill">Preview session</span>
+        </div>
+      </div>
+
+      <div class="workspace-grid">
+        <div class="ledger-panel">
+          <div class="ledger-head">
+            <div>
+              <h3>Semester 6 grade ledger</h3>
+              <p>Demo entries · edit credits, internal marks, and grade letters.</p>
+            </div>
+            <span class="demo-pill">SAMPLE VALUES</span>
+          </div>
+
+          <div class="table-scroll">
+            <table class="grade-table">
+              <caption class="sr-only">Editable Semester 6 grade projection preview</caption>
+              <thead>
+                <tr>
+                  <th scope="col">CODE</th>
+                  <th scope="col">SUBJECT</th>
+                  <th scope="col">CR</th>
+                  <th scope="col">INTERNAL</th>
+                  <th scope="col">GRADE (O/E/A/B/C/D/F)</th>
+                  <th scope="col">POINTS</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td data-label="CODE">PCC-CS601</td>
+                  <td class="subject-cell" data-label="SUBJECT">Database Management Systems</td>
+                  <td data-label="CR"><input class="ledger-input credit-input" type="number" min="0" step="0.5" value="3" aria-label="Database Management Systems credits"></td>
+                  <td data-label="INTERNAL"><input class="ledger-input" type="number" min="0" step="1" value="22" aria-label="Database Management Systems internal marks"></td>
+                  <td data-label="GRADE"><select class="grade-select" aria-label="Database Management Systems projected grade"><option>O</option><option>E</option><option selected="">A</option><option>B</option><option>C</option><option>D</option><option>F</option></select></td>
+                  <td class="point-cell" data-label="POINTS">8</td>
+                </tr>
+                <tr>
+                  <td data-label="CODE">PCC-CS602</td>
+                  <td class="subject-cell" data-label="SUBJECT">Computer Networks</td>
+                  <td data-label="CR"><input class="ledger-input credit-input" type="number" min="0" step="0.5" value="3" aria-label="Computer Networks credits"></td>
+                  <td data-label="INTERNAL"><input class="ledger-input" type="number" min="0" step="1" value="20" aria-label="Computer Networks internal marks"></td>
+                  <td data-label="GRADE"><select class="grade-select" aria-label="Computer Networks projected grade"><option>O</option><option selected="">E</option><option>A</option><option>B</option><option>C</option><option>D</option><option>F</option></select></td>
+                  <td class="point-cell" data-label="POINTS">9</td>
+                </tr>
+                <tr>
+                  <td data-label="CODE">PROJ-CS601</td>
+                  <td class="subject-cell" data-label="SUBJECT">Research Methodology</td>
+                  <td data-label="CR"><input class="ledger-input credit-input" type="number" min="0" step="0.5" value="3" aria-label="Research Methodology credits"></td>
+                  <td data-label="INTERNAL"><input class="ledger-input" type="number" min="0" step="1" value="23" aria-label="Research Methodology internal marks"></td>
+                  <td data-label="GRADE"><select class="grade-select" aria-label="Research Methodology projected grade"><option>O</option><option>E</option><option selected="">A</option><option>B</option><option>C</option><option>D</option><option>F</option></select></td>
+                  <td class="point-cell" data-label="POINTS">8</td>
+                </tr>
+                <tr>
+                  <td data-label="CODE">PEC-IT601B</td>
+                  <td class="subject-cell" data-label="SUBJECT">Distributed Systems · elective</td>
+                  <td data-label="CR"><input class="ledger-input credit-input" type="number" min="0" step="0.5" value="3" aria-label="Distributed Systems credits"></td>
+                  <td data-label="INTERNAL"><input class="ledger-input" type="number" min="0" step="1" value="19" aria-label="Distributed Systems internal marks"></td>
+                  <td data-label="GRADE"><select class="grade-select" aria-label="Distributed Systems projected grade"><option>O</option><option>E</option><option>A</option><option selected="">B</option><option>C</option><option>D</option><option>F</option></select></td>
+                  <td class="point-cell" data-label="POINTS">7</td>
+                </tr>
+                <tr>
+                  <td data-label="CODE">PCC-CS691</td>
+                  <td class="subject-cell" data-label="SUBJECT">Database Management System Lab</td>
+                  <td data-label="CR"><input class="ledger-input credit-input" type="number" min="0" step="0.5" value="2" aria-label="Database Management System Lab credits"></td>
+                  <td data-label="INTERNAL"><input class="ledger-input" type="number" min="0" step="1" value="24" aria-label="Database Management System Lab internal marks"></td>
+                  <td data-label="GRADE"><select class="grade-select" aria-label="Database Management System Lab projected grade"><option>O</option><option>E</option><option>A</option><option>B</option><option selected="">C</option><option>D</option><option>F</option></select></td>
+                  <td class="point-cell" data-label="POINTS">6</td>
+                </tr>
+                <tr>
+                  <td data-label="CODE">OEC-IT601A</td>
+                  <td class="subject-cell" data-label="SUBJECT">Numerical Methods · elective</td>
+                  <td data-label="CR"><input class="ledger-input credit-input" type="number" min="0" step="0.5" value="3" aria-label="Numerical Methods credits"></td>
+                  <td data-label="INTERNAL"><input class="ledger-input" type="number" min="0" step="1" value="18" aria-label="Numerical Methods internal marks"></td>
+                  <td data-label="GRADE"><select class="grade-select" aria-label="Numerical Methods projected grade"><option>O</option><option>E</option><option>A</option><option>B</option><option>C</option><option selected="">D</option><option>F</option></select></td>
+                  <td class="point-cell" data-label="POINTS">5</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="ledger-footnote">
+            Preview grade-point mapping only. In production, load the selected cohort’s verified grade table.
+            Internal marks are recorded here but are not automatically converted into a final letter grade.
+          </p>
+        </div>
+
+        <aside class="workspace-aside" aria-label="Grade projection and trajectory">
+          <div class="projected-card">
+            <div class="panel-heading">
+              <span class="panel-kicker">PROJECTED SGPA</span>
+              <span class="demo-pill">LIVE PREVIEW</span>
+            </div>
+            <div class="projected-number-row">
+              <span class="projected-number" id="projectedSGPA" aria-live="polite">—</span>
+              <span class="projected-caption">from selected grade letters</span>
+            </div>
+            <div class="projected-meta">
+              <span>Credits included</span>
+              <strong id="totalCredits">—</strong>
+            </div>
+            <div class="sgpa-track" role="progressbar" aria-label="Projected SGPA on a ten point preview scale" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0">
+              <span id="sgpaFill"></span>
+            </div>
+          </div>
+
+          <div class="workspace-card">
+            <div class="panel-heading">
+              <h3>Target trajectory</h3>
+              <span class="demo-pill">EDITABLE</span>
+            </div>
+            <div class="target-inputs">
+              <label>Current CGPA
+                <input id="currentCgpa" type="number" min="0" max="10" step="0.01" value="8.12">
+              </label>
+              <label>Target CGPA
+                <input id="targetCgpa" type="number" min="0" max="10" step="0.01" value="8.50">
+              </label>
+            </div>
+            <div class="target-summary">
+              <span>Progress to target</span>
+              <strong id="targetGap">0.38 to target</strong>
+            </div>
+            <div class="target-track" role="progressbar" aria-label="Current CGPA relative to target" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+              <span id="targetFill"></span>
+            </div>
+          </div>
+
+          <div class="workspace-card">
+            <div class="latex-block" style="margin-top:0">
+              <div class="latex-block-head">
+                <span>Weighted SGPA · LaTeX source</span>
+                <button class="copy-button" id="copyWorkspaceLatex" type="button">
+                  <svg class="icon" aria-hidden="true"><use href="#i-copy"></use></svg>Copy
+                </button>
+              </div>
+              <code class="latex-source" id="workspaceLatex">\mathrm{SGPA} = \frac{\sum_{i=1}^{n} C_i G_i}{\sum_{i=1}^{n} C_i}</code>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="meter-grid" aria-label="Student activity progress preview">
+        <article class="meter-card" data-meter="mar">
+          <div class="meter-visual">
+            <svg viewBox="0 0 100 100" role="img" aria-label="MAR activity points progress">
+              <circle class="meter-track-circle" cx="50" cy="50" r="46"></circle>
+              <circle class="meter-progress-circle" data-ring="mar" cx="50" cy="50" r="46"></circle>
+            </svg>
+            <span class="meter-number" id="marValue">64</span>
+          </div>
+          <div class="meter-info">
+            <div class="meter-head"><h3>MAR activity</h3><span class="demo-pill">/ 100 PTS</span></div>
+            <p>Student progress preview. Values are held in memory.</p>
+            <button class="meter-action" type="button" data-increment="mar">Add 1 point</button>
+          </div>
+        </article>
+
+        <article class="meter-card" data-meter="moocs">
+          <div class="meter-visual">
+            <svg viewBox="0 0 100 100" role="img" aria-label="MOOC credit progress">
+              <circle class="meter-track-circle" cx="50" cy="50" r="46"></circle>
+              <circle class="meter-progress-circle" data-ring="moocs" cx="50" cy="50" r="46"></circle>
+            </svg>
+            <span class="meter-number" id="moocsValue">12</span>
+          </div>
+          <div class="meter-info">
+            <div class="meter-head"><h3>MOOCs</h3><span class="demo-pill">/ 20 CR</span></div>
+            <p>Credit progress preview. Values are held in memory.</p>
+            <button class="meter-action" type="button" data-increment="moocs">Add 1 credit</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section resource-grid" aria-label="Exam resources">
+      <article class="resource-card" id="archives">
+        <div class="resource-heading">
+          <span class="panel-kicker">03 / PYQ ARCHIVES</span>
+          <span class="verified-pill"><span class="verified-dot"></span>Catalog indexed</span>
+        </div>
+        <div class="resource-stat-line">
+          <span class="resource-count">2,924</span>
+          <span class="resource-count-label">question-paper records</span>
+        </div>
+        <p>Browse the archive by stream, semester, year, and course code. Paper links should resolve from the verified resource catalog.</p>
+        <div class="resource-filters">
+          <span class="topic-tag">CSE</span>
+          <span class="topic-tag">Semesters 1–8</span>
+          <span class="topic-tag">Year filters</span>
+          <span class="topic-tag">PDF preview</span>
+        </div>
+        <button class="button" id="archiveAction" type="button">
+          Open archive index <svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg>
+        </button>
+      </article>
+
+      <article class="resource-card" id="panic">
+        <div class="resource-heading">
+          <span class="panel-kicker">04 / 48-HOUR PANIC PACK</span>
+          <span class="snapshot-pill">Frequency-ranked source data</span>
+        </div>
+        <h3>A shorter route through revision.</h3>
+        <p>Revision sequence is a planning surface; question frequency and citations must come from verified PYQ records.</p>
+        <div class="panic-steps">
+          <div class="panic-step"><time>T-48H</time><strong>Rebuild core units</strong></div>
+          <div class="panic-step"><time>T-24H</time><strong>Work through repeated PYQs</strong></div>
+          <div class="panic-step"><time>FINAL PASS</time><strong>Definitions &amp; derivations</strong></div>
+        </div>
+        <button class="button" id="panicAction" type="button">
+          Ask about a verified topic <svg class="icon" aria-hidden="true"><use href="#i-chat"></use></svg>
+        </button>
+      </article>
+    </section>
+
+    <footer>
+      <span>CampusSense is an independent student initiative and is not affiliated with MAKAUT.</span>
+      <span class="mono">SOURCE-FIRST · COHORT-AWARE · STUDENT-FOCUSED</span>
+    </footer>
+  </main>
+
+  <aside class="chat-window" id="chatWindow" role="dialog" aria-label="CampusSense AI Assistant" aria-modal="false">
+    <div class="chat-header" id="chatHeader">
+      <span class="drag-handle" aria-label="Drag chat window">
+        <span class="drag-dots" aria-hidden="true">
+          <i></i><i></i><i></i><i></i><i></i><i></i>
+        </span>
+      </span>
+      <div class="chat-title-wrap">
+        <span class="chat-title">CampusSense AI Assistant</span>
+        <span class="chat-badge">CSE · Verified Syllabus</span>
+      </div>
+      <div class="chat-controls">
+        <button class="chat-control" id="pinChat" type="button" aria-pressed="false" aria-label="Pin chat to screen" title="Pin to Screen">
+          <svg class="icon" aria-hidden="true"><use href="#i-pin"></use></svg>
+        </button>
+        <button class="chat-control" id="minimizeChat" type="button" aria-label="Minimize chat" aria-expanded="true" title="Minimize">
+          <svg class="icon" aria-hidden="true"><use href="#i-minus"></use></svg>
+        </button>
+        <button class="chat-control" id="closeChat" type="button" aria-label="Close chat" title="Close">
+          <svg class="icon" aria-hidden="true"><use href="#i-close"></use></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="chat-body" id="chatBody">
+      <div class="chat-feed" id="chatFeed" aria-live="polite">
+        <div class="chat-date-line">SOURCE SNAPSHOT · 2023–24 CSE</div>
+
+        <div class="chat-message user">
+          <span class="message-label">YOU · 09:41</span>
+          <div class="message-bubble">What should I revise first in Operating Systems?</div>
+        </div>
+
+        <div class="chat-message assistant">
+          <span class="message-label">CAMPUSSENSE · GROUNDED RESPONSE</span>
+          <div class="message-bubble">
+            <p>The CSE source snapshot lists OS services, system calls, and structure in Unit 1, followed by processes, threads, and scheduling in Unit 2. Check the linked syllabus for the complete outline for your cohort.</p>
+            <div class="citation-row">
+              <a class="citation-pill" href="https://makautexam.net/aicte_details/Syllabus/CSE/AllSem23.pdf" target="_blank" rel="noopener">
+                <span class="verified-dot"></span>Verified · PCC-CS502 · Unit 1
+                <svg class="icon" aria-hidden="true"><use href="#i-external"></use></svg>
+              </a>
+              <a class="citation-pill" href="https://makautexam.net/aicte_details/Syllabus/CSE/AllSem23.pdf" target="_blank" rel="noopener">
+                <span class="verified-dot"></span>Verified · PCC-CS502 · Unit 2
+                <svg class="icon" aria-hidden="true"><use href="#i-external"></use></svg>
+              </a>
+            </div>
+
+            <div class="chat-latex">
+              <div class="chat-latex-head">
+                <span>SGPA relation · LaTeX source</span>
+                <button class="copy-button" id="copyChatLatex" type="button">
+                  <svg class="icon" aria-hidden="true"><use href="#i-copy"></use></svg>Copy
+                </button>
+              </div>
+              <code class="latex-source" id="chatLatex">\mathrm{SGPA} = \frac{\sum_{i=1}^{n} C_i G_i}{\sum_{i=1}^{n} C_i}</code>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grounding-alert" role="note">
+        <svg class="icon" aria-hidden="true"><use href="#i-alert"></use></svg>
+        <span>This information is not verified by official MAKAUT curriculum data.</span>
+      </div>
+
+      <form class="chat-console" id="chatForm">
+        <div class="chat-input-row">
+          <input id="chatInput" type="text" autocomplete="off" placeholder="Ask about a verified syllabus topic..." aria-label="Ask CampusSense">
+          <input id="attachmentInput" type="file" accept="application/pdf" hidden="">
+          <button class="chat-input-action" id="attachButton" type="button" aria-label="Attach a PDF" title="Attach a PDF">
+            <svg class="icon" aria-hidden="true"><use href="#i-paperclip"></use></svg>
+          </button>
+          <button class="chat-input-action send" type="submit" aria-label="Send message" title="Send">
+            <svg class="icon" aria-hidden="true"><use href="#i-send"></use></svg>
+          </button>
+        </div>
+        <div class="chat-console-note">
+          <span id="attachmentNote">Answers require a matching source.</span>
+          <span>ENTER TO SEND</span>
+        </div>
+      </form>
+    </div>
+
+    <div class="resize-grip" id="resizeGrip" role="button" tabindex="0" aria-label="Resize chat window" title="Drag to resize"></div>
+  </aside>
+
+  <button class="chat-launcher" id="chatLauncher" type="button" hidden="">
+    <svg class="icon" aria-hidden="true"><use href="#i-chat"></use></svg>
+    Open CampusSense AI
+  </button>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden=""></div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const $ = (selector, root = document) => root.querySelector(selector);
+      const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+      const officialSyllabusUrl =
+        "https://makautexam.net/aicte_details/Syllabus/CSE/AllSem23.pdf";
+
+      const themeToggle = $("#themeToggle");
+      const themeRoot = document.documentElement;
+
+      themeToggle.addEventListener("click", () => {
+        const nextTheme = themeRoot.dataset.theme === "dark" ? "light" : "dark";
+        themeRoot.dataset.theme = nextTheme;
+        themeToggle.setAttribute(
+          "aria-label",
+          nextTheme === "dark" ? "Switch to light theme" : "Switch to dark theme"
+        );
+        updateShaderTint();
+      });
+
+      const mobileNavToggle = $("#mobileNavToggle");
+      const mobileNavPanel = $("#mobileNavPanel");
+
+      mobileNavToggle.addEventListener("click", () => {
+        const isOpen = !mobileNavPanel.hidden;
+        mobileNavPanel.hidden = isOpen;
+        mobileNavToggle.setAttribute("aria-expanded", String(!isOpen));
+        mobileNavToggle.setAttribute(
+          "aria-label",
+          isOpen ? "Open navigation menu" : "Close navigation menu"
+        );
+      });
+
+      $$("#mobileNavPanel a").forEach((link) => {
+        link.addEventListener("click", () => {
+          mobileNavPanel.hidden = true;
+          mobileNavToggle.setAttribute("aria-expanded", "false");
+        });
+      });
+
+      const commandDialog = $("#commandDialog");
+      const openCommandButton = $("#openCommand");
+      const closeCommandButton = $("#closeCommand");
+      const paletteSearch = $("#paletteSearch");
+      const commandResults = $("#commandResults");
+      const heroSearch = $("#heroSearch");
+      const heroSearchForm = $("#heroSearchForm");
+      const courseCards = $$(".course-card");
+      const curriculumEmpty = $("#curriculumEmpty");
+      const courseResultCount = $("#courseResultCount");
+
+      let activeStream = "all";
+      let activeSemester = "all";
+      let selectedCommandIndex = -1;
+
+      const searchExpansions = {
+        os: "operating systems",
+        dbms: "database management systems",
+        automata: "formal language automata theory",
+        fla: "formal language automata theory",
+        java: "object oriented programming"
+      };
+
+      function normalizedSearchQuery(query) {
+        const trimmed = query.trim().toLowerCase();
+        return searchExpansions[trimmed] || trimmed;
+      }
+
+      function courseMatchesQuery(card, query) {
+        if (!query) return true;
+        const expanded = normalizedSearchQuery(query);
+        const terms = expanded.split(/\s+/).filter(Boolean);
+        const content = card.textContent.toLowerCase();
+        return terms.every((term) => content.includes(term));
+      }
+
+      function courseMatchesFilters(card) {
+        const streamMatch =
+          activeStream === "all" ||
+          (card.dataset.stream || "").split(/\s+/).includes(activeStream);
+        const semesterMatch =
+          activeSemester === "all" || card.dataset.sem === activeSemester;
+        return streamMatch && semesterMatch;
+      }
+
+      function updateCurriculum(query = heroSearch.value) {
+        let visible = 0;
+
+        courseCards.forEach((card) => {
+          const show = courseMatchesFilters(card) && courseMatchesQuery(card, query);
+          card.hidden = !show;
+          if (show) visible += 1;
+        });
+
+        courseResultCount.textContent =
+          `${visible} ${visible === 1 ? "course" : "courses"}`;
+        curriculumEmpty.hidden = visible !== 0;
+        updateCommandResults(query);
+      }
+
+      function updateCommandResults(query = paletteSearch.value) {
+        commandResults.replaceChildren();
+        selectedCommandIndex = -1;
+
+        const matches = courseCards.filter((card) => {
+          return courseMatchesFilters(card) && courseMatchesQuery(card, query);
+        });
+
+        if (matches.length === 0) {
+          const empty = document.createElement("div");
+          empty.className = "command-empty";
+          empty.textContent =
+            "No matching card in this preview. Select a cohort-backed catalog in production.";
+          commandResults.append(empty);
+          return;
+        }
+
+        matches.slice(0, 6).forEach((card) => {
+          const link = document.createElement("a");
+          link.className = "command-result";
+          link.href = "#curriculum";
+          link.setAttribute("role", "option");
+
+          const main = document.createElement("span");
+          const title = document.createElement("span");
+          title.className = "command-result-title";
+          title.textContent = $("h3", card).textContent;
+
+          const subtitle = document.createElement("span");
+          subtitle.className = "command-result-subtitle";
+          subtitle.textContent = `SEM ${card.dataset.sem} · CSE syllabus snapshot`;
+
+          main.append(title, subtitle);
+
+          const code = document.createElement("span");
+          code.className = "command-result-code";
+          code.textContent = $(".course-code", card).textContent;
+
+          link.append(main, code);
+          link.addEventListener("click", () => {
+            commandDialog.close();
+          });
+          commandResults.append(link);
+        });
+      }
+
+      heroSearch.addEventListener("input", () => {
+        paletteSearch.value = heroSearch.value;
+        updateCurriculum(heroSearch.value);
+      });
+
+      paletteSearch.addEventListener("input", () => {
+        heroSearch.value = paletteSearch.value;
+        updateCurriculum(paletteSearch.value);
+      });
+
+      heroSearchForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        $("#curriculum").scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      function openCommandPalette() {
+        if (!commandDialog.open) commandDialog.showModal();
+        paletteSearch.value = heroSearch.value;
+        updateCommandResults(paletteSearch.value);
+        window.setTimeout(() => paletteSearch.focus(), 0);
+      }
+
+      openCommandButton.addEventListener("click", openCommandPalette);
+      closeCommandButton.addEventListener("click", () => commandDialog.close());
+
+      commandDialog.addEventListener("click", (event) => {
+        if (event.target === commandDialog) commandDialog.close();
+      });
+
+      paletteSearch.addEventListener("keydown", (event) => {
+        const items = $$(".command-result", commandResults);
+        if (!items.length) return;
+
+        if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+          event.preventDefault();
+          const direction = event.key === "ArrowDown" ? 1 : -1;
+          selectedCommandIndex =
+            (selectedCommandIndex + direction + items.length) % items.length;
+          items.forEach((item, index) => {
+            item.classList.toggle("is-selected", index === selectedCommandIndex);
+            item.setAttribute("aria-selected", String(index === selectedCommandIndex));
+          });
+          items[selectedCommandIndex].scrollIntoView({ block: "nearest" });
+        }
+
+        if (event.key === "Enter" && selectedCommandIndex >= 0) {
+          event.preventDefault();
+          items[selectedCommandIndex].click();
+        }
+      });
+
+      document.addEventListener("keydown", (event) => {
+        const target = event.target;
+        const isEditing =
+          target instanceof HTMLElement &&
+          (target.isContentEditable ||
+            ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName));
+
+        if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+          event.preventDefault();
+          openCommandPalette();
+          return;
+        }
+
+        if (event.key === "/" && !isEditing && !commandDialog.open) {
+          event.preventDefault();
+          openCommandPalette();
+        }
+      });
+
+      $$("[data-stream-filter]").forEach((button) => {
+        button.addEventListener("click", () => {
+          activeStream = button.dataset.streamFilter;
+          $$("[data-stream-filter]").forEach((item) =>
+            item.classList.toggle("is-active", item === button)
+          );
+          updateCurriculum();
+        });
+      });
+
+      $$("[data-sem-filter]").forEach((button) => {
+        button.addEventListener("click", () => {
+          activeSemester = button.dataset.semFilter;
+          $$("[data-sem-filter]").forEach((item) =>
+            item.classList.toggle("is-active", item === button)
+          );
+          updateCurriculum();
+        });
+      });
+
+      $$(".quick-filter").forEach((button) => {
+        button.addEventListener("click", () => {
+          activeStream = "CSE";
+          activeSemester = button.dataset.quickSem || "all";
+          heroSearch.value = button.dataset.quickQuery || "";
+          paletteSearch.value = heroSearch.value;
+
+          $$("[data-stream-filter]").forEach((item) =>
+            item.classList.toggle("is-active", item.dataset.streamFilter === "CSE")
+          );
+          $$("[data-sem-filter]").forEach((item) =>
+            item.classList.toggle(
+              "is-active",
+              item.dataset.semFilter === activeSemester
+            )
+          );
+          updateCurriculum(heroSearch.value);
+        });
+      });
+
+      courseCards.forEach((card) => {
+        const checks = $$('input[type="checkbox"]', card);
+        const readout = $(".progress-readout", card);
+        const progress = $(".module-progress [role='progressbar']", card);
+        const fill = $(".module-progress .progress-track span", card);
+
+        function updateCardProgress() {
+          const completed = checks.filter((input) => input.checked).length;
+          const total = checks.length;
+          readout.textContent = `${completed} / ${total} reviewed`;
+          progress.setAttribute("aria-valuenow", String(completed));
+          fill.style.width = total ? `${(completed / total) * 100}%` : "0%";
+        }
+
+        checks.forEach((input) => input.addEventListener("change", updateCardProgress));
+        updateCardProgress();
+      });
+
+      const courseGrid = $("#courseGrid");
+      courseGrid.addEventListener("pointermove", (event) => {
+        courseCards.forEach((card) => {
+          const rect = card.getBoundingClientRect();
+          const nearestX = Math.max(rect.left, Math.min(event.clientX, rect.right));
+          const nearestY = Math.max(rect.top, Math.min(event.clientY, rect.bottom));
+          const distance = Math.hypot(event.clientX - nearestX, event.clientY - nearestY);
+          const alpha = Math.max(0, 1 - distance / 600);
+
+          card.style.setProperty("--spot-x", `${event.clientX - rect.left}px`);
+          card.style.setProperty("--spot-y", `${event.clientY - rect.top}px`);
+          card.style.setProperty("--spot-alpha", alpha.toFixed(3));
+        });
+      });
+
+      courseGrid.addEventListener("pointerleave", () => {
+        courseCards.forEach((card) => card.style.setProperty("--spot-alpha", "0"));
+      });
+
+      const gradePoints = { O: 10, E: 9, A: 8, B: 7, C: 6, D: 5, F: 0 };
+      const gradeRows = $$(".grade-table tbody tr");
+      const projectedSGPA = $("#projectedSGPA");
+      const totalCredits = $("#totalCredits");
+      const sgpaFill = $("#sgpaFill");
+      const sgpaProgress = $(".sgpa-track[role='progressbar']");
+
+      function updateLedger() {
+        let creditTotal = 0;
+        let weightedTotal = 0;
+
+        gradeRows.forEach((row) => {
+          const credits = Math.max(0, Number($(".credit-input", row).value) || 0);
+          const grade = $(".grade-select", row).value;
+          const points = gradePoints[grade] ?? 0;
+
+          $(".point-cell", row).textContent = String(points);
+          creditTotal += credits;
+          weightedTotal += credits * points;
+        });
+
+        const sgpa = creditTotal ? weightedTotal / creditTotal : 0;
+        projectedSGPA.textContent = creditTotal ? sgpa.toFixed(2) : "—";
+        totalCredits.textContent = creditTotal.toFixed(1);
+        sgpaFill.style.width = `${Math.min(100, (sgpa / 10) * 100)}%`;
+        sgpaProgress.setAttribute("aria-valuenow", sgpa.toFixed(2));
+      }
+
+      gradeRows.forEach((row) => {
+        $$(".credit-input, .grade-select, input[type='number']", row).forEach((input) => {
+          input.addEventListener("input", updateLedger);
+          input.addEventListener("change", updateLedger);
+        });
+      });
+      updateLedger();
+
+      const currentCgpaInput = $("#currentCgpa");
+      const targetCgpaInput = $("#targetCgpa");
+      const targetFill = $("#targetFill");
+      const targetGap = $("#targetGap");
+      const targetProgress = $(".target-track[role='progressbar']");
+
+      function updateTarget() {
+        const current = Math.max(0, Math.min(10, Number(currentCgpaInput.value) || 0));
+        const target = Math.max(0, Math.min(10, Number(targetCgpaInput.value) || 0));
+        const ratio = target > 0 ? Math.min(100, (current / target) * 100) : 0;
+        const difference = target - current;
+
+        targetFill.style.width = `${ratio}%`;
+        targetGap.textContent =
+          difference > 0
+            ? `${difference.toFixed(2)} to target`
+            : `${Math.abs(difference).toFixed(2)} above target`;
+        targetProgress.setAttribute("aria-valuenow", ratio.toFixed(0));
+      }
+
+      currentCgpaInput.addEventListener("input", updateTarget);
+      targetCgpaInput.addEventListener("input", updateTarget);
+      updateTarget();
+
+      const meterValues = { mar: 64, moocs: 12 };
+      const meterMaximums = { mar: 100, moocs: 20 };
+      const ringCircumference = 289.03;
+
+      function updateMeter(key) {
+        const value = meterValues[key];
+        const max = meterMaximums[key];
+        const circle = $(`[data-ring="${key}"]`);
+        const offset = ringCircumference * (1 - value / max);
+
+        circle.style.strokeDasharray = String(ringCircumference);
+        circle.style.strokeDashoffset = String(offset);
+        $(`#${key}Value`).textContent = String(value);
+        circle.closest("svg").setAttribute(
+          "aria-label",
+          `${value} of ${max} ${key === "mar" ? "MAR points" : "MOOC credits"}`
+        );
+      }
+
+      $$("[data-increment]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const key = button.dataset.increment;
+          meterValues[key] = Math.min(meterMaximums[key], meterValues[key] + 1);
+          updateMeter(key);
+        });
+      });
+
+      updateMeter("mar");
+      updateMeter("moocs");
+
+      const toast = $("#toast");
+      let toastTimer;
+
+      function showToast(message) {
+        toast.textContent = message;
+        toast.hidden = false;
+        window.clearTimeout(toastTimer);
+        toastTimer = window.setTimeout(() => {
+          toast.hidden = true;
+        }, 2600);
+      }
+
+      $("#signInButton").addEventListener("click", () => {
+        showToast("Preview only: connect this control to the Clerk sign-in flow.");
+      });
+
+      $("#joinButton").addEventListener("click", () => {
+        showToast("Preview only: connect account creation to the Clerk sign-up flow.");
+      });
+
+      $("#archiveAction").addEventListener("click", () => {
+        showToast("Production archive records should resolve from the verified resources catalog.");
+      });
+
+      const chatWindow = $("#chatWindow");
+      const chatHeader = $("#chatHeader");
+      const pinButton = $("#pinChat");
+      const minimizeButton = $("#minimizeChat");
+      const closeChatButton = $("#closeChat");
+      const chatLauncher = $("#chatLauncher");
+      const resizeGrip = $("#resizeGrip");
+      const chatFeed = $("#chatFeed");
+      const chatInput = $("#chatInput");
+      const chatForm = $("#chatForm");
+      const attachmentInput = $("#attachmentInput");
+
+      function openChat() {
+        chatWindow.hidden = false;
+        chatWindow.classList.remove("is-minimized");
+        chatLauncher.hidden = true;
+        minimizeButton.setAttribute("aria-expanded", "true");
+        minimizeButton.setAttribute("aria-label", "Minimize chat");
+        window.setTimeout(() => chatInput.focus(), 30);
+      }
+
+      function minimizeChat() {
+        const isMinimized = chatWindow.classList.toggle("is-minimized");
+        minimizeButton.setAttribute("aria-expanded", String(!isMinimized));
+        minimizeButton.setAttribute(
+          "aria-label",
+          isMinimized ? "Expand chat" : "Minimize chat"
+        );
+      }
+
+      $("#heroChatOpen").addEventListener("click", openChat);
+      chatLauncher.addEventListener("click", openChat);
+
+      minimizeButton.addEventListener("click", minimizeChat);
+
+      closeChatButton.addEventListener("click", () => {
+        chatWindow.hidden = true;
+        chatLauncher.hidden = false;
+        chatLauncher.focus();
+      });
+
+      pinButton.addEventListener("click", () => {
+        const isPinned = pinButton.getAttribute("aria-pressed") !== "true";
+        pinButton.setAttribute("aria-pressed", String(isPinned));
+        pinButton.setAttribute(
+          "aria-label",
+          isPinned ? "Unpin chat from screen" : "Pin chat to screen"
+        );
+        chatWindow.classList.toggle("is-pinned", isPinned);
+
+        if (isPinned) {
+          chatWindow.style.left = "";
+          chatWindow.style.top = "";
+          chatWindow.style.right = window.innerWidth <= 680 ? "12px" : "24px";
+          chatWindow.style.bottom = window.innerWidth <= 680 ? "12px" : "24px";
+          showToast("Chat pinned to the screen edge.");
+        } else {
+          showToast("Chat unpinned. Drag the header to reposition it.");
+        }
+      });
+
+      let dragState = null;
+
+      chatHeader.addEventListener("pointerdown", (event) => {
+        if (
+          event.target.closest("button") ||
+          event.target.closest("a") ||
+          chatWindow.classList.contains("is-pinned")
+        ) {
+          return;
+        }
+
+        const rect = chatWindow.getBoundingClientRect();
+        dragState = {
+          pointerId: event.pointerId,
+          startX: event.clientX,
+          startY: event.clientY,
+          left: rect.left,
+          top: rect.top
+        };
+
+        chatHeader.setPointerCapture(event.pointerId);
+      });
+
+      chatHeader.addEventListener("pointermove", (event) => {
+        if (!dragState || dragState.pointerId !== event.pointerId) return;
+
+        const maxLeft = Math.max(0, window.innerWidth - chatWindow.offsetWidth);
+        const maxTop = Math.max(0, window.innerHeight - chatWindow.offsetHeight);
+        const left = Math.max(
+          0,
+          Math.min(maxLeft, dragState.left + event.clientX - dragState.startX)
+        );
+        const top = Math.max(
+          0,
+          Math.min(maxTop, dragState.top + event.clientY - dragState.startY)
+        );
+
+        chatWindow.style.left = `${left}px`;
+        chatWindow.style.top = `${top}px`;
+        chatWindow.style.right = "auto";
+        chatWindow.style.bottom = "auto";
+      });
+
+      function endDrag(event) {
+        if (dragState && dragState.pointerId === event.pointerId) dragState = null;
+      }
+
+      chatHeader.addEventListener("pointerup", endDrag);
+      chatHeader.addEventListener("pointercancel", endDrag);
+
+      let resizeState = null;
+
+      resizeGrip.addEventListener("pointerdown", (event) => {
+        event.preventDefault();
+        const rect = chatWindow.getBoundingClientRect();
+        resizeState = {
+          pointerId: event.pointerId,
+          startX: event.clientX,
+          startY: event.clientY,
+          width: rect.width,
+          height: rect.height
+        };
+        resizeGrip.setPointerCapture(event.pointerId);
+      });
+
+      resizeGrip.addEventListener("pointermove", (event) => {
+        if (!resizeState || resizeState.pointerId !== event.pointerId) return;
+
+        const maxWidth = Math.min(800, Math.max(320, window.innerWidth - 24));
+        const maxHeight = Math.min(850, Math.max(420, window.innerHeight - 24));
+        const minWidth = Math.min(320, maxWidth);
+        const minHeight = Math.min(420, maxHeight);
+        const width = Math.max(
+          minWidth,
+          Math.min(maxWidth, resizeState.width + event.clientX - resizeState.startX)
+        );
+        const height = Math.max(
+          minHeight,
+          Math.min(maxHeight, resizeState.height + event.clientY - resizeState.startY)
+        );
+
+        chatWindow.style.width = `${width}px`;
+        chatWindow.style.height = `${height}px`;
+      });
+
+      function endResize(event) {
+        if (resizeState && resizeState.pointerId === event.pointerId) resizeState = null;
+      }
+
+      resizeGrip.addEventListener("pointerup", endResize);
+      resizeGrip.addEventListener("pointercancel", endResize);
+
+      if (window.matchMedia("(max-width: 680px)").matches) {
+        chatWindow.classList.add("is-minimized");
+        minimizeButton.setAttribute("aria-expanded", "false");
+        minimizeButton.setAttribute("aria-label", "Expand chat");
+      }
+
+      const citationLabels = {
+        os: ["PCC-CS502 · Unit 1", "PCC-CS502 · Unit 2"],
+        compiler: ["PCC-CS501 · Unit 2", "PCC-CS501 · Unit 3"],
+        automata: ["PCC-CS403 · Unit 2", "PCC-CS403 · Unit 3"],
+        dbms: ["PCC-CS601 · Unit 1", "PCC-CS601 · Unit 2"]
+      };
+
+      function groundedMatch(query) {
+        const text = query.toLowerCase();
+
+        if (/\b(os|operating system|operating systems|process|thread|scheduling)\b/.test(text)) {
+          return {
+            answer:
+              "In the CSE 2023–24 source snapshot, PCC-CS502 Unit 1 covers OS services, system calls, and OS structure; Unit 2 covers processes, threads, and scheduling.",
+            citations: citationLabels.os
+          };
+        }
+
+        if (/\b(compiler|lexical|parser|parsing)\b/.test(text)) {
+          return {
+            answer:
+              "In the CSE 2023–24 source snapshot, PCC-CS501 Unit 2 is Lexical Analysis and Unit 3 is Syntax Analysis.",
+            citations: citationLabels.compiler
+          };
+        }
+
+        if (/\b(automata|formal language|finite automata|regular language)\b/.test(text)) {
+          return {
+            answer:
+              "In the CSE 2023–24 source snapshot, PCC-CS403 includes regular languages and finite automata, followed by context-free languages and pushdown automata.",
+            citations: citationLabels.automata
+          };
+        }
+
+        if (/\b(dbms|database|sql|relational)\b/.test(text)) {
+          return {
+            answer:
+              "In the CSE 2023–24 source snapshot, PCC-CS601 begins with database system architecture and data models, followed by relational query languages and database design.",
+            citations: citationLabels.dbms
+          };
+        }
+
+        return null;
+      }
+
+      function addChatMessage(role, text, citations = []) {
+        const message = document.createElement("div");
+        message.className = `chat-message ${role}`;
+
+        const label = document.createElement("span");
+        label.className = "message-label";
+        label.textContent =
+          role === "user" ? "YOU · NOW" : "CAMPUSSENSE · GROUNDED RESPONSE";
+
+        const bubble = document.createElement("div");
+        bubble.className = "message-bubble";
+
+        const paragraph = document.createElement("p");
+        paragraph.textContent = text;
+        bubble.append(paragraph);
+
+        if (citations.length) {
+          const citationRow = document.createElement("div");
+          citationRow.className = "citation-row";
+
+          citations.forEach((citation) => {
+            const link = document.createElement("a");
+            link.className = "citation-pill";
+            link.href = officialSyllabusUrl;
+            link.target = "_blank";
+            link.rel = "noopener";
+
+            const dot = document.createElement("span");
+            dot.className = "verified-dot";
+
+            const caption = document.createElement("span");
+            caption.textContent = `Verified · ${citation}`;
+
+            const externalIcon = document.createElementNS(
+              "http://www.w3.org/2000/svg",
+              "svg"
+            );
+            externalIcon.setAttribute("class", "icon");
+            externalIcon.setAttribute("aria-hidden", "true");
+
+            const use = document.createElementNS("http://www.w3.org/2000/svg", "use");
+            use.setAttribute("href", "#i-external");
+            externalIcon.append(use);
+
+            link.append(dot, caption, externalIcon);
+            citationRow.append(link);
+          });
+
+          bubble.append(citationRow);
+        }
+
+        message.append(label, bubble);
+        chatFeed.append(message);
+        chatFeed.scrollTop = chatFeed.scrollHeight;
+      }
+
+      chatForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const query = chatInput.value.trim();
+        if (!query) return;
+
+        addChatMessage("user", query);
+        chatInput.value = "";
+
+        const match = groundedMatch(query);
+        window.setTimeout(() => {
+          if (match) {
+            addChatMessage("assistant", match.answer, match.citations);
+          } else {
+            addChatMessage(
+              "assistant",
+              "This information is not verified by official MAKAUT curriculum data."
+            );
+          }
+        }, 180);
+      });
+
+      $("#attachButton").addEventListener("click", () => attachmentInput.click());
+
+      attachmentInput.addEventListener("change", () => {
+        const file = attachmentInput.files && attachmentInput.files[0];
+        if (!file) return;
+        $("#attachmentNote").textContent = `Selected: ${file.name} · preview only`;
+        showToast("Attachment selected. This prototype does not upload files.");
+      });
+
+      $("#panicAction").addEventListener("click", () => {
+        openChat();
+        chatInput.value = "Show the verified highest-repeat questions for this subject.";
+        chatInput.focus();
+      });
+
+      async function copyTextFrom(elementId) {
+        const text = $(`#${elementId}`).textContent.trim();
+
+        try {
+          if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(text);
+          } else {
+            const temporary = document.createElement("textarea");
+            temporary.value = text;
+            temporary.style.position = "fixed";
+            temporary.style.opacity = "0";
+            document.body.append(temporary);
+            temporary.select();
+            document.execCommand("copy");
+            temporary.remove();
+          }
+          showToast("LaTeX source copied.");
+        } catch {
+          showToast("Copy is unavailable in this browser context.");
+        }
+      }
+
+      $("#copyChatLatex").addEventListener("click", () => copyTextFrom("chatLatex"));
+      $("#copyWorkspaceLatex").addEventListener("click", () => copyTextFrom("workspaceLatex"));
+
+      const hero = $(".hero");
+      const shaderCanvas = $("#shaderCanvas");
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const gl = shaderCanvas.getContext("webgl", {
+        alpha: true,
+        antialias: false,
+        premultipliedAlpha: false
+      });
+
+      let shaderProgram = null;
+      let shaderResolution = null;
+      let shaderTime = null;
+      let shaderMouse = null;
+      let shaderTint = null;
+
+      function compileShader(context, type, source) {
+        const shader = context.createShader(type);
+        context.shaderSource(shader, source);
+        context.compileShader(shader);
+
+        if (!context.getShaderParameter(shader, context.COMPILE_STATUS)) {
+          context.deleteShader(shader);
+          return null;
+        }
+        return shader;
+      }
+
+      if (gl) {
+        const vertexSource = `
+          attribute vec2 position;
+          void main() {
+            gl_Position = vec4(position, 0.0, 1.0);
+          }
+        `;
+
+        const fragmentSource = `
+          precision mediump float;
+          uniform vec2 u_resolution;
+          uniform float u_time;
+          uniform vec2 u_mouse;
+          uniform vec3 u_tint;
+
+          float hash(vec2 p) {
+            return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+          }
+
+          void main() {
+            vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+            vec2 st = uv;
+            st.x *= u_resolution.x / u_resolution.y;
+
+            float grain = hash(floor(gl_FragCoord.xy * 0.72 + u_time * 0.12));
+            float gridX = step(0.986, fract(st.x * 8.0));
+            float gridY = step(0.986, fract(st.y * 8.0));
+            float grid = max(gridX, gridY);
+            float mesh = 0.5 + 0.5 * sin(st.x * 4.0 + st.y * 5.0
+              + sin(st.y * 4.0 + u_time * 0.08));
+            float spotlight = exp(-distance(uv, u_mouse) * 7.0);
+
+            float alpha = 0.010 + grain * 0.020 + grid * 0.012
+              + mesh * 0.006 + spotlight * 0.014;
+
+            gl_FragColor = vec4(u_tint, alpha);
+          }
+        `;
+
+        const vertexShader = compileShader(gl, gl.VERTEX_SHADER, vertexSource);
+        const fragmentShader = compileShader(gl, gl.FRAGMENT_SHADER, fragmentSource);
+
+        if (vertexShader && fragmentShader) {
+          shaderProgram = gl.createProgram();
+          gl.attachShader(shaderProgram, vertexShader);
+          gl.attachShader(shaderProgram, fragmentShader);
+          gl.linkProgram(shaderProgram);
+
+          if (gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+            gl.useProgram(shaderProgram);
+            shaderResolution = gl.getUniformLocation(shaderProgram, "u_resolution");
+            shaderTime = gl.getUniformLocation(shaderProgram, "u_time");
+            shaderMouse = gl.getUniformLocation(shaderProgram, "u_mouse");
+            shaderTint = gl.getUniformLocation(shaderProgram, "u_tint");
+
+            const buffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+            gl.bufferData(
+              gl.ARRAY_BUFFER,
+              new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]),
+              gl.STATIC_DRAW
+            );
+
+            const position = gl.getAttribLocation(shaderProgram, "position");
+            gl.enableVertexAttribArray(position);
+            gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
+            gl.enable(gl.BLEND);
+            gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+            function resizeShader() {
+              const rect = hero.getBoundingClientRect();
+              const dpr = Math.min(window.devicePixelRatio || 1, 1.35);
+              shaderCanvas.width = Math.max(1, Math.floor(rect.width * dpr));
+              shaderCanvas.height = Math.max(1, Math.floor(rect.height * dpr));
+              gl.viewport(0, 0, shaderCanvas.width, shaderCanvas.height);
+              gl.uniform2f(shaderResolution, shaderCanvas.width, shaderCanvas.height);
+              drawShader(0);
+            }
+
+            function updateShaderTint() {
+              if (!gl || !shaderProgram) return;
+              gl.useProgram(shaderProgram);
+              if (themeRoot.dataset.theme === "dark") {
+                gl.uniform3f(shaderTint, 0.52, 0.56, 0.72);
+              } else {
+                gl.uniform3f(shaderTint, 0.18, 0.22, 0.34);
+              }
+            }
+
+            function drawShader(timestamp) {
+              if (!gl || !shaderProgram) return;
+              gl.useProgram(shaderProgram);
+              gl.uniform1f(shaderTime, reducedMotion ? 0 : timestamp * 0.001);
+              gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+              if (!reducedMotion) requestAnimationFrame(drawShader);
+            }
+
+            window.updateShaderTint = updateShaderTint;
+            updateShaderTint();
+            resizeShader();
+
+            if ("ResizeObserver" in window) {
+              new ResizeObserver(resizeShader).observe(hero);
+            } else {
+              window.addEventListener("resize", resizeShader);
+            }
+
+            let mouseX = -1;
+            let mouseY = -1;
+
+            hero.addEventListener("pointermove", (event) => {
+              const rect = hero.getBoundingClientRect();
+              mouseX = (event.clientX - rect.left) / rect.width;
+              mouseY = 1 - (event.clientY - rect.top) / rect.height;
+              gl.useProgram(shaderProgram);
+              gl.uniform2f(shaderMouse, mouseX, mouseY);
+            });
+
+            hero.addEventListener("pointerleave", () => {
+              gl.useProgram(shaderProgram);
+              gl.uniform2f(shaderMouse, -2, -2);
+            });
+          } else {
+            shaderCanvas.hidden = true;
+          }
+        } else {
+          shaderCanvas.hidden = true;
+        }
+      } else {
+        shaderCanvas.hidden = true;
+      }
+
+      if (typeof window.updateShaderTint !== "function") {
+        window.updateShaderTint = () => {};
+      }
+
+      updateCurriculum("");
+    })();
+  </script>
+
+
+</body></html>

@@ -62,8 +62,10 @@ public class PdfBoxParser {
         if (inputStream == null) {
             throw new IllegalArgumentException("InputStream cannot be null");
         }
-        byte[] bytes = inputStream.readAllBytes();
-        return parsePdf(bytes);
+        try (InputStream is = inputStream) {
+            byte[] bytes = is.readAllBytes();
+            return parsePdf(bytes);
+        }
     }
 
     public ParsedPdfResult parsePdf(File file) throws IOException {

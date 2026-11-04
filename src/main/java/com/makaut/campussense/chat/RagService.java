@@ -15,7 +15,6 @@ import com.makaut.campussense.repository.DocumentEmbeddingRepository;
 import com.makaut.campussense.repository.PlacementRecordRepository;
 import com.makaut.campussense.service.EmbeddingService;
 import com.makaut.campussense.service.LlmService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -27,7 +26,6 @@ import java.util.regex.Pattern;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 @SuppressWarnings("null")
 public class RagService {
 
@@ -37,7 +35,27 @@ public class RagService {
     private final PlacementRecordRepository placementRecordRepository;
     private final ChatSessionRepository chatSessionRepository;
     private final ChatMessageRepository chatMessageRepository;
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final org.springframework.core.env.Environment environment;
+    private final ObjectMapper objectMapper;
+
+    public RagService(
+            EmbeddingService embeddingService,
+            LlmService llmService,
+            DocumentEmbeddingRepository documentEmbeddingRepository,
+            PlacementRecordRepository placementRecordRepository,
+            ChatSessionRepository chatSessionRepository,
+            ChatMessageRepository chatMessageRepository,
+            org.springframework.core.env.Environment environment
+    ) {
+        this.embeddingService = embeddingService;
+        this.llmService = llmService;
+        this.documentEmbeddingRepository = documentEmbeddingRepository;
+        this.placementRecordRepository = placementRecordRepository;
+        this.chatSessionRepository = chatSessionRepository;
+        this.chatMessageRepository = chatMessageRepository;
+        this.environment = environment;
+        this.objectMapper = new ObjectMapper();
+    }
 
     @Value("${campussense.vector.top-k:5}")
     private int topK;
@@ -138,7 +156,8 @@ public class RagService {
         boolean verified = true;
 
         if (contextBuilder.length() == 0) {
-            finalResponse = PromptTemplates.UNVERIFIED_FALLBACK_MESSAGE;
+            String fallback = llmService.generateFallbackCompletion(userQuery);
+            finalResponse = (fallback != null && !fallback.isBlank()) ? fallback : PromptTemplates.UNVERIFIED_FALLBACK_MESSAGE;
             verified = false;
         } else {
             finalResponse = llmService.generateCompletion(contextBuilder.toString(), userQuery);
@@ -216,8 +235,6 @@ public class RagService {
         }
         return sb.toString();
     }
-
-    private final org.springframework.core.env.Environment environment;
 
     /**
      * Top-K Cosine Similarity Search supporting both PostgreSQL (native pgvector)

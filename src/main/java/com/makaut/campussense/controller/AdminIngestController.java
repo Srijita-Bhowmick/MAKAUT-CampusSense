@@ -6,7 +6,6 @@ import com.makaut.campussense.model.enums.StreamType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +22,16 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/admin")
-@RequiredArgsConstructor
 @Tag(name = "Admin Ingestion", description = "Endpoints for ingesting PDFs, syllabus documents, and URLs into the vector store")
 public class AdminIngestController {
 
     private final IngestionService ingestionService;
-    private final HttpClient httpClient = HttpClient.newHttpClient();
+    private final HttpClient httpClient;
+
+    public AdminIngestController(IngestionService ingestionService) {
+        this.ingestionService = ingestionService;
+        this.httpClient = HttpClient.newHttpClient();
+    }
 
     @PostMapping(value = "/ingest/pdf", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Ingest uploaded PDF document into vector database")
@@ -85,17 +88,19 @@ public class AdminIngestController {
                 throw new RuntimeException("Failed to download PDF from URL, HTTP status: " + response.statusCode());
             }
 
-            IngestionService.IngestionResult result = ingestionService.ingestPdf(
-                    response.body(),
-                    payload.getStream(),
-                    payload.getSemester(),
-                    payload.getSubjectCode(),
-                    payload.getSubjectName(),
-                    payload.getResourceType(),
-                    payload.getYear(),
-                    payload.getUrl()
-            );
-            return ResponseEntity.ok(result);
+            try (InputStream is = response.body()) {
+                IngestionService.IngestionResult result = ingestionService.ingestPdf(
+                        is,
+                        payload.getStream(),
+                        payload.getSemester(),
+                        payload.getSubjectCode(),
+                        payload.getSubjectName(),
+                        payload.getResourceType(),
+                        payload.getYear(),
+                        payload.getUrl()
+                );
+                return ResponseEntity.ok(result);
+            }
         } catch (Exception e) {
             log.error("Failed to ingest from URL: {}", e.getMessage());
             throw new RuntimeException("Error ingesting from URL: " + e.getMessage(), e);

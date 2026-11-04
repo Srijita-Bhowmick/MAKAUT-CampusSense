@@ -1,0 +1,21 @@
+{
+  "name": "makaut-campussense",
+  "version": "1.0.0",
+  "description": "MAKAUT CampusSense - Academic Resource Aggregator & Conversational RAG System",
+  "scripts": {
+    "dev": "mvnw.cmd spring-boot:run",
+    "start": "mvnw.cmd spring-boot:run",
+    "serve": "npx -y serve docs",
+    "rag": "scripts\\run_rag.bat --serve 8000",
+    "train": "scripts\\train_rag.bat"
+  },
+  "keywords": [
+    "makaut",
+    "rag",
+    "chatbot",
+    "spring-boot",
+    "syllabus"
+  ],
+  "author": "MAKAUT CampusSense",
+  "license": "MIT"
+}

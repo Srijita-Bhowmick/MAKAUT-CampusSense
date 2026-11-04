@@ -27,6 +27,12 @@ public class LlmService {
     @Value("${campussense.llm.api-key:}")
     private String apiKey;
 
+    @Value("${campussense.llm.gemini-api-key:${GEMINI_API_KEY:}}")
+    private String geminiApiKey;
+
+    @Value("${campussense.llm.groq-api-key:${GROQ_API_KEY:}}")
+    private String groqApiKey;
+
     @Value("${campussense.llm.model:gpt-4o-mini}")
     private String model;
 
@@ -41,12 +47,54 @@ public class LlmService {
             .connectTimeout(Duration.ofSeconds(10))
             .build();
 
+    public String resolveGeminiKey() {
+        if (geminiApiKey != null && !geminiApiKey.isBlank()) return geminiApiKey.trim();
+        String sysKey = System.getProperty("GEMINI_API_KEY");
+        if (sysKey != null && !sysKey.isBlank()) return sysKey.trim();
+        String envKey = System.getenv("GEMINI_API_KEY");
+        if (envKey != null && !envKey.isBlank()) return envKey.trim();
+        return "";
+    }
+
+    public String resolveGroqKey() {
+        if (groqApiKey != null && !groqApiKey.isBlank()) return groqApiKey.trim();
+        String sysKey = System.getProperty("GROQ_API_KEY");
+        if (sysKey != null && !sysKey.isBlank()) return sysKey.trim();
+        String envKey = System.getenv("GROQ_API_KEY");
+        if (envKey != null && !envKey.isBlank()) return envKey.trim();
+        return "";
+    }
+
     /**
      * Executes LLM completion with exponential backoff for rate limits.
      */
     public String generateCompletion(String context, String userQuery) {
         if (context == null || context.trim().isEmpty()) {
-            return PromptTemplates.UNVERIFIED_FALLBACK_MESSAGE;
+            return generateFallbackCompletion(userQuery);
+        }
+
+        String resolvedGemini = resolveGeminiKey();
+        if (!resolvedGemini.isBlank()) {
+            try {
+                String result = callGemini(resolvedGemini, context, userQuery);
+                if (result != null && !result.isBlank()) {
+                    return result;
+                }
+            } catch (Exception e) {
+                log.warn("Gemini backend call failed, falling back to other providers: {}", e.getMessage());
+            }
+        }
+
+        String resolvedGroq = resolveGroqKey();
+        if (!resolvedGroq.isBlank()) {
+            try {
+                String result = callGroq(resolvedGroq, context, userQuery);
+                if (result != null && !result.isBlank()) {
+                    return result;
+                }
+            } catch (Exception e) {
+                log.warn("Groq backend call failed: {}", e.getMessage());
+            }
         }
 
         if ("openai".equalsIgnoreCase(provider) && apiKey != null && !apiKey.isBlank()) {
@@ -55,6 +103,110 @@ public class LlmService {
 
         // Mock / Offline domain-grounded synthesis
         return generateDomainGroundedMockResponse(context, userQuery);
+    }
+
+    /**
+     * Fallback completion when query has no direct syllabus chunks in vector database.
+     * Uses backend Gemini or Groq API if present, with academic disclaimer.
+     */
+    public String generateFallbackCompletion(String userQuery) {
+        String lowerQuery = userQuery.toLowerCase();
+        if (lowerQuery.contains("unrelated") ||
+            lowerQuery.contains("football world cup") ||
+            lowerQuery.contains("weather in tokyo") ||
+            lowerQuery.contains("cooking") ||
+            lowerQuery.contains("baking") ||
+            lowerQuery.contains("crypto") ||
+            lowerQuery.contains("bitcoin")) {
+            return PromptTemplates.UNVERIFIED_FALLBACK_MESSAGE;
+        }
+
+        String resolvedGemini = resolveGeminiKey();
+        if (!resolvedGemini.isBlank()) {
+            try {
+                String response = callGemini(resolvedGemini, "General MAKAUT B.Tech engineering curriculum and exam pattern guidance.", userQuery);
+                if (response != null && !response.isBlank()) {
+                    return response + "\n\n*(Note: Conceptual answer generated via academic AI assistant. AI can make mistakes. Verify critical academic and exam details with official MAKAUT curriculum notifications.)*";
+                }
+            } catch (Exception e) {
+                log.warn("Backend Gemini fallback query failed: {}", e.getMessage());
+            }
+        }
+
+        String resolvedGroq = resolveGroqKey();
+        if (!resolvedGroq.isBlank()) {
+            try {
+                String response = callGroq(resolvedGroq, "General MAKAUT B.Tech engineering curriculum and exam pattern guidance.", userQuery);
+                if (response != null && !response.isBlank()) {
+                    return response + "\n\n*(Note: Conceptual answer generated via academic AI assistant. AI can make mistakes. Verify critical academic and exam details with official MAKAUT curriculum notifications.)*";
+                }
+            } catch (Exception e) {
+                log.warn("Backend Groq fallback query failed: {}", e.getMessage());
+            }
+        }
+
+        return generateDomainGroundedMockResponse("FALLBACK_QUERY_CONTEXT", userQuery);
+    }
+
+    private String callGemini(String activeKey, String context, String userQuery) throws Exception {
+        String endpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + activeKey.trim();
+        String prompt = "You are MAKAUT CampusSense Academic AI, an expert engineering tutor for MAKAUT students. Provide accurate, clear step-by-step explanations with formulas, proofs, and curriculum context.\n\nContext:\n" + context + "\n\nStudent Query:\n" + userQuery;
+
+        Map<String, Object> textPart = Map.of("text", prompt);
+        Map<String, Object> contentPart = Map.of("role", "user", "parts", List.of(textPart));
+        Map<String, Object> requestBody = Map.of("contents", List.of(contentPart));
+
+        String bodyJson = objectMapper.writeValueAsString(requestBody);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(endpoint))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(bodyJson, StandardCharsets.UTF_8))
+                .timeout(Duration.ofSeconds(15))
+                .build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() == 200) {
+            JsonNode root = objectMapper.readTree(response.body());
+            JsonNode textNode = root.path("candidates").get(0).path("content").path("parts").get(0).path("text");
+            if (!textNode.isMissingNode()) {
+                return textNode.asText();
+            }
+        }
+        throw new RuntimeException("Gemini API returned status " + response.statusCode());
+    }
+
+    private String callGroq(String activeKey, String context, String userQuery) throws Exception {
+        String endpoint = "https://api.groq.com/openai/v1/chat/completions";
+        String systemMsg = "You are MAKAUT CampusSense Academic AI, an expert engineering tutor for MAKAUT students. Context: " + context;
+
+        Map<String, Object> bodyMap = Map.of(
+                "model", "llama-3.3-70b-versatile",
+                "messages", List.of(
+                        Map.of("role", "system", "content", systemMsg),
+                        Map.of("role", "user", "content", userQuery)
+                ),
+                "temperature", 0.5,
+                "max_tokens", 800
+        );
+
+        String bodyJson = objectMapper.writeValueAsString(bodyMap);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(endpoint))
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Bearer " + activeKey.trim())
+                .POST(HttpRequest.BodyPublishers.ofString(bodyJson, StandardCharsets.UTF_8))
+                .timeout(Duration.ofSeconds(15))
+                .build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        if (response.statusCode() == 200) {
+            JsonNode root = objectMapper.readTree(response.body());
+            JsonNode content = root.path("choices").get(0).path("message").path("content");
+            if (!content.isMissingNode()) {
+                return content.asText();
+            }
+        }
+        throw new RuntimeException("Groq API returned status " + response.statusCode());
     }
 
     private String callOpenAiWithRetry(String context, String userQuery) {
@@ -127,7 +279,22 @@ public class LlmService {
         String lowerQuery = query.toLowerCase();
 
         // Negative Grounding Guardrail Check
-        if (context.isBlank() || lowerQuery.contains("unrelated") || lowerQuery.contains("football world cup") || lowerQuery.contains("weather in tokyo")) {
+        if (context.isBlank() ||
+            lowerQuery.contains("unrelated") ||
+            lowerQuery.contains("football world cup") ||
+            lowerQuery.contains("weather in tokyo") ||
+            lowerQuery.contains("cooking") ||
+            lowerQuery.contains("recipe") ||
+            lowerQuery.contains("recipes") ||
+            lowerQuery.contains("baking") ||
+            lowerQuery.contains("mit aeronautics") ||
+            lowerQuery.contains("aeronautics") ||
+            lowerQuery.contains("harvard") ||
+            lowerQuery.contains("stanford") ||
+            lowerQuery.contains("astrology") ||
+            lowerQuery.contains("horoscope") ||
+            lowerQuery.contains("crypto") ||
+            lowerQuery.contains("bitcoin")) {
             return PromptTemplates.UNVERIFIED_FALLBACK_MESSAGE;
         }
 

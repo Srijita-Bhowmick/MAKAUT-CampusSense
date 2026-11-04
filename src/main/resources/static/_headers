@@ -1,0 +1,36 @@
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  X-Cloudflare-Protection: Turnstile-Enabled; WAF-Active
+
+# Heavy immutable assets (*.pdf, fonts, vendor icons)
+/*.pdf
+  Cache-Control: public, max-age=31536000, immutable
+/*/*.pdf
+  Cache-Control: public, max-age=31536000, immutable
+/*/*/*.pdf
+  Cache-Control: public, max-age=31536000, immutable
+/*/*/*/*.pdf
+  Cache-Control: public, max-age=31536000, immutable
+/*/*/*/*/*.pdf
+  Cache-Control: public, max-age=31536000, immutable
+
+# Static structural catalogs
+/resources.json
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+/makaut_knowledge_index.json
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+
+# Core entry points
+/index.html
+  Cache-Control: public, no-cache, must-revalidate
+/login.html
+  Cache-Control: public, no-cache, must-revalidate
+/app.js
+  Cache-Control: public, no-cache, must-revalidate
+/styles.css
+  Cache-Control: public, no-cache, must-revalidate

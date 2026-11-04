@@ -1,0 +1,1999 @@
+<!DOCTYPE html>
+<html lang="en" class="dark" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>Dashboard — MAKAUT CampusSense</title>
+  <meta name="description" content="Your personal student dashboard for MAKAUT CampusSense. Access curriculum, PYQs, panic packs and revision decks." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="theme-color" content="#0b0f19" />
+
+  <!-- Early Theme Ingestion (Zero Flash) -->
+  <script>
+    (function () {
+      try {
+        const theme = localStorage.getItem('campussense_theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', theme);
+        if (theme === 'dark') document.documentElement.classList.add('dark');
+        else document.documentElement.classList.remove('dark');
+      } catch (e) {}
+    })();
+  </script>
+
+  <!-- Runtime Config -->
+  <script id="campussense-runtime-config">
+    window.__CAMPUSSENSE_CONFIG__ = window.__CAMPUSSENSE_CONFIG__ || {
+      clerkPublishableKey: "",
+      apiBaseUrl: window.location.origin,
+      isCloudflarePages: window.location.hostname.endsWith('.pages.dev') || window.location.hostname.includes('campussense.pages.dev')
+    };
+  </script>
+
+  <!-- Clerk SDK -->
+  <script id="clerk-sdk-script" async crossorigin="anonymous"
+    src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js"
+    data-clerk-publishable-key="">
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Plus+Jakarta+Sans:wght@600;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <!-- Shared Stylesheet -->
+  <link rel="stylesheet" href="styles.css?v=20261022_v1" />
+
+  <style>
+    /* ─── Viewport Stability ─── */
+    html, body {
+      min-height: 100vh !important;
+      height: auto !important;
+      overflow-y: scroll !important;
+      overflow-x: hidden !important;
+      scrollbar-gutter: stable !important;
+    }
+
+    /* ─── CSS Variables: StockPulse Dark Palette ─── */
+    :root,
+    [data-theme="dark"],
+    html.dark {
+      --surface-canvas:  #0b0f19;
+      --surface-card:    #16181f;
+      --surface-elevated:#1e222d;
+      --surface-hover:   #23283a;
+      --border-hairline: #2a2f3e;
+      --border-subtle:   #343a4f;
+      --text-primary:    #f1f5f9;
+      --text-secondary:  #94a3b8;
+      --text-muted:      #64748b;
+      --accent-blue:     #3b82f6;
+      --accent-blue-dim: rgba(59,130,246,0.15);
+      --accent-indigo:   #6366f1;
+      --accent-green:    #22c55e;
+      --accent-orange:   #f97316;
+      --accent-red:      #ef4444;
+      --font-display:    'Manrope', 'Plus Jakarta Sans', system-ui, sans-serif;
+      --font-body:       'Inter', system-ui, sans-serif;
+      --font-mono:       'JetBrains Mono', monospace;
+      --radius-sm:       8px;
+      --radius-md:       12px;
+      --radius-lg:       16px;
+      --transition-fast: 150ms cubic-bezier(0.4,0,0.2,1);
+      --transition-base: 200ms cubic-bezier(0.4,0,0.2,1);
+      --sidebar-width:   240px;
+      --dock-width:      380px;
+      --header-height:   56px;
+    }
+
+    [data-theme="light"],
+    html:not(.dark) {
+      --surface-canvas:  #f8fafc;
+      --surface-card:    #ffffff;
+      --surface-elevated:#f1f5f9;
+      --surface-hover:   #e2e8f0;
+      --border-hairline: #e2e8f0;
+      --border-subtle:   #cbd5e1;
+      --text-primary:    #0f172a;
+      --text-secondary:  #334155;
+      --text-muted:      #64748b;
+    }
+
+    /* ─── Base ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--surface-canvas);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ─── Auth Guard Veil ─── */
+    #auth-veil {
+      position: fixed;
+      inset: 0;
+      background: var(--surface-canvas);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #auth-veil .spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid var(--border-subtle);
+      border-top-color: var(--accent-blue);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ─── Header ─── */
+    #dash-header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--header-height);
+      z-index: 1000;
+      background: rgba(11,15,25,0.92);
+      border-bottom: 1px solid var(--border-hairline);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0 1.25rem;
+    }
+    [data-theme="light"] #dash-header { background: rgba(248,250,252,0.92); }
+
+    /* Wordmark */
+    .header-wordmark {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+    .header-wordmark-logo {
+      width: 30px; height: 30px;
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-indigo));
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 800; color: #fff;
+      font-family: var(--font-display);
+      flex-shrink: 0;
+    }
+    .header-wordmark-name {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 15px;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+    .header-branch-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 2px 8px;
+      background: var(--accent-blue-dim);
+      border: 1px solid rgba(59,130,246,0.3);
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 600;
+      color: #60a5fa;
+      font-family: var(--font-mono);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* CmdK Search */
+    #cmdK-bar {
+      flex: 1;
+      max-width: 480px;
+      position: relative;
+    }
+    #cmdK-input {
+      width: 100%;
+      background: var(--surface-elevated);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-md);
+      padding: 0.45rem 2.8rem 0.45rem 2.4rem;
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 13px;
+      outline: none;
+      transition: border-color var(--transition-fast);
+    }
+    #cmdK-input::placeholder { color: var(--text-muted); }
+    #cmdK-input:focus { border-color: var(--accent-blue); }
+    .cmdK-icon-left {
+      position: absolute; left: 0.7rem; top: 50%; transform: translateY(-50%);
+      color: var(--text-muted); pointer-events: none; font-size: 14px;
+    }
+    .cmdK-shortcut {
+      position: absolute; right: 0.6rem; top: 50%; transform: translateY(-50%);
+      background: var(--surface-card); border: 1px solid var(--border-hairline);
+      border-radius: 5px; padding: 1px 5px;
+      font-family: var(--font-mono); font-size: 10px; color: var(--text-muted);
+      pointer-events: none;
+    }
+    #cmdK-results {
+      display: none;
+      position: absolute; top: calc(100% + 6px); left: 0; right: 0;
+      background: var(--surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+      max-height: 320px; overflow-y: auto; z-index: 200;
+      padding: 0.5rem 0;
+    }
+    #cmdK-results.visible { display: block; }
+    .cmdK-result-item {
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.5rem 0.9rem; cursor: pointer;
+      color: var(--text-secondary); font-size: 13px;
+      transition: background var(--transition-fast);
+    }
+    .cmdK-result-item:hover { background: var(--surface-hover); color: var(--text-primary); }
+    .cmdK-result-icon { font-size: 14px; flex-shrink: 0; }
+    .cmdK-result-label { font-weight: 500; }
+    .cmdK-result-sub { font-size: 11px; color: var(--text-muted); margin-left: auto; font-family: var(--font-mono); }
+    .cmdK-empty { padding: 1rem; text-align: center; color: var(--text-muted); font-size: 13px; }
+
+    /* Header right */
+    .header-right {
+      display: flex; align-items: center; gap: 0.6rem; flex-shrink: 0;
+    }
+    .user-chip {
+      display: flex; align-items: center; gap: 0.5rem;
+      background: var(--surface-elevated);
+      border: 1px solid var(--border-hairline);
+      border-radius: 20px; padding: 4px 10px 4px 4px;
+      cursor: default;
+    }
+    .user-avatar {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-indigo), var(--accent-blue));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; color: #fff;
+      font-family: var(--font-display); flex-shrink: 0;
+    }
+    .user-name {
+      font-size: 12px; font-weight: 600; color: var(--text-primary);
+      font-family: var(--font-body); max-width: 110px;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    #signout-btn {
+      background-color: #ef4444;
+      color: #ffffff;
+      font-weight: 600;
+      font-family: var(--font-body);
+      font-size: 12px;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 6px 14px;
+      cursor: pointer;
+      transition: background-color var(--transition-fast), transform var(--transition-fast);
+      white-space: nowrap;
+    }
+    #signout-btn:hover { background-color: #dc2626; transform: translateY(-1px); }
+    #signout-btn:active { transform: translateY(0); }
+
+    /* ─── Layout Shell ─── */
+    #dash-shell {
+      display: flex;
+      padding-top: var(--header-height);
+      min-height: 100vh;
+    }
+
+    /* ─── Left Sidebar / Navigator ─── */
+    #dash-nav {
+      width: var(--sidebar-width);
+      min-width: var(--sidebar-width);
+      max-width: var(--sidebar-width);
+      background: var(--surface-card);
+      border-right: 1px solid var(--border-hairline);
+      position: fixed;
+      top: var(--header-height);
+      bottom: 0;
+      left: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      z-index: 100;
+      padding: 1rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border-subtle) transparent;
+    }
+    .nav-section-label {
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--text-muted);
+      padding: 0.6rem 0.5rem 0.4rem;
+      font-family: var(--font-mono);
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: 0.65rem;
+      padding: 0.55rem 0.75rem;
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 13px; font-weight: 500;
+      font-family: var(--font-body);
+      cursor: pointer;
+      transition: background var(--transition-fast), color var(--transition-fast);
+      border: none; background: transparent; width: 100%; text-align: left;
+      position: relative;
+    }
+    .nav-item:hover { background: var(--surface-elevated); color: var(--text-primary); }
+    .nav-item.active {
+      background: var(--accent-blue-dim);
+      color: #60a5fa;
+      font-weight: 600;
+    }
+    .nav-item.active::before {
+      content: '';
+      position: absolute; left: 0; top: 20%; bottom: 20%;
+      width: 2px; border-radius: 2px;
+      background: var(--accent-blue);
+    }
+    .nav-item-icon { font-size: 15px; flex-shrink: 0; }
+    .nav-item-label { flex: 1; }
+    .nav-badge {
+      background: var(--accent-orange);
+      color: #fff;
+      font-size: 10px; font-weight: 700;
+      padding: 1px 6px; border-radius: 10px;
+      font-family: var(--font-mono);
+    }
+    .nav-divider { height: 1px; background: var(--border-hairline); margin: 0.5rem 0; }
+
+    /* ─── Main Workspace ─── */
+    #dash-workspace {
+      flex: 1;
+      margin-left: var(--sidebar-width);
+      margin-right: var(--dock-width);
+      padding: 1.5rem 1.75rem;
+      min-height: calc(100vh - var(--header-height));
+    }
+
+    /* Active context banner */
+    .context-banner {
+      display: flex; align-items: center; gap: 0.75rem;
+      background: var(--surface-card);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-md);
+      padding: 0.75rem 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .context-banner-label {
+      font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .context-banner-value {
+      font-size: 14px; font-weight: 700; color: var(--text-primary);
+      font-family: var(--font-display);
+    }
+    .context-banner-sep { width: 1px; height: 20px; background: var(--border-subtle); }
+    .context-chip {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      padding: 2px 8px;
+      background: var(--accent-blue-dim);
+      border: 1px solid rgba(59,130,246,0.3);
+      border-radius: 20px;
+      font-size: 11px; font-weight: 600; color: #60a5fa;
+      font-family: var(--font-mono);
+    }
+
+    /* Section heading */
+    .workspace-section { margin-bottom: 2rem; scroll-margin-top: calc(var(--header-height) + 16px); }
+    .workspace-section-header {
+      display: flex; align-items: center; gap: 0.6rem;
+      margin-bottom: 1rem;
+    }
+    .workspace-section-title {
+      font-family: var(--font-display);
+      font-size: 16px; font-weight: 700; color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+    .workspace-section-count {
+      font-family: var(--font-mono); font-size: 11px;
+      color: var(--text-muted); background: var(--surface-elevated);
+      padding: 1px 7px; border-radius: 10px;
+    }
+
+    /* ─── Course Accordion ─── */
+    .course-accordion {
+      background: var(--surface-card);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-lg);
+      margin-bottom: 0.85rem;
+      overflow: hidden;
+      transition: box-shadow var(--transition-base);
+    }
+    .course-accordion:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.25); }
+
+    .course-accordion-header {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 1rem 1.25rem;
+      cursor: pointer;
+      user-select: none;
+      background: transparent;
+      border: none; width: 100%; text-align: left;
+      transition: background var(--transition-fast);
+    }
+    .course-accordion-header:hover { background: var(--surface-elevated); }
+
+    .course-code-badge {
+      font-family: var(--font-mono);
+      font-size: 10px; font-weight: 600;
+      padding: 2px 7px; border-radius: 6px;
+      background: var(--accent-blue-dim);
+      border: 1px solid rgba(59,130,246,0.25);
+      color: #60a5fa;
+      flex-shrink: 0;
+    }
+    .course-title-block { flex: 1; }
+    .course-title {
+      font-family: var(--font-display);
+      font-size: 14px; font-weight: 700; color: var(--text-primary);
+      letter-spacing: -0.01em; line-height: 1.3;
+    }
+    .course-meta {
+      font-size: 11px; color: var(--text-muted); margin-top: 1px;
+      font-family: var(--font-body);
+    }
+    .course-credit-pill {
+      font-size: 10px; font-weight: 600;
+      padding: 2px 7px; border-radius: 10px;
+      background: rgba(34,197,94,0.12);
+      border: 1px solid rgba(34,197,94,0.25);
+      color: #4ade80;
+      font-family: var(--font-mono);
+      flex-shrink: 0;
+    }
+    .course-chevron {
+      color: var(--text-muted); font-size: 14px;
+      transition: transform var(--transition-fast);
+      flex-shrink: 0;
+    }
+    .course-accordion.open .course-chevron { transform: rotate(180deg); }
+
+    .course-accordion-body {
+      display: none;
+      border-top: 1px solid var(--border-hairline);
+      padding: 0.75rem 1.25rem 1rem;
+      background: rgba(11,15,25,0.35);
+    }
+    [data-theme="light"] .course-accordion-body { background: rgba(241,245,249,0.5); }
+    .course-accordion.open .course-accordion-body { display: block; }
+
+    /* Unit rows */
+    .unit-list { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 0.85rem; }
+    .unit-row {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.55rem 0.9rem;
+      background: var(--surface-elevated);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background var(--transition-fast), border-color var(--transition-fast);
+      text-decoration: none;
+      color: inherit;
+    }
+    .unit-row:hover {
+      background: var(--surface-hover);
+      border-color: var(--border-subtle);
+    }
+    .unit-number {
+      font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+      color: var(--text-muted); flex-shrink: 0; min-width: 2.5rem;
+    }
+    .unit-name { font-size: 13px; font-weight: 500; color: var(--text-primary); flex: 1; }
+    .unit-lectures {
+      font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);
+      flex-shrink: 0;
+    }
+    .unit-save-btn {
+      background: transparent; border: 1px solid var(--border-hairline);
+      border-radius: 6px; padding: 3px 8px;
+      font-size: 10px; font-weight: 600; color: var(--text-muted);
+      cursor: pointer; white-space: nowrap;
+      transition: all var(--transition-fast);
+      font-family: var(--font-body);
+    }
+    .unit-save-btn:hover {
+      background: var(--accent-blue-dim);
+      border-color: rgba(59,130,246,0.4);
+      color: #60a5fa;
+    }
+    .unit-save-btn.saved {
+      background: rgba(34,197,94,0.12);
+      border-color: rgba(34,197,94,0.3);
+      color: #4ade80;
+    }
+
+    /* Course actions */
+    .course-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+    .course-action-btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: var(--radius-sm);
+      font-size: 12px; font-weight: 600;
+      font-family: var(--font-body);
+      cursor: pointer; text-decoration: none;
+      transition: all var(--transition-fast);
+      white-space: nowrap;
+    }
+    .course-action-btn.primary {
+      background: var(--accent-blue); color: #fff; border: 1px solid transparent;
+    }
+    .course-action-btn.primary:hover { background: #2563eb; transform: translateY(-1px); }
+    .course-action-btn.secondary {
+      background: var(--surface-elevated); color: var(--text-secondary);
+      border: 1px solid var(--border-hairline);
+    }
+    .course-action-btn.secondary:hover {
+      background: var(--surface-hover); color: var(--text-primary);
+      border-color: var(--border-subtle);
+    }
+
+    /* ─── PYQ Archive Cards ─── */
+    .pyq-archive-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 0.85rem;
+    }
+    .pyq-card {
+      background: var(--surface-card);
+      border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.25rem;
+      display: flex; flex-direction: column; gap: 0.75rem;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    }
+    .pyq-card:hover {
+      border-color: var(--border-subtle);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    }
+    .pyq-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem; }
+    .pyq-card-year {
+      font-family: var(--font-display);
+      font-size: 18px; font-weight: 800; color: var(--text-primary);
+      letter-spacing: -0.03em;
+    }
+    .pyq-card-type {
+      font-size: 10px; font-weight: 600;
+      padding: 2px 7px; border-radius: 10px;
+      font-family: var(--font-mono);
+    }
+    .pyq-card-type.regular {
+      background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.25); color: #60a5fa;
+    }
+    .pyq-card-type.backlog {
+      background: rgba(249,115,22,0.12); border: 1px solid rgba(249,115,22,0.25); color: #fb923c;
+    }
+    .pyq-card-type.archive {
+      background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.25); color: #a5b4fc;
+    }
+    .pyq-card-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+    .pyq-card-papers { display: flex; flex-direction: column; gap: 0.35rem; }
+    .pyq-paper-row {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 12px; color: var(--text-secondary);
+    }
+    .pyq-paper-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent-blue); flex-shrink: 0; }
+    .pyq-paper-name { flex: 1; }
+    .pyq-paper-link {
+      font-size: 10px; font-weight: 600;
+      padding: 2px 8px; border-radius: 5px;
+      background: var(--surface-elevated); border: 1px solid var(--border-hairline);
+      color: var(--text-muted); text-decoration: none;
+      cursor: pointer; font-family: var(--font-mono);
+      transition: all var(--transition-fast);
+    }
+    .pyq-paper-link:hover {
+      background: var(--accent-blue-dim); border-color: rgba(59,130,246,0.4); color: #60a5fa;
+    }
+
+    /* ─── Panic Pack Section ─── */
+    .panic-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.75rem;
+    }
+    .panic-card {
+      background: var(--surface-card);
+      border: 1px solid rgba(249,115,22,0.2);
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1rem;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      display: flex; flex-direction: column; gap: 0.5rem;
+    }
+    .panic-card:hover {
+      background: rgba(249,115,22,0.06);
+      border-color: rgba(249,115,22,0.4);
+      transform: translateY(-1px);
+    }
+    .panic-card-icon { font-size: 18px; }
+    .panic-card-title { font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.3; }
+    .panic-card-sub { font-size: 11px; color: var(--text-muted); }
+
+    /* ─── Bookmarks section ─── */
+    .bookmarks-empty {
+      background: var(--surface-card); border: 1px dashed var(--border-subtle);
+      border-radius: var(--radius-md); padding: 2rem; text-align: center;
+      color: var(--text-muted); font-size: 13px;
+    }
+    .bookmarks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 0.75rem;
+    }
+    .bookmark-card {
+      background: var(--surface-card); border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-md); padding: 0.9rem 1.1rem;
+      display: flex; align-items: flex-start; gap: 0.75rem;
+      transition: border-color var(--transition-fast);
+    }
+    .bookmark-card:hover { border-color: var(--border-subtle); }
+    .bookmark-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+    .bookmark-info { flex: 1; }
+    .bookmark-title { font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.3; }
+    .bookmark-meta { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    .bookmark-remove {
+      background: transparent; border: none; cursor: pointer;
+      font-size: 16px; color: var(--text-muted); transition: color var(--transition-fast);
+      flex-shrink: 0;
+    }
+    .bookmark-remove:hover { color: var(--accent-red); }
+
+    /* ─── Right Dock / Revision Deck ─── */
+    #dash-dock {
+      width: var(--dock-width);
+      min-width: var(--dock-width);
+      background: var(--surface-card);
+      border-left: 1px solid var(--border-hairline);
+      position: fixed;
+      top: var(--header-height); right: 0; bottom: 0;
+      overflow-y: auto; overflow-x: hidden;
+      padding: 1.25rem 1rem;
+      display: flex; flex-direction: column; gap: 1rem;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border-subtle) transparent;
+    }
+    .dock-header {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 0.5rem;
+    }
+    .dock-title {
+      font-family: var(--font-display);
+      font-size: 14px; font-weight: 700; color: var(--text-primary);
+    }
+    .dock-count-badge {
+      background: var(--surface-elevated); border: 1px solid var(--border-hairline);
+      border-radius: 10px; padding: 1px 7px;
+      font-family: var(--font-mono); font-size: 10px; color: var(--text-muted);
+    }
+    .deck-empty-state {
+      background: var(--surface-elevated); border: 1px dashed var(--border-subtle);
+      border-radius: var(--radius-md); padding: 1.5rem 1rem;
+      text-align: center; color: var(--text-muted);
+      font-size: 12px; line-height: 1.6;
+    }
+    .deck-empty-icon { font-size: 24px; margin-bottom: 0.5rem; }
+    .deck-items { display: flex; flex-direction: column; gap: 0.5rem; }
+    .deck-item {
+      display: flex; align-items: center; gap: 0.6rem;
+      background: var(--surface-elevated); border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-sm); padding: 0.65rem 0.85rem;
+      transition: border-color var(--transition-fast);
+    }
+    .deck-item:hover { border-color: var(--border-subtle); }
+    .deck-item-label { flex: 1; font-size: 12px; font-weight: 500; color: var(--text-primary); line-height: 1.4; }
+    .deck-item-sub { font-size: 10px; color: var(--text-muted); margin-top: 1px; font-family: var(--font-mono); }
+    .deck-item-remove {
+      background: transparent; border: none; cursor: pointer;
+      font-size: 15px; color: var(--text-muted);
+      transition: color var(--transition-fast); flex-shrink: 0;
+    }
+    .deck-item-remove:hover { color: var(--accent-red); }
+    .dock-divider { height: 1px; background: var(--border-hairline); }
+    .dock-action-btn {
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+      width: 100%; padding: 0.6rem 1rem;
+      background: var(--surface-elevated); border: 1px solid var(--border-hairline);
+      border-radius: var(--radius-sm);
+      font-size: 12px; font-weight: 600; color: var(--text-secondary);
+      font-family: var(--font-body); cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    .dock-action-btn:hover {
+      background: var(--surface-hover); border-color: var(--border-subtle);
+      color: var(--text-primary);
+    }
+    .dock-action-btn.export {
+      background: var(--accent-blue-dim); border-color: rgba(59,130,246,0.3); color: #60a5fa;
+    }
+    .dock-action-btn.export:hover { background: rgba(59,130,246,0.2); }
+
+    /* Preferences panel */
+    .pref-group { display: flex; flex-direction: column; gap: 0.5rem; }
+    .pref-item {
+      display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border-hairline);
+    }
+    .pref-item:last-child { border-bottom: none; }
+    .pref-label { font-size: 13px; color: var(--text-secondary); }
+    .toggle-switch {
+      position: relative; width: 36px; height: 20px; flex-shrink: 0;
+    }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider {
+      position: absolute; inset: 0; background: var(--border-subtle); border-radius: 20px;
+      cursor: pointer; transition: background var(--transition-fast);
+    }
+    .toggle-slider::before {
+      content: ''; position: absolute;
+      width: 14px; height: 14px; left: 3px; bottom: 3px;
+      background: #fff; border-radius: 50%;
+      transition: transform var(--transition-fast);
+    }
+    .toggle-switch input:checked + .toggle-slider { background: var(--accent-blue); }
+    .toggle-switch input:checked + .toggle-slider::before { transform: translateX(16px); }
+
+    /* ─── Mobile Menu Toggle ─── */
+    #mobile-menu-btn {
+      display: none; background: transparent; border: 1px solid var(--border-hairline);
+      border-radius: 7px; padding: 6px 8px; cursor: pointer; color: var(--text-secondary);
+      font-size: 16px; align-items: center; justify-content: center;
+      transition: background var(--transition-fast);
+    }
+    #mobile-menu-btn:hover { background: var(--surface-elevated); }
+    #dock-toggle-btn {
+      display: none; background: transparent; border: 1px solid var(--border-hairline);
+      border-radius: 7px; padding: 6px 8px; cursor: pointer; color: var(--text-secondary);
+      font-size: 16px; align-items: center; justify-content: center;
+      transition: background var(--transition-fast);
+    }
+    #dock-toggle-btn:hover { background: var(--surface-elevated); }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 1200px) {
+      :root {
+        --dock-width: 320px;
+      }
+    }
+    @media (max-width: 1024px) {
+      #dash-dock {
+        transform: translateX(100%);
+        transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
+        z-index: 200;
+      }
+      #dash-dock.dock-open { transform: translateX(0); }
+      #dash-workspace { margin-right: 0; }
+      #dock-toggle-btn { display: flex; }
+    }
+    @media (max-width: 768px) {
+      #dash-nav {
+        transform: translateX(-100%);
+        transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
+        z-index: 300;
+      }
+      #dash-nav.nav-open { transform: translateX(0); }
+      #dash-workspace { margin-left: 0; }
+      #mobile-menu-btn { display: flex; }
+      #cmdK-bar { max-width: 200px; }
+      .header-wordmark-name { display: none; }
+      .user-name { display: none; }
+      #dash-dock {
+        width: 100vw; min-width: 0;
+      }
+    }
+    @media (max-width: 480px) {
+      #cmdK-bar { display: none; }
+      #dash-workspace { padding: 1rem; }
+    }
+
+    /* ─── Nav Overlay (mobile) ─── */
+    #nav-overlay {
+      display: none;
+      position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+      z-index: 250; cursor: pointer;
+    }
+    #nav-overlay.visible { display: block; }
+
+    /* ─── Toast ─── */
+    #toast-container {
+      position: fixed; bottom: 1.5rem; right: 1.5rem;
+      z-index: 9998; display: flex; flex-direction: column; gap: 0.5rem;
+    }
+    .toast {
+      display: flex; align-items: center; gap: 0.6rem;
+      background: var(--surface-elevated); border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md); padding: 0.75rem 1rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      min-width: 240px; max-width: 320px;
+      font-size: 13px; color: var(--text-primary);
+      animation: toastIn 0.2s ease forwards;
+    }
+    .toast.toast-success { border-color: rgba(34,197,94,0.4); }
+    .toast.toast-error { border-color: rgba(239,68,68,0.4); }
+    @keyframes toastIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    @keyframes toastOut { to { opacity: 0; transform: translateY(-8px); } }
+    .toast.removing { animation: toastOut 0.15s ease forwards; }
+  </style>
+</head>
+<body>
+
+<!-- Auth Guard Veil -->
+<div id="auth-veil">
+  <div class="spinner"></div>
+</div>
+
+<!-- Toast Container -->
+<div id="toast-container" aria-live="polite"></div>
+
+<!-- Nav Overlay (mobile) -->
+<div id="nav-overlay" role="button" aria-label="Close navigation" tabindex="0"></div>
+
+<!-- ═══════════════════════════════════════════════
+     HEADER
+═══════════════════════════════════════════════ -->
+<header id="dash-header" role="banner">
+  <!-- Left: Wordmark + hamburger -->
+  <div style="display:flex;align-items:center;gap:0.6rem;flex-shrink:0;">
+    <button id="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <a href="/" class="header-wordmark" aria-label="MAKAUT CampusSense home">
+      <div class="header-wordmark-logo">CS</div>
+      <span class="header-wordmark-name">MAKAUT CampusSense</span>
+    </a>
+    <span class="header-branch-badge" id="branch-badge">B.Tech CSE · Sem 5</span>
+  </div>
+
+  <!-- Centre: CmdK Search -->
+  <div id="cmdK-bar" role="search">
+    <span class="cmdK-icon-left">🔍</span>
+    <input
+      id="cmdK-input"
+      type="search"
+      placeholder="Search Blueprints, PYQs, Topics…"
+      autocomplete="off"
+      spellcheck="false"
+      aria-label="Search"
+      aria-controls="cmdK-results"
+      aria-autocomplete="list"
+    />
+    <span class="cmdK-shortcut">⌘K</span>
+    <div id="cmdK-results" role="listbox" aria-label="Search results"></div>
+  </div>
+
+  <!-- Right: user chip + sign out + dock toggle -->
+  <div class="header-right">
+    <button id="dock-toggle-btn" aria-label="Toggle revision dock" title="Revision Dock">📑</button>
+    <div class="user-chip" id="user-chip">
+      <div class="user-avatar" id="user-avatar">?</div>
+      <span class="user-name" id="user-name">Loading…</span>
+    </div>
+    <button id="signout-btn" type="button">Sign Out</button>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════
+     SHELL: Sidebar + Workspace + Dock
+═══════════════════════════════════════════════ -->
+<div id="dash-shell">
+
+  <!-- ── Left Navigator Sidebar ── -->
+  <nav id="dash-nav" aria-label="Dashboard navigation">
+    <span class="nav-section-label">Navigator</span>
+
+    <button class="nav-item active" data-section="curriculum" onclick="scrollToSection('curriculum',this)" aria-current="page">
+      <span class="nav-item-icon">📚</span>
+      <span class="nav-item-label">Curriculum Matrix</span>
+    </button>
+
+    <button class="nav-item" data-section="pyqs" onclick="scrollToSection('pyqs',this)">
+      <span class="nav-item-icon">📄</span>
+      <span class="nav-item-label">Examination Vault</span>
+    </button>
+
+    <button class="nav-item" data-section="panic" onclick="scrollToSection('panic',this)">
+      <span class="nav-item-icon">🔥</span>
+      <span class="nav-item-label">Panic Pack</span>
+      <span class="nav-badge" id="panic-count-badge">16</span>
+    </button>
+
+    <button class="nav-item" data-section="bookmarks" onclick="scrollToSection('bookmarks',this)">
+      <span class="nav-item-icon">🔖</span>
+      <span class="nav-item-label">Bookmarked Notes</span>
+    </button>
+
+    <div class="nav-divider"></div>
+    <span class="nav-section-label">Settings</span>
+
+    <button class="nav-item" data-section="preferences" onclick="scrollToSection('preferences',this)">
+      <span class="nav-item-icon">⚙️</span>
+      <span class="nav-item-label">Preferences</span>
+    </button>
+
+    <div class="nav-divider"></div>
+    <span class="nav-section-label">Quick Links</span>
+
+    <a href="/" class="nav-item">
+      <span class="nav-item-icon">🏠</span>
+      <span class="nav-item-label">Home</span>
+    </a>
+    <a href="/#landing-curriculum" class="nav-item">
+      <span class="nav-item-icon">🗂️</span>
+      <span class="nav-item-label">Full Syllabus</span>
+    </a>
+    <a href="/#landing-pyqs" class="nav-item">
+      <span class="nav-item-icon">📋</span>
+      <span class="nav-item-label">All PYQs</span>
+    </a>
+  </nav>
+
+  <!-- ── Main Workspace ── -->
+  <main id="dash-workspace" role="main" aria-label="Dashboard workspace">
+
+    <!-- Context Banner -->
+    <div class="context-banner" role="status" aria-label="Active academic context">
+      <div>
+        <div class="context-banner-label">Active Context</div>
+        <div class="context-banner-value" id="context-value">B.Tech CSE · 5th Semester</div>
+      </div>
+      <div class="context-banner-sep"></div>
+      <span class="context-chip">2024–25</span>
+      <span class="context-chip" id="session-chip">Session —</span>
+    </div>
+
+    <!-- ══ Section: Curriculum Matrix ══ -->
+    <section class="workspace-section" id="curriculum" aria-label="Curriculum Matrix">
+      <div class="workspace-section-header">
+        <h2 class="workspace-section-title">📚 Curriculum Matrix</h2>
+        <span class="workspace-section-count">4 Subjects</span>
+      </div>
+
+      <!-- PCC-CS501 -->
+      <div class="course-accordion" id="acc-cs501">
+        <button class="course-accordion-header" onclick="toggleAccordion('acc-cs501')" aria-expanded="false" aria-controls="body-cs501">
+          <span class="course-code-badge">PCC-CS501</span>
+          <div class="course-title-block">
+            <div class="course-title">Formal Language &amp; Automata Theory</div>
+            <div class="course-meta">3 Credits · 5 Units · 40 Lectures</div>
+          </div>
+          <span class="course-credit-pill">3 Cr.</span>
+          <span class="course-chevron" aria-hidden="true">▾</span>
+        </button>
+        <div class="course-accordion-body" id="body-cs501" role="region" aria-label="PCC-CS501 units">
+          <div class="unit-list">
+            <div class="unit-row" onclick="handleUnitClick('PCC-CS501','Unit 1: Introduction to Finite Automata')">
+              <span class="unit-number">Unit 1</span>
+              <span class="unit-name">Introduction to Finite Automata &amp; Regular Languages</span>
+              <span class="unit-lectures">8 Lectures</span>
+              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 1: Finite Automata','PCC-CS501')" data-deck-id="cs501-u1">+ Deck</button>
+            </div>
+            <div class="unit-row" onclick="handleUnitClick('PCC-CS501','Unit 2: Regular Expressions')">
+              <span class="unit-number">Unit 2</span>
+              <span class="unit-name">Regular Expressions &amp; Closure Properties</span>
+              <span class="unit-lectures">8 Lectures</span>
+              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 2: Regular Expressions','PCC-CS501')" data-deck-id="cs501-u2">+ Deck</button>
+            </div>
+            <div class="unit-row" onclick="handleUnitClick('PCC-CS501','Unit 3: Context-Free Grammars')">
+              <span class="unit-number">Unit 3</span>
+              <span class="unit-name">Context-Free Grammars &amp; Pushdown Automata</span>
+              <span class="unit-lectures">8 Lectures</span>
+              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 3: CFG &amp; PDA','PCC-CS501')" data-deck-id="cs501-u3">+ Deck</button>
+            </div>
+            <div class="unit-row" onclick="handleUnitClick('PCC-CS501','Unit 4: Turing Machines')">
+              <span class="unit-number">Unit 4</span>
+              <span class="unit-name">Turing Machines &amp; Variants</span>
+              <span class="unit-lectures">8 Lectures</span>
+              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 4: Turing Machines','PCC-CS501')" data-deck-id="cs501-u4">+ Deck</button>
+            </div>
+            <div class="unit-row" onclick="handleUnitClick('PCC-CS501','Unit 5: Decidability &amp; Complexity')">
+              <span class="unit-number">Unit 5</span>
+              <span class="unit-name">Decidability, Complexity &amp; NP-Completeness</span>
+              <span class="unit-lectures">8 Lectures</span>
+              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 5: Decidability','PCC-CS501')" data-deck-id="cs501-u5">+ Deck</button>
+            </div>
+          </div>
+          <div class="course-actions">
+            <a href="/#landing-curriculum" class="course-action-btn primary">📘 View Syllabus Blueprint →</a>
+            <a href="/#landing-pyqs" class="course-action-btn secondary">📄 Access PYQ Archives →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- PCC-CS502 -->
+      <div class="course-accordion" id="acc-cs502">
+        <button class="course-accordion-header" onclick="toggleAccordion('acc-cs502')" aria-expanded="false" aria-controls="body-cs502">
+          <span class="course-code-badge">PCC-CS502</span>
+          <div class="course-title-block">
+            <div class="course-title">Database Management Systems</div>
+            <div class="course-meta">3 Credits · 5 Units · 42 Lectures</div>
+          </div>
+          <span class="course-credit-pill">3 Cr.</span>
+          <span class="course-chevron" aria-hidden="true">▾</span>
+        </button>
+        <div class="course-accordion-body" id="body-cs502" role="region" aria-label="PCC-CS502 units">
+          <div class="unit-list">
+            <div class="unit-row" onclick="handleUnitClick('PCC-CS502','Unit 1: Relational Model')">
+              <span class="unit-number">Unit 1</span>
+              <span class="unit-name">Relational Model &amp; Extended ER Diagrams</span>
+              <span class="unit-lectures">8 Lectures</span>
+              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 1: Relational Model','PCC-CS502')" data-deck-id="cs502-u1">+ Deck</button>
+            </div>
+            <div class="unit-row" onclick="handleUnitClick('PCC-CS502','Unit 2: SQL &amp; Relational Algebra')">
+              <span class="unit-number">Unit 2</span>
+              <span class="unit-name">SQL, Relational Algebra &amp; Calculus</span>
+              <span class="unit-lectures">10 Lectures</span>
+              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 2: SQL &amp; Relational Algebra','PCC-CS502')" data-deck-id="cs502-u2">+ Deck</button>
+            </div>
+            <div class="unit-row" onclick="handleUnitClick('PCC-CS502','Unit 3: Normalization')">
+              <span class="unit-number">Unit 3</span>
+              <span class="unit-name">Normalization: 1NF to BCNF, Functional Dependencies</span>
+              <span class="unit-lectures">8 Lectures</span>
+              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 3: Normal Forms','PCC-CS502')" data-deck-id="cs502-u3">+ Deck</button>
+            </div>
+            <div class="unit-row" onclick="handleUnitClick('PCC-CS502','Unit 4: Transactions &amp; Concurrency')">
+              <span class="unit-number">Unit 4</span>
+              <span class="unit-name">ACID Transactions, Serializability &amp; Concurrency Control</span>
+              <span class="unit-lectures">8 Lectures</span>
+              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 4: Transactions','PCC-CS502')" data-deck-id="cs502-u4">+ Deck</button>
+            </div>
+            <div class="unit-row" onclick="handleUnitClick('PCC-CS502','Unit 5: Recovery &amp; Indexing')">
+              <span class="unit-number">Unit 5</span>
+              <span class="unit-name">Database Recovery, Indexing &amp; B+ Trees</span>
+              <span class="unit-lectures">8 Lectures</span>
+              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 5: Recovery &amp; Indexing','PCC-CS502')" data-deck-id="cs502-u5">+ Deck</button>
+            </div>
+          </div>
+          <div class="course-actions">
+            <a href="/#landing-curriculum" class="course-action-btn primary">📘 View Syllabus Blueprint →</a>
+            <a href="/#landing-pyqs" class="course-action-btn secondary">📄 Access PYQ Archives →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- PCC-CS503 -->
+      <div class="course-accordion open" id="acc-cs503">
+        <button class="course-accordion-header" onclick="toggleAccordion('acc-cs503')" aria-expanded="true" aria-controls="body-cs503">
+          <span class="course-code-badge">PCC-CS503</span>
+          <div class="course-title-block">
+            <div class="course-title">Operating Systems</div>
+            <div class="course-meta">3 Credits · 5 Units · 40 Lectures</div>
+          </div>
+          <span class="course-credit-pill">3 Cr.</span>
+          <span class="course-chevron" aria-hidden="true">▾</span>
+        </button>
+        <div class="course-accordion-body" id="body-cs503" role="region" aria-label="PCC-CS503 units">
+          <div class="unit-list">
+            <div class="unit-row" onclick="handleUnitClick('PCC-CS503','Unit 1: Introduction to OS')">
+              <span class="unit-number">Unit 1</span>
+              <span class="unit-name">Introduction to OS: Architecture, Types &amp; System Calls</span>
+              <span class="unit-lectures">6 Lectures</span>
+              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 1: OS Introduction','PCC-CS503')" data-deck-id="cs503-u1">+ Deck</button>
+            </div>
+            <div class="unit-row" onclick="handleUnitClick('PCC-CS503','Unit 2: Process &amp; CPU Scheduling')">
+              <span class="unit-number">Unit 2</span>
+              <span class="unit-name">Process Scheduling: FCFS, SJF, Round Robin, Priority</span>
+              <span class="unit-lectures">10 Lectures</span>
+              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 2: CPU Scheduling','PCC-CS503')" data-deck-id="cs503-u2">+ Deck</button>
+            </div>
+            <div class="unit-row" onclick="handleUnitClick('PCC-CS503','Unit 3: Memory Management')">
+              <span class="unit-number">Unit 3</span>
+              <span class="unit-name">Memory Management: Paging, Segmentation &amp; Virtual Memory</span>
+              <span class="unit-lectures">10 Lectures</span>
+              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 3: Memory Management','PCC-CS503')" data-deck-id="cs503-u3">+ Deck</button>
+            </div>
+            <div class="unit-row" onclick="handleUnitClick('PCC-CS503','Unit 4: Synchronization &amp; Deadlocks')">
+              <span class="unit-number">Unit 4</span>
+              <span class="unit-name">Process Sync, Semaphores, Monitors &amp; Deadlock Avoidance</span>
+              <span class="unit-lectures">8 Lectures</span>
+              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 4: Deadlocks &amp; Sync','PCC-CS503')" data-deck-id="cs503-u4">+ Deck</button>
+            </div>
+            <div class="unit-row" onclick="handleUnitClick('PCC-CS503','Unit 5: File &amp; Storage Systems')">
+              <span class="unit-number">Unit 5</span>
+              <span class="unit-name">File Systems, Disk Scheduling &amp; I/O Management</span>
+              <span class="unit-lectures">6 Lectures</span>
+              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 5: File Systems','PCC-CS503')" data-deck-id="cs503-u5">+ Deck</button>
+            </div>
+          </div>
+          <div class="course-actions">
+            <a href="/#landing-curriculum" class="course-action-btn primary">📘 View Syllabus Blueprint →</a>
+            <a href="/#landing-pyqs" class="course-action-btn secondary">📄 Access PYQ Archives →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- PCC-CS504 -->
+      <div class="course-accordion" id="acc-cs504">
+        <button class="course-accordion-header" onclick="toggleAccordion('acc-cs504')" aria-expanded="false" aria-controls="body-cs504">
+          <span class="course-code-badge">PCC-CS504</span>
+          <div class="course-title-block">
+            <div class="course-title">Object-Oriented Programming with Java</div>
+            <div class="course-meta">3 Credits · 5 Units · 40 Lectures</div>
+          </div>
+          <span class="course-credit-pill">3 Cr.</span>
+          <span class="course-chevron" aria-hidden="true">▾</span>
+        </button>
+        <div class="course-accordion-body" id="body-cs504" role="region" aria-label="PCC-CS504 units">
+          <div class="unit-list">
+            <div class="unit-row" onclick="handleUnitClick('PCC-CS504','Unit 1: OOP Paradigm &amp; Java Fundamentals')">
+              <span class="unit-number">Unit 1</span>
+              <span class="unit-name">OOP Paradigm, JVM Architecture &amp; Java Fundamentals</span>
+              <span class="unit-lectures">8 Lectures</span>
+              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 1: Java Fundamentals','PCC-CS504')" data-deck-id="cs504-u1">+ Deck</button>
+            </div>
+            <div class="unit-row" onclick="handleUnitClick('PCC-CS504','Unit 2: Inheritance &amp; Polymorphism')">
+              <span class="unit-number">Unit 2</span>
+              <span class="unit-name">Inheritance, Polymorphism, Interfaces &amp; Abstract Classes</span>
+              <span class="unit-lectures">8 Lectures</span>
+              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 2: Inheritance &amp; Polymorphism','PCC-CS504')" data-deck-id="cs504-u2">+ Deck</button>
+            </div>
+            <div class="unit-row" onclick="handleUnitClick('PCC-CS504','Unit 3: Collections &amp; Generics')">
+              <span class="unit-number">Unit 3</span>
+              <span class="unit-name">Java Collections Framework, Generics &amp; Iterators</span>
+              <span class="unit-lectures">8 Lectures</span>
+              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 3: Collections','PCC-CS504')" data-deck-id="cs504-u3">+ Deck</button>
+            </div>
+            <div class="unit-row" onclick="handleUnitClick('PCC-CS504','Unit 4: Multithreading &amp; Concurrency')">
+              <span class="unit-number">Unit 4</span>
+              <span class="unit-name">Multithreading, Concurrency &amp; Thread Synchronization</span>
+              <span class="unit-lectures">8 Lectures</span>
+              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 4: Multithreading','PCC-CS504')" data-deck-id="cs504-u4">+ Deck</button>
+            </div>
+            <div class="unit-row" onclick="handleUnitClick('PCC-CS504','Unit 5: Exception Handling &amp; I/O')">
+              <span class="unit-number">Unit 5</span>
+              <span class="unit-name">Exception Handling, I/O Streams &amp; File Operations</span>
+              <span class="unit-lectures">8 Lectures</span>
+              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 5: Exception &amp; IO','PCC-CS504')" data-deck-id="cs504-u5">+ Deck</button>
+            </div>
+          </div>
+          <div class="course-actions">
+            <a href="/#landing-curriculum" class="course-action-btn primary">📘 View Syllabus Blueprint →</a>
+            <a href="/#landing-pyqs" class="course-action-btn secondary">📄 Access PYQ Archives →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ Section: PYQ Examination Vault ══ -->
+    <section class="workspace-section" id="pyqs" aria-label="Examination Vault">
+      <div class="workspace-section-header">
+        <h2 class="workspace-section-title">📄 Ingested Question Archives</h2>
+        <span class="workspace-section-count">2018–2024</span>
+      </div>
+      <div class="pyq-archive-grid">
+
+        <div class="pyq-card">
+          <div class="pyq-card-top">
+            <span class="pyq-card-year">2024</span>
+            <span class="pyq-card-type regular">Regular</span>
+          </div>
+          <div class="pyq-card-desc">End-Semester Examination papers for B.Tech CSE 5th Semester, 2024 Regular batch.</div>
+          <div class="pyq-card-papers">
+            <div class="pyq-paper-row">
+              <span class="pyq-paper-dot"></span>
+              <span class="pyq-paper-name">CS501 – Automata Theory</span>
+              <a class="pyq-paper-link" href="/#landing-pyqs" aria-label="Open CS501 2024 paper">PDF →</a>
+            </div>
+            <div class="pyq-paper-row">
+              <span class="pyq-paper-dot"></span>
+              <span class="pyq-paper-name">CS502 – DBMS</span>
+              <a class="pyq-paper-link" href="/#landing-pyqs" aria-label="Open CS502 2024 paper">PDF →</a>
+            </div>
+            <div class="pyq-paper-row">
+              <span class="pyq-paper-dot"></span>
+              <span class="pyq-paper-name">CS503 – Operating Systems</span>
+              <a class="pyq-paper-link" href="/#landing-pyqs" aria-label="Open CS503 2024 paper">PDF →</a>
+            </div>
+            <div class="pyq-paper-row">
+              <span class="pyq-paper-dot"></span>
+              <span class="pyq-paper-name">CS504 – OOP with Java</span>
+              <a class="pyq-paper-link" href="/#landing-pyqs" aria-label="Open CS504 2024 paper">PDF →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="pyq-card">
+          <div class="pyq-card-top">
+            <span class="pyq-card-year">2023</span>
+            <span class="pyq-card-type regular">Regular</span>
+          </div>
+          <div class="pyq-card-desc">End-Semester papers for B.Tech CSE 5th Semester, 2023 Regular.</div>
+          <div class="pyq-card-papers">
+            <div class="pyq-paper-row">
+              <span class="pyq-paper-dot"></span>
+              <span class="pyq-paper-name">CS501 – Automata Theory</span>
+              <a class="pyq-paper-link" href="/#landing-pyqs">PDF →</a>
+            </div>
+            <div class="pyq-paper-row">
+              <span class="pyq-paper-dot"></span>
+              <span class="pyq-paper-name">CS502 – DBMS</span>
+              <a class="pyq-paper-link" href="/#landing-pyqs">PDF →</a>
+            </div>
+            <div class="pyq-paper-row">
+              <span class="pyq-paper-dot"></span>
+              <span class="pyq-paper-name">CS503 – Operating Systems</span>
+              <a class="pyq-paper-link" href="/#landing-pyqs">PDF →</a>
+            </div>
+            <div class="pyq-paper-row">
+              <span class="pyq-paper-dot"></span>
+              <span class="pyq-paper-name">CS504 – OOP with Java</span>
+              <a class="pyq-paper-link" href="/#landing-pyqs">PDF →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="pyq-card">
+          <div class="pyq-card-top">
+            <span class="pyq-card-year">2023</span>
+            <span class="pyq-card-type backlog">Backlog</span>
+          </div>
+          <div class="pyq-card-desc">Backlog / Supplementary papers for B.Tech CSE 5th Semester, 2023.</div>
+          <div class="pyq-card-papers">
+            <div class="pyq-paper-row">
+              <span class="pyq-paper-dot"></span>
+              <span class="pyq-paper-name">CS501 – Automata Theory</span>
+              <a class="pyq-paper-link" href="/#landing-pyqs">PDF →</a>
+            </div>
+            <div class="pyq-paper-row">
+              <span class="pyq-paper-dot"></span>
+              <span class="pyq-paper-name">CS502 – DBMS</span>
+              <a class="pyq-paper-link" href="/#landing-pyqs">PDF →</a>
+            </div>
+            <div class="pyq-paper-row">
+              <span class="pyq-paper-dot"></span>
+              <span class="pyq-paper-name">CS503 – Operating Systems</span>
+              <a class="pyq-paper-link" href="/#landing-pyqs">PDF →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="pyq-card">
+          <div class="pyq-card-top">
+            <span class="pyq-card-year">2022</span>
+            <span class="pyq-card-type archive">Archive</span>
+          </div>
+          <div class="pyq-card-desc">2022 archived end-semester papers. Verified &amp; indexed.</div>
+          <div class="pyq-card-papers">
+            <div class="pyq-paper-row">
+              <span class="pyq-paper-dot"></span>
+              <span class="pyq-paper-name">CS501 – Automata Theory</span>
+              <a class="pyq-paper-link" href="/#landing-pyqs">PDF →</a>
+            </div>
+            <div class="pyq-paper-row">
+              <span class="pyq-paper-dot"></span>
+              <span class="pyq-paper-name">CS502 – DBMS</span>
+              <a class="pyq-paper-link" href="/#landing-pyqs">PDF →</a>
+            </div>
+            <div class="pyq-paper-row">
+              <span class="pyq-paper-dot"></span>
+              <span class="pyq-paper-name">CS503 – Operating Systems</span>
+              <a class="pyq-paper-link" href="/#landing-pyqs">PDF →</a>
+            </div>
+            <div class="pyq-paper-row">
+              <span class="pyq-paper-dot"></span>
+              <span class="pyq-paper-name">CS504 – OOP with Java</span>
+              <a class="pyq-paper-link" href="/#landing-pyqs">PDF →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="pyq-card">
+          <div class="pyq-card-top">
+            <span class="pyq-card-year">2021</span>
+            <span class="pyq-card-type archive">Archive</span>
+          </div>
+          <div class="pyq-card-desc">2021 end-semester papers (COVID batch, revised syllabus).</div>
+          <div class="pyq-card-papers">
+            <div class="pyq-paper-row">
+              <span class="pyq-paper-dot"></span>
+              <span class="pyq-paper-name">CS501 – Automata Theory</span>
+              <a class="pyq-paper-link" href="/#landing-pyqs">PDF →</a>
+            </div>
+            <div class="pyq-paper-row">
+              <span class="pyq-paper-dot"></span>
+              <span class="pyq-paper-name">CS502 – DBMS</span>
+              <a class="pyq-paper-link" href="/#landing-pyqs">PDF →</a>
+            </div>
+            <div class="pyq-paper-row">
+              <span class="pyq-paper-dot"></span>
+              <span class="pyq-paper-name">CS503 – Operating Systems</span>
+              <a class="pyq-paper-link" href="/#landing-pyqs">PDF →</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="pyq-card">
+          <div class="pyq-card-top">
+            <span class="pyq-card-year">2018–20</span>
+            <span class="pyq-card-type archive">Archive</span>
+          </div>
+          <div class="pyq-card-desc">Historical archives: 2018, 2019, 2020 papers (pre-revision syllabus).</div>
+          <div class="pyq-card-papers">
+            <div class="pyq-paper-row">
+              <span class="pyq-paper-dot"></span>
+              <span class="pyq-paper-name">Full Archive Bundle</span>
+              <a class="pyq-paper-link" href="/#landing-pyqs">View All →</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══ Section: Panic Pack ══ -->
+    <section class="workspace-section" id="panic" aria-label="Panic Pack">
+      <div class="workspace-section-header">
+        <h2 class="workspace-section-title">🔥 Panic Pack</h2>
+        <span class="workspace-section-count" id="panic-section-count">16 Topics</span>
+      </div>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:1rem;">High-yield topics most likely to appear in MAKAUT 5th Semester exams, curated from PYQ frequency analysis.</p>
+      <div class="panic-grid" id="panic-grid">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+    <!-- ══ Section: Bookmarked Notes ══ -->
+    <section class="workspace-section" id="bookmarks" aria-label="Bookmarked Notes">
+      <div class="workspace-section-header">
+        <h2 class="workspace-section-title">🔖 Bookmarked Notes</h2>
+        <span class="workspace-section-count" id="bookmarks-count-badge">0 Saved</span>
+      </div>
+      <div id="bookmarks-container"></div>
+    </section>
+
+    <!-- ══ Section: Preferences ══ -->
+    <section class="workspace-section" id="preferences" aria-label="Preferences">
+      <div class="workspace-section-header">
+        <h2 class="workspace-section-title">⚙️ Preferences</h2>
+      </div>
+      <div style="background:var(--surface-card);border:1px solid var(--border-hairline);border-radius:var(--radius-md);padding:1.25rem;">
+        <div class="pref-group">
+          <div class="pref-item">
+            <label class="pref-label" for="pref-darkmode">Dark Mode</label>
+            <label class="toggle-switch">
+              <input type="checkbox" id="pref-darkmode" checked onchange="toggleTheme(this.checked)" />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="pref-item">
+            <label class="pref-label" for="pref-animations">Reduce Motion</label>
+            <label class="toggle-switch">
+              <input type="checkbox" id="pref-animations" onchange="toggleReduceMotion(this.checked)" />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="pref-item">
+            <label class="pref-label" for="pref-notifications">Exam Reminders</label>
+            <label class="toggle-switch">
+              <input type="checkbox" id="pref-notifications" onchange="savePref('exam_reminders', this.checked)" />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="pref-item">
+            <label class="pref-label" for="pref-compact">Compact View</label>
+            <label class="toggle-switch">
+              <input type="checkbox" id="pref-compact" onchange="savePref('compact_view', this.checked)" />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+        <div style="margin-top:1.25rem;display:flex;gap:0.75rem;flex-wrap:wrap;">
+          <button class="course-action-btn secondary" onclick="clearDeck()" style="font-size:12px;">🗑️ Clear Revision Deck</button>
+          <button class="course-action-btn secondary" onclick="clearBookmarks()" style="font-size:12px;">🔖 Clear All Bookmarks</button>
+          <button class="course-action-btn secondary" style="color:var(--accent-red);border-color:rgba(239,68,68,0.3);font-size:12px;" onclick="document.getElementById('signout-btn').click()">⚡ Sign Out</button>
+        </div>
+      </div>
+    </section>
+
+  </main><!-- /#dash-workspace -->
+
+  <!-- ── Right Dock: Revision Deck ── -->
+  <aside id="dash-dock" aria-label="Revision Deck">
+    <div class="dock-header">
+      <h2 class="dock-title">📑 Saved Revision Deck</h2>
+      <span class="dock-count-badge" id="deck-count-badge">0 Items</span>
+    </div>
+
+    <div id="deck-body">
+      <!-- Populated by JS -->
+    </div>
+
+    <div class="dock-divider"></div>
+    <button class="dock-action-btn export" onclick="exportRevisionDeck()" id="export-deck-btn">
+      ⬇️ Export Revision Deck
+    </button>
+    <button class="dock-action-btn" onclick="clearDeck()">
+      🗑️ Clear Deck
+    </button>
+  </aside>
+
+</div><!-- /#dash-shell -->
+
+<!-- Shared App JS -->
+<script src="app.js?v=20261022_v1"></script>
+
+<script>
+/* ════════════════════════════════════════════════
+   CAMPUSSENSE DASHBOARD — Inline Controller
+   (Runs after DOM is ready; app.js already loaded)
+════════════════════════════════════════════════ */
+
+// ── Panic Pack Data ──────────────────────────────
+const PANIC_TOPICS = [
+  { icon:'🔄', title:'CPU Scheduling Algorithms', sub:'PCC-CS503 · Unit 2 · High Yield', section:'curriculum' },
+  { icon:'🗄️', title:'Database Normalization (BCNF)', sub:'PCC-CS502 · Unit 3 · Very High', section:'curriculum' },
+  { icon:'🤖', title:'NFA to DFA Conversion', sub:'PCC-CS501 · Unit 1 · High Yield', section:'curriculum' },
+  { icon:'☕', title:'Java Collections Framework', sub:'PCC-CS504 · Unit 3 · High Yield', section:'curriculum' },
+  { icon:'🔒', title:'Deadlock Detection &amp; Banker\'s', sub:'PCC-CS503 · Unit 4 · Very High', section:'curriculum' },
+  { icon:'📊', title:'SQL Joins &amp; Aggregate Functions', sub:'PCC-CS502 · Unit 2 · Very High', section:'curriculum' },
+  { icon:'🧮', title:'Regular Expressions &amp; Pumping Lemma', sub:'PCC-CS501 · Unit 2 · High Yield', section:'curriculum' },
+  { icon:'🧵', title:'Multithreading &amp; Race Conditions', sub:'PCC-CS504 · Unit 4 · High Yield', section:'curriculum' },
+  { icon:'💾', title:'Virtual Memory &amp; Page Replacement', sub:'PCC-CS503 · Unit 3 · Very High', section:'curriculum' },
+  { icon:'🌳', title:'B+ Trees &amp; Indexing', sub:'PCC-CS502 · Unit 5 · High Yield', section:'curriculum' },
+  { icon:'📐', title:'Context-Free Grammars &amp; CYK', sub:'PCC-CS501 · Unit 3 · Medium', section:'curriculum' },
+  { icon:'🔑', title:'ACID Properties &amp; 2PL Protocol', sub:'PCC-CS502 · Unit 4 · Very High', section:'curriculum' },
+  { icon:'🖥️', title:'System Calls &amp; Process States', sub:'PCC-CS503 · Unit 1 · High Yield', section:'curriculum' },
+  { icon:'🎭', title:'Runtime Polymorphism &amp; Overriding', sub:'PCC-CS504 · Unit 2 · High Yield', section:'curriculum' },
+  { icon:'📜', title:'Turing Machines &amp; Halting Problem', sub:'PCC-CS501 · Unit 4 · Medium', section:'curriculum' },
+  { icon:'📁', title:'File Systems &amp; Disk Scheduling', sub:'PCC-CS503 · Unit 5 · High Yield', section:'curriculum' },
+];
+
+// ── CmdK Search Index ────────────────────────────
+const SEARCH_INDEX = [
+  { icon:'📘', label:'CPU Scheduling — OS Unit 2', sub:'PCC-CS503', href:'#curriculum' },
+  { icon:'📘', label:'DBMS Normalization — Unit 3', sub:'PCC-CS502', href:'#curriculum' },
+  { icon:'📘', label:'NFA/DFA — Automata Unit 1', sub:'PCC-CS501', href:'#curriculum' },
+  { icon:'📘', label:'Java OOP — Collections Unit 3', sub:'PCC-CS504', href:'#curriculum' },
+  { icon:'📄', label:'2024 Regular Question Papers', sub:'PYQ Vault', href:'#pyqs' },
+  { icon:'📄', label:'2023 Regular &amp; Backlog Papers', sub:'PYQ Vault', href:'#pyqs' },
+  { icon:'📄', label:'2022 Archive Papers', sub:'PYQ Vault', href:'#pyqs' },
+  { icon:'🔥', label:'Panic Pack Topics', sub:'16 High-Yield', href:'#panic' },
+  { icon:'🔖', label:'Bookmarked Notes', sub:'Your Bookmarks', href:'#bookmarks' },
+  { icon:'⚙️', label:'Preferences &amp; Settings', sub:'Dashboard', href:'#preferences' },
+  { icon:'📚', label:'Full Syllabus Blueprint', sub:'CampusSense Home', href:'/#landing-curriculum' },
+  { icon:'🏠', label:'Go to Home Page', sub:'CampusSense', href:'/' },
+];
+
+// ── Utility: localStorage safe helpers ──────────
+function lsGet(key, fallback = null) {
+  try { const v = localStorage.getItem(key); return v !== null ? v : fallback; }
+  catch { return fallback; }
+}
+function lsSet(key, val) {
+  try { localStorage.setItem(key, val); } catch {}
+}
+function lsGetJson(key, fallback = null) {
+  try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }
+  catch { return fallback; }
+}
+function lsSetJson(key, val) {
+  try { localStorage.setItem(key, JSON.stringify(val)); } catch {}
+}
+
+// ── Toast ────────────────────────────────────────
+function showToast(msg, type = 'default', durationMs = 2800) {
+  const container = document.getElementById('toast-container');
+  if (!container) return;
+  const t = document.createElement('div');
+  t.className = `toast toast-${type}`;
+  const icons = { success: '✅', error: '❌', default: 'ℹ️' };
+  t.innerHTML = `<span>${icons[type] || 'ℹ️'}</span><span>${msg}</span>`;
+  container.appendChild(t);
+  setTimeout(() => {
+    t.classList.add('removing');
+    t.addEventListener('animationend', () => t.remove(), { once: true });
+    setTimeout(() => { if (t.parentNode) t.remove(); }, 300);
+  }, durationMs);
+}
+
+// ── Auth Guard ───────────────────────────────────
+function runAuthGuard() {
+  const veil = document.getElementById('auth-veil');
+  const isLoggedIn = lsGet('campussense_logged_in') === 'true';
+  if (!isLoggedIn) {
+    window.location.replace('/login.html');
+    return false;
+  }
+  // Reveal page after guard passes
+  if (veil) { veil.style.display = 'none'; }
+  return true;
+}
+
+// ── Load User Profile ────────────────────────────
+function loadUserProfile() {
+  const session = lsGetJson('campussense_user_session', {});
+  const academic = lsGetJson('campussense_academic_profile', {});
+
+  const name = session.name || session.firstName || session.email?.split('@')[0] || 'Student';
+  const email = session.email || '';
+  const branch = academic.branch || session.branch || 'B.Tech CSE';
+  const semester = academic.semester || session.semester || '5';
+
+  // Avatar initials
+  const initials = name.split(' ').map(p => p[0]).join('').slice(0,2).toUpperCase() || 'ST';
+  const avatarEl = document.getElementById('user-avatar');
+  const nameEl = document.getElementById('user-name');
+  const badgeEl = document.getElementById('branch-badge');
+  const contextEl = document.getElementById('context-value');
+  const sessionChip = document.getElementById('session-chip');
+
+  if (avatarEl) avatarEl.textContent = initials;
+  if (nameEl) nameEl.textContent = name;
+  if (badgeEl) badgeEl.textContent = `${branch} · Sem ${semester}`;
+  if (contextEl) contextEl.textContent = `${branch} · ${ordinal(parseInt(semester))} Semester`;
+  if (sessionChip) sessionChip.textContent = session.rollNumber || email || 'Session';
+}
+
+function ordinal(n) {
+  const s = ['', '1st','2nd','3rd','4th','5th','6th','7th','8th'];
+  return s[n] || n + 'th';
+}
+
+// ── Sign Out ─────────────────────────────────────
+async function handleSignOut() {
+  const btn = document.getElementById('signout-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Signing out…'; }
+  try {
+    if (window.Clerk && typeof window.Clerk.signOut === 'function') {
+      await window.Clerk.signOut();
+    }
+  } catch (err) {
+    console.warn('[CampusSense] Clerk signOut error:', err);
+  }
+  // Clear all session keys
+  const keysToRemove = [
+    'campussense_logged_in',
+    'campussense_user_session',
+    'campussense_academic_profile',
+    'campussense_clerk_token',
+    'campussense_theme', // keep? — leave it, user's preference
+  ];
+  keysToRemove.forEach(k => { try { localStorage.removeItem(k); } catch {} });
+  // Navigate home
+  try { history.replaceState(null, '', '/'); } catch {}
+  window.location.replace('/');
+}
+
+// ── Accordion ────────────────────────────────────
+function toggleAccordion(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const isOpen = el.classList.toggle('open');
+  const btn = el.querySelector('.course-accordion-header');
+  if (btn) btn.setAttribute('aria-expanded', String(isOpen));
+}
+
+// ── Nav active + scroll ──────────────────────────
+function scrollToSection(sectionId, navItemEl) {
+  const section = document.getElementById(sectionId);
+  if (section) {
+    const top = section.getBoundingClientRect().top + window.scrollY - 72;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
+  // Update active nav item
+  document.querySelectorAll('.nav-item').forEach(el => {
+    el.classList.remove('active');
+    el.removeAttribute('aria-current');
+  });
+  if (navItemEl) {
+    navItemEl.classList.add('active');
+    navItemEl.setAttribute('aria-current', 'page');
+  }
+  // Close mobile nav
+  closeMobileNav();
+}
+
+// ── Scroll spy ───────────────────────────────────
+function initScrollSpy() {
+  const sections = ['curriculum','pyqs','panic','bookmarks','preferences'];
+  const navItems = {};
+  sections.forEach(id => {
+    navItems[id] = document.querySelector(`.nav-item[data-section="${id}"]`);
+  });
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        sections.forEach(id => {
+          const ni = navItems[id];
+          if (ni) { ni.classList.remove('active'); ni.removeAttribute('aria-current'); }
+        });
+        const ni = navItems[e.target.id];
+        if (ni) { ni.classList.add('active'); ni.setAttribute('aria-current','page'); }
+      }
+    });
+  }, { rootMargin: '-20% 0px -60% 0px', threshold: 0 });
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) observer.observe(el);
+  });
+}
+
+// ── Unit click ───────────────────────────────────
+function handleUnitClick(courseCode, unitName) {
+  // Route to the main app's curriculum section with context
+  window.location.href = `/#landing-curriculum`;
+}
+
+// ── Save to Deck ─────────────────────────────────
+function saveToDeck(event, unitName, courseCode) {
+  event.stopPropagation();
+  const deck = lsGetJson('campussense_saved_deck', []);
+  const id = `${courseCode}-${unitName}`.replace(/\s+/g,'_').toLowerCase();
+
+  // Deduplicate
+  if (deck.find(d => d.id === id)) {
+    showToast(`Already in deck: ${unitName}`, 'default');
+    return;
+  }
+  deck.unshift({ id, label: unitName, sub: courseCode, savedAt: Date.now() });
+  lsSetJson('campussense_saved_deck', deck);
+
+  // Update button
+  const btn = event.currentTarget || event.target;
+  if (btn) { btn.textContent = '✓ Saved'; btn.classList.add('saved'); }
+
+  renderDeck();
+  showToast(`Added to deck: ${unitName}`, 'success');
+}
+
+// ── Render Revision Deck ─────────────────────────
+function renderDeck() {
+  const deck = lsGetJson('campussense_saved_deck', []);
+  const body = document.getElementById('deck-body');
+  const countBadge = document.getElementById('deck-count-badge');
+  if (countBadge) countBadge.textContent = `${deck.length} Item${deck.length !== 1 ? 's' : ''}`;
+
+  if (!body) return;
+  if (deck.length === 0) {
+    body.innerHTML = `
+      <div class="deck-empty-state">
+        <div class="deck-empty-icon">📭</div>
+        No saved items yet.<br>Click <strong>+ Deck</strong> on any unit to save it here.
+      </div>`;
+    return;
+  }
+
+  body.innerHTML = `
+    <div class="deck-items" id="deck-items-list">
+      ${deck.map((item, idx) => `
+        <div class="deck-item" data-deck-idx="${idx}">
+          <div style="flex:1;">
+            <div class="deck-item-label">${item.label}</div>
+            <div class="deck-item-sub">${item.sub}</div>
+          </div>
+          <button class="deck-item-remove" onclick="removeDeckItem('${item.id}')" aria-label="Remove ${item.label} from deck">✕</button>
+        </div>
+      `).join('')}
+    </div>`;
+
+  // Sync "saved" state on unit save buttons
+  document.querySelectorAll('.unit-save-btn').forEach(btn => {
+    const deckId = btn.getAttribute('data-deck-id');
+    if (deckId && deck.find(d => d.id.includes(deckId.replace('-','')))) {
+      btn.textContent = '✓ Saved';
+      btn.classList.add('saved');
+    }
+  });
+}
+
+function removeDeckItem(id) {
+  let deck = lsGetJson('campussense_saved_deck', []);
+  deck = deck.filter(d => d.id !== id);
+  lsSetJson('campussense_saved_deck', deck);
+  renderDeck();
+  // Reset any matching save button
+  document.querySelectorAll('.unit-save-btn').forEach(btn => {
+    btn.textContent = '+ Deck';
+    btn.classList.remove('saved');
+  });
+  // Re-check remaining
+  deck.forEach(item => {
+    document.querySelectorAll('.unit-save-btn').forEach(btn => {
+      const deckId = btn.getAttribute('data-deck-id');
+      if (deckId && item.id.includes(deckId)) {
+        btn.textContent = '✓ Saved';
+        btn.classList.add('saved');
+      }
+    });
+  });
+  showToast('Removed from deck', 'default', 1800);
+}
+
+function clearDeck() {
+  if (!confirm('Clear all items from your Revision Deck?')) return;
+  lsSetJson('campussense_saved_deck', []);
+  document.querySelectorAll('.unit-save-btn').forEach(btn => {
+    btn.textContent = '+ Deck';
+    btn.classList.remove('saved');
+  });
+  renderDeck();
+  showToast('Revision Deck cleared', 'default');
+}
+
+function exportRevisionDeck() {
+  const deck = lsGetJson('campussense_saved_deck', []);
+  if (deck.length === 0) { showToast('Deck is empty', 'error', 2000); return; }
+  const lines = [
+    'MAKAUT CampusSense — Revision Deck Export',
+    `Exported: ${new Date().toLocaleString()}`,
+    '─'.repeat(50),
+    '',
+    ...deck.map((item, i) => `${i+1}. [${item.sub}] ${item.label}`),
+    '',
+    '─'.repeat(50),
+    'https://campussense.pages.dev'
+  ];
+  const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'CampusSense_RevisionDeck.txt';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Deck exported!', 'success');
+}
+
+// ── Panic Pack ───────────────────────────────────
+function renderPanicPack() {
+  const grid = document.getElementById('panic-grid');
+  if (!grid) return;
+  grid.innerHTML = PANIC_TOPICS.map((t, i) => `
+    <div class="panic-card" onclick="scrollToSection('${t.section}', null)" role="button" tabindex="0"
+         aria-label="Panic topic: ${t.title}"
+         onkeydown="if(event.key==='Enter'||event.key===' ')this.click()">
+      <div class="panic-card-icon">${t.icon}</div>
+      <div class="panic-card-title">${t.title}</div>
+      <div class="panic-card-sub">${t.sub}</div>
+    </div>
+  `).join('');
+  const countEl = document.getElementById('panic-section-count');
+  const badgeEl = document.getElementById('panic-count-badge');
+  if (countEl) countEl.textContent = `${PANIC_TOPICS.length} Topics`;
+  if (badgeEl) badgeEl.textContent = PANIC_TOPICS.length;
+}
+
+// ── Bookmarks ────────────────────────────────────
+function renderBookmarks() {
+  const bookmarks = lsGetJson('campussense_bookmarks', []);
+  const container = document.getElementById('bookmarks-container');
+  const countEl = document.getElementById('bookmarks-count-badge');
+  if (countEl) countEl.textContent = `${bookmarks.length} Saved`;
+  if (!container) return;
+
+  if (bookmarks.length === 0) {
+    container.innerHTML = `
+      <div class="bookmarks-empty">
+        <div style="font-size:24px;margin-bottom:0.5rem;">🔖</div>
+        No bookmarks yet. Bookmark topic cards from the <a href="/#landing-curriculum" style="color:var(--accent-blue);text-decoration:none;">Curriculum Matrix</a> on the home page.
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="bookmarks-grid">
+      ${bookmarks.map((b, i) => `
+        <div class="bookmark-card">
+          <span class="bookmark-icon">📌</span>
+          <div class="bookmark-info">
+            <div class="bookmark-title">${b.title || 'Untitled'}</div>
+            <div class="bookmark-meta">${b.sub || b.courseCode || ''}</div>
+          </div>
+          <button class="bookmark-remove" onclick="removeBookmark(${i})" aria-label="Remove bookmark">✕</button>
+        </div>
+      `).join('')}
+    </div>`;
+}
+
+function removeBookmark(idx) {
+  let bm = lsGetJson('campussense_bookmarks', []);
+  bm.splice(idx, 1);
+  lsSetJson('campussense_bookmarks', bm);
+  renderBookmarks();
+  showToast('Bookmark removed', 'default', 1800);
+}
+
+function clearBookmarks() {
+  if (!confirm('Clear all bookmarks?')) return;
+  lsSetJson('campussense_bookmarks', []);
+  renderBookmarks();
+  showToast('All bookmarks cleared', 'default');
+}
+
+// ── Preferences ──────────────────────────────────
+function loadPrefs() {
+  const theme = lsGet('campussense_theme', 'dark');
+  const darkmodeEl = document.getElementById('pref-darkmode');
+  if (darkmodeEl) darkmodeEl.checked = (theme === 'dark');
+
+  const reduceMotion = lsGet('campussense_reduce_motion') === 'true';
+  const rmEl = document.getElementById('pref-animations');
+  if (rmEl) rmEl.checked = reduceMotion;
+
+  const reminders = lsGet('campussense_exam_reminders') === 'true';
+  const remEl = document.getElementById('pref-notifications');
+  if (remEl) remEl.checked = reminders;
+
+  const compact = lsGet('campussense_compact_view') === 'true';
+  const cmEl = document.getElementById('pref-compact');
+  if (cmEl) cmEl.checked = compact;
+}
+
+function toggleTheme(isDark) {
+  const theme = isDark ? 'dark' : 'light';
+  lsSet('campussense_theme', theme);
+  document.documentElement.setAttribute('data-theme', theme);
+  if (isDark) document.documentElement.classList.add('dark');
+  else document.documentElement.classList.remove('dark');
+  showToast(`Switched to ${isDark ? 'dark' : 'light'} mode`, 'success', 2000);
+}
+
+function toggleReduceMotion(enabled) {
+  lsSet('campussense_reduce_motion', String(enabled));
+  document.documentElement.style.setProperty('--transition-fast', enabled ? '0ms' : '150ms cubic-bezier(0.4,0,0.2,1)');
+  document.documentElement.style.setProperty('--transition-base', enabled ? '0ms' : '200ms cubic-bezier(0.4,0,0.2,1)');
+}
+
+function savePref(key, val) {
+  lsSet(`campussense_${key}`, String(val));
+}
+
+// ── CmdK Search ──────────────────────────────────
+function initCmdK() {
+  const input = document.getElementById('cmdK-input');
+  const results = document.getElementById('cmdK-results');
+  if (!input || !results) return;
+
+  input.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    if (q.length < 1) { results.classList.remove('visible'); return; }
+
+    const matches = SEARCH_INDEX.filter(item =>
+      item.label.toLowerCase().includes(q) || item.sub.toLowerCase().includes(q)
+    ).slice(0, 8);
+
+    if (matches.length === 0) {
+      results.innerHTML = `<div class="cmdK-empty">No results for "${q}"</div>`;
+    } else {
+      results.innerHTML = matches.map(m => `
+        <div class="cmdK-result-item" onclick="cmdKNavigate('${m.href}')" tabindex="0"
+             onkeydown="if(event.key==='Enter')cmdKNavigate('${m.href}')">
+          <span class="cmdK-result-icon">${m.icon}</span>
+          <span class="cmdK-result-label">${m.label}</span>
+          <span class="cmdK-result-sub">${m.sub}</span>
+        </div>`).join('');
+    }
+    results.classList.add('visible');
+  });
+
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { results.classList.remove('visible'); input.blur(); }
+  });
+
+  document.addEventListener('click', e => {
+    if (!document.getElementById('cmdK-bar').contains(e.target)) {
+      results.classList.remove('visible');
+    }
+  });
+
+  // CmdK keyboard shortcut
+  document.addEventListener('keydown', e => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      input.focus(); input.select();
+    }
+  });
+}
+
+function cmdKNavigate(href) {
+  const results = document.getElementById('cmdK-results');
+  const input = document.getElementById('cmdK-input');
+  if (results) results.classList.remove('visible');
+  if (input) input.value = '';
+  if (href.startsWith('#')) {
+    const sectionId = href.replace('#', '');
+    scrollToSection(sectionId, document.querySelector(`.nav-item[data-section="${sectionId}"]`));
+  } else {
+    window.location.href = href;
+  }
+}
+
+// ── Mobile Nav ───────────────────────────────────
+function initMobileNav() {
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  const nav = document.getElementById('dash-nav');
+  const overlay = document.getElementById('nav-overlay');
+
+  function openNav() {
+    nav.classList.add('nav-open');
+    overlay.classList.add('visible');
+    if (menuBtn) menuBtn.setAttribute('aria-expanded', 'true');
+    menuBtn.textContent = '✕';
+  }
+  function closeNav() {
+    nav.classList.remove('nav-open');
+    overlay.classList.remove('visible');
+    if (menuBtn) menuBtn.setAttribute('aria-expanded', 'false');
+    menuBtn.textContent = '☰';
+  }
+  window.closeMobileNav = closeNav;
+
+  if (menuBtn) menuBtn.addEventListener('click', () => {
+    if (nav.classList.contains('nav-open')) closeNav(); else openNav();
+  });
+  if (overlay) overlay.addEventListener('click', closeNav);
+}
+
+// ── Dock Toggle (tablet) ─────────────────────────
+function initDockToggle() {
+  const btn = document.getElementById('dock-toggle-btn');
+  const dock = document.getElementById('dash-dock');
+  if (!btn || !dock) return;
+  btn.addEventListener('click', () => {
+    dock.classList.toggle('dock-open');
+  });
+}
+
+// ── Main Init ────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  // Auth guard runs first
+  if (!runAuthGuard()) return;
+
+  // Load profile from localStorage
+  loadUserProfile();
+
+  // Render dynamic sections
+  renderPanicPack();
+  renderDeck();
+  renderBookmarks();
+
+  // Load preferences
+  loadPrefs();
+
+  // Wire sign-out
+  const signoutBtn = document.getElementById('signout-btn');
+  if (signoutBtn) signoutBtn.addEventListener('click', handleSignOut);
+
+  // CmdK
+  initCmdK();
+
+  // Mobile nav
+  initMobileNav();
+
+  // Dock toggle
+  initDockToggle();
+
+  // Scroll spy
+  initScrollSpy();
+
+  // Sync accordion "open" state aria
+  document.querySelectorAll('.course-accordion.open .course-accordion-header').forEach(btn => {
+    btn.setAttribute('aria-expanded', 'true');
+  });
+});
+
+// ── Also guard on window load (Clerk may not be ready at DOMContentLoaded) ──
+window.addEventListener('load', () => {
+  // Try to hydrate Clerk from config
+  try {
+    const cfg = window.__CAMPUSSENSE_CONFIG__;
+    const pk = cfg && cfg.clerkPublishableKey;
+    if (pk && window.Clerk && !window.Clerk.__initialized) {
+      window.Clerk.load({ publishableKey: pk }).catch(() => {});
+    }
+  } catch {}
+  // Final auth guard pass
+  const isLoggedIn = lsGet('campussense_logged_in') === 'true';
+  if (!isLoggedIn) { window.location.replace('/login.html'); }
+});
+</script>
+</body>
+</html>

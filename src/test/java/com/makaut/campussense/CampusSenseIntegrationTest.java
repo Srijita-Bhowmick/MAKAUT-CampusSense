@@ -67,6 +67,38 @@ class CampusSenseIntegrationTest {
     }
 
     @Test
+    @DisplayName("Integration: POST /api/v1/chat/query - Negative Grounding Guardrail (Cooking Recipe)")
+    void testChatNegativeGroundingCooking() throws Exception {
+        ChatQueryRequest request = ChatQueryRequest.builder()
+                .query("Teach me cooking recipes")
+                .build();
+
+        mockMvc.perform(post("/api/v1/chat/query")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.verified", is(false)))
+                .andExpect(jsonPath("$.response", is("This information is not verified by official MAKAUT curriculum data.")))
+                .andExpect(jsonPath("$.sources", empty()));
+    }
+
+    @Test
+    @DisplayName("Integration: POST /api/v1/chat/query - Negative Grounding Guardrail (MIT Aeronautics)")
+    void testChatNegativeGroundingMitAeronautics() throws Exception {
+        ChatQueryRequest request = ChatQueryRequest.builder()
+                .query("What is the syllabus for MIT Aeronautics?")
+                .build();
+
+        mockMvc.perform(post("/api/v1/chat/query")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.verified", is(false)))
+                .andExpect(jsonPath("$.response", is("This information is not verified by official MAKAUT curriculum data.")))
+                .andExpect(jsonPath("$.sources", empty()));
+    }
+
+    @Test
     @DisplayName("Integration: GET /api/v1/resources/search - Filter by Stream and Semester")
     void testResourceSearch() throws Exception {
         mockMvc.perform(get("/api/v1/resources/search")
@@ -134,5 +166,74 @@ class CampusSenseIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(header().string("Content-Type", containsString("application/pdf")))
                 .andExpect(header().string("X-Frame-Options", "SAMEORIGIN"));
+    }
+
+    @Test
+    @DisplayName("Integration: GET /1st year/syllabus/Physics.pdf - Canonical 1st Year Syllabus Delivery")
+    void testCanonical1stYearSyllabusDelivery() throws Exception {
+        mockMvc.perform(get("/1st year/syllabus/Physics.pdf"))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Content-Type", containsString("application/pdf")))
+                .andExpect(header().string("X-Frame-Options", "SAMEORIGIN"));
+    }
+
+    @Test
+    @DisplayName("Integration: GET /3rd to 8th sem/cse/syllabus/CSE20.pdf - Canonical 3rd to 8th sem Syllabus Delivery")
+    void testCanonical3rdTo8thSemSyllabusDelivery() throws Exception {
+        mockMvc.perform(get("/3rd to 8th sem/cse/syllabus/CSE20.pdf"))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Content-Type", containsString("application/pdf")))
+                .andExpect(header().string("X-Frame-Options", "SAMEORIGIN"));
+    }
+
+    @Test
+    @DisplayName("Integration: GET /api/resources - Dynamic Resource Catalog Endpoint")
+    void testDynamicResourceCatalogEndpoint() throws Exception {
+        mockMvc.perform(get("/api/resources"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.totalResources", greaterThan(1400)))
+                .andExpect(jsonPath("$.summary.pyqCount", greaterThan(1400)))
+                .andExpect(jsonPath("$.summary.syllabusCount", greaterThanOrEqualTo(15)));
+    }
+
+    @Test
+    @DisplayName("Integration: GET /api/v1/config/auth-public - Public Auth Configuration Endpoint")
+    void testAuthPublicConfigEndpoint() throws Exception {
+        mockMvc.perform(get("/api/v1/config/auth-public"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.guestAllowed", is(true)))
+                .andExpect(jsonPath("$.authMode", notNullValue()));
+    }
+
+    @Test
+    @DisplayName("Integration: Edge Cache-Control - Immutable PDFs, Catalog Caching & Dynamic Entry Points")
+    void testEdgeCacheControlPolicies() throws Exception {
+        // Heavy immutable PDF assets: max-age=31536000, immutable
+        mockMvc.perform(get("/1st year/syllabus/Physics.pdf"))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Cache-Control", containsString("max-age=31536000")))
+                .andExpect(header().string("Cache-Control", containsString("immutable")));
+
+        // Static structural catalogs: max-age=3600, stale-while-revalidate=86400
+        mockMvc.perform(get("/resources.json"))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Cache-Control", containsString("max-age=3600")))
+                .andExpect(header().string("Cache-Control", containsString("stale-while-revalidate=86400")));
+
+        // Core entry points: no-cache, must-revalidate
+        mockMvc.perform(get("/index.html"))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Cache-Control", containsString("no-cache")))
+                .andExpect(header().string("Cache-Control", containsString("must-revalidate")));
+    }
+
+    @Test
+    @DisplayName("Integration: CORS - Cloudflare Pages & Configured Domains Authorized")
+    void testCorsOriginPolicies() throws Exception {
+        mockMvc.perform(get("/api/v1/config/auth-public")
+                        .header("Origin", "https://campussense.pages.dev"))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Access-Control-Allow-Origin", "https://campussense.pages.dev"))
+                .andExpect(header().string("Access-Control-Allow-Credentials", "true"));
     }
 }

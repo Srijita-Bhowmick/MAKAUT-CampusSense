@@ -23,9 +23,22 @@ public class ConfigController {
     @GetMapping("/clerk")
     @Operation(summary = "Get configured Clerk publishable key safely")
     public ResponseEntity<ClerkConfigResponse> getClerkConfig() {
+        boolean configured = clerkPublishableKey != null && !clerkPublishableKey.isBlank();
         return ResponseEntity.ok(ClerkConfigResponse.builder()
-                .publishableKey(clerkPublishableKey != null ? clerkPublishableKey.trim() : "")
-                .configured(clerkPublishableKey != null && !clerkPublishableKey.isBlank())
+                .publishableKey(configured ? clerkPublishableKey.trim() : "")
+                .configured(configured)
+                .build());
+    }
+
+    @GetMapping("/auth-public")
+    @Operation(summary = "Get unauthenticated public authentication configuration")
+    public ResponseEntity<AuthPublicConfigResponse> getAuthPublicConfig() {
+        boolean configured = clerkPublishableKey != null && !clerkPublishableKey.isBlank();
+        return ResponseEntity.ok(AuthPublicConfigResponse.builder()
+                .clerkPublishableKey(configured ? clerkPublishableKey.trim() : "")
+                .configured(configured)
+                .authMode(configured ? "CLERK" : "GUEST")
+                .guestAllowed(true)
                 .build());
     }
 
@@ -36,5 +49,16 @@ public class ConfigController {
     public static class ClerkConfigResponse {
         private String publishableKey;
         private boolean configured;
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AuthPublicConfigResponse {
+        private String clerkPublishableKey;
+        private boolean configured;
+        private String authMode;
+        private boolean guestAllowed;
     }
 }

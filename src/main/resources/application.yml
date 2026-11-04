@@ -1,8 +1,29 @@
+server:
+  port: ${SERVER_PORT:8080}
+  forward-headers-strategy: framework
+
 spring:
   application:
     name: makaut-campussense
   profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
     default: dev
+  main:
+    headless: true
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:campussense}
+    username: ${DB_USER:campussense_user}
+    password: ${DB_PASSWORD:campussense_password}
+
+clerk:
+  publishable-key: ${CLERK_PUBLISHABLE_KEY:}
+  secret-key: ${CLERK_SECRET_KEY:}
+
+ai:
+  gemini:
+    api-key: ${GEMINI_API_KEY:}
+  groq:
+    api-key: ${GROQ_API_KEY:}
 
 campussense:
   vector:
@@ -14,11 +35,13 @@ campussense:
   llm:
     provider: ${LLM_PROVIDER:mock} # mock | openai | gemini
     api-key: ${OPENAI_API_KEY:}
+    gemini-api-key: ${ai.gemini.api-key:${GEMINI_API_KEY:}}
+    groq-api-key: ${ai.groq.api-key:${GROQ_API_KEY:}}
     model: ${LLM_MODEL:gpt-4o-mini}
     temperature: 0.2
     max-tokens: 1000
   embedding:
-    provider: ${EMBEDDING_PROVIDER:mock} # mock | openai
+    provider: ${EMBEDDING_PROVIDER:mock} # mock | openai | deterministic
     api-key: ${OPENAI_API_KEY:}
     model: ${EMBEDDING_MODEL:text-embedding-3-small}
 
@@ -29,8 +52,3 @@ springdoc:
     path: /swagger-ui.html
     tags-sorter: alpha
     operations-sorter: method
-
-clerk:
-  publishable-key: ${CLERK_PUBLISHABLE_KEY:}
-  secret-key: ${CLERK_SECRET_KEY:}
-

@@ -4,16 +4,45 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Privacy Policy & Terms — MAKAUT CampusSense</title>
+  <script>
+    (function() {
+      try {
+        const theme = localStorage.getItem("campussense_theme") || "dark";
+        document.documentElement.setAttribute("data-theme", theme);
+      } catch (e) {}
+    })();
+  </script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-page: #090A0F;
+      --bg-card: #111319;
+      --border-color: #232734;
+      --text-primary: #F8FAFC;
+      --text-secondary: #94A3B8;
+      --badge-bg: rgba(99, 102, 241, 0.15);
+      --badge-text: #818CF8;
+      --accent: #6366F1;
+    }
+    [data-theme="light"] {
+      --bg-page: #F8FAFC;
+      --bg-card: #FFFFFF;
+      --border-color: #E2E8F0;
+      --text-primary: #0F172A;
+      --text-secondary: #475569;
+      --badge-bg: #EEF2FF;
+      --badge-text: #4F46E5;
+      --accent: #4F46E5;
+    }
     body {
-      background-color: #0b0f19;
-      color: #e2e8f0;
+      background-color: var(--bg-page);
+      color: var(--text-primary);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       line-height: 1.6;
       padding: 2.5rem 1.25rem;
       display: flex;
       justify-content: center;
+      transition: background-color 0.2s ease, color 0.2s ease;
     }
     .container {
       max-width: 760px;
@@ -23,43 +52,47 @@
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
-      color: #94a3b8;
+      color: var(--text-secondary);
       text-decoration: none;
       font-size: 0.875rem;
       margin-bottom: 2rem;
-      transition: color 0.2s;
+      transition: color 0.2s, transform 0.15s ease;
     }
-    .back-link:hover { color: #ffffff; }
+    .back-link:hover {
+      color: var(--accent);
+      transform: translateX(-2px);
+    }
     h1 {
       font-size: 2rem;
       font-weight: 700;
-      color: #ffffff;
+      color: var(--text-primary);
       margin-bottom: 0.5rem;
     }
     .subtitle {
-      color: #94a3b8;
+      color: var(--text-secondary);
       font-size: 0.95rem;
       margin-bottom: 2.5rem;
-      border-bottom: 1px solid #1e293b;
+      border-bottom: 1px solid var(--border-color);
       padding-bottom: 1rem;
     }
     .card {
-      background-color: #111827;
-      border: 1px solid #1f2937;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
       border-radius: 0.85rem;
       padding: 1.5rem;
       margin-bottom: 1.5rem;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
     }
     .card h2 {
       font-size: 1.15rem;
-      color: #f8fafc;
+      color: var(--text-primary);
       margin-bottom: 0.6rem;
       display: flex;
       align-items: center;
       gap: 0.5rem;
     }
     .card p, .card ul {
-      color: #94a3b8;
+      color: var(--text-secondary);
       font-size: 0.9rem;
     }
     .card ul {
@@ -73,9 +106,20 @@
       font-weight: 600;
       padding: 0.2rem 0.5rem;
       border-radius: 0.375rem;
-      background: rgba(99, 102, 241, 0.15);
-      color: #818cf8;
+      background: var(--badge-bg);
+      color: var(--badge-text);
       margin-bottom: 0.75rem;
+    }
+    @media (max-width: 640px) {
+      body {
+        padding: 1.5rem 0.75rem;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
+      .card {
+        padding: 1.15rem;
+      }
     }
   </style>
 </head>
@@ -101,8 +145,8 @@
       <h2>2. What Data We Collect & Why</h2>
       <p>We believe in strict data minimization. We only collect the bare minimum information needed to identify your user account:</p>
       <ul>
-        <li><strong>Email Address & Profile Name:</strong> Authenticated securely via Clerk (Google OAuth or Email One-Time Passcode) to allow you to save personalized study decks and bookmarks.</li>
-        <li><strong>Zero Password Storage:</strong> We operate passwordless authentication. We never ask for, hash, or store any account passwords on our servers.</li>
+        <li><strong>Email Address & Profile Name:</strong> Authenticated passwordlessly via Email One-Time Passcode (OTP) and protected by Cloudflare Turnstile to allow you to save personalized study decks and bookmarks.</li>
+        <li><strong>Zero Password Storage:</strong> We operate strictly passwordless authentication. We never ask for, hash, or store any account passwords on our servers.</li>
         <li><strong>Zero Data Selling:</strong> We do not sell, rent, monetize, or disclose your personal information or study activity to third-party brokers or advertisers.</li>
       </ul>
     </div>
@@ -110,9 +154,9 @@
     <!-- 3. Cookies & Session Storage -->
     <div class="card">
       <span class="badge">Session Security</span>
-      <h2>3. Cookies & Technical Telemetry</h2>
+      <h2>3. Cookies & Session Storage</h2>
       <p>
-        CampusSense uses strictly necessary functional cookies and local storage exclusively managed by Clerk to keep your authentication session active between tabs and browser reloads. We do not deploy third-party advertising tracking cookies, marketing pixels, or invasive session fingerprinting.
+        CampusSense uses strictly necessary functional cookies, local session storage, and Cloudflare Turnstile bot verification to keep your authentication session active and secure against automated attacks. We do not deploy third-party advertising tracking cookies, marketing pixels, or invasive session fingerprinting.
       </p>
     </div>
 

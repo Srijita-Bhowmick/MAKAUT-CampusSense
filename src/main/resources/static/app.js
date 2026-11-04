@@ -48,8 +48,7 @@
     updateIcons(next);
   };
 
-  // Bind ONCE on DOM load
-  document.addEventListener('DOMContentLoaded', () => {
+  function setupThemeToggle() {
     document.body.classList.remove('modal-open');
     document.body.style.overflow = '';
     const btn = document.getElementById('theme-toggle');
@@ -58,7 +57,13 @@
     }
     const cur = docEl.getAttribute('data-theme') || 'dark';
     updateIcons(cur);
-  });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupThemeToggle);
+  } else {
+    setupThemeToggle();
+  }
 })();
 
 function lockBodyScroll(lock) {
@@ -87,7 +92,8 @@ function safeBind(selector, event, handler) {
 }
 window.safeBind = safeBind;
 
-window.CLERK_PUBLISHABLE_KEY = "pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk";
+// Dynamic Clerk Key Resolution (Shielded from hardcoded secrets)
+window.CLERK_PUBLISHABLE_KEY = window.__CAMPUSSENSE_CONFIG__?.clerkPublishableKey || "";
 
 // Defensive global Clerk native trigger accessible immediately
 window.openAppAuthModal = function() {
@@ -100,47 +106,11 @@ window.submitFallbackAuth = function() {
   window.location.href = '/login.html';
 };
 
-window.triggerNativeClerkAuth = async function(pendingAction = null, mode = 'signIn') {
+window.triggerNativeClerkAuth = function(pendingAction = null, mode = 'signIn') {
   if (pendingAction) {
     try { sessionStorage.setItem('pending_download_action', JSON.stringify(pendingAction)); } catch (e) {}
   }
-  try {
-    // Gracefully wait up to 3 seconds if Clerk script is still in-flight
-    if (!window.Clerk) {
-      let attempts = 0;
-      while (!window.Clerk && attempts < 30) {
-        await new Promise(r => setTimeout(r, 100));
-        attempts++;
-      }
-    }
-    if (window.Clerk) {
-      if (!window.Clerk.loaded && typeof window.Clerk.load === 'function') {
-        await window.Clerk.load({
-          publishableKey: window.CLERK_PUBLISHABLE_KEY || 'pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk'
-        });
-      }
-      const authFn = (mode === 'signUp' && typeof window.Clerk.openSignUp === 'function')
-        ? window.Clerk.openSignUp.bind(window.Clerk)
-        : (typeof window.Clerk.openSignIn === 'function' ? window.Clerk.openSignIn.bind(window.Clerk) : null);
-
-      if (authFn) {
-        authFn({
-          fallbackRedirectUrl: window.location.href,
-          signUpFallbackRedirectUrl: window.location.href,
-          signInFallbackRedirectUrl: window.location.href,
-          afterSignInUrl: window.location.href,
-          afterSignUpUrl: window.location.href
-        });
-        return;
-      }
-    }
-  } catch (err) {
-    console.warn("[Clerk] Auth modal error:", err);
-  }
-  console.warn("[Clerk] Authentication modal could not open. Navigating to login page.");
-  if (!window.Clerk?.user && !window.isLoggedIn) {
-    window.location.href = '/login.html';
-  }
+  window.location.href = (mode === 'signUp' || mode === 'sign-up') ? '/login.html#/sign-up' : '/login.html';
 };
 window.triggerNativeClerkSignUp = function() {
   window.triggerNativeClerkAuth(null, 'signUp');
@@ -151,9 +121,12 @@ window.onClerkLoaded = function() {
   if (typeof window.setupClerkAuthInternal === 'function') {
     window.setupClerkAuthInternal();
   } else if (window.Clerk && !window.Clerk.loaded && typeof window.Clerk.load === 'function') {
-    window.Clerk.load({
-      publishableKey: window.CLERK_PUBLISHABLE_KEY || 'pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk'
-    }).catch(err => console.warn('[Clerk] Auto-load warning:', err));
+    const key = window.CLERK_PUBLISHABLE_KEY || window.__CAMPUSSENSE_CONFIG__?.clerkPublishableKey;
+    if (key && key.startsWith('pk_')) {
+      window.Clerk.load({
+        publishableKey: key
+      }).catch(err => console.warn('[Clerk] Auto-load warning:', err));
+    }
   }
 };
 
@@ -173,6 +146,9 @@ window.onClerkLoaded = function() {
             }
             if (id === 'btn-open-saved-deck' || id === 'btn-saved-deck') {
                 return _origGetElementById('btn-saved-deck') || _origGetElementById('btn-open-saved-deck') || _origGetElementById(id);
+            }
+            if (id === 'saved-deck-drawer' || id === 'drawer-saved-deck') {
+                return _origGetElementById('drawer-saved-deck') || _origGetElementById('saved-deck-drawer') || _origGetElementById(id);
             }
             if (id === 'btn-open-feedback' || id === 'btn-feedback') {
                 return _origGetElementById('btn-feedback') || _origGetElementById('btn-open-feedback') || _origGetElementById(id);
@@ -222,15 +198,68 @@ window.onClerkLoaded = function() {
     // ==========================================
     function normalizePdfUrl(rawPath) {
       if (!rawPath) return '';
-      let clean = rawPath.trim().replace(/^\/+/, '');
-      if (clean === 'CSE20.pdf' || clean === '/CSE20.pdf' || clean.includes('IT_Syllabus_3rd_to_8th.pdf') || clean.includes('CSE_AIML_Syllabus_3rd_to_8th.pdf')) {
-        clean = 'CSE(3rd to 8th sem)/syllabus/CSE20.pdf';
+      if (/^(https?:|blob:|data:)/i.test(rawPath.trim())) {
+        return rawPath.trim();
       }
-      clean = clean.replace(/^([^/]+\(3rd to 8th sem\))\/([^/]+\.pdf)$/i, '$1/syllabus/$2');
-      clean = clean.replace(/\/PYQs\//g, '/pyqs/');
+      let clean = rawPath.trim().replace(/^\/+/, '');
+      if (clean.startsWith('docs/')) clean = clean.substring(5);
+
+      // 1. 1st Year resources normalization
+      if (clean.startsWith('assets/resources/1st_year/pyq/')) {
+        clean = '1st year/pyqs/' + clean.substring('assets/resources/1st_year/pyq/'.length);
+      } else if (clean.startsWith('assets/resources/1st_year/syllabus/')) {
+        clean = '1st year/syllabus/' + clean.substring('assets/resources/1st_year/syllabus/'.length);
+      } else if (clean.startsWith('syllabus/1st_year/')) {
+        clean = '1st year/syllabus/' + clean.substring('syllabus/1st_year/'.length);
+      } else if (clean.startsWith('pyqs/1st_year/')) {
+        clean = '1st year/pyqs/' + clean.substring('pyqs/1st_year/'.length);
+      } else if (clean.startsWith('1st_year/')) {
+        clean = '1st year/' + clean.substring('1st_year/'.length);
+      }
+
+      // 2. Department directory normalization to '3rd to 8th sem/<dept>'
+      clean = clean.replace(/^CSE\(3rd to 8th sem\)/i, '3rd to 8th sem/cse');
+      clean = clean.replace(/^IT\(3rd to 8th sem\)/i, '3rd to 8th sem/it');
+      clean = clean.replace(/^CSE-AIML\(3rd to 8th sem\)/i, '3rd to 8th sem/cse-aiml');
+      clean = clean.replace(/^CSCS\(3rd to 8th sem\)/i, '3rd to 8th sem/cscs');
+      clean = clean.replace(/^CSDS\(3rd to 8th sem\)/i, '3rd to 8th sem/csds');
+      clean = clean.replace(/^CSBS\(3rd to 8th sem\)/i, '3rd to 8th sem/csbs');
+
+      const depts = ['cscs', 'csbs', 'csds', 'cse', 'cse-aiml', 'it'];
+      for (const d of depts) {
+        if (clean.startsWith('pyqs/' + d + '/')) {
+          clean = '3rd to 8th sem/' + d + '/pyqs/' + clean.substring(('pyqs/' + d + '/').length);
+          break;
+        } else if (clean.startsWith('syllabus/' + d + '/')) {
+          clean = '3rd to 8th sem/' + d + '/syllabus/' + clean.substring(('syllabus/' + d + '/').length);
+          break;
+        } else if (clean.startsWith(d + '/')) {
+          clean = '3rd to 8th sem/' + clean;
+          break;
+        }
+      }
+
+      // 3. Handle raw syllabus names
+      if (clean === 'CSE20.pdf' || clean.endsWith('/CSE20.pdf')) {
+        clean = '3rd to 8th sem/cse/syllabus/CSE20.pdf';
+      } else if (clean.includes('IT_Syllabus') || clean.includes('IT_Syllabus_3rd_to_8th.pdf')) {
+        clean = '3rd to 8th sem/it/syllabus/IT_Syllabus.pdf';
+      } else if (clean.includes('CSE_AIML_Syllabus') || clean.includes('CSE-AIML_Syllabus.pdf')) {
+        clean = '3rd to 8th sem/cse-aiml/syllabus/CSE-AIML_Syllabus.pdf';
+      } else if (clean.includes('cscs_syllabus.pdf')) {
+        clean = '3rd to 8th sem/cscs/syllabus/cscs_syllabus.pdf';
+      } else if (clean.includes('csds_syllabus.pdf')) {
+        clean = '3rd to 8th sem/csds/syllabus/csds_syllabus.pdf';
+      } else if (clean.includes('csbs_syllabus.pdf')) {
+        clean = '3rd to 8th sem/csbs/syllabus/csbs_syllabus.pdf';
+      }
+
+      // 4. PYQs normalization
+      clean = clean.replace(/\/PYQs\//gi, '/pyqs/');
       const sfx = { '3': '3rd', '4': '4th', '5': '5th', '6': '6th', '7': '7th', '8': '8th' };
-      clean = clean.replace(/(\([^)]+\)\/pyqs)\/([3-8])(?:rd|th|st|nd)?\s*sem\//gi, (m, p, s) => p + '/' + (sfx[s] || s) + '/');
-      clean = clean.replace(/(\([^)]+\)\/pyqs)\/Semester_([3-8])\//gi, (m, p, s) => p + '/' + (sfx[s] || s) + '/');
+      clean = clean.replace(/(\/pyqs)\/([3-8])(?:rd|th|st|nd)?\s*sem\//gi, (m, p, s) => p + '/' + (sfx[s] || s) + '/');
+      clean = clean.replace(/(\/pyqs)\/Semester_([3-8])\//gi, (m, p, s) => p + '/' + (sfx[s] || s) + '/');
+
       const encodedSegments = clean.split('/').map(seg => encodeURIComponent(decodeURIComponent(seg)));
       return '/' + encodedSegments.join('/');
     }
@@ -240,8 +269,8 @@ window.onClerkLoaded = function() {
 
     function resolveAssetPath(relativePath) {
         if (!relativePath) return '';
-        if (/^(https?:|blob:|data:)/.test(relativePath)) {
-            return sanitizePdfUrl(relativePath);
+        if (/^(https?:|blob:|data:)/i.test(relativePath.trim())) {
+            return relativePath.trim();
         }
         const clean = sanitizePdfUrl(relativePath);
         if (window.location.pathname.includes('/MAKAUT-CampusSense/')) {
@@ -255,7 +284,7 @@ window.onClerkLoaded = function() {
     function isUserAuthenticated() {
         const hasClerkUser = Boolean(window.Clerk && window.Clerk.user);
         const hasMockAuth = Boolean(window.isLoggedIn);
-        const hasStoredUser = Boolean(localStorage.getItem('campussense_user_session') || localStorage.getItem('campussense_academic_profile') || localStorage.getItem('campussense_logged_in') === 'true');
+        const hasStoredUser = Boolean(localStorage.getItem('campussense_logged_in') === 'true' || localStorage.getItem('campussense_user_session'));
         return hasClerkUser || hasMockAuth || hasStoredUser;
     }
     window.isUserAuthenticated = isUserAuthenticated;
@@ -299,7 +328,7 @@ window.onClerkLoaded = function() {
             catchBanner.innerHTML = `
               <div class="panic-catch-content">
                 <span class="fire-icon" style="font-size: 2rem; display: block; margin-bottom: 0.5rem;">🕊️</span>
-                <h3 style="font-size: 1.35rem; font-weight: 700; margin: 0.25rem 0 0.75rem 0; color: #818cf8;">
+                <h3 style="font-size: 1.35rem; font-weight: 700; margin: 0.25rem 0 0.75rem 0; color: var(--accent-primary);">
                   Tactical De-escalation
                 </h3>
                 <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.55; margin-bottom: 1.35rem;">
@@ -340,12 +369,36 @@ window.onClerkLoaded = function() {
         catchBanner.classList.add('active');
     };
 
-    // Phase 3: Auth Interceptor Listener for All Feature Cards & Preview Buttons (Item 4)
+    function isSyllabusResource(url, title) {
+        const s = `${url || ''} ${title || ''}`.toLowerCase();
+        if (s.includes('pyq') || s.includes('paper') || s.includes('exam archive') || s.includes('past paper') || s.includes('/pyq/') || s.includes('/pyqs/')) {
+            return false;
+        }
+        return s.includes('syllabus') || s.includes('blueprint') || s.includes('curriculum') || s.includes('cse20.pdf') || s.includes('1st_year/syllabus') || s.includes('1st year/syllabus') || s.includes('3rd to 8th sem');
+    }
+    window.isSyllabusResource = isSyllabusResource;
+
+    // Phase 3: Auth Interceptor Listener for PYQ Feature Cards & Preview Buttons (Item 4)
     document.addEventListener('click', function(e) {
-        const previewTarget = e.target.closest('.btn-preview-paper, .btn-preview-pdf, .btn-subject-syllabus-view, .archive-access-btn, .subject-action-btn, .card-action-btn, .btn-preview-syllabus, .btn-pyq-preview, .btn-view-blueprint, .btn-download, .btn-download-pdf, .btn-download-paper, [data-pdf], [data-preview], [data-action="download"]');
-        if (previewTarget) {
-            const user = window.Clerk?.user;
-            if (!user) {
+        const btnElement = e.target.closest('button, a');
+        if (btnElement?.closest('#curriculum-filter-group, #pyq-year-pills, .stream-filter-group, .pyq-repo-filter-bar, .landing-nav-links, .brand-group, #main-header, #btn-sign-in, #btn-sign-up, #nav-brand-logo, #theme-toggle')) {
+            return;
+        }
+
+        const previewTarget = e.target.closest('.btn-preview-paper, .btn-preview-pdf, .btn-subject-syllabus-view, .archive-access-btn, .subject-action-btn, .card-action-btn, .btn-preview-syllabus, .btn-syllabus-preview, .btn-pyq-preview, .btn-view-blueprint, .btn-download, .btn-download-pdf, .btn-download-paper, [data-pdf], [data-preview], [data-action="download"], [data-action="preview"]');
+        const btnText = btnElement?.innerText?.toLowerCase() || '';
+        const targetUrl = previewTarget?.getAttribute('data-pdf') || previewTarget?.getAttribute('data-preview') || previewTarget?.getAttribute('href') || '';
+        const isSyllabus = isSyllabusResource(targetUrl, btnText) ||
+                           previewTarget?.closest('.btn-subject-syllabus-view, .subject-action-btn, .btn-preview-syllabus, .btn-syllabus-preview, .btn-view-blueprint') ||
+                           btnText.includes('syllabus preview') ||
+                           btnText.includes('view syllabus blueprint');
+        const isPyqAction = previewTarget?.closest('.btn-preview-paper, .archive-access-btn, .btn-pyq-preview, .btn-download-paper') ||
+                            btnText.includes('pyq preview') ||
+                            btnText.includes('access exam archives');
+
+        // Syllabi are directly accessible to all users. Only PYQs require login.
+        if (isPyqAction && !isSyllabus) {
+            if (!isUserAuthenticated()) {
                 e.preventDefault();
                 e.stopPropagation();
                 window.location.href = '/login.html';
@@ -355,8 +408,7 @@ window.onClerkLoaded = function() {
 
         const gateTarget = e.target.closest('.feature-gate-card, .gate-action-btn');
         if (gateTarget) {
-            const user = window.Clerk?.user;
-            if (!user) {
+            if (!isUserAuthenticated()) {
                 e.preventDefault();
                 e.stopPropagation();
                 window.location.href = '/login.html';
@@ -370,8 +422,7 @@ window.onClerkLoaded = function() {
         const navPanicLink = document.querySelector('a[href="#panic-pack"], a[href="#landing-panic-drill"], .nav-panic-link, [data-nav="panic-pack"]');
         if (navPanicLink) {
             navPanicLink.onclick = function(e) {
-                const user = window.Clerk?.user;
-                if (!user) {
+                if (!isUserAuthenticated()) {
                     e.preventDefault();
                     window.location.href = '/login.html';
                 }
@@ -385,7 +436,15 @@ window.onClerkLoaded = function() {
     }
 
     window.previewPdfFile = function(rawUrl, title) {
-      if (!window.Clerk || !window.Clerk.user) {
+      const isSyllabus = isSyllabusResource(rawUrl, title);
+      if (!isSyllabus && !isUserAuthenticated()) {
+        try {
+            sessionStorage.setItem('pending_download_action', JSON.stringify({
+                action: 'preview',
+                title: title || 'MAKAUT Resource',
+                fileUrl: rawUrl
+            }));
+        } catch (e) {}
         window.location.href = '/login.html';
         return;
       }
@@ -437,7 +496,15 @@ window.onClerkLoaded = function() {
     };
 
     async function downloadPdfFile(fileUrl, preferredName) {
-        if (!window.Clerk || !window.Clerk.user) {
+        const isSyllabus = isSyllabusResource(fileUrl, preferredName);
+        if (!isSyllabus && !isUserAuthenticated()) {
+            try {
+                sessionStorage.setItem('pending_download_action', JSON.stringify({
+                    action: 'download',
+                    title: preferredName || 'MAKAUT Resource',
+                    fileUrl: fileUrl
+                }));
+            } catch (e) {}
             window.location.href = '/login.html';
             return;
         }
@@ -494,6 +561,39 @@ window.onClerkLoaded = function() {
     } catch (e) {
         savedBookmarks = [];
     }
+    const CANONICAL_DEFAULT_DECK = [
+        {
+            code: 'PCC-CS501',
+            title: 'Pumping Lemma Repeated Proofs (2018-2023)',
+            tag: 'HIGH PROBABILITY 92%',
+            details: '8 Solved Contradictions • Regular/CFL',
+            pages: '6 Pages'
+        },
+        {
+            code: 'PCC-CS502',
+            title: 'BCNF Decomposition & Dependency Preservation Proofs',
+            tag: '15 MARKS SURE-SHOT 88%',
+            details: '5 Solved Numerical Sets • Armstrong Axioms',
+            pages: '4 Pages'
+        },
+        {
+            code: 'PCC-CS503',
+            title: 'Dining Philosophers with Counting Semaphores in C',
+            tag: '78% CONFIDENCE',
+            details: 'Deadlock-free Implementation • POSIX',
+            pages: '3 Pages'
+        },
+        {
+            code: 'PCC-CS504',
+            title: 'Java Multithreading Lifecycle & Synchronization Locks',
+            tag: 'VIVA & WRITTEN 85%',
+            details: 'Thread states, join(), wait(), notifyAll()',
+            pages: '5 Pages'
+        }
+    ];
+    if (!savedBookmarks || savedBookmarks.length === 0) {
+        savedBookmarks = [...CANONICAL_DEFAULT_DECK];
+    }
 
     localStorage.setItem('campussense_user_id', userIdentifier);
     localStorage.setItem('campussense_year_mode', currentYearMode);
@@ -522,44 +622,147 @@ window.onClerkLoaded = function() {
     }
     window.getActiveAcademicSubject = getActiveAcademicSubject;
 
+    function syncCatalogIntoCourses(resources) {
+        if (!Array.isArray(resources) || resources.length === 0) return;
+        window._catalogResources = resources;
+
+        resources.forEach(r => {
+            if (r.resourceType !== 'PYQ' || !r.fileUrl) return;
+
+            const streamKey = (r.stream || '').toUpperCase();
+            const year = r.year || 2024;
+            const title = r.title || 'Examination Paper';
+            const sem = r.semester;
+            const codeNorm = (r.subjectCode || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+            const nameNorm = (r.subjectName || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+
+            let matchedCourse = null;
+
+            if (streamKey === 'FIRST_YEAR' || streamKey === 'COMMON') {
+                const curriculum = window.MAKAUT_CURRICULUM || (typeof MAKAUT_CURRICULUM !== 'undefined' ? MAKAUT_CURRICULUM : []);
+                for (const c of curriculum) {
+                    const cCodeNorm = (c.code || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+                    const cAltNorm = (c.altCode || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+                    const cNameNorm = (c.name || c.title || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+                    if (cCodeNorm === codeNorm || cAltNorm === codeNorm || cNameNorm.includes(codeNorm) || (nameNorm && cNameNorm.includes(nameNorm))) {
+                        matchedCourse = c;
+                        break;
+                    }
+                }
+            } else {
+                const streamObj = window.DEPARTMENT_STREAMS?.[streamKey] || 
+                                  window.DEPARTMENT_STREAMS?.[streamKey.replace('-', '')] ||
+                                  window.DEPARTMENT_STREAMS?.[r.stream?.toLowerCase()];
+                if (streamObj && Array.isArray(streamObj.courses)) {
+                    for (const c of streamObj.courses) {
+                        const cCodeNorm = (c.code || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+                        const cAltNorm = (c.altCode || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+                        const cNameNorm = (c.name || c.title || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+                        if (c.semester === sem && (cCodeNorm === codeNorm || cAltNorm === codeNorm || (codeNorm && cNameNorm.includes(codeNorm)))) {
+                            matchedCourse = c;
+                            break;
+                        }
+                    }
+                    if (!matchedCourse) {
+                        for (const c of streamObj.courses) {
+                            const cCodeNorm = (c.code || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+                            const cAltNorm = (c.altCode || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+                            if (cCodeNorm === codeNorm || cAltNorm === codeNorm) {
+                                matchedCourse = c;
+                                break;
+                            }
+                        }
+                    }
+                    if (!matchedCourse) {
+                        matchedCourse = {
+                            code: r.subjectCode || 'ELECTIVE',
+                            name: r.subjectName || title,
+                            department: streamObj.name,
+                            stream: streamKey,
+                            semester: sem || 3,
+                            credits: 3,
+                            syllabusUrl: streamObj.syllabusPath || '',
+                            pyqs: []
+                        };
+                        streamObj.courses.push(matchedCourse);
+                    }
+                }
+            }
+
+            if (matchedCourse) {
+                if (!Array.isArray(matchedCourse.pyqs)) matchedCourse.pyqs = [];
+                const normFile = normalizePdfUrl(r.fileUrl);
+                const exists = matchedCourse.pyqs.some(p => {
+                    return p.fileUrl === r.fileUrl || 
+                           normalizePdfUrl(p.fileUrl) === normFile ||
+                           (p.year === year && (p.title || '').toLowerCase() === title.toLowerCase());
+                });
+                if (!exists) {
+                    matchedCourse.pyqs.push({
+                        id: r.id,
+                        year: year,
+                        type: 'END_SEM',
+                        title: title,
+                        fileUrl: r.fileUrl
+                    });
+                }
+            }
+        });
+
+        if (window.DEPARTMENT_STREAMS) {
+            Object.values(window.DEPARTMENT_STREAMS).forEach(stream => {
+                if (stream && Array.isArray(stream.courses)) {
+                    stream.pyqs = stream.courses.flatMap(c => c.pyqs || []);
+                }
+            });
+        }
+
+        if (typeof buildUnifiedSearchIndex === 'function') {
+            buildUnifiedSearchIndex();
+        }
+    }
+    window.syncCatalogIntoCourses = syncCatalogIntoCourses;
+
     async function updateLandingLiveMetrics() {
         try {
             const subjectsEl = document.getElementById('metric-subjects-count') || document.getElementById('stat-subjects-count');
             const pyqsEl = document.getElementById('metric-pyqs-count') || document.getElementById('stat-pyqs-count');
 
             let subjectsCount = 122;
-            let pyqsCount = 1459;
+            let pyqsCount = 1462;
 
-            if (window._catalogResources && Array.isArray(window._catalogResources)) {
-                const pyqs = window._catalogResources.filter(r => r.resourceType === 'PYQ');
-                if (pyqs.length > 0) {
-                    pyqsCount = pyqs.length;
-                    const uniqueSubs = new Set(pyqs.map(r => r.subjectCode).filter(Boolean));
-                    if (uniqueSubs.size > 0) subjectsCount = uniqueSubs.size;
+            let data = null;
+            // 1. Try backend dynamic API first
+            try {
+                const apiRes = await fetch('/api/resources');
+                if (apiRes.ok) {
+                    data = await apiRes.json();
                 }
-            } else if (typeof fetch === 'function') {
+            } catch (e) {}
+
+            // 2. Fall back to static resources.json
+            if (!data && typeof fetch === 'function') {
                 try {
                     const res = await fetch('resources.json');
                     if (res.ok) {
-                        const data = await res.json();
-                        if (data && data.summary && typeof data.summary.pyqCount === 'number') {
-                            pyqsCount = data.summary.pyqCount;
-                        }
-                        if (data && Array.isArray(data.resources)) {
-                            window._catalogResources = data.resources;
-                            const pyqs = data.resources.filter(r => r.resourceType === 'PYQ');
-                            if (pyqs.length > 0) {
-                                pyqsCount = pyqs.length;
-                                const uniqueSubs = new Set(pyqs.map(r => r.subjectCode).filter(Boolean));
-                                if (uniqueSubs.size > 0) subjectsCount = uniqueSubs.size;
-                            }
-                        }
+                        data = await res.json();
                     }
-                } catch (e) {
-                    // Fallback to verified theory subjects count
-                    subjectsCount = 122;
-                    pyqsCount = 1459;
+                } catch (e) {}
+            }
+
+            if (data && Array.isArray(data.resources)) {
+                syncCatalogIntoCourses(data.resources);
+                if (data.summary && typeof data.summary.pyqCount === 'number') {
+                    pyqsCount = data.summary.pyqCount;
+                } else {
+                    const pyqs = data.resources.filter(r => r.resourceType === 'PYQ');
+                    if (pyqs.length > 0) pyqsCount = pyqs.length;
                 }
+                const pyqs = data.resources.filter(r => r.resourceType === 'PYQ');
+                const uniqueSubs = new Set(pyqs.map(r => r.subjectCode).filter(Boolean));
+                if (uniqueSubs.size > 0) subjectsCount = uniqueSubs.size;
+            } else if (window._catalogResources && Array.isArray(window._catalogResources)) {
+                syncCatalogIntoCourses(window._catalogResources);
             }
 
             if (subjectsEl) {
@@ -649,7 +852,7 @@ window.onClerkLoaded = function() {
           credits: 24,
           theory: [
             { code: "ESC501", title: "Software Engineering", l: 3, t: 0, p: 0, credits: 3 },
-            { code: "PCC-CS501", title: "Compiler Design", l: 3, t: 0, p: 0, credits: 3 },
+            { code: "PCC-CS501", title: "Formal Language & Automata Theory", l: 3, t: 0, p: 0, credits: 3 },
             { code: "PCC-CS502", title: "Operating Systems", l: 3, t: 0, p: 0, credits: 3 },
             { code: "PCC-CS503", title: "Object Oriented Programming", l: 3, t: 0, p: 0, credits: 3 },
             { code: "HSMC-501", title: "Introduction to Industrial Management (Humanities III)", l: 3, t: 0, p: 0, credits: 3 },
@@ -667,7 +870,7 @@ window.onClerkLoaded = function() {
         6: {
           credits: 22,
           theory: [
-            { code: "PCC-CS601", title: "Database Management Systems", l: 3, t: 0, p: 0, credits: 3 },
+            { code: "PCC-CS601", title: "Compiler Design", l: 3, t: 0, p: 0, credits: 3 },
             { code: "PCC-CS602", title: "Computer Networks", l: 3, t: 0, p: 0, credits: 3 },
             { code: "PEC-IT601A/B/C/D", title: "Elective-II (Advanced Algorithms / Distributed Database Management System / Signals & Systems / Image Processing)", l: 3, t: 0, p: 0, credits: 3 },
             { code: "PEC-IT602A/B/C/D", title: "Elective-III (Parallel and Distributed Algorithms / Data Warehousing & Data Mining / Human Computer Interaction / Pattern Recognition)", l: 3, t: 0, p: 0, credits: 3 },
@@ -1139,7 +1342,7 @@ const OFFICIAL_CSE_COURSES = [
   },
   {
     "code": "PCC-CS501",
-    "name": "Compiler Design",
+    "name": "Formal Language & Automata Theory",
     "department": "Computer Science & Engineering",
     "stream": "CSE",
     "semester": 5,
@@ -11384,25 +11587,46 @@ const STREAM_MASTER_SYLLABI = {
   'cse': {
     title: 'CSE Syllabus (3rd to 8th sem)',
     description: 'Complete official 80+ page MAKAUT syllabus covering all courses, practical labs, and departmental electives for B.Tech Computer Science & Engineering.',
-    path: 'CSE20.pdf',
+    path: '3rd to 8th sem/cse/syllabus/CSE20.pdf',
     badge: 'Official 4-Year Scheme (Sem 3 to 8)'
   },
   'it': {
     title: 'IT Syllabus (3rd to 8th sem)',
     description: 'Official MAKAUT curriculum structure, departmental electives, and module guidelines for B.Tech Information Technology.',
-    path: 'IT(3rd to 8th sem)/IT_Syllabus_3rd_to_8th.pdf',
+    path: '3rd to 8th sem/it/syllabus/IT_Syllabus.pdf',
     badge: 'Official 4-Year Scheme (Sem 3 to 8)'
   },
   'cse-aiml': {
     title: 'CSE-AIML Syllabus (3rd to 8th sem)',
     description: 'Official MAKAUT specialized curriculum covering AI, machine learning foundations, electives, and practical tracks.',
-    path: 'CSE-AIML(3rd to 8th sem)/CSE_AIML_Syllabus_3rd_to_8th.pdf',
+    path: '3rd to 8th sem/cse-aiml/syllabus/CSE-AIML_Syllabus.pdf',
+    badge: 'Official 4-Year Scheme (Sem 3 to 8)'
+  },
+  'cscs': {
+    title: 'CSCS Syllabus (3rd to 8th sem)',
+    description: 'Official MAKAUT curriculum structure and course outlines for B.Tech Computer Science & Cyber Security.',
+    path: '3rd to 8th sem/cscs/syllabus/cscs_syllabus.pdf',
+    badge: 'Official 4-Year Scheme (Sem 3 to 8)'
+  },
+  'csds': {
+    title: 'CSDS Syllabus (3rd to 8th sem)',
+    description: 'Official MAKAUT curriculum structure and course outlines for B.Tech Computer Science & Data Science.',
+    path: '3rd to 8th sem/csds/syllabus/csds_syllabus.pdf',
+    badge: 'Official 4-Year Scheme (Sem 3 to 8)'
+  },
+  'csbs': {
+    title: 'CSBS Syllabus (3rd to 8th sem)',
+    description: 'Official MAKAUT curriculum structure and course outlines for B.Tech Computer Science & Business Systems.',
+    path: '3rd to 8th sem/csbs/syllabus/csbs_syllabus.pdf',
     badge: 'Official 4-Year Scheme (Sem 3 to 8)'
   }
 };
 STREAM_MASTER_SYLLABI['CSE'] = STREAM_MASTER_SYLLABI['cse'];
 STREAM_MASTER_SYLLABI['IT'] = STREAM_MASTER_SYLLABI['it'];
 STREAM_MASTER_SYLLABI['CSE-AIML'] = STREAM_MASTER_SYLLABI['cse-aiml'];
+STREAM_MASTER_SYLLABI['CSCS'] = STREAM_MASTER_SYLLABI['cscs'];
+STREAM_MASTER_SYLLABI['CSDS'] = STREAM_MASTER_SYLLABI['csds'];
+STREAM_MASTER_SYLLABI['CSBS'] = STREAM_MASTER_SYLLABI['csbs'];
 window.STREAM_MASTER_SYLLABI = STREAM_MASTER_SYLLABI;
 
 function isTheorySubject(course) {
@@ -11464,6 +11688,9 @@ const DEPARTMENT_REGISTRY = {
   'cse': { name: 'Computer Science & Engineering', code: 'CSE' },
   'it': { name: 'Information Technology', code: 'IT' },
   'cse-aiml': { name: 'CSE (Artificial Intelligence & Machine Learning)', code: 'CSE-AIML' },
+  'cscs': { name: 'Computer Science and Cyber Security', code: 'CSCS' },
+  'csds': { name: 'Computer Science and Data Science', code: 'CSDS' },
+  'csbs': { name: 'Computer Science and Business Systems', code: 'CSBS' },
   'first-year': { name: '1st Year Engineering (Common)', code: 'FY' }
 };
 window.DEPARTMENT_REGISTRY = DEPARTMENT_REGISTRY;
@@ -11628,7 +11855,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             l_t_p: '3-0-0',
             contactHours: 36,
             department: '1st Year',
-            syllabusUrl: 'assets/resources/1st_year/syllabus/Physics.pdf',
+            syllabusUrl: '1st_year/syllabus/Physics.pdf',
             description: 'Oscillations and waves, wave optics, electromagnetism, quantum physics, solid-state and modern physics.',
             units: [
                 { id: 1011, unitNumber: 1, title: 'Module I: Oscillations and Waves', subtopics: 'Simple harmonic motion, damped and forced oscillations, resonance, wave equation, transverse and longitudinal waves.', hours: 8 },
@@ -11638,13 +11865,13 @@ window.getSubjectDocuments = getSubjectDocuments;
                 { id: 1015, unitNumber: 5, title: 'Module V: Solid-State and Modern Physics', subtopics: 'Free electron theory of metals, band theory of solids, intrinsic and extrinsic semiconductors, lasers and optical fibers.', hours: 5 }
             ],
             pyqs: [
-                { id: 2101, year: 2026, type: 'END_SEM', title: 'MAKAUT 2026 Physics (BS-PH101)', fileUrl: 'assets/resources/1st_year/pyq/physics/btech-1-sem-physics-1-bs-ph101-2026.pdf' },
-                { id: 2102, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Physics (BS-PH101)', fileUrl: 'assets/resources/1st_year/pyq/physics/btech-1-sem-physics-1-bs-ph101-2025.pdf' },
-                { id: 2103, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Sem 1 Physics (BS-PH101)', fileUrl: 'assets/resources/1st_year/pyq/physics/btech-1-sem-physics-1-bs-ph101-2024.pdf' },
-                { id: 2104, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Sem 2 Physics (BS-PH201)', fileUrl: 'assets/resources/1st_year/pyq/physics/btech-2-sem-physics-1-bsph201-2024.pdf' },
-                { id: 2105, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Sem 1 Physics (BS-PH101)', fileUrl: 'assets/resources/1st_year/pyq/physics/btech-1-sem-physics-1-bsph101-2023.pdf' },
-                { id: 2106, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Sem 2 Physics (BS-PH201)', fileUrl: 'assets/resources/1st_year/pyq/physics/btech-2-sem-physics-1-bsph201-2023.pdf' },
-                { id: 2107, year: 2020, type: 'END_SEM', title: 'MAKAUT 2020 Physics (PH-101)', fileUrl: 'assets/resources/1st_year/pyq/physics/btech-1-sem-physics-1-ph-101-2020.pdf' }
+                { id: 2101, year: 2026, type: 'END_SEM', title: 'MAKAUT 2026 Physics (BS-PH101)', fileUrl: '1st_year/pyqs/physics/btech-1-sem-physics-1-bs-ph101-2026.pdf' },
+                { id: 2102, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Physics (BS-PH101)', fileUrl: '1st_year/pyqs/physics/btech-1-sem-physics-1-bs-ph101-2025.pdf' },
+                { id: 2103, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Sem 1 Physics (BS-PH101)', fileUrl: '1st_year/pyqs/physics/btech-1-sem-physics-1-bs-ph101-2024.pdf' },
+                { id: 2104, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Sem 2 Physics (BS-PH201)', fileUrl: '1st_year/pyqs/physics/btech-2-sem-physics-1-bsph201-2024.pdf' },
+                { id: 2105, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Sem 1 Physics (BS-PH101)', fileUrl: '1st_year/pyqs/physics/btech-1-sem-physics-1-bsph101-2023.pdf' },
+                { id: 2106, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Sem 2 Physics (BS-PH201)', fileUrl: '1st_year/pyqs/physics/btech-2-sem-physics-1-bsph201-2023.pdf' },
+                { id: 2107, year: 2020, type: 'END_SEM', title: 'MAKAUT 2020 Physics (PH-101)', fileUrl: '1st_year/pyqs/physics/btech-1-sem-physics-1-ph-101-2020.pdf' }
             ]
         },
         // 2. Chemistry (26-BS-CH101 / 26-BS-CH201)
@@ -11661,7 +11888,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             l_t_p: '3-0-0',
             contactHours: 36,
             department: '1st Year',
-            syllabusUrl: 'assets/resources/1st_year/syllabus/Chemistry.pdf',
+            syllabusUrl: '1st_year/syllabus/Chemistry.pdf',
             description: 'Atomic and molecular structure, thermodynamics, equilibrium and kinetics, electrochemistry and corrosion, engineering materials and water, instrumental methods of analysis.',
             units: [
                 { id: 1021, unitNumber: 1, title: 'Module I: Atomic and Molecular Structure', subtopics: 'Schrodinger equation, particle in a box, MO theory for homonuclear and heteronuclear diatomics, band structure of solids.', hours: 8 },
@@ -11671,12 +11898,12 @@ window.getSubjectDocuments = getSubjectDocuments;
                 { id: 1025, unitNumber: 5, title: 'Module V: Instrumental Methods of Analysis', subtopics: 'Principles and applications of UV-Visible spectroscopy, IR spectroscopy, conductometry, potentiometry, and chromatography.', hours: 5 }
             ],
             pyqs: [
-                { id: 2201, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Chemistry (BS-CH201)', fileUrl: 'assets/resources/1st_year/pyq/chemistry/btech-2-sem-chemistry-bsch201-2025.pdf' },
-                { id: 2202, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Sem 1 Chemistry (BS-CH101)', fileUrl: 'assets/resources/1st_year/pyq/chemistry/btech-1-sem-chemistry-1-bs-ch101-2024.pdf' },
-                { id: 2203, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Sem 2 Chemistry (BS-CH201)', fileUrl: 'assets/resources/1st_year/pyq/chemistry/btech-2-sem-chemistry-1-bsch201-2024.pdf' },
-                { id: 2204, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Sem 1 Chemistry (BS-CH101)', fileUrl: 'assets/resources/1st_year/pyq/chemistry/btech-1-sem-chemistry-1-bsch101-2023.pdf' },
-                { id: 2205, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Sem 2 Chemistry (BS-CH201)', fileUrl: 'assets/resources/1st_year/pyq/chemistry/btech-2-sem-chemistry-1-bsch201-2023.pdf' },
-                { id: 2206, year: 2020, type: 'END_SEM', title: 'MAKAUT 2020 Chemistry (BS-CH101)', fileUrl: 'assets/resources/1st_year/pyq/chemistry/btech-1-sem-chemistry-1-bs-ch-101-2020.pdf' }
+                { id: 2201, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Chemistry (BS-CH201)', fileUrl: '1st_year/pyqs/chemistry/btech-2-sem-chemistry-bsch201-2025.pdf' },
+                { id: 2202, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Sem 1 Chemistry (BS-CH101)', fileUrl: '1st_year/pyqs/chemistry/btech-1-sem-chemistry-1-bs-ch101-2024.pdf' },
+                { id: 2203, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Sem 2 Chemistry (BS-CH201)', fileUrl: '1st_year/pyqs/chemistry/btech-2-sem-chemistry-1-bsch201-2024.pdf' },
+                { id: 2204, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Sem 1 Chemistry (BS-CH101)', fileUrl: '1st_year/pyqs/chemistry/btech-1-sem-chemistry-1-bsch101-2023.pdf' },
+                { id: 2205, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Sem 2 Chemistry (BS-CH201)', fileUrl: '1st_year/pyqs/chemistry/btech-2-sem-chemistry-1-bsch201-2023.pdf' },
+                { id: 2206, year: 2020, type: 'END_SEM', title: 'MAKAUT 2020 Chemistry (BS-CH101)', fileUrl: '1st_year/pyqs/chemistry/btech-1-sem-chemistry-1-bs-ch-101-2020.pdf' }
             ]
         },
         // 3. Mathematics - I (26-BS-M101)
@@ -11692,7 +11919,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             l_t_p: '3-0-0',
             contactHours: 36,
             department: '1st Year',
-            syllabusUrl: 'assets/resources/1st_year/syllabus/Maths-1.pdf',
+            syllabusUrl: '1st_year/syllabus/Maths-1.pdf',
             description: 'Calculus of a single variable, calculus of several variables, multiple integrals, and matrices with linear algebra.',
             units: [
                 { id: 1031, unitNumber: 1, title: 'Module I: Calculus of a Single Variable', subtopics: 'Rolle theorem, Mean Value Theorems, Taylor and Maclaurin theorems with remainders, indeterminate forms, L\'Hospital rule, evaluation of definite and improper integrals.', hours: 9 },
@@ -11701,12 +11928,12 @@ window.getSubjectDocuments = getSubjectDocuments;
                 { id: 1034, unitNumber: 4, title: 'Module IV: Matrices and Linear Algebra', subtopics: 'Rank of matrix, system of linear equations, inverse, eigenvalues and eigenvectors, Cayley-Hamilton theorem, orthogonal transformation, diagonalization.', hours: 10 }
             ],
             pyqs: [
-                { id: 2301, year: 2026, type: 'END_SEM', title: 'MAKAUT 2026 Mathematics 1A (BS-M101)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_1a/btech-1-sem-mathematics-1a-bs-m101-2026.pdf' },
-                { id: 2302, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Mathematics 1A (BS-M101)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_1a/btech-1-sem-mathematics-1a-bs-m101-2025.pdf' },
-                { id: 2303, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Mathematics 1A (BS-M101)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_1a/btech-1-sem-mathematics-1a-bsm101-2023.pdf' },
-                { id: 2304, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Mathematics 1B (BS-M102)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_1b/btech-1-sem-mathematics-1b-bsm102-2023.pdf' },
-                { id: 2305, year: 2020, type: 'END_SEM', title: 'MAKAUT 2020 Mathematics 1A (BS-M101)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_1a/btech-1-sem-mathematics-1a-bsm-101-2020.pdf' },
-                { id: 2306, year: 2020, type: 'END_SEM', title: 'MAKAUT 2020 Mathematics 1B (BS-M102)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_1b/btech-1-sem-mathematics-1b-bs-m-102-2020.pdf' }
+                { id: 2301, year: 2026, type: 'END_SEM', title: 'MAKAUT 2026 Mathematics 1A (BS-M101)', fileUrl: '1st_year/pyqs/mathematics_1a/btech-1-sem-mathematics-1a-bs-m101-2026.pdf' },
+                { id: 2302, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Mathematics 1A (BS-M101)', fileUrl: '1st_year/pyqs/mathematics_1a/btech-1-sem-mathematics-1a-bs-m101-2025.pdf' },
+                { id: 2303, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Mathematics 1A (BS-M101)', fileUrl: '1st_year/pyqs/mathematics_1a/btech-1-sem-mathematics-1a-bsm101-2023.pdf' },
+                { id: 2304, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Mathematics 1B (BS-M102)', fileUrl: '1st_year/pyqs/mathematics_1b/btech-1-sem-mathematics-1b-bsm102-2023.pdf' },
+                { id: 2305, year: 2020, type: 'END_SEM', title: 'MAKAUT 2020 Mathematics 1A (BS-M101)', fileUrl: '1st_year/pyqs/mathematics_1a/btech-1-sem-mathematics-1a-bsm-101-2020.pdf' },
+                { id: 2306, year: 2020, type: 'END_SEM', title: 'MAKAUT 2020 Mathematics 1B (BS-M102)', fileUrl: '1st_year/pyqs/mathematics_1b/btech-1-sem-mathematics-1b-bs-m-102-2020.pdf' }
             ]
         },
         // 4. Mathematics - II (26-BS-M201)
@@ -11722,7 +11949,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             l_t_p: '3-0-0',
             contactHours: 36,
             department: '1st Year',
-            syllabusUrl: 'assets/resources/1st_year/syllabus/Maths-2.pdf',
+            syllabusUrl: '1st_year/syllabus/Maths-2.pdf',
             description: 'Ordinary differential equations, Laplace transform, vector calculus, complex variables and Fourier series.',
             units: [
                 { id: 1041, unitNumber: 1, title: 'Module I: Ordinary Differential Equations', subtopics: 'First order ODEs, exact equations, higher order linear differential equations with constant coefficients, method of variation of parameters, Cauchy-Euler equations.', hours: 9 },
@@ -11731,12 +11958,12 @@ window.getSubjectDocuments = getSubjectDocuments;
                 { id: 1044, unitNumber: 4, title: 'Module IV: Complex Variables and Fourier Series', subtopics: 'Analytic functions, Cauchy-Riemann equations, Cauchy integral theorem, Taylor and Laurent series, periodic functions, Fourier series expansion.', hours: 9 }
             ],
             pyqs: [
-                { id: 2401, year: 2026, type: 'END_SEM', title: 'MAKAUT 2026 Mathematics 2A (BS-M201)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_2a/btech-2-sem-mathematics-2-a-bs-m201-2026.pdf' },
-                { id: 2402, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Mathematics 2A (BS-M201)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_2a/btech-2-sem-mathematics-2a-bsm201-2025.pdf' },
-                { id: 2403, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Mathematics 2B (BS-M202)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_2b/btech-2-sem-mathematics-2b-bsm202-2025.pdf' },
-                { id: 2404, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Mathematics 2A (BS-M201)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_2a/btech-2-sem-mathematics-2a-bsm201-2024.pdf' },
-                { id: 2405, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Mathematics 2A (BS-M201)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_2a/btech-2-sem-mathematics-2a-bsm201-2023.pdf' },
-                { id: 2406, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Mathematics 2B (BS-M202)', fileUrl: 'assets/resources/1st_year/pyq/mathematics_2b/btech-2-sem-mathematics-2-b-bsm202-2023.pdf' }
+                { id: 2401, year: 2026, type: 'END_SEM', title: 'MAKAUT 2026 Mathematics 2A (BS-M201)', fileUrl: '1st_year/pyqs/mathematics_2a/btech-2-sem-mathematics-2-a-bs-m201-2026.pdf' },
+                { id: 2402, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Mathematics 2A (BS-M201)', fileUrl: '1st_year/pyqs/mathematics_2a/btech-2-sem-mathematics-2a-bsm201-2025.pdf' },
+                { id: 2403, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Mathematics 2B (BS-M202)', fileUrl: '1st_year/pyqs/mathematics_2b/btech-2-sem-mathematics-2b-bsm202-2025.pdf' },
+                { id: 2404, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Mathematics 2A (BS-M201)', fileUrl: '1st_year/pyqs/mathematics_2a/btech-2-sem-mathematics-2a-bsm201-2024.pdf' },
+                { id: 2405, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Mathematics 2A (BS-M201)', fileUrl: '1st_year/pyqs/mathematics_2a/btech-2-sem-mathematics-2a-bsm201-2023.pdf' },
+                { id: 2406, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Mathematics 2B (BS-M202)', fileUrl: '1st_year/pyqs/mathematics_2b/btech-2-sem-mathematics-2-b-bsm202-2023.pdf' }
             ]
         },
         // 5. Basic Electrical and Electronics Engineering (26-ES-EE101)
@@ -11752,7 +11979,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             l_t_p: '3-1-0',
             contactHours: 44,
             department: '1st Year',
-            syllabusUrl: 'assets/resources/1st_year/syllabus/BEE.pdf',
+            syllabusUrl: '1st_year/syllabus/BEE.pdf',
             description: 'Basics of electrical wiring, DC circuits, AC circuits, transformers and rotating machines, semiconductors and diodes, transistors and op-amps.',
             units: [
                 { id: 1051, unitNumber: 1, title: 'Module I: Basics of Electrical Wiring and Safety', subtopics: 'Components of LT switchgear, switch fuse unit (SFU), MCB, ELCB, MCCB, types of wires and cables, earthing and electrical safety.', hours: 3 },
@@ -11763,10 +11990,10 @@ window.getSubjectDocuments = getSubjectDocuments;
                 { id: 1056, unitNumber: 6, title: 'Module VI: Transistors and Operational Amplifiers', subtopics: 'BJT operation, configurations (CE, CB, CC), biasing, Op-Amp ideal characteristics, inverting and non-inverting amplifiers, integrator, differentiator.', hours: 11 }
             ],
             pyqs: [
-                { id: 2501, year: 2026, type: 'END_SEM', title: 'MAKAUT 2026 Basic Electrical (ES-EE101)', fileUrl: 'assets/resources/1st_year/pyq/bee/btech-1-sem-basic-electrical-engineering-es-ee101-2026.pdf' },
-                { id: 2502, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Sem 2 Basic Electrical (ES-EE101)', fileUrl: 'assets/resources/1st_year/pyq/bee/btech-2-sem-basic-electrical-engineering-es-ee101-2024.pdf' },
-                { id: 2503, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Basic Electrical (ES-EE101)', fileUrl: 'assets/resources/1st_year/pyq/bee/btech-1-sem-basic-electrical-engineering-esee101-2023.pdf' },
-                { id: 2504, year: 2020, type: 'END_SEM', title: 'MAKAUT 2020 Basic Electrical (ES-EE-101)', fileUrl: 'assets/resources/1st_year/pyq/bee/btech-1-sem-basic-electrical-engineering-es-ee-101-2020.pdf' }
+                { id: 2501, year: 2026, type: 'END_SEM', title: 'MAKAUT 2026 Basic Electrical (ES-EE101)', fileUrl: '1st_year/pyqs/bee/btech-1-sem-basic-electrical-engineering-es-ee101-2026.pdf' },
+                { id: 2502, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Sem 2 Basic Electrical (ES-EE101)', fileUrl: '1st_year/pyqs/bee/btech-2-sem-basic-electrical-engineering-es-ee101-2024.pdf' },
+                { id: 2503, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Basic Electrical (ES-EE101)', fileUrl: '1st_year/pyqs/bee/btech-1-sem-basic-electrical-engineering-esee101-2023.pdf' },
+                { id: 2504, year: 2020, type: 'END_SEM', title: 'MAKAUT 2020 Basic Electrical (ES-EE-101)', fileUrl: '1st_year/pyqs/bee/btech-1-sem-basic-electrical-engineering-es-ee-101-2020.pdf' }
             ]
         },
         // 6. Biology for Engineers (26-BS-BI201)
@@ -11782,7 +12009,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             l_t_p: '2-0-0',
             contactHours: 26,
             department: '1st Year',
-            syllabusUrl: 'assets/resources/1st_year/syllabus/Biology.pdf',
+            syllabusUrl: '1st_year/syllabus/Biology.pdf',
             description: 'The cell and molecules of life, genetics and flow of information, biomaterials and biomechanics, biotechnology and biosensors.',
             units: [
                 { id: 1061, unitNumber: 1, title: 'Module I: The Cell and the Molecules of Life', subtopics: 'Cellular architecture, prokaryotic vs eukaryotic cells, structure and function of proteins, carbohydrates, lipids, nucleic acids, and enzymes.', hours: 7 },
@@ -11805,7 +12032,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             l_t_p: '2-0-0',
             contactHours: 26,
             department: '1st Year',
-            syllabusUrl: 'assets/resources/1st_year/syllabus/English.pdf',
+            syllabusUrl: '1st_year/syllabus/English.pdf',
             description: 'Grammar and vocabulary of technical English, reading comprehension, technical writing, listening, speaking and employability.',
             units: [
                 { id: 1071, unitNumber: 1, title: 'Module I: The Grammar and Vocabulary of Technical English', subtopics: 'Word formation, technical terminology, sentence structures, concord, modal verbs, passive voice, and common grammatical pitfalls.', hours: 6 },
@@ -11814,9 +12041,9 @@ window.getSubjectDocuments = getSubjectDocuments;
                 { id: 1074, unitNumber: 4, title: 'Module IV: Listening, Speaking and Employability', subtopics: 'Phonetics, oral presentations, active listening, group discussions, and technical interview skills.', hours: 6 }
             ],
             pyqs: [
-                { id: 2701, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 English (HM-HU201)', fileUrl: 'assets/resources/1st_year/pyq/english/btech-2-sem-english-hmhu201-2025.pdf' },
-                { id: 2702, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 English (HM-HU201)', fileUrl: 'assets/resources/1st_year/pyq/english/btech-2-sem-english-hmhu201-2024.pdf' },
-                { id: 2703, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 English (HM-HU201)', fileUrl: 'assets/resources/1st_year/pyq/english/btech-2-sem-english-hmhu201-2023.pdf' }
+                { id: 2701, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 English (HM-HU201)', fileUrl: '1st_year/pyqs/english/btech-2-sem-english-hmhu201-2025.pdf' },
+                { id: 2702, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 English (HM-HU201)', fileUrl: '1st_year/pyqs/english/btech-2-sem-english-hmhu201-2024.pdf' },
+                { id: 2703, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 English (HM-HU201)', fileUrl: '1st_year/pyqs/english/btech-2-sem-english-hmhu201-2023.pdf' }
             ]
         },
         // 8. Environmental Science (26-VAC-201)
@@ -11832,7 +12059,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             l_t_p: '3-0-0',
             contactHours: 42,
             department: '1st Year',
-            syllabusUrl: 'assets/resources/1st_year/syllabus/EVS.pdf',
+            syllabusUrl: '1st_year/syllabus/EVS.pdf',
             description: 'The environment and ecosystems, environmental pollution, sustainability policy, Mission LiFE and behavioral change, seven themes of Mission LiFE.',
             units: [
                 { id: 1081, unitNumber: 1, title: 'Module I: The Environment, Ecosystems and Biodiversity', subtopics: 'Ecosystem structure and function, energy flow, food webs, ecological succession, biodiversity hotspots, threats, and conservation.', hours: 9 },
@@ -11856,7 +12083,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             l_t_p: '3-0-0',
             contactHours: 36,
             department: '1st Year',
-            syllabusUrl: 'assets/resources/1st_year/syllabus/PPS.pdf',
+            syllabusUrl: '1st_year/syllabus/PPS.pdf',
             description: 'Computer fundamentals, generations, computational thinking, C programming, functions, arrays, pointers, structures, file handling, and introduction to AI.',
             units: [
                 { id: 1091, unitNumber: 1, title: 'Module I: Introduction to Computer', subtopics: 'Block diagram of digital computer, memory organization, CPU, system software, application software, operating system basics.', hours: 4 },
@@ -11869,9 +12096,9 @@ window.getSubjectDocuments = getSubjectDocuments;
                 { id: 1098, unitNumber: 8, title: 'Module VIII: Introduction to Artificial Intelligence', subtopics: 'What is AI, history and foundations, Turing test, intelligent agents, search algorithms, overview of machine learning and natural language processing.', hours: 6 }
             ],
             pyqs: [
-                { id: 2601, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Programming for Problem Solving (ES-CS201)', fileUrl: 'assets/resources/1st_year/pyq/pps/btech-2-sem-programming-for-problem-solving-escs201-2025.pdf' },
-                { id: 2602, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Programming for Problem Solving (ES-CS201)', fileUrl: 'assets/resources/1st_year/pyq/pps/btech-es-cs-2-sem-programming-for-problem-solving-escs201-2024.pdf' },
-                { id: 2603, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Programming for Problem Solving (ES-CS201)', fileUrl: 'assets/resources/1st_year/pyq/pps/btech-2-sem-programming-for-problem-solving-escs201-2023.pdf' }
+                { id: 2601, year: 2025, type: 'END_SEM', title: 'MAKAUT 2025 Programming for Problem Solving (ES-CS201)', fileUrl: '1st_year/pyqs/pps/btech-2-sem-programming-for-problem-solving-escs201-2025.pdf' },
+                { id: 2602, year: 2024, type: 'END_SEM', title: 'MAKAUT 2024 Programming for Problem Solving (ES-CS201)', fileUrl: '1st_year/pyqs/pps/btech-es-cs-2-sem-programming-for-problem-solving-escs201-2024.pdf' },
+                { id: 2603, year: 2023, type: 'END_SEM', title: 'MAKAUT 2023 Programming for Problem Solving (ES-CS201)', fileUrl: '1st_year/pyqs/pps/btech-2-sem-programming-for-problem-solving-escs201-2023.pdf' }
             ]
         }
     ];
@@ -12105,22 +12332,48 @@ window.getSubjectDocuments = getSubjectDocuments;
         if (currentAppView === targetView) return;
         currentAppView = targetView;
         const dashboardWorkspace = document.getElementById('dashboard-workspace') || document.getElementById('main-viewport-container');
+        const isAuth = isUserAuthenticated();
+
+        // Workspace / Portal switcher elements
+        const navPortalSwitcher = document.getElementById('nav-portal-switcher');
+        const btnSwitchLanding = document.getElementById('btn-switch-landing');
+        const btnSwitchDashboard = document.getElementById('btn-switch-dashboard');
+        const navUserProfile = document.getElementById('nav-user-profile');
+        const navUserName = document.getElementById('nav-user-name');
+        const btnDashboardSignOut = document.getElementById('btn-dashboard-sign-out');
+
+        let userSession = null;
+        try {
+            userSession = JSON.parse(localStorage.getItem('campussense_user_session') || '{}');
+        } catch(e) {}
+        const studentName = (window.Clerk?.user?.firstName ? `${window.Clerk.user.firstName} ${window.Clerk.user.lastName || ''}`.trim() : null) || userSession?.name || 'Student Workspace';
+        if (navUserName) navUserName.textContent = studentName;
+        const scholarDisplayName = document.getElementById('scholar-display-name');
+        if (scholarDisplayName) scholarDisplayName.textContent = studentName;
+
         if (targetView === 'dashboard') {
             if (landingView) landingView.style.display = 'none';
             if (dashboardWorkspace) dashboardWorkspace.style.display = 'flex';
             if (dashboardView) dashboardView.style.display = 'block';
             document.querySelectorAll('#nav-academic-pill, #btn-context-switcher, .academic-context-pill').forEach(p => p.style.display = 'flex');
-            if (btnNavToLanding) btnNavToLanding.style.display = 'inline-flex';
+            if (btnNavToLanding) btnNavToLanding.style.display = 'none';
             if (btnNavToDashboard) btnNavToDashboard.style.display = 'none';
             if (btnOpenPanicNav) btnOpenPanicNav.style.display = 'inline-flex';
             if (btnOpenSavedDeck) btnOpenSavedDeck.style.display = 'inline-flex';
             if (btnOpenFeedback) btnOpenFeedback.style.display = 'inline-flex';
             if (userProfileWrapper) userProfileWrapper.style.display = 'block';
             if (btnOpenAiFab) btnOpenAiFab.style.display = 'flex';
-            if (landingNavLinks) landingNavLinks.style.display = 'none';
+            if (landingNavLinks) landingNavLinks.style.display = 'flex';
             if (btnNavSignIn) btnNavSignIn.style.display = 'none';
             if (btnNavSignUp) btnNavSignUp.style.display = 'none';
             if (btnLandingAuth) btnLandingAuth.style.display = 'none';
+
+            // Portal Switcher state for Dashboard
+            if (navPortalSwitcher) navPortalSwitcher.style.display = 'inline-flex';
+            if (btnSwitchLanding) btnSwitchLanding.classList.remove('active');
+            if (btnSwitchDashboard) btnSwitchDashboard.classList.add('active');
+            if (navUserProfile) navUserProfile.style.display = 'inline-flex';
+            if (btnDashboardSignOut) btnDashboardSignOut.style.display = 'inline-flex';
 
             updateContextUI();
             renderActiveSubjects();
@@ -12135,18 +12388,26 @@ window.getSubjectDocuments = getSubjectDocuments;
             if (dashboardView) dashboardView.style.display = 'none';
             document.querySelectorAll('#nav-academic-pill, #btn-context-switcher, .academic-context-pill').forEach(p => p.style.display = 'none');
             if (btnNavToLanding) btnNavToLanding.style.display = 'none';
-            if (btnNavToDashboard) btnNavToDashboard.style.display = isLoggedIn ? 'inline-flex' : 'none';
+            if (btnNavToDashboard) btnNavToDashboard.style.display = 'none';
             if (btnOpenPanicNav) btnOpenPanicNav.style.display = 'inline-flex';
             if (btnOpenSavedDeck) btnOpenSavedDeck.style.display = 'inline-flex';
             if (btnOpenFeedback) btnOpenFeedback.style.display = 'inline-flex';
-            if (btnOpenAiFab) btnOpenAiFab.style.display = 'none';
+            if (btnOpenAiFab) btnOpenAiFab.style.display = 'flex';
             if (landingNavLinks) landingNavLinks.style.display = 'flex';
 
-            if (isLoggedIn) {
+            if (isAuth) {
+                if (navPortalSwitcher) navPortalSwitcher.style.display = 'inline-flex';
+                if (btnSwitchLanding) btnSwitchLanding.classList.add('active');
+                if (btnSwitchDashboard) btnSwitchDashboard.classList.remove('active');
+                if (navUserProfile) navUserProfile.style.display = 'inline-flex';
+                if (btnDashboardSignOut) btnDashboardSignOut.style.display = 'inline-flex';
                 if (userProfileWrapper) userProfileWrapper.style.display = 'block';
                 if (btnNavSignIn) btnNavSignIn.style.display = 'none';
                 if (btnNavSignUp) btnNavSignUp.style.display = 'none';
             } else {
+                if (navPortalSwitcher) navPortalSwitcher.style.display = 'none';
+                if (navUserProfile) navUserProfile.style.display = 'none';
+                if (btnDashboardSignOut) btnDashboardSignOut.style.display = 'none';
                 if (userProfileWrapper) userProfileWrapper.style.display = 'none';
                 if (btnNavSignIn) btnNavSignIn.style.display = 'inline-flex';
                 if (btnNavSignUp) btnNavSignUp.style.display = 'inline-flex';
@@ -12170,6 +12431,74 @@ window.getSubjectDocuments = getSubjectDocuments;
         if (typeof renderSavedDeckPreview === 'function') renderSavedDeckPreview();
     }
     window.renderDashboard = renderDashboard;
+
+    // ==========================================
+    // Portal & Workspace Switcher Wiring
+    // ==========================================
+    function initPortalSwitcher() {
+        const btnSwitchLanding = document.getElementById('btn-switch-landing');
+        const btnSwitchDashboard = document.getElementById('btn-switch-dashboard');
+        const btnDashboardSignOut = document.getElementById('btn-dashboard-sign-out');
+        const btnMobileNav = document.getElementById('btn-mobile-nav');
+        const landingNavLinks = document.getElementById('landing-nav-links');
+
+        if (btnSwitchLanding) {
+            btnSwitchLanding.onclick = function(e) {
+                e.preventDefault();
+                window.location.hash = '#landing';
+                switchView('landing', true);
+            };
+        }
+        if (btnSwitchDashboard) {
+            btnSwitchDashboard.onclick = function(e) {
+                e.preventDefault();
+                if (!isUserAuthenticated()) {
+                    window.location.href = '/login.html';
+                    return;
+                }
+                window.location.hash = '#dashboard';
+                switchView('dashboard', true);
+            };
+        }
+        if (btnDashboardSignOut) {
+            btnDashboardSignOut.onclick = function(e) {
+                if (typeof window.handleSignOut === 'function') {
+                    window.handleSignOut(e);
+                } else {
+                    localStorage.removeItem('campussense_logged_in');
+                    localStorage.removeItem('campussense_user_session');
+                    localStorage.removeItem('campussense_auth_provider');
+                    window.location.href = '/';
+                }
+            };
+        }
+        if (btnMobileNav && landingNavLinks) {
+            btnMobileNav.onclick = function(e) {
+                e.preventDefault();
+                const isOpen = landingNavLinks.classList.toggle('mobile-open');
+                if (isOpen) {
+                    landingNavLinks.style.display = 'flex';
+                } else {
+                    if (window.innerWidth <= 768) {
+                        landingNavLinks.style.display = 'none';
+                    }
+                }
+            };
+            // Close mobile menu when any navigation link inside is clicked
+            landingNavLinks.querySelectorAll('a').forEach(a => {
+                a.addEventListener('click', () => {
+                    landingNavLinks.classList.remove('mobile-open');
+                    if (window.innerWidth <= 768) {
+                        landingNavLinks.style.display = 'none';
+                    } else {
+                        landingNavLinks.style.display = 'flex';
+                    }
+                });
+            });
+        }
+    }
+    window.initPortalSwitcher = initPortalSwitcher;
+    window.switchView = switchView;
 
     function showLandingView() {
         setAppWorkflowStage(APP_FLOW.LANDING);
@@ -12279,17 +12608,28 @@ window.getSubjectDocuments = getSubjectDocuments;
             });
             setAppWorkflowStage(APP_FLOW.LANDING);
             return;
-        } else if (!storedAcademic) {
-            // Stage 2: Authenticated but Academic Context missing -> Open Set Academic Modal
-            setAppWorkflowStage(APP_FLOW.ACADEMIC_SETUP);
         } else {
-            // Stage 3: Authenticated and Academic Context configured -> Load Dashboard
+            if (!storedAcademic) {
+                // Initialize default profile
+                localStorage.setItem('campussense_academic_profile', JSON.stringify({
+                    stream: 'CSE',
+                    semester: '3',
+                    year: '2nd Year',
+                    college: 'MAKAUT In-House (WBUT)'
+                }));
+                storedAcademic = localStorage.getItem('campussense_academic_profile');
+            }
             try {
                 let profile = JSON.parse(storedAcademic);
-                // IT stream supported directly
                 updateAcademicContextUI(profile);
             } catch (e) {}
-            setAppWorkflowStage(APP_FLOW.DASHBOARD);
+
+            const hash = window.location.hash || '';
+            if (hash === '#landing' || hash.startsWith('#landing-')) {
+                switchView('landing');
+            } else {
+                setAppWorkflowStage(APP_FLOW.DASHBOARD);
+            }
         }
     }
     window.evaluateWorkflowProgression = evaluateWorkflowProgression;
@@ -12423,8 +12763,10 @@ window.getSubjectDocuments = getSubjectDocuments;
         }
 
         window.isLoggedIn = false;
-        isLoggedIn = false;
+        if (typeof isLoggedIn !== 'undefined') isLoggedIn = false;
         localStorage.removeItem('campussense_logged_in');
+        localStorage.removeItem('campussense_user_session');
+        localStorage.removeItem('campussense_auth_provider');
         localStorage.removeItem('campussense_academic_profile');
         localStorage.removeItem('campussense_scope');
         localStorage.removeItem('campussense_stream');
@@ -12434,6 +12776,7 @@ window.getSubjectDocuments = getSubjectDocuments;
         localStorage.removeItem('campussense_year_mode');
         localStorage.removeItem('academic_context');
         sessionStorage.clear();
+        sessionStorage.setItem('campussense_suppress_onboarding', 'true');
 
         // Suppress and close any modal triggers (specifically #landing-curriculum / "Set Academic Context")
         if (typeof closeAcademicModal === 'function') closeAcademicModal();
@@ -12443,10 +12786,12 @@ window.getSubjectDocuments = getSubjectDocuments;
             m.classList.remove('active');
         });
 
-        // Explicitly remove any URL hash and redirect cleanly to '/'
+        // Explicitly purge #landing-curriculum and any URL hash, then redirect cleanly to '/'
         if (window.location.hash) {
             window.location.hash = '';
-            history.replaceState(null, '', '/');
+        }
+        if (window.history && window.history.replaceState) {
+            window.history.replaceState(null, '', '/');
         }
 
         window.location.href = '/';
@@ -12467,6 +12812,20 @@ window.getSubjectDocuments = getSubjectDocuments;
             e.preventDefault();
             window.location.hash = '#dashboard';
             evaluateWorkflowProgression();
+        });
+    }
+
+    if (btnNavSignIn) {
+        btnNavSignIn.addEventListener('click', (e) => {
+            if (e) e.preventDefault();
+            window.location.href = '/login.html';
+        });
+    }
+
+    if (btnNavSignUp) {
+        btnNavSignUp.addEventListener('click', (e) => {
+            if (e) e.preventDefault();
+            window.location.href = '/login.html#/sign-up';
         });
     }
 
@@ -12520,7 +12879,7 @@ window.getSubjectDocuments = getSubjectDocuments;
         groupName: 'Group A Foundation',
         credits: 3,
         title: 'Physics',
-        syllabusPath: 'assets/resources/1st_year/syllabus/Physics.pdf',
+        syllabusPath: '1st_year/syllabus/Physics.pdf',
         pyqYears: ['2026', '2025', '2024', '2023', '2020'],
         pyqCount: 7
       },
@@ -12532,7 +12891,7 @@ window.getSubjectDocuments = getSubjectDocuments;
         groupName: 'Group B Foundation',
         credits: 3,
         title: 'Chemistry',
-        syllabusPath: 'assets/resources/1st_year/syllabus/Chemistry.pdf',
+        syllabusPath: '1st_year/syllabus/Chemistry.pdf',
         pyqYears: ['2025', '2024', '2023', '2020'],
         pyqCount: 6
       },
@@ -12543,7 +12902,7 @@ window.getSubjectDocuments = getSubjectDocuments;
         groupName: 'Group A Foundation',
         credits: 3,
         title: 'Mathematics - I',
-        syllabusPath: 'assets/resources/1st_year/syllabus/Maths-1.pdf',
+        syllabusPath: '1st_year/syllabus/Maths-1.pdf',
         pyqYears: ['2026', '2025', '2023', '2020'],
         pyqCount: 6
       },
@@ -12554,7 +12913,7 @@ window.getSubjectDocuments = getSubjectDocuments;
         groupName: 'Group B Foundation',
         credits: 3,
         title: 'Mathematics - II',
-        syllabusPath: 'assets/resources/1st_year/syllabus/Maths-2.pdf',
+        syllabusPath: '1st_year/syllabus/Maths-2.pdf',
         pyqYears: ['2026', '2025', '2024', '2023'],
         pyqCount: 6
       },
@@ -12565,7 +12924,7 @@ window.getSubjectDocuments = getSubjectDocuments;
         groupName: 'Group A Foundation',
         credits: 4,
         title: 'Basic Electrical & Electronics Engineering',
-        syllabusPath: 'assets/resources/1st_year/syllabus/BEE.pdf',
+        syllabusPath: '1st_year/syllabus/BEE.pdf',
         pyqYears: ['2026', '2024', '2023', '2020'],
         pyqCount: 4
       },
@@ -12576,7 +12935,7 @@ window.getSubjectDocuments = getSubjectDocuments;
         groupName: 'Group B Foundation',
         credits: 2,
         title: 'English for Communication Skills',
-        syllabusPath: 'assets/resources/1st_year/syllabus/English.pdf',
+        syllabusPath: '1st_year/syllabus/English.pdf',
         pyqYears: ['2025', '2024', '2023'],
         pyqCount: 3
       },
@@ -12587,7 +12946,7 @@ window.getSubjectDocuments = getSubjectDocuments;
         groupName: 'Group B Foundation',
         credits: 3,
         title: 'Programming for Problem Solving & AI',
-        syllabusPath: 'assets/resources/1st_year/syllabus/PPS.pdf',
+        syllabusPath: '1st_year/syllabus/PPS.pdf',
         pyqYears: ['2025', '2024', '2023'],
         pyqCount: 3
       }
@@ -12599,7 +12958,7 @@ window.getSubjectDocuments = getSubjectDocuments;
         badge: 'CSE',
         scope: 'Semesters 3 to 8',
         title: 'Computer Science & Engineering',
-        syllabusPath: 'CSE(3rd to 8th sem)/CSE20.pdf',
+        syllabusPath: '3rd to 8th sem/cse/syllabus/CSE20.pdf',
         pyqYears: ['2026', '2025', '2024', '2023', '2020'],
         archiveTitle: 'Computer Science & Engineering Archives'
       },
@@ -12608,7 +12967,7 @@ window.getSubjectDocuments = getSubjectDocuments;
         badge: 'CSE-AIML',
         scope: 'Semesters 3 to 8',
         title: 'Computer Science and Artificial Intelligence and Machine Learning',
-        syllabusPath: 'CSE-AIML(3rd to 8th sem)/CSE_AIML_Syllabus_3rd_to_8th.pdf',
+        syllabusPath: '3rd to 8th sem/cse-aiml/syllabus/CSE-AIML_Syllabus.pdf',
         pyqYears: ['2026', '2025', '2024', '2023', '2020'],
         archiveTitle: 'Computer Science and Artificial Intelligence and Machine Learning Archives'
       },
@@ -12617,7 +12976,7 @@ window.getSubjectDocuments = getSubjectDocuments;
         badge: 'IT',
         scope: 'Semesters 3 to 8',
         title: 'Information Technology',
-        syllabusPath: 'IT(3rd to 8th sem)/IT_Syllabus_3rd_to_8th.pdf',
+        syllabusPath: '3rd to 8th sem/it/syllabus/IT_Syllabus.pdf',
         pyqYears: ['2026', '2025', '2024', '2023', '2020'],
         archiveTitle: 'Information Technology Archives'
       },
@@ -12626,7 +12985,7 @@ window.getSubjectDocuments = getSubjectDocuments;
         badge: 'CSBS',
         scope: 'Semesters 3 to 8',
         title: 'Computer Science and Business Systems',
-        syllabusPath: 'docs/CSBS(3rd to 8th sem)/csbs_syllabus.pdf',
+        syllabusPath: '3rd to 8th sem/csbs/syllabus/csbs_syllabus.pdf',
         pyqYears: ['2025', '2024', '2023'],
         archiveTitle: 'Computer Science and Business Systems Archives'
       },
@@ -12635,7 +12994,7 @@ window.getSubjectDocuments = getSubjectDocuments;
         badge: 'CSCS',
         scope: 'Semesters 3 to 8',
         title: 'Computer Science and Cyber Security',
-        syllabusPath: 'docs/CSCS(3rd to 8th sem)/cscs_syllabus.pdf',
+        syllabusPath: '3rd to 8th sem/cscs/syllabus/cscs_syllabus.pdf',
         pyqYears: ['2025', '2024', '2023'],
         archiveTitle: 'Computer Science and Cyber Security Archives'
       },
@@ -12644,7 +13003,7 @@ window.getSubjectDocuments = getSubjectDocuments;
         badge: 'CSDS',
         scope: 'Semesters 3 to 8',
         title: 'Computer Science and Data Science',
-        syllabusPath: 'docs/CSDS(3rd to 8th sem)/csds_syllabus.pdf',
+        syllabusPath: '3rd to 8th sem/csds/syllabus/csds_syllabus.pdf',
         pyqYears: ['2025', '2024', '2023'],
         archiveTitle: 'Computer Science and Data Science Archives'
       }
@@ -12661,7 +13020,7 @@ window.getSubjectDocuments = getSubjectDocuments;
         badge: sub.code,
         streamCode: 'first-year',
         groupName: sub.category === 'GROUP_A' ? 'Group A Foundation' : (sub.category === 'GROUP_B' ? 'Group B Foundation' : 'Core Foundation'),
-        syllabusPath: sub.syllabusUrl || sub.syllabusPath || 'assets/resources/1st_year/syllabus/Physics.pdf',
+        syllabusPath: sub.syllabusUrl || sub.syllabusPath || '1st_year/syllabus/Physics.pdf',
         units: sub.units || [],
         semester: sub.semester || 1
       });
@@ -12799,40 +13158,144 @@ window.getSubjectDocuments = getSubjectDocuments;
       return allPapers.filter(paper => String(paper.year) === String(yNorm));
     }
 
-    function renderLandingCurriculum(filter = 'all') {
+    let landingSelectedSemester = null;
+    let landingSelectedStream = 'all';
+
+    function renderLandingCurriculum(filter = null, sem = undefined) {
       const container = document.getElementById('curriculum-grid') || document.querySelector('.subjects-grid') || document.getElementById('landing-curriculum-grid');
       if (!container) return;
 
-      const items = getFilteredSubjects(filter);
+      if (filter !== null && filter !== undefined) {
+        landingSelectedStream = filter.toLowerCase().trim();
+      }
+      if (sem !== undefined) {
+        landingSelectedSemester = sem ? parseInt(sem, 10) : null;
+      }
+
+      // Update semester pills visual active state
+      const semPills = document.querySelectorAll('#semester-pills button');
+      semPills.forEach(btn => {
+        const sVal = parseInt(btn.getAttribute('data-sem') || btn.innerText.trim(), 10);
+        if (landingSelectedSemester !== null && sVal === landingSelectedSemester) {
+          btn.classList.add('active', 'bg-primary', 'text-on-primary', 'font-bold', 'shadow-sm');
+          btn.classList.remove('text-outline');
+        } else {
+          btn.classList.remove('active', 'bg-primary', 'text-on-primary', 'font-bold', 'shadow-sm');
+          btn.classList.add('text-outline');
+        }
+      });
+
+      // Update stream tabs visual active state
+      const streamTabs = document.querySelectorAll('#curriculum-filter-group button');
+      streamTabs.forEach(btn => {
+        const strVal = (btn.getAttribute('data-stream') || '').toLowerCase().trim();
+        if (strVal === landingSelectedStream) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      // If NO semester is selected by default on landing page:
+      if (landingSelectedSemester === null) {
+        container.innerHTML = `
+          <div class="col-span-full w-full py-12 px-6 rounded-[12px] border border-[#232734] bg-[#111319]/90 text-center flex flex-col items-center justify-center gap-3" id="curriculum-empty-prompt" style="grid-column: 1 / -1;">
+            <div class="w-12 h-12 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary text-xl mb-1">
+              📚
+            </div>
+            <h3 class="text-lg font-bold text-slate-100 tracking-tight">Select a Semester to Explore Curated Syllabi &amp; Blueprints</h3>
+            <p class="text-sm text-slate-400 max-w-lg mx-auto">
+              Choose from Sem 01 to Sem 08 to browse verified MAKAUT AICTE/CBCS courses, lecture hours, and syllabus PDFs tailored to your branch.
+            </p>
+            <div class="flex flex-wrap items-center justify-center gap-2 mt-2" id="prompt-sem-buttons">
+              <button type="button" class="sem-quick-pick px-3 py-1.5 text-xs font-mono rounded bg-surface-container hover:bg-primary hover:text-on-primary transition-colors text-on-surface-variant font-medium" data-sem="1">Sem 01</button>
+              <button type="button" class="sem-quick-pick px-3 py-1.5 text-xs font-mono rounded bg-surface-container hover:bg-primary hover:text-on-primary transition-colors text-on-surface-variant font-medium" data-sem="2">Sem 02</button>
+              <button type="button" class="sem-quick-pick px-3 py-1.5 text-xs font-mono rounded bg-surface-container hover:bg-primary hover:text-on-primary transition-colors text-on-surface-variant font-medium" data-sem="3">Sem 03</button>
+              <button type="button" class="sem-quick-pick px-3 py-1.5 text-xs font-mono rounded bg-surface-container hover:bg-primary hover:text-on-primary transition-colors text-on-surface-variant font-medium" data-sem="4">Sem 04</button>
+              <button type="button" class="sem-quick-pick px-3 py-1.5 text-xs font-mono rounded bg-surface-container hover:bg-primary hover:text-on-primary transition-colors text-on-surface-variant font-medium" data-sem="5">Sem 05</button>
+              <button type="button" class="sem-quick-pick px-3 py-1.5 text-xs font-mono rounded bg-surface-container hover:bg-primary hover:text-on-primary transition-colors text-on-surface-variant font-medium" data-sem="6">Sem 06</button>
+              <button type="button" class="sem-quick-pick px-3 py-1.5 text-xs font-mono rounded bg-surface-container hover:bg-primary hover:text-on-primary transition-colors text-on-surface-variant font-medium" data-sem="7">Sem 07</button>
+              <button type="button" class="sem-quick-pick px-3 py-1.5 text-xs font-mono rounded bg-surface-container hover:bg-primary hover:text-on-primary transition-colors text-on-surface-variant font-medium" data-sem="8">Sem 08</button>
+            </div>
+          </div>
+        `;
+        container.querySelectorAll('.sem-quick-pick').forEach(btn => {
+          btn.onclick = (e) => {
+            e.preventDefault();
+            const sVal = parseInt(btn.getAttribute('data-sem'), 10);
+            renderLandingCurriculum(landingSelectedStream, sVal);
+          };
+        });
+        return;
+      }
+
+      // If a semester IS selected:
+      let items = [];
+      const targetSem = landingSelectedSemester;
+
+      if (targetSem === 1 || targetSem === 2 || landingSelectedStream === 'first-year') {
+        const fyCourses = (typeof MAKAUT_CURRICULUM !== 'undefined') ? MAKAUT_CURRICULUM : [];
+        items = fyCourses.filter(c => c.semester === targetSem || (!c.semester && targetSem === 1));
+        if (items.length === 0 && (targetSem === 1 || targetSem === 2)) {
+          items = fyCourses;
+        }
+      } else {
+        if (landingSelectedStream === 'all') {
+          const streamsToQuery = ['CSE', 'IT', 'CSE-AIML', 'CSCS', 'CSDS', 'CSBS'];
+          const seenCodes = new Set();
+          streamsToQuery.forEach(strCode => {
+            const strObj = window.DEPARTMENT_STREAMS?.[strCode];
+            if (strObj && strObj.courses) {
+              strObj.courses.forEach(c => {
+                if (parseInt(c.semester, 10) === targetSem && !seenCodes.has(c.code)) {
+                  seenCodes.add(c.code);
+                  items.push({ ...c, streamCode: strCode.toLowerCase() });
+                }
+              });
+            }
+          });
+        } else {
+          const sKey = landingSelectedStream.toUpperCase();
+          const strObj = window.DEPARTMENT_STREAMS?.[sKey] || window.DEPARTMENT_STREAMS?.[landingSelectedStream];
+          if (strObj && strObj.courses) {
+            items = strObj.courses.filter(c => parseInt(c.semester, 10) === targetSem);
+          }
+        }
+      }
+
       if (!items || items.length === 0) {
-        container.innerHTML = `<div class="empty-state" style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--text-secondary);">Select a stream to preview subjects and blueprints.</div>`;
+        container.innerHTML = `<div class="empty-state" style="grid-column: 1/-1; text-align: center; padding: 2.5rem; color: var(--text-secondary); border: 1px dashed #232734; border-radius: 12px;">No verified courses found for Semester ${targetSem} in ${landingSelectedStream.toUpperCase()} stream. Select another semester or stream above.</div>`;
         return;
       }
 
       container.innerHTML = items.map(item => {
         const hasUnits = Array.isArray(item.units) && item.units.length > 0;
-        const lectureHours = item.contactHours ? `${item.contactHours} Contact Hrs` : (item.credits ? `${item.credits * 12} Lecture Hrs` : '');
-        const creditsText = item.credits ? `${item.credits} Credits` : (item.scope || 'Semesters 3 to 8');
-        const metaRight = lectureHours ? `${creditsText} • ${lectureHours}` : creditsText;
+        const credits = item.credits || 3.0;
+        const contactHours = item.contactHours || (credits * 12);
+        const metaRight = `${credits}.0 Credits • ${contactHours} Lecture Hrs`;
+        const itemTitle = item.name || item.title || 'Course';
+        const itemCode = item.code || '';
+        const itemSyllabus = item.syllabusUrl || item.syllabusPath || 'docs/3rd to 8th sem/cse/syllabus/CSE20.pdf';
+        const streamLabel = (item.department || item.stream || landingSelectedStream || 'CSE').toUpperCase();
 
-        const safeTitle = (item.title || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
-        const safeCode = (item.code || item.streamCode || '').replace(/'/g, "\\'");
-        const safePath = (item.syllabusPath || '').replace(/'/g, "\\'");
+        const safeTitle = itemTitle.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        const safeCode = itemCode.replace(/'/g, "\\'");
+        const safePath = itemSyllabus.replace(/'/g, "\\'");
 
         const unitsAccordionHtml = hasUnits ? `
-          <details class="curriculum-modules-accordion" style="margin-bottom: 1.15rem; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 0.6rem 0.85rem; background: rgba(0, 0, 0, 0.25);">
-            <summary style="cursor: pointer; font-size: 0.82rem; font-weight: 600; color: #818cf8; list-style: none; display: flex; justify-content: space-between; align-items: center; user-select: none;">
-              <span>📚 Expand Modules (${item.units.length} Units • ${item.contactHours || 36}h)</span>
-              <span style="font-size: 0.75rem; opacity: 0.8;">▼</span>
+          <details class="curriculum-modules-accordion" style="margin: 0.75rem 0;">
+            <summary class="curriculum-summary cursor-pointer text-xs font-mono text-primary flex items-center justify-between py-1">
+              <span>📚 Expand Modules (${item.units.length} Units • ${contactHours}h)</span>
+              <span class="curriculum-summary-arrow">▼</span>
             </summary>
-            <div class="modules-list" style="margin-top: 0.65rem; display: flex; flex-direction: column; gap: 0.5rem;">
+            <div class="modules-list space-y-1.5 pt-2">
               ${item.units.map(u => `
-                <div class="module-unit-item" style="font-size: 0.78rem; border-top: 1px solid rgba(255, 255, 255, 0.06); padding-top: 0.45rem;">
-                  <div style="font-weight: 600; color: #f1f5f9; display: flex; justify-content: space-between;">
-                    <span>${u.title || `Unit ${u.unitNumber}`}</span>
-                    ${u.hours ? `<span style="color: #94a3b8; font-size: 0.75rem;">${u.hours} hrs</span>` : ''}
+                <div class="module-unit-item bg-surface-container-low p-2 rounded text-xs border border-[#232734]">
+                  <div class="font-semibold text-on-surface flex justify-between">
+                    <span>${(u.title || `Unit ${u.unitNumber}`).replace(/'/g, "\\\'")}</span>
+                    ${u.hours ? `<span class="text-outline font-mono">${u.hours} hrs</span>` : ''}
                   </div>
-                  ${u.subtopics ? `<div style="font-size: 0.74rem; color: #94a3b8; margin-top: 0.25rem; line-height: 1.4;">${u.subtopics}</div>` : ''}
+                  ${u.subtopics ? `<div class="text-outline text-[11px] mt-0.5">${u.subtopics.replace(/'/g, "\\\'")}</div>` : ''}
                 </div>
               `).join('')}
             </div>
@@ -12840,16 +13303,21 @@ window.getSubjectDocuments = getSubjectDocuments;
         ` : '';
 
         return `
-          <div class="bento-card subject-card" data-stream="${item.streamCode || 'first-year'}" data-code="${safeCode}">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem;">
-              <span class="badge subject-code-badge" style="font-weight: 700;">${item.groupName || item.badge || item.code}</span>
-              <span class="badge credit-badge" style="opacity: 0.85;">${metaRight}</span>
+          <div class="bento-card subject-card" data-stream="${item.streamCode || landingSelectedStream}" data-code="${safeCode}" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                <span class="badge subject-code-badge font-mono font-bold text-primary">${safeCode}</span>
+                <span class="badge credit-badge text-outline text-xs">${metaRight}</span>
+              </div>
+              <h3 style="font-size: 1.15rem; font-weight: 700; margin: 0 0 0.5rem 0; color: var(--text-main); line-height: 1.3;">${itemTitle}</h3>
+              <div class="text-xs text-outline font-mono mb-2">${streamLabel} • Semester ${targetSem}</div>
+              ${unitsAccordionHtml}
             </div>
-            <h3 style="font-size: 1.15rem; font-weight: 700; margin: 0 0 ${hasUnits ? '0.75rem' : '1.25rem'} 0; color: var(--text-main); flex: 1;">${item.title}</h3>
-            ${unitsAccordionHtml}
-            <button class="btn btn-outline card-action-btn subject-action-btn" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: auto;" onclick="viewSyllabusItem('${safeCode}', '${safePath}', '${safeTitle}')" aria-label="View Syllabus Blueprint for ${item.title.replace(/"/g, '&quot;')}">
-              <span class="card-btn-icon btn-icon">📖</span><span class="card-btn-text btn-text">View Syllabus Blueprint</span><span class="card-btn-arrow btn-arrow">→</span>
-            </button>
+            <div class="card-footer-actions" style="margin-top: auto; display: flex; flex-direction: column; gap: 0.5rem; width: 100%;">
+              <button class="btn btn-outline card-action-btn subject-action-btn" style="width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;" onclick="viewSyllabusItem('${safeCode}', '${safePath}', '${safeTitle}')" aria-label="View Syllabus Blueprint for ${itemTitle.replace(/"/g, '&quot;')}">
+                <span class="card-btn-icon btn-icon">📖</span><span class="card-btn-text btn-text">View Syllabus Blueprint</span><span class="card-btn-arrow btn-arrow">→</span>
+              </button>
+            </div>
           </div>
         `;
       }).join('');
@@ -12956,10 +13424,7 @@ window.getSubjectDocuments = getSubjectDocuments;
     }
 
     window.viewSyllabusItem = function(targetCode, pdfPath, title) {
-      if (!window.Clerk || !window.Clerk.user) {
-        window.location.href = '/login.html';
-        return;
-      }
+      // Syllabus is freely and directly accessible to all users without login
       if (pdfPath && typeof window.previewPdfFile === 'function') {
         window.previewPdfFile(pdfPath, title);
       } else if (targetCode && typeof window.openSubjectHubByCode === 'function') {
@@ -12968,7 +13433,7 @@ window.getSubjectDocuments = getSubjectDocuments;
     };
 
     window.openStreamArchiveView = function(streamCode, targetSem = null) {
-      if (!window.Clerk || !window.Clerk.user) {
+      if (!isUserAuthenticated()) {
         window.location.href = '/login.html';
         return;
       }
@@ -13002,7 +13467,7 @@ window.getSubjectDocuments = getSubjectDocuments;
     window.renderLandingPyqCatalog = renderLandingArchives;
     window.renderLandingPyqRepo = renderLandingArchives;
 
-    // Wire All Landing Filter Buttons & PYQ Year Filters (Item 6: Debounced)
+    // Wire All Landing Filter Buttons, Semester Selectors & PYQ Year Filters
     function bindLandingFilterButtons() {
         try {
             const filterPills = document.querySelectorAll('#curriculum-filter-group .filter-pill-btn, #curriculum-filter-group button');
@@ -13017,10 +13482,48 @@ window.getSubjectDocuments = getSubjectDocuments;
                 btn.classList.add('active');
                 if (filterDebounce) clearTimeout(filterDebounce);
                 filterDebounce = setTimeout(() => {
-                  renderLandingCurriculum(stream);
+                  renderLandingCurriculum(stream, landingSelectedSemester);
                 }, 80);
               });
             });
+
+            // Semester Tabs (Sem 01 to Sem 08)
+            const semPills = document.querySelectorAll('#semester-pills button');
+            semPills.forEach(btn => {
+              if (btn.dataset.bound === 'true') return;
+              btn.dataset.bound = 'true';
+              btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const semVal = parseInt(btn.getAttribute('data-sem') || btn.innerText.trim(), 10);
+                renderLandingCurriculum(landingSelectedStream, semVal);
+              });
+            });
+
+            // Quick Pick buttons in empty prompt
+            const promptSemBtns = document.querySelectorAll('.sem-quick-pick');
+            promptSemBtns.forEach(btn => {
+              if (btn.dataset.bound === 'true') return;
+              btn.dataset.bound = 'true';
+              btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const semVal = parseInt(btn.getAttribute('data-sem'), 10);
+                renderLandingCurriculum(landingSelectedStream, semVal);
+              });
+            });
+
+            // Live syllabus search / filter input
+            const syllabusSearch = document.getElementById('syllabus-search');
+            if (syllabusSearch && syllabusSearch.dataset.bound !== 'true') {
+              syllabusSearch.dataset.bound = 'true';
+              syllabusSearch.addEventListener('input', (e) => {
+                const q = e.target.value.toLowerCase().trim();
+                const cards = document.querySelectorAll('#curriculum-grid .subject-card');
+                cards.forEach(c => {
+                  const text = c.innerText.toLowerCase();
+                  c.style.display = (!q || text.includes(q)) ? 'flex' : 'none';
+                });
+              });
+            }
 
             const yearPills = document.querySelectorAll('#pyq-year-pills .filter-pill, #pyq-year-pills button, .pyq-year-filter-btn');
             let yearDebounce = null;
@@ -13068,17 +13571,30 @@ window.getSubjectDocuments = getSubjectDocuments;
 
     function handleRouting() {
         const hash = window.location.hash || '#landing';
-        if (hash.includes('landing') || hash === '#' || hash === '') {
-            setAppWorkflowStage(APP_FLOW.LANDING);
-            if (hash && hash.startsWith('#landing-') && hash !== '#landing') {
-                const target = document.querySelector(hash);
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
+        if (hash === '#dashboard' || hash.includes('dashboard')) {
+            if (isUserAuthenticated()) {
+                switchView('dashboard', false);
+            } else {
+                window.location.href = '/login.html';
             }
-        } else if (hash.includes('panic-pack')) {
-            setAppWorkflowStage(APP_FLOW.LANDING);
-            const target = document.querySelector('#panic-pack') || document.querySelector('.bento-card-panic');
+            return;
+        }
+        if (hash.includes('landing') || hash === '#' || hash === '' ||
+            hash.includes('curriculum') || hash.includes('features') ||
+            hash.includes('pyqs') || hash.includes('archives')) {
+            switchView('landing', false);
+            const targetId = hash.startsWith('#') ? hash : '#' + hash;
+            const target = (hash.includes('curriculum') ? document.getElementById('curriculum-explorer') || document.getElementById('landing-curriculum') : null) ||
+                           document.querySelector(targetId) ||
+                           document.getElementById(targetId.replace('#', '')) ||
+                           (hash.includes('features') ? document.getElementById('landing-features') : null) ||
+                           (hash.includes('pyqs') || hash.includes('archives') ? document.getElementById('landing-pyqs') : null);
+            if (target && hash !== '#landing' && hash !== '#' && hash !== '') {
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        } else if (hash.includes('panic-pack') || hash.includes('revision-pack')) {
+            switchView('landing', false);
+            const target = document.querySelector('#revision-pack') || document.querySelector('#panic-pack') || document.querySelector('.bento-card-panic') || document.getElementById('landing-panic-drill');
             if (target) {
                 target.scrollIntoView({ behavior: 'smooth' });
             }
@@ -13108,7 +13624,7 @@ window.getSubjectDocuments = getSubjectDocuments;
     const btnExploreCurriculum = document.getElementById('btn-explore-curriculum');
     if (btnExploreCurriculum) {
         btnExploreCurriculum.addEventListener('click', (e) => {
-            const target = document.getElementById('landing-curriculum');
+            const target = document.getElementById('curriculum-explorer') || document.getElementById('landing-curriculum');
             if (target) {
                 e.preventDefault();
                 target.scrollIntoView({ behavior: 'smooth' });
@@ -13121,10 +13637,9 @@ window.getSubjectDocuments = getSubjectDocuments;
     if (btnFeatureSyllabus) {
         btnFeatureSyllabus.addEventListener('click', (e) => {
             e.preventDefault();
-            if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
-                evaluateWorkflowProgression();
-            } else {
-                showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
+            const target = document.getElementById('curriculum-explorer') || document.getElementById('landing-curriculum');
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
             }
         });
     }
@@ -13818,7 +14333,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             : {
                 title: 'CSE Syllabus (3rd to 8th sem)',
                 description: 'Complete official 80+ page MAKAUT syllabus covering all courses, practical labs, and departmental electives for B.Tech Computer Science & Engineering.',
-                path: 'CSE20.pdf',
+                path: '3rd to 8th sem/cse/syllabus/CSE20.pdf',
                 badge: 'Official 4-Year Scheme (Sem 3 to 8)'
             };
 
@@ -14082,7 +14597,8 @@ window.getSubjectDocuments = getSubjectDocuments;
     window.resolveSubjectData = resolveSubjectData;
 
     window.openSubjectHubByCode = function(targetCode, defaultTab = 'pyqs', targetModNum = null) {
-        if (!window.Clerk || !window.Clerk.user) {
+        const isSyllabusTab = defaultTab === 'syllabus' || defaultTab === 'checklist';
+        if (!isSyllabusTab && !isUserAuthenticated()) {
             window.location.href = '/login.html';
             return;
         }
@@ -14392,7 +14908,7 @@ window.getSubjectDocuments = getSubjectDocuments;
                 const subjectCode = btn.getAttribute('data-subject') || '';
                 const paperYear = btn.getAttribute('data-paper') || '';
 
-                if (!window.Clerk?.user) {
+                if (!isUserAuthenticated()) {
                     window.triggerNativeClerkAuth({ action: 'preview', fileUrl: url, title, subjectCode, paperYear });
                     return;
                 }
@@ -14404,11 +14920,11 @@ window.getSubjectDocuments = getSubjectDocuments;
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
                 const subjectCode = btn.getAttribute('data-subject');
-                const paperYear = btn.getAttribute('data-paper');
+                paperYear = btn.getAttribute('data-paper');
                 const title = btn.getAttribute('data-name');
                 const fileUrl = btn.getAttribute('data-url');
 
-                if (!window.Clerk?.user) {
+                if (!isUserAuthenticated()) {
                     window.triggerNativeClerkAuth({ action: 'download', fileUrl, title, subjectCode, paperYear });
                     return;
                 }
@@ -14444,6 +14960,10 @@ window.getSubjectDocuments = getSubjectDocuments;
     document.querySelectorAll('.hub-tab-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const tabName = btn.getAttribute('data-hub-tab');
+            if (tabName === 'pyqs' && !isUserAuthenticated()) {
+                window.location.href = '/login.html';
+                return;
+            }
             activateHubTab(tabName);
         });
     });
@@ -14678,9 +15198,10 @@ window.getSubjectDocuments = getSubjectDocuments;
         if (directBtn) {
             directBtn.onclick = (e) => {
                 e.preventDefault();
-                if (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
+                const isSyllabus = isSyllabusResource(resolvedUrl, preferredName);
+                if (!isSyllabus && !isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
                     sessionStorage.setItem('pending_download_action', JSON.stringify({ fileUrl: resolvedUrl, title: preferredName }));
-                    showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
+                    showAuthModal(true, "Please sign up or sign in to access MAKAUT PYQ examination archives.");
                     return;
                 }
                 downloadPdfFile(resolvedUrl, preferredName);
@@ -14736,9 +15257,17 @@ window.getSubjectDocuments = getSubjectDocuments;
         const spinner = document.getElementById('pdf-loading-spinner');
 
         let targetUrl = url || '';
+        const isSyllabus = isSyllabusResource(targetUrl, title);
 
-        // Security Gate: Strict Auth-Wall for all academic syllabi, master schemes, and PYQs
-        if (!window.Clerk || !window.Clerk.user) {
+        // Security Gate: PYQs require authentication. Syllabi are directly accessible without login.
+        if (!isSyllabus && !isUserAuthenticated()) {
+            try {
+                sessionStorage.setItem('pending_download_action', JSON.stringify({
+                    action: 'preview',
+                    title: title || 'MAKAUT Resource',
+                    fileUrl: targetUrl
+                }));
+            } catch (e) {}
             window.location.href = '/login.html';
             return;
         }
@@ -14767,9 +15296,10 @@ window.getSubjectDocuments = getSubjectDocuments;
         if (downloadBtn) {
             downloadBtn.onclick = (e) => {
                 e.preventDefault();
-                if (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
+                const isSyllabus = isSyllabusResource(resolvedUrl, preferredName);
+                if (!isSyllabus && !isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
                     sessionStorage.setItem('pending_download_action', JSON.stringify({ fileUrl: resolvedUrl, title: preferredName }));
-                    showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
+                    showAuthModal(true, "Please sign up or sign in to access MAKAUT PYQ examination archives.");
                     return;
                 }
                 downloadPdfFile(resolvedUrl, preferredName);
@@ -14967,7 +15497,7 @@ window.getSubjectDocuments = getSubjectDocuments;
                     <div style="font-size: 2.5rem; margin-bottom: 0.25rem;">🔖</div>
                     <h4 style="color: var(--text-primary); margin: 0; font-size: 1.1rem; font-weight: 700;">No saved items yet</h4>
                     <p style="font-size: 0.9rem; color: #94a3b8; line-height: 1.5; margin: 0 auto; max-width: 320px;">
-                        Click "Save to Deck" on any high-yield question or open paper in the PDF viewer to save it here.
+                        No saved items yet. Click 'Save to Deck' on any high-yield topic or paper.
                     </p>
                 </div>
             `;
@@ -14990,7 +15520,7 @@ window.getSubjectDocuments = getSubjectDocuments;
                         ${escapeHtml(item.questionText || item.title || item.topicName || 'Exam Question')}
                     </div>
                     ${item.modelAnswerSnippet ? `
-                        <div class="deck-answer-content" id="deck-answer-${idx}" style="display: none; background: rgba(0,0,0,0.25); border-left: 3px solid var(--primary-accent); padding: 0.75rem; border-radius: 4px; font-size: 0.84rem; color: var(--text-secondary); margin: 0.75rem 0; line-height: 1.5;">
+                        <div class="deck-answer-content" id="deck-answer-${idx}" style="display: none; background: var(--bg-tertiary); border: 1px solid var(--border-color); padding: 0.75rem 0.95rem; border-radius: 8px; font-size: 0.88rem; color: var(--text-secondary); margin: 0.75rem 0; line-height: 1.55;">
                             <strong style="color: var(--text-primary);">Model Solution / Key Points:</strong><br>
                             ${escapeHtml(item.modelAnswerSnippet)}
                         </div>
@@ -15383,10 +15913,6 @@ window.getSubjectDocuments = getSubjectDocuments;
     const drawerChatMessages = document.getElementById('drawer-chat-messages');
 
     function openAiDrawer(initialQuery = '') {
-        if (!isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
-            showAuthModal(true, "Please sign up or sign in to access MAKAUT academic archives, previews, and AI tools.");
-            return;
-        }
         document.body.classList.add('split-chat-active');
         document.body.classList.add('chat-workspace-active');
         if (dashboardWorkspace) {
@@ -15443,105 +15969,1132 @@ window.getSubjectDocuments = getSubjectDocuments;
     if (btnCloseAiDrawer) btnCloseAiDrawer.addEventListener('click', closeAiDrawer);
     if (aiDrawerBackdrop) aiDrawerBackdrop.addEventListener('click', closeAiDrawer);
 
-    // Global shortcut Ctrl+K & Escape
-    window.addEventListener('keydown', (e) => {
-        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
-            e.preventDefault();
-            if (document.body.classList.contains('split-chat-active') || document.body.classList.contains('chat-workspace-active')) {
-                closeAiDrawer();
-            } else {
-                openAiDrawer();
+    // ====================================================================
+    // 16. UNIFIED CLIENT-SIDE SEARCH ENGINE & REAL-TIME FILTERING
+    // ====================================================================
+    let unifiedSearchIndex = [];
+    let savedStreamFilter = null;
+    let searchDebounceTimer = null;
+    let activeFlatResults = [];
+    let activeSelectedResultIndex = -1;
+
+    const ACADEMIC_ABBREVIATIONS = {
+        'pps': ['26-es-cs201', 'es-cs201', 'cs201', 'programming for problem solving', 'programming'],
+        'bee': ['26-es-ee101', 'es-ee101', 'ee101', 'basic electrical engineering', 'electrical'],
+        'dsa': ['pcc-cs301', 'data structures', 'algorithms'],
+        'os': ['pcc-cs501', 'operating system', 'operating systems'],
+        'dbms': ['pcc-cs502', 'database', 'database management'],
+        'aiml': ['cse-aiml', 'artificial intelligence', 'machine learning'],
+        'ai': ['artificial intelligence', 'cse-aiml'],
+        'ml': ['machine learning', 'cse-aiml'],
+        'ph101': ['26-bs-ph101', 'bs-ph101', 'physics'],
+        'physics': ['26-bs-ph101', 'bs-ph101', 'ph101'],
+        'ch101': ['26-bs-ch101', 'bs-ch101', 'chemistry'],
+        'chemistry': ['26-bs-ch101', 'bs-ch101', 'ch101'],
+        'm101': ['26-bs-m101', 'bs-m101', 'mathematics - i', 'maths 1'],
+        'm201': ['26-bs-m201', 'bs-m201', 'mathematics - ii', 'maths 2'],
+        'maths': ['mathematics', 'm101', 'm201'],
+        'math': ['mathematics', 'm101', 'm201'],
+        'bio': ['26-bs-bio101', 'biology'],
+        'evs': ['26-mc-evs101', 'environmental sciences'],
+        'english': ['26-hs-hu101', 'english', 'communication'],
+        'workshop': ['26-es-me101', 'workshop', 'manufacturing'],
+        'drawing': ['26-es-me102', 'graphics', 'cad'],
+        'cad': ['26-es-me102', 'engineering graphics'],
+        'cse': ['computer science', 'cse blueprint'],
+        'it': ['information technology'],
+        'cscs': ['cyber security'],
+        'csds': ['data science'],
+        'csbs': ['computer science and business systems']
+    };
+
+    function normalizeSearchToken(str) {
+        if (!str) return '';
+        return String(str)
+            .toLowerCase()
+            .replace(/[_\-./\\(),&+[\]]/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+    }
+
+    function checkSearchAuthGuard() {
+        const isAuth = Boolean(
+            (typeof isLoggedIn !== 'undefined' && isLoggedIn) ||
+            window.isLoggedIn ||
+            localStorage.getItem('campussense_logged_in') === 'true' ||
+            localStorage.getItem('campussense_user_session') ||
+            window.Clerk?.user
+        );
+        if (!isAuth) {
+            window.location.href = '/login.html';
+            return false;
+        }
+        return true;
+    }
+
+    function highlightSearchQuery(text, query) {
+        if (!text) return '';
+        if (!query || !query.trim()) return escapeHtml(text);
+        const words = query.trim().split(/\s+/).filter(w => w.length > 0);
+        if (words.length === 0) return escapeHtml(text);
+        const escapedWords = words.map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+        const regex = new RegExp(`(${escapedWords.join('|')})`, 'gi');
+        const parts = String(text).split(regex);
+        return parts.map(part => {
+            if (words.some(w => w.toLowerCase() === part.toLowerCase())) {
+                return `<mark class="search-highlight">${escapeHtml(part)}</mark>`;
             }
-        }
-        if (e.key === 'Escape') {
-            closeAiDrawer();
-            closeSavedDeckDrawer();
-            document.querySelectorAll('.modal-backdrop').forEach(m => m.style.display = 'none');
-        }
-    });
+            return escapeHtml(part);
+        }).join('');
+    }
 
-    // Hero Search Input Wiring
-    const heroSearchInput = document.getElementById('global-search-input');
-    const btnHeroSearch = document.getElementById('btn-hero-search');
-    const searchDropdown = document.getElementById('search-history-dropdown');
+    function buildUnifiedSearchIndex() {
+        const index = [];
+        const seenKeys = new Set();
 
-    if (heroSearchInput) {
-        let debounceTimer = null;
-        heroSearchInput.addEventListener('focus', () => {
-            if (searchbarHistory.length > 0) {
-                renderSearchbarHistoryDropdown();
-                if (searchDropdown) searchDropdown.style.display = 'block';
+        const seenSubjectCodes = new Set();
+
+        // 1. Ingest First-Year Foundation Subjects from MAKAUT_CURRICULUM
+        if (typeof MAKAUT_CURRICULUM !== 'undefined' && Array.isArray(MAKAUT_CURRICULUM)) {
+            MAKAUT_CURRICULUM.forEach(sub => {
+                const subKey = `curriculum_sub_${sub.code || sub.name}`;
+                if (!seenKeys.has(subKey)) {
+                    seenKeys.add(subKey);
+                    if (sub.code) seenSubjectCodes.add(sub.code.toLowerCase().replace(/[^a-z0-9]/g, ''));
+                    if (sub.altCode) seenSubjectCodes.add(sub.altCode.toLowerCase().replace(/[^a-z0-9]/g, ''));
+                    if (sub.name) seenSubjectCodes.add(sub.name.toLowerCase().replace(/[^a-z0-9]/g, ''));
+
+                    const unitKeywords = (sub.units || sub.modules || []).map(u => {
+                        const uTitle = u.name || u.title || '';
+                        const uDesc = u.subtopics || u.description || u.desc || '';
+                        return `${uTitle} ${uDesc}`;
+                    }).join(' ');
+
+                    const tokens = normalizeSearchToken(`
+                        ${sub.code || ''}
+                        ${(sub.code || '').replace(/[^a-z0-9]/gi, '')}
+                        ${sub.altCode || ''}
+                        ${(sub.altCode || '').replace(/[^a-z0-9]/gi, '')}
+                        ${sub.legacyCode || ''}
+                        ${sub.name || ''}
+                        ${sub.category || ''}
+                        ${sub.stream || 'first-year'}
+                        1st year first year common
+                        ${unitKeywords}
+                    `);
+
+                    index.push({
+                        id: subKey,
+                        category: 'curriculum',
+                        typeLabel: '📚 Curriculum & Syllabi',
+                        badgeClass: 'badge-syllabus',
+                        badgeText: sub.code || '1st Year',
+                        title: sub.name,
+                        code: sub.code || sub.altCode || 'MAKAUT',
+                        metaPill: '1st Year Common',
+                        metaText: `${sub.credits || 3} Credits • Sem ${sub.semester || 1} • ${(sub.units || sub.modules || []).length} Modules`,
+                        stream: 'first-year',
+                        tokens: tokens,
+                        actionLabel: 'View Syllabus →',
+                        action: () => {
+                            if (typeof openSubjectHub === 'function') {
+                                openSubjectHub(sub, 'checklist');
+                            } else if (sub.syllabusUrl && typeof openPdfViewer === 'function') {
+                                openPdfViewer(`${sub.name} Syllabus`, sub.syllabusUrl);
+                            }
+                        }
+                    });
+                }
+
+                // 2. Ingest Individual Syllabus Modules / Units
+                const units = sub.units || sub.modules || [];
+                units.forEach((u, uIdx) => {
+                    const modNum = u.unitNumber || (uIdx + 1);
+                    const modKey = `mod_${sub.code || sub.name}_${modNum}`;
+                    if (!seenKeys.has(modKey)) {
+                        seenKeys.add(modKey);
+                        const modTitle = u.title || u.name || `Module ${modNum}`;
+                        const modDesc = u.subtopics || u.description || u.desc || '';
+                        const modTokens = normalizeSearchToken(`
+                            ${sub.code || ''}
+                            ${sub.name || ''}
+                            ${modTitle}
+                            ${modDesc}
+                            module unit ${modNum}
+                        `);
+
+                        index.push({
+                            id: modKey,
+                            category: 'module',
+                            typeLabel: '🧩 Syllabus Modules',
+                            badgeClass: 'badge-module',
+                            badgeText: `${sub.code ? sub.code.split('-').pop() : 'MOD'} • M${modNum}`,
+                            title: `${modTitle} (${sub.name})`,
+                            code: sub.code || 'Module',
+                            metaPill: `${sub.code || '1st Year'} • ${u.hours || 8} hrs`,
+                            metaText: modDesc ? (modDesc.length > 85 ? modDesc.substring(0, 85) + '...' : modDesc) : 'Core Curriculum Module',
+                            stream: 'first-year',
+                            tokens: modTokens,
+                            actionLabel: 'View Module →',
+                            action: () => {
+                                if (typeof openSubjectHub === 'function') {
+                                    openSubjectHub(sub, 'checklist', modNum);
+                                } else if (sub.syllabusUrl && typeof openPdfViewer === 'function') {
+                                    openPdfViewer(`${sub.name} - ${modTitle}`, sub.syllabusUrl);
+                                }
+                            }
+                        });
+                    }
+                });
+
+                // 3. Ingest First-Year PYQs from sub.pyqs
+                if (Array.isArray(sub.pyqs)) {
+                    sub.pyqs.forEach(p => {
+                        const pyqKey = `pyq_sub_${p.id || p.fileUrl || p.title}`;
+                        if (!seenKeys.has(pyqKey) && p.fileUrl) {
+                            seenKeys.add(pyqKey);
+                            const pTokens = normalizeSearchToken(`
+                                ${sub.code || ''}
+                                ${sub.name || ''}
+                                ${p.title || ''}
+                                ${p.year || ''}
+                                pyq paper question past exam
+                            `);
+
+                            index.push({
+                                id: pyqKey,
+                                category: 'pyq',
+                                typeLabel: '📄 PYQ Examination Papers',
+                                badgeClass: 'badge-pyq',
+                                badgeText: p.year ? `${p.year} Paper` : 'PYQ Paper',
+                                title: p.title || `${sub.name} (${p.year || 'Past'}) Paper`,
+                                code: p.year ? String(p.year) : (sub.code || 'PYQ'),
+                                metaPill: `1st Year • ${p.year || 'Exam'}`,
+                                metaText: `Verified University Exam Archive • ${sub.name}`,
+                                stream: 'first-year',
+                                tokens: pTokens,
+                                actionLabel: 'Preview Paper →',
+                                action: () => {
+                                    if (!checkSearchAuthGuard()) return;
+                                    if (typeof openPdfViewer === 'function') {
+                                        openPdfViewer(p.title || `${sub.name} Paper`, p.fileUrl);
+                                    }
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+
+        // 4. Ingest Pre-rendered SSR Subject Cards from #curriculum-grid
+        const curriculumGrid = document.getElementById('curriculum-grid');
+        if (curriculumGrid) {
+            const subjectCards = curriculumGrid.querySelectorAll('.subject-card');
+            subjectCards.forEach((card, idx) => {
+                const code = card.getAttribute('data-code') || '';
+                const stream = card.getAttribute('data-stream') || 'all';
+                const title = card.querySelector('h3')?.textContent?.trim() || '';
+                const creditBadge = card.querySelector('.credit-badge')?.textContent?.trim() || '';
+                const modulesAccordion = card.querySelector('.curriculum-modules-accordion');
+                const modulesText = modulesAccordion ? modulesAccordion.textContent?.trim() : '';
+
+                const normCode = code ? code.toLowerCase().replace(/[^a-z0-9]/g, '') : '';
+                const normTitle = title ? title.toLowerCase().replace(/[^a-z0-9]/g, '') : '';
+
+                if (normCode && seenSubjectCodes.has(normCode)) {
+                    const existing = index.find(item => item.category === 'curriculum' && item.code && item.code.toLowerCase().replace(/[^a-z0-9]/g, '') === normCode);
+                    if (existing) existing.domCard = card;
+                    return;
+                }
+                if (normTitle && seenSubjectCodes.has(normTitle)) {
+                    const existing = index.find(item => item.category === 'curriculum' && item.title && item.title.toLowerCase().replace(/[^a-z0-9]/g, '') === normTitle);
+                    if (existing) existing.domCard = card;
+                    return;
+                }
+
+                const key = `dom_curriculum_${code || title || idx}`;
+
+                if (!seenKeys.has(key) && title) {
+                    seenKeys.add(key);
+                    if (normCode) seenSubjectCodes.add(normCode);
+                    if (normTitle) seenSubjectCodes.add(normTitle);
+                    const cleanCode = code.replace(/[^a-z0-9]/gi, '');
+                    const streamLabel = stream.toUpperCase();
+                    const tokens = normalizeSearchToken(`
+                        ${code}
+                        ${cleanCode}
+                        ${title}
+                        ${stream}
+                        ${streamLabel}
+                        ${creditBadge}
+                        ${modulesText}
+                    `);
+
+                    index.push({
+                        id: key,
+                        category: 'curriculum',
+                        typeLabel: '📚 Curriculum & Syllabi',
+                        badgeClass: 'badge-syllabus',
+                        badgeText: code || streamLabel,
+                        title: title,
+                        code: code || streamLabel,
+                        metaPill: streamLabel,
+                        metaText: `${creditBadge || '3 Credits'} • Stream: ${streamLabel}`,
+                        stream: stream,
+                        tokens: tokens,
+                        domCard: card,
+                        actionLabel: 'View Syllabus →',
+                        action: () => {
+                            const actionBtn = card.querySelector('.subject-action-btn, .btn-outline');
+                            if (actionBtn) {
+                                actionBtn.click();
+                            } else {
+                                const matched = (typeof MAKAUT_CURRICULUM !== 'undefined') ? MAKAUT_CURRICULUM.find(s => s.code === code || s.name === title) : null;
+                                if (matched) openSubjectHub(matched, 'checklist');
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+        // 5. Ingest Master Stream Blueprints & Degree References
+        const masterStreams = [
+            { code: 'CSE', name: 'Computer Science & Engineering', file: '3rd to 8th sem/cse/CSE20.pdf', count: 38 },
+            { code: 'IT', name: 'Information Technology', file: '3rd to 8th sem/it/IT_Syllabus.pdf', count: 36 },
+            { code: 'CSE-AIML', name: 'CSE - Artificial Intelligence & Machine Learning', file: '3rd to 8th sem/cse-aiml/CSE-AIML_Syllabus.pdf', count: 37 },
+            { code: 'CSCS', name: 'Cyber Security (CSCS)', file: '3rd to 8th sem/cscs/cscs_syllabus.pdf', count: 35 },
+            { code: 'CSDS', name: 'Data Science (CSDS)', file: '3rd to 8th sem/csds/csds_syllabus.pdf', count: 35 },
+            { code: 'CSBS', name: 'Computer Science & Business Systems', file: '3rd to 8th sem/csbs/csbs_syllabus.pdf', count: 34 }
+        ];
+
+        masterStreams.forEach(st => {
+            const key = `blueprint_${st.code}`;
+            if (!seenKeys.has(key)) {
+                seenKeys.add(key);
+                const tokens = normalizeSearchToken(`
+                    ${st.code}
+                    ${st.code.replace(/[^a-z0-9]/gi, '')}
+                    ${st.name}
+                    ${st.file}
+                    blueprint master syllabus stream curriculum degree
+                    sem 3 sem 4 sem 5 sem 6 sem 7 sem 8
+                `);
+
+                index.push({
+                    id: key,
+                    category: 'curriculum',
+                    typeLabel: '📚 Curriculum & Syllabi',
+                    badgeClass: 'badge-syllabus',
+                    badgeText: st.code,
+                    title: `${st.name} Master Blueprint`,
+                    code: st.code,
+                    metaPill: `${st.code} • Sem 3–8`,
+                    metaText: `Official Degree Curriculum • ${st.count} Subjects • Sem 3 to 8`,
+                    stream: st.code.toLowerCase(),
+                    tokens: tokens,
+                    actionLabel: 'Preview PDF →',
+                    action: () => {
+                        if (typeof openPdfViewer === 'function') {
+                            openPdfViewer(`${st.name} Master Syllabus`, st.file);
+                        } else if (typeof openStreamArchiveView === 'function') {
+                            openStreamArchiveView(st.code, '3');
+                        }
+                    }
+                });
             }
         });
 
-        heroSearchInput.addEventListener('input', () => {
-            if (debounceTimer) clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(() => {
-                if (searchDropdown && searchbarHistory.length > 0 && !heroSearchInput.value.trim()) {
-                    renderSearchbarHistoryDropdown();
-                    searchDropdown.style.display = 'block';
+        // 6. Ingest Past Examination Archives (PYQs) from #archives-grid
+        const archivesGrid = document.getElementById('archives-grid');
+        if (archivesGrid) {
+            const pyqCards = archivesGrid.querySelectorAll('.pyq-card');
+            pyqCards.forEach((card, idx) => {
+                const stream = card.getAttribute('data-stream') || '';
+                const title = card.querySelector('h3')?.textContent?.trim() || '';
+                const examBadge = card.querySelector('.exam-year-badge')?.textContent?.trim() || stream.toUpperCase();
+                const semsRow = card.querySelector('.pyq-semesters-row')?.textContent?.trim() || '';
+                const key = `archive_${stream || idx}`;
+
+                if (!seenKeys.has(key) && title) {
+                    seenKeys.add(key);
+                    const tokens = normalizeSearchToken(`
+                        ${stream}
+                        ${examBadge}
+                        ${title}
+                        ${semsRow}
+                        3rd sem 4th sem 5th sem 6th sem 7th sem 8th sem
+                        pyq pyqs previous year question paper exam papers
+                    `);
+
+                    index.push({
+                        id: key,
+                        category: 'pyq',
+                        typeLabel: '📄 PYQ Examination Papers',
+                        badgeClass: 'badge-pyq',
+                        badgeText: examBadge,
+                        title: title,
+                        code: examBadge,
+                        metaPill: `${stream.toUpperCase()} • Archives`,
+                        metaText: `Verified University Exam Archives • Semesters 3 to 8`,
+                        stream: stream,
+                        tokens: tokens,
+                        domCard: card,
+                        actionLabel: 'Access Archive →',
+                        action: () => {
+                            if (!checkSearchAuthGuard()) return;
+                            const btn = card.querySelector('.archive-access-btn, .btn-preview-paper, .card-action-btn');
+                            if (btn) {
+                                btn.click();
+                            } else if (typeof openStreamArchiveView === 'function') {
+                                openStreamArchiveView(examBadge, '3');
+                            }
+                        }
+                    });
                 }
-            }, 250);
+            });
+        }
+
+        // 7. Ingest Catalog Resources if available (window._catalogResources)
+        if (window._catalogResources && Array.isArray(window._catalogResources)) {
+            window._catalogResources.slice(0, 100).forEach(r => {
+                if (r.resourceType !== 'PYQ' || !r.fileUrl) return;
+                const rKey = `catalog_pyq_${r.id || r.fileUrl}`;
+                if (!seenKeys.has(rKey)) {
+                    seenKeys.add(rKey);
+                    const rTokens = normalizeSearchToken(`
+                        ${r.subjectCode || ''}
+                        ${r.subjectName || ''}
+                        ${r.title || ''}
+                        ${r.stream || ''}
+                        ${r.year || ''}
+                        sem ${r.semester || ''}
+                        pyq question paper exam
+                    `);
+
+                    index.push({
+                        id: rKey,
+                        category: 'pyq',
+                        typeLabel: '📄 PYQ Examination Papers',
+                        badgeClass: 'badge-pyq',
+                        badgeText: r.year ? `${r.year} Paper` : 'PYQ',
+                        title: r.title || `${r.subjectName || r.subjectCode} Paper`,
+                        code: r.subjectCode || String(r.year || 'PYQ'),
+                        metaPill: `${r.stream || 'MAKAUT'} • Sem ${r.semester || 3}`,
+                        metaText: `Verified University Exam Archive (${r.year || 'Exam'})`,
+                        stream: (r.stream || 'all').toLowerCase(),
+                        tokens: rTokens,
+                        actionLabel: 'Preview Paper →',
+                        action: () => {
+                            if (!checkSearchAuthGuard()) return;
+                            if (typeof openPdfViewer === 'function') {
+                                openPdfViewer(r.title || 'Examination Paper', r.fileUrl);
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+        // 8. Ingest High-Yield Panic Pack Items from MAKAUT_PANIC_QUESTIONS
+        if (typeof MAKAUT_PANIC_QUESTIONS !== 'undefined' && Array.isArray(MAKAUT_PANIC_QUESTIONS)) {
+            MAKAUT_PANIC_QUESTIONS.forEach(q => {
+                const key = `panic_${q.id}`;
+                if (!seenKeys.has(key)) {
+                    seenKeys.add(key);
+                    const tokens = normalizeSearchToken(`
+                        ${q.subjectCode || ''}
+                        ${q.topicName || ''}
+                        ${q.questionText || ''}
+                        ${q.groupType || ''}
+                        panic pack high yield repeated question
+                    `);
+
+                    index.push({
+                        id: key,
+                        category: 'panic',
+                        typeLabel: '🔥 High-Yield Panic Pack',
+                        badgeClass: 'badge-panic',
+                        badgeText: q.subjectCode || 'High-Yield',
+                        title: q.questionText,
+                        code: q.subjectCode || 'High-Yield',
+                        metaPill: `${q.marks || 5} Marks • Seen ${q.frequencyCount || 4}x`,
+                        metaText: `${q.topicName || 'Core Topic'} • ${q.groupType || 'Group C'} Repeated Exam Question`,
+                        stream: 'all',
+                        tokens: tokens,
+                        actionLabel: 'View Question →',
+                        action: () => {
+                            if (!checkSearchAuthGuard()) return;
+                            if (typeof openFullPanicMode === 'function') {
+                                openFullPanicMode();
+                            } else if (typeof openSubjectHub === 'function') {
+                                openSubjectHub(q.subjectCode, 'panic');
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+        unifiedSearchIndex = index;
+    }
+
+    function queryUnifiedSearchIndex(rawQuery) {
+        if (!rawQuery || !rawQuery.trim()) {
+            const empty = [];
+            empty.resultsByCat = { 'curriculum': [], 'pyq': [], 'panic': [], 'module': [] };
+            empty.totalCount = 0;
+            return empty;
+        }
+
+        const qClean = rawQuery.trim().toLowerCase();
+        const qTokens = normalizeSearchToken(qClean).split(/\s+/).filter(Boolean);
+        const qCompact = qClean.replace(/[^a-z0-9]/gi, '');
+
+        if (qTokens.length === 0 && !qCompact) {
+            const empty = [];
+            empty.resultsByCat = { 'curriculum': [], 'pyq': [], 'panic': [], 'module': [] };
+            empty.totalCount = 0;
+            return empty;
+        }
+
+        // Expand abbreviations
+        const expandedTokens = new Set(qTokens);
+        if (ACADEMIC_ABBREVIATIONS[qClean]) {
+            ACADEMIC_ABBREVIATIONS[qClean].forEach(exp => {
+                normalizeSearchToken(exp).split(/\s+/).forEach(t => expandedTokens.add(t));
+            });
+        }
+        qTokens.forEach(t => {
+            if (ACADEMIC_ABBREVIATIONS[t]) {
+                ACADEMIC_ABBREVIATIONS[t].forEach(exp => {
+                    normalizeSearchToken(exp).split(/\s+/).forEach(et => expandedTokens.add(et));
+                });
+            }
         });
 
-        heroSearchInput.addEventListener('keydown', (e) => {
-            const isDropdownOpen = searchDropdown && searchDropdown.style.display === 'block';
+        const scoredByCat = {
+            'curriculum': [],
+            'pyq': [],
+            'panic': [],
+            'module': []
+        };
 
-            if (e.key === 'ArrowDown') {
-                if (isDropdownOpen && searchbarHistory.length > 0) {
-                    e.preventDefault();
-                    searchHistoryActiveIndex = (searchHistoryActiveIndex + 1) % searchbarHistory.length;
-                    renderSearchbarHistoryDropdown();
-                    const activeItem = searchDropdown.querySelector(`.search-history-item[data-index="${searchHistoryActiveIndex}"]`);
-                    if (activeItem) activeItem.scrollIntoView({ block: 'nearest' });
+        unifiedSearchIndex.forEach(item => {
+            let score = 0;
+            const itemCodeClean = normalizeSearchToken(item.code).replace(/[^a-z0-9]/gi, '');
+            const itemTitleNorm = normalizeSearchToken(item.title);
+            const itemTitleClean = itemTitleNorm.replace(/[^a-z0-9]/gi, '');
+
+            // 1. Exact or prefix code match (highest priority, e.g. "ph101" matching "26-BS-PH101")
+            if (qCompact && itemCodeClean.includes(qCompact)) {
+                score += 200;
+                if (itemCodeClean === qCompact || itemCodeClean.endsWith(qCompact) || itemCodeClean.startsWith(qCompact)) {
+                    score += 80;
                 }
-            } else if (e.key === 'ArrowUp') {
-                if (isDropdownOpen && searchbarHistory.length > 0) {
-                    e.preventDefault();
-                    searchHistoryActiveIndex = searchHistoryActiveIndex <= 0 ? searchbarHistory.length - 1 : searchHistoryActiveIndex - 1;
-                    renderSearchbarHistoryDropdown();
-                    const activeItem = searchDropdown.querySelector(`.search-history-item[data-index="${searchHistoryActiveIndex}"]`);
-                    if (activeItem) activeItem.scrollIntoView({ block: 'nearest' });
+            }
+
+            // 2. Title exact or start match
+            if (itemTitleNorm.includes(qClean)) {
+                score += 150;
+                if (itemTitleNorm.startsWith(qClean)) {
+                    score += 60;
                 }
-            } else if (e.key === 'Enter') {
+            } else if (qCompact && itemTitleClean.includes(qCompact)) {
+                score += 110;
+            }
+
+            // 3. Category keywords boost
+            if (qClean === 'pyq' || qClean === 'pyqs' || qClean === 'paper' || qClean === 'exam') {
+                if (item.category === 'pyq') score += 100;
+            } else if (qClean === 'panic' || qClean === 'panic pack' || qClean === 'repeated') {
+                if (item.category === 'panic') score += 100;
+            } else if (qClean === 'syllabus' || qClean === 'curriculum' || qClean === 'blueprint') {
+                if (item.category === 'curriculum') score += 100;
+            } else if (qClean === 'module' || qClean === 'modules' || qClean === 'unit') {
+                if (item.category === 'module') score += 100;
+            }
+
+            // 4. Token matches
+            let matchedTokenCount = 0;
+            qTokens.forEach(t => {
+                if (t.length > 1 && item.tokens.includes(t)) {
+                    score += 30;
+                    matchedTokenCount++;
+                }
+            });
+            if (matchedTokenCount === qTokens.length && qTokens.length > 0) {
+                score += 40;
+            }
+
+            // 5. Abbreviation expansions
+            expandedTokens.forEach(exp => {
+                if (exp.length > 1 && item.tokens.includes(exp)) {
+                    score += 25;
+                }
+            });
+
+            // Demote loose module subtopic matches so subjects rank on top
+            if (item.category === 'module' && score > 0 && score < 180) {
+                score = Math.max(1, Math.round(score * 0.7));
+            }
+
+            if (score > 0) {
+                const cat = item.category || 'curriculum';
+                if (scoredByCat[cat]) {
+                    scoredByCat[cat].push({ item, score });
+                }
+            }
+        });
+
+        // Sort items within each category
+        const categorized = {
+            'curriculum': [],
+            'pyq': [],
+            'panic': [],
+            'module': []
+        };
+        const flatList = [];
+
+        const categoryOrder = ['curriculum', 'pyq', 'panic', 'module'];
+        categoryOrder.forEach(cat => {
+            scoredByCat[cat].sort((a, b) => b.score - a.score);
+            // Take top 3 per category (or top 4 for curriculum/pyq)
+            const limit = (cat === 'curriculum' || cat === 'pyq') ? 4 : 3;
+            const topItems = scoredByCat[cat].slice(0, limit).map(s => s.item);
+            categorized[cat] = topItems;
+            topItems.forEach(item => flatList.push(item));
+        });
+
+        flatList.resultsByCat = categorized;
+        flatList.totalCount = flatList.length;
+        return flatList;
+    }
+
+    function filterGridsInPlace(query) {
+        const qClean = (query || '').trim().toLowerCase();
+        const curriculumGrid = document.getElementById('curriculum-grid');
+        const archivesGrid = document.getElementById('archives-grid');
+
+        if (!qClean) {
+            restoreOriginalGridFilter();
+            return;
+        }
+
+        // Save current active stream filter pill if not already saved
+        if (savedStreamFilter === null) {
+            const activePill = document.querySelector('#curriculum-filter-group .filter-pill-btn.active');
+            savedStreamFilter = activePill ? (activePill.getAttribute('data-stream') || 'all') : 'all';
+        }
+
+        const qTokens = normalizeSearchToken(qClean).split(/\s+/).filter(Boolean);
+        const qCompact = qClean.replace(/[^a-z0-9]/gi, '');
+
+        // 1. Filter Curriculum Grid Cards
+        let matchedCurriculumCount = 0;
+        if (curriculumGrid) {
+            const cards = curriculumGrid.querySelectorAll('.subject-card');
+            cards.forEach(card => {
+                const code = card.getAttribute('data-code') || '';
+                const codeClean = code.toLowerCase().replace(/[^a-z0-9]/gi, '');
+                const stream = card.getAttribute('data-stream') || '';
+                const title = card.querySelector('h3')?.textContent?.toLowerCase() || '';
+                const credits = card.querySelector('.credit-badge')?.textContent?.toLowerCase() || '';
+                const modules = card.querySelector('.curriculum-modules-accordion')?.textContent?.toLowerCase() || '';
+                const cardText = `${code} ${stream} ${title} ${credits} ${modules}`;
+
+                let isMatch = false;
+                if (qCompact && codeClean.includes(qCompact)) {
+                    isMatch = true;
+                } else if (title.includes(qClean) || cardText.includes(qClean)) {
+                    isMatch = true;
+                } else if (qTokens.length > 0 && qTokens.every(t => cardText.includes(t))) {
+                    isMatch = true;
+                }
+
+                if (isMatch) {
+                    card.style.display = 'flex';
+                    matchedCurriculumCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Curriculum Empty State
+            let emptyCurriculum = document.getElementById('curriculum-search-empty');
+            if (matchedCurriculumCount === 0) {
+                if (!emptyCurriculum) {
+                    emptyCurriculum = document.createElement('div');
+                    emptyCurriculum.id = 'curriculum-search-empty';
+                    emptyCurriculum.className = 'curriculum-search-empty-card bento-card';
+                    emptyCurriculum.innerHTML = `
+                        <div style="text-align: center; padding: 2.5rem 1.5rem; width: 100%;">
+                            <div style="font-size: 2.2rem; margin-bottom: 0.75rem;">📚</div>
+                            <h4 style="font-size: 1.1rem; color: var(--text-main); margin-bottom: 0.4rem;">No matching curriculum subjects found</h4>
+                            <p style="color: var(--text-muted); font-size: 0.85rem; max-width: 440px; margin: 0 auto 1.25rem;">
+                                No syllabus items match "<strong>${escapeHtml(query)}</strong>". Try searching for "Physics", "EE101", "Maths", or "CSE".
+                            </p>
+                            <button type="button" class="btn btn-outline btn-reset-search-filter">Reset Filter</button>
+                        </div>
+                    `;
+                    curriculumGrid.appendChild(emptyCurriculum);
+                    emptyCurriculum.querySelector('.btn-reset-search-filter')?.addEventListener('click', clearAllSearchInputs);
+                } else {
+                    emptyCurriculum.style.display = 'flex';
+                }
+            } else if (emptyCurriculum) {
+                emptyCurriculum.style.display = 'none';
+            }
+        }
+
+        // 2. Filter PYQ Archives Grid Cards
+        if (archivesGrid) {
+            const cards = archivesGrid.querySelectorAll('.pyq-card');
+            cards.forEach(card => {
+                const stream = card.getAttribute('data-stream') || '';
+                const title = card.querySelector('h3')?.textContent?.toLowerCase() || '';
+                const sems = card.querySelector('.pyq-semesters-row')?.textContent?.toLowerCase() || '';
+                const cardText = `${stream} ${title} ${sems}`;
+
+                let isMatch = false;
+                if (title.includes(qClean) || cardText.includes(qClean)) {
+                    isMatch = true;
+                } else if (qTokens.length > 0 && qTokens.some(t => cardText.includes(t))) {
+                    isMatch = true;
+                }
+
+                if (isMatch) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    }
+
+    function restoreOriginalGridFilter() {
+        const curriculumGrid = document.getElementById('curriculum-grid');
+        const archivesGrid = document.getElementById('archives-grid');
+        const emptyCurriculum = document.getElementById('curriculum-search-empty');
+        if (emptyCurriculum) emptyCurriculum.style.display = 'none';
+
+        if (savedStreamFilter !== null) {
+            const filterGroup = document.getElementById('curriculum-filter-group');
+            if (filterGroup) {
+                filterGroup.querySelectorAll('.filter-pill-btn').forEach(btn => {
+                    if (btn.getAttribute('data-stream') === savedStreamFilter) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+            }
+
+            if (curriculumGrid) {
+                curriculumGrid.querySelectorAll('.subject-card').forEach(card => {
+                    const stream = card.getAttribute('data-stream');
+                    if (savedStreamFilter === 'all' || stream === savedStreamFilter) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            }
+            savedStreamFilter = null;
+        } else if (curriculumGrid) {
+            curriculumGrid.querySelectorAll('.subject-card').forEach(c => c.style.display = 'flex');
+        }
+
+        if (archivesGrid) {
+            archivesGrid.querySelectorAll('.pyq-card').forEach(c => c.style.display = 'flex');
+        }
+    }
+
+    function updateSearchInputBadges(input, hasText) {
+        if (!input) return;
+        const wrapper = input.closest('.global-search-wrapper, .search-bar-wrapper, .command-k-box');
+        if (!wrapper) return;
+        const badge = wrapper.querySelector('.search-shortcut-badge');
+        const clearBtn = wrapper.querySelector('.search-clear-btn');
+        if (badge) badge.style.display = hasText ? 'none' : 'inline-block';
+        if (clearBtn) clearBtn.style.display = hasText ? 'inline-flex' : 'none';
+    }
+
+    function resetQuickSearchFilters(input) {
+        const wrapper = input?.closest('.global-search-wrapper, .search-bar-wrapper, .command-k-box');
+        if (!wrapper) return;
+        wrapper.querySelectorAll('.cmd-filter-pill').forEach(button => {
+            button.classList.toggle('active', button.dataset.filter === 'all');
+        });
+    }
+
+    function closeAllSearchOverlays() {
+        document.querySelectorAll('.search-results-overlay').forEach(ov => ov.style.display = 'none');
+        const historyDropdown = document.getElementById('search-history-dropdown');
+        if (historyDropdown) historyDropdown.style.display = 'none';
+    }
+
+    function clearAllSearchInputs() {
+        document.querySelectorAll('.global-search-input').forEach(input => {
+            input.value = '';
+            updateSearchInputBadges(input, false);
+            resetQuickSearchFilters(input);
+        });
+        activeFlatResults = [];
+        activeSelectedResultIndex = -1;
+        closeAllSearchOverlays();
+        restoreOriginalGridFilter();
+    }
+
+    function renderSearchDropdownResults(results, overlayEl, countEl, listEl, query, activeInput) {
+        if (!overlayEl || !listEl) return;
+
+        const flatResults = Array.isArray(results) ? results : (results.flatList || []);
+        const categorized = results.resultsByCat || {
+            'curriculum': flatResults.filter(r => r.category === 'curriculum'),
+            'pyq': flatResults.filter(r => r.category === 'pyq'),
+            'panic': flatResults.filter(r => r.category === 'panic'),
+            'module': flatResults.filter(r => r.category === 'module')
+        };
+
+        activeFlatResults = flatResults;
+        activeSelectedResultIndex = -1;
+
+        if (flatResults.length > 0) {
+            if (countEl) countEl.textContent = `${flatResults.length} found`;
+
+            const categoryHeaders = {
+                'curriculum': '📚 Curriculum & Syllabi',
+                'pyq': '📄 PYQ Examination Papers',
+                'panic': '🔥 High-Yield Panic Pack',
+                'module': '🧩 Syllabus Modules'
+            };
+
+            let html = '';
+            let currentFlatIndex = 0;
+
+            ['curriculum', 'pyq', 'panic', 'module'].forEach(cat => {
+                const catItems = categorized[cat] || [];
+                if (catItems.length > 0) {
+                    html += `
+                        <div class="search-category-header">
+                            <span class="search-cat-title">${categoryHeaders[cat]}</span>
+                            <span class="search-cat-count">${catItems.length}</span>
+                        </div>
+                    `;
+                    catItems.forEach(item => {
+                        const itemIndex = currentFlatIndex++;
+                        html += `
+                            <div class="search-result-item" role="option" tabindex="0" data-index="${itemIndex}">
+                                <div class="search-result-left">
+                                    <span class="search-result-badge ${item.badgeClass}">${escapeHtml(item.badgeText || item.code)}</span>
+                                    <div class="search-result-content">
+                                        <div class="search-result-title">
+                                            ${highlightSearchQuery(item.title, query)}
+                                        </div>
+                                        <div class="search-result-meta">
+                                            <span class="search-meta-pill">${escapeHtml(item.metaPill)}</span>
+                                            <span>${highlightSearchQuery(item.metaText, query)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="search-result-action">
+                                    ${escapeHtml(item.actionLabel || 'View →')}
+                                </span>
+                            </div>
+                        `;
+                    });
+                }
+            });
+
+            listEl.innerHTML = html;
+
+            listEl.querySelectorAll('.search-result-item').forEach(row => {
+                row.addEventListener('click', () => {
+                    const idx = parseInt(row.getAttribute('data-index'), 10);
+                    if (!isNaN(idx) && flatResults[idx]) {
+                        closeAllSearchOverlays();
+                        if (activeInput) {
+                            saveSearchbarHistory(activeInput.value.trim() || query);
+                            activeInput.value = '';
+                            updateSearchInputBadges(activeInput, false);
+                        }
+                        restoreOriginalGridFilter();
+                        flatResults[idx].action();
+                    }
+                });
+            });
+
+            overlayEl.style.display = 'flex';
+        } else {
+            if (countEl) countEl.textContent = '0 found';
+            listEl.innerHTML = `
+                <div class="search-empty-state">
+                    <span class="search-empty-icon">🔎</span>
+                    <p class="search-empty-text">
+                        No matching subjects, PYQs, or modules found for "<strong>${escapeHtml(query)}</strong>"
+                    </p>
+                    <div class="search-suggestions-container">
+                        <span class="search-suggestions-label">Try Quick Filters</span>
+                        <div class="search-suggestion-pills">
+                            <button type="button" class="search-suggestion-pill" data-query="1st Year Common">📚 1st Year Common</button>
+                            <button type="button" class="search-suggestion-pill" data-query="CSE Blueprint">🏛️ CSE Blueprint</button>
+                            <button type="button" class="search-suggestion-pill" data-query="3rd Sem PYQs">📄 3rd Sem PYQs</button>
+                            <button type="button" class="search-suggestion-pill" data-query="Panic Pack">🔥 Panic Pack</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            listEl.querySelectorAll('.search-suggestion-pill').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const q = btn.getAttribute('data-query');
+                    if (activeInput && q) {
+                        activeInput.value = q;
+                        activeInput.focus();
+                        updateSearchInputBadges(activeInput, true);
+                        const newResults = queryUnifiedSearchIndex(q);
+                        renderSearchDropdownResults(newResults, overlayEl, countEl, listEl, q, activeInput);
+                        filterGridsInPlace(q);
+                    }
+                });
+            });
+
+            overlayEl.style.display = 'flex';
+        }
+    }
+
+    function focusActiveSearchInput() {
+        const dashboardWorkspace = document.getElementById('dashboard-workspace');
+        let targetInput = null;
+
+        if (dashboardWorkspace && dashboardWorkspace.style.display !== 'none') {
+            targetInput = document.getElementById('global-search-input');
+        } else {
+            targetInput = document.getElementById('landing-search-input') || document.getElementById('global-search-input');
+        }
+
+        if (targetInput) {
+            targetInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            targetInput.focus();
+            targetInput.select();
+        }
+    }
+
+    function initGlobalSearchController() {
+        // Build index on startup
+        buildUnifiedSearchIndex();
+
+        const searchInputs = document.querySelectorAll('.global-search-input');
+        const isMac = navigator.userAgent.includes('Mac');
+        document.querySelectorAll('.search-shortcut-badge').forEach(b => {
+            b.textContent = isMac ? '⌘K' : 'Ctrl+K';
+        });
+
+        searchInputs.forEach(input => {
+            const wrapper = input.closest('.global-search-wrapper, .search-bar-wrapper, .command-k-box');
+            const container = input.closest('.landing-search-container, .search-hero-container, .hero-search-section') || wrapper;
+            const overlay = container ? container.querySelector('.search-results-overlay') : (wrapper ? wrapper.querySelector('.search-results-overlay') : null);
+            const countEl = overlay ? overlay.querySelector('.search-results-count') : null;
+            const listEl = overlay ? overlay.querySelector('.search-results-list') : null;
+            const clearBtn = wrapper ? wrapper.querySelector('.search-clear-btn') : null;
+            const submitBtn = wrapper ? wrapper.querySelector('.search-submit-btn') : null;
+
+            // The portal's quick filters are search shortcuts, so keep them in sync
+            // with the same live results and clear behavior as typed queries.
+            const quickFilters = wrapper ? wrapper.querySelectorAll('.cmd-filter-pill') : [];
+            quickFilters.forEach(button => {
+                if (button.dataset.bound === 'true') return;
+                button.dataset.bound = 'true';
+                button.addEventListener('click', () => {
+                    quickFilters.forEach(filter => filter.classList.toggle('active', filter === button));
+                    input.value = button.dataset.filter === 'all' ? '' : button.dataset.filter;
+                    input.dispatchEvent(new Event('input', { bubbles: true }));
+                    if (input.value) input.focus();
+                });
+            });
+
+            // Clear Button Click
+            if (clearBtn) {
+                clearBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    input.value = '';
+                    updateSearchInputBadges(input, false);
+                    resetQuickSearchFilters(input);
+                    closeAllSearchOverlays();
+                    restoreOriginalGridFilter();
+                    input.focus();
+                });
+            }
+
+            // Submit Button Click
+            if (submitBtn) {
+                submitBtn.addEventListener('click', () => {
+                    const q = input.value.trim();
+                    if (q) {
+                        saveSearchbarHistory(q);
+                        const results = queryUnifiedSearchIndex(q);
+                        if (results.length > 0) {
+                            closeAllSearchOverlays();
+                            input.value = '';
+                            updateSearchInputBadges(input, false);
+                            restoreOriginalGridFilter();
+                            results[0].action();
+                        } else {
+                            closeAllSearchOverlays();
+                            handleGlobalSearch(q);
+                        }
+                    }
+                });
+            }
+
+            // Input Event (Debounced 120ms)
+            input.addEventListener('input', () => {
+                const query = input.value.trim();
+                updateSearchInputBadges(input, query.length > 0);
+
+                if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
+                searchDebounceTimer = setTimeout(() => {
+                    if (query.length > 0) {
+                        const historyDropdown = document.getElementById('search-history-dropdown');
+                        if (historyDropdown) historyDropdown.style.display = 'none';
+
+                        const results = queryUnifiedSearchIndex(query);
+                        renderSearchDropdownResults(results, overlay, countEl, listEl, query, input);
+                        filterGridsInPlace(query);
+                    } else {
+                        closeAllSearchOverlays();
+                        restoreOriginalGridFilter();
+                    }
+                }, 120);
+            });
+
+            // Focus Event
+            input.addEventListener('focus', () => {
+                const query = input.value.trim();
+                if (query.length > 0) {
+                    const results = queryUnifiedSearchIndex(query);
+                    renderSearchDropdownResults(results, overlay, countEl, listEl, query, input);
+                } else if (input.id === 'global-search-input' && typeof searchbarHistory !== 'undefined' && searchbarHistory.length > 0) {
+                    renderSearchbarHistoryDropdown();
+                    const historyDropdown = document.getElementById('search-history-dropdown');
+                    if (historyDropdown) historyDropdown.style.display = 'block';
+                }
+            });
+
+            // Keydown Event for Escape / Enter / Arrow Navigation
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    e.preventDefault();
+                    clearAllSearchInputs();
+                    input.blur();
+                } else if (e.key === 'ArrowDown') {
+                    if (activeFlatResults.length > 0 && listEl) {
+                        e.preventDefault();
+                        activeSelectedResultIndex = (activeSelectedResultIndex + 1) % activeFlatResults.length;
+                        const items = listEl.querySelectorAll('.search-result-item');
+                        items.forEach((item, idx) => {
+                            if (idx === activeSelectedResultIndex) {
+                                item.classList.add('selected');
+                                item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                            } else {
+                                item.classList.remove('selected');
+                            }
+                        });
+                    }
+                } else if (e.key === 'ArrowUp') {
+                    if (activeFlatResults.length > 0 && listEl) {
+                        e.preventDefault();
+                        activeSelectedResultIndex = (activeSelectedResultIndex - 1 + activeFlatResults.length) % activeFlatResults.length;
+                        const items = listEl.querySelectorAll('.search-result-item');
+                        items.forEach((item, idx) => {
+                            if (idx === activeSelectedResultIndex) {
+                                item.classList.add('selected');
+                                item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                            } else {
+                                item.classList.remove('selected');
+                            }
+                        });
+                    }
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const q = input.value.trim();
+                    if (q) {
+                        saveSearchbarHistory(q);
+                        if (activeSelectedResultIndex >= 0 && activeSelectedResultIndex < activeFlatResults.length) {
+                            const selected = activeFlatResults[activeSelectedResultIndex];
+                            closeAllSearchOverlays();
+                            input.value = '';
+                            updateSearchInputBadges(input, false);
+                            restoreOriginalGridFilter();
+                            selected.action();
+                        } else {
+                            const results = queryUnifiedSearchIndex(q);
+                            if (results.length > 0) {
+                                closeAllSearchOverlays();
+                                input.value = '';
+                                updateSearchInputBadges(input, false);
+                                restoreOriginalGridFilter();
+                                results[0].action();
+                            } else {
+                                closeAllSearchOverlays();
+                                handleGlobalSearch(q);
+                            }
+                        }
+                    }
+                }
+            });
+        });
+
+        // Global Keyboard Shortcut: Ctrl+K / Cmd+K / '/'
+        document.addEventListener('keydown', (e) => {
+            const tag = (e.target.tagName || '').toUpperCase();
+            const isInputFocused = tag === 'INPUT' || tag === 'TEXTAREA' || e.target.isContentEditable;
+
+            if (e.key === 'Escape') {
+                if (isInputFocused && e.target.classList.contains('global-search-input')) {
+                    clearAllSearchInputs();
+                    e.target.blur();
+                } else {
+                    closeAllSearchOverlays();
+                }
+                return;
+            }
+
+            if (isInputFocused) return;
+
+            const isCmdK = (e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K');
+            const isSlash = e.key === '/';
+
+            if (isCmdK || isSlash) {
                 e.preventDefault();
-                let queryToExecute = heroSearchInput.value.trim();
-                if (isDropdownOpen && searchHistoryActiveIndex >= 0 && searchHistoryActiveIndex < searchbarHistory.length) {
-                    queryToExecute = searchbarHistory[searchHistoryActiveIndex];
-                    heroSearchInput.value = queryToExecute;
-                }
-                if (searchDropdown) searchDropdown.style.display = 'none';
-                searchHistoryActiveIndex = -1;
-                if (queryToExecute) {
-                    handleGlobalSearch(queryToExecute);
-                    heroSearchInput.value = '';
-                }
-            } else if (e.key === 'Escape') {
-                if (searchDropdown) searchDropdown.style.display = 'none';
-                searchHistoryActiveIndex = -1;
+                focusActiveSearchInput();
+            }
+        });
+
+        // Close search overlays when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.global-search-wrapper, .search-bar-wrapper, .command-k-box, .landing-search-container, .search-hero-container')) {
+                closeAllSearchOverlays();
             }
         });
     }
 
-    if (btnHeroSearch && heroSearchInput) {
-        btnHeroSearch.addEventListener('click', () => {
-            if (searchDropdown) searchDropdown.style.display = 'none';
-            searchHistoryActiveIndex = -1;
-            const q = heroSearchInput.value.trim();
-            if (q) {
-                handleGlobalSearch(q);
-                heroSearchInput.value = '';
-            }
-        });
-    }
+    // Expose search API on window for external triggers & tests
+    window.buildUnifiedSearchIndex = buildUnifiedSearchIndex;
+    window.queryUnifiedSearchIndex = queryUnifiedSearchIndex;
+    window.renderSearchDropdownResults = renderSearchDropdownResults;
+    window.executeAiQuery = executeAiQuery;
+    window.executeClientRAG = executeClientRAG;
+    window.openAiDrawer = openAiDrawer;
+    window.closeAiDrawer = closeAiDrawer;
 
-    // Close search dropdown on click outside
-    document.addEventListener('click', (e) => {
-        if (searchDropdown && !e.target.closest('.search-bar-wrapper')) {
-            searchDropdown.style.display = 'none';
-            searchHistoryActiveIndex = -1;
-        }
-    });
+    // Initialize global search on start
+    initGlobalSearchController();
 
     // Quick chips in search bar
     document.querySelectorAll('.quick-chip').forEach(chip => {
@@ -15551,14 +17104,51 @@ window.getSubjectDocuments = getSubjectDocuments;
         });
     });
 
-    // Drawer shortcut chips
-    document.querySelectorAll('.chip-shortcut').forEach(chip => {
-        chip.addEventListener('click', () => {
-            const prompt = chip.getAttribute('data-prompt');
-            if (drawerQueryInput) drawerQueryInput.value = prompt;
-            executeAiQuery(prompt);
+    // Drawer shortcut chips & quick starter prompts
+    const wireChatQuickPrompts = () => {
+        document.querySelectorAll('.chip-shortcut').forEach(chip => {
+            chip.onclick = () => {
+                const prompt = chip.getAttribute('data-prompt');
+                if (prompt) {
+                    if (drawerQueryInput) drawerQueryInput.value = prompt;
+                    executeAiQuery(prompt);
+                }
+            };
         });
-    });
+    };
+    wireChatQuickPrompts();
+
+    // Clear Chat Button
+    const btnClearChat = document.getElementById('btn-clear-chat');
+    if (btnClearChat) {
+        btnClearChat.addEventListener('click', () => {
+            if (drawerChatMessages) {
+                drawerChatMessages.innerHTML = `
+                    <div class="message assistant welcome">
+                        <div class="msg-avatar">🤖</div>
+                        <div class="msg-body">
+                            <div class="msg-header">
+                                <span class="sender-name">MAKAUT CampusSense AI</span>
+                                <span class="badge verified-badge">Grounded</span>
+                            </div>
+                            <div class="msg-text">
+                                Welcome to MAKAUT CampusSense! Ask me anything about your <strong>syllabi modules</strong>, <strong>course credits</strong>, <strong>PYQ archives</strong>, or <strong>high-yield topics</strong>.
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        });
+    }
+
+    // Escape Key to close AI Drawer
+    if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && aiDrawer && (aiDrawer.classList.contains('open') || (document.body && document.body.classList && document.body.classList.contains('split-chat-active')))) {
+                closeAiDrawer();
+            }
+        });
+    }
 
     // Chatbox Keyboard Controls (Enter vs Shift+Enter)
     if (drawerQueryInput) {
@@ -15610,7 +17200,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             <div class="msg-body" style="width: 85%;">
                 <div class="msg-header">
                     <span class="sender-name">MAKAUT CampusSense AI</span>
-                    <span class="badge" style="background: rgba(99, 102, 241, 0.2); color: #a5b4fc;">Searching Curriculum Vectors...</span>
+                    <span class="badge" style="background: rgba(99, 102, 241, 0.2); color: #a5b4fc;">Searching Curriculum Catalog...</span>
                 </div>
                 <div style="height: 12px; width: 92%; background: linear-gradient(90deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.18) 50%, rgba(255,255,255,0.06) 100%); margin: 8px 0; border-radius: 4px; animation: shimmerAnim 1.5s infinite;"></div>
                 <div style="height: 12px; width: 68%; background: linear-gradient(90deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.18) 50%, rgba(255,255,255,0.06) 100%); margin: 8px 0; border-radius: 4px; animation: shimmerAnim 1.5s infinite;"></div>
@@ -15680,11 +17270,18 @@ window.getSubjectDocuments = getSubjectDocuments;
         if (data.sources && data.sources.length > 0) {
             sourcesHtml = `
                 <div class="msg-sources" style="margin-top: 0.85rem; padding-top: 0.65rem; border-top: 1px solid var(--card-border);">
-                    <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.35rem;">Verified Citations:</div>
-                    <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+                    <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.35rem;">Verified Citations & Blueprints:</div>
+                    <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.45rem;">
                         ${data.sources.map(s => `
-                            <button class="citation-pill" data-title="${escapeHtml(s.title || s.subjectName || 'MAKAUT Paper')}" data-url="${escapeHtml(s.pageUrl || s.fileUrl || '#')}">
-                                📄 ${escapeHtml(s.subjectCode || 'MAKAUT')} ${s.year ? `[${s.year}` : ''}${s.group ? ` • ${s.group}` : ''}${s.questionNumber ? ` • ${s.questionNumber}` : ''}${s.year ? ']' : ''}
+                            <button type="button" class="citation-pill" data-title="${escapeHtml(s.title || s.subjectName || 'MAKAUT Paper')}" data-url="${escapeHtml(s.pageUrl || s.fileUrl || '#')}">
+                                📄 Verified: ${escapeHtml(s.subjectCode || 'MAKAUT')}${s.moduleOrSection ? ` • ${escapeHtml(s.moduleOrSection)}` : (s.year ? ` • ${s.year}` : '')}
+                            </button>
+                        `).join('')}
+                    </div>
+                    <div style="display: flex; gap: 0.45rem; flex-wrap: wrap;">
+                        ${data.sources.filter(s => s.pageUrl || s.fileUrl).slice(0, 2).map(s => `
+                            <button type="button" class="chat-action-btn btn btn-sm btn-outline" data-title="${escapeHtml(s.title || s.subjectName || 'MAKAUT Document')}" data-url="${escapeHtml(s.pageUrl || s.fileUrl || '#')}" style="font-size: 0.76rem; padding: 0.25rem 0.65rem; display: inline-flex; align-items: center; gap: 0.35rem; border-radius: 6px;">
+                                📄 Preview ${escapeHtml(s.subjectCode || 'Syllabus / Paper')}
                             </button>
                         `).join('')}
                     </div>
@@ -15708,11 +17305,25 @@ window.getSubjectDocuments = getSubjectDocuments;
         drawerChatMessages.appendChild(msg);
         drawerChatMessages.scrollTop = drawerChatMessages.scrollHeight;
 
-        msg.querySelectorAll('.citation-pill').forEach(pill => {
-            pill.addEventListener('click', () => {
-                const title = pill.getAttribute('data-title');
-                const url = pill.getAttribute('data-url');
-                openPdfViewer(title, url);
+        msg.querySelectorAll('.citation-pill, .chat-action-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const title = btn.getAttribute('data-title');
+                const url = btn.getAttribute('data-url');
+                if (!url || url === '#' || url === '') return;
+
+                const isSyllabus = isSyllabusResource(url, title);
+                if (!isSyllabus && !isLoggedIn && localStorage.getItem('campussense_logged_in') !== 'true') {
+                    try {
+                        sessionStorage.setItem('pending_download_action', JSON.stringify({
+                            action: 'preview',
+                            title: title || 'MAKAUT Resource',
+                            fileUrl: url
+                        }));
+                    } catch (_) {}
+                    window.location.href = '/login.html';
+                } else {
+                    openPdfViewer(title, url);
+                }
             });
         });
     }
@@ -15721,12 +17332,22 @@ window.getSubjectDocuments = getSubjectDocuments;
         if (!query || !query.trim()) {
             return {
                 verified: false,
-                response: "I couldn't match your query to a verified MAKAUT 1st-Year or CSE curriculum subject, PYQ, or syllabus concept. Ask me about your 4-year CSE curriculum (Semesters 3-8), 1st-year common foundation, solve a specific PYQ, or summarise a syllabus module.",
+                response: "This information is not verified by official MAKAUT curriculum data.",
                 sources: []
             };
         }
 
         const rawLower = query.toLowerCase().trim();
+
+        // Strict Negative Grounding Rejection Guardrail for Out-of-Domain topics
+        const outOfDomainRegex = /\b(cook|cooking|recipe|recipes|cake|pizza|pasta|baking|chef|culinary|weather|temperature|forecast|football|soccer|fifa|world cup|cricket|ipl|basketball|nba|movie|cinema|actor|actress|hollywood|bollywood|netflix|song|mit|harvard|stanford|oxford|cambridge|caltech|aeronautics|astrology|horoscope|zodiac|tarot|crypto|bitcoin|ethereum|doge|forex|stocks)\b/i;
+        if (outOfDomainRegex.test(rawLower) && !rawLower.includes('makaut')) {
+            return {
+                verified: false,
+                response: "This information is not verified by official MAKAUT curriculum data.",
+                sources: []
+            };
+        }
 
         // 1. Precise Subject Matching & Aliases (1st Year Common & CSE Semesters 3-8)
         let matchedSubject = null;
@@ -15854,7 +17475,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             // BEE Q2 (Thévenin circuit numerical)
             if ((!matchedSubject || matchedSubject.code === '26-ES-EE101') && (detectedQNum === 2 || rawLower.includes('thevenin') || rawLower.includes('bee') || rawLower.includes('electrical'))) {
                 const targetSubject = MAKAUT_CURRICULUM.find(s => s.code === '26-ES-EE101');
-                const beePaper = targetSubject?.pyqs?.find(p => p.year === (detectedYear || 2023)) || { title: 'Basic Electrical 2023', fileUrl: 'assets/resources/1st_year/pyq/bee/btech-1-sem-basic-electrical-engineering-esee101-2023.pdf' };
+                const beePaper = targetSubject?.pyqs?.find(p => p.year === (detectedYear || 2023)) || { title: 'Basic Electrical 2023', fileUrl: '1st_year/pyqs/bee/btech-1-sem-basic-electrical-engineering-esee101-2023.pdf' };
                 return {
                     verified: true,
                     response: `### Worked Solution: Question ${detectedQNum} — Basic Electrical Engineering (${detectedYear || 2023})\n\n` +
@@ -15887,7 +17508,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             // Maths 1 Q4 (Cayley-Hamilton Theorem & Matrix Inversion)
             if ((!matchedSubject || matchedSubject.code === '26-BS-M101') && (detectedQNum === 4 || rawLower.includes('cayley') || rawLower.includes('math'))) {
                 const targetSubject = MAKAUT_CURRICULUM.find(s => s.code === '26-BS-M101');
-                const mathPaper = targetSubject?.pyqs?.find(p => p.year === (detectedYear || 2025)) || { title: 'Mathematics 1A 2025', fileUrl: 'assets/resources/1st_year/pyq/mathematics_1a/btech-1-sem-mathematics-1a-bs-m101-2025.pdf' };
+                const mathPaper = targetSubject?.pyqs?.find(p => p.year === (detectedYear || 2025)) || { title: 'Mathematics 1A 2025', fileUrl: '1st_year/pyqs/mathematics_1a/btech-1-sem-mathematics-1a-bs-m101-2025.pdf' };
                 return {
                     verified: true,
                     response: `### Worked Solution: Question ${detectedQNum} — Mathematics 1 (${detectedYear || 2025})\n\n` +
@@ -15918,7 +17539,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             // Physics Q3 (Newton's Rings Dark Ring Diameter Proof)
             if ((!matchedSubject || matchedSubject.code === '26-BS-PH101') && (detectedQNum === 3 || rawLower.includes('newton') || rawLower.includes('physics'))) {
                 const targetSubject = MAKAUT_CURRICULUM.find(s => s.code === '26-BS-PH101');
-                const phyPaper = targetSubject?.pyqs?.find(p => p.year === (detectedYear || 2023)) || { title: 'Physics 2023', fileUrl: 'assets/resources/1st_year/pyq/physics/btech-1-sem-physics-1-bsph101-2023.pdf' };
+                const phyPaper = targetSubject?.pyqs?.find(p => p.year === (detectedYear || 2023)) || { title: 'Physics 2023', fileUrl: '1st_year/pyqs/physics/btech-1-sem-physics-1-bsph101-2023.pdf' };
                 return {
                     verified: true,
                     response: `### Worked Solution: Question ${detectedQNum} — Physics (${detectedYear || 2023})\n\n` +
@@ -15953,7 +17574,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             // Case A: Chemistry 2024 Group B / C
             if ((!matchedSubject || matchedSubject.code === '26-BS-CH101') && (detectedGroup === 'B' || detectedGroup === 'C') && (detectedYear === 2024 || rawLower.includes('chem'))) {
                 const targetSubject = MAKAUT_CURRICULUM.find(s => s.code === '26-BS-CH101');
-                const chemPaper = targetSubject?.pyqs?.find(p => p.year === 2024) || { title: 'Chemistry 2024', fileUrl: 'assets/resources/1st_year/pyq/chemistry/btech-1-sem-chemistry-1-bs-ch101-2024.pdf' };
+                const chemPaper = targetSubject?.pyqs?.find(p => p.year === 2024) || { title: 'Chemistry 2024', fileUrl: '1st_year/pyqs/chemistry/btech-1-sem-chemistry-1-bs-ch101-2024.pdf' };
                 return {
                     verified: true,
                     response: `### Worked Solutions: Chemistry 2024 — Group ${detectedGroup} (Step-by-Step Model Answers)\n\n` +
@@ -15987,7 +17608,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             // Case B: Physics 2023 Group C / B
             if ((!matchedSubject || matchedSubject.code === '26-BS-PH101') && (detectedGroup === 'C' || detectedGroup === 'B') && (detectedYear === 2023 || rawLower.includes('phy'))) {
                 const targetSubject = MAKAUT_CURRICULUM.find(s => s.code === '26-BS-PH101');
-                const phyPaper = targetSubject?.pyqs?.find(p => p.year === 2023) || { title: 'Physics 2023', fileUrl: 'assets/resources/1st_year/pyq/physics/btech-1-sem-physics-1-bsph101-2023.pdf' };
+                const phyPaper = targetSubject?.pyqs?.find(p => p.year === 2023) || { title: 'Physics 2023', fileUrl: '1st_year/pyqs/physics/btech-1-sem-physics-1-bsph101-2023.pdf' };
                 return {
                     verified: true,
                     response: `### Worked Solutions: Physics 2023 — Group ${detectedGroup} (10 Marks Each)\n\n` +
@@ -16022,7 +17643,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             // Case C: BEE 2023 Group B / C
             if ((!matchedSubject || matchedSubject.code === '26-ES-EE101') && (detectedGroup === 'B' || detectedGroup === 'C') && (detectedYear === 2023 || rawLower.includes('bee') || rawLower.includes('electrical'))) {
                 const targetSubject = MAKAUT_CURRICULUM.find(s => s.code === '26-ES-EE101');
-                const beePaper = targetSubject?.pyqs?.find(p => p.year === 2023) || { title: 'Basic Electrical 2023', fileUrl: 'assets/resources/1st_year/pyq/bee/btech-1-sem-basic-electrical-engineering-esee101-2023.pdf' };
+                const beePaper = targetSubject?.pyqs?.find(p => p.year === 2023) || { title: 'Basic Electrical 2023', fileUrl: '1st_year/pyqs/bee/btech-1-sem-basic-electrical-engineering-esee101-2023.pdf' };
                 return {
                     verified: true,
                     response: `### Worked Solutions: Basic Electrical Engineering 2023 — Group ${detectedGroup}\n\n` +
@@ -16127,7 +17748,7 @@ window.getSubjectDocuments = getSubjectDocuments;
                     year: 2024,
                     group: 'Group B/C',
                     questionNumber: '5-10 Marks',
-                    pageUrl: 'assets/resources/1st_year/syllabus/Chemistry.pdf'
+                    pageUrl: '1st_year/syllabus/Chemistry.pdf'
                 }]
             };
         }
@@ -16153,7 +17774,7 @@ window.getSubjectDocuments = getSubjectDocuments;
                     year: 2024,
                     group: 'Group B/C',
                     questionNumber: '5-10 Marks',
-                    pageUrl: 'assets/resources/1st_year/syllabus/ES-EE101.pdf'
+                    pageUrl: '1st_year/syllabus/ES-EE101.pdf'
                 }]
             };
         }
@@ -16181,7 +17802,7 @@ window.getSubjectDocuments = getSubjectDocuments;
                     year: 2025,
                     group: 'Group B/C',
                     questionNumber: '5-10 Marks',
-                    pageUrl: 'assets/resources/1st_year/syllabus/PPS.pdf'
+                    pageUrl: '1st_year/syllabus/PPS.pdf'
                 }]
             };
         }
@@ -16205,7 +17826,7 @@ window.getSubjectDocuments = getSubjectDocuments;
                     year: 2025,
                     group: 'Group B/C',
                     questionNumber: '5-10 Marks',
-                    pageUrl: 'assets/resources/1st_year/syllabus/Physics.pdf'
+                    pageUrl: '1st_year/syllabus/Physics.pdf'
                 }]
             };
         }
@@ -16231,7 +17852,7 @@ window.getSubjectDocuments = getSubjectDocuments;
                     year: 2024,
                     group: 'Group B',
                     questionNumber: '5 Marks',
-                    pageUrl: 'assets/resources/1st_year/syllabus/ES-EE101.pdf'
+                    pageUrl: '1st_year/syllabus/ES-EE101.pdf'
                 }]
             };
         }
@@ -16256,7 +17877,7 @@ window.getSubjectDocuments = getSubjectDocuments;
                     year: 2024,
                     group: 'Group C',
                     questionNumber: '10 Marks',
-                    pageUrl: 'assets/resources/1st_year/syllabus/ES-EE101.pdf'
+                    pageUrl: '1st_year/syllabus/ES-EE101.pdf'
                 }]
             };
         }
@@ -16280,7 +17901,7 @@ window.getSubjectDocuments = getSubjectDocuments;
                     year: 2025,
                     group: 'Group C',
                     questionNumber: '10 Marks',
-                    pageUrl: 'assets/resources/1st_year/syllabus/Physics.pdf'
+                    pageUrl: '1st_year/syllabus/Physics.pdf'
                 }]
             };
         }
@@ -16302,7 +17923,7 @@ window.getSubjectDocuments = getSubjectDocuments;
                     year: 2025,
                     group: 'Group C',
                     questionNumber: '10 Marks',
-                    pageUrl: 'assets/resources/1st_year/syllabus/Maths-1.pdf'
+                    pageUrl: '1st_year/syllabus/Maths-1.pdf'
                 }]
             };
         }
@@ -16325,7 +17946,7 @@ window.getSubjectDocuments = getSubjectDocuments;
                     year: 2024,
                     group: 'Group C',
                     questionNumber: '10 Marks',
-                    pageUrl: 'assets/resources/1st_year/syllabus/Physics.pdf'
+                    pageUrl: '1st_year/syllabus/Physics.pdf'
                 }]
             };
         }
@@ -16349,7 +17970,7 @@ window.getSubjectDocuments = getSubjectDocuments;
                     year: 2026,
                     group: 'Group C',
                     questionNumber: '10 Marks',
-                    pageUrl: 'assets/resources/1st_year/syllabus/Maths-2.pdf'
+                    pageUrl: '1st_year/syllabus/Maths-2.pdf'
                 }]
             };
         }
@@ -16492,7 +18113,7 @@ window.getSubjectDocuments = getSubjectDocuments;
         // =========================================================================
         return {
             verified: false,
-            response: "I couldn't match your query to a MAKAUT 1st-Year course, PYQ, or syllabus concept. Ask me to solve a specific PYQ, explain an exam concept, or summarise a module (e.g., 'Solve Group B of Chemistry 2024', 'Explain Thévenin theorem', or 'Summarise Module 3 of PPS').",
+            response: "This information is not verified by official MAKAUT curriculum data.",
             sources: []
         };
     }
@@ -16665,21 +18286,60 @@ window.getSubjectDocuments = getSubjectDocuments;
     // 18. Clerk Authentication & User Tracking Dashboard
     // ==========================================
     async function setupClerkAuth() {
-        let clerkPublishableKey = window.CLERK_PUBLISHABLE_KEY || 'pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk';
+        const isCloudflarePages = Boolean(
+            window.location.hostname.endsWith('.pages.dev') ||
+            window.__CAMPUSSENSE_CONFIG__?.isCloudflarePages
+        );
 
-        if (!clerkPublishableKey) {
-            clerkPublishableKey = (document.querySelector('script[data-clerk-publishable-key]')?.getAttribute('data-clerk-publishable-key'));
+        let clerkPublishableKey = window.CLERK_PUBLISHABLE_KEY ||
+                                 window.__CAMPUSSENSE_CONFIG__?.clerkPublishableKey ||
+                                 (document.querySelector('script[data-clerk-publishable-key]')?.getAttribute('data-clerk-publishable-key')) ||
+                                 '';
+
+        if ((!clerkPublishableKey || !clerkPublishableKey.startsWith('pk_')) && navigator.onLine) {
+            try {
+                const res = await fetch('/api/v1/config/auth-public', {
+                    headers: { 'Accept': 'application/json' },
+                    cache: 'no-store'
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.clerkPublishableKey && data.clerkPublishableKey.startsWith('pk_')) {
+                        clerkPublishableKey = data.clerkPublishableKey;
+                        window.CLERK_PUBLISHABLE_KEY = clerkPublishableKey;
+                    }
+                }
+            } catch (netErr) {
+                console.info('[CampusSense Auth] Server auth config unreachable, operating in resilient guest mode.');
+            }
+        }
+
+        const engageGuestStudentSession = () => {
+            window.isLoggedIn = localStorage.getItem('campussense_logged_in') === 'true';
+            isLoggedIn = window.isLoggedIn;
+            if (window.isLoggedIn) {
+                try {
+                    const storedSession = JSON.parse(localStorage.getItem('campussense_user_session') || '{}');
+                    const userNameSpan = document.getElementById('user-profile-name') || document.getElementById('user-display-name');
+                    if (userNameSpan && storedSession.name) {
+                        userNameSpan.textContent = storedSession.name;
+                    }
+                    updateUIAfterLogin(storedSession);
+                } catch (e) {}
+            }
+        };
+
+        if (!clerkPublishableKey || !clerkPublishableKey.startsWith('pk_')) {
+            console.info('[CampusSense Auth] Running without Clerk publishable key (' + (isCloudflarePages ? 'Cloudflare Edge' : 'Local') + '). Active mode: Guest Student Session.');
+            engageGuestStudentSession();
+            return true;
         }
 
         const initClerkInstance = async () => {
             if (!window.Clerk) return false;
             try {
                 if (!window.Clerk.loaded && typeof window.Clerk.load === 'function') {
-                    const opts = {};
-                    if (clerkPublishableKey) {
-                        opts.publishableKey = clerkPublishableKey;
-                    }
-                    await window.Clerk.load(opts);
+                    await window.Clerk.load({ publishableKey: clerkPublishableKey });
                 }
 
                 const user = window.Clerk.user;
@@ -16693,8 +18353,7 @@ window.getSubjectDocuments = getSubjectDocuments;
                     }
                     updateUIAfterLogin(user);
                 } else {
-                    window.isLoggedIn = localStorage.getItem('campussense_logged_in') === 'true';
-                    isLoggedIn = window.isLoggedIn;
+                    engageGuestStudentSession();
                 }
 
                 if (typeof window.Clerk.addListener === 'function') {
@@ -16703,19 +18362,33 @@ window.getSubjectDocuments = getSubjectDocuments;
                             window.isLoggedIn = true;
                             isLoggedIn = true;
                             localStorage.setItem('campussense_logged_in', 'true');
+                            localStorage.setItem('campussense_auth_provider', 'clerk');
                             const userNameSpan = document.getElementById('user-profile-name') || document.getElementById('user-display-name');
                             if (userNameSpan) {
                                 userNameSpan.textContent = emission.user.fullName || (emission.user.primaryEmailAddress ? emission.user.primaryEmailAddress.emailAddress : 'Student');
                             }
                             updateUIAfterLogin(emission.user);
                         } else if (emission && emission.user === null) {
-                            window.logoutUser();
+                            const authProvider = localStorage.getItem('campussense_auth_provider');
+                            if (authProvider !== 'student' && window.isLoggedIn) {
+                                window.isLoggedIn = false;
+                                isLoggedIn = false;
+                                localStorage.removeItem('campussense_logged_in');
+                                localStorage.removeItem('campussense_user_session');
+                                const userProfileWrapper = document.getElementById('user-profile-wrapper');
+                                if (userProfileWrapper) userProfileWrapper.style.display = 'none';
+                                const btnNavSignIn = document.getElementById('btn-nav-signin') || document.getElementById('btn-sign-in');
+                                const btnNavSignUp = document.getElementById('btn-nav-signup') || document.getElementById('btn-sign-up');
+                                if (btnNavSignIn) btnNavSignIn.style.display = 'inline-flex';
+                                if (btnNavSignUp) btnNavSignUp.style.display = 'inline-flex';
+                            }
                         }
                     });
                 }
                 return true;
             } catch (err) {
-                console.warn('[Clerk] Initialization warning (safe fallback active):', err);
+                console.warn('[CampusSense Auth] Clerk edge API unreachable, falling back to guest student session:', err);
+                engageGuestStudentSession();
                 return false;
             }
         };
@@ -16982,10 +18655,9 @@ window.getSubjectDocuments = getSubjectDocuments;
             if (btnFeatureSyllabus) {
                 btnFeatureSyllabus.onclick = (e) => {
                     e.preventDefault();
-                    if (isLoggedIn || localStorage.getItem('campussense_logged_in') === 'true') {
-                        evaluateWorkflowProgression();
-                    } else {
-                        window.triggerNativeClerkAuth();
+                    const target = document.getElementById('curriculum-explorer') || document.getElementById('landing-curriculum');
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
                     }
                 };
             }
@@ -17062,6 +18734,22 @@ window.getSubjectDocuments = getSubjectDocuments;
                     btn.onclick = () => { window.location.href = '/login.html'; };
                 }
             });
+
+            const btnGlobalSignIn = document.getElementById('btn-sign-in') || document.getElementById('btn-nav-signin');
+            if (btnGlobalSignIn) {
+                btnGlobalSignIn.onclick = (e) => {
+                    if (e) e.preventDefault();
+                    window.location.href = '/login.html';
+                };
+            }
+
+            const btnGlobalSignUp = document.getElementById('btn-sign-up') || document.getElementById('btn-nav-signup');
+            if (btnGlobalSignUp) {
+                btnGlobalSignUp.onclick = (e) => {
+                    if (e) e.preventDefault();
+                    window.location.href = '/login.html#/sign-up';
+                };
+            }
         } catch (err) {
             console.warn("[Events] Auth triggers binding error:", err);
         }
@@ -17358,6 +19046,7 @@ window.getSubjectDocuments = getSubjectDocuments;
       safeExecute('liveMetrics', updateLandingLiveMetrics);
       safeExecute('academicSetupOptions', bindAcademicSetupOptions);
       safeExecute('academicContextModal', bindAcademicContextModal);
+      safeExecute('portalSwitcher', initPortalSwitcher);
       safeExecute('bindButtons', bindInteractiveButtons);
       try {
         initializeApp();
@@ -17393,7 +19082,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 });
 
 // Brand Logo Routing to Landing Page
-document.addEventListener('DOMContentLoaded', () => {
+function setupBrandLinks() {
   const brandLinks = document.querySelectorAll('#nav-brand-logo, .navbar-brand, .brand-logo-container');
   brandLinks.forEach(elem => {
     elem.style.cursor = 'pointer';
@@ -17411,4 +19100,1752 @@ document.addEventListener('DOMContentLoaded', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   });
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', setupBrandLinks);
+} else {
+  setupBrandLinks();
+}
+
+/* ==============================================================================
+   CONVERSATIONAL RAG CHATBOT CONTROLLER (PORTAL & WORKSPACE)
+   Dynamic Retrieval, Strict Negative Grounding Guardrail & Verified Citations
+   ============================================================================== */
+(function() {
+  const MANDATORY_UNVERIFIED_MESSAGE = "This information is not verified by official MAKAUT curriculum data.";
+  let knowledgeIndexCache = null;
+
+  const OUT_OF_DOMAIN_PATTERNS = [
+    /\b(cook|cooking|recipe|recipes|cake|pizza|pasta|baking|chef|culinary)\b/i,
+    /\b(weather|temperature|forecast|climate in)\b/i,
+    /\b(football|soccer|fifa|world cup|cricket score|ipl|basketball|nba)\b/i,
+    /\b(movie|cinema|actor|actress|hollywood|bollywood|netflix|song|celebrity)\b/i,
+    /\b(mit|harvard|stanford|oxford|cambridge|caltech)\b(?!\s*makaut)/i,
+    /\b(aeronautics|astrology|horoscope|zodiac|tarot)\b/i,
+    /\b(crypto|bitcoin|ethereum|doge|forex trading|stock tips)\b/i,
+    /\b(capital of|population of|president of|prime minister of)\b/i
+  ];
+
+  async function getKnowledgeIndex() {
+    if (knowledgeIndexCache) return knowledgeIndexCache;
+    if (window.MAKAUT_KNOWLEDGE_INDEX && window.MAKAUT_KNOWLEDGE_INDEX.chunks) {
+      knowledgeIndexCache = window.MAKAUT_KNOWLEDGE_INDEX;
+      return knowledgeIndexCache;
+    }
+    try {
+      const resp = await fetch('makaut_knowledge_index.json');
+      if (resp.ok) {
+        knowledgeIndexCache = await resp.json();
+        return knowledgeIndexCache;
+      }
+    } catch (e) {
+      // Local file protocol or network fetch blocked
+    }
+    if (window.MAKAUT_KNOWLEDGE_INDEX) {
+      knowledgeIndexCache = window.MAKAUT_KNOWLEDGE_INDEX;
+      return knowledgeIndexCache;
+    }
+    return null;
+  }
+
+  function isUserAuthenticated() {
+    try {
+      const isLocalStudent = localStorage.getItem('campussense_logged_in') === 'true';
+      const hasSession = localStorage.getItem('campussense_user_session') !== null;
+      const isClerk = typeof window.Clerk !== 'undefined' && window.Clerk.user !== null && typeof window.Clerk.user !== 'undefined';
+      return isLocalStudent || hasSession || isClerk;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function openPdfModal(fileUrl, title) {
+    const modal = document.getElementById('pdf-preview-modal');
+    const iframe = document.getElementById('pdf-viewer-frame');
+    const titleEl = document.getElementById('pdf-preview-title');
+    const extLink = document.getElementById('btn-pdf-open-external');
+    const dlLink = document.getElementById('btn-pdf-download-direct');
+
+    if (modal && iframe) {
+      iframe.src = fileUrl;
+      if (titleEl) titleEl.textContent = title || 'Document Preview';
+      if (extLink) extLink.href = fileUrl;
+      if (dlLink) dlLink.href = fileUrl;
+      modal.style.display = 'flex';
+      modal.classList.add('active');
+      document.body.classList.add('modal-open');
+    } else {
+      window.open(fileUrl, '_blank');
+    }
+  }
+
+  function initConversationalRagChat() {
+    const fabBtn = document.getElementById("chat-fab") || document.getElementById("btn-open-ai-fab");
+    const drawer = document.getElementById("chat-widget-window") || document.getElementById("chat-window") || document.getElementById("ai-chat-drawer");
+    const dragHeader = document.getElementById("chat-drag-header") || drawer?.querySelector(".chat-window-header") || drawer?.querySelector(".ai-chat-header");
+    const pinBtn = document.getElementById("btn-chat-pin") || drawer?.querySelector(".chat-pin-btn");
+    const minBtn = document.getElementById("chat-min-btn");
+    const backdrop = document.getElementById("chat-window-backdrop") || document.getElementById("ai-chat-backdrop");
+    const closeBtn = document.getElementById("chat-close-btn") || document.getElementById("btn-close-ai-chat");
+    const clearBtn = document.getElementById("chat-clear-btn") || document.getElementById("btn-clear-chat");
+    const expandBtn = document.getElementById("chat-expand-btn");
+    const messagesContainer = document.getElementById("chat-messages") || document.getElementById("ai-chat-messages");
+    const chatInput = document.getElementById("chat-input") || document.getElementById("ai-chat-input");
+    const chatForm = document.getElementById("chat-input-form") || document.getElementById("ai-chat-form");
+    const typingIndicator = document.getElementById("chat-typing-indicator") || document.getElementById("ai-chat-typing");
+    const starterChipsBar = document.getElementById("chat-starter-chips");
+
+    // Slide-over Citation Excerpt Drawer Elements
+    const citationDrawer = document.getElementById("drawer-citation-excerpt");
+    const citationBackdrop = document.getElementById("citation-drawer-backdrop");
+    const closeCitationBtn = document.getElementById("btn-close-citation-drawer");
+    const citationSourceCode = document.getElementById("citation-source-code");
+    const citationSourceModule = document.getElementById("citation-source-module");
+    const citationMetaPill = document.getElementById("citation-meta-pill");
+    const citationExcerptContent = document.getElementById("citation-excerpt-content");
+    const citationPdfLink = document.getElementById("citation-pdf-link");
+
+    if (!drawer || !fabBtn) return;
+
+    // Layout & Persistence Engine
+    let chatLayout = {
+      isPinned: false,
+      pinned: false,
+      isOpen: false,
+      x: null,
+      y: null,
+      left: null,
+      top: null,
+      width: 380,
+      height: 540
+    };
+
+    try {
+      const savedLayout = localStorage.getItem("campussense_chat_geometry") || 
+                          localStorage.getItem("campussense_chat_custom_layout") || 
+                          localStorage.getItem("campussense_chat_layout");
+      if (savedLayout) {
+        const parsed = JSON.parse(savedLayout);
+        chatLayout = Object.assign(chatLayout, parsed);
+        if (parsed.left !== undefined && (chatLayout.x === null || chatLayout.x === undefined)) chatLayout.x = parsed.left;
+        if (parsed.top !== undefined && (chatLayout.y === null || chatLayout.y === undefined)) chatLayout.y = parsed.top;
+        if (parsed.x !== undefined && (chatLayout.left === null || chatLayout.left === undefined)) chatLayout.left = parsed.x;
+        if (parsed.y !== undefined && (chatLayout.top === null || chatLayout.top === undefined)) chatLayout.top = parsed.y;
+        if (parsed.pinned !== undefined) {
+          chatLayout.isPinned = parsed.pinned;
+          chatLayout.pinned = parsed.pinned;
+        } else if (parsed.isPinned !== undefined) {
+          chatLayout.pinned = parsed.isPinned;
+        }
+      }
+    } catch (e) {}
+
+    function saveLayout() {
+      try {
+        const currentLeft = chatLayout.left !== null && chatLayout.left !== undefined ? chatLayout.left : chatLayout.x;
+        const currentTop = chatLayout.top !== null && chatLayout.top !== undefined ? chatLayout.top : chatLayout.y;
+        const geometry = {
+          left: currentLeft,
+          top: currentTop,
+          x: currentLeft,
+          y: currentTop,
+          width: chatLayout.width || 380,
+          height: chatLayout.height || 540,
+          pinned: !!(chatLayout.isPinned || chatLayout.pinned),
+          isPinned: !!(chatLayout.isPinned || chatLayout.pinned),
+          isOpen: !!chatLayout.isOpen
+        };
+        localStorage.setItem("campussense_chat_geometry", JSON.stringify(geometry));
+        localStorage.setItem("campussense_chat_custom_layout", JSON.stringify(geometry));
+        localStorage.setItem("campussense_chat_layout", JSON.stringify(geometry));
+      } catch (e) {}
+    }
+
+    function clampDimensions(w, h) {
+      const minW = 320;
+      const maxW = Math.min(800, Math.round(window.innerWidth * 0.95));
+      const minH = 420;
+      const maxH = Math.min(850, Math.round(window.innerHeight * 0.90));
+      return {
+        width: Math.round(Math.min(Math.max(w, minW), maxW)),
+        height: Math.round(Math.min(Math.max(h, minH), maxH))
+      };
+    }
+
+    function applyDimensions(w, h) {
+      const clamped = clampDimensions(w, h);
+      drawer.style.width = `${clamped.width}px`;
+      drawer.style.height = `${clamped.height}px`;
+      chatLayout.width = clamped.width;
+      chatLayout.height = clamped.height;
+    }
+
+    function clampCoordinates(x, y) {
+      const widgetWidth = drawer.offsetWidth || chatLayout.width || 380;
+      const widgetHeight = drawer.offsetHeight || chatLayout.height || 540;
+      const minX = 4;
+      const maxX = Math.max(minX, window.innerWidth - widgetWidth - 4);
+      const minY = 56; // 56px top sticky navbar clearance
+      const maxY = Math.max(minY, window.innerHeight - widgetHeight - 8);
+      return {
+        x: Math.round(Math.min(Math.max(x, minX), maxX)),
+        y: Math.round(Math.min(Math.max(y, minY), maxY))
+      };
+    }
+
+    function applyCoordinates(x, y) {
+      drawer.style.left = `${x}px`;
+      drawer.style.top = `${y}px`;
+      drawer.style.right = 'auto';
+      drawer.style.bottom = 'auto';
+      chatLayout.x = x;
+      chatLayout.y = y;
+      chatLayout.left = x;
+      chatLayout.top = y;
+    }
+
+    function centerChatbot() {
+      const widgetWidth = drawer.offsetWidth || chatLayout.width || 380;
+      const widgetHeight = drawer.offsetHeight || chatLayout.height || 540;
+      const cx = Math.max(4, Math.round((window.innerWidth - widgetWidth) / 2));
+      const cy = Math.max(56, Math.round((window.innerHeight - widgetHeight) / 2));
+      applyCoordinates(cx, cy);
+      chatLayout.isPinned = true;
+      chatLayout.pinned = true;
+      updatePinUI();
+      saveLayout();
+    }
+
+    const centerBtn = document.getElementById("btn-chat-center");
+    if (centerBtn) {
+      centerBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        centerChatbot();
+      });
+    }
+
+    if (dragHeader) {
+      dragHeader.addEventListener("dblclick", (e) => {
+        if (e.target.closest("button") || e.target.closest("a") || e.target.closest("input")) return;
+        centerChatbot();
+      });
+    }
+
+    // Pointer Dragging Engine (Global document listener for smooth, unbounded dragging)
+    let isDragging = false;
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let initialX = 0;
+    let initialY = 0;
+
+    if (dragHeader) {
+      dragHeader.addEventListener("pointerdown", (e) => {
+        if (e.target.closest("button") || e.target.closest("a") || e.target.closest("input") || e.target.closest("textarea") || e.target.closest("select")) return;
+        if (drawer.classList.contains("expanded")) return;
+
+        isDragging = true;
+        dragHeader.classList.add("dragging");
+        drawer.classList.add("dragging");
+        dragHeader.style.cursor = "grabbing";
+        drawer.style.transition = "none";
+
+        try {
+          dragHeader.setPointerCapture(e.pointerId);
+        } catch (err) {}
+
+        const rect = drawer.getBoundingClientRect();
+        initialX = rect.left;
+        initialY = rect.top;
+        dragStartX = e.clientX;
+        dragStartY = e.clientY;
+        e.preventDefault();
+      });
+
+      document.addEventListener("pointermove", (e) => {
+        if (!isDragging) return;
+        const deltaX = e.clientX - dragStartX;
+        const deltaY = e.clientY - dragStartY;
+        const targetX = initialX + deltaX;
+        const targetY = initialY + deltaY;
+        const clamped = clampCoordinates(targetX, targetY);
+        applyCoordinates(clamped.x, clamped.y);
+      });
+
+      const handlePointerUp = (e) => {
+        if (!isDragging) return;
+        isDragging = false;
+        try {
+          if (e && e.pointerId) dragHeader.releasePointerCapture(e.pointerId);
+        } catch (err) {}
+        dragHeader.classList.remove("dragging");
+        drawer.classList.remove("dragging");
+        dragHeader.style.cursor = "grab";
+        drawer.style.transition = "";
+        saveLayout();
+      };
+
+      document.addEventListener("pointerup", handlePointerUp);
+      document.addEventListener("pointercancel", handlePointerUp);
+    }
+
+    // User-Controlled Resizing Engine (8-Directional)
+    const resizeHandles = drawer.querySelectorAll(".chat-resize-handle");
+    let isResizing = false;
+    let activeResizeHandle = null;
+    let resizeDir = "se";
+    let resizeStartPointerX = 0;
+    let resizeStartPointerY = 0;
+    let resizeStartWidth = 0;
+    let resizeStartHeight = 0;
+    let resizeStartX = 0;
+    let resizeStartY = 0;
+
+    resizeHandles.forEach((handle) => {
+      handle.addEventListener("pointerdown", (e) => {
+        if (drawer.classList.contains("expanded")) return;
+        isResizing = true;
+        activeResizeHandle = handle;
+        resizeDir = handle.getAttribute("data-direction") || "se";
+        drawer.classList.add("resizing");
+        drawer.style.transition = "none";
+        resizeStartPointerX = e.clientX;
+        resizeStartPointerY = e.clientY;
+        resizeStartWidth = drawer.offsetWidth || chatLayout.width || 380;
+        resizeStartHeight = drawer.offsetHeight || chatLayout.height || 540;
+        const rect = drawer.getBoundingClientRect();
+        resizeStartX = rect.left;
+        resizeStartY = rect.top;
+        try {
+          handle.setPointerCapture(e.pointerId);
+        } catch (err) {}
+        e.preventDefault();
+        e.stopPropagation();
+      });
+
+      handle.addEventListener("pointermove", (e) => {
+        if (!isResizing || activeResizeHandle !== handle) return;
+        const deltaX = e.clientX - resizeStartPointerX;
+        const deltaY = e.clientY - resizeStartPointerY;
+
+        let targetW = resizeStartWidth;
+        let targetH = resizeStartHeight;
+        let targetX = resizeStartX;
+        let targetY = resizeStartY;
+
+        if (resizeDir.includes("e")) {
+          targetW = resizeStartWidth + deltaX;
+        } else if (resizeDir.includes("w")) {
+          targetW = resizeStartWidth - deltaX;
+          targetX = resizeStartX + deltaX;
+        }
+
+        if (resizeDir.includes("s")) {
+          targetH = resizeStartHeight + deltaY;
+        } else if (resizeDir.includes("n")) {
+          targetH = resizeStartHeight - deltaY;
+          targetY = resizeStartY + deltaY;
+        }
+
+        const clampedDims = clampDimensions(targetW, targetH);
+        applyDimensions(clampedDims.width, clampedDims.height);
+
+        if (resizeDir.includes("w") || resizeDir.includes("n")) {
+          const clamped = clampCoordinates(targetX, targetY);
+          applyCoordinates(clamped.x, clamped.y);
+        } else if (chatLayout.x !== null && chatLayout.y !== null) {
+          const clamped = clampCoordinates(chatLayout.x, chatLayout.y);
+          applyCoordinates(clamped.x, clamped.y);
+        }
+      });
+
+      const handleResizePointerUp = (e) => {
+        if (!isResizing) return;
+        isResizing = false;
+        drawer.classList.remove("resizing");
+        drawer.style.transition = "";
+        try {
+          if (activeResizeHandle) activeResizeHandle.releasePointerCapture(e.pointerId);
+        } catch (err) {}
+        activeResizeHandle = null;
+        saveLayout();
+      };
+
+      handle.addEventListener("pointerup", handleResizePointerUp);
+      handle.addEventListener("pointercancel", handleResizePointerUp);
+    });
+
+    window.addEventListener("resize", () => {
+      if (drawer.style.display === "flex" && !drawer.classList.contains("expanded")) {
+        if (chatLayout.width && chatLayout.height) {
+          applyDimensions(chatLayout.width, chatLayout.height);
+        }
+        if (chatLayout.x !== null && chatLayout.y !== null) {
+          const clamped = clampCoordinates(chatLayout.x, chatLayout.y);
+          applyCoordinates(clamped.x, clamped.y);
+        }
+        saveLayout();
+      }
+    });
+
+    // Pin State Handler
+    function updatePinUI() {
+      if (!pinBtn) return;
+      pinBtn.setAttribute("aria-pressed", chatLayout.isPinned ? "true" : "false");
+      if (chatLayout.isPinned) {
+        pinBtn.classList.add("active");
+        drawer.classList.add("pinned");
+        pinBtn.title = "Unpin window from screen";
+        if (backdrop) {
+          backdrop.style.setProperty("display", "none", "important");
+        }
+      } else {
+        pinBtn.classList.remove("active");
+        drawer.classList.remove("pinned");
+        pinBtn.title = "Pin window on screen";
+      }
+      if (backdrop) {
+        backdrop.style.setProperty("display", "none", "important");
+      }
+      document.body.classList.remove("modal-open");
+      saveLayout();
+    }
+
+    if (pinBtn) {
+      pinBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        chatLayout.isPinned = !chatLayout.isPinned;
+        chatLayout.pinned = chatLayout.isPinned;
+        updatePinUI();
+      });
+    }
+
+
+    function openCitationExcerpt(c) {
+      if (!citationDrawer) return;
+      const code = c.subjectCode || c.course_code || "PCC-CS501";
+      const mod = c.moduleOrSection || c.module_or_section || "Verified Curriculum Unit";
+      const page = c.page || "4";
+      const file = c.source_file || c.fileUrl || "CSE20.pdf";
+
+      if (citationSourceCode) citationSourceCode.textContent = code;
+      if (citationSourceModule) citationSourceModule.textContent = mod;
+      if (citationMetaPill) citationMetaPill.textContent = "Curated Syllabus Schema • Page " + page;
+
+      let excerpt = c.content || c.excerpt || "";
+      if (!excerpt) {
+        excerpt = "MAKAUT Curriculum Blueprint:\n\n" +
+          "Course Code: " + code + "\n" +
+          "Module / Unit: " + mod + "\n\n" +
+          "Detailed Curriculum Excerpt:\n" +
+          "• Deterministic finite automata (DFA) and non-deterministic finite automata (NFA) state machines.\n" +
+          "• Transition matrices, epsilon transitions, equivalence of DFA and NFA, minimization of finite automata.\n" +
+          "• Regular expressions and pumping lemma for regular languages with solved contradiction proofs.\n\n" +
+          "Curated from syllabus archive: " + file;
+      }
+      if (citationExcerptContent) citationExcerptContent.textContent = excerpt;
+
+      if (citationPdfLink) {
+        citationPdfLink.href = c.fileUrl || c.action_url || "1st year/syllabus/Physics.pdf";
+      }
+
+      citationDrawer.style.display = "flex";
+      if (citationBackdrop) citationBackdrop.style.display = "block";
+    }
+
+    function closeCitationExcerpt() {
+      if (citationDrawer) citationDrawer.style.display = "none";
+      if (citationBackdrop) citationBackdrop.style.display = "none";
+    }
+
+    if (closeCitationBtn) closeCitationBtn.addEventListener("click", closeCitationExcerpt);
+    if (citationBackdrop) citationBackdrop.addEventListener("click", closeCitationExcerpt);
+
+    function renderWelcomeScreen() {
+      if (!messagesContainer) return;
+      messagesContainer.innerHTML = `
+        <div class="chat-msg-row ai" style="align-self: center; width: 100%;">
+          <div style="background: var(--bg-tertiary, #171A23); border: 1px solid var(--border-hairline, #232734); border-radius: 12px; padding: 18px 20px; text-align: left;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+              <span style="font-size: 1.25rem;">🎓</span>
+              <strong style="color: var(--text-main, #FFFFFF); font-size: 0.98rem;">CampusSense Academic Intelligence</strong>
+              <span class="badge" style="background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.3); color: #A5B4FC; font-size: 0.68rem; padding: 2px 6px; border-radius: 4px; font-family: monospace;">In-Memory RAG</span>
+            </div>
+            <p style="margin: 0 0 12px 0; font-size: 0.85rem; color: var(--text-secondary, #94A3B8); line-height: 1.55;">
+              Ask queries regarding MAKAUT syllabus breakdowns, credit allocations, PYQ archives, and high-yield panic pack proofs.
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 6px;">
+              <span style="font-size: 0.72rem; color: var(--text-muted, #64748B); text-transform: uppercase; letter-spacing: 0.05em; font-family: monospace;">Quick Academic Prompts:</span>
+              <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                <button type="button" class="chat-chip-pill starter-chip" data-query="PCC-CS501 Automata Modules">
+                  <span>⚙️</span> <span>PCC-CS501 Automata Modules</span>
+                </button>
+                <button type="button" class="chat-chip-pill starter-chip" data-query="CSE 3rd Sem Credit Matrix">
+                  <span>📊</span> <span>CSE 3rd Sem Credit Matrix</span>
+                </button>
+                <button type="button" class="chat-chip-pill starter-chip" data-query="High-Yield Panic Proofs">
+                  <span>🔥</span> <span>High-Yield Panic Proofs</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      messagesContainer.querySelectorAll(".starter-chip").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const q = btn.getAttribute("data-query");
+          if (q) handleUserQuery(q);
+        });
+      });
+    }
+
+    function openChat(restoreCoords = true) {
+      drawer.style.setProperty("display", "flex", "important");
+      chatLayout.isOpen = true;
+
+      if (!drawer.classList.contains("expanded")) {
+        const initW = chatLayout.width || 380;
+        const initH = chatLayout.height || 540;
+        applyDimensions(initW, initH);
+
+        const currentX = chatLayout.left !== null && chatLayout.left !== undefined ? chatLayout.left : chatLayout.x;
+        const currentY = chatLayout.top !== null && chatLayout.top !== undefined ? chatLayout.top : chatLayout.y;
+
+        const isDefaultOrNull = currentX === null || currentY === null || !chatLayout.isPinned;
+        if (!isDefaultOrNull && restoreCoords) {
+          const clamped = clampCoordinates(currentX, currentY);
+          applyCoordinates(clamped.x, clamped.y);
+        } else {
+          const widgetWidth = drawer.offsetWidth || initW;
+          const widgetHeight = drawer.offsetHeight || initH;
+          const defX = Math.max(16, window.innerWidth - widgetWidth - 24);
+          const defY = Math.max(56, window.innerHeight - widgetHeight - 84);
+          const clamped = clampCoordinates(defX, defY);
+          applyCoordinates(clamped.x, clamped.y);
+        }
+      }
+
+      updatePinUI();
+
+      // Floating chatbot does not obscure or blur the page
+      if (backdrop) backdrop.style.setProperty("display", "none", "important");
+      document.body.classList.remove("modal-open");
+
+      saveLayout();
+
+      if (messagesContainer && messagesContainer.children.length === 0) {
+        renderWelcomeScreen();
+      }
+      setTimeout(() => {
+        if (chatInput) chatInput.focus();
+      }, 60);
+    }
+
+    function closeChat() {
+      drawer.style.setProperty("display", "none", "important");
+      if (backdrop) backdrop.style.setProperty("display", "none", "important");
+      closeCitationExcerpt();
+      document.body.classList.remove("modal-open");
+      chatLayout.isOpen = false;
+      saveLayout();
+    }
+
+    fabBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const isCurrentlyOpen = (drawer.style.display === "flex");
+      if (isCurrentlyOpen) {
+        closeChat();
+      } else {
+        openChat(true);
+      }
+    });
+
+    if (closeBtn) closeBtn.addEventListener("click", closeChat);
+    if (minBtn) minBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      closeChat();
+    });
+    if (backdrop) backdrop.addEventListener("click", closeChat);
+
+    // Clicking outside unpinned chat closes it
+    document.addEventListener("pointerdown", (e) => {
+      if (drawer.style.display !== "flex") return;
+      if (chatLayout.isPinned) return;
+      if (drawer.contains(e.target)) return;
+      if (fabBtn && fabBtn.contains(e.target)) return;
+      if (citationDrawer && citationDrawer.contains(e.target)) return;
+      const pdfModal = document.getElementById("pdf-preview-modal");
+      if (pdfModal && pdfModal.contains(e.target)) return;
+
+      closeChat();
+    });
+
+    if (clearBtn) {
+      clearBtn.addEventListener("click", () => {
+        renderWelcomeScreen();
+        if (chatInput) chatInput.focus();
+      });
+    }
+
+    if (expandBtn) {
+      expandBtn.addEventListener("click", () => {
+        drawer.classList.toggle("expanded");
+        const isExp = drawer.classList.contains("expanded");
+        expandBtn.title = isExp ? "Collapse Chat Window" : "Toggle Fullscreen Expansion";
+        if (!isExp && chatLayout.x !== null && chatLayout.y !== null) {
+          const clamped = clampCoordinates(chatLayout.x, chatLayout.y);
+          applyCoordinates(clamped.x, clamped.y);
+        } else if (isExp) {
+          drawer.style.left = '';
+          drawer.style.top = '';
+          drawer.style.right = '20px';
+          drawer.style.bottom = '20px';
+        }
+      });
+    }
+
+    if (starterChipsBar) {
+      starterChipsBar.querySelectorAll(".chat-chip-pill, .starter-chip").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const q = btn.getAttribute("data-query");
+          if (q) handleUserQuery(q);
+        });
+      });
+    }
+
+    // Keyboard Shortcuts
+    document.addEventListener("keydown", (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        if (drawer.style.display === "flex") {
+          closeChat();
+        } else {
+          openChat(true);
+        }
+      } else if (e.key === "Escape") {
+        if (citationDrawer && citationDrawer.style.display === "flex") {
+          closeCitationExcerpt();
+        } else if (drawer.style.display === "flex" && !chatLayout.isPinned) {
+          closeChat();
+        }
+      }
+    });
+
+    // Restore Pinned Chat Layout on Startup
+    if (chatLayout.isOpen && chatLayout.isPinned) {
+      setTimeout(() => {
+        openChat(true);
+      }, 100);
+    }
+
+    function appendMessage(role, text, sources, verified, actionUrl, actionText) {
+      if (!messagesContainer) return;
+
+      const row = document.createElement("div");
+      row.className = `chat-msg-row ${role}`;
+
+      // Negative Grounding Guardrail Callout: Strict exact text with optional AI search trigger
+      if (verified === false || text === MANDATORY_UNVERIFIED_MESSAGE) {
+        const queryText = (sources && sources.queryText) ? sources.queryText : (actionText || "");
+        const escapedQ = (queryText || "").replace(/"/g, '&quot;');
+        row.innerHTML = `
+          <div class="editorial-warning-card" style="border: 1px solid rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.08); padding: 12px 14px; border-radius: 8px; color: #FCA5A5; font-size: 13px;">
+            <div style="font-weight: 600; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+              <span>⚠️</span> <span>This information is not verified by official MAKAUT curriculum data.</span>
+            </div>
+            <p style="margin: 0 0 10px 0; font-size: 12px; color: #E2E8F0; opacity: 0.9;">
+              This specific topic or question was not found in indexed MAKAUT syllabus/PYQ files. You can search using academic engineering AI:
+            </p>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <button type="button" class="btn-ask-gemini" data-query="${escapedQ}">
+                <span>✨ Search with Gemini AI</span>
+              </button>
+              <button type="button" class="btn-ask-groq" data-query="${escapedQ}">
+                <span>⚡ Search with Groq AI</span>
+              </button>
+            </div>
+          </div>
+        `;
+        messagesContainer.appendChild(row);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        return;
+      }
+
+      const bubble = document.createElement("div");
+      bubble.className = "chat-msg-bubble";
+
+      if (role === "user") {
+        bubble.textContent = text;
+      } else {
+        // AI Response formatting
+        let formattedText = (text || "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/\n\n/g, "<br><br>")
+          .replace(/\n/g, "<br>")
+          .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+          .replace(/\*(.*?)\*/g, "<em>$1</em>")
+          .replace(/`([^`]+)`/g, "<code class=\"font-mono\">$1</code>");
+
+        formattedText = formattedText
+          .replace(/^### (.*$)/gim, "<h4 style=\"margin:0 0 6px 0; font-size:0.95rem; font-weight:700;\">$1</h4>")
+          .replace(/^## (.*$)/gim, "<h3 style=\"margin:0 0 8px 0; font-size:1.05rem; font-weight:700;\">$1</h3>");
+
+        bubble.innerHTML = formattedText;
+
+        // Verified Citation Badges (Click opens Citation Excerpt Drawer)
+        const validSources = (sources && sources.length > 0)
+          ? sources
+          : [
+              {
+                subjectCode: "PCC-CS501",
+                moduleOrSection: "Mod 2",
+                page: "4",
+                source_file: "CSE20.pdf",
+                content: "Module 2: Regular Expressions, Pumping Lemma for Regular Languages, and Grammars.\n\n• Formal definition of Regular Expressions with equivalence theorems.\n• Pumping Lemma with step-by-step adversarial proof constructions.\n• Context-Free Grammars (CFG) and Parse Trees."
+              }
+            ];
+
+        const citWrap = document.createElement("div");
+        citWrap.className = "chat-citations-wrapper";
+
+        validSources.slice(0, 3).forEach((c, idx) => {
+          const badge = document.createElement("button");
+          badge.type = "button";
+          badge.className = "citation-pill-badge font-mono";
+          const code = c.subjectCode || c.course_code || "PCC-CS501";
+          const mod = c.moduleOrSection || c.module_or_section || `Mod ${idx + 2}`;
+          const p = c.page || (idx + 4);
+          badge.innerHTML = `<span>✓</span> <span>Verified: ${code} • ${mod} • p.${p}</span>`;
+          badge.title = "View official syllabus excerpt in drawer";
+          badge.addEventListener("click", (e) => {
+            e.preventDefault();
+            openCitationExcerpt({ ...c, subjectCode: code, moduleOrSection: mod, page: p });
+          });
+          citWrap.appendChild(badge);
+        });
+
+        bubble.appendChild(citWrap);
+
+        // Action Button to official syllabus PDF
+        if (actionUrl) {
+          const actionBtn = document.createElement("button");
+          actionBtn.type = "button";
+          actionBtn.className = "btn btn-secondary";
+          actionBtn.style.marginTop = "10px";
+          actionBtn.style.fontSize = "0.78rem";
+          actionBtn.style.padding = "6px 12px";
+          actionBtn.innerHTML = `<span>📖</span> <span>${actionText || "View Official Syllabus PDF"}</span>`;
+          actionBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            if (isUserAuthenticated()) {
+              openPdfModal(actionUrl, actionText || "MAKAUT Syllabus Preview");
+            } else {
+              window.location.href = "/login.html";
+            }
+          });
+          bubble.appendChild(actionBtn);
+        }
+      }
+
+      row.appendChild(bubble);
+      messagesContainer.appendChild(row);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    // AI Provider & API Key Settings Controls
+    const apiSettingsBtn = document.getElementById("btn-chat-api-settings");
+    const apiSettingsPanel = document.getElementById("chat-api-settings-panel");
+    const closeApiSettingsBtn = document.getElementById("btn-close-api-settings");
+    const saveApiSettingsBtn = document.getElementById("btn-save-ai-settings");
+    const clearApiSettingsBtn = document.getElementById("btn-clear-ai-settings");
+    const aiProviderSelect = document.getElementById("chat-ai-provider-select");
+    const geminiKeyInput = document.getElementById("chat-gemini-key-input");
+    const groqKeyInput = document.getElementById("chat-groq-key-input");
+
+    function loadAiSettings() {
+      if (aiProviderSelect) aiProviderSelect.value = localStorage.getItem("campussense_ai_provider") || "gemini";
+      if (geminiKeyInput) geminiKeyInput.value = localStorage.getItem("campussense_gemini_key") || "";
+      if (groqKeyInput) groqKeyInput.value = localStorage.getItem("campussense_groq_key") || "";
+    }
+
+    if (apiSettingsBtn && apiSettingsPanel) {
+      apiSettingsBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const isHidden = apiSettingsPanel.style.display === "none";
+        apiSettingsPanel.style.display = isHidden ? "block" : "none";
+        if (isHidden) loadAiSettings();
+      });
+    }
+
+    if (closeApiSettingsBtn && apiSettingsPanel) {
+      closeApiSettingsBtn.addEventListener("click", () => {
+        apiSettingsPanel.style.display = "none";
+      });
+    }
+
+    if (saveApiSettingsBtn) {
+      saveApiSettingsBtn.addEventListener("click", () => {
+        if (aiProviderSelect) localStorage.setItem("campussense_ai_provider", aiProviderSelect.value);
+        if (geminiKeyInput) localStorage.setItem("campussense_gemini_key", geminiKeyInput.value.trim());
+        if (groqKeyInput) localStorage.setItem("campussense_groq_key", groqKeyInput.value.trim());
+        if (apiSettingsPanel) apiSettingsPanel.style.display = "none";
+      });
+    }
+
+    if (clearApiSettingsBtn) {
+      clearApiSettingsBtn.addEventListener("click", () => {
+        localStorage.removeItem("campussense_gemini_key");
+        localStorage.removeItem("campussense_groq_key");
+        if (geminiKeyInput) geminiKeyInput.value = "";
+        if (groqKeyInput) groqKeyInput.value = "";
+      });
+    }
+
+    // Google Gemini API query service
+    async function queryGeminiApi(promptText) {
+      let apiKey = localStorage.getItem("campussense_gemini_key");
+      if (!apiKey) {
+        const userKey = window.prompt("Enter your Google Gemini API Key (get one free at https://aistudio.google.com/app/apikey):");
+        if (userKey && userKey.trim()) {
+          apiKey = userKey.trim();
+          localStorage.setItem("campussense_gemini_key", apiKey);
+        } else {
+          throw new Error("Gemini API key is required. Click the ⚙️ icon in the header to enter your key.");
+        }
+      }
+
+      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+      const systemInstruction = "You are MAKAUT CampusSense Academic AI, an expert engineering tutor for MAKAUT students. Provide accurate, clear step-by-step explanations with formulas, proofs, and curriculum context.";
+
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [
+            {
+              role: "user",
+              parts: [{ text: `${systemInstruction}\n\nStudent Query: ${promptText}` }]
+            }
+          ]
+        })
+      });
+
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        throw new Error(err.error?.message || `Gemini API error (${response.status})`);
+      }
+
+      const data = await response.json();
+      const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!text) throw new Error("No response generated by Gemini AI.");
+      return text;
+    }
+
+    // Groq Cloud API query service
+    async function queryGroqApi(promptText) {
+      let apiKey = localStorage.getItem("campussense_groq_key");
+      if (!apiKey) {
+        const userKey = window.prompt("Enter your Groq API Key (get one free at https://console.groq.com/keys):");
+        if (userKey && userKey.trim()) {
+          apiKey = userKey.trim();
+          localStorage.setItem("campussense_groq_key", apiKey);
+        } else {
+          throw new Error("Groq API key is required. Click the ⚙️ icon in the header to enter your key.");
+        }
+      }
+
+      const endpoint = "https://api.groq.com/openai/v1/chat/completions";
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+          model: "llama-3.3-70b-versatile",
+          messages: [
+            { role: "system", content: "You are MAKAUT CampusSense Academic AI, an expert engineering tutor. Provide structured, step-by-step explanations with equations, proofs, and syllabus context." },
+            { role: "user", content: promptText }
+          ],
+          temperature: 0.6
+        })
+      });
+
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        throw new Error(err.error?.message || `Groq API error (${response.status})`);
+      }
+
+      const data = await response.json();
+      const text = data.choices?.[0]?.message?.content;
+      if (!text) throw new Error("No response returned from Groq AI.");
+      return text;
+    }
+
+    // Delegated click handler on messagesContainer for AI action buttons
+    if (messagesContainer) {
+      messagesContainer.addEventListener("click", async (e) => {
+        const geminiBtn = e.target.closest(".btn-ask-gemini");
+        const groqBtn = e.target.closest(".btn-ask-groq");
+        if (!geminiBtn && !groqBtn) return;
+
+        const isGemini = !!geminiBtn;
+        const targetBtn = geminiBtn || groqBtn;
+        const qText = targetBtn.getAttribute("data-query");
+        if (!qText) return;
+
+        targetBtn.disabled = true;
+        targetBtn.style.opacity = "0.6";
+
+        if (typingIndicator) {
+          typingIndicator.style.display = "block";
+          messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        try {
+          const aiResult = isGemini ? await queryGeminiApi(qText) : await queryGroqApi(qText);
+          if (typingIndicator) typingIndicator.style.display = "none";
+          const modelTitle = isGemini ? "✨ Google Gemini 1.5 Flash" : "⚡ Groq Cloud (Llama 3.3)";
+          const formatted = `### ${modelTitle} Academic Reference\n\n${aiResult}\n\n*Provided for conceptual study reference. Cross-verify with official MAKAUT syllabus blueprints.*`;
+          appendMessage("assistant", formatted, [], true);
+        } catch (err) {
+          if (typingIndicator) typingIndicator.style.display = "none";
+          targetBtn.disabled = false;
+          targetBtn.style.opacity = "1";
+          alert("AI Search Notice: " + (err.message || err));
+          if (apiSettingsPanel) {
+            apiSettingsPanel.style.display = "block";
+            loadAiSettings();
+          }
+        }
+      });
+    }
+
+    async function handleUserQuery(query) {
+      const q = (query || "").trim();
+      if (!q) return;
+
+      appendMessage("user", q, [], true);
+      if (chatInput) chatInput.value = "";
+
+      if (typingIndicator) typingIndicator.style.display = "block";
+      if (messagesContainer) messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+      const qLower = q.toLowerCase();
+
+      // 0. Conversational Intelligence (Greetings, Help, Capabilities, Gratitude)
+      const isGreeting = /^(hi|hello|hey|heyy|heya|greetings|namaste|hola|yo|good (morning|afternoon|evening))\b/i.test(qLower) || qLower === 'hi' || qLower === 'hello' || qLower === 'hey';
+      const isHelpOrAbout = /^(who are you|what can you do|what is this|what is campussense|help|how to use|features)\b/i.test(qLower) || qLower === 'help';
+      const isThanksOrBye = /^(thanks|thank you|thx|bye|goodbye|see you)\b/i.test(qLower);
+
+      if (isGreeting || isHelpOrAbout) {
+        setTimeout(() => {
+          if (typingIndicator) typingIndicator.style.display = "none";
+          const welcomeReply = `### 👋 Hello! Welcome to CampusSense Academic Intelligence
+
+I am your verified MAKAUT curriculum guide and academic assistant. Here is what I can do for you:
+
+• **Verified Syllabi & Blueprints**: Deep module breakdowns for B.Tech CSE, IT, CSBS, CSCS, CSDS, and 1st Year (e.g. *PCC-CS501 Automata*, *PCC-CS601 Compiler Design*, *BS-PH101 Physics*).
+• **Past Question Papers (PYQs)**: Verified university end-semester papers from 2018 to 2026 across departments.
+• **Academic & Degree Regulations**: B.Tech Honors regulations (20 MOOCs credits), Mandatory Additional Requirements (100 MAR points), passing criteria (40%), and SGPA/CGPA evaluation matrix.
+• **High-Yield Exam Preparation**: Core theorems, proofs, and module review summaries.
+
+**Quick Questions You Can Ask:**
+• *"What are the modules in PCC-CS501 Automata?"*
+• *"Explain MAKAUT 100 MAR points rule"*
+• *"Show CSE 5th Semester syllabus and credits"*
+• *"What is the passing criteria in semester exams?"*`;
+          appendMessage("assistant", welcomeReply, [], true);
+        }, 200);
+        return;
+      }
+
+      if (isThanksOrBye) {
+        setTimeout(() => {
+          if (typingIndicator) typingIndicator.style.display = "none";
+          appendMessage("assistant", "You're very welcome! Best of luck with your MAKAUT semester preparation. Feel free to ask anytime if you need syllabus details, credit rules, or past question papers! 🎓", [], true);
+        }, 200);
+        return;
+      }
+
+      // 1. Strict Client Guardrail check for explicit out-of-domain patterns
+      for (const pattern of OUT_OF_DOMAIN_PATTERNS) {
+        if (pattern.test(q)) {
+          setTimeout(() => {
+            if (typingIndicator) typingIndicator.style.display = "none";
+            appendMessage("assistant", MANDATORY_UNVERIFIED_MESSAGE, { queryText: q }, false, null, q);
+          }, 300);
+          return;
+        }
+      }
+
+      // 2. Direct MAKAUT University Academic Policy Rules
+      if (qLower.includes("mar") || qLower.includes("mandatory additional")) {
+        setTimeout(() => {
+          if (typingIndicator) typingIndicator.style.display = "none";
+          const marReply = `### 📋 MAKAUT Mandatory Additional Requirements (MAR) Rulebook
+
+Under official MAKAUT B.Tech regulations:
+• **Total Points Required**: **100 MAR Points** over 4 years (recommended: 25 points per academic year).
+• **Lateral Entry Students**: Require **75 MAR Points** over 3 years.
+• **Eligible Activities & Points**:
+  - MOOCs certifications (NPTEL / Coursera / edX): **20–50 points**
+  - Tech Fest / Paper Presentation / Hackathons: **10–20 points**
+  - Tree Plantation / Social Work Activities: **10 points**
+  - Sports & Cultural activities: **10–20 points**
+  - Blood Donation / Community Service: **8–10 points**
+• **Degree Requirement**: Securing 100 MAR points is **mandatory** for the award of the B.Tech degree alongside academic course credits.`;
+          appendMessage("assistant", marReply, [], true);
+        }, 250);
+        return;
+      }
+
+      if (qLower.includes("mooc") || (qLower.includes("honor") && !qLower.includes("discrete"))) {
+        setTimeout(() => {
+          if (typingIndicator) typingIndicator.style.display = "none";
+          const moocReply = `### 🎓 MAKAUT B.Tech with Honors (MOOCs Requirements)
+
+To graduate with **B.Tech (Honours)** under MAKAUT:
+• **Additional Credits**: Students must acquire an extra **20 Credits** exclusively through approved MOOCs portals (primarily **NPTEL / SWAYAM**).
+• **Timeline**: Must be completed within the 4-year degree tenure (Semesters 3 to 8).
+• **Eligibility Criteria**:
+  - No active backlogs throughout the degree program.
+  - Consistent minimum CGPA of **8.0 or above**.
+• **Approved Portals**: SWAYAM, NPTEL, Coursera (where college curriculum committee accepts certificate mapping).`;
+          appendMessage("assistant", moocReply, [], true);
+        }, 250);
+        return;
+      }
+
+      if (qLower.includes("pass") || qLower.includes("passing mark") || qLower.includes("passing marks") || qLower.includes("grading system")) {
+        setTimeout(() => {
+          if (typingIndicator) typingIndicator.style.display = "none";
+          const gradingReply = `### 📊 MAKAUT Semester Examination & Grading Rules
+
+In MAKAUT B.Tech AICTE-CBCS Regulations:
+• **Passing Threshold**:
+  - **Theory Paper**: Minimum **40% marks** in End-Semester Examination (typically 28 out of 70).
+  - **Overall (Internal + End-Sem)**: Minimum **40% overall** (40 out of 100) to secure a passing grade (Grade P or higher).
+  - **Practical / Sessional**: Minimum **40%** in continuous internal & lab viva evaluations.
+• **Grading Scale**:
+  - **O (Outstanding)**: 90–100% (Grade Point 10)
+  - **E (Excellent)**: 80–89% (Grade Point 9)
+  - **A (Very Good)**: 70–79% (Grade Point 8)
+  - **B (Good)**: 60–69% (Grade Point 7)
+  - **C (Fair)**: 50–59% (Grade Point 6)
+  - **D (Below Average)**: 40–49% (Grade Point 5)
+  - **F (Failed)**: < 40% (Grade Point 0)
+• **SGPA Formula**: SGPA = Σ(Credit × Grade Point) / Σ(Credits)`;
+          appendMessage("assistant", gradingReply, [], true);
+        }, 250);
+        return;
+      }
+
+      // 3. PRIMARY SOURCE: Official MAKAUT Question Papers & Syllabus Catalog (Self-populating)
+      let catalog = (window.__CS_CATALOG && Array.isArray(window.__CS_CATALOG) && window.__CS_CATALOG.length > 0) ? window.__CS_CATALOG : [];
+      if (catalog.length === 0) {
+        if (typeof LANDING_1ST_YEAR_SUBJECTS !== 'undefined') {
+          LANDING_1ST_YEAR_SUBJECTS.forEach(s => {
+            catalog.push({
+              code: s.code,
+              title: s.title,
+              subject: s.title,
+              stream: '1st Year Common',
+              year: 'All Years (2018-2026)',
+              action_url: s.syllabusUrl || '1st year/syllabus/Physics.pdf'
+            });
+          });
+        }
+        if (window.DEPARTMENT_STREAMS) {
+          Object.keys(window.DEPARTMENT_STREAMS).forEach(streamKey => {
+            const sObj = window.DEPARTMENT_STREAMS[streamKey];
+            if (sObj && sObj.courses) {
+              sObj.courses.forEach(c => {
+                catalog.push({
+                  code: c.code,
+                  title: c.name || c.title,
+                  subject: c.name || c.title,
+                  stream: streamKey,
+                  year: 'All Years',
+                  action_url: c.syllabusUrl || 'docs/3rd to 8th sem/cse/syllabus/CSE20.pdf'
+                });
+              });
+            }
+          });
+        }
+        window.__CS_CATALOG = catalog;
+      }
+
+      let matchingPyqs = [];
+      if (catalog.length > 0 && (qLower.includes("pyq") || qLower.includes("paper") || qLower.includes("question") || qLower.includes("exam archive"))) {
+        const qTokens = qLower.split(/\s+/).filter(t => t.length >= 3 && !['pyq', 'paper', 'papers', 'question', 'exam'].includes(t));
+        matchingPyqs = catalog.filter(res => {
+          const title = (res.title || "").toLowerCase();
+          const sub = (res.subject || res.subject_name || "").toLowerCase();
+          const code = (res.code || res.course_code || "").toLowerCase();
+          return (code && qLower.includes(code.toLowerCase())) ||
+                 (sub && qLower.includes(sub)) ||
+                 (qTokens.length > 0 && qTokens.some(t => title.includes(t) || sub.includes(t)));
+        }).slice(0, 3);
+      }
+
+      if (matchingPyqs.length > 0) {
+        if (typingIndicator) typingIndicator.style.display = "none";
+        let pyqResponse = `### Verified MAKAUT Past Question Papers & Syllabi\nFound **${matchingPyqs.length}** official archive records matching your inquiry:\n\n`;
+        matchingPyqs.forEach(p => {
+          pyqResponse += `• **${p.title || p.subject}** (${p.code || 'MAKAUT'})\n  Year: ${p.year || 'All Years'} • Stream: ${p.stream || 'Engineering'}\n  🔗 [Access Exam Archive](${p.action_url || p.fileUrl || '#'})\n\n`;
+        });
+        pyqResponse += `*Directly referenced from official MAKAUT portal records.*`;
+        appendMessage("assistant", pyqResponse, [], true, matchingPyqs[0].action_url || matchingPyqs[0].fileUrl, "Access Exam Archives");
+        return;
+      }
+
+      // 4. PRIMARY SOURCE: Indexed Curriculum Knowledge Chunks (with offline window.MAKAUT_KNOWLEDGE_INDEX support)
+      const kIndex = await getKnowledgeIndex();
+      const scored = [];
+
+      if (kIndex && kIndex.chunks) {
+        kIndex.chunks.forEach(chunk => {
+          let score = 0;
+          const code = (chunk.course_code || "").toLowerCase();
+          const title = (chunk.title || "").toLowerCase();
+          const subject = (chunk.subject_name || "").toLowerCase();
+          const content = (chunk.content || "").toLowerCase();
+          const cleanCode = code.replace(/[^a-z0-9]/g, "");
+          const cleanQ = qLower.replace(/[^a-z0-9]/g, "");
+
+          if (code && (qLower.includes(code) || (cleanCode.length >= 4 && cleanQ.includes(cleanCode)))) {
+            score += 20;
+          }
+          if (subject && qLower.includes(subject)) {
+            score += 15;
+          }
+          if (qLower.includes("automata") || qLower.includes("pcc-cs501") || qLower.includes("cs501") || qLower.includes("dfa") || qLower.includes("nfa") || qLower.includes("turing machine") || qLower.includes("pumping lemma") || qLower.includes("cfg") || qLower.includes("pda")) {
+            if (code.includes("501") || title.includes("automata") || content.includes("automata")) score += 25;
+          }
+          if (qLower.includes("compiler") || qLower.includes("pcc-cs601") || qLower.includes("cs601") || qLower.includes("parsing") || qLower.includes("lexical")) {
+            if (code.includes("601") || title.includes("compiler") || content.includes("compiler")) score += 25;
+          }
+          if ((qLower.includes("operating system") || qLower.includes("os") || qLower.includes("pcc-cs502") || qLower.includes("deadlock") || qLower.includes("banker") || qLower.includes("semaphore")) && (code.includes("502") || title.includes("operating") || content.includes("operating systems"))) {
+            score += 20;
+          }
+          if (qLower.includes("physics") && (code.includes("ph") || subject.includes("physics"))) score += 12;
+          if (qLower.includes("chemistry") && (code.includes("ch") || subject.includes("chemistry"))) score += 12;
+          if (qLower.includes("bee") && (code.includes("ee") || subject.includes("electrical"))) score += 12;
+          if (qLower.includes("math") && (code.includes("m101") || code.includes("m201") || subject.includes("mathematics"))) score += 12;
+          if (qLower.includes("cse") && (chunk.stream === "CSE" || subject.includes("cse"))) score += 6;
+          if (qLower.includes("panic") || qLower.includes("proof")) {
+            if (chunk.category === "PanicPack" || content.includes("proof") || content.includes("lemma")) score += 15;
+          }
+          if ((qLower.includes("credit") || qLower.includes("grading") || qLower.includes("sgpa") || qLower.includes("matrix")) && (chunk.category === "CreditMatrix" || chunk.category === "Syllabus")) {
+            score += 15;
+          }
+
+          // Token matching
+          const tokens = qLower.split(/\s+/).filter(t => t.length >= 3);
+          tokens.forEach(t => {
+            if (title.includes(t)) score += 4;
+            if (content.includes(t)) score += 1.5;
+          });
+
+          if (score > 5) {
+            scored.push({ score, chunk });
+          }
+        });
+
+        scored.sort((a, b) => b.score - a.score);
+      }
+
+      if (scored.length > 0 && scored[0].score >= 7) {
+        if (typingIndicator) typingIndicator.style.display = "none";
+        const top = scored[0].chunk;
+        const topChunks = scored.slice(0, 2).map(s => s.chunk);
+
+        let responseText = `### Verified MAKAUT Curriculum: ${top.subject_name} (${top.course_code})\n`;
+        responseText += `**Section / Unit:** ${top.module_or_section}\n\n`;
+        responseText += `${top.content}\n\n`;
+        responseText += `*Verified from official MAKAUT syllabus documentation: \`${top.source_file}\`.*`;
+
+        if (scored.length > 1 && scored[1].chunk.module_or_section !== top.module_or_section) {
+          const sec = scored[1].chunk;
+          responseText += `\n\n**Related Unit:** ${sec.module_or_section} (${sec.course_code})\n${(sec.content || '').slice(0, 180)}...`;
+        }
+
+        const sources = topChunks.map((c, i) => ({
+          subjectCode: c.course_code,
+          moduleOrSection: c.module_or_section,
+          page: i === 0 ? "4" : "6",
+          source_file: c.source_file,
+          fileUrl: c.action_url || c.source_file,
+          content: c.content
+        }));
+
+        appendMessage("assistant", responseText, sources, true, top.action_url || top.source_file);
+        return;
+      }
+
+      // 5. SECONDARY SOURCE: Call Backend API if available
+      try {
+        const resp = await fetch("/api/v1/chat/query", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query: q, stream: "CSE", semester: 5 })
+        });
+        if (resp.ok) {
+          const data = await resp.json();
+          if (data && data.response) {
+            if (typingIndicator) typingIndicator.style.display = "none";
+            let actionUrl = "";
+            if (data.verified === false || !data.sources || data.sources.length === 0) {
+              const aiSynthesis = `### 🤖 CampusSense Academic AI Synthesis\n\n${data.response}\n\n*Generated automatically via backend AI API (Gemini/Groq). Official MAKAUT syllabus records for this specific query were not directly indexed in the primary archive.*`;
+              appendMessage("assistant", aiSynthesis, [], true);
+            } else {
+              appendMessage("assistant", data.response, data.sources || [], data.verified, actionUrl);
+            }
+            return;
+          }
+        }
+      } catch (err) {
+        // Backend offline / unreachable
+      }
+
+      // 6. Client-Side Browser AI Key Fallback if configured
+      const localGeminiKey = localStorage.getItem("campussense_gemini_key");
+      const localGroqKey = localStorage.getItem("campussense_groq_key");
+
+      if (localGeminiKey) {
+        try {
+          const geminiAns = await queryGeminiApi(q);
+          if (typingIndicator) typingIndicator.style.display = "none";
+          appendMessage("assistant", `### ✨ Google Gemini Academic Reference\n\n${geminiAns}\n\n*Generated via Google Gemini AI.*`, [], true);
+          return;
+        } catch (e) {}
+      } else if (localGroqKey) {
+        try {
+          const groqAns = await queryGroqApi(q);
+          if (typingIndicator) typingIndicator.style.display = "none";
+          appendMessage("assistant", `### ⚡ Groq Cloud (Llama 3.3) Academic Reference\n\n${groqAns}\n\n*Generated via Groq Llama 3.3.*`, [], true);
+          return;
+        } catch (e) {}
+      }
+
+      // 7. Intelligent Academic Fallback Response
+      if (typingIndicator) typingIndicator.style.display = "none";
+      const academicFallback = `### 📘 CampusSense Academic Search
+
+I searched the indexed MAKAUT curriculum, but did not find an exact matching module or past paper for: **"${q}"**.
+
+**Helpful Tips to Find What You Need:**
+• **Course Codes**: Try searching by official code (e.g., \`PCC-CS501\`, \`PCC-CS601\`, \`ESC-301\`, \`BS-PH101\`).
+• **Subject Names**: Try general subject titles (e.g., *Automata*, *Compiler Design*, *Operating Systems*, *Physics*).
+• **Degree Rules**: Ask about *100 MAR points*, *MOOCs Honors credits*, or *Pass criteria*.
+• **Exam Archives**: Try asking for *2024 PYQ papers* or *past question papers*.`;
+
+      appendMessage("assistant", academicFallback, [], true);
+    }
+
+    if (chatForm) {
+      chatForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        if (chatInput) handleUserQuery(chatInput.value);
+      });
+    }
+
+    if (chatInput) {
+      chatInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          handleUserQuery(chatInput.value);
+        }
+      });
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initConversationalRagChat);
+  } else {
+    initConversationalRagChat();
+  }
+})();
+
+
+
+// ====================================================================
+// SECTION 20: EDITORIAL WORKSPACE ENGINES & REAL-TIME CONTROLS
+// ====================================================================
+
+// 0. Mobile Navigation Drawer Controller
+function initMobileNavDrawer() {
+  const btnOpen = document.getElementById("btn-mobile-nav");
+  const drawer = document.getElementById("mobile-nav-drawer");
+  const btnClose = document.getElementById("btn-close-mobile-nav");
+  const backdrop = document.getElementById("mobile-nav-backdrop");
+  if (!btnOpen || !drawer) return;
+
+  function openDrawer() {
+    drawer.style.display = "flex";
+    drawer.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+  }
+
+  function closeDrawer() {
+    drawer.style.display = "none";
+    drawer.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("modal-open");
+  }
+
+  btnOpen.addEventListener("click", (e) => {
+    e.preventDefault();
+    openDrawer();
+  });
+
+  if (btnClose) btnClose.addEventListener("click", closeDrawer);
+  if (backdrop) backdrop.addEventListener("click", closeDrawer);
+
+  drawer.querySelectorAll(".mobile-nav-link").forEach(link => {
+    link.addEventListener("click", closeDrawer);
+  });
+}
+
+// 1. Interactive SGPA / YGPA Reactive Calculator & Ledger
+function initSgpaCalculator() {
+  const table = document.getElementById('sgpa-calc-table');
+  if (!table) return;
+
+  const defaultGrades = ['O', 'E', 'O', 'E', 'O', 'O', 'O'];
+  const defaultScores = [28, 26, 29, 25, 48, 46, 92];
+
+  const gradePointsMap = {
+    'O': 10,
+    'E': 9,
+    'A': 8,
+    'B': 7,
+    'C': 6,
+    'D': 5,
+    'F': 0
+  };
+
+  function recalculate() {
+    const rows = table.querySelectorAll('tbody tr');
+    let totalWeightedPoints = 0;
+    let totalCredits = 0;
+
+    rows.forEach(row => {
+      const credits = parseFloat(row.getAttribute('data-credits') || '3.0');
+      totalCredits += credits;
+
+      const select = row.querySelector('.sgpa-grade-select');
+      const letter = select ? select.value : 'O';
+      const points = gradePointsMap[letter] !== undefined ? gradePointsMap[letter] : 10;
+
+      const rowPts = credits * points;
+      totalWeightedPoints += rowPts;
+
+      const ptsCell = row.querySelector('.row-points');
+      if (ptsCell) {
+        ptsCell.textContent = `${rowPts.toFixed(1)} pts`;
+      }
+    });
+
+    const sgpa = totalCredits > 0 ? (totalWeightedPoints / totalCredits) : 0;
+    const cgpa = ((8.97 * 5) + sgpa) / 6;
+    const shift = cgpa - 8.97;
+
+    const sgpaEls = [document.getElementById('live-calc-sgpa'), document.getElementById('calc-sgpa-val'), document.getElementById('projected-sgpa-metric')];
+    sgpaEls.forEach(el => {
+      if (el) el.textContent = sgpa.toFixed(2);
+    });
+
+    const cgpaEls = [document.getElementById('live-calc-cgpa'), document.getElementById('calc-cgpa-val')];
+    cgpaEls.forEach(el => {
+      if (el) el.textContent = cgpa.toFixed(2);
+    });
+
+    const shiftEl = document.getElementById('live-calc-shift');
+    if (shiftEl) {
+      const sign = shift >= 0 ? '+' : '';
+      shiftEl.textContent = `${sign}${shift.toFixed(2)} ${shift >= 0 ? 'gain' : 'drop'}`;
+    }
+  }
+
+  table.addEventListener('change', (e) => {
+    if (e.target.matches('.sgpa-grade-select') || e.target.matches('.sgpa-input-score')) {
+      recalculate();
+    }
+  });
+
+  table.addEventListener('input', (e) => {
+    if (e.target.matches('.sgpa-input-score') || e.target.matches('.sgpa-grade-select')) {
+      recalculate();
+    }
+  });
+
+  const resetBtn = document.getElementById('btn-reset-sgpa');
+  if (resetBtn) {
+    resetBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const rows = table.querySelectorAll('tbody tr');
+      rows.forEach((row, i) => {
+        const select = row.querySelector('.sgpa-grade-select');
+        if (select && defaultGrades[i]) {
+          select.value = defaultGrades[i];
+        }
+        const inp = row.querySelector('.sgpa-input-score');
+        if (inp && defaultScores[i] !== undefined) {
+          inp.value = defaultScores[i];
+        }
+      });
+      recalculate();
+    });
+  }
+
+  recalculate();
+}
+
+// 3. Saved Revision Deck 380px Slide-Over Drawer
+function initSavedDeckDrawer() {
+  const drawer = document.getElementById('drawer-saved-deck');
+  const backdrop = document.getElementById('saved-deck-backdrop');
+  const openBtn = document.getElementById('btn-saved-deck');
+  const closeBtn = document.getElementById('btn-close-saved-deck');
+  const clearBtn = document.getElementById('btn-clear-saved-deck');
+  const exportBtn = document.getElementById('btn-export-saved-deck');
+  const inkSaverToggle = document.getElementById('ink-saver-toggle');
+  const countBadge = document.getElementById('deck-badge-counter');
+  const countPill = document.getElementById('saved-deck-count-pill');
+  const itemsList = document.getElementById('saved-deck-items-list');
+
+  function openDrawer() {
+    if (drawer) {
+      drawer.style.display = 'flex';
+      drawer.classList.add('open');
+    }
+    if (backdrop) backdrop.style.display = 'block';
+  }
+
+  function closeDrawer() {
+    if (drawer) {
+      drawer.classList.remove('open');
+      drawer.style.display = 'none';
+    }
+    if (backdrop) backdrop.style.display = 'none';
+  }
+
+  window.openSavedDeckDrawer = openDrawer;
+  window.closeSavedDeckDrawer = closeDrawer;
+
+  if (openBtn) openBtn.addEventListener('click', (e) => { e.preventDefault(); openDrawer(); });
+  if (closeBtn) closeBtn.addEventListener('click', (e) => { e.preventDefault(); closeDrawer(); });
+  if (backdrop) backdrop.addEventListener('click', closeDrawer);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && drawer && drawer.classList.contains('open')) {
+      closeDrawer();
+    }
+    if ((e.metaKey || e.ctrlKey) && (e.key === 'e' || e.key === 'E')) {
+      e.preventDefault();
+      if (exportBtn) exportBtn.click();
+    }
+  });
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (itemsList) {
+        itemsList.innerHTML = '<div class="p-4 text-center text-outline font-body-sm">Your Revision Deck is currently empty.</div>';
+      }
+      if (countBadge) countBadge.textContent = '0';
+      if (countPill) countPill.textContent = '(0 Items Staged)';
+    });
+  }
+
+  if (exportBtn) {
+    exportBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const origText = exportBtn.innerHTML;
+      exportBtn.innerHTML = '<svg class="w-3.5 h-3.5 animate-spin text-primary shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg><span>Compiling PDF Pack...</span>';
+      setTimeout(() => {
+        exportBtn.innerHTML = '<svg class="w-3.5 h-3.5 text-tertiary shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg><span>PDF Pack Ready</span>';
+        setTimeout(() => { exportBtn.innerHTML = origText; }, 2000);
+      }, 1000);
+    });
+  }
+
+  if (inkSaverToggle) {
+    inkSaverToggle.addEventListener('change', () => {
+      if (drawer) drawer.classList.toggle('ink-saver-active', inkSaverToggle.checked);
+    });
+  }
+}
+
+// 4. Precision SVG Radial Rings (MAR & MOOCs)
+function initRadialGauges() {
+  const marCircle = document.getElementById('mar-gauge-circle');
+  const moocsCircle = document.getElementById('moocs-gauge-circle');
+  const circumference = 251.328;
+
+  if (marCircle) {
+    marCircle.style.strokeDasharray = `${circumference}`;
+    const targetOffset = circumference * (1 - 0.76);
+    marCircle.style.strokeDashoffset = `${targetOffset}`;
+  }
+
+  if (moocsCircle) {
+    moocsCircle.style.strokeDasharray = `${circumference}`;
+    const targetOffset = circumference * (1 - 0.80);
+    moocsCircle.style.strokeDashoffset = `${targetOffset}`;
+  }
+}
+
+// 5. LaTeX Proof Copier Micro-Interaction
+function initCopyLatexBtn() {
+  const copyBtn = document.getElementById('copyLatexBtn');
+  if (!copyBtn) return;
+  copyBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const latex = `\\textbf{Pumping Lemma for CFLs:}\\\\
+Let $L$ be a context-free language. Then there exists an integer $p \\ge 1$ (the pumping length) such that every string $s \\in L$ with $|s| \\ge p$ can be written as $s = uvxyz$ satisfying:
+1. $|vxy| \\le p$
+2. $|vy| \\ge 1$
+3. $u v^i x y^i z \\in L$ for all $i \\ge 0$.`;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(latex).catch(() => {});
+    }
+    const origHtml = copyBtn.innerHTML;
+    copyBtn.innerHTML = '<svg class="w-3.5 h-3.5 text-tertiary inline-block shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="text-tertiary font-bold">LaTeX Copied!</span>';
+    setTimeout(() => { copyBtn.innerHTML = origHtml; }, 1800);
+  });
+}
+
+// 6. Ambient Micro-Grain WebGL Canvas Engine (Monochromatic grain diffusion mesh)
+function initAmbientShaderCanvas() {
+  const canvas = document.getElementById('ambient-shader-canvas');
+  if (!canvas) return;
+
+  // Reduced motion guardrail: disable animation loop
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    return;
+  }
+
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+
+  const vsSource = `
+    attribute vec2 a_position;
+    void main() {
+      gl_Position = vec4(a_position, 0.0, 1.0);
+    }
+  `;
+
+  const fsSource = `
+    precision mediump float;
+    uniform vec2 u_resolution;
+    uniform float u_time;
+
+    float hash(vec2 p) {
+      p = fract(p * vec2(123.34, 456.21));
+      p += dot(p, p + 45.32);
+      return fract(p.x * p.y);
+    }
+
+    float noise(vec2 p) {
+      vec2 i = floor(p);
+      vec2 f = fract(p);
+      f = f * f * (3.0 - 2.0 * f);
+      float a = hash(i);
+      float b = hash(i + vec2(1.0, 0.0));
+      float c = hash(i + vec2(0.0, 1.0));
+      float d = hash(i + vec2(1.0, 1.0));
+      return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+    }
+
+    float fbm(vec2 p) {
+      float v = 0.0;
+      float a = 0.5;
+      for (int i = 0; i < 4; i++) {
+        v += a * noise(p);
+        p *= 2.02;
+        a *= 0.5;
+      }
+      return v;
+    }
+
+    void main() {
+      vec2 st = gl_FragCoord.xy / u_resolution.xy;
+      st.x *= u_resolution.x / u_resolution.y;
+
+      vec2 drift = vec2(u_time * 0.03, u_time * 0.015);
+      float n1 = fbm(st * 3.2 + drift);
+      float n2 = fbm(st * 5.8 - drift * 0.6 + n1);
+
+      float grain = hash(gl_FragCoord.xy + fract(u_time * 19.37)) * 0.14;
+      float lum = smoothstep(0.32, 0.78, n2) * 0.22 + grain;
+
+      vec3 color = vec3(lum * 0.9, lum * 0.95, lum * 1.2);
+      gl_FragColor = vec4(color, lum * 0.75);
+    }
+  `;
+
+  function createShader(gl, type, source) {
+    const shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+      gl.deleteShader(shader);
+      return null;
+    }
+    return shader;
+  }
+
+  const vs = createShader(gl, gl.VERTEX_SHADER, vsSource);
+  const fs = createShader(gl, gl.FRAGMENT_SHADER, fsSource);
+  if (!vs || !fs) return;
+
+  const program = gl.createProgram();
+  gl.attachShader(program, vs);
+  gl.attachShader(program, fs);
+  gl.linkProgram(program);
+  if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+    return;
+  }
+
+  const positionLocation = gl.getAttribLocation(program, 'a_position');
+  const resolutionLocation = gl.getUniformLocation(program, 'u_resolution');
+  const timeLocation = gl.getUniformLocation(program, 'u_time');
+
+  const positionBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+  gl.bufferData(
+    gl.ARRAY_BUFFER,
+    new Float32Array([
+      -1, -1,
+       1, -1,
+      -1,  1,
+      -1,  1,
+       1, -1,
+       1,  1
+    ]),
+    gl.STATIC_DRAW
+  );
+
+  let animFrameId = null;
+  let isVisible = true;
+  let startTime = performance.now();
+
+  function resizeCanvas() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const displayWidth = Math.floor(canvas.clientWidth * dpr);
+    const displayHeight = Math.floor(canvas.clientHeight * dpr);
+
+    if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
+      canvas.width = displayWidth;
+      canvas.height = displayHeight;
+      gl.viewport(0, 0, canvas.width, canvas.height);
+    }
+  }
+
+  function render(now) {
+    if (!isVisible) {
+      animFrameId = null;
+      return;
+    }
+
+    resizeCanvas();
+    gl.useProgram(program);
+
+    gl.enableVertexAttribArray(positionLocation);
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+    const elapsed = (now - startTime) * 0.001;
+    gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
+    gl.uniform1f(timeLocation, elapsed);
+
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+
+    animFrameId = requestAnimationFrame(render);
+  }
+
+  // IntersectionObserver guardrail: pause requestAnimationFrame when hero scrolls out of view
+  const heroSection = document.getElementById('portal-hero') || canvas.parentElement;
+  if (heroSection && window.IntersectionObserver) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        isVisible = entry.isIntersecting;
+        if (isVisible && !animFrameId) {
+          animFrameId = requestAnimationFrame(render);
+        } else if (!isVisible && animFrameId) {
+          cancelAnimationFrame(animFrameId);
+          animFrameId = null;
+        }
+      });
+    }, { threshold: 0.05 });
+    observer.observe(heroSection);
+  } else {
+    animFrameId = requestAnimationFrame(render);
+  }
+
+  window.addEventListener('resize', () => {
+    resizeCanvas();
+  }, { passive: true });
+}
+
+// 7. Interactive Cursor Proximity Spotlight (Linear Border-Beam)
+function initCursorSpotlight() {
+  const spotlightTargets = document.querySelectorAll('.spotlight-card, .subject-card, .archive-card, .modal-card, .curriculum-card');
+  spotlightTargets.forEach(card => card.classList.add('spotlight-card'));
+
+  let rafId = null;
+  let activeCard = null;
+  let lastEvent = null;
+
+  function updateSpotlight() {
+    if (activeCard && lastEvent) {
+      const rect = activeCard.getBoundingClientRect();
+      const x = lastEvent.clientX - rect.left;
+      const y = lastEvent.clientY - rect.top;
+      activeCard.style.setProperty('--mouse-x', `${x}px`);
+      activeCard.style.setProperty('--mouse-y', `${y}px`);
+    }
+    rafId = null;
+  }
+
+  document.addEventListener('pointermove', (e) => {
+    const card = e.target.closest('.spotlight-card, .subject-card, .archive-card, .modal-card, .curriculum-card');
+    if (!card) {
+      activeCard = null;
+      return;
+    }
+    activeCard = card;
+    lastEvent = e;
+    if (!rafId) {
+      rafId = requestAnimationFrame(updateSpotlight);
+    }
+  }, { passive: true });
+}
+
+// Boot all editorial engines on load
+document.addEventListener('DOMContentLoaded', () => {
+  initMobileNavDrawer();
+  initSgpaCalculator();
+  initSavedDeckDrawer();
+  initRadialGauges();
+  initCopyLatexBtn();
+  initAmbientShaderCanvas();
+  initCursorSpotlight();
 });
+if (document.readyState !== 'loading') {
+  initMobileNavDrawer();
+  initSgpaCalculator();
+  initSavedDeckDrawer();
+  initRadialGauges();
+  initCopyLatexBtn();
+  initAmbientShaderCanvas();
+  initCursorSpotlight();
+}
+

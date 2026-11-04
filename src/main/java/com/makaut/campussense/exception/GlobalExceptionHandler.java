@@ -34,7 +34,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(LlmRateLimitException.class)
     public ResponseEntity<ErrorResponse> handleRateLimit(LlmRateLimitException ex, HttpServletRequest request) {
-        log.warn("Rate limit exception: {}", ex.getMessage());
+        String clientIp = com.makaut.campussense.config.CloudflareSecurityFilter.resolveClientIp(request);
+        log.warn("Rate limit exception from client IP {}: {}", clientIp, ex.getMessage());
         return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
                 .body(ErrorResponse.builder()
                         .timestamp(Instant.now())
