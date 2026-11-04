@@ -14636,20 +14636,9 @@ html, body {
   align-items: center !important;
 }
 
-.nav-feedback-btn {
-  color: #1A2218 !important;
-  font-weight: 600 !important;
-  text-decoration: none !important;
-  margin-right: 1.25rem !important;
-  cursor: pointer !important;
-  font-size: 0.95rem !important;
-  background: transparent !important;
-  border: none !important;
-}
+/* .nav-feedback-btn superseded */
 
-.nav-feedback-btn:hover {
-  color: var(--emerald-primary, #046A38) !important;
-}
+/* .nav-feedback-btn:hover superseded */
 
 .nav-auth-link {
   color: #1A2218 !important;
@@ -15934,4 +15923,12 @@ main, section, header, nav, .hero-section, .features-container, #features-sectio
 
 .modal-hidden {
   display: none !important;
+}
+
+#nav-feedback-btn, .nav-feedback-btn {
+  background-color: #F5B69E !important;
+  color: #000000 !important;
+  border-radius: 0.5rem !important;
+  font-weight: 700 !important;
+  border: none !important;
 }
