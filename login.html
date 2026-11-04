@@ -43,46 +43,51 @@
       padding: 0;
     }
 
-    :root {
-      /* StockPulse Dark Theme — matches CampusSense Design System v2.6 */
-      --bg-canvas: #0b0f19;
-      --bg-card: #16181f;
-      --bg-input: #1e222d;
-      --border-color: rgba(255,255,255,0.08);
-      --border-focus: #526B58;
-      --text-primary: #FFFFFF;
-      --text-secondary: #CBD5E1;
-      --text-muted: #94A3B8;
-      --accent: #526B58;
-      --accent-hover: #8FA895;
-      --accent-subtle: rgba(82,107,88,0.18);
-      --btn-bg: #FFFFFF;
-      --btn-text: #000000;
-      --btn-hover: #E2E8F0;
-      --alert-success-bg: rgba(16, 185, 129, 0.12);
-      --alert-success-border: #10B981;
-      --alert-success-text: #34D399;
-      --alert-error-bg: rgba(239, 68, 68, 0.12);
-      --alert-error-border: #EF4444;
-      --alert-error-text: #F87171;
-    }
+    :root, [data-theme="light"], [data-theme="dark"] {
+      /* Poppy Editorial Color Palette */
+      --surface-canvas: #F9EBD7;           /* Warm Ivory: Glare-free 60% editorial base */
+      --surface-card: #FFFFFF;             /* Pure White: High-contrast elevated cards */
+      --surface-elevated: #F2E3CD;         /* Subtle Ivory Sand: Input backgrounds & panels */
+      --surface-border: rgba(4, 106, 56, 0.18); /* Crisp emerald-tinted stone outlines */
+      --surface-border-focus: #046A38;     /* Emerald focus ring */
 
-    [data-theme="light"] {
-      /* Editorial Light Theme — matches CampusSense Design System v2.6 */
-      --bg-canvas: #F5F3ED;
-      --bg-card: #FFFFFF;
-      --bg-input: #EAE7DC;
-      --border-color: #DEDCD3;
-      --border-focus: #526B58;
-      --text-primary: #20231F;
-      --text-secondary: #575D55;
-      --text-muted: #83887F;
-      --accent: #526B58;
-      --accent-hover: #3D5242;
-      --accent-subtle: rgba(82,107,88,0.12);
-      --btn-bg: #20231F;
-      --btn-text: #F5F3ED;
-      --btn-hover: #1a1d18;
+      /* Deep Botanical Typography */
+      --text-primary: #1A2218;             /* Deep botanical charcoal ink (high legibility) */
+      --text-secondary: #485446;           /* Refined muted green-charcoal */
+      --text-tertiary: #7A8678;            /* Subdued stone metadata */
+
+      /* Pop #1: Academic Authority & Verification */
+      --emerald-primary: #046A38;          /* Vibrant Emerald Green */
+      --emerald-hover: #03522B;
+      --emerald-surface: rgba(4, 106, 56, 0.08);
+
+      /* Pop #2: High-Voltage Tactical Energy */
+      --vermilion-primary: #E34222;        /* High-energy Vermilion Red-Orange */
+      --vermilion-hover: #C93619;
+      --vermilion-surface: rgba(227, 66, 34, 0.10);
+
+      /* Functional Component Mapping */
+      --btn-primary-bg: #E34222;
+      --btn-primary-text: #FFFFFF;
+      --btn-secondary-bg: #046A38;
+      --btn-secondary-text: #FFFFFF;
+      --pill-active-bg: #046A38;
+      --pill-active-text: #FFFFFF;
+      --danger-action: #EF4444;
+
+      /* Aliases */
+      --bg-canvas: var(--surface-canvas);
+      --bg-card: var(--surface-card);
+      --bg-input: var(--surface-elevated);
+      --border-color: var(--surface-border);
+      --border-focus: var(--emerald-primary);
+      --text-muted: var(--text-tertiary);
+      --accent: var(--emerald-primary);
+      --accent-hover: var(--emerald-hover);
+      --accent-subtle: var(--emerald-surface);
+      --btn-bg: var(--emerald-primary);
+      --btn-text: #FFFFFF;
+      --btn-hover: var(--emerald-hover);
       --alert-success-bg: #ECFDF5;
       --alert-success-border: #059669;
       --alert-success-text: #065F46;
@@ -96,11 +101,10 @@
       height: auto !important;
       overflow-y: scroll !important;
       overflow-x: hidden !important;
-      scrollbar-gutter: stable !important;
-      background-color: var(--bg-canvas);
-      color: var(--text-primary);
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-      transition: background-color 0.2s ease, color 0.2s ease;
+      scrollbar-gutter: stable both-edges !important;
+      background-color: var(--surface-canvas) !important;
+      color: var(--text-primary) !important;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -122,76 +126,67 @@
       padding: 0 !important;
     }
     .cl-card {
-      background-color: #16181f !important;
-      border: 1px solid rgba(255,255,255,0.08) !important;
+      background-color: var(--surface-card) !important;
+      border: 1px solid var(--surface-border) !important;
       border-radius: 0.75rem !important;
-      box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.35) !important;
-    }
-    [data-theme="light"] .cl-card {
-      background-color: #FFFFFF !important;
-      border: 1px solid #DEDCD3 !important;
+      box-shadow: 0 4px 20px rgba(4, 106, 56, 0.06) !important;
+      padding: 2rem !important;
     }
     .cl-headerTitle, .cl-formFieldLabel {
-      color: #ffffff !important;
+      color: var(--text-primary) !important;
       font-weight: 700 !important;
-    }
-    [data-theme="light"] .cl-headerTitle, [data-theme="light"] .cl-formFieldLabel {
-      color: #20231F !important;
     }
     .cl-headerSubtitle, .cl-formFieldSuccessText, .cl-identityPreviewText {
-      color: #cbd5e1 !important;
-    }
-    [data-theme="light"] .cl-headerSubtitle, [data-theme="light"] .cl-identityPreviewText {
-      color: #575D55 !important;
+      color: var(--text-secondary) !important;
     }
     .cl-formFieldInput {
-      background-color: #1e222d !important;
-      color: #ffffff !important;
-      border: 1px solid rgba(255,255,255,0.2) !important;
+      background-color: var(--surface-elevated) !important;
+      color: var(--text-primary) !important;
+      border: 1px solid var(--surface-border) !important;
       border-radius: 8px !important;
-    }
-    [data-theme="light"] .cl-formFieldInput {
-      background-color: #EAE7DC !important;
-      color: #20231F !important;
-      border: 1px solid #DEDCD3 !important;
     }
     .cl-formButtonPrimary {
-      background-color: #ffffff !important;
-      color: #000000 !important;
+      background: var(--emerald-primary) !important;
+      background-color: var(--emerald-primary) !important;
+      color: #FFFFFF !important;
       font-weight: 700 !important;
-      border-radius: 8px !important;
+      border-radius: 0.5rem !important;
+      border: none !important;
+      transition: background-color 0.15s ease !important;
     }
-    [data-theme="light"] .cl-formButtonPrimary {
-      background-color: #20231F !important;
-      color: #F5F3ED !important;
+    .cl-formButtonPrimary:hover {
+      background: var(--emerald-hover) !important;
+      background-color: var(--emerald-hover) !important;
     }
-    /* OTP Verification Overhaul */
-    .cl-otpCodeFieldInputs, .cl-otpCodeField {
+    /* Discrete 6-Digit OTP Inputs */
+    .cl-otpCodeFieldInputs, .cl-otpCodeField, fieldset:has(.cl-otpCodeFieldInput) {
       border: none !important;
       background: transparent !important;
       box-shadow: none !important;
     }
     .cl-otpCodeFieldInput {
-      border: 1px solid rgba(255,255,255,0.25) !important;
-      background-color: #1e222d !important;
-      color: #ffffff !important;
+      border: 1px solid var(--surface-border) !important;
+      background: var(--surface-elevated) !important;
+      background-color: var(--surface-elevated) !important;
+      color: var(--text-primary) !important;
+      font-size: 1.25rem !important;
+      text-align: center !important;
       border-radius: 0.375rem !important;
     }
-    [data-theme="light"] .cl-otpCodeFieldInput {
-      border: 1px solid #DEDCD3 !important;
-      background-color: #EAE7DC !important;
-      color: #20231F !important;
-    }
-    [class*="alternativeMethods"], [data-localization-key*="useAnotherMethod"] {
+    /* Hide Alternative Methods */
+    [class*="alternativeMethods"],
+    [data-localization-key*="useAnotherMethod"],
+    button:has-text("Use another method") {
       display: none !important;
     }
+    /* "Secured by Clerk" Branding */
     .cl-footerText, .cl-securedByText, .cl-securedBy {
-      color: #94a3b8 !important;
+      color: var(--text-secondary) !important;
       opacity: 1 !important;
       visibility: visible !important;
     }
     .cl-securedByLogo svg, .cl-securedBy svg {
-      filter: brightness(0) invert(1) !important;
+      filter: none !important;
       opacity: 0.9 !important;
     }
 
@@ -653,7 +648,7 @@
 
     <div id="custom-auth-card">
     <div class="auth-header">
-      <h1 class="auth-title" id="auth-title">🎓 Welcome to CampusSense</h1>
+      <h1 class="auth-title" id="auth-title">📐 Welcome to CampusSense</h1>
       <p class="auth-subtitle" id="auth-subtitle">
         Passwordless student authentication powered by Clerk &amp; Cloudflare defense.
       </p>

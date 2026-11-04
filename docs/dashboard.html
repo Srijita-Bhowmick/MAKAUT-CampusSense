@@ -50,28 +50,59 @@
       height: auto !important;
       overflow-y: scroll !important;
       overflow-x: hidden !important;
-      scrollbar-gutter: stable !important;
+      scrollbar-gutter: stable both-edges !important;
+      background-color: var(--surface-canvas) !important;
+      color: var(--text-primary) !important;
+      font-family: 'Inter', sans-serif !important;
     }
 
-    /* ─── CSS Variables: StockPulse Dark Palette ─── */
+    /* ─── CSS Variables: Poppy Editorial Palette ─── */
     :root,
     [data-theme="dark"],
-    html.dark {
-      --surface-canvas:  #0b0f19;
-      --surface-card:    #16181f;
-      --surface-elevated:#1e222d;
-      --surface-hover:   #23283a;
-      --border-hairline: #2a2f3e;
-      --border-subtle:   #343a4f;
-      --text-primary:    #f1f5f9;
-      --text-secondary:  #94a3b8;
-      --text-muted:      #64748b;
-      --accent-blue:     #3b82f6;
-      --accent-blue-dim: rgba(59,130,246,0.15);
-      --accent-indigo:   #6366f1;
-      --accent-green:    #22c55e;
-      --accent-orange:   #f97316;
-      --accent-red:      #ef4444;
+    [data-theme="light"],
+    html.dark,
+    html:not(.dark) {
+      /* Core Tri-Color Palette */
+      --surface-canvas: #F9EBD7;           /* Warm Ivory: Glare-free 60% editorial base */
+      --surface-card: #FFFFFF;             /* Pure White: High-contrast elevated cards */
+      --surface-elevated: #F2E3CD;         /* Subtle Ivory Sand: Input backgrounds & panels */
+      --surface-border: rgba(4, 106, 56, 0.18); /* Crisp emerald-tinted stone outlines */
+      --surface-border-focus: #046A38;     /* Emerald focus ring */
+
+      /* Deep Botanical Typography */
+      --text-primary: #1A2218;             /* Deep botanical charcoal ink (high legibility) */
+      --text-secondary: #485446;           /* Refined muted green-charcoal */
+      --text-tertiary: #7A8678;            /* Subdued stone metadata */
+
+      /* Pop #1: Academic Authority & Verification */
+      --emerald-primary: #046A38;          /* Vibrant Emerald Green */
+      --emerald-hover: #03522B;
+      --emerald-surface: rgba(4, 106, 56, 0.08);
+
+      /* Pop #2: High-Voltage Tactical Energy */
+      --vermilion-primary: #E34222;        /* High-energy Vermilion Red-Orange */
+      --vermilion-hover: #C93619;
+      --vermilion-surface: rgba(227, 66, 34, 0.10);
+
+      /* Functional Component Mapping */
+      --btn-primary-bg: #E34222;
+      --btn-primary-text: #FFFFFF;
+      --btn-secondary-bg: #046A38;
+      --btn-secondary-text: #FFFFFF;
+      --pill-active-bg: #046A38;
+      --pill-active-text: #FFFFFF;
+      --danger-action: #EF4444;
+
+      --surface-hover:   var(--surface-elevated);
+      --border-hairline: var(--surface-border);
+      --border-subtle:   var(--surface-border);
+      --text-muted:      var(--text-tertiary);
+      --accent-blue:     var(--emerald-primary);
+      --accent-blue-dim: var(--emerald-surface);
+      --accent-indigo:   var(--emerald-primary);
+      --accent-green:    var(--emerald-primary);
+      --accent-orange:   var(--vermilion-primary);
+      --accent-red:      var(--danger-action);
       --font-display:    'Manrope', 'Plus Jakarta Sans', system-ui, sans-serif;
       --font-body:       'Inter', system-ui, sans-serif;
       --font-mono:       'JetBrains Mono', monospace;
@@ -83,19 +114,6 @@
       --sidebar-width:   240px;
       --dock-width:      380px;
       --header-height:   56px;
-    }
-
-    [data-theme="light"],
-    html:not(.dark) {
-      --surface-canvas:  #f8fafc;
-      --surface-card:    #ffffff;
-      --surface-elevated:#f1f5f9;
-      --surface-hover:   #e2e8f0;
-      --border-hairline: #e2e8f0;
-      --border-subtle:   #cbd5e1;
-      --text-primary:    #0f172a;
-      --text-secondary:  #334155;
-      --text-muted:      #64748b;
     }
 
     /* ─── Base ─── */
@@ -265,19 +283,19 @@
       overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     }
     #signout-btn {
-      background-color: #ef4444;
-      color: #ffffff;
-      font-weight: 600;
+      background-color: var(--danger-action) !important;
+      color: #FFFFFF !important;
+      font-weight: 600 !important;
       font-family: var(--font-body);
-      font-size: 12px;
-      border: none;
-      border-radius: var(--radius-sm);
-      padding: 6px 14px;
-      cursor: pointer;
+      font-size: 13px !important;
+      border: none !important;
+      border-radius: 0.5rem !important;
+      padding: 0.5rem 1rem !important;
+      cursor: pointer !important;
       transition: background-color var(--transition-fast), transform var(--transition-fast);
       white-space: nowrap;
     }
-    #signout-btn:hover { background-color: #dc2626; transform: translateY(-1px); }
+    #signout-btn:hover { background-color: #dc2626 !important; transform: translateY(-1px); }
     #signout-btn:active { transform: translateY(0); }
 
     /* ─── Layout Shell ─── */
@@ -329,15 +347,13 @@
     }
     .nav-item:hover { background: var(--surface-elevated); color: var(--text-primary); }
     .nav-item.active {
-      background: var(--accent-blue-dim);
-      color: #60a5fa;
+      background: var(--emerald-surface) !important;
+      color: var(--emerald-primary) !important;
       font-weight: 600;
+      border-left: 3px solid var(--emerald-primary) !important;
     }
     .nav-item.active::before {
-      content: '';
-      position: absolute; left: 0; top: 20%; bottom: 20%;
-      width: 2px; border-radius: 2px;
-      background: var(--accent-blue);
+      display: none;
     }
     .nav-item-icon { font-size: 15px; flex-shrink: 0; }
     .nav-item-label { flex: 1; }
@@ -513,6 +529,17 @@
       background: rgba(34,197,94,0.12);
       border-color: rgba(34,197,94,0.3);
       color: #4ade80;
+    }
+    .tag-high-yield,
+    .vermilion-tag {
+      background: var(--vermilion-surface) !important;
+      color: var(--vermilion-primary) !important;
+      font-weight: 600 !important;
+      font-size: 0.75rem !important;
+      padding: 0.25rem 0.6rem !important;
+      border-radius: 0.25rem !important;
+      margin-left: 0.5rem;
+      white-space: nowrap;
     }
 
     /* Course actions */
@@ -848,11 +875,10 @@
   <!-- Left: Wordmark + hamburger -->
   <div style="display:flex;align-items:center;gap:0.6rem;flex-shrink:0;">
     <button id="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">☰</button>
-    <a href="/" class="header-wordmark" aria-label="MAKAUT CampusSense home">
-      <div class="header-wordmark-logo">CS</div>
-      <span class="header-wordmark-name">MAKAUT CampusSense</span>
+    <a href="/" class="header-wordmark" aria-label="MAKAUT CampusSense home" style="text-decoration:none;">
+      <span class="header-wordmark-name" style="font-family:'Manrope',sans-serif;font-weight:700;color:var(--text-primary);font-size:1.15rem;display:inline-flex;align-items:center;gap:6px;">📐 MAKAUT CampusSense</span>
     </a>
-    <span class="header-branch-badge" id="branch-badge">B.Tech CSE · Sem 5</span>
+    <span class="header-branch-badge" id="branch-badge" style="background:var(--emerald-surface);color:var(--emerald-primary);border:1px solid var(--surface-border);border-radius:9999px;font-weight:600;padding:3px 10px;font-size:12px;">B.Tech CSE · Sem 5</span>
   </div>
 
   <!-- Centre: CmdK Search -->

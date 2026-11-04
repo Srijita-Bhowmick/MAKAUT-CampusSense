@@ -1,41 +1,77 @@
 /* ===================================================================
-   CAMPUSSENSE DESIGN SYSTEM v2.6 — SEMANTIC TOKEN LAYER
-   Dual Palette: Dark (StockPulse Obsidian) / Light (Editorial Warm Ivory)
-   DO NOT EDIT: auto-generated from design spec 2026-11-03
+   CAMPUSSENSE DESIGN SYSTEM — POPPY EDITORIAL COLOR PALETTE & TOKENS
+   Warm Ivory (#F9EBD7), Pure White (#FFFFFF), Ivory Sand (#F2E3CD)
+   Emerald Green (#046A38), High-Voltage Vermilion (#E34222)
    =================================================================== */
 
-/* ── Dark Theme: StockPulse Obsidian ─────────────────────────────── */
-[data-theme="dark"], html.dark, .dark {
-    --surface-canvas:       #0b0f19;
-    --surface-card:         #16181f;
-    --surface-elevated:     #1e222d;
-    --surface-border:       rgba(255,255,255,0.08);
-    --surface-border-focus: #526B58;
-    --text-primary:         #FFFFFF;
-    --text-secondary:       #CBD5E1;
-    --text-tertiary:        #94A3B8;
-    --cta-primary-bg:       #FFFFFF;
-    --cta-primary-text:     #000000;
-    --badge-accent-bg:      rgba(82,107,88,0.18);
-    --badge-accent-text:    #8FA895;
-    --danger-action:        #EF4444;
-}
+:root,
+[data-theme="light"],
+[data-theme="dark"],
+html,
+body {
+  /* Core Tri-Color Palette */
+  --surface-canvas: #F9EBD7;           /* Warm Ivory: Glare-free 60% editorial base */
+  --surface-card: #FFFFFF;             /* Pure White: High-contrast elevated cards */
+  --surface-elevated: #F2E3CD;         /* Subtle Ivory Sand: Input backgrounds & panels */
+  --surface-border: rgba(4, 106, 56, 0.18); /* Crisp emerald-tinted stone outlines */
+  --surface-border-focus: #046A38;     /* Emerald focus ring */
 
-/* ── Light Theme: Editorial Warm Ivory ───────────────────────────── */
-[data-theme="light"], html.light, .light, .light-theme {
-    --surface-canvas:       #F5F3ED;
-    --surface-card:         #FFFFFF;
-    --surface-elevated:     #EAE7DC;
-    --surface-border:       #DEDCD3;
-    --surface-border-focus: #526B58;
-    --text-primary:         #20231F;
-    --text-secondary:       #575D55;
-    --text-tertiary:        #83887F;
-    --cta-primary-bg:       #20231F;
-    --cta-primary-text:     #F5F3ED;
-    --badge-accent-bg:      rgba(82,107,88,0.12);
-    --badge-accent-text:    #3D5242;
-    --danger-action:        #DC2626;
+  /* Deep Botanical Typography */
+  --text-primary: #1A2218;             /* Deep botanical charcoal ink (high legibility) */
+  --text-secondary: #485446;           /* Refined muted green-charcoal */
+  --text-tertiary: #7A8678;            /* Subdued stone metadata */
+
+  /* Pop #1: Academic Authority & Verification */
+  --emerald-primary: #046A38;          /* Vibrant Emerald Green */
+  --emerald-hover: #03522B;
+  --emerald-surface: rgba(4, 106, 56, 0.08);
+
+  /* Pop #2: High-Voltage Tactical Energy */
+  --vermilion-primary: #E34222;        /* High-energy Vermilion Red-Orange */
+  --vermilion-hover: #C93619;
+  --vermilion-surface: rgba(227, 66, 34, 0.10);
+
+  /* Functional Component Mapping */
+  --btn-primary-bg: #E34222;
+  --btn-primary-text: #FFFFFF;
+  --btn-secondary-bg: #046A38;
+  --btn-secondary-text: #FFFFFF;
+  --pill-active-bg: #046A38;
+  --pill-active-text: #FFFFFF;
+  --danger-action: #EF4444;
+
+  /* Backward Compatibility Aliases */
+  --bg-main: var(--surface-canvas);
+  --bg-primary: var(--surface-canvas);
+  --bg-secondary: var(--surface-elevated);
+  --bg-tertiary: var(--surface-card);
+  --bg-surface-elevated: var(--surface-elevated);
+  --bg-surface-highest: var(--surface-elevated);
+  --card-bg: var(--surface-card);
+  --card-hover: var(--surface-elevated);
+  --card-border: var(--surface-border);
+  --border-hairline: var(--surface-border);
+  --border-subtle: var(--surface-border);
+  --bg-header: rgba(249, 235, 215, 0.95);
+  --header-bg: rgba(249, 235, 215, 0.95);
+  --surface-color: var(--surface-card);
+  --surface-glass: rgba(255, 255, 255, 0.9);
+  --text-main: var(--text-primary);
+  --text-muted: var(--text-secondary);
+  --text-subtle: var(--text-tertiary);
+  --text-outline: var(--text-tertiary);
+  --font-mono-color: var(--text-secondary);
+  --accent-primary: var(--emerald-primary);
+  --accent-hover: var(--emerald-hover);
+  --accent-emerald: var(--emerald-primary);
+  --accent-flame: var(--vermilion-primary);
+  --cta-primary-bg: var(--btn-primary-bg);
+  --cta-primary-text: var(--btn-primary-text);
+  --badge-accent-bg: var(--emerald-surface);
+  --badge-accent-text: var(--emerald-primary);
+  --modal-bg: var(--surface-card);
+  --input-bg: var(--surface-card);
+  --input-border: var(--surface-border);
 }
 
 /* ── Typography Hierarchy ────────────────────────────────────────── */
@@ -441,6 +477,9 @@ html, body {
   overflow-y: scroll !important;
   overflow-x: hidden !important;
   scrollbar-gutter: stable both-edges !important;
+  background-color: var(--surface-canvas) !important;
+  color: var(--text-primary) !important;
+  font-family: 'Inter', sans-serif !important;
 }
 
 /* Clean Repaint Containment: Purge Ghosting Cascade & Repaint Trails */
@@ -471,9 +510,9 @@ body {
   overscroll-behavior: auto !important;
   touch-action: auto !important;
   -webkit-overflow-scrolling: touch;
-  background-color: var(--bg-main);
-  color: var(--text-main);
-  font-family: var(--font-body);
+  background-color: var(--surface-canvas) !important;
+  color: var(--text-primary) !important;
+  font-family: 'Inter', sans-serif !important;
   line-height: 1.6;
 }
 
@@ -608,6 +647,8 @@ body.modal-open {
   overflow-y: scroll !important;
   overflow-x: hidden !important;
   scrollbar-gutter: stable both-edges !important;
+  background-color: var(--surface-canvas) !important;
+  color: var(--text-primary) !important;
 }
 
 /* Stabilize scrollbar thumb to prevent collapse and runaway jumps */
@@ -673,6 +714,8 @@ body:not(.modal-open) {
   overflow-y: scroll !important;
   overflow-x: hidden !important;
   scrollbar-gutter: stable both-edges !important;
+  background-color: var(--surface-canvas) !important;
+  color: var(--text-primary) !important;
 }
 
 /* Modals must only absorb clicks when explicitly visible */
@@ -13633,6 +13676,341 @@ html.light #btn-mobile-nav {
         padding: 0 8px !important;
         font-size: 11px !important;
     }
+}
+
+/* ==========================================================================
+   AIO PRODUCTION SPECIFICATION: POPPY EDITORIAL SYSTEM & UNIFIED NAVBAR
+   ========================================================================== */
+
+/* 1. Global Viewport Stability & Anti-Jitter Lock */
+html, body {
+  min-height: 100vh !important;
+  height: auto !important;
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
+  scrollbar-gutter: stable both-edges !important;
+  background-color: var(--surface-canvas) !important;
+  color: var(--text-primary) !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+/* 2. Top Navigation Bar & Unified Items */
+.app-header,
+#main-header {
+  background-color: var(--surface-canvas) !important;
+  border-bottom: 1px solid var(--surface-border) !important;
+  box-shadow: 0 1px 4px rgba(4, 106, 56, 0.05) !important;
+}
+
+.navbar-brand,
+.brand-group {
+  text-decoration: none !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.brand-title,
+.navbar-brand .brand-title {
+  font-family: 'Manrope', sans-serif !important;
+  font-weight: 700 !important;
+  color: var(--text-primary) !important;
+  text-decoration: none !important;
+  font-size: 1.15rem !important;
+  letter-spacing: -0.01em !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+/* NAVBAR UNIFORMITY RULE:
+   ALL top-level navigation links must share identical font family, font size,
+   weight, hover states, and neutral botanical color (var(--text-primary)).
+   Zero background pills or vermilion boxes on Panic Pack. */
+.landing-nav-links .landing-nav-link,
+.landing-nav-link,
+.nav-panic-link,
+a[data-nav="panic-pack"],
+a[data-nav="features"],
+a[data-nav="curriculum"],
+a[data-nav="archives"],
+a[data-nav="saved-deck"],
+a[data-nav="feedback"] {
+  color: var(--text-primary) !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 500 !important;
+  font-size: 0.95rem !important;
+  text-decoration: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 0.35rem 0.65rem !important;
+  transition: color 0.15s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+
+.landing-nav-links .landing-nav-link:hover,
+.landing-nav-link:hover,
+.nav-panic-link:hover,
+a[data-nav="panic-pack"]:hover,
+a[data-nav="features"]:hover,
+a[data-nav="curriculum"]:hover,
+a[data-nav="archives"]:hover,
+a[data-nav="saved-deck"]:hover,
+a[data-nav="feedback"]:hover {
+  color: var(--emerald-primary) !important;
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* Live counter badge in Saved Deck link */
+.landing-nav-link .badge,
+#deck-badge-counter {
+  background: var(--emerald-surface) !important;
+  color: var(--emerald-primary) !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  padding: 0.15rem 0.45rem !important;
+  border-radius: 9999px !important;
+  border: 1px solid var(--surface-border) !important;
+  margin-left: 4px !important;
+}
+
+/* Direct Auth Links in Header */
+.nav-auth-link {
+  color: var(--text-primary) !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 500 !important;
+  font-size: 0.95rem !important;
+  text-decoration: none !important;
+  padding: 0.4rem 0.8rem !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: color 0.15s ease !important;
+}
+.nav-auth-link:hover {
+  color: var(--emerald-primary) !important;
+}
+
+.nav-signup-btn {
+  background: var(--vermilion-primary) !important;
+  color: #FFFFFF !important;
+  padding: 0.5rem 1.1rem !important;
+  border-radius: 0.5rem !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 0.95rem !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: background 0.15s ease, transform 0.15s ease !important;
+}
+.nav-signup-btn:hover {
+  background: var(--vermilion-hover) !important;
+  color: #FFFFFF !important;
+  transform: translateY(-1px);
+}
+
+/* 3. Hero Section Components */
+.hero-pill-badge {
+  background: var(--emerald-surface) !important;
+  color: var(--emerald-primary) !important;
+  border: 1px solid var(--surface-border) !important;
+  border-radius: 9999px !important;
+  padding: 0.35rem 1rem !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  letter-spacing: normal !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  text-transform: none !important;
+}
+
+.editorial-hero-title,
+.editorial-hero-heading,
+.landing-hero-title {
+  font-family: 'Manrope', sans-serif !important;
+  font-weight: 800 !important;
+  font-size: 3.25rem !important;
+  letter-spacing: -0.03em !important;
+  color: var(--text-primary) !important;
+  line-height: 1.15 !important;
+}
+
+.editorial-hero-lead,
+.editorial-hero-desc {
+  color: var(--text-secondary) !important;
+  font-size: 1.15rem !important;
+  max-width: 650px !important;
+  margin: 1rem 0 !important;
+  line-height: 1.6 !important;
+}
+
+.hero-btn-explore,
+.hero-action-ctas .btn-primary {
+  background: var(--vermilion-primary) !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  padding: 0.85rem 1.75rem !important;
+  border-radius: 0.5rem !important;
+  border: none !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: background 0.15s ease, transform 0.15s ease !important;
+}
+.hero-btn-explore:hover,
+.hero-action-ctas .btn-primary:hover {
+  background: var(--vermilion-hover) !important;
+  transform: translateY(-1px);
+}
+
+.hero-btn-panic,
+.hero-action-ctas .btn-outline {
+  background: transparent !important;
+  border: 1.5px solid var(--emerald-primary) !important;
+  color: var(--emerald-primary) !important;
+  font-weight: 700 !important;
+  padding: 0.85rem 1.75rem !important;
+  border-radius: 0.5rem !important;
+  cursor: pointer !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.15s ease !important;
+}
+.hero-btn-panic:hover,
+.hero-action-ctas .btn-outline:hover {
+  background: var(--emerald-surface) !important;
+  transform: translateY(-1px);
+}
+
+/* 4. Metrics Bento Grid: 4 pure white cards */
+.landing-highlights-grid .highlight-pill,
+.highlight-pill {
+  background: #FFFFFF !important;
+  border: 1px solid var(--surface-border) !important;
+  border-radius: 0.75rem !important;
+  padding: 1.5rem !important;
+  box-shadow: 0 4px 15px rgba(4, 106, 56, 0.04) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 4px !important;
+  text-decoration: none !important;
+  transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+}
+.landing-highlights-grid .highlight-pill:hover,
+.highlight-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(4, 106, 56, 0.08) !important;
+}
+
+/* 5. Curriculum Blueprint Department Filter Tabs */
+#curriculum-filter-group .filter-pill-btn,
+#stream-tabs .filter-pill-btn {
+  background: var(--surface-elevated) !important;
+  border: 1px solid var(--surface-border) !important;
+  color: var(--text-primary) !important;
+  font-weight: 500 !important;
+  border-radius: 0.375rem !important;
+  padding: 0.35rem 0.75rem !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+}
+
+#curriculum-filter-group .filter-pill-btn.active,
+#stream-tabs .filter-pill-btn.active {
+  background: var(--emerald-primary) !important;
+  color: #FFFFFF !important;
+  border-color: var(--emerald-primary) !important;
+  font-weight: 600 !important;
+}
+
+/* 6. Saved Revision Deck Slide-Over Drawer */
+.saved-deck-drawer,
+#drawer-saved-deck {
+  width: 380px !important;
+  max-width: 90vw !important;
+  position: fixed !important;
+  right: 0 !important;
+  top: 0 !important;
+  height: 100vh !important;
+  z-index: 9999 !important;
+  background: var(--surface-card) !important;
+  border-left: 1px solid var(--surface-border) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  box-shadow: -4px 0 30px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* 7. "Set Academic Context" Modal Specification */
+#academic-setup-modal .modal-card,
+#scope-modal .modal-card {
+  max-width: 600px !important;
+  width: 100% !important;
+  min-height: 420px !important;
+  border-radius: 1rem !important;
+  background: var(--surface-card) !important;
+  border: 1px solid var(--surface-border) !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1) !important;
+}
+
+#academic-setup-modal .primary-year-btn,
+#academic-setup-modal .academic-stage-card,
+#academic-setup-modal .stage-card {
+  background: var(--surface-card) !important;
+  border: 1px solid var(--surface-border) !important;
+  border-radius: 0.75rem !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+}
+
+#academic-setup-modal .primary-year-btn:hover,
+#academic-setup-modal .academic-stage-card:hover,
+#academic-setup-modal .stage-card:hover {
+  background: var(--surface-elevated) !important;
+  border: 2px solid var(--emerald-primary) !important;
+  cursor: pointer !important;
+}
+
+#academic-setup-modal .primary-year-btn.selected,
+#academic-setup-modal .primary-year-btn.active,
+#academic-setup-modal .academic-stage-card.selected,
+#academic-setup-modal .academic-stage-card.active,
+#academic-setup-modal .stage-card.selected,
+#academic-setup-modal .stage-card.active {
+  background: var(--surface-elevated) !important;
+  border: 2px solid var(--emerald-primary) !important;
+}
+
+#academic-setup-modal .btn-enter-dashboard,
+#academic-setup-modal #btn-confirm-scope {
+  background: var(--vermilion-primary) !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  border-radius: 0.5rem !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: background 0.15s ease, transform 0.15s ease !important;
+}
+#academic-setup-modal .btn-enter-dashboard:hover,
+#academic-setup-modal #btn-confirm-scope:hover {
+  background: var(--vermilion-hover) !important;
+  transform: translateY(-1px);
 }
 
 

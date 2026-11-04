@@ -757,38 +757,33 @@
 
     <!-- 1. Universal Top Navigation Bar (56px Fixed Single-Row) -->
     <header class="app-header" id="main-header">
-        <!-- Left: Monogram badge + "MAKAUT CampusSense" + "v2.6" -->
-        <a href="#portal" id="nav-brand-logo" class="navbar-brand brand-group" title="MAKAUT CampusSense">
-            <div class="brand-monogram-badge">CS</div>
-            <div class="brand-info">
-                <div class="brand-title" style="font-family: 'Manrope', sans-serif; font-weight: 700;">MAKAUT CampusSense <span class="version-pill">v2.6</span></div>
-            </div>
+        <!-- Left: Wordmark: 📐 MAKAUT CampusSense -->
+        <a href="#portal" id="nav-brand-logo" class="navbar-brand brand-group" title="📐 MAKAUT CampusSense">
+            <span class="brand-title" style="font-family: 'Manrope', sans-serif; font-weight: 700; color: var(--text-primary); text-decoration: none; font-size: 1.15rem; display: inline-flex; align-items: center; gap: 6px;">📐 MAKAUT CampusSense</span>
             <div id="btn-brand-home" style="display:none;" aria-hidden="true"></div>
         </a>
 
-        <!-- Center: Nav links (Features, Curriculum, PYQ Archives, 🔥 Panic Pack, Feedback) -->
+        <!-- Center: Unified Nav links (Features, Curriculum, PYQ Archives, 🔥 Panic Pack, Saved Deck, Feedback) -->
         <nav class="landing-nav-links nav-links" id="landing-nav-links">
             <a href="#landing-features" class="landing-nav-link" data-nav="features">Features</a>
             <a href="#curriculum-section" class="landing-nav-link" data-nav="curriculum">Curriculum</a>
             <a href="#archives" class="landing-nav-link" data-nav="archives">PYQ Archives</a>
             <a href="#panic-pack-section" class="landing-nav-link nav-panic-link" data-nav="panic-pack">🔥 Panic Pack</a>
+            <a href="#saved-deck" class="landing-nav-link nav-link-deck" id="nav-link-saved-deck" data-nav="saved-deck" onclick="if(window.openSavedDeckDrawer){window.openSavedDeckDrawer();return false;}">Saved Deck <span class="badge" id="deck-badge-counter">4</span></a>
             <a href="mailto:feedback@campussense.pages.dev?subject=CampusSense+Feedback" class="landing-nav-link" data-nav="feedback">Feedback</a>
         </nav>
 
-        <!-- Right: Saved Deck badge, Theme toggle, and Sign In / Sign Up buttons -->
+        <!-- Right: Theme toggle, and Direct Auth links -->
         <div class="nav-actions">
-            <!-- Saved Revision Deck Button -->
-            <button id="btn-saved-deck" class="nav-action-pill pill-deck" title="Open Saved Revision Deck">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
-                <span>Saved Deck</span>
-                <span class="badge" id="deck-badge-counter">4</span>
-            </button>
+            <!-- Hidden backward-compatibility Saved Deck button for existing JS references -->
+            <button id="btn-saved-deck" class="nav-action-pill pill-deck" style="display: none;" title="Open Saved Revision Deck" aria-hidden="true"></button>
 
             <!-- Theme Toggle -->
             <button id="theme-toggle" class="nav-icon-btn" aria-label="Toggle theme" onclick="if(window.toggleTheme)window.toggleTheme(event)">🌙</button>
 
-            <a href="/login.html" id="btn-sign-in" class="btn btn-outline" style="text-decoration: none;">Sign In</a>
-            <a href="/login.html#/sign-up" id="btn-sign-up" class="btn btn-primary" style="text-decoration: none;">Sign Up</a>
+            <!-- Direct Auth Links -->
+            <a href="/login.html" id="btn-sign-in" class="nav-auth-link">Sign In</a>
+            <a href="/login.html#/sign-up" id="btn-sign-up" class="nav-signup-btn">Sign Up</a>
 
             <!-- Hidden compatibility hooks for student dashboard state in app.js -->
             <div id="nav-portal-switcher" class="portal-switcher-pill p-2" style="display: none; padding: 8px 12px;">
@@ -849,20 +844,20 @@
             <div class="editorial-hero-grid" style="position: relative; z-index: 1;">
                 <!-- Left Column: Search -->
                 <div class="editorial-hero-left">
-                    <div class="hero-pill-badge" style="display:inline-flex; align-items:center; gap:6px; padding:4px 12px; border-radius:9999px; background:var(--badge-accent-bg, rgba(82,107,88,0.18)); color:var(--badge-accent-text, #8FA895); font-size:0.75rem; font-weight:600; letter-spacing:0.04em; margin-bottom:1rem; border:1px solid rgba(82,107,88,0.3); text-transform:uppercase;">🏛️ University Curricula · Verified PYQ Vault</div>
-                    <h1 class="editorial-hero-heading editorial-hero-title" style="font-family:'Manrope',sans-serif; font-weight:700; letter-spacing:-0.02em;">
+                    <div class="hero-pill-badge" style="background: var(--emerald-surface); color: var(--emerald-primary); border: 1px solid var(--surface-border); border-radius: 9999px; padding: 0.35rem 1rem; font-size: 0.85rem; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">🏛️ University Curricula · Verified PYQ Vault</div>
+                    <h1 class="editorial-hero-heading editorial-hero-title" style="font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 3.25rem; letter-spacing: -0.03em; color: var(--text-primary); margin: 0.75rem 0 0.5rem;">
                         MAKAUT CampusSense
                     </h1>
-                    <p class="editorial-hero-lead editorial-hero-desc" style="font-family:'Inter',sans-serif;">
+                    <p class="editorial-hero-lead editorial-hero-desc" style="color: var(--text-secondary); font-size: 1.15rem; max-width: 650px; margin: 1rem 0; line-height: 1.6;">
                         Curated syllabi, subject-wise PYQs, and exam-ready revisions for MAKAUT students.
                     </p>
 
                     <!-- Hero Action CTAs -->
-                    <div class="hero-action-ctas" style="display:flex; flex-wrap:wrap; gap:12px; margin-top:1.25rem; margin-bottom:1.5rem;">
-                        <a href="#curriculum-section" class="btn btn-primary" style="padding:0.7rem 1.25rem; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
+                    <div class="hero-action-ctas" style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: 1.25rem; margin-bottom: 1.5rem;">
+                        <a href="#curriculum-section" class="hero-btn-explore" style="background: var(--vermilion-primary); color: #FFFFFF; font-weight: 700; padding: 0.85rem 1.75rem; border-radius: 0.5rem; border: none; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
                             <span>Explore Curriculums and PYQs</span>
                         </a>
-                        <a href="#panic-pack-section" class="btn btn-outline" style="padding:0.7rem 1.25rem; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:8px; border-color:var(--surface-border-focus, #526B58);">
+                        <a href="#panic-pack-section" class="hero-btn-panic" style="background: transparent; border: 1.5px solid var(--emerald-primary); color: var(--emerald-primary); font-weight: 700; padding: 0.85rem 1.75rem; border-radius: 0.5rem; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
                             <span>View 16+ Panic Pack →</span>
                         </a>
                     </div>
@@ -926,23 +921,23 @@
                 </div>
             </div>
 
-            <!-- Metric Grid: 4 high-contrast cards showing real ingested syllabus metrics -->
+            <!-- Metric Grid: 4 pure white cards showing real ingested syllabus metrics -->
             <div class="landing-highlights-grid landing-highlights-row" id="landing-stats-bar" style="margin-top: 1.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-                <a href="#curriculum-section" class="highlight-pill" style="display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 1rem 1.25rem; height: auto; text-decoration: none;">
+                <a href="#curriculum-section" class="highlight-pill" style="background: #FFFFFF; border: 1px solid var(--surface-border); border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 15px rgba(4, 106, 56, 0.04); display: flex; flex-direction: column; align-items: flex-start; gap: 4px; text-decoration: none;">
                     <div style="font-size: 1.25rem; font-weight: 700; font-family: 'Manrope', sans-serif; color: var(--text-primary);"><strong id="metric-subjects-count">122</strong> Subjects</div>
-                    <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.04em;">1st Yr &amp; Core Ingest</div>
+                    <div style="font-size: 0.8rem; color: var(--text-secondary);">1st Year &amp; Core Streams Ingested</div>
                 </a>
-                <a href="#archives" class="highlight-pill" style="display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 1rem 1.25rem; height: auto; text-decoration: none;">
-                    <div style="font-size: 1.25rem; font-weight: 700; font-family: 'Manrope', sans-serif; color: var(--text-primary);"><strong id="metric-pyqs-count">1489</strong> Papers</div>
-                    <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.04em;">Verified Archives</div>
+                <a href="#panic-pack-section" class="highlight-pill" style="background: #FFFFFF; border: 1px solid var(--surface-border); border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 15px rgba(4, 106, 56, 0.04); display: flex; flex-direction: column; align-items: flex-start; gap: 4px; text-decoration: none;">
+                    <div style="font-size: 1.25rem; font-weight: 700; font-family: 'Manrope', sans-serif; color: var(--text-primary);">Top 20%</div>
+                    <div style="font-size: 0.8rem; color: var(--text-secondary);">Repeated Exam Questions</div>
                 </a>
-                <a href="#panic-pack-section" class="highlight-pill" style="display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 1rem 1.25rem; height: auto; text-decoration: none;">
-                    <div style="font-size: 1.25rem; font-weight: 700; font-family: 'Manrope', sans-serif; color: var(--text-primary);">Top 20% Questions</div>
-                    <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.04em;">Repeated Patterns</div>
+                <a href="#archives" class="highlight-pill" style="background: #FFFFFF; border: 1px solid var(--surface-border); border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 15px rgba(4, 106, 56, 0.04); display: flex; flex-direction: column; align-items: flex-start; gap: 4px; text-decoration: none;">
+                    <div style="font-size: 1.25rem; font-weight: 700; font-family: 'Manrope', sans-serif; color: var(--text-primary);"><strong id="metric-pyqs-count">1489+</strong> Papers</div>
+                    <div style="font-size: 0.8rem; color: var(--text-secondary);">PYQ Archives Ingested</div>
                 </a>
-                <a href="#portal" class="highlight-pill" id="btn-open-ai-link" style="display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 1rem 1.25rem; height: auto; text-decoration: none;">
-                    <div style="font-size: 1.25rem; font-weight: 700; font-family: 'Manrope', sans-serif; color: var(--text-primary);">Grounded RAG AI</div>
-                    <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.04em;">Verified Citations</div>
+                <a href="#portal" class="highlight-pill" id="btn-open-ai-link" style="background: #FFFFFF; border: 1px solid var(--surface-border); border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 15px rgba(4, 106, 56, 0.04); display: flex; flex-direction: column; align-items: flex-start; gap: 4px; text-decoration: none;">
+                    <div style="font-size: 1.25rem; font-weight: 700; font-family: 'Manrope', sans-serif; color: var(--text-primary);">Grounded AI</div>
+                    <div style="font-size: 0.8rem; color: var(--text-secondary);">Academic Assistant with Citations</div>
                 </a>
             </div>
         </section>
@@ -1181,28 +1176,28 @@
                 <div class="w-full bg-surface-container-low border-b border-[#232734] px-margin-desktop py-space-xs overflow-x-auto scrollbar-none transition-colors duration-200" id="curriculum-filter-group" role="tablist">
                     <div class="flex items-center gap-space-xs min-w-max" id="stream-tabs">
                         <button class="filter-pill-btn px-2.5 py-1 rounded text-code-sm font-code-sm bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors active" data-stream="all">
-                            All Streams <span class="text-outline ml-1 font-label-caps">134</span>
+                            All Subjects
                         </button>
                         <button class="filter-pill-btn px-2.5 py-1 rounded text-code-sm font-code-sm bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" data-stream="first-year">
-                            1st Year Common <span class="text-outline ml-1 font-label-caps">18</span>
+                            1st Year Common
                         </button>
                         <button class="filter-pill-btn px-2.5 py-1 rounded text-code-sm font-code-sm bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" data-stream="cse">
-                            CSE - Computer Science <span class="text-outline ml-1 font-label-caps">28</span>
+                            CSE
                         </button>
                         <button class="filter-pill-btn px-2.5 py-1 rounded text-code-sm font-code-sm bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" data-stream="it">
-                            IT - Information Tech <span class="text-outline ml-1 font-label-caps">26</span>
+                            IT
                         </button>
                         <button class="filter-pill-btn px-2.5 py-1 rounded text-code-sm font-code-sm bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" data-stream="cse-aiml">
-                            CSE-AIML <span class="text-outline ml-1 font-label-caps">24</span>
+                            CSE-AIML
                         </button>
                         <button class="filter-pill-btn px-2.5 py-1 rounded text-code-sm font-code-sm bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" data-stream="cscs">
-                            CSCS - Cyber Security <span class="text-outline ml-1 font-label-caps">22</span>
+                            CSCS
                         </button>
                         <button class="filter-pill-btn px-2.5 py-1 rounded text-code-sm font-code-sm bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" data-stream="csds">
-                            CSDS - Data Science <span class="text-outline ml-1 font-label-caps">24</span>
+                            CSDS
                         </button>
                         <button class="filter-pill-btn px-2.5 py-1 rounded text-code-sm font-code-sm bg-surface-container text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors" data-stream="csbs">
-                            CSBS - Business Systems <span class="text-outline ml-1 font-label-caps">22</span>
+                            CSBS
                         </button>
                     </div>
                 </div>
@@ -1374,12 +1369,11 @@
                                     <div class="flex items-center gap-space-xs overflow-x-auto pb-1 scrollbar-none filter-pills" id="pyq-year-pills">
                                         <span class="font-label-caps text-label-caps text-outline uppercase pr-2 whitespace-nowrap filter-lbl">Cohort Sem:</span>
                                         <button class="filter-pill pyq-year-filter-btn font-code-sm text-code-sm px-2.5 py-1 rounded bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors whitespace-nowrap" data-year-filter="1st-year" data-pyq-year="1st-year" data-year="1st-year">1st Year</button>
-                                        <button class="filter-pill pyq-year-filter-btn font-code-sm text-code-sm px-2.5 py-1 rounded bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors whitespace-nowrap" data-year-filter="sem-2" data-pyq-year="sem-2" data-year="sem-2">2nd Sem</button>
                                         <button class="filter-pill pyq-year-filter-btn font-code-sm text-code-sm px-2.5 py-1 rounded bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors whitespace-nowrap" data-year-filter="sem-3" data-pyq-year="sem-3" data-year="sem-3">3rd Sem</button>
                                         <button class="filter-pill pyq-year-filter-btn font-code-sm text-code-sm px-2.5 py-1 rounded bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors whitespace-nowrap" data-year-filter="sem-4" data-pyq-year="sem-4" data-year="sem-4">4th Sem</button>
                                         <button class="filter-pill pyq-year-filter-btn font-code-sm text-code-sm px-3 py-1 rounded bg-primary-container text-on-primary font-semibold flex items-center gap-1.5 shadow-sm whitespace-nowrap active" data-year-filter="sem-5" data-pyq-year="sem-5" data-year="sem-5">
                                             <svg width="12" height="12" class="w-3 h-3 text-on-primary inline-block shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><polyline points="8 12 11 15 16 9"></polyline></svg>
-                                            <span>5th Semester (Winter/Odd Sem)</span>
+                                            <span>5th Sem</span>
                                         </button>
                                         <button class="filter-pill pyq-year-filter-btn font-code-sm text-code-sm px-2.5 py-1 rounded bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors whitespace-nowrap" data-year-filter="sem-6" data-pyq-year="sem-6" data-year="sem-6">6th Sem</button>
                                         <button class="filter-pill pyq-year-filter-btn font-code-sm text-code-sm px-2.5 py-1 rounded bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors whitespace-nowrap" data-year-filter="sem-7" data-pyq-year="sem-7" data-year="sem-7">7th Sem</button>

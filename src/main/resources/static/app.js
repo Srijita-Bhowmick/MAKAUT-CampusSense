@@ -396,9 +396,9 @@ window.onClerkLoaded = function() {
                             btnText.includes('pyq preview') ||
                             btnText.includes('access exam archives');
 
-        // Syllabi are directly accessible to all users. Only PYQs require login.
-        if (isPyqAction && !isSyllabus) {
-            if (!isUserAuthenticated()) {
+        // Both PYQs and Syllabi require authentication per security policy. Unauthenticated users are routed to /login.html.
+        if (!isUserAuthenticated()) {
+            if (isPyqAction || isSyllabus) {
                 e.preventDefault();
                 e.stopPropagation();
                 window.location.href = '/login.html';
@@ -13424,7 +13424,10 @@ window.getSubjectDocuments = getSubjectDocuments;
     }
 
     window.viewSyllabusItem = function(targetCode, pdfPath, title) {
-      // Syllabus is freely and directly accessible to all users without login
+      if (!isUserAuthenticated()) {
+        window.location.href = '/login.html';
+        return;
+      }
       if (pdfPath && typeof window.previewPdfFile === 'function') {
         window.previewPdfFile(pdfPath, title);
       } else if (targetCode && typeof window.openSubjectHubByCode === 'function') {
@@ -20557,7 +20560,7 @@ function initSavedDeckDrawer() {
     clearBtn.addEventListener('click', (e) => {
       e.preventDefault();
       if (itemsList) {
-        itemsList.innerHTML = '<div class="p-4 text-center text-outline font-body-sm">Your Revision Deck is currently empty.</div>';
+        itemsList.innerHTML = '<div class="p-4 text-center text-outline font-body-sm leading-normal">No saved items yet. Click \'Save to Deck\' on any high-yield topic or paper.</div>';
       }
       if (countBadge) countBadge.textContent = '0';
       if (countPill) countPill.textContent = '(0 Items Staged)';
