@@ -20835,6 +20835,8 @@ if (document.readyState !== 'loading') {
 
 
 // =====================================================================
+
+// =====================================================================
 // FLOATING ASK-AI BUTTON NEUTRALIZER (Directive 2 Enforcement)
 // =====================================================================
 function initFloatingAskAi() {
@@ -20842,8 +20844,6 @@ function initFloatingAskAi() {
   if (askAiBtn) {
     askAiBtn.textContent = 'Ask AI';
     askAiBtn.onclick = () => { window.location.href = '/login.html'; };
-  }
-};
   }
 }
 if (document.readyState === 'loading') {

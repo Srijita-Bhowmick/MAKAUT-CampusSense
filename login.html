@@ -615,12 +615,13 @@
     }
   
     /* Viewport Centering & Discrete OTP Grid */
-    body.auth-body {
+    body.auth-body, .auth-page-container {
       min-height: 100vh !important;
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
-      background-color: #E9E8F8 !important;
+      background: linear-gradient(rgba(233, 232, 248, 0.94), rgba(233, 232, 248, 0.94)),
+                  url('/assets/images/makaut-haringhata-boulevard.jpg') center center / cover no-repeat fixed !important;
       padding: 1.5rem !important;
       box-sizing: border-box !important;
     }
@@ -667,7 +668,7 @@
 
 </style>
 </head>
-<body class="auth-body">
+<body class="auth-body auth-page-container">
 
   <!-- Top Fixed Return Link -->
   <a href="/" class="back-link" title="Return to MAKAUT CampusSense">

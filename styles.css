@@ -15721,3 +15721,62 @@ footer .footer-badges a, footer .footer-badges span, footer .badge-item {
   align-items: center;
   justify-content: center;
 }
+
+
+/* ===================================================================
+   MAKAUT HARINGHATA CAMPUS BACKDROP & SURFACE CANVASES (DIRECTIVE 2)
+   =================================================================== */
+:root {
+  --surface-canvas: #E9E8F8;
+  --surface-card: #FFFFFF;
+  --surface-elevated: #D4E3F7;
+  --surface-border: rgba(141, 185, 240, 0.45);
+  --surface-border-focus: #8DB9F0;
+  --text-primary: #0F172A;
+  --text-secondary: #334155;
+  --text-tertiary: #64748B;
+  --powder-blue: #8DB9F0;
+  --powder-blue-hover: #72A4E0;
+  --sunset-peach: #F5B69E;
+  --sunset-peach-hover: #E89E82;
+  --danger-action: #EF4444;
+}
+
+body, html {
+  min-height: 100vh !important;
+  width: 100% !important;
+  max-width: 100vw !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: scroll !important;
+  font-family: 'Inter', sans-serif;
+  color: var(--text-primary) !important;
+  background-color: var(--surface-canvas) !important;
+}
+
+body.landing-body, body.dashboard-body, .page-wrapper {
+  background: 
+    linear-gradient(rgba(233, 232, 248, 0.92), rgba(233, 232, 248, 0.92)), 
+    url('/assets/images/makaut-haringhata-boulevard.jpg') center center / cover no-repeat fixed !important;
+}
+
+#app, main, section, .hero-section, #features-section, #syllabus-section, #pyq-section, footer, .landing-footer {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+.auth-page-container, body.auth-body {
+  min-height: 100vh !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: linear-gradient(rgba(233, 232, 248, 0.94), rgba(233, 232, 248, 0.94)),
+              url('/assets/images/makaut-haringhata-boulevard.jpg') center center / cover no-repeat fixed !important;
+  padding: 1.5rem !important;
+  box-sizing: border-box !important;
+}
+
+.course-credit-pill {
+  display: none !important;
+}
