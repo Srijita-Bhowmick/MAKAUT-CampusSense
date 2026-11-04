@@ -64,58 +64,37 @@
     [data-theme="light"],
     html.dark,
     html:not(.dark) {
-      /* Core Tri-Color Palette */
-      --surface-canvas: #F9EBD7;           /* Warm Ivory: Glare-free 60% editorial base */
-      --surface-card: #FFFFFF;             /* Pure White: High-contrast elevated cards */
-      --surface-elevated: #F2E3CD;         /* Subtle Ivory Sand: Input backgrounds & panels */
-      --surface-border: rgba(4, 106, 56, 0.18); /* Crisp emerald-tinted stone outlines */
-      --surface-border-focus: #046A38;     /* Emerald focus ring */
-
-      /* Deep Botanical Typography */
-      --text-primary: #1A2218;             /* Deep botanical charcoal ink (high legibility) */
-      --text-secondary: #485446;           /* Refined muted green-charcoal */
-      --text-tertiary: #7A8678;            /* Subdued stone metadata */
-
-      /* Pop #1: Academic Authority & Verification */
-      --emerald-primary: #046A38;          /* Vibrant Emerald Green */
-      --emerald-hover: #03522B;
-      --emerald-surface: rgba(4, 106, 56, 0.08);
-
-      /* Pop #2: High-Voltage Tactical Energy */
-      --vermilion-primary: #E34222;        /* High-energy Vermilion Red-Orange */
-      --vermilion-hover: #C93619;
-      --vermilion-surface: rgba(227, 66, 34, 0.10);
-
-      /* Functional Component Mapping */
-      --btn-primary-bg: #E34222;
-      --btn-primary-text: #FFFFFF;
-      --btn-secondary-bg: #046A38;
-      --btn-secondary-text: #FFFFFF;
-      --pill-active-bg: #046A38;
-      --pill-active-text: #FFFFFF;
+      /* Soft Lavender White / Powder Blue / Sunset Peach */
+      --surface-canvas: #E9E8F8;
+      --surface-card: #FFFFFF;
+      --surface-elevated: #D4E3F7;
+      --surface-border: rgba(141, 185, 240, 0.45);
+      --surface-border-focus: #8DB9F0;
+      --text-primary: #0F172A;
+      --text-secondary: #334155;
+      --text-tertiary: #64748B;
+      --powder-blue: #8DB9F0;
+      --powder-blue-hover: #6BA3E3;
+      --sunset-peach: #F5B69E;
+      --sunset-peach-hover: #E39474;
       --danger-action: #EF4444;
+
+      --emerald-primary: #8DB9F0;
+      --emerald-hover: #6BA3E3;
+      --emerald-surface: rgba(141, 185, 240, 0.20);
+      --vermilion-primary: #F5B69E;
+      --vermilion-hover: #E39474;
+      --vermilion-surface: rgba(245, 182, 158, 0.25);
+      --btn-primary-bg: #F5B69E;
+      --btn-primary-text: #0F172A;
+      --btn-secondary-bg: #8DB9F0;
+      --btn-secondary-text: #0F172A;
 
       --surface-hover:   var(--surface-elevated);
       --border-hairline: var(--surface-border);
       --border-subtle:   var(--surface-border);
-      --text-muted:      var(--text-tertiary);
-      --accent-blue:     var(--emerald-primary);
-      --accent-blue-dim: var(--emerald-surface);
-      --accent-indigo:   var(--emerald-primary);
-      --accent-green:    var(--emerald-primary);
-      --accent-orange:   var(--vermilion-primary);
-      --accent-red:      var(--danger-action);
-      --font-display:    'Manrope', 'Plus Jakarta Sans', system-ui, sans-serif;
-      --font-body:       'Inter', system-ui, sans-serif;
-      --font-mono:       'JetBrains Mono', monospace;
-      --radius-sm:       8px;
-      --radius-md:       12px;
-      --radius-lg:       16px;
-      --transition-fast: 150ms cubic-bezier(0.4,0,0.2,1);
-      --transition-base: 200ms cubic-bezier(0.4,0,0.2,1);
-      --sidebar-width:   240px;
-      --dock-width:      380px;
-      --header-height:   56px;
+      --card-bg:         var(--surface-card);
+      --body-bg:         var(--surface-canvas);
     }
 
     /* ─── Base ─── */
@@ -856,7 +835,28 @@
     @keyframes toastIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
     @keyframes toastOut { to { opacity: 0; transform: translateY(-8px); } }
     .toast.removing { animation: toastOut 0.15s ease forwards; }
-  </style>
+  
+    .nav-item.active {
+      background-color: #8DB9F0 !important;
+      background: #8DB9F0 !important;
+      color: #0F172A !important;
+      font-weight: 700 !important;
+    }
+    .nav-item.active .nav-item-label, .nav-item.active .nav-item-icon {
+      color: #0F172A !important;
+    }
+    .dock-action-btn.export, #export-deck-btn {
+      background-color: #F5B69E !important;
+      background: #F5B69E !important;
+      color: #0F172A !important;
+      font-weight: 700 !important;
+      border: none !important;
+    }
+    .dock-action-btn.export:hover, #export-deck-btn:hover {
+      background-color: #E39474 !important;
+    }
+
+</style>
 </head>
 <body>
 

@@ -44,56 +44,41 @@
     }
 
     :root, [data-theme="light"], [data-theme="dark"] {
-      /* Poppy Editorial Color Palette */
-      --surface-canvas: #F9EBD7;           /* Warm Ivory: Glare-free 60% editorial base */
-      --surface-card: #FFFFFF;             /* Pure White: High-contrast elevated cards */
-      --surface-elevated: #F2E3CD;         /* Subtle Ivory Sand: Input backgrounds & panels */
-      --surface-border: rgba(4, 106, 56, 0.18); /* Crisp emerald-tinted stone outlines */
-      --surface-border-focus: #046A38;     /* Emerald focus ring */
-
-      /* Deep Botanical Typography */
-      --text-primary: #1A2218;             /* Deep botanical charcoal ink (high legibility) */
-      --text-secondary: #485446;           /* Refined muted green-charcoal */
-      --text-tertiary: #7A8678;            /* Subdued stone metadata */
-
-      /* Pop #1: Academic Authority & Verification */
-      --emerald-primary: #046A38;          /* Vibrant Emerald Green */
-      --emerald-hover: #03522B;
-      --emerald-surface: rgba(4, 106, 56, 0.08);
-
-      /* Pop #2: High-Voltage Tactical Energy */
-      --vermilion-primary: #E34222;        /* High-energy Vermilion Red-Orange */
-      --vermilion-hover: #C93619;
-      --vermilion-surface: rgba(227, 66, 34, 0.10);
-
-      /* Functional Component Mapping */
-      --btn-primary-bg: #E34222;
-      --btn-primary-text: #FFFFFF;
-      --btn-secondary-bg: #046A38;
-      --btn-secondary-text: #FFFFFF;
-      --pill-active-bg: #046A38;
-      --pill-active-text: #FFFFFF;
+      /* Lavender / Powder Blue / Sunset Peach Palette */
+      --surface-canvas: #E9E8F8;
+      --surface-card: #FFFFFF;
+      --surface-elevated: #D4E3F7;
+      --surface-border: rgba(141, 185, 240, 0.45);
+      --surface-border-focus: #8DB9F0;
+      --text-primary: #0F172A;
+      --text-secondary: #334155;
+      --text-tertiary: #64748B;
+      --powder-blue: #8DB9F0;
+      --powder-blue-hover: #6BA3E3;
+      --sunset-peach: #F5B69E;
+      --sunset-peach-hover: #E39474;
       --danger-action: #EF4444;
 
-      /* Aliases */
+      --emerald-primary: #8DB9F0;
+      --emerald-hover: #6BA3E3;
+      --vermilion-primary: #F5B69E;
+      --vermilion-hover: #E39474;
+      --btn-primary-bg: #8DB9F0;
+      --btn-primary-text: #0F172A;
+      --btn-secondary-bg: #8DB9F0;
+      --btn-secondary-text: #0F172A;
+
       --bg-canvas: var(--surface-canvas);
       --bg-card: var(--surface-card);
       --bg-input: var(--surface-elevated);
       --border-color: var(--surface-border);
-      --border-focus: var(--emerald-primary);
+      --border-focus: var(--powder-blue);
       --text-muted: var(--text-tertiary);
-      --accent: var(--emerald-primary);
-      --accent-hover: var(--emerald-hover);
-      --accent-subtle: var(--emerald-surface);
-      --btn-bg: var(--emerald-primary);
-      --btn-text: #FFFFFF;
-      --btn-hover: var(--emerald-hover);
-      --alert-success-bg: #ECFDF5;
-      --alert-success-border: #059669;
-      --alert-success-text: #065F46;
-      --alert-error-bg: #FEF2F2;
-      --alert-error-border: #DC2626;
-      --alert-error-text: #991B1B;
+      --accent: var(--powder-blue);
+      --accent-hover: var(--powder-blue-hover);
+      --btn-bg: var(--powder-blue);
+      --btn-text: #0F172A;
+      --btn-hover: var(--powder-blue-hover);
     }
 
     html, body {
@@ -128,10 +113,10 @@
       padding: 0 !important;
     }
     .cl-card {
-      background-color: var(--surface-card) !important;
-      border: 1px solid var(--surface-border) !important;
+      background-color: #FFFFFF !important;
+      border: 1.5px solid rgba(141, 185, 240, 0.45) !important;
       border-radius: 0.75rem !important;
-      box-shadow: 0 4px 20px rgba(4, 106, 56, 0.06) !important;
+      box-shadow: 0 4px 20px rgba(141, 185, 240, 0.15) !important;
       padding: 2rem !important;
     }
     .cl-headerTitle, .cl-formFieldLabel {
@@ -148,9 +133,9 @@
       border-radius: 8px !important;
     }
     .cl-formButtonPrimary {
-      background: var(--emerald-primary) !important;
-      background-color: var(--emerald-primary) !important;
-      color: #FFFFFF !important;
+      background: #8DB9F0 !important;
+      background-color: #8DB9F0 !important;
+      color: #0F172A !important;
       font-weight: 700 !important;
       border-radius: 0.5rem !important;
       border: none !important;
@@ -167,10 +152,10 @@
       box-shadow: none !important;
     }
     .cl-otpCodeFieldInput {
-      border: 1px solid var(--surface-border) !important;
-      background: var(--surface-elevated) !important;
-      background-color: var(--surface-elevated) !important;
-      color: var(--text-primary) !important;
+      border: 1px solid rgba(141, 185, 240, 0.45) !important;
+      background: #D4E3F7 !important;
+      background-color: #D4E3F7 !important;
+      color: #0F172A !important;
       font-size: 1.25rem !important;
       text-align: center !important;
       border-radius: 0.375rem !important;

@@ -6,33 +6,65 @@
 
 :root {
   /* Core Tri-Color Palette */
-  --surface-canvas: #F9EBD7;           /* Warm Ivory: Glare-free 60% editorial base */
-  --surface-card: #FFFFFF;             /* Pure White: High-contrast elevated cards */
-  --surface-elevated: #F2E3CD;         /* Subtle Ivory Sand: Input backgrounds & panels */
-  --surface-border: rgba(4, 106, 56, 0.18); /* Subtle emerald-tinted stone outlines */
-  --surface-border-focus: #046A38;     /* Emerald focus outline */
+  --surface-canvas: #E9E8F8;           /* Soft Lavender White (Base Canvas) */
+  --surface-card: #FFFFFF;             /* Pure White (Highly elevated cards) */
+  --surface-elevated: #D4E3F7;         /* Deeper Powder Blue tints for input fields & badge pills */
+  --surface-border: rgba(141, 185, 240, 0.45); /* Soft Powder Blue borders */
+  --surface-border-focus: #8DB9F0;     /* Powder Blue focus state */
 
-  /* High-Contrast Jet Black & Deep Botanical Typography */
-  --text-primary: #1A2218;             /* Jet Black / Botanical Ink (STRICT on ivory/white surfaces) */
-  --text-secondary: #485446;           /* Muted green-charcoal */
-  --text-tertiary: #7A8678;            /* Subdued stone metadata */
+  /* High-Contrast Jet Black & Dark Navy Typography */
+  --text-primary: #0F172A;             /* Deep Dark Navy (STRICT on lavender, white, and pastels) */
+  --text-secondary: #334155;           /* Refined Slate Blue for sub-headers and metadata */
+  --text-tertiary: #64748B;            /* Slate Gray for quiet metadata */
 
-  /* Pop #1: Academic Authority (Emerald Green) */
-  --emerald-primary: #046A38;
-  --emerald-hover: #03522B;
-  --emerald-surface: rgba(4, 106, 56, 0.08);
+  /* Interactive Elements */
+  --powder-blue: #8DB9F0;              /* Powder Blue (Structure, Twin buttons, Preview, Sub nav) */
+  --powder-blue-hover: #6BA3E3;
+  --sunset-peach: #F5B69E;             /* Sunset Peach (Core CTAs: Sign Up, Enter Dashboard, Download, Alerts) */
+  --sunset-peach-hover: #E39474;
 
-  /* Pop #2: High-Voltage Tactical Energy (Vermilion) */
-  --vermilion-primary: #E34222;
-  --vermilion-hover: #C93619;
-  --vermilion-surface: rgba(227, 66, 34, 0.10);
+  --danger-action: #EF4444;            /* Safe deletion Red */
 
-  /* Functional Component Mapping */
-  --btn-primary-bg: #E34222;
-  --btn-primary-text: #FFFFFF;         /* STRICT: Pure White text on vermilion */
-  --btn-secondary-bg: #046A38;
-  --btn-secondary-text: #FFFFFF;       /* STRICT: Pure White text on emerald */
-  --danger-action: #EF4444;
+  /* Semantic Compatibility Aliases */
+  --bg-main: #E9E8F8;
+  --bg-primary: #E9E8F8;
+  --bg-secondary: #D4E3F7;
+  --bg-tertiary: #FFFFFF;
+  --bg-surface-elevated: #D4E3F7;
+  --bg-surface-highest: #D4E3F7;
+  --bg-card: #FFFFFF;
+  --card-bg: #FFFFFF;
+  --card-hover: #D4E3F7;
+  --card-border: rgba(141, 185, 240, 0.45);
+  --border-color: rgba(141, 185, 240, 0.45);
+  --border-hairline: rgba(141, 185, 240, 0.45);
+  --border-subtle: rgba(141, 185, 240, 0.45);
+  --bg-header: rgba(233, 232, 248, 0.95);
+  --header-bg: rgba(233, 232, 248, 0.95);
+  --surface-color: #FFFFFF;
+  --surface-glass: rgba(255, 255, 255, 0.9);
+  --text-main: #0F172A;
+  --text-muted: #334155;
+  --text-subtle: #64748B;
+  --text-outline: #64748B;
+  --font-mono-color: #0F172A;
+
+  --emerald-primary: #8DB9F0;
+  --emerald-hover: #6BA3E3;
+  --emerald-surface: rgba(141, 185, 240, 0.20);
+  --vermilion-primary: #F5B69E;
+  --vermilion-hover: #E39474;
+  --vermilion-surface: rgba(245, 182, 158, 0.25);
+  --btn-primary-bg: #F5B69E;
+  --btn-primary-text: #0F172A;
+  --btn-secondary-bg: #8DB9F0;
+  --btn-secondary-text: #0F172A;
+  --pill-active-bg: #8DB9F0;
+  --pill-active-text: #0F172A;
+
+  --font-heading: 'Manrope', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 }
 
 /* ── Typography Hierarchy ────────────────────────────────────────── */
@@ -42,136 +74,38 @@
 /* Code & Course IDs:  JetBrains Mono, 0.85rem                                 */
 
 [data-theme="dark"], html.dark, .dark {
-    --surface-canvas: #F9EBD7;
-    --surface-card: #FFFFFF;
-    --surface-elevated: #F2E3CD;
-    --surface-border: rgba(4, 106, 56, 0.18);
-    --surface-border-focus: #046A38;
-    --text-primary: #1A2218;
-    --text-secondary: #485446;
-    --text-tertiary: #7A8678;
-    --emerald-primary: #046A38;
-    --emerald-hover: #03522B;
-    --emerald-surface: rgba(4, 106, 56, 0.08);
-    --vermilion-primary: #E34222;
-    --vermilion-hover: #C93619;
-    --vermilion-surface: rgba(227, 66, 34, 0.10);
-    --btn-primary-bg: #E34222;
-    --btn-primary-text: #FFFFFF;
-    --btn-secondary-bg: #046A38;
-    --btn-secondary-text: #FFFFFF;
-    --pill-active-bg: #046A38;
-    --pill-active-text: #FFFFFF;
-    --danger-action: #EF4444;
-
-    --bg-main: #F9EBD7;
-    --bg-primary: #F9EBD7;
-    --bg-secondary: #F2E3CD;
-    --bg-tertiary: #FFFFFF;
-    --bg-surface-elevated: #F2E3CD;
-    --bg-surface-highest: #EAE7DC;
-    --bg-card: #FFFFFF;
-    --card-bg: #FFFFFF;
-    --card-hover: #F2E3CD;
-    --card-border: rgba(4, 106, 56, 0.18);
-    --border-color: rgba(4, 106, 56, 0.18);
-    --border-hairline: rgba(4, 106, 56, 0.18);
-    --border-subtle: rgba(4, 106, 56, 0.18);
-    --bg-header: rgba(249, 235, 215, 0.95);
-    --header-bg: rgba(249, 235, 215, 0.95);
-    --surface-color: #FFFFFF;
-    --surface-glass: rgba(255, 255, 255, 0.9);
-    --text-main: #1A2218;
-    --text-muted: #485446;
-    --text-subtle: #7A8678;
-    --text-outline: #7A8678;
-    --font-mono-color: #1A2218;
-    --input-bg: #FFFFFF;
-    --input-border: rgba(4, 106, 56, 0.18);
-    --modal-bg: #FFFFFF;
-    --card-shadow: 0 4px 16px rgba(4, 106, 56, 0.08);
+  /* Unified Pastel Palette */
+  --surface-canvas: #E9E8F8;
+  --surface-card: #FFFFFF;
+  --surface-elevated: #D4E3F7;
+  --surface-border: rgba(141, 185, 240, 0.45);
+  --surface-border-focus: #8DB9F0;
+  --text-primary: #0F172A;
+  --text-secondary: #334155;
+  --text-tertiary: #64748B;
+  --powder-blue: #8DB9F0;
+  --powder-blue-hover: #6BA3E3;
+  --sunset-peach: #F5B69E;
+  --sunset-peach-hover: #E39474;
+  --danger-action: #EF4444;
 }
 
 /* --- EDITORIAL ARCHITECTURAL LIGHT MODE PALETTE (Geist / Linear Parity) --- */
 :root, :root.light-theme, [data-theme="light"], html.light, .light, .light-theme {
-    --surface-canvas: #F9EBD7;
-    --surface-card: #FFFFFF;
-    --surface-elevated: #F2E3CD;
-    --surface-border: rgba(4, 106, 56, 0.18);
-    --surface-border-focus: #046A38;
-    --text-primary: #1A2218;
-    --text-secondary: #485446;
-    --text-tertiary: #7A8678;
-    --emerald-primary: #046A38;
-    --emerald-hover: #03522B;
-    --emerald-surface: rgba(4, 106, 56, 0.08);
-    --vermilion-primary: #E34222;
-    --vermilion-hover: #C93619;
-    --vermilion-surface: rgba(227, 66, 34, 0.10);
-    --btn-primary-bg: #E34222;
-    --btn-primary-text: #FFFFFF;
-    --btn-secondary-bg: #046A38;
-    --btn-secondary-text: #FFFFFF;
-    --pill-active-bg: #046A38;
-    --pill-active-text: #FFFFFF;
-    --danger-action: #EF4444;
-
-    --bg-main: #F9EBD7;
-    --bg-primary: #F9EBD7;
-    --bg-secondary: #F2E3CD;
-    --bg-tertiary: #FFFFFF;
-    --bg-surface-elevated: #F2E3CD;
-    --bg-surface-highest: #EAE7DC;
-    --bg-card: #FFFFFF;
-    --surface-color: #FFFFFF;
-    --border-color: rgba(4, 106, 56, 0.18);
-    --border-hairline: rgba(4, 106, 56, 0.18);
-    --bg-header: rgba(249, 235, 215, 0.95);
-    --border-focus: #046A38;
-    
-    --text-main: #1A2218;
-    --text-primary: #1A2218;
-    --text-secondary: #485446;
-    --text-muted: #485446;
-    --text-subtle: #7A8678;
-    --text-outline: #7A8678;
-    --font-mono-color: #485446;
-    
-    --btn-primary-bg: #E34222;
-    --accent-primary: #4F46E5;
-    --accent-hover: #4338CA;
-    --accent-indigo: #4F46E5;
-    --accent-cobalt: #4F46E5;
-    --accent-active-ring: #4F46E5;
-    --accent-ring: #4F46E5;
-    --accent-subtle: #EEF2FF;
-    --accent-cyan: #0284C7;
-    --accent-emerald: #059669;
-    --accent-amber: #D97706;
-    --accent-rose: #E11D48;
-    --accent-flame: #EA580C;
-    
-    --card-bg: #FFFFFF;
-    --card-hover: #F8FAFC;
-    --card-border: #E2E8F0;
-    --card-border-glow: transparent;
-    --card-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
-    
-    --badge-bg: #F1F5F9;
-    --badge-text: #0F172A;
-    --badge-accent-bg: #EEF2FF;
-    --badge-accent-text: #4F46E5;
-    
-    --btn-secondary-bg: #FFFFFF;
-    --btn-secondary-border: #CBD5E1;
-    --btn-secondary-text: #0F172A;
-    --btn-secondary-hover: #F1F5F9;
-    
-    --header-bg: rgba(248, 250, 252, 0.95);
-    --input-bg: #FFFFFF;
-    --input-border: #CBD5E1;
-    --modal-bg: #FFFFFF;
-    --surface-glass: rgba(248, 250, 252, 0.85);
+  /* Unified Pastel Palette */
+  --surface-canvas: #E9E8F8;
+  --surface-card: #FFFFFF;
+  --surface-elevated: #D4E3F7;
+  --surface-border: rgba(141, 185, 240, 0.45);
+  --surface-border-focus: #8DB9F0;
+  --text-primary: #0F172A;
+  --text-secondary: #334155;
+  --text-tertiary: #64748B;
+  --powder-blue: #8DB9F0;
+  --powder-blue-hover: #6BA3E3;
+  --sunset-peach: #F5B69E;
+  --sunset-peach-hover: #E39474;
+  --danger-action: #EF4444;
 }
 
 /* Global Smooth Theme Transition & Viewport Lock */
@@ -14553,29 +14487,66 @@ html, body {
 
 /* Strict Typography & Background Contrast Rules */
 :root {
-  --surface-canvas: #F9EBD7;           /* Warm Ivory: Glare-free 60% editorial base */
-  --surface-card: #FFFFFF;             /* Pure White: High-contrast elevated cards */
-  --surface-elevated: #F2E3CD;         /* Subtle Ivory Sand: Input backgrounds & panels */
-  --surface-border: rgba(4, 106, 56, 0.18); /* Subtle emerald-tinted stone outlines */
-  --surface-border-focus: #046A38;     /* Emerald focus ring */
+  /* Core Tri-Color Palette */
+  --surface-canvas: #E9E8F8;           /* Soft Lavender White (Base Canvas) */
+  --surface-card: #FFFFFF;             /* Pure White (Highly elevated cards) */
+  --surface-elevated: #D4E3F7;         /* Deeper Powder Blue tints for input fields & badge pills */
+  --surface-border: rgba(141, 185, 240, 0.45); /* Soft Powder Blue borders */
+  --surface-border-focus: #8DB9F0;     /* Powder Blue focus state */
 
-  --text-primary: #1A2218;             /* Jet Black / Botanical Ink (STRICT: On all ivory/white surfaces) */
-  --text-secondary: #485446;           /* Muted green-charcoal */
-  --text-tertiary: #7A8678;            /* Subdued stone metadata */
+  /* High-Contrast Jet Black & Dark Navy Typography */
+  --text-primary: #0F172A;             /* Deep Dark Navy (STRICT on lavender, white, and pastels) */
+  --text-secondary: #334155;           /* Refined Slate Blue for sub-headers and metadata */
+  --text-tertiary: #64748B;            /* Slate Gray for quiet metadata */
 
-  --emerald-primary: #046A38;
-  --emerald-hover: #03522B;
-  --emerald-surface: rgba(4, 106, 56, 0.08);
+  /* Interactive Elements */
+  --powder-blue: #8DB9F0;              /* Powder Blue (Structure, Twin buttons, Preview, Sub nav) */
+  --powder-blue-hover: #6BA3E3;
+  --sunset-peach: #F5B69E;             /* Sunset Peach (Core CTAs: Sign Up, Enter Dashboard, Download, Alerts) */
+  --sunset-peach-hover: #E39474;
 
-  --vermilion-primary: #E34222;
-  --vermilion-hover: #C93619;
-  --vermilion-surface: rgba(227, 66, 34, 0.10);
+  --danger-action: #EF4444;            /* Safe deletion Red */
 
-  --btn-primary-bg: #E34222;
-  --btn-primary-text: #FFFFFF;
-  --btn-secondary-bg: #046A38;
-  --btn-secondary-text: #FFFFFF;
-  --danger-action: #EF4444;
+  /* Semantic Compatibility Aliases */
+  --bg-main: #E9E8F8;
+  --bg-primary: #E9E8F8;
+  --bg-secondary: #D4E3F7;
+  --bg-tertiary: #FFFFFF;
+  --bg-surface-elevated: #D4E3F7;
+  --bg-surface-highest: #D4E3F7;
+  --bg-card: #FFFFFF;
+  --card-bg: #FFFFFF;
+  --card-hover: #D4E3F7;
+  --card-border: rgba(141, 185, 240, 0.45);
+  --border-color: rgba(141, 185, 240, 0.45);
+  --border-hairline: rgba(141, 185, 240, 0.45);
+  --border-subtle: rgba(141, 185, 240, 0.45);
+  --bg-header: rgba(233, 232, 248, 0.95);
+  --header-bg: rgba(233, 232, 248, 0.95);
+  --surface-color: #FFFFFF;
+  --surface-glass: rgba(255, 255, 255, 0.9);
+  --text-main: #0F172A;
+  --text-muted: #334155;
+  --text-subtle: #64748B;
+  --text-outline: #64748B;
+  --font-mono-color: #0F172A;
+
+  --emerald-primary: #8DB9F0;
+  --emerald-hover: #6BA3E3;
+  --emerald-surface: rgba(141, 185, 240, 0.20);
+  --vermilion-primary: #F5B69E;
+  --vermilion-hover: #E39474;
+  --vermilion-surface: rgba(245, 182, 158, 0.25);
+  --btn-primary-bg: #F5B69E;
+  --btn-primary-text: #0F172A;
+  --btn-secondary-bg: #8DB9F0;
+  --btn-secondary-text: #0F172A;
+  --pill-active-bg: #8DB9F0;
+  --pill-active-text: #0F172A;
+
+  --font-heading: 'Manrope', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 }
 
 /* Strict contrast overrides: Any element on warm ivory or pure white must have #1A2218 */
@@ -15217,4 +15188,275 @@ h1, h2, h3, h4, p, span:not(.btn-text-white), a:not(.btn-vermilion):not(.btn-eme
 .btn-download-emerald, .btn-download-vermilion, .btn-card-download-emerald, .btn-card-download-vermilion,
 .btn-download-master, #floating-ask-ai, .floating-ask-ai, .btn-text-white {
   color: #FFFFFF !important;
+}
+
+/* ===================================================================
+   PALETTE OVERHAUL: SOFT LAVENDER-WHITE, POWDER BLUE & SUNSET PEACH
+   =================================================================== */
+
+/* 1. Complete Edge-to-Edge Canvas */
+html, body {
+  min-height: 100vh !important;
+  width: 100% !important;
+  max-width: 100vw !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: scroll !important;
+  background-color: #E9E8F8 !important;
+  background: #E9E8F8 !important;
+  color: #0F172A !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+html, body, #app, main, header, nav, section, .hero-section, #features-section, #syllabus-section, #pyq-section, footer, .landing-footer {
+  background-color: #E9E8F8 !important;
+  background: #E9E8F8 !important;
+  color: #0F172A !important;
+}
+
+/* Force High Contrast on All Text Elements */
+h1, h2, h3, h4, p, span, a {
+  color: #0F172A;
+}
+
+h1, h2, h3, h4, .editorial-hero-heading, .landing-section-heading, .dept-master-title, .cute-card-title, .feature-bento-val {
+  color: #0F172A !important;
+}
+
+.editorial-hero-lead, .landing-section-subhead, .feature-bento-desc, .cute-card-sub, .dept-master-subtext {
+  color: #334155 !important;
+}
+
+/* Card Badges (Monospace Code Tags) */
+.card-badge, .course-badge, .badge, span.code, .subject-code, .cute-card-code, .dept-stream-badge {
+  background-color: #D4E3F7 !important;
+  color: #0F172A !important;
+  border: 1px solid rgba(141, 185, 240, 0.45) !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  padding: 0.2rem 0.5rem !important;
+  border-radius: 0.25rem !important;
+  display: inline-block !important;
+}
+
+/* Card Surfaces */
+.syllabus-card, .pyq-card, .feature-card, .bento-card, .cute-subject-card, .dept-master-card, .feature-bento-card {
+  background-color: #FFFFFF !important;
+  background: #FFFFFF !important;
+  border: 1.5px solid rgba(141, 185, 240, 0.45) !important;
+  border-radius: 0.75rem !important;
+  box-shadow: 0 4px 14px rgba(141, 185, 240, 0.12) !important;
+}
+
+/* Action Buttons */
+.btn-preview, button.preview-btn, a.preview-btn, .btn-card-preview {
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
+  border: 1.5px solid #8DB9F0 !important;
+  font-size: 0.8rem !important;
+  padding: 0.4rem 0.85rem !important;
+  border-radius: 0.375rem !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-decoration: none !important;
+  transition: all 0.15s ease !important;
+}
+
+.btn-preview:hover, button.preview-btn:hover, a.preview-btn:hover, .btn-card-preview:hover {
+  background-color: #D4E3F7 !important;
+  border-color: #6BA3E3 !important;
+  color: #0F172A !important;
+}
+
+.btn-download-powder, .btn-card-download-powder, .btn-download-master, .btn-card-download-emerald, .btn-download-emerald {
+  background-color: #8DB9F0 !important;
+  background: #8DB9F0 !important;
+  color: #0F172A !important;
+  font-size: 0.8rem !important;
+  padding: 0.4rem 0.85rem !important;
+  border-radius: 0.375rem !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  border: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-decoration: none !important;
+  transition: background-color 0.15s ease !important;
+}
+
+.btn-download-powder:hover, .btn-card-download-powder:hover, .btn-download-master:hover, .btn-card-download-emerald:hover {
+  background-color: #6BA3E3 !important;
+}
+
+.btn-download-peach, .btn-card-download-peach, .btn-card-download-vermilion, .btn-download-vermilion {
+  background-color: #F5B69E !important;
+  background: #F5B69E !important;
+  color: #0F172A !important;
+  font-size: 0.8rem !important;
+  padding: 0.4rem 0.85rem !important;
+  border-radius: 0.375rem !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  border: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-decoration: none !important;
+  transition: background-color 0.15s ease !important;
+}
+
+.btn-download-peach:hover, .btn-card-download-peach:hover, .btn-card-download-vermilion:hover {
+  background-color: #E39474 !important;
+}
+
+/* Hero Twin Action Buttons */
+.hero-btn-explore, .hero-btn-panic {
+  background-color: #8DB9F0 !important;
+  background: #8DB9F0 !important;
+  color: #0F172A !important;
+  font-weight: 700 !important;
+  padding: 0.85rem 1.85rem !important;
+  border-radius: 0.5rem !important;
+  border: none !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 48px !important;
+  box-sizing: border-box !important;
+  text-decoration: none !important;
+  transition: background-color 0.15s ease !important;
+}
+
+.hero-btn-explore:hover, .hero-btn-panic:hover {
+  background-color: #6BA3E3 !important;
+}
+
+/* Navbar Controls */
+.nav-signup-btn {
+  background-color: #F5B69E !important;
+  background: #F5B69E !important;
+  color: #0F172A !important;
+  padding: 0.5rem 1.25rem !important;
+  border-radius: 0.5rem !important;
+  font-weight: 700 !important;
+  border: none !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: background-color 0.15s ease !important;
+}
+
+.nav-signup-btn:hover {
+  background-color: #E39474 !important;
+}
+
+/* Floating Bottom-Right Ask AI Button */
+#floating-ask-ai, .floating-ask-ai {
+  position: fixed !important;
+  bottom: 1.5rem !important;
+  right: 1.5rem !important;
+  z-index: 9999 !important;
+  background-color: #8DB9F0 !important;
+  background: #8DB9F0 !important;
+  color: #0F172A !important;
+  font-weight: 700 !important;
+  font-size: 0.95rem !important;
+  padding: 0.75rem 1.4rem !important;
+  border-radius: 9999px !important;
+  border: none !important;
+  box-shadow: 0 4px 20px rgba(141, 185, 240, 0.35) !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-decoration: none !important;
+}
+
+#floating-ask-ai:hover, .floating-ask-ai:hover {
+  background-color: #6BA3E3 !important;
+  transform: translateY(-2px) !important;
+}
+
+/* Modal Styling (View 3: Set Academic Context Modal) */
+.modal-card, .onboarding-card {
+  background: #FFFFFF !important;
+  border: 1.5px solid rgba(141, 185, 240, 0.45) !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 8px 30px rgba(141, 185, 240, 0.15) !important;
+}
+
+.primary-year-btn, .academic-stage-card, .stage-card {
+  background: #FFFFFF !important;
+  border: 1.5px solid rgba(141, 185, 240, 0.45) !important;
+  color: #0F172A !important;
+  border-radius: 0.75rem !important;
+}
+
+.primary-year-btn.selected, .primary-year-btn.active,
+.academic-stage-card.selected, .academic-stage-card.active,
+.stage-card.selected, .stage-card.active {
+  border: 2px solid #8DB9F0 !important;
+  background: #E9E8F8 !important;
+}
+
+.primary-year-btn.selected .checkmark,
+.academic-stage-card.selected .checkmark {
+  background-color: #F5B69E !important;
+  color: #0F172A !important;
+  font-weight: 700 !important;
+}
+
+.btn-enter-dashboard, #btn-confirm-scope {
+  background-color: #F5B69E !important;
+  background: #F5B69E !important;
+  color: #0F172A !important;
+  font-weight: 700 !important;
+  border: none !important;
+  border-radius: 0.5rem !important;
+  padding: 0.75rem 1.5rem !important;
+  cursor: pointer !important;
+}
+
+.btn-enter-dashboard:hover, #btn-confirm-scope:hover {
+  background-color: #E39474 !important;
+}
+
+/* Footer Styling */
+footer, .landing-footer {
+  background-color: #E9E8F8 !important;
+  background: #E9E8F8 !important;
+  color: #0F172A !important;
+  border-top: 1px solid rgba(141, 185, 240, 0.45) !important;
+  width: 100% !important;
+  max-width: 100vw !important;
+  box-sizing: border-box !important;
+  padding: 3.5rem 1.5rem !important;
+  margin: 0 !important;
+}
+
+footer h4, #footer-brand-title {
+  color: #0F172A !important;
+  font-weight: 800 !important;
+}
+
+footer p.footer-creator-line {
+  color: #0F172A !important;
+  font-weight: 700 !important;
+  text-decoration: underline !important;
+}
+
+footer p.footer-disclaimer {
+  color: #334155 !important;
+}
+
+footer .footer-badges a, footer .footer-badges span, footer .badge-item {
+  color: #0F172A !important;
 }
