@@ -98,6 +98,12 @@ window.onClerkLoaded = function() {
             if (id === 'saved-deck-drawer' || id === 'drawer-saved-deck') {
                 return _origGetElementById('drawer-saved-deck') || _origGetElementById('saved-deck-drawer') || _origGetElementById(id);
             }
+                        if (id === 'btn-sign-in' || id === 'btn-nav-signin' || id === 'nav-signin-link') {
+                return _origGetElementById('nav-signin-link') || _origGetElementById('btn-sign-in') || _origGetElementById('btn-nav-signin') || _origGetElementById(id);
+            }
+            if (id === 'btn-sign-up' || id === 'btn-nav-signup' || id === 'nav-signup-btn') {
+                return _origGetElementById('nav-signup-btn') || _origGetElementById('btn-sign-up') || _origGetElementById('btn-nav-signup') || _origGetElementById(id);
+            }
             if (id === 'btn-open-feedback' || id === 'btn-feedback' || id === 'nav-feedback-btn') {
                 return _origGetElementById('nav-feedback-btn') || _origGetElementById('btn-feedback') || _origGetElementById('btn-open-feedback') || _origGetElementById(id);
             }
