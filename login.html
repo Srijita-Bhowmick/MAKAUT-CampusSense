@@ -386,28 +386,9 @@
       cursor: not-allowed;
     }
 
-    .btn-quick-demo {
-      width: 100%;
-      padding: 0.7rem 1rem;
-      background: var(--accent-subtle);
-      border: 1px solid rgba(99, 102, 241, 0.3);
-      border-radius: 8px;
-      color: var(--accent);
-      font-weight: 600;
-      font-size: 0.85rem;
-      cursor: pointer;
-      margin-top: 0.85rem;
-      transition: all 0.15s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-    }
+    
 
-    .btn-quick-demo:hover {
-      background: rgba(99, 102, 241, 0.25);
-      border-color: var(--accent);
-    }
+    
 
     /* 6-Digit OTP Boxes */
     .otp-grid {
@@ -469,41 +450,13 @@
       color: var(--alert-error-text);
     }
 
-    .otp-notice-card {
-      background: var(--accent-subtle);
-      border: 1px dashed var(--accent);
-      border-radius: 8px;
-      padding: 0.75rem 1rem;
-      margin-bottom: 1.25rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
+    
 
-    .otp-code-highlight {
-      font-family: monospace;
-      font-size: 1.2rem;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      color: var(--accent);
-    }
+    
 
-    .btn-autofill-otp {
-      padding: 4px 10px;
-      background: var(--btn-bg);
-      color: var(--btn-text);
-      border: none;
-      border-radius: 6px;
-      font-size: 0.78rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: opacity 0.15s;
-    }
+    
 
-    .btn-autofill-otp:hover {
-      opacity: 0.85;
-    }
+    
 
     /* Cloudflare & Clerk Badges */
     .security-badge-footer {
@@ -690,6 +643,7 @@
     </div>
 
     <!-- Alert / Status Toast -->
+    <div id="auth-error-msg" class="auth-alert error" style="display: none;"></div>
     <div id="auth-alert" class="auth-alert" role="alert">
       <span id="alert-icon">ℹ️</span>
       <span id="alert-message"></span>
@@ -720,7 +674,7 @@
       <div class="form-group">
         <label for="auth-email" class="form-label">Email Address</label>
         <input type="email" id="auth-email" class="form-input" placeholder="student@makaut.ac.in or personal email" required autocomplete="email" />
-        <p class="form-hint">Enter any email. A 6-digit OTP will be generated. No password required.</p>
+        <p class="form-hint">Enter your email. A 6-digit verification code will be sent to your inbox. No password required.</p>
       </div>
 
       <!-- Cloudflare Turnstile Bot Defense Widget -->
@@ -732,25 +686,15 @@
         <span>→</span>
       </button>
 
-      <!-- 1-Click Demo Login -->
-      <button type="button" class="btn-quick-demo" onclick="quickDemoLogin();">
-        <span>⚡</span>
-        <span>Instant 1-Click Student Demo</span>
-      </button>
+      
     </form>
 
     <!-- STEP 2: 6-Digit OTP Verification Form -->
     <form id="step2-form" style="display: none;" onsubmit="handleVerifyOtp(event);">
-      <div class="otp-notice-card" id="otp-notice-card">
-        <div>
-          <div style="font-size: 0.76rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Verification Code</div>
-          <div class="otp-code-highlight" id="otp-code-display">------</div>
-        </div>
-        <button type="button" class="btn-autofill-otp" id="btn-autofill" onclick="autofillOtp();">1-Click Auto-Fill</button>
-      </div>
+      
 
       <p style="font-size: 0.86rem; color: var(--text-secondary); margin-bottom: 0.5rem; text-align: center;">
-        Enter the 6-digit code for <strong id="display-email" style="color: var(--text-primary);"></strong>
+        Enter the 6-digit verification code sent to <strong id="display-email" style="color: var(--text-primary);"></strong>
       </p>
 
       <!-- 6 Individual Digit Boxes with Auto-Advance & Paste Support -->
@@ -763,7 +707,7 @@
         <input type="text" maxlength="1" class="otp-box" data-idx="5" inputmode="numeric" pattern="[0-9]*" />
       </div>
 
-      <button type="submit" class="btn-auth-primary" id="btn-verify-otp">
+      <button type="submit" class="btn-auth-primary" id="verify-otp-btn"><input type="hidden" id="btn-verify-otp" />
         <span id="btn-verify-text">Verify & Continue</span>
         <span>→</span>
       </button>
@@ -885,11 +829,10 @@
           });
           return;
         }
-        // Fallback demo if Clerk OAuth not active
-        quickDemoLogin();
+        showAlert("error", "Google Sign-In is unavailable. Please sign in with email OTP.");
       } catch (err) {
         console.warn("[Clerk OAuth]", err);
-        quickDemoLogin();
+        showAlert("error", "Sign-in unavailable. Please use email verification code.");
       }
     }
 
@@ -1057,290 +1000,20 @@
 
         const data = await response.json();
         if (response.ok && data.success) {
-          generatedOtp = data.otp || generateClientOtp();
-          transitionToStep2(data.message || `Verification code sent to ${currentEmail}`);
+          showAlert("success", "A new verification code has been dispatched to your email.");
         } else {
-          showAlert("error", data.message || "Unable to send verification code. Please try again.");
-          btnSend.disabled = false;
-          btnSend.querySelector("span:first-child").textContent = currentMode === "signup" ? "Generate Verification Code" : "Get Verification Code";
-        }
-      } catch (err) {
-        // Local/Static fallback
-        generatedOtp = generateClientOtp();
-        transitionToStep2(`Verification code generated for ${currentEmail}`);
-      }
-    }
-
-    function generateClientOtp() {
-      return String(Math.floor(100000 + Math.random() * 900000));
-    }
-
-    function transitionToStep2(successMsg) {
-      document.getElementById("step1-form").style.display = "none";
-      document.getElementById("step2-form").style.display = "block";
-      document.getElementById("display-email").textContent = currentEmail;
-      document.getElementById("otp-code-display").textContent = generatedOtp;
-
-      showAlert("success", successMsg);
-
-      clearOtpBoxes();
-      const firstBox = document.querySelector('.otp-box[data-idx="0"]');
-      if (firstBox) firstBox.focus();
-
-      startResendCountdown();
-    }
-
-    function resetToStep1() {
-      clearInterval(resendInterval);
-      document.getElementById("step2-form").style.display = "none";
-      document.getElementById("step1-form").style.display = "block";
-      const btnSend = document.getElementById("btn-send-otp");
-      btnSend.disabled = false;
-      btnSend.querySelector("span:first-child").textContent = currentMode === "signup" ? "Generate Verification Code" : "Get Verification Code";
-      hideAlert();
-    }
-
-    // OTP Boxes Handling
-    const otpBoxes = document.querySelectorAll(".otp-box");
-    otpBoxes.forEach((box, index) => {
-      box.addEventListener("input", (e) => {
-        const val = e.target.value.replace(/[^0-9]/g, "");
-        e.target.value = val ? val[0] : "";
-        if (val) {
-          box.classList.add("filled");
-          if (index < otpBoxes.length - 1) {
-            otpBoxes[index + 1].focus();
-          }
-        } else {
-          box.classList.remove("filled");
-        }
-      });
-
-      box.addEventListener("keydown", (e) => {
-        if (e.key === "Backspace" && !box.value && index > 0) {
-          otpBoxes[index - 1].focus();
-        } else if (e.key === "ArrowLeft" && index > 0) {
-          otpBoxes[index - 1].focus();
-        } else if (e.key === "ArrowRight" && index < otpBoxes.length - 1) {
-          otpBoxes[index + 1].focus();
-        }
-      });
-
-      box.addEventListener("paste", (e) => {
-        e.preventDefault();
-        const pastedData = (e.clipboardData || window.clipboardData).getData("text").replace(/[^0-9]/g, "");
-        if (pastedData.length >= 6) {
-          pastedData.slice(0, 6).split("").forEach((digit, i) => {
-            if (otpBoxes[i]) {
-              otpBoxes[i].value = digit;
-              otpBoxes[i].classList.add("filled");
-            }
-          });
-          otpBoxes[5].focus();
-        }
-      });
-    });
-
-    function getEnteredOtp() {
-      let code = "";
-      otpBoxes.forEach(b => code += b.value.trim());
-      return code;
-    }
-
-    function clearOtpBoxes() {
-      otpBoxes.forEach(b => {
-        b.value = "";
-        b.classList.remove("filled");
-      });
-    }
-
-    function autofillOtp() {
-      if (!generatedOtp) return;
-      generatedOtp.split("").forEach((d, i) => {
-        if (otpBoxes[i]) {
-          otpBoxes[i].value = d;
-          otpBoxes[i].classList.add("filled");
-        }
-      });
-      otpBoxes[5].focus();
-    }
-
-    // STEP 2: Verify OTP via Clerk + Backend
-    async function handleVerifyOtp(e) {
-      if (e) e.preventDefault();
-      hideAlert();
-
-      const enteredOtp = getEnteredOtp();
-      if (enteredOtp.length !== 6) {
-        showAlert("error", "Please enter the complete 6-digit verification code.");
-        return;
-      }
-
-      const btnVerify = document.getElementById("btn-verify-otp");
-      const btnVerifyText = document.getElementById("btn-verify-text");
-      btnVerify.disabled = true;
-      btnVerifyText.textContent = "Verifying with Clerk & Cloudflare...";
-
-      // 1. Attempt verification with Clerk SDK if active
-      try {
-        if (clerkSignUpAttempt && typeof clerkSignUpAttempt.attemptEmailAddressVerification === "function") {
-          const res = await clerkSignUpAttempt.attemptEmailAddressVerification({ code: enteredOtp });
-          if (res.status === "complete") {
-            if (window.Clerk.setActive) {
-              await window.Clerk.setActive({ session: res.createdSessionId });
-            }
-          }
-        } else if (clerkSignInAttempt && typeof clerkSignInAttempt.attemptFirstFactor === "function") {
-          const res = await clerkSignInAttempt.attemptFirstFactor({ strategy: "email_code", code: enteredOtp });
-          if (res.status === "complete") {
-            if (window.Clerk.setActive) {
-              await window.Clerk.setActive({ session: res.createdSessionId });
-            }
-          }
-        }
-      } catch (clerkErr) {
-        console.info("[Clerk Verify]", clerkErr?.message || clerkErr);
-      }
-
-      // 2. Verify with Backend API
-      try {
-        const response = await fetch("/api/v1/auth/verify-otp", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: currentEmail,
-            otp: enteredOtp,
-            name: currentName,
-            department: currentDept,
-            mode: currentMode
-          })
-        });
-
-        const data = await response.json();
-        if (response.ok && data.success) {
-          completeAuthentication(data.user || {
-            email: currentEmail,
-            name: currentName || deriveName(currentEmail),
-            role: "STUDENT",
-            department: currentDept
-          });
-        } else {
-          showAlert("error", data.message || "Invalid verification code. Please check and try again.");
-          btnVerify.disabled = false;
-          btnVerifyText.textContent = "Verify & Continue";
-        }
-      } catch (err) {
-        // Fallback for static environment
-        if (enteredOtp === generatedOtp) {
-          completeAuthentication({
-            email: currentEmail,
-            name: currentName || deriveName(currentEmail),
-            role: "STUDENT",
-            department: currentDept
-          });
-        } else {
-          showAlert("error", "Invalid verification code. Please check the code above.");
-          btnVerify.disabled = false;
-          btnVerifyText.textContent = "Verify & Continue";
-        }
-      }
-    }
-
-    function deriveName(email) {
-      const user = email.split("@")[0].replace(/[._-]/g, " ").trim();
-      if (!user) return "Student Scholar";
-      return user.split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ");
-    }
-
-    function completeAuthentication(user) {
-      localStorage.setItem("campussense_logged_in", "true");
-      localStorage.setItem("campussense_auth_provider", "clerk_otp");
-      localStorage.setItem("campussense_user_session", JSON.stringify(user));
-
-      if (!localStorage.getItem("campussense_academic_profile")) {
-        localStorage.setItem("campussense_academic_profile", JSON.stringify({
-          stream: user.department || "CSE",
-          semester: "5",
-          year: "3rd Year",
-          college: "MAKAUT Main Campus (In-House)"
-        }));
-      }
-
-      showAlert("success", "Verification successful! Redirecting to Student Workspace...");
-      setTimeout(() => {
-        window.location.replace("/dashboard.html");
-      }, 350);
-    }
-
-    function startResendCountdown() {
-      let seconds = 45;
-      const timerText = document.getElementById("resend-timer-text");
-      const countSpan = document.getElementById("resend-count");
-      const resendLink = document.getElementById("resend-link");
-
-      timerText.style.display = "inline";
-      resendLink.style.display = "none";
-      countSpan.textContent = seconds;
-
-      clearInterval(resendInterval);
-      resendInterval = setInterval(() => {
-        seconds--;
-        if (seconds <= 0) {
-          clearInterval(resendInterval);
-          timerText.style.display = "none";
-          resendLink.style.display = "inline";
-        } else {
-          countSpan.textContent = seconds;
-        }
-      }, 1000);
-    }
-
-    async function resendOtp() {
-      const resendLink = document.getElementById("resend-link");
-      resendLink.textContent = "Sending...";
-      resendLink.style.pointerEvents = "none";
-
-      try {
-        const response = await fetch("/api/v1/auth/send-otp", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: currentEmail,
-            name: currentName,
-            mode: currentMode,
-            turnstileToken: turnstileToken
-          })
-        });
-        const data = await response.json();
-        if (response.ok && data.success) {
-          generatedOtp = data.otp || generateClientOtp();
-          document.getElementById("otp-code-display").textContent = generatedOtp;
-          showAlert("success", "A new verification code has been generated.");
-        } else {
-          generatedOtp = generateClientOtp();
-          document.getElementById("otp-code-display").textContent = generatedOtp;
-          showAlert("success", "A new verification code has been generated.");
+          showAlert("error", data.message || "Failed to resend verification code. Please try again.");
         }
       } catch (e) {
-        generatedOtp = generateClientOtp();
-        document.getElementById("otp-code-display").textContent = generatedOtp;
-        showAlert("success", "A new verification code has been generated.");
+        showAlert("error", "Failed to connect to authentication service.");
       }
-
       clearOtpBoxes();
       resendLink.textContent = "Resend Code";
       resendLink.style.pointerEvents = "auto";
       startResendCountdown();
     }
 
-    window.quickDemoLogin = function() {
-      completeAuthentication({
-        email: "student@makaut.ac.in",
-        name: "Student Scholar",
-        role: "STUDENT",
-        department: "CSE"
-      });
-    };
+    
 
     // Initialize
     detectInitialMode();

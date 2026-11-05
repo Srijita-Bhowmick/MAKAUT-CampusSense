@@ -5,6 +5,13 @@ server:
 spring:
   application:
     name: makaut-campussense
+  mail:
+    properties:
+      mail:
+        smtp:
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:dev}
     default: dev

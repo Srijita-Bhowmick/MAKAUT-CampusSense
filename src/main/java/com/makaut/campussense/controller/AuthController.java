@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping({"/api/v1/auth", "/api/auth"})
 @RequiredArgsConstructor
 @Slf4j
 @Tag(name = "Passwordless OTP Authentication", description = "Student Sign-In & Sign-Up via Email OTP with Cloudflare Security")
@@ -48,7 +48,7 @@ public class AuthController {
         String clientIp = CloudflareSecurityFilter.resolveClientIp(httpRequest);
         OtpAuthService.AuthResult result = otpAuthService.verifyOtp(
                 request.getEmail(),
-                request.getOtp(),
+                request.getResolvedOtp(),
                 request.getName(),
                 request.getDepartment(),
                 clientIp
@@ -95,8 +95,22 @@ public class AuthController {
     public static class VerifyOtpRequest {
         private String email;
         private String otp;
+        private String code;
         private String name;
         private String department;
         private String mode;
+
+        public VerifyOtpRequest(String email, String otp, String name, String department, String mode) {
+            this.email = email;
+            this.otp = otp;
+            this.code = otp;
+            this.name = name;
+            this.department = department;
+            this.mode = mode;
+        }
+
+        public String getResolvedOtp() {
+            return (otp != null && !otp.isBlank()) ? otp : code;
+        }
     }
 }

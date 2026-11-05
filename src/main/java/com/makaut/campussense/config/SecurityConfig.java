@@ -45,6 +45,8 @@ public class SecurityConfig {
                                 "/index.html",
                                 "/login",
                                 "/login.html",
+                                "/dashboard",
+                                "/dashboard.html",
                                 "/privacy",
                                 "/privacy.html",
                                 "/styles.css",
@@ -85,6 +87,7 @@ public class SecurityConfig {
                                 "/api/resources/**",
                                 "/api/feedback",
                                 "/api/feedback/**",
+                                "/api/auth/**",
                                 "/api/v1/**"
                         ).permitAll()
                         .anyRequest().authenticated()
