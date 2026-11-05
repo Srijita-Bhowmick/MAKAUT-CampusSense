@@ -15974,3 +15974,15 @@ main, section, header, nav, .hero-section, .features-container, #features-sectio
 #nav-signup-btn:focus-visible {
   box-shadow: 0 0 0 3px rgba(141, 185, 240, 0.75) !important;
 }
+
+/* Hero CTA Twin Buttons - Warm Sunset Peach */
+.hero-cta-btn:hover {
+  background-color: #f7a88b !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 18px rgba(245, 182, 158, 0.6) !important;
+}
+
+.hero-cta-btn:active {
+  transform: scale(0.97) !important;
+  background-color: #e59c80 !important;
+}
