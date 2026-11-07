@@ -134,61 +134,78 @@ public class OtpAuthService {
     }
 
     public AuthResult verifyOtp(String rawEmail, String rawCode, String optionalName, String optionalDept, String clientIp) {
-        if (rawEmail == null || rawEmail.isBlank() || rawCode == null || rawCode.isBlank()) {
+        return verifyOtp(rawEmail, rawCode, optionalName, optionalDept, false, clientIp);
+    }
+
+    public AuthResult verifyOtp(String rawEmail, String rawCode, String optionalName, String optionalDept, boolean clerkVerified, String clientIp) {
+        if (rawEmail == null || rawEmail.isBlank()) {
             return AuthResult.builder()
                     .success(false)
-                    .message("Email and verification code are required.")
+                    .message("Email address is required.")
                     .build();
         }
 
         String email = rawEmail.trim().toLowerCase();
-        String code = rawCode.trim();
+        String code = rawCode != null ? rawCode.trim() : "";
 
         OtpEntry entry = otpStore.get(email);
-        if (entry == null) {
-            return AuthResult.builder()
-                    .success(false)
-                    .message("No active verification code found for this email. Please request a new code.")
-                    .build();
+
+        if (!clerkVerified) {
+            if (code.isBlank()) {
+                return AuthResult.builder()
+                        .success(false)
+                        .message("Email and verification code are required.")
+                        .build();
+            }
+
+            if (entry == null) {
+                return AuthResult.builder()
+                        .success(false)
+                        .message("No active verification code found for this email. Please request a new code.")
+                        .build();
+            }
+
+            if (Instant.now().isAfter(entry.getExpiresAt())) {
+                otpStore.remove(email);
+                return AuthResult.builder()
+                        .success(false)
+                        .message("Verification code has expired. Please request a new one.")
+                        .build();
+            }
+
+            if (entry.getFailedAttempts() >= MAX_FAILED_ATTEMPTS) {
+                otpStore.remove(email);
+                log.warn("[Cloudflare-Secured Auth] Blocked excessive failed OTP attempts for email: {} from IP: {}", email, clientIp);
+                return AuthResult.builder()
+                        .success(false)
+                        .message("Too many failed attempts. Code invalidated for security. Please request a new code.")
+                        .build();
+            }
+
+            if (!entry.getCode().equals(code)) {
+                entry.setFailedAttempts(entry.getFailedAttempts() + 1);
+                int remaining = MAX_FAILED_ATTEMPTS - entry.getFailedAttempts();
+                return AuthResult.builder()
+                        .success(false)
+                        .message("Incorrect verification code. " + (remaining > 0 ? remaining + " attempts remaining." : "Code invalidated."))
+                        .build();
+            }
         }
 
-        if (Instant.now().isAfter(entry.getExpiresAt())) {
+        // Successfully verified via Clerk or internal OTP - remove OTP to prevent reuse
+        if (entry != null) {
             otpStore.remove(email);
-            return AuthResult.builder()
-                    .success(false)
-                    .message("Verification code has expired. Please request a new one.")
-                    .build();
         }
-
-        if (entry.getFailedAttempts() >= MAX_FAILED_ATTEMPTS) {
-            otpStore.remove(email);
-            log.warn("[Cloudflare-Secured Auth] Blocked excessive failed OTP attempts for email: {} from IP: {}", email, clientIp);
-            return AuthResult.builder()
-                    .success(false)
-                    .message("Too many failed attempts. Code invalidated for security. Please request a new code.")
-                    .build();
-        }
-
-        if (!entry.getCode().equals(code)) {
-            entry.setFailedAttempts(entry.getFailedAttempts() + 1);
-            int remaining = MAX_FAILED_ATTEMPTS - entry.getFailedAttempts();
-            return AuthResult.builder()
-                    .success(false)
-                    .message("Incorrect verification code. " + (remaining > 0 ? remaining + " attempts remaining." : "Code invalidated."))
-                    .build();
-        }
-
-        // Successfully verified - remove OTP to prevent reuse
-        otpStore.remove(email);
 
         String finalName = optionalName != null && !optionalName.isBlank()
                 ? optionalName.trim()
-                : (entry.getName() != null && !entry.getName().isBlank() ? entry.getName() : deriveNameFromEmail(email));
+                : (entry != null && entry.getName() != null && !entry.getName().isBlank() ? entry.getName() : deriveNameFromEmail(email));
 
         String finalDept = optionalDept != null && !optionalDept.isBlank() ? optionalDept.trim() : "CSE";
         String token = UUID.randomUUID().toString();
 
-        log.info("[Cloudflare-Secured Auth] Successfully authenticated user: {} ({}) from IP: {}", email, finalName, clientIp);
+        log.info("[Cloudflare-Secured Auth] Successfully authenticated user: {} ({}) via {} from IP: {}",
+                email, finalName, clerkVerified ? "Clerk Email Verification" : "Internal OTP", clientIp);
 
         UserProfile profile = UserProfile.builder()
                 .email(email)

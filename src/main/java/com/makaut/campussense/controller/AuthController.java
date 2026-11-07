@@ -51,6 +51,7 @@ public class AuthController {
                 request.getResolvedOtp(),
                 request.getName(),
                 request.getDepartment(),
+                request.isClerkVerified(),
                 clientIp
         );
 
@@ -99,6 +100,7 @@ public class AuthController {
         private String name;
         private String department;
         private String mode;
+        private boolean clerkVerified;
 
         public VerifyOtpRequest(String email, String otp, String name, String department, String mode) {
             this.email = email;
@@ -107,6 +109,7 @@ public class AuthController {
             this.name = name;
             this.department = department;
             this.mode = mode;
+            this.clerkVerified = false;
         }
 
         public String getResolvedOtp() {
