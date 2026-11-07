@@ -23,8 +23,8 @@ spring:
     password: ${DB_PASSWORD:campussense_password}
 
 clerk:
-  publishable-key: ${CLERK_PUBLISHABLE_KEY:}
-  secret-key: ${CLERK_SECRET_KEY:}
+  publishable-key: ${CLERK_PUBLISHABLE_KEY:pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk}
+  secret-key: ${CLERK_SECRET_KEY:sk_test_pJ1VAe96OhB6iomGiQ4CLjefswTH7koQpTyER9UaFn}
 
 ai:
   gemini:

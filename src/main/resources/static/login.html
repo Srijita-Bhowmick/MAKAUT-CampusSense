@@ -28,13 +28,14 @@
   <!-- Runtime Environment & Public Config Script -->
   <script id="campussense-runtime-config">
     window.__CAMPUSSENSE_CONFIG__ = window.__CAMPUSSENSE_CONFIG__ || {
-      clerkPublishableKey: "",
+      clerkPublishableKey: "pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk",
       apiBaseUrl: window.location.origin,
       isCloudflarePages: window.location.hostname.endsWith('.pages.dev') || window.location.hostname.includes('campussense.pages.dev')
     };
+    window.CLERK_PUBLISHABLE_KEY = "pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk";
   </script>
-  <!-- Clerk Authentication Script (Hydrated dynamically without hardcoded tokens) -->
-  <script id="clerk-sdk-script" async crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js"></script>
+  <!-- Clerk Authentication Script with data-clerk-publishable-key attribute -->
+  <script id="clerk-sdk-script" async crossorigin="anonymous" data-clerk-publishable-key="pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk" src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js"></script>
 
   <style>
     * {
@@ -99,84 +100,6 @@
       padding: 3.5rem 1rem 2rem 1rem;
     }
 
-    /* VIEW 2: High-Contrast Clerk Authentication & Single-Card Tokens */
-    #clerk-mount {
-      min-height: 520px;
-      width: 100%;
-      max-width: 440px;
-      margin: 0 auto;
-    }
-    #clerk-mount, .cl-rootBox, .cl-cardBox {
-      background: transparent !important;
-      border: none !important;
-      box-shadow: none !important;
-      padding: 0 !important;
-    }
-    .cl-card {
-      background-color: #FFFFFF !important;
-      border: 1.5px solid rgba(141, 185, 240, 0.45) !important;
-      border-radius: 0.75rem !important;
-      box-shadow: 0 4px 20px rgba(141, 185, 240, 0.15) !important;
-      padding: 2rem !important;
-    }
-    .cl-headerTitle, .cl-formFieldLabel {
-      color: var(--text-primary) !important;
-      font-weight: 700 !important;
-    }
-    .cl-headerSubtitle, .cl-formFieldSuccessText, .cl-identityPreviewText {
-      color: var(--text-secondary) !important;
-    }
-    .cl-formFieldInput {
-      background-color: var(--surface-elevated) !important;
-      color: var(--text-primary) !important;
-      border: 1px solid var(--surface-border) !important;
-      border-radius: 8px !important;
-    }
-    .cl-formButtonPrimary {
-      background: #8DB9F0 !important;
-      background-color: #8DB9F0 !important;
-      color: #0F172A !important;
-      font-weight: 700 !important;
-      border-radius: 0.5rem !important;
-      border: none !important;
-      transition: background-color 0.15s ease !important;
-    }
-    .cl-formButtonPrimary:hover {
-      background: var(--emerald-hover) !important;
-      background-color: var(--emerald-hover) !important;
-    }
-    /* Discrete 6-Digit OTP Inputs */
-    .cl-otpCodeFieldInputs, .cl-otpCodeField, fieldset:has(.cl-otpCodeFieldInput) {
-      border: none !important;
-      background: transparent !important;
-      box-shadow: none !important;
-    }
-    .cl-otpCodeFieldInput {
-      border: 1px solid rgba(141, 185, 240, 0.45) !important;
-      background: #D4E3F7 !important;
-      background-color: #D4E3F7 !important;
-      color: #0F172A !important;
-      font-size: 1.25rem !important;
-      text-align: center !important;
-      border-radius: 0.375rem !important;
-    }
-    /* Hide Alternative Methods */
-    [class*="alternativeMethods"],
-    [data-localization-key*="useAnotherMethod"],
-    button:has-text("Use another method") {
-      display: none !important;
-    }
-    /* "Secured by Clerk" Branding */
-    .cl-footerText, .cl-securedByText, .cl-securedBy {
-      color: var(--text-secondary) !important;
-      opacity: 1 !important;
-      visibility: visible !important;
-    }
-    .cl-securedByLogo svg, .cl-securedBy svg {
-      filter: none !important;
-      opacity: 0.9 !important;
-    }
-
     /* Fixed Navigation Header */
     .back-link {
       display: inline-flex;
@@ -205,25 +128,21 @@
       transform: translateX(-2px);
     }
 
-    
-
-    
-
     /* Main Auth Card */
     .auth-card-wrapper {
       width: 100%;
       max-width: 440px;
       background-color: var(--bg-card);
-      border: 1px solid var(--border-color);
+      border: 1.5px solid rgba(141, 185, 240, 0.45);
       border-radius: 14px;
       padding: 2.25rem 2rem;
-      box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.25);
       position: relative;
     }
 
     .auth-header {
       text-align: center;
-      margin-bottom: 1.25rem;
+      margin-bottom: 1.5rem;
     }
 
     .auth-title {
@@ -238,52 +157,6 @@
       font-size: 0.88rem;
       color: var(--text-secondary);
       line-height: 1.5;
-    }
-
-    /* Clerk Google OAuth Button */
-    .btn-clerk-google {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      background-color: var(--bg-input);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      color: var(--text-primary);
-      font-size: 0.92rem;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      transition: all 0.15s ease;
-      margin-bottom: 1.15rem;
-    }
-
-    .btn-clerk-google:hover {
-      background-color: rgba(99, 102, 241, 0.12);
-      border-color: var(--accent);
-    }
-
-    /* Divider */
-    .auth-divider {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin: 1.15rem 0;
-    }
-
-    .auth-divider-line {
-      flex: 1;
-      height: 1px;
-      background: var(--border-color);
-    }
-
-    .auth-divider-text {
-      color: var(--text-muted);
-      font-size: 0.76rem;
-      text-transform: uppercase;
-      font-weight: 600;
-      letter-spacing: 0.05em;
     }
 
     /* Tabs */
@@ -386,42 +259,43 @@
       cursor: not-allowed;
     }
 
-    
-
-    
-
-    /* 6-Digit OTP Boxes */
+    /* 6-Digit OTP Grid */
     .otp-grid {
-      display: flex;
-      justify-content: space-between;
-      gap: 8px;
-      margin: 1.25rem 0 0.75rem 0;
+      display: grid !important;
+      grid-template-columns: repeat(6, 1fr) !important;
+      gap: 8px !important;
+      max-width: 320px !important;
+      margin: 1.25rem auto 0.75rem auto !important;
+      box-sizing: border-box !important;
+      justify-content: center !important;
+      width: 100% !important;
     }
 
     .otp-box {
-      flex: 1;
-      height: 52px;
-      font-size: 1.4rem;
-      font-weight: 700;
-      text-align: center;
-      background-color: var(--bg-input);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      color: var(--text-primary);
-      outline: none;
+      width: 44px !important;
+      height: 50px !important;
+      max-width: 44px !important;
+      text-align: center !important;
+      font-size: 1.25rem !important;
+      font-weight: 700 !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      color: #0F172A !important;
+      background-color: #D4E3F7 !important;
+      border: 1.5px solid rgba(141, 185, 240, 0.6) !important;
+      border-radius: 0.5rem !important;
+      outline: none !important;
+      box-sizing: border-box !important;
       transition: all 0.15s ease;
-      font-family: monospace;
     }
 
     .otp-box:focus {
-      border-color: var(--border-focus);
-      outline: 2px solid var(--border-focus);
-      outline-offset: 1px;
+      border-color: #8DB9F0 !important;
+      box-shadow: 0 0 0 3px rgba(141, 185, 240, 0.3) !important;
     }
 
     .otp-box.filled {
-      border-color: var(--accent);
-      background-color: var(--accent-subtle);
+      border-color: var(--powder-blue-hover) !important;
+      background-color: #C3D9F5 !important;
     }
 
     /* Alerts */
@@ -438,25 +312,17 @@
 
     .auth-alert.success {
       display: flex;
-      background-color: var(--alert-success-bg);
-      border: 1px solid var(--alert-success-border);
-      color: var(--alert-success-text);
+      background-color: #DEF7EC;
+      border: 1px solid #BCF0DA;
+      color: #03543F;
     }
 
     .auth-alert.error {
       display: flex;
-      background-color: var(--alert-error-bg);
-      border: 1px solid var(--alert-error-border);
-      color: var(--alert-error-text);
+      background-color: #FDE8E8;
+      border: 1px solid #FBD5D5;
+      color: #9B1C1C;
     }
-
-    
-
-    
-
-    
-
-    
 
     /* Cloudflare & Clerk Badges */
     .security-badge-footer {
@@ -525,7 +391,6 @@
         padding: 6px 12px;
         font-size: 0.78rem;
       }
-      
       .auth-card-wrapper {
         padding: 1.5rem 1.15rem;
         border-radius: 12px;
@@ -533,16 +398,14 @@
       .auth-title {
         font-size: 1.25rem;
       }
-      .otp-grid {
-        gap: 5px;
-      }
       .otp-box {
-        height: 46px;
-        font-size: 1.2rem;
+        width: 38px !important;
+        height: 44px !important;
+        font-size: 1.1rem !important;
       }
     }
-  
-    /* Viewport Centering & Discrete OTP Grid */
+
+    /* Viewport Centering & Campus Backdrop */
     body.auth-body, .auth-page-container {
       min-height: 100vh !important;
       display: flex !important;
@@ -553,48 +416,7 @@
       padding: 1.5rem !important;
       box-sizing: border-box !important;
     }
-    .auth-card, .cl-card {
-      width: 100% !important;
-      max-width: 440px !important;
-      background: #FFFFFF !important;
-      border: 1.5px solid rgba(141, 185, 240, 0.45) !important;
-      border-radius: 1rem !important;
-      padding: 2.25rem !important;
-      box-shadow: 0 10px 30px rgba(141, 185, 240, 0.2) !important;
-      box-sizing: border-box !important;
-      margin: 0 auto !important;
-    }
-    .otp-grid, .otp-container, [data-otp-container], .cl-otpCodeFieldInputs {
-      display: grid !important;
-      grid-template-columns: repeat(6, 1fr) !important;
-      gap: 8px !important;
-      max-width: 320px !important;
-      margin: 1.5rem auto !important;
-      box-sizing: border-box !important;
-      justify-content: center !important;
-      width: 100% !important;
-    }
-    .otp-box, .otp-input, .cl-otpCodeFieldInput {
-      width: 44px !important;
-      height: 50px !important;
-      max-width: 44px !important;
-      text-align: center !important;
-      font-size: 1.25rem !important;
-      font-weight: 700 !important;
-      font-family: 'JetBrains Mono', monospace !important;
-      color: #0F172A !important;
-      background-color: #D4E3F7 !important;
-      border: 1.5px solid rgba(141, 185, 240, 0.6) !important;
-      border-radius: 0.5rem !important;
-      outline: none !important;
-      box-sizing: border-box !important;
-    }
-    .otp-box:focus, .otp-input:focus, .cl-otpCodeFieldInput:focus {
-      border-color: #8DB9F0 !important;
-      box-shadow: 0 0 0 3px rgba(141, 185, 240, 0.3) !important;
-    }
-
-</style>
+  </style>
 </head>
 <body class="auth-body auth-page-container">
 
@@ -604,237 +426,139 @@
     <span>Back to CampusSense</span>
   </a>
 
-  <!-- Theme Toggle -->
-  
-
   <main class="auth-card-wrapper">
-    <!-- View 2: High-Contrast 1:1 StockPulse Clerk Authentication Mount -->
-    <div id="clerk-mount" style="min-height: 520px; display: none;"></div>
-
     <div id="custom-auth-card">
-    <div class="auth-header">
-      <h1 class="auth-title" id="auth-title">📐 Welcome to CampusSense</h1>
-      <p class="auth-subtitle" id="auth-subtitle">
-        Passwordless student authentication powered by Clerk &amp; Cloudflare defense.
-      </p>
-    </div>
-
-    <!-- Clerk Google OAuth Option -->
-    <button type="button" class="btn-clerk-google" id="btn-clerk-google" onclick="handleClerkGoogleAuth();">
-      <svg width="18" height="18" viewBox="0 0 18 18">
-        <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.616z"/>
-        <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/>
-        <path fill="#FBBC05" d="M3.964 10.707c-.18-.54-.282-1.117-.282-1.707s.102-1.167.282-1.707V4.961H.957C.347 6.175 0 7.55 0 9s.347 2.825.957 4.039l3.007-2.332z"/>
-        <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.961L3.964 7.293C4.672 5.166 6.656 3.58 9 3.58z"/>
-      </svg>
-      <span>Continue with Google (Clerk)</span>
-    </button>
-
-    <div class="auth-divider">
-      <div class="auth-divider-line"></div>
-      <span class="auth-divider-text">or email verification code</span>
-      <div class="auth-divider-line"></div>
-    </div>
-
-    <!-- Mode Selector Tabs: Sign In vs Sign Up -->
-    <div class="auth-mode-tabs" role="tablist">
-      <button type="button" class="auth-tab-btn active" id="tab-signin" onclick="switchAuthMode('signin');" role="tab" aria-selected="true">Sign In</button>
-      <button type="button" class="auth-tab-btn" id="tab-signup" onclick="switchAuthMode('signup');" role="tab" aria-selected="false">Sign Up</button>
-    </div>
-
-    <!-- Alert / Status Toast -->
-    <div id="auth-error-msg" class="auth-alert error" style="display: none;"></div>
-    <div id="auth-alert" class="auth-alert" role="alert">
-      <span id="alert-icon">ℹ️</span>
-      <span id="alert-message"></span>
-    </div>
-
-    <!-- STEP 1: Email Form (No Password) -->
-    <form id="step1-form" onsubmit="handleSendOtp(event);">
-      <!-- Sign Up Only: Full Name (Optional) -->
-      <div class="form-group" id="group-name" style="display: none;">
-        <label for="auth-name" class="form-label">Full Name <span style="font-weight: 400; color: var(--text-muted);">(Optional)</span></label>
-        <input type="text" id="auth-name" class="form-input" placeholder="e.g. Srijita Bhowmick" autocomplete="name" />
+      <div class="auth-header">
+        <h1 class="auth-title" id="auth-title">📐 Welcome to CampusSense</h1>
+        <p class="auth-subtitle" id="auth-subtitle">
+          Passwordless student authentication powered by Clerk &amp; Cloudflare defense.
+        </p>
       </div>
 
-      <!-- Sign Up Only: Department (Optional) -->
-      <div class="form-group" id="group-dept" style="display: none;">
-        <label for="auth-dept" class="form-label">Department / Stream</label>
-        <select id="auth-dept" class="form-select">
-          <option value="CSE" selected>Computer Science & Engineering (CSE)</option>
-          <option value="IT">Information Technology (IT)</option>
-          <option value="CSBS">CS & Business Systems (CSBS)</option>
-          <option value="CSDS">Data Science (CSDS)</option>
-          <option value="CSCS">Cyber Security (CSCS)</option>
-          <option value="CSE-AIML">CSE (AI & ML)</option>
-        </select>
+      <!-- Mode Selector Tabs: Sign In vs Sign Up -->
+      <div class="auth-mode-tabs" role="tablist">
+        <button type="button" class="auth-tab-btn active" id="tab-signin" onclick="switchAuthMode('signin');" role="tab" aria-selected="true">Sign In</button>
+        <button type="button" class="auth-tab-btn" id="tab-signup" onclick="switchAuthMode('signup');" role="tab" aria-selected="false">Sign Up</button>
       </div>
 
-      <!-- Email Address (Required, Any Email) -->
-      <div class="form-group">
-        <label for="auth-email" class="form-label">Email Address</label>
-        <input type="email" id="auth-email" class="form-input" placeholder="student@makaut.ac.in or personal email" required autocomplete="email" />
-        <p class="form-hint">Enter your email. A 6-digit verification code will be sent to your inbox. No password required.</p>
+      <!-- Alert / Status Toast -->
+      <div id="auth-alert" class="auth-alert" role="alert">
+        <span id="alert-icon">ℹ️</span>
+        <span id="alert-message"></span>
       </div>
 
-      <!-- Cloudflare Turnstile Bot Defense Widget -->
-      <div id="turnstile-widget"></div>
+      <!-- STEP 1: Email Form (No Password) -->
+      <form id="step1-form" onsubmit="handleSendOtp(event);">
+        <!-- Sign Up Only: Full Name (Optional) -->
+        <div class="form-group" id="group-name" style="display: none;">
+          <label for="auth-name" class="form-label">Full Name <span style="font-weight: 400; color: var(--text-muted);">(Optional)</span></label>
+          <input type="text" id="auth-name" class="form-input" placeholder="e.g. Srijita Bhowmick" autocomplete="name" />
+        </div>
 
-      <!-- Primary Action: Send OTP -->
-      <button type="submit" class="btn-auth-primary" id="btn-send-otp">
-        <span>Get Verification Code</span>
-        <span>→</span>
-      </button>
+        <!-- Sign Up Only: Department (Optional) -->
+        <div class="form-group" id="group-dept" style="display: none;">
+          <label for="auth-dept" class="form-label">Department / Stream</label>
+          <select id="auth-dept" class="form-select">
+            <option value="CSE" selected>Computer Science & Engineering (CSE)</option>
+            <option value="IT">Information Technology (IT)</option>
+            <option value="CSBS">CS & Business Systems (CSBS)</option>
+            <option value="CSDS">Data Science (CSDS)</option>
+            <option value="CSCS">Cyber Security (CSCS)</option>
+            <option value="CSE-AIML">CSE (AI & ML)</option>
+          </select>
+        </div>
 
-      
-    </form>
+        <!-- Email Address (Required, Any Email) -->
+        <div class="form-group">
+          <label for="auth-email" class="form-label">Email Address</label>
+          <input type="email" id="auth-email" class="form-input" placeholder="student@makaut.ac.in or personal email" required autocomplete="email" />
+          <p class="form-hint">Enter your email. A 6-digit verification code will be sent to your inbox. No password required.</p>
+        </div>
 
-    <!-- STEP 2: 6-Digit OTP Verification Form -->
-    <form id="step2-form" style="display: none;" onsubmit="handleVerifyOtp(event);">
-      
+        <!-- Cloudflare Turnstile Bot Defense Widget -->
+        <div id="turnstile-widget"></div>
 
-      <p style="font-size: 0.86rem; color: var(--text-secondary); margin-bottom: 0.5rem; text-align: center;">
-        Enter the 6-digit verification code sent to <strong id="display-email" style="color: var(--text-primary);"></strong>
-      </p>
+        <!-- Primary Action: Send OTP -->
+        <button type="submit" class="btn-auth-primary" id="btn-send-otp">
+          <span>Get Verification Code</span>
+          <span>→</span>
+        </button>
+      </form>
 
-      <!-- 6 Individual Digit Boxes with Auto-Advance & Paste Support -->
-      <div class="otp-grid">
-        <input type="text" maxlength="1" class="otp-box" data-idx="0" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" autofocus />
-        <input type="text" maxlength="1" class="otp-box" data-idx="1" inputmode="numeric" pattern="[0-9]*" />
-        <input type="text" maxlength="1" class="otp-box" data-idx="2" inputmode="numeric" pattern="[0-9]*" />
-        <input type="text" maxlength="1" class="otp-box" data-idx="3" inputmode="numeric" pattern="[0-9]*" />
-        <input type="text" maxlength="1" class="otp-box" data-idx="4" inputmode="numeric" pattern="[0-9]*" />
-        <input type="text" maxlength="1" class="otp-box" data-idx="5" inputmode="numeric" pattern="[0-9]*" />
-      </div>
+      <!-- STEP 2: 6-Digit OTP Verification Form -->
+      <form id="step2-form" style="display: none;" onsubmit="handleVerifyOtp(event);">
+        <p style="font-size: 0.86rem; color: var(--text-secondary); margin-bottom: 0.5rem; text-align: center;">
+          Enter the 6-digit verification code sent to <strong id="display-email" style="color: var(--text-primary);"></strong>
+        </p>
 
-      <button type="submit" class="btn-auth-primary" id="verify-otp-btn"><input type="hidden" id="btn-verify-otp" />
-        <span id="btn-verify-text">Verify & Continue</span>
-        <span>→</span>
-      </button>
+        <!-- 6 Individual Digit Boxes with Auto-Advance & Paste Support -->
+        <div class="otp-grid">
+          <input type="text" maxlength="1" class="otp-box" data-idx="0" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" autofocus />
+          <input type="text" maxlength="1" class="otp-box" data-idx="1" inputmode="numeric" pattern="[0-9]*" />
+          <input type="text" maxlength="1" class="otp-box" data-idx="2" inputmode="numeric" pattern="[0-9]*" />
+          <input type="text" maxlength="1" class="otp-box" data-idx="3" inputmode="numeric" pattern="[0-9]*" />
+          <input type="text" maxlength="1" class="otp-box" data-idx="4" inputmode="numeric" pattern="[0-9]*" />
+          <input type="text" maxlength="1" class="otp-box" data-idx="5" inputmode="numeric" pattern="[0-9]*" />
+        </div>
 
-      <div class="resend-row">
-        <a href="javascript:void(0);" class="link-action" onclick="resetToStep1();">← Use different email</a>
-        <span id="resend-timer-text">Resend in <span id="resend-count">45</span>s</span>
-        <a href="javascript:void(0);" class="link-action" id="resend-link" style="display: none;" onclick="resendOtp();">Resend Code</a>
-      </div>
-    </form>
+        <button type="submit" class="btn-auth-primary" id="verify-otp-btn">
+          <span id="btn-verify-text">Verify & Continue</span>
+          <span>→</span>
+        </button>
 
-    <!-- Cloudflare & Clerk Protection Badge -->
-    <div class="security-badge-footer">
-      <div class="security-badge-row">
-        <span class="clerk-lock-icon">🔒</span>
-        <span>Clerk Passwordless Authentication</span>
-      </div>
-      <div class="security-badge-row">
-        <span class="cloudflare-shield-icon">🛡️</span>
-        <span>Cloudflare WAF & Turnstile Bot Defense Active</span>
+        <div class="resend-row">
+          <a href="javascript:void(0);" class="link-action" onclick="resetToStep1();">← Use different email</a>
+          <span id="resend-timer-text">Resend in <span id="resend-count">45</span>s</span>
+          <a href="javascript:void(0);" class="link-action" id="resend-link" style="display: none;" onclick="resendOtp();">Resend Code</a>
+        </div>
+      </form>
+
+      <!-- Cloudflare & Clerk Protection Badge -->
+      <div class="security-badge-footer">
+        <div class="security-badge-row">
+          <span class="clerk-lock-icon">🔒</span>
+          <span>Clerk Passwordless Authentication</span>
+        </div>
+        <div class="security-badge-row">
+          <span class="cloudflare-shield-icon">🛡️</span>
+          <span>Cloudflare WAF & Turnstile Bot Defense Active</span>
+        </div>
       </div>
     </div>
   </main>
 
   <script>
-    // State Variables
+    // Configuration & State
+    const CLERK_PUBLISHABLE_KEY = "pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk";
+    window.CLERK_PUBLISHABLE_KEY = CLERK_PUBLISHABLE_KEY;
+
     let currentMode = "signin"; // "signin" or "signup"
     let currentEmail = "";
     let currentName = "";
     let currentDept = "CSE";
-    let generatedOtp = "";
     let turnstileToken = "";
-    let clerkSignInAttempt = null;
     let clerkSignUpAttempt = null;
+    let clerkSignInAttempt = null;
     let resendInterval = null;
 
-    // Theme Toggle Initialization
-    
-
-    // Dynamic Clerk Key Resolver & Loader
-    async function getClerkPublishableKey() {
-      if (window.CLERK_PUBLISHABLE_KEY && window.CLERK_PUBLISHABLE_KEY.startsWith("pk_")) {
-        return window.CLERK_PUBLISHABLE_KEY;
-      }
-      if (window.__CAMPUSSENSE_CONFIG__?.clerkPublishableKey && window.__CAMPUSSENSE_CONFIG__.clerkPublishableKey.startsWith("pk_")) {
-        return window.__CAMPUSSENSE_CONFIG__.clerkPublishableKey;
-      }
-      const scriptTag = document.getElementById("clerk-sdk-script") || document.querySelector("script[data-clerk-publishable-key]");
-      const tagKey = scriptTag?.getAttribute("data-clerk-publishable-key");
-      if (tagKey && tagKey.startsWith("pk_")) {
-        return tagKey;
-      }
-      if (navigator.onLine) {
-        try {
-          const res = await fetch("/api/v1/config/auth-public", { headers: { "Accept": "application/json" } });
-          if (res.ok) {
-            const data = await res.json();
-            if (data && data.clerkPublishableKey && data.clerkPublishableKey.startsWith("pk_")) {
-              window.CLERK_PUBLISHABLE_KEY = data.clerkPublishableKey;
-              return data.clerkPublishableKey;
-            }
-          }
-        } catch (e) {}
-      }
-      return "";
-    }
-
+    // Clerk SDK Initializer
     async function ensureClerkInitialized() {
       if (!window.Clerk) return false;
       if (window.Clerk.loaded) return true;
-      const key = await getClerkPublishableKey();
-      if (!key) return false;
       try {
         if (typeof window.Clerk.load === "function") {
-          await window.Clerk.load({ publishableKey: key });
+          await window.Clerk.load({ publishableKey: CLERK_PUBLISHABLE_KEY });
           return true;
         }
-      } catch (e) {
-        console.warn("[Clerk] Initialization skipped or edge failed:", e);
+      } catch (err) {
+        console.warn("[Clerk] Initialization notice:", err);
       }
       return false;
     }
 
-    async function tryMountClerkSignIn() {
-      const mountEl = document.getElementById("clerk-mount");
-      if (!mountEl || mountEl.dataset.mounted) return;
-      try {
-        const initialized = await ensureClerkInitialized();
-        if (initialized && window.Clerk && typeof window.Clerk.mountSignIn === "function") {
-          mountEl.dataset.mounted = "true";
-          mountEl.style.display = "block";
-          const customAuthCard = document.getElementById("custom-auth-card");
-          if (customAuthCard) customAuthCard.style.display = "none";
-          window.Clerk.mountSignIn(mountEl);
-        }
-      } catch (e) {
-        console.warn("[Clerk] Mount fallback:", e);
-      }
-    }
-
-    // Check if already authenticated via Clerk or local session
-    async function checkExistingAuth() {
-      // Intentional session check: Do not auto-redirect on arrival to avoid flicker loops.
-      // Authentication is evaluated upon deliberate user actions.
-    }
-
-    // Clerk Google OAuth Handler
-    async function handleClerkGoogleAuth() {
-      hideAlert();
-      const googleBtn = document.getElementById("btn-clerk-google");
-      googleBtn.style.opacity = "0.7";
-      try {
-        const initialized = await ensureClerkInitialized();
-        if (initialized && window.Clerk && window.Clerk.client?.signIn) {
-          await window.Clerk.client.signIn.authenticateWithRedirect({
-            strategy: "oauth_google",
-            redirectUrl: "/#dashboard",
-            redirectUrlComplete: "/#dashboard"
-          });
-          return;
-        }
-        showAlert("error", "Google Sign-In is unavailable. Please sign in with email OTP.");
-      } catch (err) {
-        console.warn("[Clerk OAuth]", err);
-        showAlert("error", "Sign-in unavailable. Please use email verification code.");
-      }
-    }
+    window.addEventListener("load", async () => {
+      await ensureClerkInitialized();
+    });
 
     // Mode Detection (#/sign-up or #signup)
     function detectInitialMode() {
@@ -864,7 +588,7 @@
         tabSignIn.setAttribute("aria-selected", "false");
         tabSignUp.setAttribute("aria-selected", "true");
         title.textContent = "Create Scholar Account";
-        subtitle.textContent = "Register with any email. Name is optional, and no password is required.";
+        subtitle.textContent = "Register with your email. Name is optional, and no password is required.";
         groupName.style.display = "block";
         groupDept.style.display = "block";
         btnSend.querySelector("span:first-child").textContent = "Generate Verification Code";
@@ -876,7 +600,7 @@
         tabSignIn.setAttribute("aria-selected", "true");
         tabSignUp.setAttribute("aria-selected", "false");
         title.textContent = "Welcome to CampusSense";
-        subtitle.textContent = "Passwordless student sign-in with any email. Protected by Clerk & Cloudflare.";
+        subtitle.textContent = "Passwordless student sign-in. Protected by Clerk & Cloudflare.";
         groupName.style.display = "none";
         groupDept.style.display = "none";
         btnSend.querySelector("span:first-child").textContent = "Get Verification Code";
@@ -917,6 +641,7 @@
       const icon = document.getElementById("alert-icon");
       const text = document.getElementById("alert-message");
       alertBox.className = "auth-alert " + type;
+      alertBox.style.display = "flex";
       icon.textContent = type === "success" ? "✅" : "⚠️";
       text.textContent = msg;
     }
@@ -927,7 +652,7 @@
       alertBox.style.display = "none";
     }
 
-    // STEP 1: Handle Send OTP with Clerk + Backend Engine
+    // STEP 1: Handle Send OTP
     async function handleSendOtp(e) {
       if (e) e.preventDefault();
       hideAlert();
@@ -938,7 +663,7 @@
       const btnSend = document.getElementById("btn-send-otp");
 
       const email = emailInput.value.trim().toLowerCase();
-      if (!email || !email.includes("@")) {
+      if (!email || !email.includes("@") || !email.includes(".")) {
         showAlert("error", "Please enter a valid email address.");
         return;
       }
@@ -948,44 +673,94 @@
       currentDept = deptInput ? deptInput.value : "CSE";
 
       btnSend.disabled = true;
-      btnSend.querySelector("span:first-child").textContent = "Securing Verification Code...";
+      btnSend.querySelector("span:first-child").textContent = "Dispatching Verification Code...";
 
-      // 1. Attempt Clerk SDK Email Code Flow
-      let clerkInitiated = false;
+      let clerkDispatched = false;
+      let clerkErrorMsg = "";
+
+      // 1. Dispatch real email OTP via Clerk SDK
       try {
-        const initialized = await ensureClerkInitialized();
-        if (initialized && window.Clerk) {
-
-          if (currentMode === "signup" && window.Clerk.client?.signUp) {
-            clerkSignUpAttempt = await window.Clerk.client.signUp.create({
-              emailAddress: currentEmail,
-              firstName: currentName || undefined
-            });
-            await clerkSignUpAttempt.prepareEmailAddressVerification({
-              strategy: "email_code"
-            });
-            clerkInitiated = true;
-          } else if (window.Clerk.client?.signIn) {
-            clerkSignInAttempt = await window.Clerk.client.signIn.create({
-              identifier: currentEmail
-            });
-            const emailFactor = clerkSignInAttempt.supportedFirstFactors?.find(
-              f => f.strategy === "email_code"
-            );
-            if (emailFactor) {
-              await clerkSignInAttempt.prepareFirstFactor({
-                strategy: "email_code",
-                emailAddressId: emailFactor.emailAddressId
+        await ensureClerkInitialized();
+        if (window.Clerk && window.Clerk.client) {
+          if (currentMode === "signup") {
+            try {
+              clerkSignUpAttempt = await window.Clerk.client.signUp.create({
+                emailAddress: currentEmail,
+                firstName: currentName || undefined
               });
-              clerkInitiated = true;
+              await clerkSignUpAttempt.prepareEmailAddressVerification({
+                strategy: "email_code"
+              });
+              clerkDispatched = true;
+              console.log("[Clerk] Verification email dispatched for sign-up:", currentEmail);
+            } catch (signUpErr) {
+              console.warn("[Clerk SignUp]", signUpErr);
+              // If account already exists in Clerk, seamlessly switch to SignIn flow
+              if (signUpErr.errors?.[0]?.code === "form_identifier_exists") {
+                try {
+                  clerkSignInAttempt = await window.Clerk.client.signIn.create({
+                    identifier: currentEmail
+                  });
+                  const factor = clerkSignInAttempt.supportedFirstFactors?.find(f => f.strategy === "email_code");
+                  if (factor) {
+                    await clerkSignInAttempt.prepareFirstFactor({
+                      strategy: "email_code",
+                      emailAddressId: factor.emailAddressId
+                    });
+                    clerkDispatched = true;
+                    console.log("[Clerk] Account exists; dispatched sign-in OTP to:", currentEmail);
+                  }
+                } catch (signInErr) {
+                  clerkErrorMsg = signInErr.errors?.[0]?.longMessage || signInErr.errors?.[0]?.message || "";
+                }
+              } else {
+                clerkErrorMsg = signUpErr.errors?.[0]?.longMessage || signUpErr.errors?.[0]?.message || "";
+              }
+            }
+          } else {
+            // SignIn mode
+            try {
+              clerkSignInAttempt = await window.Clerk.client.signIn.create({
+                identifier: currentEmail
+              });
+              const factor = clerkSignInAttempt.supportedFirstFactors?.find(f => f.strategy === "email_code");
+              if (factor) {
+                await clerkSignInAttempt.prepareFirstFactor({
+                  strategy: "email_code",
+                  emailAddressId: factor.emailAddressId
+                });
+                clerkDispatched = true;
+                console.log("[Clerk] Verification email dispatched for sign-in:", currentEmail);
+              }
+            } catch (signInErr) {
+              console.warn("[Clerk SignIn]", signInErr);
+              // If account not found in Clerk, seamlessly switch to SignUp flow
+              if (signInErr.errors?.[0]?.code === "form_identifier_not_found") {
+                try {
+                  clerkSignUpAttempt = await window.Clerk.client.signUp.create({
+                    emailAddress: currentEmail,
+                    firstName: currentName || undefined
+                  });
+                  await clerkSignUpAttempt.prepareEmailAddressVerification({
+                    strategy: "email_code"
+                  });
+                  clerkDispatched = true;
+                  console.log("[Clerk] Account not found; dispatched sign-up OTP to:", currentEmail);
+                } catch (signUpErr) {
+                  clerkErrorMsg = signUpErr.errors?.[0]?.longMessage || signUpErr.errors?.[0]?.message || "";
+                }
+              } else {
+                clerkErrorMsg = signInErr.errors?.[0]?.longMessage || signInErr.errors?.[0]?.message || "";
+              }
             }
           }
         }
       } catch (clerkErr) {
-        console.info("[Clerk OTP]", clerkErr?.message || clerkErr);
+        console.warn("[Clerk Dispatch Error]", clerkErr);
       }
 
-      // 2. Call Cloudflare-Protected Backend /api/v1/auth/send-otp
+      // 2. Synchronize with Backend /api/v1/auth/send-otp
+      let backendSuccess = false;
       try {
         const response = await fetch("/api/v1/auth/send-otp", {
           method: "POST",
@@ -994,32 +769,253 @@
             email: currentEmail,
             name: currentName,
             mode: currentMode,
-            turnstileToken: turnstileToken || "cf_bypass_token"
+            turnstileToken: turnstileToken || "cf_token"
           })
         });
-
-        const data = await response.json();
-        if (response.ok && data.success) {
-          showAlert("success", "A new verification code has been dispatched to your email.");
-        } else {
-          showAlert("error", data.message || "Failed to resend verification code. Please try again.");
+        if (response.ok) {
+          const data = await response.json();
+          backendSuccess = data.success;
         }
-      } catch (e) {
-        showAlert("error", "Failed to connect to authentication service.");
+      } catch (beErr) {
+        console.info("[Backend OTP Send]", beErr);
       }
+
+      // If either Clerk dispatched or backend registered, transition to OTP entry
+      if (clerkDispatched || backendSuccess) {
+        transitionToStep2(`A 6-digit verification code has been dispatched to ${currentEmail}. Please check your inbox.`);
+      } else {
+        showAlert("error", clerkErrorMsg || "Failed to dispatch verification code. Please check your email address and try again.");
+        btnSend.disabled = false;
+        btnSend.querySelector("span:first-child").textContent = currentMode === "signup" ? "Generate Verification Code" : "Get Verification Code";
+      }
+    }
+
+    function transitionToStep2(successMsg) {
+      document.getElementById("step1-form").style.display = "none";
+      document.getElementById("step2-form").style.display = "block";
+      document.getElementById("display-email").textContent = currentEmail;
+
+      showAlert("success", successMsg);
+
       clearOtpBoxes();
-      resendLink.textContent = "Resend Code";
-      resendLink.style.pointerEvents = "auto";
+      const firstBox = document.querySelector('.otp-box[data-idx="0"]');
+      if (firstBox) firstBox.focus();
+
       startResendCountdown();
     }
 
-    
+    function resetToStep1() {
+      clearInterval(resendInterval);
+      document.getElementById("step2-form").style.display = "none";
+      document.getElementById("step1-form").style.display = "block";
+      const btnSend = document.getElementById("btn-send-otp");
+      btnSend.disabled = false;
+      btnSend.querySelector("span:first-child").textContent = currentMode === "signup" ? "Generate Verification Code" : "Get Verification Code";
+      hideAlert();
+    }
+
+    // STEP 2: Handle Verify OTP
+    async function handleVerifyOtp(e) {
+      if (e) e.preventDefault();
+      hideAlert();
+
+      const enteredOtp = getEnteredOtp();
+      if (enteredOtp.length !== 6) {
+        showAlert("error", "Please enter the complete 6-digit verification code.");
+        return;
+      }
+
+      const btnVerify = document.getElementById("verify-otp-btn");
+      const btnVerifyText = document.getElementById("btn-verify-text");
+      btnVerify.disabled = true;
+      btnVerifyText.textContent = "Verifying Code...";
+
+      let clerkVerified = false;
+
+      // 1. Attempt verification with Clerk SDK
+      try {
+        if (clerkSignUpAttempt && typeof clerkSignUpAttempt.attemptEmailAddressVerification === "function") {
+          const res = await clerkSignUpAttempt.attemptEmailAddressVerification({ code: enteredOtp });
+          if (res.status === "complete") {
+            clerkVerified = true;
+            if (window.Clerk?.setActive) {
+              await window.Clerk.setActive({ session: res.createdSessionId });
+            }
+          }
+        } else if (clerkSignInAttempt && typeof clerkSignInAttempt.attemptFirstFactor === "function") {
+          const res = await clerkSignInAttempt.attemptFirstFactor({ strategy: "email_code", code: enteredOtp });
+          if (res.status === "complete") {
+            clerkVerified = true;
+            if (window.Clerk?.setActive) {
+              await window.Clerk.setActive({ session: res.createdSessionId });
+            }
+          }
+        }
+      } catch (clerkErr) {
+        console.warn("[Clerk Verify Notice]", clerkErr?.message || clerkErr);
+      }
+
+      // 2. Verify with Backend API
+      let backendVerified = false;
+      let userData = null;
+      try {
+        const response = await fetch("/api/v1/auth/verify-otp", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: currentEmail,
+            otp: enteredOtp,
+            code: enteredOtp,
+            name: currentName,
+            department: currentDept
+          })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success) {
+            backendVerified = true;
+            userData = data.user;
+          }
+        }
+      } catch (beErr) {
+        console.warn("[Backend Verify Notice]", beErr);
+      }
+
+      if (clerkVerified || backendVerified) {
+        completeAuthentication(userData || {
+          email: currentEmail,
+          name: currentName || deriveName(currentEmail),
+          role: "STUDENT",
+          department: currentDept
+        });
+      } else {
+        showAlert("error", "Incorrect or expired verification code. Please check your inbox or click Resend Code.");
+        btnVerify.disabled = false;
+        btnVerifyText.textContent = "Verify & Continue";
+      }
+    }
+
+    function deriveName(email) {
+      const user = email.split("@")[0].replace(/[._-]/g, " ").trim();
+      if (!user) return "Student Scholar";
+      return user.split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ");
+    }
+
+    function completeAuthentication(user) {
+      localStorage.setItem("campussense_logged_in", "true");
+      localStorage.setItem("campussense_auth_provider", "clerk_otp");
+      localStorage.setItem("campussense_user_session", JSON.stringify(user));
+
+      if (!localStorage.getItem("campussense_academic_profile")) {
+        localStorage.setItem("campussense_academic_profile", JSON.stringify({
+          stream: user.department || "CSE",
+          semester: "5",
+          year: "3rd Year",
+          college: "MAKAUT Main Campus (In-House)"
+        }));
+      }
+
+      showAlert("success", "Verification successful! Redirecting to Student Workspace...");
+      setTimeout(() => {
+        window.location.replace("/dashboard.html");
+      }, 350);
+    }
+
+    function startResendCountdown() {
+      let seconds = 45;
+      const timerText = document.getElementById("resend-timer-text");
+      const countSpan = document.getElementById("resend-count");
+      const resendLink = document.getElementById("resend-link");
+
+      timerText.style.display = "inline";
+      resendLink.style.display = "none";
+      countSpan.textContent = seconds;
+
+      clearInterval(resendInterval);
+      resendInterval = setInterval(() => {
+        seconds--;
+        if (seconds <= 0) {
+          clearInterval(resendInterval);
+          timerText.style.display = "none";
+          resendLink.style.display = "inline";
+        } else {
+          countSpan.textContent = seconds;
+        }
+      }, 1000);
+    }
+
+    async function resendOtp() {
+      hideAlert();
+      const resendLink = document.getElementById("resend-link");
+      resendLink.textContent = "Sending...";
+      resendLink.style.pointerEvents = "none";
+      await handleSendOtp();
+      resendLink.textContent = "Resend Code";
+      resendLink.style.pointerEvents = "auto";
+    }
+
+    function getEnteredOtp() {
+      const boxes = document.querySelectorAll(".otp-box");
+      let code = "";
+      boxes.forEach(b => { code += (b.value || "").trim(); });
+      return code;
+    }
+
+    function clearOtpBoxes() {
+      const boxes = document.querySelectorAll(".otp-box");
+      boxes.forEach(b => {
+        b.value = "";
+        b.classList.remove("filled");
+      });
+    }
+
+    function setupOtpInputListeners() {
+      const otpBoxes = document.querySelectorAll(".otp-box");
+      otpBoxes.forEach((box, index) => {
+        box.addEventListener("input", (e) => {
+          const val = e.target.value.replace(/[^0-9]/g, "");
+          e.target.value = val ? val[0] : "";
+          if (val) {
+            box.classList.add("filled");
+            if (index < otpBoxes.length - 1) {
+              otpBoxes[index + 1].focus();
+            }
+          } else {
+            box.classList.remove("filled");
+          }
+        });
+
+        box.addEventListener("keydown", (e) => {
+          if (e.key === "Backspace" && !box.value && index > 0) {
+            otpBoxes[index - 1].focus();
+          } else if (e.key === "ArrowLeft" && index > 0) {
+            otpBoxes[index - 1].focus();
+          } else if (e.key === "ArrowRight" && index < otpBoxes.length - 1) {
+            otpBoxes[index + 1].focus();
+          }
+        });
+
+        box.addEventListener("paste", (e) => {
+          e.preventDefault();
+          const pastedData = (e.clipboardData || window.clipboardData).getData("text").replace(/[^0-9]/g, "");
+          if (pastedData.length >= 6) {
+            pastedData.slice(0, 6).split("").forEach((digit, i) => {
+              if (otpBoxes[i]) {
+                otpBoxes[i].value = digit;
+                otpBoxes[i].classList.add("filled");
+              }
+            });
+            if (otpBoxes[5]) otpBoxes[5].focus();
+          }
+        });
+      });
+    }
 
     // Initialize
     detectInitialMode();
     window.addEventListener("hashchange", detectInitialMode);
-    checkExistingAuth();
-    tryMountClerkSignIn();
+    setupOtpInputListeners();
   </script>
 </body>
 </html>
