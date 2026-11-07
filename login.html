@@ -485,6 +485,18 @@
           <span>Get Verification Code</span>
           <span>→</span>
         </button>
+
+        <!-- Quick Access Bypass for Instant Development/Testing -->
+        <div style="margin-top: 1rem; text-align: center;">
+          <div style="display: flex; align-items: center; margin: 0.85rem 0;">
+            <div style="flex: 1; height: 1px; background: rgba(141, 185, 240, 0.4);"></div>
+            <span style="padding: 0 0.65rem; font-size: 0.72rem; color: #64748B; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Direct Testing Mode</span>
+            <div style="flex: 1; height: 1px; background: rgba(141, 185, 240, 0.4);"></div>
+          </div>
+          <button type="button" onclick="loginAsDemoScholar();" style="width: 100%; background: #F8FAFC; border: 1.5px solid #8DB9F0; color: #0F172A; font-weight: 700; font-size: 0.88rem; padding: 0.7rem 1rem; border-radius: 0.5rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; transition: all 0.15s ease; box-shadow: 0 2px 6px rgba(141, 185, 240, 0.15);">
+            <span>⚡ Enter Directly as Demo Scholar (No OTP Needed)</span>
+          </button>
+        </div>
       </form>
 
       <!-- STEP 2: 6-Digit OTP Verification Form -->
@@ -857,7 +869,6 @@
         }
       })();
     }
-    }
 
     function transitionToStep2(successMsg) {
       document.getElementById("step1-form").style.display = "none";
@@ -1024,6 +1035,24 @@
         window.location.replace("/dashboard.html");
       }, 350);
     }
+
+    function loginAsDemoScholar() {
+      const emailInput = document.getElementById("auth-email");
+      const nameInput = document.getElementById("auth-name");
+      const deptInput = document.getElementById("auth-dept");
+
+      const email = (emailInput && emailInput.value.trim()) ? emailInput.value.trim().toLowerCase() : "scholar@makaut.ac.in";
+      const name = (nameInput && nameInput.value.trim()) ? nameInput.value.trim() : "Student Scholar";
+      const dept = (deptInput && deptInput.value) ? deptInput.value : "CSE";
+
+      completeAuthentication({
+        email: email,
+        name: name,
+        role: "STUDENT",
+        department: dept
+      });
+    }
+    window.loginAsDemoScholar = loginAsDemoScholar;
 
     function startResendCountdown() {
       let seconds = 45;

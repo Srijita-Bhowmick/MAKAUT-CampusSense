@@ -330,7 +330,7 @@ window.onClerkLoaded = function() {
     // Phase 3: Auth Interceptor Listener for PYQ Feature Cards & Preview Buttons (Item 4)
     document.addEventListener('click', function(e) {
         const btnElement = e.target.closest('button, a');
-        if (btnElement?.closest('#curriculum-filter-group, #pyq-year-pills, .stream-filter-group, .pyq-repo-filter-bar, .landing-nav-links, .brand-group, #main-header, #btn-sign-in, #btn-sign-up, #nav-brand-logo, #theme-toggle')) {
+        if (btnElement?.closest('#syllabus-section, .cute-academic-card, .dept-master-grid, #pdf-preview-modal, #curriculum-filter-group, #pyq-year-pills, .stream-filter-group, .pyq-repo-filter-bar, .landing-nav-links, .brand-group, #main-header, #btn-sign-in, #btn-sign-up, #nav-brand-logo, #theme-toggle')) {
             return;
         }
 
@@ -345,9 +345,13 @@ window.onClerkLoaded = function() {
                             btnText.includes('pyq preview') ||
                             btnText.includes('access exam archives');
 
-        // Both PYQs and Syllabi require authentication per security policy. Unauthenticated users are routed to /login.html.
+        // Syllabi are completely public with zero auth gate. Only PYQs require authentication.
+        if (isSyllabus) {
+            return;
+        }
+
         if (!isUserAuthenticated()) {
-            if (isPyqAction || isSyllabus) {
+            if (isPyqAction) {
                 e.preventDefault();
                 e.stopPropagation();
                 window.location.href = '/login.html';
@@ -453,18 +457,20 @@ window.onClerkLoaded = function() {
 
     async function downloadPdfFile(fileUrl, preferredName) {
         const isSyllabus = isSyllabusResource(fileUrl, preferredName);
-        if (!isSyllabus && !isUserAuthenticated()) {
-            try {
-                sessionStorage.setItem('pending_download_action', JSON.stringify({
-                    action: 'download',
-                    title: preferredName || 'MAKAUT Resource',
-                    fileUrl: fileUrl
-                }));
-            } catch (e) {}
-            window.location.href = '/login.html';
-            return;
+        if (!isSyllabus) {
+            if (!isUserAuthenticated()) {
+                try {
+                    sessionStorage.setItem('pending_download_action', JSON.stringify({
+                        action: 'download',
+                        title: preferredName || 'MAKAUT Resource',
+                        fileUrl: fileUrl
+                    }));
+                } catch (e) {}
+                window.location.href = '/login.html';
+                return;
+            }
+            if (!requireAuthOrTrigger()) return;
         }
-        if (!requireAuthOrTrigger()) return;
         const resolved = resolveAssetPath(fileUrl);
         try {
             const res = await fetch(resolved);
