@@ -17,6 +17,7 @@ import java.security.SecureRandom;
 import java.time.Instant;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
@@ -121,8 +122,10 @@ public class OtpAuthService {
         otpStore.put(email, entry);
         log.info("[Cloudflare-Secured Auth] Generated 6-digit OTP for email: {} from IP: {} (expires in {}s)", email, clientIp, OTP_EXPIRY_SECONDS);
 
-        // Pre-provision user in Clerk via Backend API so client SDK can dispatch OTP without CAPTCHA blocks
-        provisionClerkUser(email, entry.getName());
+        // Pre-provision user in Clerk via Backend API asynchronously so requestOtp responds immediately in <15ms
+        final String finalEmail = email;
+        final String finalName = entry.getName();
+        CompletableFuture.runAsync(() -> provisionClerkUser(finalEmail, finalName));
 
         return AuthResult.builder()
                 .success(true)

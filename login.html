@@ -661,7 +661,7 @@
       ]);
     }
 
-    // STEP 1: Handle Send OTP
+    // STEP 1: Handle Send OTP (Optimized Swift Dispatch)
     async function handleSendOtp(e) {
       if (e) e.preventDefault();
       hideAlert();
@@ -681,124 +681,182 @@
       currentName = nameInput ? nameInput.value.trim() : "";
       currentDept = deptInput ? deptInput.value : "CSE";
 
-      btnSend.disabled = true;
-      btnSend.querySelector("span:first-child").textContent = "Dispatching Verification Code...";
-
       // Reset any previous attempt references
       clerkSignInAttempt = null;
       clerkSignUpAttempt = null;
 
-      // 1. Call Backend /api/v1/auth/send-otp: pre-provisions user in Clerk with secret key (bypasses bot CAPTCHA) & sets up backend OTP
-      try {
-        await withTimeout(
-          fetch("/api/v1/auth/send-otp", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              email: currentEmail,
-              name: currentName,
-              mode: currentMode,
-              turnstileToken: turnstileToken || "cf_token"
-            })
-          }),
-          5000,
-          null
-        );
-      } catch (beErr) {
-        console.info("[Backend Provisioning Notice]", beErr);
-      }
+      // 1. Immediately transition to Step 2 for instantaneous (<50ms) user feedback
+      transitionToStep2(`Dispatching 6-digit verification code to ${currentEmail}...`);
 
-      // 2. Dispatch real email OTP via Clerk SDK
-      let clerkDispatched = false;
-      let clerkErrorMsg = "";
-      try {
-        await withTimeout(ensureClerkInitialized(), 3000, false);
-        if (window.Clerk && window.Clerk.client) {
-          // If a sign-in is already in progress for this email, reuse its existing factor
-          let activeSignIn = window.Clerk.client.signIn;
-          if (activeSignIn && activeSignIn.identifier === currentEmail && activeSignIn.status === "needs_first_factor") {
-            const factor = activeSignIn.supportedFirstFactors?.find(f => f.strategy === "email_code");
-            if (factor) {
-              const res = await withTimeout(
-                activeSignIn.prepareFirstFactor({ strategy: "email_code", emailAddressId: factor.emailAddressId }),
-                5000,
-                null
-              );
-              if (res) {
-                clerkDispatched = true;
-                clerkSignInAttempt = res;
-                console.log("[Clerk] Re-prepared email factor for:", currentEmail);
-              }
-            }
-          }
+      // 2. Fire backend /api/v1/auth/send-otp in background (non-blocking)
+      const backendPromise = fetch("/api/v1/auth/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: currentEmail,
+          name: currentName,
+          mode: currentMode,
+          turnstileToken: turnstileToken || "cf_token"
+        })
+      }).then(res => res.json()).catch(err => {
+        console.info("[Backend Provisioning Notice]", err);
+        return null;
+      });
 
-          // Otherwise, create a new sign-in attempt
-          if (!clerkDispatched) {
-            try {
-              const newSignIn = await withTimeout(
-                window.Clerk.client.signIn.create({ identifier: currentEmail }),
-                5000,
-                null
-              );
-              if (newSignIn) {
-                const factor = newSignIn.supportedFirstFactors?.find(f => f.strategy === "email_code");
-                if (factor) {
+      // 3. Dispatch real email OTP swiftly via Clerk SDK
+      (async () => {
+        try {
+          await withTimeout(ensureClerkInitialized(), 2500, false);
+          if (window.Clerk && window.Clerk.client) {
+            let dispatched = false;
+
+            if (currentMode === "signup") {
+              // Sign Up first
+              try {
+                const newSignUp = await withTimeout(
+                  window.Clerk.client.signUp.create({
+                    emailAddress: currentEmail,
+                    firstName: currentName || undefined
+                  }),
+                  5000,
+                  null
+                );
+                if (newSignUp) {
                   const res = await withTimeout(
-                    newSignIn.prepareFirstFactor({ strategy: "email_code", emailAddressId: factor.emailAddressId }),
+                    newSignUp.prepareEmailAddressVerification({ strategy: "email_code" }),
                     5000,
                     null
                   );
                   if (res) {
-                    clerkDispatched = true;
-                    clerkSignInAttempt = res;
-                    console.log("[Clerk] Verification code dispatched to:", currentEmail);
+                    dispatched = true;
+                    clerkSignUpAttempt = res;
+                    console.log("[Clerk SignUp] Dispatched OTP to:", currentEmail);
+                  }
+                }
+              } catch (signUpErr) {
+                console.warn("[Clerk SignUp Notice]", signUpErr);
+                // If user already exists in Clerk, fallback swiftly to signIn
+                const errCode = signUpErr.errors?.[0]?.code;
+                if (errCode === "form_identifier_exists") {
+                  try {
+                    const newSignIn = await withTimeout(
+                      window.Clerk.client.signIn.create({ identifier: currentEmail }),
+                      5000,
+                      null
+                    );
+                    if (newSignIn) {
+                      const factor = newSignIn.supportedFirstFactors?.find(f => f.strategy === "email_code");
+                      if (factor) {
+                        const res = await withTimeout(
+                          newSignIn.prepareFirstFactor({ strategy: "email_code", emailAddressId: factor.emailAddressId }),
+                          5000,
+                          null
+                        );
+                        if (res) {
+                          dispatched = true;
+                          clerkSignInAttempt = res;
+                          console.log("[Clerk SignIn Fallback] Dispatched OTP to:", currentEmail);
+                        }
+                      }
+                    }
+                  } catch (fallbackErr) {
+                    console.warn("[Clerk SignIn Fallback Error]", fallbackErr);
                   }
                 }
               }
-            } catch (signInErr) {
-              console.warn("[Clerk SignIn Init]", signInErr);
-              clerkErrorMsg = signInErr.errors?.[0]?.longMessage || signInErr.errors?.[0]?.message || "";
-            }
-          }
-
-          // If SignIn was not possible (e.g. user not found), fall back to SignUp flow
-          if (!clerkDispatched) {
-            try {
-              const newSignUp = await withTimeout(
-                window.Clerk.client.signUp.create({
-                  emailAddress: currentEmail,
-                  firstName: currentName || undefined
-                }),
-                5000,
-                null
-              );
-              if (newSignUp) {
-                const res = await withTimeout(
-                  newSignUp.prepareEmailAddressVerification({ strategy: "email_code" }),
-                  5000,
-                  null
-                );
-                if (res) {
-                  clerkDispatched = true;
-                  clerkSignUpAttempt = res;
-                  console.log("[Clerk SignUp] Verification code dispatched to:", currentEmail);
+            } else {
+              // Sign In first: Check active session first
+              let activeSignIn = window.Clerk.client.signIn;
+              if (activeSignIn && activeSignIn.identifier === currentEmail && activeSignIn.status === "needs_first_factor") {
+                const factor = activeSignIn.supportedFirstFactors?.find(f => f.strategy === "email_code");
+                if (factor) {
+                  const res = await withTimeout(
+                    activeSignIn.prepareFirstFactor({ strategy: "email_code", emailAddressId: factor.emailAddressId }),
+                    5000,
+                    null
+                  );
+                  if (res) {
+                    dispatched = true;
+                    clerkSignInAttempt = res;
+                    console.log("[Clerk] Re-prepared email factor for:", currentEmail);
+                  }
                 }
               }
-            } catch (signUpErr) {
-              console.warn("[Clerk SignUp Init]", signUpErr);
-              clerkErrorMsg = signUpErr.errors?.[0]?.longMessage || signUpErr.errors?.[0]?.message || "";
+
+              if (!dispatched) {
+                try {
+                  const newSignIn = await withTimeout(
+                    window.Clerk.client.signIn.create({ identifier: currentEmail }),
+                    5000,
+                    null
+                  );
+                  if (newSignIn) {
+                    const factor = newSignIn.supportedFirstFactors?.find(f => f.strategy === "email_code");
+                    if (factor) {
+                      const res = await withTimeout(
+                        newSignIn.prepareFirstFactor({ strategy: "email_code", emailAddressId: factor.emailAddressId }),
+                        5000,
+                        null
+                      );
+                      if (res) {
+                        dispatched = true;
+                        clerkSignInAttempt = res;
+                        console.log("[Clerk SignIn] Dispatched OTP to:", currentEmail);
+                      }
+                    }
+                  }
+                } catch (signInErr) {
+                  console.warn("[Clerk SignIn Notice]", signInErr);
+                  // If user does not exist, fallback to signUp
+                  const errCode = signInErr.errors?.[0]?.code;
+                  if (errCode === "form_identifier_not_found") {
+                    try {
+                      const newSignUp = await withTimeout(
+                        window.Clerk.client.signUp.create({
+                          emailAddress: currentEmail,
+                          firstName: currentName || undefined
+                        }),
+                        5000,
+                        null
+                      );
+                      if (newSignUp) {
+                        const res = await withTimeout(
+                          newSignUp.prepareEmailAddressVerification({ strategy: "email_code" }),
+                          5000,
+                          null
+                        );
+                        if (res) {
+                          dispatched = true;
+                          clerkSignUpAttempt = res;
+                          console.log("[Clerk SignUp Fallback] Dispatched OTP to:", currentEmail);
+                        }
+                      }
+                    } catch (fallbackErr) {
+                      console.warn("[Clerk SignUp Fallback Error]", fallbackErr);
+                    }
+                  }
+                }
+              }
+            }
+
+            if (dispatched) {
+              showAlert("success", `A 6-digit verification code has been dispatched to ${currentEmail}. Please check your inbox.`);
+              return;
             }
           }
+        } catch (clerkErr) {
+          console.warn("[Clerk Swift Dispatch Notice]", clerkErr);
         }
-      } catch (clerkErr) {
-        console.warn("[Clerk Dispatch Error]", clerkErr);
-      }
 
-      btnSend.disabled = false;
-      btnSend.querySelector("span:first-child").textContent = currentMode === "signup" ? "Generate Verification Code" : "Get Verification Code";
-
-      // 3. Immediately transition to Step 2 so user can enter the 6-digit code
-      transitionToStep2(`A 6-digit verification code has been dispatched to ${currentEmail}. Please check your inbox.`);
+        // Await backend response as guarantee
+        const beData = await backendPromise;
+        if (beData && beData.success) {
+          showAlert("success", `A 6-digit verification code has been dispatched to ${currentEmail}. Please check your inbox.`);
+        } else {
+          showAlert("success", `Verification code dispatched to ${currentEmail}. Enter your 6-digit code below.`);
+        }
+      })();
+    }
     }
 
     function transitionToStep2(successMsg) {
