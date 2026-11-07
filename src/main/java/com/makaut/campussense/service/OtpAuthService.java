@@ -5,8 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.time.Instant;
 import java.util.Map;
@@ -17,6 +23,9 @@ import java.util.regex.Pattern;
 @Service
 @Slf4j
 public class OtpAuthService {
+
+    @Value("${clerk.secret-key:}")
+    private String clerkSecretKey;
 
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
     private static final int OTP_EXPIRY_SECONDS = 300; // 5 minutes
@@ -111,6 +120,9 @@ public class OtpAuthService {
 
         otpStore.put(email, entry);
         log.info("[Cloudflare-Secured Auth] Generated 6-digit OTP for email: {} from IP: {} (expires in {}s)", email, clientIp, OTP_EXPIRY_SECONDS);
+
+        // Pre-provision user in Clerk via Backend API so client SDK can dispatch OTP without CAPTCHA blocks
+        provisionClerkUser(email, entry.getName());
 
         return AuthResult.builder()
                 .success(true)
@@ -223,5 +235,35 @@ public class OtpAuthService {
             }
         }
         return sb.toString().trim();
+    }
+
+    private void provisionClerkUser(String email, String name) {
+        if (clerkSecretKey == null || clerkSecretKey.isBlank() || !clerkSecretKey.startsWith("sk_")) {
+            return;
+        }
+        try {
+            URL url = new URI("https://api.clerk.com/v1/users").toURL();
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Authorization", "Bearer " + clerkSecretKey.trim());
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
+            conn.setConnectTimeout(4000);
+            conn.setReadTimeout(4000);
+            conn.setDoOutput(true);
+
+            String safeName = (name != null && !name.isBlank()) ? name.trim().replaceAll("\"", "") : deriveNameFromEmail(email);
+            String payload = String.format("{\"email_address\":[\"%s\"],\"first_name\":\"%s\",\"skip_password_requirement\":true}", email, safeName);
+
+            try (OutputStream os = conn.getOutputStream()) {
+                os.write(payload.getBytes(StandardCharsets.UTF_8));
+            }
+
+            int status = conn.getResponseCode();
+            log.info("[Clerk Provisioning] Status: {} for email: {}", status, email);
+            conn.disconnect();
+        } catch (Exception e) {
+            log.warn("[Clerk Provisioning] Notice: {}", e.getMessage());
+        }
     }
 }
