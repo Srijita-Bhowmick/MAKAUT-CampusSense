@@ -45,20 +45,20 @@ window.CLERK_PUBLISHABLE_KEY = window.__CAMPUSSENSE_CONFIG__?.clerkPublishableKe
 
 // Defensive global Clerk native trigger accessible immediately
 window.openAppAuthModal = function() {
-  window.location.href = '/login.html';
+  window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html');
 };
 
 window.closeAppAuthModal = function() {};
 
 window.submitFallbackAuth = function() {
-  window.location.href = '/login.html';
+  window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html');
 };
 
 window.triggerNativeClerkAuth = function(pendingAction = null, mode = 'signIn') {
   if (pendingAction) {
     try { sessionStorage.setItem('pending_download_action', JSON.stringify(pendingAction)); } catch (e) {}
   }
-  window.location.href = (mode === 'signUp' || mode === 'sign-up') ? '/login.html#/sign-up' : '/login.html';
+  window.location.href = (mode === 'signUp' || mode === 'sign-up') ? (typeof getAppUrl === 'function' ? getAppUrl('login.html#/sign-up') : 'login.html#/sign-up') : (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html');
 };
 window.triggerNativeClerkSignUp = function() {
   window.triggerNativeClerkAuth(null, 'signUp');
@@ -216,16 +216,24 @@ window.onClerkLoaded = function() {
     window.normalizePdfUrl = normalizePdfUrl;
     window.sanitizePdfUrl = normalizePdfUrl;
 
+    function getAppBasePath() {
+        return window.location.pathname.toLowerCase().includes('makaut-campussense') ? '/MAKAUT-CampusSense/' : '/';
+    }
+    window.getAppBasePath = getAppBasePath;
+
+    function getAppUrl(path) {
+        const clean = (path || '').replace(/^\/+/, '');
+        return getAppBasePath() + clean;
+    }
+    window.getAppUrl = getAppUrl;
+
     function resolveAssetPath(relativePath) {
         if (!relativePath) return '';
         if (/^(https?:|blob:|data:)/i.test(relativePath.trim())) {
             return relativePath.trim();
         }
-        const clean = sanitizePdfUrl(relativePath);
-        if (window.location.pathname.includes('/MAKAUT-CampusSense/')) {
-            return window.location.origin + '/MAKAUT-CampusSense' + clean;
-        }
-        return window.location.origin + clean;
+        const clean = sanitizePdfUrl(relativePath).replace(/^\/+/, '');
+        return getAppBasePath() + clean;
     }
     window.resolveAssetPath = resolveAssetPath;
     
@@ -239,7 +247,7 @@ window.onClerkLoaded = function() {
     window.isUserAuthenticated = isUserAuthenticated;
 
     function triggerAppAuthentication(isSignUp = false) {
-      window.location.href = '/login.html';
+      window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html');
     }
     window.triggerAppAuthentication = triggerAppAuthentication;
 
@@ -251,7 +259,7 @@ window.onClerkLoaded = function() {
           return;
         }
         e.preventDefault();
-        window.location.href = '/login.html';
+        window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html');
       }
     });
 
@@ -354,7 +362,7 @@ window.onClerkLoaded = function() {
             if (isPyqAction) {
                 e.preventDefault();
                 e.stopPropagation();
-                window.location.href = '/login.html';
+                window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html');
                 return;
             }
         }
@@ -364,7 +372,7 @@ window.onClerkLoaded = function() {
             if (!isUserAuthenticated()) {
                 e.preventDefault();
                 e.stopPropagation();
-                window.location.href = '/login.html';
+                window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html');
                 return;
             }
         }
@@ -405,7 +413,7 @@ window.onClerkLoaded = function() {
                 fileUrl: rawUrl
             }));
         } catch (e) {}
-        window.location.href = '/login.html';
+        window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html');
         return;
       }
 
@@ -466,7 +474,7 @@ window.onClerkLoaded = function() {
                         fileUrl: fileUrl
                     }));
                 } catch (e) {}
-                window.location.href = '/login.html';
+                window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html');
                 return;
             }
             if (!requireAuthOrTrigger()) return;
@@ -12415,7 +12423,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             btnSwitchDashboard.onclick = function(e) {
                 e.preventDefault();
                 if (!isUserAuthenticated()) {
-                    window.location.href = '/login.html';
+                    window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html');
                     return;
                 }
                 window.location.hash = '#dashboard';
@@ -12780,14 +12788,14 @@ window.getSubjectDocuments = getSubjectDocuments;
     if (btnNavSignIn) {
         btnNavSignIn.addEventListener('click', (e) => {
             if (e) e.preventDefault();
-            window.location.href = '/login.html';
+            window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html');
         });
     }
 
     if (btnNavSignUp) {
         btnNavSignUp.addEventListener('click', (e) => {
             if (e) e.preventDefault();
-            window.location.href = '/login.html#/sign-up';
+            window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html#/sign-up') : 'login.html#/sign-up');
         });
     }
 
@@ -13387,7 +13395,7 @@ window.getSubjectDocuments = getSubjectDocuments;
 
     window.viewSyllabusItem = function(targetCode, pdfPath, title) {
       if (!isUserAuthenticated()) {
-        window.location.href = '/login.html';
+        window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html');
         return;
       }
       if (pdfPath && typeof window.previewPdfFile === 'function') {
@@ -13399,7 +13407,7 @@ window.getSubjectDocuments = getSubjectDocuments;
 
     window.openStreamArchiveView = function(streamCode, targetSem = null) {
       if (!isUserAuthenticated()) {
-        window.location.href = '/login.html';
+        window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html');
         return;
       }
       const sKey = (streamCode || 'CSE').toUpperCase();
@@ -13540,7 +13548,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             if (isUserAuthenticated()) {
                 switchView('dashboard', false);
             } else {
-                window.location.href = '/login.html';
+                window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html');
             }
             return;
         }
@@ -13703,7 +13711,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             const href = el.getAttribute('href');
             if (!href || href === '#' || href.startsWith('javascript:')) {
                 if (e) e.preventDefault();
-                window.location.href = '/login.html';
+                window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html');
             }
         });
     });
@@ -13711,7 +13719,7 @@ window.getSubjectDocuments = getSubjectDocuments;
     if (btnLandingAuth) {
         btnLandingAuth.addEventListener('click', (e) => {
             if (e) e.preventDefault();
-            window.location.href = '/login.html';
+            window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html');
         });
     }
 
@@ -13719,14 +13727,14 @@ window.getSubjectDocuments = getSubjectDocuments;
     if (authTriggerBtn) {
         authTriggerBtn.addEventListener('click', (e) => {
             if (e) e.preventDefault();
-            window.location.href = '/login.html';
+            window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html');
         });
     }
 
     document.querySelectorAll('.auth-trigger-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             if (e) e.preventDefault();
-            window.location.href = '/login.html';
+            window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html');
         });
     });
 
@@ -14564,7 +14572,7 @@ window.getSubjectDocuments = getSubjectDocuments;
     window.openSubjectHubByCode = function(targetCode, defaultTab = 'pyqs', targetModNum = null) {
         const isSyllabusTab = defaultTab === 'syllabus' || defaultTab === 'checklist';
         if (!isSyllabusTab && !isUserAuthenticated()) {
-            window.location.href = '/login.html';
+            window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html');
             return;
         }
         if (!targetCode) return;
@@ -14926,7 +14934,7 @@ window.getSubjectDocuments = getSubjectDocuments;
         btn.addEventListener('click', () => {
             const tabName = btn.getAttribute('data-hub-tab');
             if (tabName === 'pyqs' && !isUserAuthenticated()) {
-                window.location.href = '/login.html';
+                window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html');
                 return;
             }
             activateHubTab(tabName);
@@ -15233,7 +15241,7 @@ window.getSubjectDocuments = getSubjectDocuments;
                     fileUrl: targetUrl
                 }));
             } catch (e) {}
-            window.location.href = '/login.html';
+            window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html');
             return;
         }
 
@@ -15991,7 +15999,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             window.Clerk?.user
         );
         if (!isAuth) {
-            window.location.href = '/login.html';
+            window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html');
             return false;
         }
         return true;
@@ -17285,7 +17293,7 @@ window.getSubjectDocuments = getSubjectDocuments;
                             fileUrl: url
                         }));
                     } catch (_) {}
-                    window.location.href = '/login.html';
+                    window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html');
                 } else {
                     openPdfViewer(title, url);
                 }
@@ -18686,17 +18694,17 @@ window.getSubjectDocuments = getSubjectDocuments;
 
             const btnLandingAuth = document.getElementById('btn-landing-auth');
             if (btnLandingAuth) {
-                btnLandingAuth.onclick = () => { window.location.href = '/login.html'; };
+                btnLandingAuth.onclick = () => { window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html'); };
             }
 
             const authTriggerBtn = document.getElementById('auth-trigger-btn');
             if (authTriggerBtn) {
-                authTriggerBtn.onclick = () => { window.location.href = '/login.html'; };
+                authTriggerBtn.onclick = () => { window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html'); };
             }
 
             document.querySelectorAll('.auth-trigger-btn').forEach(btn => {
                 if (btn) {
-                    btn.onclick = () => { window.location.href = '/login.html'; };
+                    btn.onclick = () => { window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html'); };
                 }
             });
 
@@ -18704,7 +18712,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             if (btnGlobalSignIn) {
                 btnGlobalSignIn.onclick = (e) => {
                     if (e) e.preventDefault();
-                    window.location.href = '/login.html';
+                    window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html');
                 };
             }
 
@@ -18712,7 +18720,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             if (btnGlobalSignUp) {
                 btnGlobalSignUp.onclick = (e) => {
                     if (e) e.preventDefault();
-                    window.location.href = '/login.html#/sign-up';
+                    window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html#/sign-up') : 'login.html#/sign-up');
                 };
             }
         } catch (err) {
@@ -19809,7 +19817,7 @@ if (document.readyState === 'loading') {
             if (isUserAuthenticated()) {
               openPdfModal(actionUrl, actionText || "MAKAUT Syllabus Preview");
             } else {
-              window.location.href = "/login.html";
+              window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html');
             }
           });
           bubble.appendChild(actionBtn);
@@ -20824,7 +20832,7 @@ function initFloatingAskAi() {
   const askAiBtn = document.getElementById('floating-ask-ai');
   if (askAiBtn) {
     askAiBtn.textContent = 'Ask AI';
-    askAiBtn.onclick = () => { window.location.href = '/login.html'; };
+    askAiBtn.onclick = () => { window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html'); };
   }
 }
 if (document.readyState === 'loading') {

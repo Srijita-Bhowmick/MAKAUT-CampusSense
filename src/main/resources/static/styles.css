@@ -15723,7 +15723,7 @@ body, html {
 body.landing-body, body.dashboard-body, .page-wrapper {
   background: 
     linear-gradient(rgba(233, 232, 248, 0.48), rgba(233, 232, 248, 0.58)), 
-    url('/assets/images/makaut-haringhata-boulevard.jpg') center center / cover no-repeat fixed !important;
+    url('images/makaut-haringhata-boulevard.jpg') center center / cover no-repeat fixed !important;
 }
 
 #app, main, section, .hero-section, #features-section, #syllabus-section, #pyq-section, footer, .landing-footer {
@@ -15737,7 +15737,7 @@ body.landing-body, body.dashboard-body, .page-wrapper {
   align-items: center !important;
   justify-content: center !important;
   background: linear-gradient(rgba(233, 232, 248, 0.48), rgba(233, 232, 248, 0.58)),
-              url('/assets/images/makaut-haringhata-boulevard.jpg') center center / cover no-repeat fixed !important;
+              url('images/makaut-haringhata-boulevard.jpg') center center / cover no-repeat fixed !important;
   padding: 1.5rem !important;
   box-sizing: border-box !important;
 }
@@ -15757,7 +15757,7 @@ body.dashboard-body,
 .page-wrapper {
   background: 
     linear-gradient(rgba(233, 232, 248, 0.48), rgba(233, 232, 248, 0.58)), 
-    url('/images/makaut-haringhata-boulevard.jpg') center center / cover no-repeat fixed !important;
+    url('images/makaut-haringhata-boulevard.jpg') center center / cover no-repeat fixed !important;
   background-color: var(--surface-canvas, #E9E8F8) !important;
 }
 
@@ -15767,7 +15767,7 @@ body.dashboard-body,
   align-items: center !important;
   justify-content: center !important;
   background: linear-gradient(rgba(233, 232, 248, 0.48), rgba(233, 232, 248, 0.58)),
-              url('/images/makaut-haringhata-boulevard.jpg') center center / cover no-repeat fixed !important;
+              url('images/makaut-haringhata-boulevard.jpg') center center / cover no-repeat fixed !important;
   padding: 1.5rem !important;
   box-sizing: border-box !important;
 }
@@ -15815,7 +15815,7 @@ html, body {
   width: 100% !important;
   background: 
     linear-gradient(rgba(233, 232, 248, 0.48), rgba(233, 232, 248, 0.58)), 
-    url('/images/makaut-haringhata-boulevard.jpg') center top / cover no-repeat fixed !important;
+    url('images/makaut-haringhata-boulevard.jpg') center top / cover no-repeat fixed !important;
   background-color: #E9E8F8 !important;
 }
 
@@ -15826,7 +15826,7 @@ body.dashboard-body,
 .page-wrapper {
   background: 
     linear-gradient(rgba(233, 232, 248, 0.48), rgba(233, 232, 248, 0.58)), 
-    url('/images/makaut-haringhata-boulevard.jpg') center top / cover no-repeat fixed !important;
+    url('images/makaut-haringhata-boulevard.jpg') center top / cover no-repeat fixed !important;
   background-color: #E9E8F8 !important;
 }
 
@@ -15883,7 +15883,7 @@ html, body {
   background-color: #E9E8F8 !important;
   background-image: 
     linear-gradient(rgba(233, 232, 248, 0.48), rgba(233, 232, 248, 0.58)),
-    url('/images/makaut-haringhata-boulevard.jpg') !important;
+    url('images/makaut-haringhata-boulevard.jpg') !important;
   background-position: center top !important;
   background-size: cover !important;
   background-repeat: no-repeat !important;

@@ -1,0 +1,11 @@
+target/
+.git/
+.github/
+.vscode/
+.idea/
+.venv/
+apache-maven-3.9.9/
+*.log
+*.tmp
+temp_check.js
+scratch/

@@ -1,0 +1,21 @@
+services:
+  # ==============================================================================
+  # MAKAUT CampusSense — Full-Stack Spring Boot Backend & Web Workspace
+  # ==============================================================================
+  - type: web
+    name: makaut-campussense
+    runtime: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /
+    autoDeploy: true
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: dev
+      - key: PORT
+        value: 8080
+      - key: CLERK_PUBLISHABLE_KEY
+        value: pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk
+      - key: CLERK_SECRET_KEY
+        value: sk_test_pJ1VAe96OhB6iomGiQ4CLjefswTH7koQpTyER9UaFn
