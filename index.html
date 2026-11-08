@@ -1,0 +1,1825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>MAKAUT CampusSense — Curated Syllabi, Subject-wise PYQs & Exam Revisions</title>
+    <meta name="description" content="Curated syllabi, subject-wise past question papers (PYQs), and exam-ready revision drills for MAKAUT engineering students. Covers 1st Year, CSE, IT, CSBS, CSCS, CSDS, and AI/ML.">
+    <meta name="keywords" content="MAKAUT, MAKAUT syllabus, MAKAUT PYQ, Maulana Abul Kalam Azad University of Technology, engineering question papers, BTech CSE, IT, CSBS, CSCS, CSDS, AIML, 2026 curriculum">
+    <meta name="author" content="MAKAUT CampusSense / Srijita Bhowmick">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="http://localhost:8080/">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="http://localhost:8080/">
+    <meta property="og:title" content="MAKAUT CampusSense — Curated Syllabi, Subject-wise PYQs & Exam Revisions">
+    <meta property="og:description" content="Curated syllabi, subject-wise past question papers (PYQs), and exam-ready revision drills for MAKAUT engineering students.">
+    <meta property="og:site_name" content="MAKAUT CampusSense">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MAKAUT CampusSense — Curated Syllabi, Subject-wise PYQs & Exam Revisions">
+    <meta name="twitter:description" content="Curated syllabi, subject-wise past question papers (PYQs), and exam-ready revision drills for MAKAUT engineering students.">
+    
+    <!-- Design System & Tokens -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Plus+Jakarta+Sans:wght@600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=20261105_v2">
+
+    <!-- Schema.org EducationalOrganization -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "EducationalOrganization",
+      "name": "MAKAUT CampusSense",
+      "url": "http://localhost:8080/",
+      "description": "Curated syllabi, past question papers, and revision tools for MAKAUT engineering students.",
+      "founder": {
+        "@type": "Person",
+        "name": "Srijita Bhowmick"
+      }
+    }
+    </script>
+</head>
+<body class="landing-body" style="color: #0F172A !important;">
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="sr-only focus:not-sr-only" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;z-index:99999;">Skip to main content</a>
+
+    <!-- A. Sticky Navigation Bar -->
+    <header class="editorial-sticky-navbar navbar app-header" id="main-header" role="banner" style="position: sticky; top: 0; z-index: 100; background: rgba(233, 232, 248, 0.92) !important; backdrop-filter: blur(8px); border-bottom: 1px solid rgba(141, 185, 240, 0.45); display: flex; align-items: center; justify-content: space-between; padding: 1rem 2.5rem; width: 100%; box-sizing: border-box;">
+        <!-- Left: Brand Wordmark (Exact Markup per Section 4A) -->
+        <a href="/" class="brand-link" style="color: #0F172A !important; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 1.25rem; text-decoration: none;">
+          📐 MAKAUT CampusSense
+          <div id="btn-brand-home" style="display:none;" aria-hidden="true"></div>
+        </a>
+
+        <!-- Center: Strictly 4 Items: Features, Syllabus, PYQ Archives, 🔥 Panic Pack -->
+        <nav class="landing-nav-links nav-links" id="landing-nav-links" style="display: flex; align-items: center; gap: 0;">
+            <a href="#features-section" class="landing-nav-link" data-nav="features" style="color: #0F172A !important; font-weight: 600; font-size: 0.95rem; text-decoration: none; margin: 0 1rem;">Features</a>
+            <a href="#syllabus-section" class="landing-nav-link" data-nav="syllabus" style="color: #0F172A !important; font-weight: 600; font-size: 0.95rem; text-decoration: none; margin: 0 1rem;">Syllabus</a>
+            <a href="#pyq-section" class="landing-nav-link" data-nav="archives" style="color: #0F172A !important; font-weight: 600; font-size: 0.95rem; text-decoration: none; margin: 0 1rem;">PYQ Archives</a>
+            <a href="javascript:void(0)" id="nav-panic-link" class="landing-nav-link nav-panic-link" data-nav="panic-pack" style="color: #0F172A !important; font-weight: 600; font-size: 0.95rem; text-decoration: none; margin: 0 1rem; background: transparent !important; border: none !important; cursor: pointer;">🔥 Panic Pack</a>
+        </nav>
+
+        <!-- Right-Hand Controls: Feedback, Sign In, Sign Up -->
+                        <div class="nav-right" style="display: flex; align-items: center; gap: 0.75rem;">
+          <button 
+            type="button" 
+            id="nav-feedback-btn" 
+            class="nav-peach-pill" 
+            onclick="openFeedbackModal()"
+          >
+            Feedback
+          </button>
+
+          <a 
+            href="login.html" 
+            id="nav-signin-link" 
+            style="color: #0F172A !important; font-family: 'Inter', sans-serif !important; font-weight: 500 !important; font-size: 0.95rem !important; text-decoration: none !important; padding: 0.5rem 0.75rem !important;"
+          >
+            Sign In
+          </a>
+
+          <a 
+            href="login.html" 
+            id="nav-signup-btn" 
+            class="nav-peach-pill"
+          >
+            Sign Up
+          </a>
+        </div>
+    </header>
+
+    <!-- Hidden compatibility elements to guarantee ZERO runtime null errors in app.js -->
+    <div style="display:none;" aria-hidden="true">
+        <input id="landing-search-input" />
+        <button id="btn-landing-search"></button>
+        <button id="landing-search-clear"></button>
+        <div id="landing-search-results"></div>
+        <div id="landing-filter-pills"></div>
+        <div id="landing-curriculum-container"></div>
+        <div id="landing-pyqs-container"></div>
+        <div id="landing-panic-container"></div>
+        <button id="btn-open-academic-setup"></button>
+        <button id="btn-open-chatbot"></button>
+        <div id="portal-landing"></div>
+        <div id="portal-dashboard"></div>
+        <div id="portal-admin"></div>
+        <div id="portal-pyq-management"></div>
+        <div id="portal-syllabus-management"></div>
+        <div id="ai-chat-drawer"></div>
+        <div id="chat-messages"></div>
+        <textarea id="ai-chat-input"></textarea>
+        <button id="ai-chat-send"></button>
+        <button id="ai-chat-close"></button>
+        <span id="saved-deck-count-pill"></span>
+        <button id="btn-clear-saved-deck"></button>
+        <button id="btn-export-saved-deck"></button>
+        <div id="saved-deck-items-list"></div>
+        <button id="btn-close-saved-deck"></button>
+        <button id="btn-close-saved-deck-drawer"></button>
+        <input type="checkbox" id="ink-saver-toggle" />
+        <div id="drawer-saved-deck"></div>
+        <div id="saved-deck-backdrop"></div>
+        <div id="saved-deck-drawer"></div>
+    </div>
+
+    <!-- Main Content Area -->
+    <main id="main-content" style="background: transparent !important;">
+        <!-- B. Hero Section -->
+        <section class="landing-hero hero-section" id="portal" style="padding: 4.5rem 1.5rem 3rem 1.5rem; text-align: center; max-width: 900px; margin: 0 auto; width: 100%; box-sizing: border-box; background: transparent !important;">
+            <!-- Centered Pill Badge (Text color strictly #000000 !important) -->
+            <div class="hero-badge institution-pill hero-pill-badge" style="background-color: #D4E3F7 !important; color: #000000 !important; font-weight: 700 !important; font-size: 0.85rem !important; padding: 0.35rem 1rem !important; border-radius: 9999px !important; display: inline-flex !important; margin-bottom: 1.25rem !important; border: 1px solid rgba(141, 185, 240, 0.6) !important;">
+                🏛️ University Curricula · Verified PYQ Vault
+            </div>
+
+            <!-- Hero Typography -->
+            <h1 class="editorial-hero-heading" style="font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 3.5rem; color: #0F172A !important; letter-spacing: -0.03em; margin: 0.5rem 0; text-align: center; line-height: 1.15;">
+                MAKAUT CampusSense
+            </h1>
+            <p class="editorial-hero-lead" style="color: #334155 !important; font-size: 1.2rem; text-align: center; max-width: 680px; margin: 0.75rem auto 1.75rem auto; line-height: 1.6;">
+                Curated syllabi, subject-wise PYQs, and exam-ready revisions for MAKAUT students.
+            </p>
+
+            <!-- Twin Action CTAs: Both buttons MUST be solid Powder Blue (#8DB9F0) with dark navy text (#0F172A), 48px, 0.5rem radius, ending in → -->
+                        <div class="hero-actions hero-action-ctas" style="display: flex; gap: 1rem; justify-content: center; align-items: center; flex-wrap: wrap; margin-top: 1.75rem;">
+              <!-- Explore Button -->
+              <a 
+                href="#syllabus-section" 
+                class="hero-cta-btn hero-btn-explore" 
+                style="background-color: #F5B69E !important; color: #0F172A !important; font-weight: 700 !important; font-size: 0.95rem !important; padding: 0.85rem 1.85rem !important; border-radius: 0.5rem !important; border: none !important; cursor: pointer !important; text-decoration: none !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; height: 48px !important; box-shadow: 0 4px 14px rgba(245, 182, 158, 0.45) !important; transition: all 0.15s ease-in-out !important;"
+              >
+                Explore Curriculums and PYQs →
+              </a>
+
+              <!-- Panic Pack Button -->
+              <button 
+                type="button" 
+                id="btn-hero-panic"
+                onclick="document.getElementById('panic-pack-modal').style.display='flex';" 
+                class="hero-cta-btn hero-btn-panic" 
+                style="background-color: #F5B69E !important; color: #0F172A !important; font-weight: 700 !important; font-size: 0.95rem !important; padding: 0.85rem 1.85rem !important; border-radius: 0.5rem !important; border: none !important; cursor: pointer !important; text-decoration: none !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; height: 48px !important; box-shadow: 0 4px 14px rgba(245, 182, 158, 0.45) !important; transition: all 0.15s ease-in-out !important;"
+              >
+                View 16+ Panic Pack →
+              </button>
+            </div>
+        </section>
+
+        <!-- C. Features Section (4 Pure White Bento Cards per Section 4D) -->
+        <section class="features-section" id="features-section" style="padding: 3rem 1.5rem; max-width: 1200px; margin: 0 auto; width: 100%; box-sizing: border-box; background: transparent !important;">
+            <div class="features-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; width: 100%;">
+                <!-- Card 1 -->
+                <div class="feature-bento-card feature-card bento-card" onclick="window.location.href='login.html'" style="background: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 14px rgba(141, 185, 240, 0.12); cursor: pointer; text-align: left; display: flex; flex-direction: column; gap: 0.4rem;">
+                    <div class="feature-bento-val" style="font-family: 'Manrope', sans-serif; font-size: 1.5rem; font-weight: 800; color: #0F172A !important;">134 Subjects</div>
+                    <div class="feature-bento-desc" style="font-size: 0.88rem; color: #334155 !important;">Ingested Syllabi across 1st Year & Core Departmental Streams</div>
+                </div>
+                <!-- Card 2: Pure White (Section 4D) -->
+                <div class="feature-bento-card feature-card bento-card" onclick="window.location.href='login.html'" style="background: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 14px rgba(141, 185, 240, 0.12); cursor: pointer; text-align: left; display: flex; flex-direction: column; gap: 0.4rem;">
+                    <div class="feature-bento-val" style="font-family: 'Manrope', sans-serif; font-size: 1.5rem; font-weight: 800; color: #0F172A !important;">Top 20%</div>
+                    <div class="feature-bento-desc" style="font-size: 0.88rem; color: #334155 !important;">Repeated Exam Questions driving 80% of university test papers</div>
+                </div>
+                <!-- Card 3 -->
+                <div class="feature-bento-card feature-card bento-card" onclick="window.location.href='login.html'" style="background: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 14px rgba(141, 185, 240, 0.12); cursor: pointer; text-align: left; display: flex; flex-direction: column; gap: 0.4rem;">
+                    <div class="feature-bento-val" style="font-family: 'Manrope', sans-serif; font-size: 1.5rem; font-weight: 800; color: #0F172A !important;">1,489 PYQ Papers</div>
+                    <div class="feature-bento-desc" style="font-size: 0.88rem; color: #334155 !important;">Verified Archives from 2018 through 2024 with full solutions</div>
+                </div>
+                <!-- Card 4 -->
+                <div class="feature-bento-card feature-card bento-card" onclick="window.location.href='login.html'" style="background: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 14px rgba(141, 185, 240, 0.12); cursor: pointer; text-align: left; display: flex; flex-direction: column; gap: 0.4rem;">
+                    <div class="feature-bento-val" style="font-family: 'Manrope', sans-serif; font-size: 1.5rem; font-weight: 800; color: #0F172A !important;">Grounded AI</div>
+                    <div class="feature-bento-desc" style="font-size: 0.88rem; color: #334155 !important;">Curriculum Citations referencing exact module codes and years</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- E. Syllabus Blueprint Section: TWO-TIER UNIFIED CUTE CARDS -->
+        <section class="landing-content-section" id="syllabus-section" style="padding: 3rem 1.5rem; max-width: 1200px; margin: 0 auto; width: 100%; box-sizing: border-box; background-color: transparent !important; background: transparent !important;">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <!-- Super-Heading -->
+                <h2 class="section-super-heading" style="font-family: 'Manrope', sans-serif; font-size: 2.25rem !important; font-weight: 800 !important; color: #0F172A !important; letter-spacing: -0.025em; margin-bottom: 0.5rem; text-align: center;">Verified University Curriculums</h2>
+                <!-- Lead Subtitle -->
+                <p class="section-lead-subtitle" style="font-size: 1.05rem !important; font-weight: 400 !important; color: #475569 !important; max-width: 720px; margin: 0 auto; line-height: 1.6; text-align: center;">Official MAKAUT foundation blueprints and complete departmental master curriculum schemes.</p>
+            </div>
+
+            <!-- Tier 1: 1st Year Common Curriculum -->
+            <div style="margin-bottom: 3.5rem;">
+                <div style="margin-bottom: 1.5rem;">
+                    <h3 class="sub-tier-heading" style="font-family: 'Manrope', sans-serif; font-size: 1.45rem !important; font-weight: 700 !important; color: #0F172A !important; margin: 2rem 0 0.35rem 0;">1st Year Common Curriculum (Semesters 1 &amp; 2)</h3>
+                    <p class="sub-tier-desc" style="font-size: 0.9rem !important; font-weight: 400 !important; color: #64748B !important; margin-bottom: 1.5rem;">Official MAKAUT foundation blueprints for all engineering streams.</p>
+                </div>
+                <div class="cute-subject-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem;">
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      BS-M101
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Mathematics-I
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Calculus, Linear Algebra & Differential Equations · Basic Sciences
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button type="button" onclick="openLandingPdfPreview('BS-M101: Mathematics-I Syllabus', '1st year/syllabus/Maths-1.pdf')" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; transition: all 0.15s ease;">
+                      Preview
+                    </button>
+                    <a href="1st year/syllabus/Maths-1.pdf" download="MAKAUT_BS-M101_Maths-1_Syllabus.pdf" onclick="downloadLandingSyllabus('1st year/syllabus/Maths-1.pdf', 'MAKAUT_BS-M101_Maths-1_Syllabus.pdf'); event.stopPropagation();" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; text-decoration: none !important; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4); box-sizing: border-box; transition: all 0.15s ease;"
+                      Download
+                    </a>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      BS-M201
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Mathematics-II
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Advanced Calculus, Vector Spaces & Complex Variables · Basic Sciences
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button type="button" onclick="openLandingPdfPreview('BS-M201: Mathematics-II Syllabus', '1st year/syllabus/Maths-2.pdf')" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; transition: all 0.15s ease;">
+                      Preview
+                    </button>
+                    <a href="1st year/syllabus/Maths-2.pdf" download="MAKAUT_BS-M201_Maths-2_Syllabus.pdf" onclick="downloadLandingSyllabus('1st year/syllabus/Maths-2.pdf', 'MAKAUT_BS-M201_Maths-2_Syllabus.pdf'); event.stopPropagation();" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; text-decoration: none !important; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4); box-sizing: border-box; transition: all 0.15s ease;"
+                      Download
+                    </a>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      BS-PH101
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Physics-I
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Optics, Electromagnetism & Quantum Mechanics · Basic Sciences
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button type="button" onclick="openLandingPdfPreview('BS-PH101: Physics-I Syllabus', '1st year/syllabus/Physics.pdf')" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; transition: all 0.15s ease;">
+                      Preview
+                    </button>
+                    <a href="1st year/syllabus/Physics.pdf" download="MAKAUT_BS-PH101_Physics_Syllabus.pdf" onclick="downloadLandingSyllabus('1st year/syllabus/Physics.pdf', 'MAKAUT_BS-PH101_Physics_Syllabus.pdf'); event.stopPropagation();" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; text-decoration: none !important; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4); box-sizing: border-box; transition: all 0.15s ease;"
+                      Download
+                    </a>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      BS-CH101
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Chemistry
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Thermodynamics, Spectroscopy & Stereochemistry · Basic Sciences
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button type="button" onclick="openLandingPdfPreview('BS-CH101: Chemistry Syllabus', '1st year/syllabus/Chemistry.pdf')" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; transition: all 0.15s ease;">
+                      Preview
+                    </button>
+                    <a href="1st year/syllabus/Chemistry.pdf" download="MAKAUT_BS-CH101_Chemistry_Syllabus.pdf" onclick="downloadLandingSyllabus('1st year/syllabus/Chemistry.pdf', 'MAKAUT_BS-CH101_Chemistry_Syllabus.pdf'); event.stopPropagation();" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; text-decoration: none !important; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4); box-sizing: border-box; transition: all 0.15s ease;"
+                      Download
+                    </a>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      ES-EE101
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Basic Electrical
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      DC/AC Circuits, Transformers & Machines · Engineering Sciences
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button type="button" onclick="openLandingPdfPreview('ES-EE101: Basic Electrical Engineering Syllabus', '1st year/syllabus/BEE.pdf')" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; transition: all 0.15s ease;">
+                      Preview
+                    </button>
+                    <a href="1st year/syllabus/BEE.pdf" download="MAKAUT_ES-EE101_BEE_Syllabus.pdf" onclick="downloadLandingSyllabus('1st year/syllabus/BEE.pdf', 'MAKAUT_ES-EE101_BEE_Syllabus.pdf'); event.stopPropagation();" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; text-decoration: none !important; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4); box-sizing: border-box; transition: all 0.15s ease;"
+                      Download
+                    </a>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      ES-CS201
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      PPS
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      C Programming, Data Structures & Algorithms · Engineering Sciences
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button type="button" onclick="openLandingPdfPreview('ES-CS201: Programming for Problem Solving Syllabus', '1st year/syllabus/PPS.pdf')" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; transition: all 0.15s ease;">
+                      Preview
+                    </button>
+                    <a href="1st year/syllabus/PPS.pdf" download="MAKAUT_ES-CS201_PPS_Syllabus.pdf" onclick="downloadLandingSyllabus('1st year/syllabus/PPS.pdf', 'MAKAUT_ES-CS201_PPS_Syllabus.pdf'); event.stopPropagation();" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; text-decoration: none !important; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4); box-sizing: border-box; transition: all 0.15s ease;"
+                      Download
+                    </a>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      HM-HU201
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      English
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Professional Communication & Technical Writing · Humanities
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button type="button" onclick="openLandingPdfPreview('HM-HU201: English Syllabus', '1st year/syllabus/English.pdf')" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; transition: all 0.15s ease;">
+                      Preview
+                    </button>
+                    <a href="1st year/syllabus/English.pdf" download="MAKAUT_HM-HU201_English_Syllabus.pdf" onclick="downloadLandingSyllabus('1st year/syllabus/English.pdf', 'MAKAUT_HM-HU201_English_Syllabus.pdf'); event.stopPropagation();" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; text-decoration: none !important; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4); box-sizing: border-box; transition: all 0.15s ease;"
+                      Download
+                    </a>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      MC-ES201
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      EVS
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Ecology, Sustainability & Pollution Control · Environmental Sciences
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button type="button" onclick="openLandingPdfPreview('MC-ES201: Environmental Sciences Syllabus', '1st year/syllabus/EVS.pdf')" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; transition: all 0.15s ease;">
+                      Preview
+                    </button>
+                    <a href="1st year/syllabus/EVS.pdf" download="MAKAUT_MC-ES201_EVS_Syllabus.pdf" onclick="downloadLandingSyllabus('1st year/syllabus/EVS.pdf', 'MAKAUT_MC-ES201_EVS_Syllabus.pdf'); event.stopPropagation();" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; text-decoration: none !important; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4); box-sizing: border-box; transition: all 0.15s ease;"
+                      Download
+                    </a>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      ES-ME191
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Engineering Graphics
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      CAD, Orthographic Projections & Isometric Views · Engineering Sciences
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button type="button" onclick="openLandingPdfPreview('ES-ME191: Engineering Graphics & Design Syllabus', '1st year/syllabus/Graphics.pdf')" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; transition: all 0.15s ease;">
+                      Preview
+                    </button>
+                    <a href="1st year/syllabus/Graphics.pdf" download="MAKAUT_ES-ME191_Graphics_Syllabus.pdf" onclick="downloadLandingSyllabus('1st year/syllabus/Graphics.pdf', 'MAKAUT_ES-ME191_Graphics_Syllabus.pdf'); event.stopPropagation();" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; text-decoration: none !important; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4); box-sizing: border-box; transition: all 0.15s ease;"
+                      Download
+                    </a>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      BS-BIO101
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Biology for Engineers
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Macromolecules, Cellular Biology & Genetics · Basic Sciences
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button type="button" onclick="openLandingPdfPreview('BS-BIO101: Biology for Engineers Syllabus', '1st year/syllabus/Biology.pdf')" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; transition: all 0.15s ease;">
+                      Preview
+                    </button>
+                    <a href="1st year/syllabus/Biology.pdf" download="MAKAUT_BS-BIO101_Biology_Syllabus.pdf" onclick="downloadLandingSyllabus('1st year/syllabus/Biology.pdf', 'MAKAUT_BS-BIO101_Biology_Syllabus.pdf'); event.stopPropagation();" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; text-decoration: none !important; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4); box-sizing: border-box; transition: all 0.15s ease;"
+                      Download
+                    </a>
+                  </div>
+                </div>
+                </div>
+            </div>
+
+            <!-- Tier 2: Departmental Syllabi (EXACTLY 6 COMPLETE DEPARTMENTAL MASTER BLUEPRINTS) -->
+            <div>
+                <div style="margin-bottom: 1.5rem;">
+                    <h3 class="sub-tier-heading" style="font-family: 'Manrope', sans-serif; font-size: 1.45rem !important; font-weight: 700 !important; color: #0F172A !important; margin: 2rem 0 0.35rem 0;">Departmental Curricula (Semesters 3 – 8)</h3>
+                    <p class="sub-tier-desc" style="font-size: 0.9rem !important; font-weight: 400 !important; color: #64748B !important; margin-bottom: 1.5rem;">Comprehensive departmental core and elective syllabus master blueprints.</p>
+                </div>
+                <div class="dept-master-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem;">
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      DEPT-CSE
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Computer Science & Engineering (CSE)
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Complete 4-Year B.Tech Syllabus Blueprint · Semesters 3–8 Full Scheme & Syllabus
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button type="button" onclick="openLandingPdfPreview('DEPT-CSE: Computer Science & Engineering (Semesters 3-8) Full Scheme & Syllabus', '3rd to 8th sem/cse/syllabus/CSE20.pdf')" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; transition: all 0.15s ease;">
+                      Preview
+                    </button>
+                    <a href="3rd to 8th sem/cse/syllabus/CSE20.pdf" download="MAKAUT_CSE_Sem3-8_Syllabus.pdf" onclick="downloadLandingSyllabus('3rd to 8th sem/cse/syllabus/CSE20.pdf', 'MAKAUT_CSE_Sem3-8_Syllabus.pdf'); event.stopPropagation();" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; text-decoration: none !important; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4); box-sizing: border-box; transition: all 0.15s ease;"
+                      Download
+                    </a>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      DEPT-IT
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Information Technology (IT)
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Complete 4-Year B.Tech Syllabus Blueprint · Semesters 3–8 Full Scheme & Syllabus
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button type="button" onclick="openLandingPdfPreview('DEPT-IT: Information Technology (Semesters 3-8) Full Scheme & Syllabus', '3rd to 8th sem/it/syllabus/IT_Syllabus.pdf')" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; transition: all 0.15s ease;">
+                      Preview
+                    </button>
+                    <a href="3rd to 8th sem/it/syllabus/IT_Syllabus.pdf" download="MAKAUT_IT_Sem3-8_Syllabus.pdf" onclick="downloadLandingSyllabus('3rd to 8th sem/it/syllabus/IT_Syllabus.pdf', 'MAKAUT_IT_Sem3-8_Syllabus.pdf'); event.stopPropagation();" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; text-decoration: none !important; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4); box-sizing: border-box; transition: all 0.15s ease;"
+                      Download
+                    </a>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      DEPT-AIML
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Computer Science & Engineering (AI & ML)
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Complete 4-Year B.Tech Syllabus Blueprint · Semesters 3–8 Full Scheme & Syllabus
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button type="button" onclick="openLandingPdfPreview('DEPT-AIML: CSE (AI & ML) (Semesters 3-8) Full Scheme & Syllabus', '3rd to 8th sem/cse-aiml/syllabus/CSE-AIML_Syllabus.pdf')" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; transition: all 0.15s ease;">
+                      Preview
+                    </button>
+                    <a href="3rd to 8th sem/cse-aiml/syllabus/CSE-AIML_Syllabus.pdf" download="MAKAUT_CSE-AIML_Sem3-8_Syllabus.pdf" onclick="downloadLandingSyllabus('3rd to 8th sem/cse-aiml/syllabus/CSE-AIML_Syllabus.pdf', 'MAKAUT_CSE-AIML_Sem3-8_Syllabus.pdf'); event.stopPropagation();" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; text-decoration: none !important; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4); box-sizing: border-box; transition: all 0.15s ease;"
+                      Download
+                    </a>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      DEPT-CSCS
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Computer Science & Cyber Security (CSCS)
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Complete 4-Year B.Tech Syllabus Blueprint · Semesters 3–8 Full Scheme & Syllabus
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button type="button" onclick="openLandingPdfPreview('DEPT-CSCS: Computer Science & Cyber Security (Semesters 3-8) Full Scheme & Syllabus', '3rd to 8th sem/cscs/syllabus/cscs_syllabus.pdf')" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; transition: all 0.15s ease;">
+                      Preview
+                    </button>
+                    <a href="3rd to 8th sem/cscs/syllabus/cscs_syllabus.pdf" download="MAKAUT_CSCS_Sem3-8_Syllabus.pdf" onclick="downloadLandingSyllabus('3rd to 8th sem/cscs/syllabus/cscs_syllabus.pdf', 'MAKAUT_CSCS_Sem3-8_Syllabus.pdf'); event.stopPropagation();" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; text-decoration: none !important; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4); box-sizing: border-box; transition: all 0.15s ease;"
+                      Download
+                    </a>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      DEPT-CSDS
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Computer Science & Data Science (CSDS)
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Complete 4-Year B.Tech Syllabus Blueprint · Semesters 3–8 Full Scheme & Syllabus
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button type="button" onclick="openLandingPdfPreview('DEPT-CSDS: Computer Science & Data Science (Semesters 3-8) Full Scheme & Syllabus', '3rd to 8th sem/csds/syllabus/csds_syllabus.pdf')" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; transition: all 0.15s ease;">
+                      Preview
+                    </button>
+                    <a href="3rd to 8th sem/csds/syllabus/csds_syllabus.pdf" download="MAKAUT_CSDS_Sem3-8_Syllabus.pdf" onclick="downloadLandingSyllabus('3rd to 8th sem/csds/syllabus/csds_syllabus.pdf', 'MAKAUT_CSDS_Sem3-8_Syllabus.pdf'); event.stopPropagation();" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; text-decoration: none !important; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4); box-sizing: border-box; transition: all 0.15s ease;"
+                      Download
+                    </a>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      DEPT-CSBS
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Computer Science & Business Systems (CSBS)
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Complete 4-Year B.Tech Syllabus Blueprint · Semesters 3–8 Full Scheme & Syllabus
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button type="button" onclick="openLandingPdfPreview('DEPT-CSBS: Computer Science & Business Systems (Semesters 3-8) Full Scheme & Syllabus', '3rd to 8th sem/csbs/syllabus/csbs_syllabus.pdf')" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; transition: all 0.15s ease;">
+                      Preview
+                    </button>
+                    <a href="3rd to 8th sem/csbs/syllabus/csbs_syllabus.pdf" download="MAKAUT_CSBS_Sem3-8_Syllabus.pdf" onclick="downloadLandingSyllabus('3rd to 8th sem/csbs/syllabus/csbs_syllabus.pdf', 'MAKAUT_CSBS_Sem3-8_Syllabus.pdf'); event.stopPropagation();" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; text-decoration: none !important; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4); box-sizing: border-box; transition: all 0.15s ease;"
+                      Download
+                    </a>
+                  </div>
+                </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- F. PYQ Archives Section -->
+        <section class="landing-content-section" id="pyq-section" style="padding: 3rem 1.5rem; max-width: 1200px; margin: 0 auto; width: 100%; box-sizing: border-box; background-color: transparent !important; background: transparent !important;">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <h2 class="section-super-heading" style="font-family: 'Manrope', sans-serif; font-size: 2.25rem !important; font-weight: 800 !important; color: #0F172A !important; letter-spacing: -0.025em; margin-bottom: 0.5rem; text-align: center;">Verified Past Year Question (PYQ) Archives</h2>
+                <p class="section-lead-subtitle" style="font-size: 1.05rem !important; font-weight: 400 !important; color: #475569 !important; max-width: 720px; margin: 0 auto; line-height: 1.6; text-align: center;">Official MAKAUT semester examination papers organized comprehensively by subject with verified answers.</p>
+            </div>
+
+            <div class="cute-subject-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem;">
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      BS-M101
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Mathematics-I
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Verified Papers Archive · 2020–2026 Examination Series
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button onclick="window.location.href='login.html'" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center;">
+                      Preview
+                    </button>
+                    <button onclick="window.location.href='login.html'" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4);">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      BS-M201
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Mathematics-II
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Verified Papers Archive · 2023–2026 Examination Series
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button onclick="window.location.href='login.html'" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center;">
+                      Preview
+                    </button>
+                    <button onclick="window.location.href='login.html'" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4);">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      BS-PH101
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Physics-I
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Verified Papers Archive · 2020–2026 Examination Series
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button onclick="window.location.href='login.html'" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center;">
+                      Preview
+                    </button>
+                    <button onclick="window.location.href='login.html'" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4);">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      BS-CH101
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Chemistry
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Verified Papers Archive · 2020–2025 Examination Series
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button onclick="window.location.href='login.html'" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center;">
+                      Preview
+                    </button>
+                    <button onclick="window.location.href='login.html'" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4);">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      ES-EE101
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Basic Electrical
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Verified Papers Archive · 2020–2026 Examination Series
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button onclick="window.location.href='login.html'" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center;">
+                      Preview
+                    </button>
+                    <button onclick="window.location.href='login.html'" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4);">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      ES-CS201
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      PPS (C Programming)
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Verified Papers Archive · 2023–2025 Examination Series
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button onclick="window.location.href='login.html'" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center;">
+                      Preview
+                    </button>
+                    <button onclick="window.location.href='login.html'" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4);">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      HM-HU201
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      English Communication
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Verified Papers Archive · 2023–2025 Examination Series
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button onclick="window.location.href='login.html'" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center;">
+                      Preview
+                    </button>
+                    <button onclick="window.location.href='login.html'" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4);">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      BSC-301
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Mathematics-III
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Differential Calculus & Transforms · 2015–2026
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button onclick="window.location.href='login.html'" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center;">
+                      Preview
+                    </button>
+                    <button onclick="window.location.href='login.html'" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4);">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      ESC-301
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Analog & Digital Electronics
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Circuit Analysis & Logic Design · 2015–2025
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button onclick="window.location.href='login.html'" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center;">
+                      Preview
+                    </button>
+                    <button onclick="window.location.href='login.html'" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4);">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      PCC-CS301
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Data Structures & Algorithms
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Stacks, Queues, Trees, Graphs · 2020–2025
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button onclick="window.location.href='login.html'" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center;">
+                      Preview
+                    </button>
+                    <button onclick="window.location.href='login.html'" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4);">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      PCC-CS302
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Computer Organization
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      ALU, Instruction Sets & Memory · 2020–2025
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button onclick="window.location.href='login.html'" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center;">
+                      Preview
+                    </button>
+                    <button onclick="window.location.href='login.html'" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4);">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      PCC-CS401
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Discrete Mathematics
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Sets, Relations, Graphs & Combinatorics · 2015–2026
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button onclick="window.location.href='login.html'" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center;">
+                      Preview
+                    </button>
+                    <button onclick="window.location.href='login.html'" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4);">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      PCC-CS402
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Computer Architecture
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Pipelining, Cache & Multiprocessors · 2023–2026
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button onclick="window.location.href='login.html'" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center;">
+                      Preview
+                    </button>
+                    <button onclick="window.location.href='login.html'" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4);">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      PCC-CS403
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Automata & Formal Languages
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Regular Expressions, Context-Free & Turing · 2015–2026
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button onclick="window.location.href='login.html'" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center;">
+                      Preview
+                    </button>
+                    <button onclick="window.location.href='login.html'" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4);">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      PCC-CS404
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Design & Analysis of Algorithms
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Divide & Conquer, Dynamic Programming · 2015–2025
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button onclick="window.location.href='login.html'" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center;">
+                      Preview
+                    </button>
+                    <button onclick="window.location.href='login.html'" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4);">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      PCC-CS501
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Operating Systems
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Process Management, Virtual Memory · 2018–2026
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button onclick="window.location.href='login.html'" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center;">
+                      Preview
+                    </button>
+                    <button onclick="window.location.href='login.html'" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4);">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      PCC-CS502
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Database Management Systems
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Relational Algebra, SQL & Normalization · 2015–2026
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button onclick="window.location.href='login.html'" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center;">
+                      Preview
+                    </button>
+                    <button onclick="window.location.href='login.html'" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4);">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      PCC-CS503
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Object-Oriented Programming
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Java, Polymorphism, Inheritance · 2023–2026
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button onclick="window.location.href='login.html'" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center;">
+                      Preview
+                    </button>
+                    <button onclick="window.location.href='login.html'" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4);">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      PCC-IT501
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Software Engineering
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      SDLC, Agile, UML & Testing Patterns · 2015–2026
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button onclick="window.location.href='login.html'" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center;">
+                      Preview
+                    </button>
+                    <button onclick="window.location.href='login.html'" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4);">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      PCC-CS601
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Computer Networks
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      TCP/IP, Routing & Flow Control · 2015–2026
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button onclick="window.location.href='login.html'" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center;">
+                      Preview
+                    </button>
+                    <button onclick="window.location.href='login.html'" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4);">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      PCC-IT502
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Compiler Design
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Lexical, Syntax & Code Generation · 2015–2019
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button onclick="window.location.href='login.html'" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center;">
+                      Preview
+                    </button>
+                    <button onclick="window.location.href='login.html'" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4);">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      PEC-IT603
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Cloud Computing
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Virtualization, AWS, Containers · 2015–2026
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button onclick="window.location.href='login.html'" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center;">
+                      Preview
+                    </button>
+                    <button onclick="window.location.href='login.html'" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4);">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      PCC-AIML501
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Artificial Intelligence
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Heuristic Search, Logic & Reasoning · 2019–2026
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button onclick="window.location.href='login.html'" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center;">
+                      Preview
+                    </button>
+                    <button onclick="window.location.href='login.html'" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4);">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      PEC-IT703
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Machine Learning
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Supervised, Unsupervised & Neural Nets · 2020–2025
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button onclick="window.location.href='login.html'" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center;">
+                      Preview
+                    </button>
+                    <button onclick="window.location.href='login.html'" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4);">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      PEC-CS801
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Cryptography & Network Security
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      AES, RSA, PKI & Cyber Defense · 2015–2026
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button onclick="window.location.href='login.html'" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center;">
+                      Preview
+                    </button>
+                    <button onclick="window.location.href='login.html'" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4);">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      OEC-CS801A
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Big Data Analytics
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Hadoop, Spark, MapReduce & NoSQL · 2024–2026
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button onclick="window.location.href='login.html'" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center;">
+                      Preview
+                    </button>
+                    <button onclick="window.location.href='login.html'" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4);">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      OEC-CS801B
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Cyber Law & Ethics
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      IT Act, Compliance & Digital Forensics · 2023–2026
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button onclick="window.location.href='login.html'" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center;">
+                      Preview
+                    </button>
+                    <button onclick="window.location.href='login.html'" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4);">
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <div class="cute-academic-card" style="background-color: #FFFFFF !important; border: 1.5px solid rgba(141, 185, 240, 0.45) !important; border-radius: 0.85rem !important; padding: 1.35rem !important; box-shadow: 0 4px 15px rgba(141, 185, 240, 0.12) !important; display: flex; flex-direction: column; justify-content: space-between;">
+                  <div>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; color: #0F172A; background-color: #D4E3F7; border: 1px solid rgba(141, 185, 240, 0.5); padding: 0.2rem 0.55rem; border-radius: 0.35rem; display: inline-block;">
+                      PEC-CS801E
+                    </span>
+                    <h3 style="font-size: 1.15rem; font-weight: 700; color: #0F172A; margin: 0.65rem 0 0.45rem 0; line-height: 1.35;">
+                      Internet of Things (IoT)
+                    </h3>
+                    <p style="font-size: 0.8rem; font-weight: 500; color: #64748B; margin-bottom: 1.25rem; line-height: 1.5;">
+                      Sensors, Embedded Protocols & MQTT · 2024–2024
+                    </p>
+                  </div>
+                  <div style="display: flex; gap: 0.65rem; align-items: center; margin-top: auto;">
+                    <button onclick="window.location.href='login.html'" style="background-color: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center;">
+                      Preview
+                    </button>
+                    <button onclick="window.location.href='login.html'" style="background-color: #F5B69E !important; color: #0F172A !important; border: none !important; font-size: 0.825rem !important; font-weight: 700 !important; padding: 0.45rem 0.95rem !important; border-radius: 0.4rem !important; cursor: pointer; flex: 1; text-align: center; box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4);">
+                      Download
+                    </button>
+                  </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- G. Floating Bottom-Right "Ask AI" Button (Pure Plain Text Pill in Warm Sunset Peach) -->
+    <button id="floating-ask-ai" class="floating-ask-ai" onclick="window.location.href='login.html'" style="position: fixed !important; bottom: 1.5rem !important; right: 1.5rem !important; z-index: 9999 !important; background-color: #F5B69E !important; color: #0F172A !important; font-weight: 700 !important; font-size: 0.95rem !important; padding: 0.75rem 1.4rem !important; border-radius: 9999px !important; border: none !important; box-shadow: 0 4px 18px rgba(245, 182, 158, 0.5) !important; cursor: pointer !important; display: inline-flex !important; align-items: center !important; justify-content: center !important;">
+      Ask AI
+    </button>
+
+    <!-- H. High-Contrast Legal Footer & Underlined Legal Terms (Exact Section 4G) -->
+    <footer class="landing-footer" style="background-color: transparent !important; color: #0F172A !important; border-top: 1px solid rgba(141, 185, 240, 0.45) !important; width: 100% !important; padding: 3.5rem 1.5rem !important; margin: 0 !important; box-sizing: border-box !important;">
+      <div style="max-width: 900px; margin: 0 auto; text-align: center;">
+        <h4 style="color: #0F172A !important; font-weight: 800; font-size: 1.15rem; margin-bottom: 0.5rem; text-decoration: none !important;">
+          MAKAUT CampusSense Academic Resource Aggregator and Conversational RAG Engine
+        </h4>
+                <p style="color: #0F172A !important; font-weight: 500; font-size: 0.95rem; text-decoration: none !important; margin: 1rem 0;">
+  Curated for MAKAUT-affiliated colleges, maintained by 
+  <span style="font-size: 1.0rem !important; font-weight: 700 !important; text-decoration: underline !important; color: #0F172A !important;">
+    Srijita Bhowmick
+  </span>
+</p>
+        <!-- NO UNDERLINE ON DISCLAIMER -->
+        <p style="color: #334155 !important; font-size: 0.85rem; max-width: 750px; margin: 0.5rem auto; line-height: 1.6; text-decoration: none !important;">
+          MAKAUT CampusSense is an independent, nonprofit student academic resources platform built solely for educational and research purposes. It is not affiliated with, sponsored by, or officially connected to MAKAUT or any of its constituent colleges.
+        </p>
+        <div style="margin-top: 1.25rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+          <!-- ONLY THIS LINK IS UNDERLINED -->
+          <a href="privacy.html" style="color: #0F172A !important; font-weight: 700; font-size: 0.85rem; text-decoration: underline !important;">
+            Privacy Policy & Educational Terms
+          </a>
+          <span style="color: #64748B;">•</span>
+          <span style="color: #0F172A !important; font-weight: 600; font-size: 0.85rem;">Protected by Cloudflare Web and Bot Defense</span>
+          <span style="color: #64748B;">•</span>
+          <span style="color: #0F172A !important; font-weight: 600; font-size: 0.85rem;">Open-source student initiative</span>
+        </div>
+      </div>
+    </footer>
+
+        <!-- 2. Self-Contained Feedback Modal (Section 2) -->
+    <div id="feedback-modal" class="modal-overlay modal-hidden" onclick="handleFeedbackBackdropClick(event)">
+  <div class="feedback-card" style="background: #FFFFFF !important; border: 2px solid #8DB9F0 !important; border-radius: 1.25rem !important; padding: 2rem !important; width: 100% !important; max-width: 480px !important; box-shadow: 0 25px 50px rgba(0,0,0,0.2) !important; box-sizing: border-box !important; text-align: left !important;" onclick="event.stopPropagation();">
+    <h3 style="margin: 0 0 0.35rem 0; font-size: 1.35rem; font-weight: 800; color: #0F172A; font-family: 'Manrope', sans-serif;">
+      Share Academic Feedback
+    </h3>
+    <p style="margin: 0 0 1rem 0; font-size: 0.85rem; color: #64748B;">
+      Select an issue or resource category:
+    </p>
+
+    <!-- Category Selector Chips -->
+    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
+      <button type="button" class="feedback-chip" onclick="this.classList.toggle('active')">Missing PYQs</button>
+      <button type="button" class="feedback-chip" onclick="this.classList.toggle('active')">Syllabus Discrepancy</button>
+      <button type="button" class="feedback-chip" onclick="this.classList.toggle('active')">Panic Pack Request</button>
+      <button type="button" class="feedback-chip" onclick="this.classList.toggle('active')">Bug Report</button>
+    </div>
+
+    <!-- Notes Textarea -->
+    <textarea id="feedback-desc" placeholder="Specify subject codes, missing years, or suggestions..." style="width: 100% !important; height: 95px !important; border: 1.5px solid rgba(141, 185, 240, 0.5) !important; border-radius: 0.5rem !important; padding: 0.75rem !important; font-family: inherit !important; font-size: 0.875rem !important; color: #0F172A !important; background: #E9E8F8 !important; box-sizing: border-box !important; resize: none !important; outline: none !important; margin-bottom: 1.25rem !important;"></textarea>
+
+    <!-- Bottom Actions: Cancel & Submit (NO 'X' BUTTON) -->
+    <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+      <button type="button" id="feedback-cancel-btn" onclick="closeFeedbackModal()" style="background: #FFFFFF !important; color: #0F172A !important; border: 1.5px solid #8DB9F0 !important; padding: 0.55rem 1.15rem !important; border-radius: 0.5rem !important; font-weight: 600 !important; cursor: pointer !important;">
+        Cancel
+      </button>
+      <button type="button" id="feedback-submit-btn" onclick="submitFeedbackForm()" style="background: #F5B69E !important; color: #0F172A !important; border: none !important; padding: 0.55rem 1.35rem !important; border-radius: 0.5rem !important; font-weight: 700 !important; cursor: pointer !important; box-shadow: 0 2px 8px rgba(245, 182, 158, 0.4) !important;">
+        Submit Feedback
+      </button>
+    </div>
+  </div>
+</div>
+
+        <!-- 1. Spiced-Up Gen-Z Panic Pack Modal (Section 1) -->
+    <div id="panic-pack-modal" style="display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(6px); z-index: 10000; align-items: center; justify-content: center; padding: 1.25rem;" onclick="if(event.target === this) this.style.display='none';">
+  <div style="background: #FFFFFF; border: 2px solid #8DB9F0; border-radius: 1.25rem; padding: 2rem; width: 100%; max-width: 480px; box-shadow: 0 25px 50px rgba(0,0,0,0.25); box-sizing: border-box; text-align: left;" onclick="event.stopPropagation();">
+    <span style="font-size: 0.75rem; font-weight: 800; color: #0F172A; background: #F5B69E; padding: 0.25rem 0.65rem; border-radius: 9999px; display: inline-block; margin-bottom: 0.75rem; letter-spacing: 0.04em;">
+      🚨 ACADEMIC EMERGENCY · CODE RED
+    </span>
+    <h3 style="font-family: 'Manrope', sans-serif; font-size: 1.35rem; font-weight: 800; color: #0F172A; line-height: 1.35; margin: 0 0 0.65rem 0;">
+      POV: Exam tomorrow and you’re negotiating with the syllabus?! 💀📉
+    </h3>
+    <p style="font-size: 0.95rem; font-weight: 500; color: #334155; line-height: 1.55; margin: 0 0 1.5rem 0;">
+      We won't pretend you'll top the branch by 9 AM, but why risk a backlog? Focus on the 20% repeated question patterns and give yourself a genuine fighting chance tomorrow! 🤝🔥
+    </p>
+    <div style="display: flex; flex-direction: column; gap: 0.65rem;">
+      <button type="button" onclick="window.location.href='login.html'" style="background: #F5B69E; color: #0F172A; font-weight: 800; font-size: 0.95rem; padding: 0.85rem 1.25rem; border-radius: 0.5rem; border: none; cursor: pointer; text-align: center; box-shadow: 0 4px 14px rgba(245, 182, 158, 0.45); transition: transform 0.15s ease;">
+        Unlock Panic Pack & Lock In →
+      </button>
+      <button type="button" onclick="document.getElementById('panic-pack-modal').style.display='none'" style="background: transparent; color: #64748B; font-weight: 600; font-size: 0.85rem; padding: 0.4rem; border: none; cursor: pointer; text-align: center;">
+        I'll manage on my own (praying for a miracle)
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Academic Scope Onboarding Modal (#academic-setup-modal / #scope-modal) -->
+    <div class="modal-backdrop academic-setup-modal" id="academic-setup-modal" data-modal="academic-setup-modal" style="display: none;">
+        <div id="scope-modal" style="display: none;" aria-hidden="true"></div>
+        <div class="modal-card onboarding-card">
+            <div class="modal-header">
+                <div>
+                    <h2 class="modal-title">Set Your Academic Context</h2>
+                    <p class="modal-subtitle">Choose your academic stage to load verified MAKAUT syllabi and PYQs.</p>
+                </div>
+                <button class="modal-close-btn" id="btn-close-scope-modal" title="Close" aria-label="Close academic context modal">✕</button>
+            </div>
+
+            <form id="scope-form" class="onboarding-form">
+                <input type="hidden" id="select-stream" name="stream" value="CSE">
+                <input type="hidden" id="select-semester" name="semester" value="3">
+                <input type="hidden" id="select-college" name="college" value="In-House">
+                <!-- 1. Primary Year Level Selector -->
+                <div class="form-group">
+                    <label class="form-label">Academic Stage & Program</label>
+                    <div class="primary-year-select-row" id="primary-year-select-row">
+                        <button type="button" class="primary-year-btn academic-stage-card stage-card stage-first-year academic-option active selected" id="btn-scope-first-year" data-year-mode="FIRST_YEAR" data-stage="first-year">
+                            <span class="year-btn-icon">🏛️</span>
+                            <div class="year-btn-content">
+                                <span class="year-btn-title">1st Year Common Curriculum (Semesters 1 & 2)</span>
+                                <span class="year-btn-sub">Physics, Chemistry, Mathematics 1 & 2, BEE, PPS, English, EVS, Biology</span>
+                            </div>
+                            <span class="year-check-icon checkmark check-icon">✓</span>
+                        </button>
+                        <button type="button" class="primary-year-btn academic-stage-card stage-card stage-departmental academic-option" id="btn-scope-departmental-years" data-year-mode="DEPARTMENTAL_YEARS" data-stage="departmental">
+                            <span class="year-btn-icon">🎓</span>
+                            <div class="year-btn-content">
+                                <span class="year-btn-title">Departmental Years (Semesters 3 – 8)</span>
+                                <span class="year-btn-sub">Branch-Specific Departmental Core & Advanced Electives</span>
+                            </div>
+                            <span class="year-check-icon checkmark check-icon" style="display: none;">✓</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Departmental Years Controls (Shown only when Departmental Years is active) -->
+                <div id="departmental-years-controls" class="departmental-options-container hidden" style="display: none;">
+                    <!-- Department / Engineering Stream Selector -->
+                    <div class="form-group">
+                        <label class="form-label">Department / Engineering Stream</label>
+                        <div class="stream-select-grid" id="stream-picker-grid">
+                            <button type="button" class="stream-option stream-card stream-pill academic-option active selected" data-stream="CSE">
+                                <span class="stream-icon">💻</span>
+                                <span class="stream-name">Computer Science & Engineering</span>
+                                <span class="stream-desc">Curated MAKAUT 4-Year B.Tech Curriculum</span>
+                            </button>
+                            <button type="button" class="stream-option stream-card stream-pill academic-option" data-stream="CSE-AIML">
+                                <span class="stream-icon">🤖</span>
+                                <span class="stream-name">Computer Science and Artificial Intelligence and Machine Learning</span>
+                                <span class="stream-desc">Specialized AI & Machine Learning Track</span>
+                            </button>
+                            <button type="button" class="stream-option stream-card stream-pill academic-option" data-stream="IT">
+                                <span class="stream-icon">🌐</span>
+                                <span class="stream-name">Information Technology</span>
+                                <span class="stream-desc">Enterprise Systems & Web Engineering</span>
+                            </button>
+                            <button type="button" class="stream-option stream-card stream-pill academic-option" data-stream="CSCS">
+                                <span class="stream-icon">🛡️</span>
+                                <span class="stream-name">Computer Science and Cyber Security</span>
+                                <span class="stream-desc">Cyber Defense & Security Architecture</span>
+                            </button>
+                            <button type="button" class="stream-option stream-card stream-pill academic-option" data-stream="CSBS">
+                                <span class="stream-icon">📊</span>
+                                <span class="stream-name">Computer Science and Business Systems</span>
+                                <span class="stream-desc">Business Systems & Computing Analytics</span>
+                            </button>
+                            <button type="button" class="stream-option stream-card stream-pill academic-option" data-stream="CSDS">
+                                <span class="stream-icon">🔬</span>
+                                <span class="stream-name">Computer Science and Data Science</span>
+                                <span class="stream-desc">Data Engineering & Applied Intelligence</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <!-- Routes authenticated users to dedicated dashboard.html; falls back to SPA #dashboard for unauthenticated preview -->
+                    <button type="submit" class="btn btn-primary btn-large btn-enter-dashboard" id="btn-confirm-scope" onclick="
+                      var isLoggedIn = localStorage.getItem('campussense_logged_in') === 'true';
+                      if (isLoggedIn && typeof handleAcademicSetupSubmit === 'function') {
+                        handleAcademicSetupSubmit(event);
+                        setTimeout(function(){ window.location.href = 'dashboard.html'; }, 200);
+                      }
+                    ">
+                        Enter Dashboard ➔
+                    </button>
+                    <button type="button" id="btn-enter-dashboard" style="display: none;" aria-hidden="true"></button>
+                    <button type="button" id="btn-save-academic" style="display: none;" aria-hidden="true"></button>
+                    <button type="button" id="academic-submit" style="display: none;" aria-hidden="true"></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Subject Hub Modal (Checklist + PYQ Archive + Recurring Topic Clusters) -->
+    <div class="modal-backdrop" id="subject-hub-modal" style="display: none;">
+        <div class="modal-card subject-hub-card">
+            <div class="hub-header">
+                <div>
+                    <div class="hub-meta-row">
+                        <span class="badge" id="hub-modal-code" data-id="hub-subject-code">BS-M101</span>
+                        
+                        <span class="stat-pill hub-subject-stream" id="hub-modal-stream-sem" data-id="hub-subject-stream">1st Year Common • Sem 1</span>
+                        
+                        
+                        
+                    </div>
+                    <h2 class="hub-title" id="hub-modal-title" data-id="hub-subject-name">Mathematics 1A</h2>
+                    
+                </div>
+                <div class="hub-progress-stat">
+                    <div class="stat-num" id="hub-completion-stat">0%</div>
+                    <div class="stat-lbl">Syllabus Covered</div>
+                </div>
+                <div class="hub-header-actions" style="display: flex; align-items: center; gap: 0.75rem;">
+                    <button type="button" class="btn-modal-back" id="btn-back-hub-modal" title="Back to Dashboard">← Back</button>
+                    <button class="modal-close-btn" id="btn-close-hub-modal" title="Close" aria-label="Close subject hub modal">✕</button>
+                </div>
+            </div>
+
+            <div class="hub-tabs-row">
+                <button class="hub-tab-btn active" data-hub-tab="checklist">📋 Syllabus Units Checklist</button>
+                <button class="hub-tab-btn" data-hub-tab="pyqs">📑 PYQ Archives</button>
+            </div>
+
+            <!-- Tab 1: Interactive Syllabus Units Checklist -->
+            <div class="hub-tab-content active" id="tab-content-checklist">
+                <div class="checklist-instructions">
+                    ✓ Check off units as you finish revising them. Progress is automatically persisted.
+                </div>
+                <div class="units-checklist-container" id="hub-units-container">
+                    <!-- Populated dynamically by app.js -->
+                </div>
+            </div>
+
+            <!-- Tab 2: PYQ Archives -->
+            <div class="hub-tab-content" id="tab-content-pyqs" style="display: none;">
+                <div class="hub-pyq-filter-row" id="hub-pyq-filter-row">
+                    <span class="filter-label">Filter Exam Year:</span>
+                    <div class="hub-pyq-pills" id="hub-pyq-pills">
+                        <button type="button" class="hub-pyq-pill active" data-pyq-year="ALL">All Papers</button>
+                        <button type="button" class="hub-pyq-pill" data-pyq-year="2026">2026</button>
+                        <button type="button" class="hub-pyq-pill" data-pyq-year="2025">2025</button>
+                        <button type="button" class="hub-pyq-pill" data-pyq-year="2024">2024</button>
+                        <button type="button" class="hub-pyq-pill" data-pyq-year="2023">2023</button>
+                        <button type="button" class="hub-pyq-pill" data-pyq-year="2020">2020</button>
+                    </div>
+                </div>
+                <div class="pyq-archive-list" id="hub-pyqs-container">
+                    <!-- Populated dynamically by app.js -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Full Panic Mode Modal (48h High-Yield PYQ Drill) -->
+    <div class="modal-backdrop" id="panic-mode-modal" style="display: none;">
+        <div class="modal-card panic-mode-card">
+            <div class="panic-modal-header">
+                <div class="flame-header-title">
+                    <span class="flame-icon large">🔥</span>
+                    <div>
+                        <h2 class="panic-title">MAKAUT Panic Pack — 48-Hour Exam Drill</h2>
+                        <p class="panic-subhead">The top 20% most repeated exam questions across MAKAUT semester papers. Prioritize these for guaranteed pass & scoring.</p>
+                    </div>
+                </div>
+                <button class="modal-close-btn" id="btn-close-panic-modal" title="Close" aria-label="Close panic drill modal">✕</button>
+            </div>
+
+            <div class="panic-filter-bar">
+                <span class="filter-label">Filter by Subject:</span>
+                <select id="panic-subject-filter" class="custom-select">
+                    <option value="">All Current Semester Subjects</option>
+                </select>
+                <div class="panic-sort-info">
+                    <span>Sorted by: <strong>Frequency of Appearance</strong></span>
+                </div>
+            </div>
+
+            <div class="panic-questions-grid" id="panic-questions-container">
+                <!-- Full ranked question cards -->
+            </div>
+        </div>
+    </div>
+
+    <!-- PDF Previewer Modal (Public Zero-Auth Syllabus Access) -->
+    <div id="pdf-preview-modal" class="modal modal-backdrop" style="display: none;" onclick="if(event.target === this) closeLandingPdfPreview();">
+      <div id="pdf-viewer-modal" style="display: none;" aria-hidden="true"></div>
+      <div class="modal-dialog modal-xl modal-card pdf-viewer-card" style="width: 92vw; max-width: 1200px; height: 90vh; display: flex; flex-direction: column;" onclick="event.stopPropagation();">
+        <div class="modal-header pdf-viewer-header" style="display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 1.25rem;">
+          <h3 id="pdf-preview-title" class="pdf-title" style="margin: 0; font-size: 1.1rem; font-weight: 700; color: #0F172A;">Document Preview</h3>
+          <span id="pdf-modal-title" style="display:none;" aria-hidden="true">Document Preview</span>
+          <div style="display: flex; align-items: center; gap: 0.6rem;">
+            <a id="btn-pdf-open-external" href="#" target="_blank" class="btn btn-outline" style="padding: 0.4rem 0.85rem; font-size: 0.825rem; font-weight: 600; text-decoration: none; border: 1.5px solid #8DB9F0; border-radius: 0.35rem; color: #0F172A;">Open in New Tab ↗</a>
+            <a id="btn-pdf-download-direct" href="#" download class="btn btn-primary" style="padding: 0.4rem 0.85rem; font-size: 0.825rem; font-weight: 700; text-decoration: none; background-color: #F5B69E; color: #0F172A; border-radius: 0.35rem;">Download ⬇</a>
+            <button id="btn-close-pdf-modal" class="modal-close-btn" aria-label="Close PDF preview modal" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; margin-left: 0.5rem;" onclick="closeLandingPdfPreview()">&times;</button>
+          </div>
+        </div>
+        <div class="modal-body pdf-viewer-body" style="flex: 1; padding: 0; background: #334155; overflow: hidden; position: relative; display: flex; flex-direction: column;">
+          <!-- Quick Control Ribbon for InPrivate / Sandboxed Browsers -->
+          <div style="background: #0f172a; color: #f8fafc; padding: 0.5rem 1rem; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; border-bottom: 2px solid #8DB9F0; flex-shrink: 0;">
+            <div style="font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 0.4rem;">
+              <span>📑</span> <span id="pdf-ribbon-title">Official Syllabus Blueprint</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <a id="btn-pdf-ribbon-open" href="#" target="_blank" style="background: #38bdf8; color: #0f172a; font-weight: 700; font-size: 0.8rem; padding: 0.3rem 0.75rem; border-radius: 0.35rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.25rem;">
+                Open Fullscreen Tab ↗
+              </a>
+              <a id="btn-pdf-ribbon-download" href="#" download style="background: #F5B69E; color: #000; font-weight: 700; font-size: 0.8rem; padding: 0.3rem 0.75rem; border-radius: 0.35rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.25rem;">
+                Download PDF ⬇
+              </a>
+            </div>
+          </div>
+          <!-- Embedded Iframe Frame -->
+          <iframe id="pdf-viewer-frame" class="pdf-viewer-frame" src="about:blank" style="flex: 1; width: 100%; border: none; background: #ffffff; opacity: 1 !important; display: block !important;" title="Document Viewer" allow="fullscreen"></iframe>
+          <iframe id="pdf-viewer-iframe" style="display: none;" aria-hidden="true"></iframe>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function resolveAppUrl(url) {
+        if (!url) return '';
+        if (/^(https?:|blob:|data:)/i.test(url.trim())) return url.trim();
+        const clean = url.trim().replace(/^\/+/, '');
+        const isGhPages = window.location.pathname.toLowerCase().includes('makaut-campussense');
+        const base = isGhPages ? '/MAKAUT-CampusSense/' : '';
+        return base + clean;
+      }
+
+      function openLandingPdfPreview(title, url) {
+        const modal = document.getElementById('pdf-preview-modal');
+        const titlePreviewEl = document.getElementById('pdf-preview-title');
+        const titleModalEl = document.getElementById('pdf-modal-title');
+        const titleRibbonEl = document.getElementById('pdf-ribbon-title');
+        const iframe = document.getElementById('pdf-viewer-frame');
+        const openNewTabBtn = document.getElementById('btn-pdf-open-external');
+        const downloadDirectBtn = document.getElementById('btn-pdf-download-direct');
+        const ribbonOpenBtn = document.getElementById('btn-pdf-ribbon-open');
+        const ribbonDownloadBtn = document.getElementById('btn-pdf-ribbon-download');
+
+        const cleanUrl = (url || '').trim();
+        const safeUrl = encodeURI(resolveAppUrl(cleanUrl));
+        const fileName = (title || 'Syllabus').replace(/[^a-zA-Z0-9_-]/g, '_') + '.pdf';
+
+        if (titlePreviewEl) titlePreviewEl.textContent = title || 'Document Preview';
+        if (titleModalEl) titleModalEl.textContent = title || 'Document Preview';
+        if (titleRibbonEl) titleRibbonEl.textContent = title || 'Official Syllabus Blueprint';
+
+        [openNewTabBtn, ribbonOpenBtn].forEach(b => {
+          if (b) { b.href = safeUrl; b.target = '_blank'; }
+        });
+
+        [downloadDirectBtn, ribbonDownloadBtn].forEach(b => {
+          if (b) {
+            b.href = safeUrl;
+            b.setAttribute('download', fileName);
+            b.onclick = function(e) {
+              e.stopPropagation();
+              downloadLandingSyllabus(safeUrl, fileName);
+            };
+          }
+        });
+
+        if (iframe) {
+          iframe.style.opacity = '1';
+          iframe.style.display = 'block';
+          iframe.src = safeUrl;
+        }
+
+        if (modal) {
+          modal.style.display = 'flex';
+          modal.style.alignItems = 'center';
+          modal.style.justifyContent = 'center';
+          modal.classList.add('active');
+          document.body.classList.add('modal-open');
+        }
+      }
+
+      function downloadLandingSyllabus(url, fileName) {
+        const safeUrl = encodeURI(resolveAppUrl(url));
+        const safeName = fileName || 'MAKAUT_Syllabus.pdf';
+        const a = document.createElement('a');
+        a.href = safeUrl;
+        a.download = safeName;
+        a.target = '_blank';
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+          if (a.parentNode) a.parentNode.removeChild(a);
+        }, 300);
+      }
+
+      function closeLandingPdfPreview() {
+        const modal = document.getElementById('pdf-preview-modal');
+        const iframe = document.getElementById('pdf-viewer-frame');
+        if (iframe) iframe.src = 'about:blank';
+        if (modal) {
+          modal.style.display = 'none';
+          modal.classList.remove('active');
+        }
+        document.body.classList.remove('modal-open');
+      }
+
+      window.openLandingPdfPreview = openLandingPdfPreview;
+      window.downloadLandingSyllabus = downloadLandingSyllabus;
+      window.closeLandingPdfPreview = closeLandingPdfPreview;
+    </script>
+
+
+    <!-- Feedback & Support Modal (Replaced by #feedback-modal) -->
+
+
+
+
+
+    <!-- ====================================================================
+         DEDICATED CONVERSATIONAL RAG CHATBOT UI/UX & CITATION EXCERPT DRAWER
+         ==================================================================== -->
+
+    <!-- Floating Launcher (#chat-fab) -->
+    <button class="chat-fab-launcher" id="chat-fab" style="display:none !important;" aria-hidden="true"></button>
+    <button id="btn-open-ai-fab" style="display:none;" aria-hidden="true"></button>
+
+    <!-- Floating Draggable & Pinnable Chat Window (#chat-widget-window / #chat-window) -->
+    <div class="chat-window-backdrop drawer-backdrop ai-chat-backdrop" id="chat-window-backdrop" style="display: none !important; pointer-events: none !important;"></div>
+    <aside class="chat-window-container ai-chat-drawer drawer-panel" id="chat-widget-window" style="display: none;" role="dialog" aria-label="CampusSense Academic Intelligence" aria-modal="false">
+        <!-- Header / Drag Handle (#chat-drag-header) -->
+        <div class="chat-window-header ai-chat-header" id="chat-drag-header">
+            <div class="chat-header-info ai-chat-title-group" style="display: flex; align-items: center; gap: 6px; min-width: 0; overflow: hidden;">
+                <svg class="chat-drag-grip-svg" width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="cursor: grab; opacity: 0.6; flex-shrink: 0;">
+                    <circle cx="2.5" cy="2.5" r="1.5" fill="currentColor"/>
+                    <circle cx="7.5" cy="2.5" r="1.5" fill="currentColor"/>
+                    <circle cx="2.5" cy="8" r="1.5" fill="currentColor"/>
+                    <circle cx="7.5" cy="8" r="1.5" fill="currentColor"/>
+                    <circle cx="2.5" cy="13.5" r="1.5" fill="currentColor"/>
+                    <circle cx="7.5" cy="13.5" r="1.5" fill="currentColor"/>
+                </svg>
+                <div class="chat-header-title ai-chat-title" style="font-size: 13px; font-weight: 600; color: var(--text-primary, #F8FAFC); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">CampusSense AI</div>
+                <span class="chat-verified-badge font-mono" style="font-size: 11px; background: rgba(99, 102, 241, 0.12); border: 1px solid rgba(99, 102, 241, 0.3); color: #818CF8; padding: 1px 5px; border-radius: 4px; white-space: nowrap; flex-shrink: 0;">Verified RAG</span>
+            </div>
+            <div class="chat-header-actions ai-chat-header-actions" style="display: flex; align-items: center; gap: 4px; flex-shrink: 0;">
+                <button type="button" class="chat-action-btn-icon chat-pin-btn" id="btn-chat-pin" title="Pin chatbot on screen" aria-label="Pin chatbot on screen" aria-pressed="false">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="17" x2="12" y2="22"/><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z"/></svg>
+                </button>
+                <button type="button" class="chat-action-btn-icon" id="btn-chat-center" title="Center window on screen" aria-label="Center window on screen">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="22" y1="12" x2="18" y2="12"/><line x1="6" y1="12" x2="2" y2="12"/><line x1="12" y1="6" x2="12" y2="2"/><line x1="12" y1="22" x2="12" y2="18"/></svg>
+                </button>
+                <button type="button" class="chat-action-btn-icon btn-clear-chat" id="chat-clear-btn" title="Clear conversation history" aria-label="Clear conversation history">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                </button>
+                <button type="button" class="chat-action-btn-icon chat-min-btn" id="chat-min-btn" title="Minimize Chat Window" aria-label="Minimize Chat Window">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </button>
+                <button type="button" class="chat-action-btn-icon chat-close-btn drawer-close-btn" id="chat-close-btn" title="Close AI Assistant (Esc)" aria-label="Close Chat">✕</button>
+                <button type="button" id="btn-close-ai-chat" style="display:none;" aria-hidden="true"></button>
+                <button type="button" id="btn-chat-api-settings" style="display:none;" aria-hidden="true"></button>
+                <button type="button" class="chat-action-btn-icon chat-expand-btn" id="chat-expand-btn" style="display:none;" title="Toggle Fullscreen Expansion" aria-label="Expand Chat Window"></button>
+            </div>
+        </div>
+
+        <!-- Chatbot AI Provider & Key Settings Panel -->
+        <div id="chat-api-settings-panel" class="chat-api-settings-panel" style="display: none;">
+            <div class="chat-api-settings-header">
+                <span class="font-bold text-sm">AI Model &amp; Key Settings</span>
+                <button type="button" id="btn-close-api-settings" class="chat-ctrl-btn" aria-label="Close AI Settings">✕</button>
+            </div>
+            <div class="chat-api-settings-body">
+                <p style="font-size: 12px; color: var(--text-secondary); margin: 0 0 8px 0; line-height: 1.45;">
+                    Primary source is MAKAUT syllabi &amp; PYQs. When an answer is not in the offline catalog, search with Gemini or Groq AI.
+                </p>
+                <label style="display: block; font-size: 12px; font-family: monospace; font-weight: 600; margin-bottom: 4px;">AI Provider</label>
+                <select id="chat-ai-provider-select" class="chat-settings-select">
+                    <option value="gemini" selected>Google Gemini (Gemini 1.5 / 2.0 Flash)</option>
+                    <option value="groq">Groq Cloud (Llama 3.3 70B Versatile)</option>
+                </select>
+                <label style="display: block; font-size: 12px; font-family: monospace; font-weight: 600; margin-top: 8px; margin-bottom: 4px;">Gemini API Key</label>
+                <input type="password" id="chat-gemini-key-input" class="chat-settings-input" placeholder="AIzaSy... (Saved locally in browser)" />
+                <label style="display: block; font-size: 12px; font-family: monospace; font-weight: 600; margin-top: 8px; margin-bottom: 4px;">Groq API Key</label>
+                <input type="password" id="chat-groq-key-input" class="chat-settings-input" placeholder="gsk_... (Saved locally in browser)" />
+                <div style="display: flex; gap: 8px; margin-top: 10px;">
+                    <button type="button" id="btn-save-ai-settings" class="btn btn-primary" style="flex: 1; padding: 6px; font-size: 12px;">Save Keys</button>
+                    <button type="button" id="btn-clear-ai-settings" class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;">Clear</button>
+                </div>
+                <div style="font-size: 12px; color: var(--text-subtle); margin-top: 8px; font-family: monospace;">
+                    Get free keys: <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary); text-decoration: underline;">Google AI Studio</a> • <a href="https://console.groq.com/keys" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary); text-decoration: underline;">Groq Console</a>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Suggestion Starter Chips Bar -->
+        <div class="chat-starter-chips-bar" id="chat-starter-chips">
+            <button type="button" class="chat-chip-pill starter-chip" data-query="PCC-CS501 Automata Modules">
+                <span>⚙️</span> <span>PCC-CS501 Automata Modules</span>
+            </button>
+            <button type="button" class="chat-chip-pill starter-chip" data-query="CSE 3rd Sem Credit Matrix">
+                <span>📊</span> <span>CSE 3rd Sem Credit Matrix</span>
+            </button>
+            <button type="button" class="chat-chip-pill starter-chip" data-query="High-Yield Panic Proofs">
+                <span>🔥</span> <span>High-Yield Panic Proofs</span>
+            </button>
+        </div>
+
+        <!-- Scrollable Message Thread -->
+        <div class="chat-messages-container ai-chat-body" id="chat-messages" tabindex="0" role="log" aria-live="polite">
+            <!-- Messages rendered dynamically -->
+        </div>
+
+        <!-- Animated Typing Indicator -->
+        <div class="chat-typing-indicator ai-chat-typing-indicator" id="chat-typing-indicator" style="display: none;">
+            <div class="typing-bubble">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="typing-spinner" aria-hidden="true">
+                    <line x1="12" y1="2" x2="12" y2="6"></line>
+                    <line x1="12" y1="18" x2="12" y2="22"></line>
+                    <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
+                    <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
+                    <line x1="2" y1="12" x2="6" y2="12"></line>
+                    <line x1="18" y1="12" x2="22" y2="12"></line>
+                    <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
+                    <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
+                </svg>
+                <span class="typing-label font-mono">Retrieving verified MAKAUT academic data...</span>
+            </div>
+        </div>
+
+        <!-- Input Console -->
+        <div class="chat-input-console ai-chat-footer">
+            <form id="chat-input-form" class="chat-form ai-chat-form" onsubmit="event.preventDefault();">
+                <div class="chat-input-box-wrapper ai-input-wrapper">
+                    <textarea id="chat-input" class="chat-input-field ai-chat-input font-sans" rows="1"
+                              placeholder="Ask about PCC-CS501, 26-BS-PH101, credit rules, PYQs..."
+                              aria-label="Ask Academic AI" autocomplete="off"></textarea>
+                    <button type="submit" class="chat-send-btn btn-send-chat" id="chat-send-btn" title="Send message (Enter)" aria-label="Send message">
+                        <span class="send-label">Send</span>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                </div>
+                <div class="chat-input-meta font-mono ai-chat-hint" style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px; font-size: 11px; color: var(--text-muted, #64748B);">
+                    <span>Press <kbd style="background: rgba(255,255,255,0.08); padding: 1px 4px; border-radius: 3px; font-size: 10px;">Enter ↵</kbd> to send</span>
+                    <span style="opacity: 0.85;">🛡️ Verified RAG Guardrail</span>
+                </div>
+            </form>
+        </div>
+        <!-- AI Disclaimer Note -->
+        <div class="chat-ai-disclaimer" id="chat-ai-disclaimer">
+            CampusSense AI can make mistakes. Verify critical academic details from official MAKAUT notices.
+        </div>
+        <!-- 8-Directional Resizing Handles (All sides and corners) -->
+        <div class="chat-resize-handle chat-resize-n" data-direction="n" aria-label="Resize from top" aria-hidden="true"></div>
+        <div class="chat-resize-handle chat-resize-s" data-direction="s" aria-label="Resize from bottom" aria-hidden="true"></div>
+        <div class="chat-resize-handle chat-resize-e" data-direction="e" aria-label="Resize from right" aria-hidden="true"></div>
+        <div class="chat-resize-handle chat-resize-w" data-direction="w" aria-label="Resize from left" aria-hidden="true"></div>
+        <div class="chat-resize-handle chat-resize-ne" data-direction="ne" aria-label="Resize from top right" aria-hidden="true"></div>
+        <div class="chat-resize-handle chat-resize-nw" data-direction="nw" aria-label="Resize from top left" aria-hidden="true"></div>
+        <div class="chat-resize-handle chat-resize-sw" data-direction="sw" aria-label="Resize from bottom left" aria-hidden="true"></div>
+        <div class="chat-resize-handle chat-resize-se" data-direction="se" id="chat-resize-handle" title="Drag any side or corner to resize chat window" aria-label="Resize from bottom right" aria-hidden="true">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 2L2 8M9 5L5 9M9 8L8 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+        </div>
+    </aside>
+
+    <!-- Slide-Over Citation Excerpt Drawer (#drawer-citation-excerpt) -->
+    <div class="drawer-backdrop citation-drawer-backdrop" id="citation-drawer-backdrop" style="display: none;"></div>
+    <aside class="citation-excerpt-drawer" id="drawer-citation-excerpt" style="display: none;" role="dialog" aria-label="Academic Source Excerpt" aria-modal="true">
+        <div class="citation-drawer-header">
+            <div class="citation-drawer-title-group">
+                <span class="citation-icon">📜</span>
+                <div>
+                    <div class="citation-drawer-title" id="citation-source-code">PCC-CS501</div>
+                    <div class="citation-drawer-subtitle" id="citation-source-module">Formal Language & Automata Theory • Module 2</div>
+                </div>
+            </div>
+            <button type="button" class="citation-close-btn drawer-close-btn" id="btn-close-citation-drawer" title="Close Excerpt (Esc)" aria-label="Close citation excerpt drawer">✕</button>
+        </div>
+        <div class="citation-drawer-body">
+            <div class="citation-meta-pill font-mono" id="citation-meta-pill">Curated MAKAUT 2018 Regulation • Page 4</div>
+            <div class="citation-excerpt-text font-mono" id="citation-excerpt-content">
+                <!-- Populated dynamically from verified source syllabus -->
+            </div>
+            <div class="citation-drawer-actions">
+                <a href="#" id="citation-pdf-link" class="btn btn-primary w-full" target="_blank" rel="noopener noreferrer">
+                    <span>📖 Open Syllabus PDF ↗</span>
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Offline Verified Knowledge Index -->
+    <script src="makaut_knowledge_index.js"></script>
+    <!-- Application Script -->
+    <script src="app.js?v=20261022_v1"></script>
+    <!-- Clerk session sync (dynamically hydrated without hardcoded tokens) -->
+    <script defer crossorigin="anonymous" id="clerk-sdk-script" data-clerk-publishable-key="pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk" src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js"></script>
+    <script>
+      let clerkSessionSynced = false;
+      async function syncClerkSession() {
+        if (clerkSessionSynced) return;
+        try {
+          const signOutBtn = document.getElementById('btn-dashboard-sign-out');
+          const isLocalStudent = localStorage.getItem('campussense_logged_in') === 'true';
+
+          if (window.Clerk) {
+            if (!window.Clerk.loaded && typeof window.Clerk.load === 'function') {
+              const key = window.CLERK_PUBLISHABLE_KEY || window.__CAMPUSSENSE_CONFIG__?.clerkPublishableKey;
+              if (key && key.startsWith('pk_')) {
+                try { await window.Clerk.load({ publishableKey: key }); } catch (e) {}
+              }
+            }
+            if (window.Clerk.loaded) {
+              clerkSessionSynced = true;
+            }
+          }
+
+          if ((window.Clerk && window.Clerk.user) || isLocalStudent) {
+            document.querySelectorAll('#btn-sign-in, #btn-sign-up, #btn-nav-signin, #btn-nav-signup').forEach(btn => btn.style.display = 'none');
+            if (signOutBtn) {
+              signOutBtn.style.display = 'inline-flex';
+              signOutBtn.onclick = async (e) => {
+                if (typeof window.handleSignOut === 'function') {
+                  await window.handleSignOut(e);
+                } else if (typeof window.logoutUser === 'function') {
+                  window.logoutUser();
+                } else {
+                  localStorage.removeItem('campussense_logged_in');
+                  localStorage.removeItem('campussense_auth_provider');
+                  localStorage.removeItem('campussense_user_session');
+                  if (window.Clerk?.signOut) {
+                    try { await window.Clerk.signOut(); } catch (err) {}
+                  }
+                  window.location.hash = '';
+                  window.location.reload();
+                }
+              };
+            }
+          } else {
+            if (signOutBtn) signOutBtn.style.display = 'none';
+            document.querySelectorAll('#btn-sign-in, #btn-sign-up, #btn-nav-signin, #btn-nav-signup').forEach(btn => btn.style.display = '');
+          }
+        } catch (err) {
+          console.warn("[Clerk] Session sync error:", err);
+        }
+      }
+      if (window.Clerk) {
+        syncClerkSession();
+      } else {
+        const clerkScript = document.querySelector('script[data-clerk-publishable-key]');
+        if (clerkScript) clerkScript.addEventListener('load', syncClerkSession);
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', syncClerkSession);
+        } else {
+          syncClerkSession();
+        }
+      }
+    </script>
+
+    
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,86 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R /F2 6 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 1396 >>
+stream
+BT
+/F1 16 Tf
+50 740 Td
+(MAULANA ABUL KALAM AZAD UNIVERSITY OF TECHNOLOGY, WEST BENGAL) Tj
+/F1 13 Tf
+0 -24 Td
+(ES-ME191: Engineering Graphics & Design Syllabus) Tj
+/F2 10 Tf
+0 -18 Td
+(Course Code: ES-ME191 / ES-ME291 | 1st Year Engineering Curriculum | Credits: 3.0) Tj
+0 -24 Td
+/F1 11 Tf
+0 -22 Td
+(Module 1: Introduction to Engineering Drawing) Tj
+/F2 9 Tf
+0 -15 Td
+(Conventions, lettering, dimensioning, types of lines, BIS SP:46 standards.) Tj
+/F1 11 Tf
+0 -22 Td
+(Module 2: Orthographic Projections) Tj
+/F2 9 Tf
+0 -15 Td
+(Principles of First and Third Angle Projections, projections of points, lines, and planes.) Tj
+/F1 11 Tf
+0 -22 Td
+(Module 3: Projections of Regular Solids) Tj
+/F2 9 Tf
+0 -15 Td
+(Prisms, pyramids, cylinders, cones inclined to both reference planes.) Tj
+/F1 11 Tf
+0 -22 Td
+(Module 4: Sections and Sectional Views) Tj
+/F2 9 Tf
+0 -15 Td
+(True shapes of sections of right angular solids cut by inclined cutting planes.) Tj
+/F1 11 Tf
+0 -22 Td
+(Module 5: Isometric Projections) Tj
+/F2 9 Tf
+0 -15 Td
+(Principles of isometric projection, isometric scale, isometric views of complex solids.) Tj
+/F1 11 Tf
+0 -22 Td
+(Module 6: Computer Aided Drafting (CAD)) Tj
+/F2 9 Tf
+0 -15 Td
+(Introduction to CAD software interface, 2D drafting commands, dimensioning and layers.) Tj
+/F1 10 Tf
+0 -30 Td
+(Evaluation Scheme: Continuous Assessment - 40 Marks | Practical Examination - 60 Marks) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+6 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000251 00000 n 
+0000001699 00000 n 
+0000001774 00000 n 
+trailer
+<< /Size 7 /Root 1 0 R >>
+startxref
+1844
+%%EOF
