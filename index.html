@@ -27,7 +27,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Plus+Jakarta+Sans:wght@600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20261110_v6">
+    <link rel="stylesheet" href="styles.css?v=20261110_v7">
 
     <!-- Schema.org EducationalOrganization -->
     <script type="application/ld+json">
@@ -405,15 +405,13 @@
             </p>
 
             <!-- Search Bar -->
-            <div style="margin: 0 auto 1rem auto; max-width: 600px;">
-              <div style="max-width: 520px; margin: 0 auto;">
-                <input type="text" id="pyqSearchInput" placeholder="Search by full subject name or subject code..." 
-                       aria-describedby="pyqSearchNote"
-                       oninput="renderFilteredPYQs()"
-                       style="width: 100%; padding: 0.7rem 1.2rem; font-size: 0.95rem; border: 1.5px solid #8DB9F0; border-radius: 9999px; background: #FFFFFF; outline: none; box-shadow: 0 2px 8px rgba(15,23,42,0.04); color: #0F172A; box-sizing: border-box;" />
-              </div>
+            <div style="margin: 0 auto 1rem auto; max-width: 520px;">
+              <input type="text" id="pyqSearchInput" placeholder="Search by full subject name or subject code..." 
+                     aria-describedby="pyqSearchNote"
+                     oninput="renderFilteredPYQs()"
+                     style="width: 100%; padding: 0.7rem 1.2rem; font-size: 0.95rem; border: 1.5px solid #8DB9F0; border-radius: 9999px; background: #FFFFFF; outline: none; box-shadow: 0 2px 8px rgba(15,23,42,0.04); color: #0F172A; box-sizing: border-box;" />
               <p id="pyqSearchNote" class="pyq-search-note">
-                <strong>Note:</strong> Search using the <strong>full form</strong> of the subject, not short forms &mdash; e.g., typing <code>DBMS</code> will show no PYQ papers, whereas typing <strong>&ldquo;Database Management System&rdquo;</strong> will find the matching PYQs.
+                <strong>Note:</strong> Search using <strong>full subject names</strong>, not short forms.
               </p>
             </div>
 
@@ -430,7 +428,7 @@
           <!-- Dynamic Catalog Grid Target -->
           <div id="dynamicPyqGrid" class="pyq-grid"></div>
           <div id="noPyqResults" class="pyq-no-results" style="display: none;">
-            No examination papers found matching your search. <strong>Tip:</strong> Enter the full subject name instead of abbreviations (for example, search <strong>&ldquo;Database Management System&rdquo;</strong> rather than <strong>&ldquo;DBMS&rdquo;</strong>), or select <strong>All Years</strong>.
+            No examination papers found matching your search. Please use full subject names (not short forms) or select <strong>All Years</strong>.
           </div>
         </section>
     </main>
