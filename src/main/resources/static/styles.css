@@ -15986,3 +15986,230 @@ main, section, header, nav, .hero-section, .features-container, #features-sectio
   transform: scale(0.97) !important;
   background-color: #e59c80 !important;
 }
+
+/* ===================================================================
+   RESTORED SUBTLE 4-COLOR PALETTE & BALANCED GRID SYSTEM
+   =================================================================== */
+
+/* 1. Canvas with Calm Lavender Wash (~76% opacity over Haringhata Boulevard) */
+html, body,
+body.landing-body, body.dashboard-body,
+.landing-wrapper, .dashboard-wrapper, .page-wrapper {
+  min-height: 100vh !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background-color: #E9E8F8 !important;
+  background-image:
+    linear-gradient(rgba(233, 232, 248, 0.74), rgba(233, 232, 248, 0.80)),
+    url('images/makaut-haringhata-boulevard.jpg') !important;
+  background-position: center top !important;
+  background-size: cover !important;
+  background-attachment: fixed !important;
+  background-repeat: no-repeat !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  color: #0F172A !important;
+}
+
+.auth-page-container, body.auth-body {
+  min-height: 100vh !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background-color: #E9E8F8 !important;
+  background-image:
+    linear-gradient(rgba(233, 232, 248, 0.74), rgba(233, 232, 248, 0.80)),
+    url('images/makaut-haringhata-boulevard.jpg') !important;
+  background-position: center top !important;
+  background-size: cover !important;
+  background-attachment: fixed !important;
+  background-repeat: no-repeat !important;
+  padding: 1.5rem !important;
+  box-sizing: border-box !important;
+}
+
+/* 2. Strip Opaque/Peach Wrappers from Headers, Sections, and Footers */
+main, section, header, nav, footer,
+.section-header, .curriculum-header, .pyq-header,
+.category-header, #syllabus-section, #pyq-section,
+#main-header, .editorial-sticky-navbar {
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* 3. Pure White Elevated Cards with Powder Blue Borders */
+.syllabus-card, .pyq-card, .feature-card, .cl-card,
+.subject-card, .bento-card, .cute-academic-card {
+  background: #FFFFFF !important;
+  background-color: #FFFFFF !important;
+  border: 1.5px solid #8DB9F0 !important;
+  border-radius: 1rem !important;
+  padding: 1.5rem !important;
+  box-shadow: 0 4px 18px rgba(141, 185, 240, 0.12), 0 2px 6px rgba(15, 23, 42, 0.04) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.cl-card, .auth-card {
+  width: 100% !important;
+  max-width: 440px !important;
+  margin: 0 auto !important;
+  padding: 2.25rem !important;
+}
+
+.syllabus-card:hover, .pyq-card:hover, .cute-academic-card:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 24px rgba(141, 185, 240, 0.25) !important;
+}
+
+/* Remove any rogue alternating color rules */
+.syllabus-card:nth-child(odd),
+.syllabus-card:nth-child(even),
+.pyq-card:nth-child(odd),
+.pyq-card:nth-child(even),
+.cute-academic-card:nth-child(odd),
+.cute-academic-card:nth-child(even) {
+  background: #FFFFFF !important;
+  background-color: #FFFFFF !important;
+}
+
+.syllabus-card h4, .pyq-card h4, .cute-academic-card h4,
+.syllabus-card h3, .pyq-card h3, .cute-academic-card h3 {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  color: #0F172A !important;
+  line-height: 1.35 !important;
+  margin: 0.7rem 0 0.45rem 0 !important;
+}
+
+.syllabus-card p, .pyq-card p, .cute-academic-card p {
+  font-size: 0.85rem !important;
+  font-weight: 400 !important;
+  color: #475569 !important;
+  line-height: 1.5 !important;
+  min-height: 2.4rem !important;
+  margin: 0 0 1.25rem 0 !important;
+}
+
+/* 4. Balanced Grid Alignment */
+.syllabus-grid, .curriculum-grid, .pyq-grid, .cute-subject-grid, .dept-master-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)) !important;
+  gap: 1.5rem !important;
+  max-width: 1200px !important;
+  margin: 0 auto 3rem auto !important;
+  padding: 0 1rem !important;
+  align-items: stretch !important;
+  box-sizing: border-box !important;
+}
+
+/* 5. Powder Blue Badges */
+.subject-badge, .card-tag {
+  display: inline-block !important;
+  background-color: #EFF6FF !important;
+  color: #1E40AF !important;
+  border: 1px solid #8DB9F0 !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  padding: 0.2rem 0.55rem !important;
+  border-radius: 0.375rem !important;
+}
+
+/* 6. Action Buttons Inside Cards */
+.card-actions {
+  display: flex !important;
+  gap: 0.75rem !important;
+  margin-top: auto !important;
+  padding-top: 0.25rem !important;
+}
+
+.btn-preview,
+.cute-academic-card .btn-preview {
+  flex: 1 !important;
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
+  border: 1.5px solid #8DB9F0 !important;
+  border-radius: 0.5rem !important;
+  padding: 0.5rem !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: background 0.15s ease !important;
+}
+.btn-preview:hover,
+.cute-academic-card .btn-preview:hover {
+  background-color: #EFF6FF !important;
+}
+
+.btn-download,
+.cute-academic-card .btn-download {
+  flex: 1 !important;
+  background-color: #F5B69E !important;
+  background: #F5B69E !important;
+  color: #000000 !important; /* Fully visible jet-black text */
+  border: none !important;
+  border-radius: 0.5rem !important;
+  padding: 0.5rem !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  box-shadow: 0 2px 6px rgba(245, 182, 158, 0.45) !important;
+  transition: background 0.15s ease !important;
+}
+.btn-download:hover,
+.cute-academic-card .btn-download:hover {
+  background-color: #f7a88b !important;
+  background: #f7a88b !important;
+  color: #000000 !important;
+}
+
+/* Navbar, Hero CTAs, and Ask AI consistency */
+.hero-cta-btn, .hero-btn-explore, .hero-btn-panic {
+  background-color: #F5B69E !important;
+  background: #F5B69E !important;
+  color: #000000 !important;
+}
+.hero-cta-btn:hover, .hero-btn-explore:hover, .hero-btn-panic:hover {
+  background-color: #f7a88b !important;
+  background: #f7a88b !important;
+  color: #000000 !important;
+}
+#floating-ask-ai, .floating-ask-ai {
+  background-color: #F5B69E !important;
+  background: #F5B69E !important;
+  color: #000000 !important;
+}
+#floating-ask-ai:hover, .floating-ask-ai:hover {
+  background-color: #f7a88b !important;
+  background: #f7a88b !important;
+  color: #000000 !important;
+}
+.landing-nav-links a:hover, .landing-nav-link:hover {
+  color: #1E40AF !important;
+}
+
+/* 7. Clean Transparent Footer */
+footer, .footer-section, .landing-footer {
+  background: transparent !important;
+  background-color: transparent !important;
+  border-top: 1px solid rgba(141, 185, 240, 0.4) !important;
+  padding: 3rem 1.5rem !important;
+  margin-top: 4rem !important;
+  text-align: center !important;
+}
