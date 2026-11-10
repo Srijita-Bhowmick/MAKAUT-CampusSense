@@ -1021,19 +1021,17 @@
       localStorage.setItem("campussense_auth_provider", "clerk_otp");
       localStorage.setItem("campussense_user_session", JSON.stringify(user));
 
-      if (!localStorage.getItem("campussense_academic_profile")) {
-        localStorage.setItem("campussense_academic_profile", JSON.stringify({
-          stream: user.department || "CSE",
-          semester: "5",
-          year: "3rd Year",
-          college: "MAKAUT Main Campus (In-House)"
-        }));
+      if (localStorage.getItem("academic_profile_completed") === "true") {
+        showAlert("success", "Verification successful! Redirecting to Student Workspace...");
+        setTimeout(() => {
+          window.location.replace("dashboard.html");
+        }, 350);
+      } else {
+        showAlert("success", "Verification successful! Redirecting to Academic Profile Setup...");
+        setTimeout(() => {
+          window.location.replace("set-academic.html");
+        }, 350);
       }
-
-      showAlert("success", "Verification successful! Redirecting to Student Workspace...");
-      setTimeout(() => {
-        window.location.replace("dashboard.html");
-      }, 350);
     }
 
     function loginAsDemoScholar() {
