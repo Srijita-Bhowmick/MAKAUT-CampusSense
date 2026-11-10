@@ -16374,17 +16374,18 @@ footer, .footer-section, .landing-footer {
 
 /* Search Bar Full-Form Clarity Note & Empty State */
 .pyq-search-note {
-  margin: 0.6rem auto 0 auto !important;
-  padding: 0.5rem 0.95rem !important;
-  max-width: 580px !important;
+  margin: 0.5rem auto 0 auto !important;
+  padding: 0.38rem 0.95rem !important;
+  max-width: 520px !important;
   background: rgba(255, 255, 255, 0.92) !important;
   border: 1px solid #8DB9F0 !important;
-  border-radius: 0.75rem !important;
-  font-size: 0.84rem !important;
-  line-height: 1.45 !important;
+  border-radius: 9999px !important;
+  font-size: 0.82rem !important;
+  line-height: 1.4 !important;
   color: #334155 !important;
   box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04) !important;
   text-align: center !important;
+  box-sizing: border-box !important;
 }
 
 .pyq-search-note strong {
@@ -16392,20 +16393,10 @@ footer, .footer-section, .landing-footer {
   font-weight: 700 !important;
 }
 
-.pyq-search-note code {
-  font-family: 'JetBrains Mono', monospace !important;
-  font-size: 0.8rem !important;
-  background: #EFF6FF !important;
-  color: #1E40AF !important;
-  padding: 0.08rem 0.35rem !important;
-  border-radius: 0.35rem !important;
-  border: 1px solid #BFDBFE !important;
-}
-
 .pyq-no-results {
   text-align: center !important;
   padding: 1.5rem 1.25rem !important;
-  max-width: 600px !important;
+  max-width: 520px !important;
   margin: 1rem auto !important;
   background: rgba(255, 255, 255, 0.94) !important;
   border: 1.5px solid #8DB9F0 !important;
