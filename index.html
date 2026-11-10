@@ -27,7 +27,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Plus+Jakarta+Sans:wght@600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20261110_v2">
+    <link rel="stylesheet" href="styles.css?v=20261110_v3">
 
     <!-- Schema.org EducationalOrganization -->
     <script type="application/ld+json">
@@ -395,292 +395,56 @@
         </section>
 
         <!-- F. PYQ Archives Section -->
-        <section id="pyq-section" style="max-width: 1200px; margin: 4rem auto; padding: 0 1.5rem;">
+        <section id="pyq-section" style="max-width: 1240px; margin: 4.5rem auto; padding: 0 1.5rem;">
           <div style="text-align: center; margin-bottom: 2.5rem;">
-            <span style="font-size: 0.8rem; font-weight: 700; color: #1E40AF; background: #DBEAFE; padding: 0.3rem 0.8rem; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.05em;">
-              Official Examination Vault
+            <span style="font-size: 0.8rem; font-weight: 700; color: #1E40AF; background: #DBEAFE; padding: 0.35rem 0.85rem; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.05em;">
+              Official Examination Archives
             </span>
-            <h2 class="section-super-heading" style="font-size: 2.25rem; font-weight: 800; color: #0F172A; margin: 0.75rem 0 0.5rem 0;">
-              Verified Past Year Question (PYQ) Archives
+            <h2 class="section-super-heading" style="font-size: 2.3rem; font-weight: 800; color: #0F172A; margin: 0.85rem 0 0.4rem 0;">
+              Verified Subject-Wise PYQ Archives
             </h2>
-            <p class="section-lead-subtitle" style="font-size: 1rem; color: #475569; max-width: 650px; margin: 0 auto;">
-              Comprehensive semester examination papers organized across all foundational and core departmental semesters.
+            <p class="section-lead-subtitle" style="font-size: 1rem; color: #475569; max-width: 720px; margin: 0 auto;">
+              Access curated semester examination papers for every engineering department and subject across Semesters 1 to 8.
             </p>
 
-            <!-- Semester Filter Chips -->
-            <div class="pyq-filters" style="display: flex; justify-content: center; gap: 0.6rem; flex-wrap: wrap; margin-top: 1.5rem;">
-              <button type="button" class="pyq-filter-btn active" onclick="filterPYQ('all', this)">All Semesters</button>
-              <button type="button" class="pyq-filter-btn" onclick="filterPYQ('sem1-2', this)">Semesters 1 &amp; 2</button>
-              <button type="button" class="pyq-filter-btn" onclick="filterPYQ('sem3-4', this)">Semesters 3 &amp; 4</button>
-              <button type="button" class="pyq-filter-btn" onclick="filterPYQ('sem5-6', this)">Semesters 5 &amp; 6</button>
-              <button type="button" class="pyq-filter-btn" onclick="filterPYQ('sem7-8', this)">Semesters 7 &amp; 8</button>
+            <!-- Search Bar -->
+            <div style="margin: 2rem auto 1.25rem auto; max-width: 520px;">
+              <input type="text" id="pyqSearchInput" placeholder="Search by subject code, title, or keyword..." 
+                     oninput="renderFilteredPYQs()"
+                     style="width: 100%; padding: 0.75rem 1.25rem; font-size: 0.95rem; border: 1.5px solid #8DB9F0; border-radius: 9999px; background: #FFFFFF; outline: none; box-shadow: 0 2px 8px rgba(15,23,42,0.04); color: #0F172A; box-sizing: border-box;" />
+            </div>
+
+            <!-- Department Filter Chips -->
+            <div style="display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.85rem;">
+              <button type="button" class="pyq-dept-chip active" onclick="setDeptFilter('ALL', this)">All Departments</button>
+              <button type="button" class="pyq-dept-chip" onclick="setDeptFilter('Common', this)">1st Year Common</button>
+              <button type="button" class="pyq-dept-chip" onclick="setDeptFilter('CSE', this)">CSE</button>
+              <button type="button" class="pyq-dept-chip" onclick="setDeptFilter('IT', this)">IT</button>
+              <button type="button" class="pyq-dept-chip" onclick="setDeptFilter('CSBS', this)">CSBS</button>
+              <button type="button" class="pyq-dept-chip" onclick="setDeptFilter('ECE', this)">ECE</button>
+              <button type="button" class="pyq-dept-chip" onclick="setDeptFilter('EE', this)">EE</button>
+              <button type="button" class="pyq-dept-chip" onclick="setDeptFilter('ME', this)">ME</button>
+              <button type="button" class="pyq-dept-chip" onclick="setDeptFilter('CE', this)">CE</button>
+            </div>
+
+            <!-- Semester Filter Pills -->
+            <div style="display: flex; justify-content: center; gap: 0.45rem; flex-wrap: wrap;">
+              <button type="button" class="pyq-sem-chip active" onclick="setSemFilter('ALL', this)">All Semesters</button>
+              <button type="button" class="pyq-sem-chip" onclick="setSemFilter('1', this)">Sem 1</button>
+              <button type="button" class="pyq-sem-chip" onclick="setSemFilter('2', this)">Sem 2</button>
+              <button type="button" class="pyq-sem-chip" onclick="setSemFilter('3', this)">Sem 3</button>
+              <button type="button" class="pyq-sem-chip" onclick="setSemFilter('4', this)">Sem 4</button>
+              <button type="button" class="pyq-sem-chip" onclick="setSemFilter('5', this)">Sem 5</button>
+              <button type="button" class="pyq-sem-chip" onclick="setSemFilter('6', this)">Sem 6</button>
+              <button type="button" class="pyq-sem-chip" onclick="setSemFilter('7', this)">Sem 7</button>
+              <button type="button" class="pyq-sem-chip" onclick="setSemFilter('8', this)">Sem 8</button>
             </div>
           </div>
 
-          <!-- PYQ Cards Grid -->
-          <div class="pyq-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); gap: 1.5rem;">
-    <!-- SEMESTER 1 & 2 (Common Foundation) -->
-
-    <div class="pyq-card" data-semester="sem1-2">
-      <div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-          <span class="subject-badge">BS-M101</span>
-          <span style="font-size: 0.75rem; color: #64748B; font-weight: 600;">Sem 1 · 2018–2024</span>
-        </div>
-        <h4 style="font-size: 1.2rem; font-weight: 700; color: #0F172A; margin: 0 0 0.35rem 0;">Mathematics-I</h4>
-        <p style="font-size: 0.85rem; color: #475569; margin: 0; line-height: 1.4;">Calculus, Linear Algebra & Differential Equations verified archives.</p>
-      </div>
-      <div class="card-actions">
-        <a href="1st year/pyqs/mathematics_1a/btech-1-sem-mathematics-1a-bs-m101-2026.pdf" target="_blank" onclick="event.preventDefault(); openLandingPdfPreview('BS-M101: Mathematics-I PYQ', '1st year/pyqs/mathematics_1a/btech-1-sem-mathematics-1a-bs-m101-2026.pdf');" class="btn-preview">Preview</a>
-        <a href="1st year/pyqs/mathematics_1a/btech-1-sem-mathematics-1a-bs-m101-2026.pdf" download="MAKAUT_BS-M101_Mathematics-I_PYQ_2026.pdf" onclick="event.preventDefault(); event.stopPropagation(); downloadLandingSyllabus('1st year/pyqs/mathematics_1a/btech-1-sem-mathematics-1a-bs-m101-2026.pdf', 'MAKAUT_BS-M101_Mathematics-I_PYQ_2026.pdf');" class="btn-download">Download</a>
-      </div>
-    </div>
-
-    <div class="pyq-card" data-semester="sem1-2">
-      <div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-          <span class="subject-badge">BS-PH101</span>
-          <span style="font-size: 0.75rem; color: #64748B; font-weight: 600;">Sem 1 · 2018–2024</span>
-        </div>
-        <h4 style="font-size: 1.2rem; font-weight: 700; color: #0F172A; margin: 0 0 0.35rem 0;">Physics-I</h4>
-        <p style="font-size: 0.85rem; color: #475569; margin: 0; line-height: 1.4;">Optics, Quantum Mechanics & Electromagnetism past solutions.</p>
-      </div>
-      <div class="card-actions">
-        <a href="1st year/pyqs/physics/btech-1-sem-physics-1-bs-ph101-2026.pdf" target="_blank" onclick="event.preventDefault(); openLandingPdfPreview('BS-PH101: Physics-I PYQ', '1st year/pyqs/physics/btech-1-sem-physics-1-bs-ph101-2026.pdf');" class="btn-preview">Preview</a>
-        <a href="1st year/pyqs/physics/btech-1-sem-physics-1-bs-ph101-2026.pdf" download="MAKAUT_BS-PH101_Physics-I_PYQ_2026.pdf" onclick="event.preventDefault(); event.stopPropagation(); downloadLandingSyllabus('1st year/pyqs/physics/btech-1-sem-physics-1-bs-ph101-2026.pdf', 'MAKAUT_BS-PH101_Physics-I_PYQ_2026.pdf');" class="btn-download">Download</a>
-      </div>
-    </div>
-
-    <div class="pyq-card" data-semester="sem1-2">
-      <div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-          <span class="subject-badge">BS-M201</span>
-          <span style="font-size: 0.75rem; color: #64748B; font-weight: 600;">Sem 2 · 2019–2024</span>
-        </div>
-        <h4 style="font-size: 1.2rem; font-weight: 700; color: #0F172A; margin: 0 0 0.35rem 0;">Mathematics-II</h4>
-        <p style="font-size: 0.85rem; color: #475569; margin: 0; line-height: 1.4;">Advanced Calculus, Vector Spaces & Complex Variables question papers.</p>
-      </div>
-      <div class="card-actions">
-        <a href="1st year/pyqs/mathematics_2a/btech-2-sem-mathematics-2-a-bs-m201-2026.pdf" target="_blank" onclick="event.preventDefault(); openLandingPdfPreview('BS-M201: Mathematics-II PYQ', '1st year/pyqs/mathematics_2a/btech-2-sem-mathematics-2-a-bs-m201-2026.pdf');" class="btn-preview">Preview</a>
-        <a href="1st year/pyqs/mathematics_2a/btech-2-sem-mathematics-2-a-bs-m201-2026.pdf" download="MAKAUT_BS-M201_Mathematics-II_PYQ_2026.pdf" onclick="event.preventDefault(); event.stopPropagation(); downloadLandingSyllabus('1st year/pyqs/mathematics_2a/btech-2-sem-mathematics-2-a-bs-m201-2026.pdf', 'MAKAUT_BS-M201_Mathematics-II_PYQ_2026.pdf');" class="btn-download">Download</a>
-      </div>
-    </div>
-
-    <div class="pyq-card" data-semester="sem1-2">
-      <div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-          <span class="subject-badge">BS-CH101</span>
-          <span style="font-size: 0.75rem; color: #64748B; font-weight: 600;">Sem 2 · 2018–2024</span>
-        </div>
-        <h4 style="font-size: 1.2rem; font-weight: 700; color: #0F172A; margin: 0 0 0.35rem 0;">Chemistry</h4>
-        <p style="font-size: 0.85rem; color: #475569; margin: 0; line-height: 1.4;">Thermodynamics, Spectroscopic Techniques & Molecular Structure.</p>
-      </div>
-      <div class="card-actions">
-        <a href="1st year/pyqs/chemistry/btech-1-sem-chemistry-1-bs-ch101-2024.pdf" target="_blank" onclick="event.preventDefault(); openLandingPdfPreview('BS-CH101: Chemistry PYQ', '1st year/pyqs/chemistry/btech-1-sem-chemistry-1-bs-ch101-2024.pdf');" class="btn-preview">Preview</a>
-        <a href="1st year/pyqs/chemistry/btech-1-sem-chemistry-1-bs-ch101-2024.pdf" download="MAKAUT_BS-CH101_Chemistry_PYQ_2024.pdf" onclick="event.preventDefault(); event.stopPropagation(); downloadLandingSyllabus('1st year/pyqs/chemistry/btech-1-sem-chemistry-1-bs-ch101-2024.pdf', 'MAKAUT_BS-CH101_Chemistry_PYQ_2024.pdf');" class="btn-download">Download</a>
-      </div>
-    </div>
-
-    <div class="pyq-card" data-semester="sem1-2">
-      <div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-          <span class="subject-badge">ES-EE101</span>
-          <span style="font-size: 0.75rem; color: #64748B; font-weight: 600;">Sem 1 · 2018–2024</span>
-        </div>
-        <h4 style="font-size: 1.2rem; font-weight: 700; color: #0F172A; margin: 0 0 0.35rem 0;">Basic Electrical Engineering</h4>
-        <p style="font-size: 0.85rem; color: #475569; margin: 0; line-height: 1.4;">DC/AC Circuits, Transformers, Electro-mechanics & Machines.</p>
-      </div>
-      <div class="card-actions">
-        <a href="1st year/pyqs/bee/btech-1-sem-basic-electrical-engineering-es-ee101-2026.pdf" target="_blank" onclick="event.preventDefault(); openLandingPdfPreview('ES-EE101: Basic Electrical Engineering PYQ', '1st year/pyqs/bee/btech-1-sem-basic-electrical-engineering-es-ee101-2026.pdf');" class="btn-preview">Preview</a>
-        <a href="1st year/pyqs/bee/btech-1-sem-basic-electrical-engineering-es-ee101-2026.pdf" download="MAKAUT_ES-EE101_BEE_PYQ_2026.pdf" onclick="event.preventDefault(); event.stopPropagation(); downloadLandingSyllabus('1st year/pyqs/bee/btech-1-sem-basic-electrical-engineering-es-ee101-2026.pdf', 'MAKAUT_ES-EE101_BEE_PYQ_2026.pdf');" class="btn-download">Download</a>
-      </div>
-    </div>
-
-    <div class="pyq-card" data-semester="sem1-2">
-      <div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-          <span class="subject-badge">ES-CS201</span>
-          <span style="font-size: 0.75rem; color: #64748B; font-weight: 600;">Sem 2 · 2019–2024</span>
-        </div>
-        <h4 style="font-size: 1.2rem; font-weight: 700; color: #0F172A; margin: 0 0 0.35rem 0;">Programming for Problem Solving</h4>
-        <p style="font-size: 0.85rem; color: #475569; margin: 0; line-height: 1.4;">C Programming, Arrays, Pointers, Structures & Algorithm Design.</p>
-      </div>
-      <div class="card-actions">
-        <a href="1st year/pyqs/pps/btech-2-sem-programming-for-problem-solving-escs201-2025.pdf" target="_blank" onclick="event.preventDefault(); openLandingPdfPreview('ES-CS201: Programming for Problem Solving PYQ', '1st year/pyqs/pps/btech-2-sem-programming-for-problem-solving-escs201-2025.pdf');" class="btn-preview">Preview</a>
-        <a href="1st year/pyqs/pps/btech-2-sem-programming-for-problem-solving-escs201-2025.pdf" download="MAKAUT_ES-CS201_PPS_PYQ_2025.pdf" onclick="event.preventDefault(); event.stopPropagation(); downloadLandingSyllabus('1st year/pyqs/pps/btech-2-sem-programming-for-problem-solving-escs201-2025.pdf', 'MAKAUT_ES-CS201_PPS_PYQ_2025.pdf');" class="btn-download">Download</a>
-      </div>
-    </div>
-
-    <!-- SEMESTER 3 & 4 (Core Foundations) -->
-
-    <div class="pyq-card" data-semester="sem3-4">
-      <div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-          <span class="subject-badge">PCC-CS301</span>
-          <span style="font-size: 0.75rem; color: #64748B; font-weight: 600;">Sem 3 · 2019–2024</span>
-        </div>
-        <h4 style="font-size: 1.2rem; font-weight: 700; color: #0F172A; margin: 0 0 0.35rem 0;">Data Structures & Algorithms</h4>
-        <p style="font-size: 0.85rem; color: #475569; margin: 0; line-height: 1.4;">Trees, Graphs, Hashing, Dynamic Memory & Sorting Algorithms.</p>
-      </div>
-      <div class="card-actions">
-        <a href="3rd to 8th sem/cse/pyqs/3rd/DSA/btech-cse-3-sem-data-structure-and-algorithms-pcc-cs301-2024.pdf" target="_blank" onclick="event.preventDefault(); openLandingPdfPreview('PCC-CS301: Data Structures & Algorithms PYQ', '3rd to 8th sem/cse/pyqs/3rd/DSA/btech-cse-3-sem-data-structure-and-algorithms-pcc-cs301-2024.pdf');" class="btn-preview">Preview</a>
-        <a href="3rd to 8th sem/cse/pyqs/3rd/DSA/btech-cse-3-sem-data-structure-and-algorithms-pcc-cs301-2024.pdf" download="MAKAUT_PCC-CS301_DSA_PYQ_2024.pdf" onclick="event.preventDefault(); event.stopPropagation(); downloadLandingSyllabus('3rd to 8th sem/cse/pyqs/3rd/DSA/btech-cse-3-sem-data-structure-and-algorithms-pcc-cs301-2024.pdf', 'MAKAUT_PCC-CS301_DSA_PYQ_2024.pdf');" class="btn-download">Download</a>
-      </div>
-    </div>
-
-    <div class="pyq-card" data-semester="sem3-4">
-      <div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-          <span class="subject-badge">ESC-301</span>
-          <span style="font-size: 0.75rem; color: #64748B; font-weight: 600;">Sem 3 · 2019–2024</span>
-        </div>
-        <h4 style="font-size: 1.2rem; font-weight: 700; color: #0F172A; margin: 0 0 0.35rem 0;">Digital Electronics</h4>
-        <p style="font-size: 0.85rem; color: #475569; margin: 0; line-height: 1.4;">Combinational & Sequential Circuits, Logic Gates, Flip-Flops & Registers.</p>
-      </div>
-      <div class="card-actions">
-        <a href="3rd to 8th sem/cse/pyqs/3rd/ANALOG & DIGITAL/btech-cse-3-sem-analog-and-digital-electronics-esc-301-2025.pdf" target="_blank" onclick="event.preventDefault(); openLandingPdfPreview('ESC-301: Digital Electronics PYQ', '3rd to 8th sem/cse/pyqs/3rd/ANALOG & DIGITAL/btech-cse-3-sem-analog-and-digital-electronics-esc-301-2025.pdf');" class="btn-preview">Preview</a>
-        <a href="3rd to 8th sem/cse/pyqs/3rd/ANALOG & DIGITAL/btech-cse-3-sem-analog-and-digital-electronics-esc-301-2025.pdf" download="MAKAUT_ESC-301_Digital_Electronics_PYQ_2025.pdf" onclick="event.preventDefault(); event.stopPropagation(); downloadLandingSyllabus('3rd to 8th sem/cse/pyqs/3rd/ANALOG & DIGITAL/btech-cse-3-sem-analog-and-digital-electronics-esc-301-2025.pdf', 'MAKAUT_ESC-301_Digital_Electronics_PYQ_2025.pdf');" class="btn-download">Download</a>
-      </div>
-    </div>
-
-    <div class="pyq-card" data-semester="sem3-4">
-      <div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-          <span class="subject-badge">PCC-CS401</span>
-          <span style="font-size: 0.75rem; color: #64748B; font-weight: 600;">Sem 4 · 2019–2024</span>
-        </div>
-        <h4 style="font-size: 1.2rem; font-weight: 700; color: #0F172A; margin: 0 0 0.35rem 0;">Discrete Mathematics</h4>
-        <p style="font-size: 0.85rem; color: #475569; margin: 0; line-height: 1.4;">Set Theory, Propositional Logic, Graph Theory & Combinatorics.</p>
-      </div>
-      <div class="card-actions">
-        <a href="3rd to 8th sem/cse/pyqs/4th/DISCRETE MATHS/btech-cse-4-sem-discrete-mathematics-pcc-cs401-2026.pdf" target="_blank" onclick="event.preventDefault(); openLandingPdfPreview('PCC-CS401: Discrete Mathematics PYQ', '3rd to 8th sem/cse/pyqs/4th/DISCRETE MATHS/btech-cse-4-sem-discrete-mathematics-pcc-cs401-2026.pdf');" class="btn-preview">Preview</a>
-        <a href="3rd to 8th sem/cse/pyqs/4th/DISCRETE MATHS/btech-cse-4-sem-discrete-mathematics-pcc-cs401-2026.pdf" download="MAKAUT_PCC-CS401_Discrete_Maths_PYQ_2026.pdf" onclick="event.preventDefault(); event.stopPropagation(); downloadLandingSyllabus('3rd to 8th sem/cse/pyqs/4th/DISCRETE MATHS/btech-cse-4-sem-discrete-mathematics-pcc-cs401-2026.pdf', 'MAKAUT_PCC-CS401_Discrete_Maths_PYQ_2026.pdf');" class="btn-download">Download</a>
-      </div>
-    </div>
-
-    <div class="pyq-card" data-semester="sem3-4">
-      <div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-          <span class="subject-badge">PCC-CS402</span>
-          <span style="font-size: 0.75rem; color: #64748B; font-weight: 600;">Sem 4 · 2019–2024</span>
-        </div>
-        <h4 style="font-size: 1.2rem; font-weight: 700; color: #0F172A; margin: 0 0 0.35rem 0;">Computer Organization & Architecture</h4>
-        <p style="font-size: 0.85rem; color: #475569; margin: 0; line-height: 1.4;">Instruction Sets, Pipelining, Memory Hierarchy, Cache & I/O Systems.</p>
-      </div>
-      <div class="card-actions">
-        <a href="3rd to 8th sem/cse/pyqs/4th/COMPUTER ARCHITECTURE/btech-cse-4-sem-computer-architecture-pcc-cs402-2026.pdf" target="_blank" onclick="event.preventDefault(); openLandingPdfPreview('PCC-CS402: Computer Organization & Architecture PYQ', '3rd to 8th sem/cse/pyqs/4th/COMPUTER ARCHITECTURE/btech-cse-4-sem-computer-architecture-pcc-cs402-2026.pdf');" class="btn-preview">Preview</a>
-        <a href="3rd to 8th sem/cse/pyqs/4th/COMPUTER ARCHITECTURE/btech-cse-4-sem-computer-architecture-pcc-cs402-2026.pdf" download="MAKAUT_PCC-CS402_COA_PYQ_2026.pdf" onclick="event.preventDefault(); event.stopPropagation(); downloadLandingSyllabus('3rd to 8th sem/cse/pyqs/4th/COMPUTER ARCHITECTURE/btech-cse-4-sem-computer-architecture-pcc-cs402-2026.pdf', 'MAKAUT_PCC-CS402_COA_PYQ_2026.pdf');" class="btn-download">Download</a>
-      </div>
-    </div>
-
-    <div class="pyq-card" data-semester="sem3-4">
-      <div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-          <span class="subject-badge">PCC-CS403</span>
-          <span style="font-size: 0.75rem; color: #64748B; font-weight: 600;">Sem 4 · 2019–2024</span>
-        </div>
-        <h4 style="font-size: 1.2rem; font-weight: 700; color: #0F172A; margin: 0 0 0.35rem 0;">Operating Systems</h4>
-        <p style="font-size: 0.85rem; color: #475569; margin: 0; line-height: 1.4;">Process Synchronization, CPU Scheduling, Deadlocks & Virtual Memory.</p>
-      </div>
-      <div class="card-actions">
-        <a href="3rd to 8th sem/cse/pyqs/5th/OS/btech-cs-5-sem-operating-systems-pcc-cs502-2026.pdf" target="_blank" onclick="event.preventDefault(); openLandingPdfPreview('PCC-CS403: Operating Systems PYQ', '3rd to 8th sem/cse/pyqs/5th/OS/btech-cs-5-sem-operating-systems-pcc-cs502-2026.pdf');" class="btn-preview">Preview</a>
-        <a href="3rd to 8th sem/cse/pyqs/5th/OS/btech-cs-5-sem-operating-systems-pcc-cs502-2026.pdf" download="MAKAUT_OS_PYQ_2026.pdf" onclick="event.preventDefault(); event.stopPropagation(); downloadLandingSyllabus('3rd to 8th sem/cse/pyqs/5th/OS/btech-cs-5-sem-operating-systems-pcc-cs502-2026.pdf', 'MAKAUT_OS_PYQ_2026.pdf');" class="btn-download">Download</a>
-      </div>
-    </div>
-
-    <!-- SEMESTER 5 & 6 (Advanced Core) -->
-
-    <div class="pyq-card" data-semester="sem5-6">
-      <div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-          <span class="subject-badge">PCC-CS501</span>
-          <span style="font-size: 0.75rem; color: #64748B; font-weight: 600;">Sem 5 · 2020–2024</span>
-        </div>
-        <h4 style="font-size: 1.2rem; font-weight: 700; color: #0F172A; margin: 0 0 0.35rem 0;">Design & Analysis of Algorithms</h4>
-        <p style="font-size: 0.85rem; color: #475569; margin: 0; line-height: 1.4;">Divide & Conquer, Greedy Techniques, Dynamic Programming & NP-Completeness.</p>
-      </div>
-      <div class="card-actions">
-        <a href="3rd to 8th sem/cse/pyqs/4th/DAA/btech-cse-it-4-sem-design-and-analysis-of-algorithms-es-cs401-2025.pdf" target="_blank" onclick="event.preventDefault(); openLandingPdfPreview('PCC-CS501: Design & Analysis of Algorithms PYQ', '3rd to 8th sem/cse/pyqs/4th/DAA/btech-cse-it-4-sem-design-and-analysis-of-algorithms-es-cs401-2025.pdf');" class="btn-preview">Preview</a>
-        <a href="3rd to 8th sem/cse/pyqs/4th/DAA/btech-cse-it-4-sem-design-and-analysis-of-algorithms-es-cs401-2025.pdf" download="MAKAUT_DAA_PYQ_2025.pdf" onclick="event.preventDefault(); event.stopPropagation(); downloadLandingSyllabus('3rd to 8th sem/cse/pyqs/4th/DAA/btech-cse-it-4-sem-design-and-analysis-of-algorithms-es-cs401-2025.pdf', 'MAKAUT_DAA_PYQ_2025.pdf');" class="btn-download">Download</a>
-      </div>
-    </div>
-
-    <div class="pyq-card" data-semester="sem5-6">
-      <div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-          <span class="subject-badge">PCC-CS502</span>
-          <span style="font-size: 0.75rem; color: #64748B; font-weight: 600;">Sem 5 · 2020–2024</span>
-        </div>
-        <h4 style="font-size: 1.2rem; font-weight: 700; color: #0F172A; margin: 0 0 0.35rem 0;">Database Management Systems</h4>
-        <p style="font-size: 0.85rem; color: #475569; margin: 0; line-height: 1.4;">Relational Algebra, SQL, Normalization, ACID Transactions & Indexing.</p>
-      </div>
-      <div class="card-actions">
-        <a href="3rd to 8th sem/cse/pyqs/6th/DBMS/btech-cse-6-sem-database-management-systems-pcc-cs601-2026.pdf" target="_blank" onclick="event.preventDefault(); openLandingPdfPreview('PCC-CS502: Database Management Systems PYQ', '3rd to 8th sem/cse/pyqs/6th/DBMS/btech-cse-6-sem-database-management-systems-pcc-cs601-2026.pdf');" class="btn-preview">Preview</a>
-        <a href="3rd to 8th sem/cse/pyqs/6th/DBMS/btech-cse-6-sem-database-management-systems-pcc-cs601-2026.pdf" download="MAKAUT_DBMS_PYQ_2026.pdf" onclick="event.preventDefault(); event.stopPropagation(); downloadLandingSyllabus('3rd to 8th sem/cse/pyqs/6th/DBMS/btech-cse-6-sem-database-management-systems-pcc-cs601-2026.pdf', 'MAKAUT_DBMS_PYQ_2026.pdf');" class="btn-download">Download</a>
-      </div>
-    </div>
-
-    <div class="pyq-card" data-semester="sem5-6">
-      <div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-          <span class="subject-badge">PCC-CS503</span>
-          <span style="font-size: 0.75rem; color: #64748B; font-weight: 600;">Sem 5 · 2020–2024</span>
-        </div>
-        <h4 style="font-size: 1.2rem; font-weight: 700; color: #0F172A; margin: 0 0 0.35rem 0;">Formal Language & Automata Theory</h4>
-        <p style="font-size: 0.85rem; color: #475569; margin: 0; line-height: 1.4;">DFA/NFA, Regular Expressions, Context-Free Grammars & Turing Machines.</p>
-      </div>
-      <div class="card-actions">
-        <a href="3rd to 8th sem/cse/pyqs/4th/TOC or FLAT/btech-cse-4-sem-formal-language-and-automata-theory-pcc-cs-403-2026.pdf" target="_blank" onclick="event.preventDefault(); openLandingPdfPreview('PCC-CS503: Formal Language & Automata Theory PYQ', '3rd to 8th sem/cse/pyqs/4th/TOC or FLAT/btech-cse-4-sem-formal-language-and-automata-theory-pcc-cs-403-2026.pdf');" class="btn-preview">Preview</a>
-        <a href="3rd to 8th sem/cse/pyqs/4th/TOC or FLAT/btech-cse-4-sem-formal-language-and-automata-theory-pcc-cs-403-2026.pdf" download="MAKAUT_FLAT_Automata_PYQ_2026.pdf" onclick="event.preventDefault(); event.stopPropagation(); downloadLandingSyllabus('3rd to 8th sem/cse/pyqs/4th/TOC or FLAT/btech-cse-4-sem-formal-language-and-automata-theory-pcc-cs-403-2026.pdf', 'MAKAUT_FLAT_Automata_PYQ_2026.pdf');" class="btn-download">Download</a>
-      </div>
-    </div>
-
-    <div class="pyq-card" data-semester="sem5-6">
-      <div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-          <span class="subject-badge">PCC-CS601</span>
-          <span style="font-size: 0.75rem; color: #64748B; font-weight: 600;">Sem 6 · 2020–2024</span>
-        </div>
-        <h4 style="font-size: 1.2rem; font-weight: 700; color: #0F172A; margin: 0 0 0.35rem 0;">Computer Networks</h4>
-        <p style="font-size: 0.85rem; color: #475569; margin: 0; line-height: 1.4;">OSI Model, TCP/IP, IP Addressing, Routing Algorithms & Flow Control.</p>
-      </div>
-      <div class="card-actions">
-        <a href="3rd to 8th sem/cse/pyqs/6th/CN/btech-ec-cse-6-sem-computer-networks-ec602-2026.pdf" target="_blank" onclick="event.preventDefault(); openLandingPdfPreview('PCC-CS601: Computer Networks PYQ', '3rd to 8th sem/cse/pyqs/6th/CN/btech-ec-cse-6-sem-computer-networks-ec602-2026.pdf');" class="btn-preview">Preview</a>
-        <a href="3rd to 8th sem/cse/pyqs/6th/CN/btech-ec-cse-6-sem-computer-networks-ec602-2026.pdf" download="MAKAUT_Computer_Networks_PYQ_2026.pdf" onclick="event.preventDefault(); event.stopPropagation(); downloadLandingSyllabus('3rd to 8th sem/cse/pyqs/6th/CN/btech-ec-cse-6-sem-computer-networks-ec602-2026.pdf', 'MAKAUT_Computer_Networks_PYQ_2026.pdf');" class="btn-download">Download</a>
-      </div>
-    </div>
-
-    <!-- SEMESTER 7 & 8 (Electives & Specializations) -->
-
-    <div class="pyq-card" data-semester="sem7-8">
-      <div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-          <span class="subject-badge">PEC-CS801E</span>
-          <span style="font-size: 0.75rem; color: #64748B; font-weight: 600;">Sem 8 · 2021–2024</span>
-        </div>
-        <h4 style="font-size: 1.2rem; font-weight: 700; color: #0F172A; margin: 0 0 0.35rem 0;">Internet of Things (IoT)</h4>
-        <p style="font-size: 0.85rem; color: #475569; margin: 0; line-height: 1.4;">Embedded Sensors, MQTT, Raspberry Pi & Microcontroller Architecture.</p>
-      </div>
-      <div class="card-actions">
-        <a href="3rd to 8th sem/cse/pyqs/8th/IOT/btech-cse-it-8-sem-internet-of-things-pec-cs801e-2024.pdf" target="_blank" onclick="event.preventDefault(); openLandingPdfPreview('PEC-CS801E: Internet of Things (IoT) PYQ', '3rd to 8th sem/cse/pyqs/8th/IOT/btech-cse-it-8-sem-internet-of-things-pec-cs801e-2024.pdf');" class="btn-preview">Preview</a>
-        <a href="3rd to 8th sem/cse/pyqs/8th/IOT/btech-cse-it-8-sem-internet-of-things-pec-cs801e-2024.pdf" download="MAKAUT_PEC-CS801E_IoT_PYQ_2024.pdf" onclick="event.preventDefault(); event.stopPropagation(); downloadLandingSyllabus('3rd to 8th sem/cse/pyqs/8th/IOT/btech-cse-it-8-sem-internet-of-things-pec-cs801e-2024.pdf', 'MAKAUT_PEC-CS801E_IoT_PYQ_2024.pdf');" class="btn-download">Download</a>
-      </div>
-    </div>
-
-    <div class="pyq-card" data-semester="sem7-8">
-      <div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-          <span class="subject-badge">OEC-CS801B</span>
-          <span style="font-size: 0.75rem; color: #64748B; font-weight: 600;">Sem 8 · 2021–2024</span>
-        </div>
-        <h4 style="font-size: 1.2rem; font-weight: 700; color: #0F172A; margin: 0 0 0.35rem 0;">Cyber Law & Ethics</h4>
-        <p style="font-size: 0.85rem; color: #475569; margin: 0; line-height: 1.4;">IT Act 2000, Intellectual Property, Digital Forensics & Cyber Crimes.</p>
-      </div>
-      <div class="card-actions">
-        <a href="3rd to 8th sem/cse/pyqs/8th/CYBER LAW & ETHICS/btech-cse-it-8-sem-cyber-law-and-ethics-oec-cs801b-2026.pdf" target="_blank" onclick="event.preventDefault(); openLandingPdfPreview('OEC-CS801B: Cyber Law & Ethics PYQ', '3rd to 8th sem/cse/pyqs/8th/CYBER LAW & ETHICS/btech-cse-it-8-sem-cyber-law-and-ethics-oec-cs801b-2026.pdf');" class="btn-preview">Preview</a>
-        <a href="3rd to 8th sem/cse/pyqs/8th/CYBER LAW & ETHICS/btech-cse-it-8-sem-cyber-law-and-ethics-oec-cs801b-2026.pdf" download="MAKAUT_OEC-CS801B_Cyber_Law_PYQ_2026.pdf" onclick="event.preventDefault(); event.stopPropagation(); downloadLandingSyllabus('3rd to 8th sem/cse/pyqs/8th/CYBER LAW & ETHICS/btech-cse-it-8-sem-cyber-law-and-ethics-oec-cs801b-2026.pdf', 'MAKAUT_OEC-CS801B_Cyber_Law_PYQ_2026.pdf');" class="btn-download">Download</a>
-      </div>
-    </div>
+          <!-- Dynamic Catalog Grid Target -->
+          <div id="dynamicPyqGrid" class="pyq-grid"></div>
+          <div id="noPyqResults" style="display: none; text-align: center; padding: 3rem 1rem; color: #64748B; font-weight: 600;">
+            No examination papers found matching your selection. Try selecting 'All Departments' or clearing your search.
           </div>
         </section>
     </main>
@@ -1352,23 +1116,8 @@
 
 
 
-    <script>
-      function filterPYQ(semester, btnElement) {
-        document.querySelectorAll('.pyq-filter-btn').forEach(btn => btn.classList.remove('active'));
-        if (btnElement) btnElement.classList.add('active');
-
-        const cards = document.querySelectorAll('#pyq-section .pyq-card');
-        cards.forEach(card => {
-          if (semester === 'all' || card.getAttribute('data-semester') === semester) {
-            card.style.setProperty('display', 'flex', 'important');
-            card.classList.remove('pyq-hidden');
-          } else {
-            card.style.setProperty('display', 'none', 'important');
-            card.classList.add('pyq-hidden');
-          }
-        });
-      }
-      window.filterPYQ = filterPYQ;
-    </script>
+    <!-- Subject-Wise Sem 1-8 PYQ Registry & Filtering Engine -->
+    <script src="js/pyq-catalog.js?v=20261110_v3"></script>
+    <script src="js/pyq-engine.js?v=20261110_v3"></script>
 </body>
 </html>
