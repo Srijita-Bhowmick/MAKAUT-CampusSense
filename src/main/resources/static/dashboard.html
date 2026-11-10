@@ -976,6 +976,7 @@
       <div class="context-banner-sep"></div>
       <span class="context-chip">2024–25</span>
       <span class="context-chip" id="session-chip">Session —</span>
+      <a href="set-academic.html" class="context-chip" style="text-decoration:none; margin-left:auto; background:#EFF6FF; color:#1E40AF; border:1px solid #8DB9F0; font-weight:600;">Edit Profile →</a>
     </div>
 
     <!-- ══ Section: Curriculum Matrix ══ -->
@@ -1518,6 +1519,10 @@ function runAuthGuard() {
     window.location.replace('login.html');
     return false;
   }
+  if (!localStorage.getItem('academic_profile_completed')) {
+    window.location.replace('set-academic.html');
+    return false;
+  }
   // Reveal page after guard passes
   if (veil) { veil.style.display = 'none'; }
   return true;
@@ -1530,8 +1535,9 @@ function loadUserProfile() {
 
   const name = session.name || session.firstName || session.email?.split('@')[0] || 'Student';
   const email = session.email || '';
-  const branch = academic.branch || session.branch || 'B.Tech CSE';
-  const semester = academic.semester || session.semester || '5';
+  const branch = academic.branch || lsGet('user_department') || academic.stream || lsGet('user_stream') || session.branch || 'B.Tech CSE';
+  const semester = academic.semester || lsGet('user_semester') || session.semester || '5';
+  const semRange = academic.semesterRange || (semester === '1-2' ? '1–2' : semester);
 
   // Avatar initials
   const initials = name.split(' ').map(p => p[0]).join('').slice(0,2).toUpperCase() || 'ST';
@@ -1543,8 +1549,10 @@ function loadUserProfile() {
 
   if (avatarEl) avatarEl.textContent = initials;
   if (nameEl) nameEl.textContent = name;
-  if (badgeEl) badgeEl.textContent = `${branch} · Sem ${semester}`;
-  if (contextEl) contextEl.textContent = `${branch} · ${ordinal(parseInt(semester))} Semester`;
+  if (badgeEl) badgeEl.textContent = `${branch} · Sem ${semRange}`;
+  if (contextEl) contextEl.textContent = (semester === '1-2' || academic.semesterRange === '1-2')
+    ? `${branch} · Semesters 1 & 2`
+    : `${branch} · ${ordinal(parseInt(semester))} Semester`;
   if (sessionChip) sessionChip.textContent = session.rollNumber || email || 'Session';
 }
 
@@ -1570,7 +1578,10 @@ async function handleSignOut() {
     'campussense_user_session',
     'campussense_academic_profile',
     'campussense_clerk_token',
-    'campussense_theme', // keep? — leave it, user's preference
+    'academic_profile_completed',
+    'user_stream',
+    'user_department',
+    'user_semester',
   ];
   keysToRemove.forEach(k => { try { localStorage.removeItem(k); } catch {} });
   // Navigate home
@@ -1995,9 +2006,10 @@ window.addEventListener('load', () => {
       window.Clerk.load({ publishableKey: pk }).catch(() => {});
     }
   } catch {}
-  // Final auth guard pass
+  // Final auth & onboarding guard pass
   const isLoggedIn = lsGet('campussense_logged_in') === 'true';
-  if (!isLoggedIn) { window.location.replace('login.html'); }
+  if (!isLoggedIn) { window.location.replace('login.html'); return; }
+  if (!localStorage.getItem('academic_profile_completed')) { window.location.replace('set-academic.html'); }
 });
 </script>
 </body>

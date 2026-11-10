@@ -12670,6 +12670,10 @@ window.getSubjectDocuments = getSubjectDocuments;
         };
 
         localStorage.setItem('campussense_academic_profile', JSON.stringify(academicProfile));
+        localStorage.setItem('academic_profile_completed', 'true');
+        localStorage.setItem('user_stream', stream === 'FIRST_YEAR' ? 'Common' : stream);
+        localStorage.setItem('user_department', stream === 'FIRST_YEAR' ? '1st Year Foundation' : stream);
+        localStorage.setItem('user_semester', stream === 'FIRST_YEAR' ? '1-2' : semester.toString());
 
         // Also persist legacy keys for full compatibility
         localStorage.setItem('campussense_stream', stream);
@@ -12745,6 +12749,10 @@ window.getSubjectDocuments = getSubjectDocuments;
         localStorage.removeItem('campussense_stage');
         localStorage.removeItem('campussense_year_mode');
         localStorage.removeItem('academic_context');
+        localStorage.removeItem('academic_profile_completed');
+        localStorage.removeItem('user_stream');
+        localStorage.removeItem('user_department');
+        localStorage.removeItem('user_semester');
         sessionStorage.clear();
         sessionStorage.setItem('campussense_suppress_onboarding', 'true');
 

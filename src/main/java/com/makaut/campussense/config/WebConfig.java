@@ -96,7 +96,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .mustRevalidate()
                 .cachePublic();
 
-        registry.addResourceHandler("/index.html", "/login.html", "/privacy.html", "/app.js", "/styles.css")
+        registry.addResourceHandler("/index.html", "/login.html", "/set-academic.html", "/dashboard.html", "/privacy.html", "/app.js", "/styles.css")
                 .addResourceLocations("file:docs/", "classpath:/static/")
                 .setCacheControl(entryPointControl);
 

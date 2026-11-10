@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Set Academic Profile — MAKAUT CampusSense</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=20261110_v4" />
+  <style>
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #0F172A;
+      background-color: #E9E8F8;
+      background-image: 
+        linear-gradient(rgba(233, 232, 248, 0.40), rgba(233, 232, 248, 0.45)),
+        url('images/makaut-haringhata-boulevard.jpg');
+      background-position: center top;
+      background-size: cover;
+      background-attachment: fixed;
+    }
+
+    .setup-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    .setup-card {
+      background: #FFFFFF;
+      border: 1.5px solid #8DB9F0;
+      border-radius: 1.25rem;
+      padding: 2.5rem;
+      max-width: 580px;
+      width: 100%;
+      box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+      box-sizing: border-box;
+    }
+
+    .track-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1.75rem 0;
+    }
+
+    @media (max-width: 520px) {
+      .track-grid {
+        grid-template-columns: 1fr;
+      }
+      .setup-card {
+        padding: 1.75rem 1.25rem;
+      }
+    }
+
+    .track-btn {
+      background: #FFFFFF;
+      border: 2px solid #8DB9F0;
+      border-radius: 0.85rem;
+      padding: 1.25rem 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .track-btn:hover {
+      border-color: #F5B69E;
+      transform: translateY(-2px);
+    }
+
+    .track-btn.active {
+      background: #FFF7F3;
+      border-color: #F5B69E;
+      box-shadow: 0 0 0 2px #F5B69E;
+    }
+
+    .track-icon {
+      font-size: 2rem;
+      line-height: 1;
+    }
+
+    .track-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #0F172A;
+    }
+
+    .track-sub {
+      font-size: 0.775rem;
+      color: #64748B;
+      line-height: 1.35;
+    }
+
+    .field-group {
+      margin-top: 1.25rem;
+    }
+
+    .field-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #0F172A;
+      margin-bottom: 0.5rem;
+    }
+
+    .dept-select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      font-size: 0.95rem;
+      font-family: inherit;
+      border: 1.5px solid #8DB9F0;
+      border-radius: 0.6rem;
+      background: #FFFFFF;
+      color: #0F172A;
+      outline: none;
+      box-sizing: border-box;
+      transition: border-color 0.2s;
+    }
+
+    .dept-select:focus {
+      border-color: #F5B69E;
+    }
+
+    .sem-pills {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .setup-card .sem-pill {
+      flex: 1;
+      min-width: 60px;
+      background: #FFFFFF !important;
+      border: 1.5px solid #8DB9F0 !important;
+      border-radius: 9999px !important;
+      padding: 0.45rem 0.6rem !important;
+      font-size: 0.825rem !important;
+      font-weight: 600 !important;
+      color: #0F172A !important;
+      cursor: pointer !important;
+      text-align: center !important;
+      transition: all 0.15s ease !important;
+      box-shadow: none !important;
+    }
+
+    .setup-card .sem-pill:hover,
+    .setup-card .sem-pill.active {
+      background: #F5B69E !important;
+      border-color: #F5B69E !important;
+      color: #000000 !important;
+      box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4) !important;
+    }
+
+    .btn-submit {
+      width: 100%;
+      margin-top: 2rem;
+      background: #F5B69E;
+      color: #000000;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 0.85rem;
+      border: none;
+      border-radius: 0.65rem;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(245, 182, 158, 0.45);
+      transition: all 0.2s ease;
+    }
+
+    .btn-submit:hover {
+      background: #f7a88b;
+      transform: translateY(-1px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Minimal Brand Header -->
+  <header style="padding: 1.25rem 2rem; display: flex; align-items: center; gap: 0.65rem;">
+    <a href="index.html" style="display: flex; align-items: center; gap: 0.65rem; text-decoration: none; color: #0F172A;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F5B69E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+      </svg>
+      <span style="font-weight: 800; font-size: 1.15rem; letter-spacing: -0.02em; text-shadow: 0 1px 10px rgba(255,255,255,0.85);">MAKAUT CampusSense</span>
+    </a>
+  </header>
+
+  <div class="setup-container">
+    <div class="setup-card">
+      <h2 style="font-size: 1.75rem; font-weight: 800; margin: 0 0 0.4rem 0; letter-spacing: -0.02em; color: #0F172A;">
+        Complete Your Academic Profile
+      </h2>
+      <p style="font-size: 0.925rem; color: #475569; margin: 0; line-height: 1.45;">
+        Select your academic year and department to personalize your dashboard.
+      </p>
+
+      <!-- Option 4 Dual Cards -->
+      <div class="track-grid">
+        <button type="button" class="track-btn active" id="btnTrackCommon" onclick="selectTrack('common')">
+          <span class="track-icon">📖🌱</span>
+          <span class="track-title">1st Year (Common)</span>
+          <span class="track-sub">Universal university syllabus</span>
+        </button>
+
+        <button type="button" class="track-btn" id="btnTrackBranch" onclick="selectTrack('branch')">
+          <span class="track-icon">🏛️⚙️</span>
+          <span class="track-title">Branch Specific</span>
+          <span class="track-sub">CSE, IT, CSBS, ECE, EE, ME, CE</span>
+        </button>
+      </div>
+
+      <!-- Branch Specific Options Container (Hidden by default when 1st Year is active) -->
+      <div id="branchFieldsContainer" style="display: none;">
+        <div class="field-group">
+          <label class="field-label" for="deptSelect">Select Department</label>
+          <select id="deptSelect" class="dept-select">
+            <option value="" disabled selected>Choose your engineering stream...</option>
+            <option value="CSE">Computer Science &amp; Engineering (CSE)</option>
+            <option value="IT">Information Technology (IT)</option>
+            <option value="CSBS">Computer Science &amp; Business Systems (CSBS)</option>
+            <option value="ECE">Electronics &amp; Communication Engineering (ECE)</option>
+            <option value="EE">Electrical Engineering (EE)</option>
+            <option value="ME">Mechanical Engineering (ME)</option>
+            <option value="CE">Civil Engineering (CE)</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Choose Your Semester</label>
+          <div class="sem-pills">
+            <button type="button" class="sem-pill" onclick="selectSem('3', this)">Sem 3</button>
+            <button type="button" class="sem-pill" onclick="selectSem('4', this)">Sem 4</button>
+            <button type="button" class="sem-pill" onclick="selectSem('5', this)">Sem 5</button>
+            <button type="button" class="sem-pill" onclick="selectSem('6', this)">Sem 6</button>
+            <button type="button" class="sem-pill" onclick="selectSem('7', this)">Sem 7</button>
+            <button type="button" class="sem-pill" onclick="selectSem('8', this)">Sem 8</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1st Year Note Banner -->
+      <div id="commonTrackBanner" style="background: #EFF6FF; border: 1px solid #8DB9F0; border-radius: 0.6rem; padding: 0.85rem 1rem; margin-top: 1.25rem;">
+        <p style="margin: 0; font-size: 0.85rem; color: #1E40AF; line-height: 1.4;">
+          <strong>Universal Foundation:</strong> 1st Year encompasses Semesters 1 &amp; 2 covering all core basic science blueprints across all streams.
+        </p>
+      </div>
+
+      <button type="button" class="btn-submit" onclick="submitAcademicProfile()">
+        Continue to Dashboard →
+      </button>
+    </div>
+  </div>
+
+  <script>
+    let activeTrack = 'common';
+    let selectedSemester = '1';
+
+    function selectTrack(track) {
+      activeTrack = track;
+      const btnCommon = document.getElementById('btnTrackCommon');
+      const btnBranch = document.getElementById('btnTrackBranch');
+      const branchContainer = document.getElementById('branchFieldsContainer');
+      const commonBanner = document.getElementById('commonTrackBanner');
+
+      if (track === 'common') {
+        btnCommon.classList.add('active');
+        btnBranch.classList.remove('active');
+        branchContainer.style.display = 'none';
+        commonBanner.style.display = 'block';
+        selectedSemester = '1';
+      } else {
+        btnBranch.classList.add('active');
+        btnCommon.classList.remove('active');
+        branchContainer.style.display = 'block';
+        commonBanner.style.display = 'none';
+        selectedSemester = '';
+        document.querySelectorAll('.sem-pill').forEach(pill => pill.classList.remove('active'));
+      }
+    }
+
+    function selectSem(sem, el) {
+      document.querySelectorAll('.sem-pill').forEach(pill => pill.classList.remove('active'));
+      if (el) el.classList.add('active');
+      selectedSemester = sem;
+    }
+
+    function submitAcademicProfile() {
+      // Ensure auth session is present if arriving directly or returning from auth
+      if (localStorage.getItem('campussense_logged_in') !== 'true') {
+        localStorage.setItem('campussense_logged_in', 'true');
+        if (!localStorage.getItem('campussense_user_session')) {
+          localStorage.setItem('campussense_user_session', JSON.stringify({
+            name: 'Student Scholar',
+            email: 'scholar@makaut.ac.in',
+            role: 'STUDENT'
+          }));
+        }
+      }
+
+      if (activeTrack === 'common') {
+        localStorage.setItem('user_stream', 'Common');
+        localStorage.setItem('user_department', '1st Year Foundation');
+        localStorage.setItem('user_semester', '1-2');
+        localStorage.setItem('academic_profile_completed', 'true');
+
+        localStorage.setItem('campussense_academic_profile', JSON.stringify({
+          stream: 'Common',
+          branch: '1st Year Foundation',
+          semester: '1',
+          semesterRange: '1-2',
+          year: '1st Year',
+          yearMode: 'FIRST_YEAR',
+          college: 'MAKAUT Main Campus (In-House)',
+          updatedAt: new Date().toISOString()
+        }));
+        localStorage.setItem('campussense_stream', 'Common');
+        localStorage.setItem('campussense_branch', '1st Year Foundation');
+        localStorage.setItem('campussense_semester', '1');
+        localStorage.setItem('campussense_stage', '1st_year');
+        localStorage.setItem('campussense_year_mode', 'FIRST_YEAR');
+
+        window.location.href = 'dashboard.html';
+        return;
+      }
+
+      const dept = document.getElementById('deptSelect').value;
+      if (!dept) {
+        alert('Please choose your engineering stream/department.');
+        return;
+      }
+      if (!selectedSemester) {
+        alert('Please select your current semester (Sem 3 to Sem 8).');
+        return;
+      }
+
+      const semNum = parseInt(selectedSemester, 10) || 3;
+      const yearLabel = semNum <= 4 ? '2nd Year' : (semNum <= 6 ? '3rd Year' : '4th Year');
+
+      localStorage.setItem('user_stream', dept);
+      localStorage.setItem('user_department', dept);
+      localStorage.setItem('user_semester', selectedSemester);
+      localStorage.setItem('academic_profile_completed', 'true');
+
+      localStorage.setItem('campussense_academic_profile', JSON.stringify({
+        stream: dept,
+        branch: `B.Tech ${dept}`,
+        semester: selectedSemester,
+        semesterRange: selectedSemester,
+        year: yearLabel,
+        yearMode: 'DEPARTMENTAL_YEARS',
+        college: 'MAKAUT Main Campus (In-House)',
+        updatedAt: new Date().toISOString()
+      }));
+      localStorage.setItem('campussense_stream', dept);
+      localStorage.setItem('campussense_branch', `B.Tech ${dept}`);
+      localStorage.setItem('campussense_semester', selectedSemester);
+      localStorage.setItem('campussense_stage', 'departmental');
+      localStorage.setItem('campussense_year_mode', 'DEPARTMENTAL_YEARS');
+
+      window.location.href = 'dashboard.html';
+    }
+  </script>
+</body>
+</html>
