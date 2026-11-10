@@ -16001,7 +16001,7 @@ body.landing-body, body.dashboard-body,
   padding: 0 !important;
   background-color: #E9E8F8 !important;
   background-image:
-    linear-gradient(rgba(233, 232, 248, 0.74), rgba(233, 232, 248, 0.80)),
+    linear-gradient(rgba(233, 232, 248, 0.40), rgba(233, 232, 248, 0.45)),
     url('images/makaut-haringhata-boulevard.jpg') !important;
   background-position: center top !important;
   background-size: cover !important;
@@ -16018,7 +16018,7 @@ body.landing-body, body.dashboard-body,
   justify-content: center !important;
   background-color: #E9E8F8 !important;
   background-image:
-    linear-gradient(rgba(233, 232, 248, 0.74), rgba(233, 232, 248, 0.80)),
+    linear-gradient(rgba(233, 232, 248, 0.40), rgba(233, 232, 248, 0.45)),
     url('images/makaut-haringhata-boulevard.jpg') !important;
   background-position: center top !important;
   background-size: cover !important;
@@ -16212,4 +16212,43 @@ footer, .footer-section, .landing-footer {
   padding: 3rem 1.5rem !important;
   margin-top: 4rem !important;
   text-align: center !important;
+}
+
+/* ===================================================================
+   40%-45% LAVENDER OVERLAY TEXT LEGIBILITY & SEMESTER FILTER CHIPS
+   =================================================================== */
+.editorial-hero-heading,
+.editorial-hero-lead,
+.section-super-heading,
+.section-lead-subtitle,
+.sub-tier-heading,
+.sub-tier-desc,
+#pyq-section > div > h2,
+#pyq-section > div > p {
+  text-shadow: 0 1px 12px rgba(255, 255, 255, 0.92), 0 0 24px rgba(233, 232, 248, 0.9) !important;
+}
+
+/* Filter Chips */
+.pyq-filter-btn {
+  background: #FFFFFF !important;
+  color: #0F172A !important;
+  border: 1.5px solid #8DB9F0 !important;
+  border-radius: 9999px !important;
+  padding: 0.45rem 1.1rem !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.pyq-filter-btn:hover, .pyq-filter-btn.active {
+  background: #F5B69E !important;
+  border-color: #F5B69E !important;
+  color: #000000 !important;
+  box-shadow: 0 2px 8px rgba(245, 182, 158, 0.4) !important;
+}
+
+.pyq-card.pyq-hidden,
+.pyq-card[style*="display: none"] {
+  display: none !important;
 }

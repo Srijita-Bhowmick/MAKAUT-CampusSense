@@ -338,7 +338,7 @@ window.onClerkLoaded = function() {
     // Phase 3: Auth Interceptor Listener for PYQ Feature Cards & Preview Buttons (Item 4)
     document.addEventListener('click', function(e) {
         const btnElement = e.target.closest('button, a');
-        if (btnElement?.closest('#syllabus-section, .cute-academic-card, .dept-master-grid, #pdf-preview-modal, #curriculum-filter-group, #pyq-year-pills, .stream-filter-group, .pyq-repo-filter-bar, .landing-nav-links, .brand-group, #main-header, #btn-sign-in, #btn-sign-up, #nav-brand-logo, #theme-toggle')) {
+        if (btnElement?.closest('#syllabus-section, #pyq-section, .pyq-card, .pyq-filters, .pyq-filter-btn, .cute-academic-card, .dept-master-grid, #pdf-preview-modal, #curriculum-filter-group, #pyq-year-pills, .stream-filter-group, .pyq-repo-filter-bar, .landing-nav-links, .brand-group, #main-header, #btn-sign-in, #btn-sign-up, #nav-brand-logo, #theme-toggle')) {
             return;
         }
 
