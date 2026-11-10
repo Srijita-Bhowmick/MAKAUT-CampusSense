@@ -37,6 +37,21 @@ function escapeJsStr(str) {
   return String(str || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
 }
 
+function resolveLoginUrl() {
+  return resolveCatalogPdfUrl('login.html') || 'login.html';
+}
+
+function redirectToAuthForPyq(action, title, path) {
+  try {
+    sessionStorage.setItem('pending_download_action', JSON.stringify({
+      action: action || 'preview',
+      title: title || 'MAKAUT PYQ',
+      fileUrl: path || ''
+    }));
+  } catch (e) {}
+  window.location.href = resolveLoginUrl();
+}
+
 function renderFilteredPYQs() {
   const query = (document.getElementById('pyqSearchInput')?.value || '').toLowerCase().trim();
   const grid = document.getElementById('dynamicPyqGrid');
@@ -64,11 +79,10 @@ function renderFilteredPYQs() {
   }
 
   if (noResults) noResults.style.display = 'none';
+  const loginHref = resolveLoginUrl();
   grid.innerHTML = matches.map(item => {
     const itemYear = getAcademicYear(item);
     const yearLabel = YEAR_LABELS[itemYear] || `Year ${itemYear}`;
-    const safeHref = encodeURI(resolveCatalogPdfUrl(item.path));
-    const dlName = `MAKAUT_${item.code.replace(/[^a-zA-Z0-9_-]/g, '_')}_PYQ.pdf`;
     const safeJsTitle = escapeJsStr(`${item.code}: ${item.title} PYQ`);
     const safeJsPath = escapeJsStr(item.path);
     return `
@@ -82,14 +96,15 @@ function renderFilteredPYQs() {
           <p>Verified Archive Series: ${item.years}</p>
         </div>
         <div class="card-actions">
-          <a href="${safeHref}" target="_blank" onclick="event.preventDefault(); if (typeof openLandingPdfPreview === 'function') { openLandingPdfPreview('${safeJsTitle}', '${safeJsPath}'); } else { window.open('${safeHref}', '_blank'); }" class="btn-preview">Preview</a>
-          <a href="${safeHref}" download="${dlName}" onclick="event.preventDefault(); event.stopPropagation(); if (typeof downloadLandingSyllabus === 'function') { downloadLandingSyllabus('${safeJsPath}', '${dlName}'); }" class="btn-download">Download</a>
+          <a href="${loginHref}" onclick="event.preventDefault(); event.stopPropagation(); redirectToAuthForPyq('preview', '${safeJsTitle}', '${safeJsPath}');" class="btn-preview">Preview</a>
+          <a href="${loginHref}" onclick="event.preventDefault(); event.stopPropagation(); redirectToAuthForPyq('download', '${safeJsTitle}', '${safeJsPath}');" class="btn-download">Download</a>
         </div>
       </div>
     `;
   }).join('');
 }
 
+window.redirectToAuthForPyq = redirectToAuthForPyq;
 window.setYearFilter = setYearFilter;
 window.renderFilteredPYQs = renderFilteredPYQs;
 
