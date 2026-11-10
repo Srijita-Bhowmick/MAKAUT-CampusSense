@@ -27,7 +27,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Plus+Jakarta+Sans:wght@600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20261110_v3">
+    <link rel="stylesheet" href="styles.css?v=20261110_v4">
 
     <!-- Schema.org EducationalOrganization -->
     <script type="application/ld+json">
@@ -395,53 +395,36 @@
         </section>
 
         <!-- F. PYQ Archives Section -->
-        <section id="pyq-section" style="max-width: 1240px; margin: 4.5rem auto; padding: 0 1.5rem;">
-          <div style="text-align: center; margin-bottom: 2.5rem;">
-            <h2 class="section-super-heading" style="font-size: 2.3rem; font-weight: 800; color: #0F172A; margin: 0 0 0.4rem 0;">
+        <section id="pyq-section" style="max-width: 1200px; margin: 3rem auto; padding: 0 1.5rem;">
+          <div style="text-align: center; margin-bottom: 1.5rem;">
+            <h2 class="section-super-heading" style="font-size: 2.25rem; font-weight: 800; color: #0F172A; margin: 0 0 0.35rem 0;">
               Verified Subject-Wise PYQ Archives
             </h2>
-            <p class="section-lead-subtitle" style="font-size: 1rem; color: #475569; max-width: 720px; margin: 0 auto;">
-              Access curated semester examination papers for every engineering department and subject across Semesters 1 to 8.
+            <p class="section-lead-subtitle" style="font-size: 1rem; color: #475569; max-width: 680px; margin: 0 auto 1.25rem auto !important;">
+              Access curated semester examination papers organized across 1st, 2nd, 3rd, and 4th Year subjects.
             </p>
 
             <!-- Search Bar -->
-            <div style="margin: 2rem auto 1.25rem auto; max-width: 520px;">
-              <input type="text" id="pyqSearchInput" placeholder="Search by subject code, title, or keyword..." 
+            <div style="margin: 0 auto 1rem auto; max-width: 520px;">
+              <input type="text" id="pyqSearchInput" placeholder="Search by subject code, subject name, or keyword..." 
                      oninput="renderFilteredPYQs()"
-                     style="width: 100%; padding: 0.75rem 1.25rem; font-size: 0.95rem; border: 1.5px solid #8DB9F0; border-radius: 9999px; background: #FFFFFF; outline: none; box-shadow: 0 2px 8px rgba(15,23,42,0.04); color: #0F172A; box-sizing: border-box;" />
+                     style="width: 100%; padding: 0.7rem 1.2rem; font-size: 0.95rem; border: 1.5px solid #8DB9F0; border-radius: 9999px; background: #FFFFFF; outline: none; box-shadow: 0 2px 8px rgba(15,23,42,0.04); color: #0F172A; box-sizing: border-box;" />
             </div>
 
-            <!-- Department Filter Chips -->
-            <div style="display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.85rem;">
-              <button type="button" class="pyq-dept-chip active" onclick="setDeptFilter('ALL', this)">All Departments</button>
-              <button type="button" class="pyq-dept-chip" onclick="setDeptFilter('Common', this)">1st Year Common</button>
-              <button type="button" class="pyq-dept-chip" onclick="setDeptFilter('CSE', this)">CSE</button>
-              <button type="button" class="pyq-dept-chip" onclick="setDeptFilter('IT', this)">IT</button>
-              <button type="button" class="pyq-dept-chip" onclick="setDeptFilter('CSBS', this)">CSBS</button>
-              <button type="button" class="pyq-dept-chip" onclick="setDeptFilter('ECE', this)">ECE</button>
-              <button type="button" class="pyq-dept-chip" onclick="setDeptFilter('EE', this)">EE</button>
-              <button type="button" class="pyq-dept-chip" onclick="setDeptFilter('ME', this)">ME</button>
-              <button type="button" class="pyq-dept-chip" onclick="setDeptFilter('CE', this)">CE</button>
-            </div>
-
-            <!-- Semester Filter Pills -->
-            <div style="display: flex; justify-content: center; gap: 0.45rem; flex-wrap: wrap;">
-              <button type="button" class="pyq-sem-chip active" onclick="setSemFilter('ALL', this)">All Semesters</button>
-              <button type="button" class="pyq-sem-chip" onclick="setSemFilter('1', this)">Sem 1</button>
-              <button type="button" class="pyq-sem-chip" onclick="setSemFilter('2', this)">Sem 2</button>
-              <button type="button" class="pyq-sem-chip" onclick="setSemFilter('3', this)">Sem 3</button>
-              <button type="button" class="pyq-sem-chip" onclick="setSemFilter('4', this)">Sem 4</button>
-              <button type="button" class="pyq-sem-chip" onclick="setSemFilter('5', this)">Sem 5</button>
-              <button type="button" class="pyq-sem-chip" onclick="setSemFilter('6', this)">Sem 6</button>
-              <button type="button" class="pyq-sem-chip" onclick="setSemFilter('7', this)">Sem 7</button>
-              <button type="button" class="pyq-sem-chip" onclick="setSemFilter('8', this)">Sem 8</button>
+            <!-- Academic Year Filter Pills -->
+            <div style="display: flex; justify-content: center; gap: 0.55rem; flex-wrap: wrap;">
+              <button type="button" class="pyq-year-chip active" onclick="setYearFilter('ALL', this)">All Years</button>
+              <button type="button" class="pyq-year-chip" onclick="setYearFilter('1', this)">First Year</button>
+              <button type="button" class="pyq-year-chip" onclick="setYearFilter('2', this)">Second Year</button>
+              <button type="button" class="pyq-year-chip" onclick="setYearFilter('3', this)">Third Year</button>
+              <button type="button" class="pyq-year-chip" onclick="setYearFilter('4', this)">Fourth Year</button>
             </div>
           </div>
 
           <!-- Dynamic Catalog Grid Target -->
           <div id="dynamicPyqGrid" class="pyq-grid"></div>
-          <div id="noPyqResults" style="display: none; text-align: center; padding: 3rem 1rem; color: #64748B; font-weight: 600;">
-            No examination papers found matching your selection. Try selecting 'All Departments' or clearing your search.
+          <div id="noPyqResults" style="display: none; text-align: center; padding: 2.5rem 1rem; color: #64748B; font-weight: 600;">
+            No examination papers found matching your selection. Try selecting 'All Years' or clearing your search.
           </div>
         </section>
     </main>
@@ -1114,7 +1097,7 @@
 
 
     <!-- Subject-Wise Sem 1-8 PYQ Registry & Filtering Engine -->
-    <script src="js/pyq-catalog.js?v=20261110_v3"></script>
-    <script src="js/pyq-engine.js?v=20261110_v3"></script>
+    <script src="js/pyq-catalog.js?v=20261110_v4"></script>
+    <script src="js/pyq-engine.js?v=20261110_v4"></script>
 </body>
 </html>
