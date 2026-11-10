@@ -324,21 +324,23 @@ html, body {
   border-color: #94a3b8 !important;
 }
 
-/* Fix Awkward Mint Green Download Buttons */
+/* Sunset Peach Download Buttons */
 [data-theme="light"] .btn-download,
 [data-theme="light"] .btn-download-pdf,
 [data-theme="light"] .btn-download-paper {
-  background: #f0fdf4 !important;
-  color: #166534 !important;
-  border: 1px solid #bbf7d0 !important;
+  background: #F5B69E !important;
+  background-color: #F5B69E !important;
+  color: #000000 !important;
+  border: none !important;
   font-weight: 600 !important;
 }
 
 [data-theme="light"] .btn-download:hover,
 [data-theme="light"] .btn-download-pdf:hover,
 [data-theme="light"] .btn-download-paper:hover {
-  background: #dcfce7 !important;
-  border-color: #86efac !important;
+  background: #f7a88b !important;
+  background-color: #f7a88b !important;
+  color: #000000 !important;
 }
 
 [data-theme="light"] .unit-checkbox-custom {
@@ -7889,11 +7891,11 @@ fieldset:has([class*="otpCodeFieldInput"]) {
   display: flex !important;
   flex-direction: column !important;
   justify-content: space-between !important;
-  height: 100% !important;
-  min-height: 380px !important;
+  height: auto !important;
+  min-height: 0 !important;
   box-sizing: border-box !important;
   border-radius: 1rem !important;
-  padding: 1.5rem !important;
+  padding: 1.25rem !important;
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease !important;
 }
 
@@ -16046,7 +16048,10 @@ main, section, header, nav, footer,
   background-color: #FFFFFF !important;
   border: 1.5px solid #8DB9F0 !important;
   border-radius: 1rem !important;
-  padding: 1.5rem !important;
+  padding: 1.2rem 1.25rem !important;
+  min-height: 0 !important;
+  height: auto !important;
+  gap: 0.5rem !important;
   box-shadow: 0 4px 18px rgba(141, 185, 240, 0.12), 0 2px 6px rgba(15, 23, 42, 0.04) !important;
   display: flex !important;
   flex-direction: column !important;
@@ -16080,29 +16085,29 @@ main, section, header, nav, footer,
 .syllabus-card h4, .pyq-card h4, .cute-academic-card h4,
 .syllabus-card h3, .pyq-card h3, .cute-academic-card h3 {
   font-family: 'Inter', sans-serif !important;
-  font-size: 1.15rem !important;
+  font-size: 1.12rem !important;
   font-weight: 700 !important;
   color: #0F172A !important;
-  line-height: 1.35 !important;
-  margin: 0.7rem 0 0.45rem 0 !important;
+  line-height: 1.3 !important;
+  margin: 0.35rem 0 0.25rem 0 !important;
 }
 
 .syllabus-card p, .pyq-card p, .cute-academic-card p {
   font-size: 0.85rem !important;
   font-weight: 400 !important;
   color: #475569 !important;
-  line-height: 1.5 !important;
-  min-height: 2.4rem !important;
-  margin: 0 0 1.25rem 0 !important;
+  line-height: 1.45 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
 }
 
 /* 4. Balanced Grid Alignment */
 .syllabus-grid, .curriculum-grid, .pyq-grid, .cute-subject-grid, .dept-master-grid {
   display: grid !important;
-  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)) !important;
-  gap: 1.5rem !important;
+  grid-template-columns: repeat(auto-fit, minmax(min(310px, 100%), 1fr)) !important;
+  gap: 1.15rem !important;
   max-width: 1200px !important;
-  margin: 0 auto 3rem auto !important;
+  margin: 0 auto 2.5rem auto !important;
   padding: 0 1rem !important;
   align-items: stretch !important;
   box-sizing: border-box !important;
@@ -16124,19 +16129,24 @@ main, section, header, nav, footer,
 /* 6. Action Buttons Inside Cards */
 .card-actions {
   display: flex !important;
-  gap: 0.75rem !important;
+  gap: 0.65rem !important;
   margin-top: auto !important;
-  padding-top: 0.25rem !important;
+  padding-top: 0.75rem !important;
 }
 
-.btn-preview,
-.cute-academic-card .btn-preview {
+[data-theme="light"] .btn-preview,
+.pyq-card .btn-preview,
+.syllabus-card .btn-preview,
+.cute-academic-card .btn-preview,
+a.btn-preview,
+.btn-preview {
   flex: 1 !important;
   background-color: #FFFFFF !important;
+  background: #FFFFFF !important;
   color: #0F172A !important;
   border: 1.5px solid #8DB9F0 !important;
   border-radius: 0.5rem !important;
-  padding: 0.5rem !important;
+  padding: 0.48rem 0.5rem !important;
   font-size: 0.875rem !important;
   font-weight: 600 !important;
   text-align: center !important;
@@ -16147,20 +16157,31 @@ main, section, header, nav, footer,
   cursor: pointer !important;
   transition: background 0.15s ease !important;
 }
-.btn-preview:hover,
-.cute-academic-card .btn-preview:hover {
+[data-theme="light"] .btn-preview:hover,
+.pyq-card .btn-preview:hover,
+.syllabus-card .btn-preview:hover,
+.cute-academic-card .btn-preview:hover,
+a.btn-preview:hover,
+.btn-preview:hover {
   background-color: #EFF6FF !important;
+  background: #EFF6FF !important;
 }
 
-.btn-download,
-.cute-academic-card .btn-download {
+[data-theme="light"] .btn-download,
+html .pyq-card .btn-download,
+html .syllabus-card .btn-download,
+.pyq-card a.btn-download,
+.syllabus-card a.btn-download,
+.cute-academic-card .btn-download,
+a.btn-download,
+.btn-download {
   flex: 1 !important;
   background-color: #F5B69E !important;
   background: #F5B69E !important;
-  color: #000000 !important; /* Fully visible jet-black text */
+  color: #000000 !important;
   border: none !important;
   border-radius: 0.5rem !important;
-  padding: 0.5rem !important;
+  padding: 0.48rem 0.5rem !important;
   font-size: 0.875rem !important;
   font-weight: 600 !important;
   text-align: center !important;
@@ -16172,8 +16193,14 @@ main, section, header, nav, footer,
   box-shadow: 0 2px 6px rgba(245, 182, 158, 0.45) !important;
   transition: background 0.15s ease !important;
 }
-.btn-download:hover,
-.cute-academic-card .btn-download:hover {
+[data-theme="light"] .btn-download:hover,
+html .pyq-card .btn-download:hover,
+html .syllabus-card .btn-download:hover,
+.pyq-card a.btn-download:hover,
+.syllabus-card a.btn-download:hover,
+.cute-academic-card .btn-download:hover,
+a.btn-download:hover,
+.btn-download:hover {
   background-color: #f7a88b !important;
   background: #f7a88b !important;
   color: #000000 !important;
@@ -16209,13 +16236,13 @@ footer, .footer-section, .landing-footer {
   background: transparent !important;
   background-color: transparent !important;
   border-top: 1px solid rgba(141, 185, 240, 0.4) !important;
-  padding: 3rem 1.5rem !important;
-  margin-top: 4rem !important;
+  padding: 2.5rem 1.5rem !important;
+  margin-top: 3rem !important;
   text-align: center !important;
 }
 
 /* ===================================================================
-   40%-45% LAVENDER OVERLAY TEXT LEGIBILITY & SEMESTER FILTER CHIPS
+   40%-45% LAVENDER OVERLAY TEXT LEGIBILITY & YEAR FILTER CHIPS
    =================================================================== */
 .editorial-hero-heading,
 .editorial-hero-lead,
@@ -16228,48 +16255,32 @@ footer, .footer-section, .landing-footer {
   text-shadow: 0 1px 12px rgba(255, 255, 255, 0.92), 0 0 24px rgba(233, 232, 248, 0.9) !important;
 }
 
-/* Filter Chips */
-.pyq-filter-btn {
-  background: #FFFFFF !important;
-  color: #0F172A !important;
-  border: 1.5px solid #8DB9F0 !important;
-  border-radius: 9999px !important;
-  padding: 0.45rem 1.1rem !important;
-  font-size: 0.85rem !important;
-  font-weight: 600 !important;
-  cursor: pointer !important;
-  transition: all 0.2s ease !important;
-}
-
-.pyq-filter-btn:hover, .pyq-filter-btn.active {
-  background: #F5B69E !important;
-  border-color: #F5B69E !important;
-  color: #000000 !important;
-  box-shadow: 0 2px 8px rgba(245, 182, 158, 0.4) !important;
-}
-
 .pyq-card.pyq-hidden,
 .pyq-card[style*="display: none"] {
   display: none !important;
 }
 
-/* Dynamic PYQ Catalog Department Chips & Semester Pills */
-.pyq-dept-chip, .pyq-sem-chip {
+/* Academic Year Filter Pills */
+.pyq-year-chip, .pyq-filter-btn, .pyq-dept-chip, .pyq-sem-chip {
   background: #FFFFFF !important;
+  background-color: #FFFFFF !important;
   color: #0F172A !important;
   border: 1.5px solid #8DB9F0 !important;
   border-radius: 9999px !important;
-  padding: 0.35rem 0.85rem !important;
-  font-size: 0.825rem !important;
+  padding: 0.45rem 1.15rem !important;
+  font-size: 0.85rem !important;
   font-weight: 600 !important;
   cursor: pointer !important;
   transition: all 0.15s ease !important;
 }
 
+.pyq-year-chip:hover, .pyq-year-chip.active,
+.pyq-filter-btn:hover, .pyq-filter-btn.active,
 .pyq-dept-chip:hover, .pyq-sem-chip:hover,
 .pyq-dept-chip.active, .pyq-sem-chip.active {
   background: #F5B69E !important;
+  background-color: #F5B69E !important;
   border-color: #F5B69E !important;
   color: #000000 !important;
-  box-shadow: 0 2px 6px rgba(245, 182, 158, 0.4) !important;
+  box-shadow: 0 2px 8px rgba(245, 182, 158, 0.45) !important;
 }
