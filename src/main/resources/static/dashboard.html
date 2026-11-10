@@ -35,10 +35,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Plus+Jakarta+Sans:wght@600;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-
-  <!-- Shared Stylesheet -->
-  <link rel="stylesheet" href="styles.css?v=20261110_v9" />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Plus+Jakarta+Sans:wght@600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
   <style>
     /* ─── Viewport Stability ─── */
@@ -64,7 +61,7 @@
       /* Soft Lavender White / Powder Blue / Sunset Peach */
       --surface-canvas: #E9E8F8;
       --surface-card: #FFFFFF;
-      --surface-elevated: #D4E3F7;
+      --surface-elevated: #F4F7FC;
       --surface-border: rgba(141, 185, 240, 0.45);
       --surface-border-focus: #8DB9F0;
       --text-primary: #0F172A;
@@ -87,11 +84,29 @@
       --btn-secondary-bg: #8DB9F0;
       --btn-secondary-text: #0F172A;
 
-      --surface-hover:   var(--surface-elevated);
+      --surface-hover:   #EFF6FF;
       --border-hairline: var(--surface-border);
-      --border-subtle:   var(--surface-border);
+      --border-subtle:   rgba(141, 185, 240, 0.65);
       --card-bg:         var(--surface-card);
       --body-bg:         var(--surface-canvas);
+      --text-muted:      var(--text-tertiary);
+      --accent-blue:     #1E40AF;
+      --accent-blue-dim: #EFF6FF;
+      --accent-indigo:   #4F46E5;
+      --accent-green:    #16A34A;
+      --accent-orange:   #F5B69E;
+      --accent-red:      var(--danger-action);
+      --font-display:    'Manrope', 'Plus Jakarta Sans', system-ui, sans-serif;
+      --font-body:       'Inter', system-ui, sans-serif;
+      --font-mono:       'JetBrains Mono', monospace;
+      --radius-sm:       8px;
+      --radius-md:       12px;
+      --radius-lg:       16px;
+      --transition-fast: 150ms cubic-bezier(0.4,0,0.2,1);
+      --transition-base: 200ms cubic-bezier(0.4,0,0.2,1);
+      --sidebar-width:   240px;
+      --dock-width:      380px;
+      --header-height:   56px;
     }
 
     /* ─── Base ─── */
@@ -131,7 +146,7 @@
       top: 0; left: 0; right: 0;
       height: var(--header-height);
       z-index: 1000;
-      background: rgba(249, 235, 215, 0.95);
+      background: rgba(255, 255, 255, 0.94);
       border-bottom: 1px solid var(--border-hairline);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
@@ -141,8 +156,8 @@
       gap: 1rem;
       padding: 0 1.25rem;
     }
-    [data-theme="light"] #dash-header { background: rgba(249, 235, 215, 0.95); }
-    [data-theme="dark"] #dash-header { background: rgba(11, 15, 25, 0.95); }
+    [data-theme="light"] #dash-header { background: rgba(255, 255, 255, 0.94); }
+    [data-theme="dark"] #dash-header { background: rgba(255, 255, 255, 0.94); }
 
     /* Wordmark */
     .header-wordmark {
@@ -172,13 +187,13 @@
       display: inline-flex;
       align-items: center;
       gap: 0.25rem;
-      padding: 2px 8px;
+      padding: 3px 10px;
       background: var(--accent-blue-dim);
-      border: 1px solid rgba(59,130,246,0.3);
-      border-radius: 20px;
-      font-size: 10px;
+      border: 1px solid #8DB9F0;
+      border-radius: 9999px;
+      font-size: 11px;
       font-weight: 600;
-      color: #60a5fa;
+      color: #1E40AF;
       font-family: var(--font-mono);
       white-space: nowrap;
       flex-shrink: 0;
@@ -251,7 +266,7 @@
     }
     .user-avatar {
       width: 24px; height: 24px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent-indigo), var(--accent-blue));
+      background: linear-gradient(135deg, #2563EB, #1E40AF);
       display: flex; align-items: center; justify-content: center;
       font-size: 11px; font-weight: 700; color: #fff;
       font-family: var(--font-display); flex-shrink: 0;
@@ -337,8 +352,8 @@
     .nav-item-icon { font-size: 15px; flex-shrink: 0; }
     .nav-item-label { flex: 1; }
     .nav-badge {
-      background: var(--accent-orange);
-      color: #fff;
+      background: var(--sunset-peach);
+      color: #0F172A;
       font-size: 10px; font-weight: 700;
       padding: 1px 6px; border-radius: 10px;
       font-family: var(--font-mono);
@@ -376,9 +391,9 @@
       display: inline-flex; align-items: center; gap: 0.3rem;
       padding: 2px 8px;
       background: var(--accent-blue-dim);
-      border: 1px solid rgba(59,130,246,0.3);
+      border: 1px solid #8DB9F0;
       border-radius: 20px;
-      font-size: 11px; font-weight: 600; color: #60a5fa;
+      font-size: 11px; font-weight: 600; color: #1E40AF;
       font-family: var(--font-mono);
     }
 
@@ -408,7 +423,7 @@
       overflow: hidden;
       transition: box-shadow var(--transition-base);
     }
-    .course-accordion:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.25); }
+    .course-accordion:hover { box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08); border-color: rgba(141, 185, 240, 0.85); }
 
     .course-accordion-header {
       display: flex; align-items: center; gap: 0.75rem;
@@ -423,11 +438,11 @@
 
     .course-code-badge {
       font-family: var(--font-mono);
-      font-size: 10px; font-weight: 600;
-      padding: 2px 7px; border-radius: 6px;
+      font-size: 10px; font-weight: 700;
+      padding: 3px 8px; border-radius: 6px;
       background: var(--accent-blue-dim);
-      border: 1px solid rgba(59,130,246,0.25);
-      color: #60a5fa;
+      border: 1px solid #8DB9F0;
+      color: #1E40AF;
       flex-shrink: 0;
     }
     .course-title-block { flex: 1; }
@@ -460,9 +475,9 @@
       display: none;
       border-top: 1px solid var(--border-hairline);
       padding: 0.75rem 1.25rem 1rem;
-      background: rgba(11,15,25,0.35);
+      background: #F8FAFC;
     }
-    [data-theme="light"] .course-accordion-body { background: rgba(241,245,249,0.5); }
+    [data-theme="light"] .course-accordion-body { background: #F8FAFC; }
     .course-accordion.open .course-accordion-body { display: block; }
 
     /* Unit rows */
@@ -500,14 +515,14 @@
       font-family: var(--font-body);
     }
     .unit-save-btn:hover {
-      background: var(--accent-blue-dim);
-      border-color: rgba(59,130,246,0.4);
-      color: #60a5fa;
+      background: #EFF6FF;
+      border-color: #8DB9F0;
+      color: #1E40AF;
     }
     .unit-save-btn.saved {
-      background: rgba(34,197,94,0.12);
-      border-color: rgba(34,197,94,0.3);
-      color: #4ade80;
+      background: rgba(22, 163, 74, 0.12);
+      border-color: rgba(22, 163, 74, 0.35);
+      color: #15803D;
     }
     .tag-high-yield,
     .vermilion-tag {
@@ -534,16 +549,16 @@
       white-space: nowrap;
     }
     .course-action-btn.primary {
-      background: var(--accent-blue); color: #fff; border: 1px solid transparent;
+      background: #F5B69E; color: #0F172A; border: 1px solid #E39474; font-weight: 700;
     }
-    .course-action-btn.primary:hover { background: #2563eb; transform: translateY(-1px); }
+    .course-action-btn.primary:hover { background: #f7a88b; transform: translateY(-1px); }
     .course-action-btn.secondary {
-      background: var(--surface-elevated); color: var(--text-secondary);
-      border: 1px solid var(--border-hairline);
+      background: #FFFFFF; color: #0F172A;
+      border: 1px solid #8DB9F0;
     }
     .course-action-btn.secondary:hover {
-      background: var(--surface-hover); color: var(--text-primary);
-      border-color: var(--border-subtle);
+      background: #EFF6FF; color: #1E40AF;
+      border-color: #6BA3E3;
     }
 
     /* ─── PYQ Archive Cards ─── */
@@ -561,8 +576,8 @@
       transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
     }
     .pyq-card:hover {
-      border-color: var(--border-subtle);
-      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      border-color: #8DB9F0;
+      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08);
     }
     .pyq-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem; }
     .pyq-card-year {
@@ -576,13 +591,13 @@
       font-family: var(--font-mono);
     }
     .pyq-card-type.regular {
-      background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.25); color: #60a5fa;
+      background: #EFF6FF; border: 1px solid #8DB9F0; color: #1E40AF;
     }
     .pyq-card-type.backlog {
-      background: rgba(249,115,22,0.12); border: 1px solid rgba(249,115,22,0.25); color: #fb923c;
+      background: #FFF7F3; border: 1px solid #F5B69E; color: #9A3412;
     }
     .pyq-card-type.archive {
-      background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.25); color: #a5b4fc;
+      background: #F5F3FF; border: 1px solid #C4B5FD; color: #5B21B6;
     }
     .pyq-card-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
     .pyq-card-papers { display: flex; flex-direction: column; gap: 0.35rem; }
@@ -590,18 +605,18 @@
       display: flex; align-items: center; gap: 0.5rem;
       font-size: 12px; color: var(--text-secondary);
     }
-    .pyq-paper-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent-blue); flex-shrink: 0; }
+    .pyq-paper-dot { width: 5px; height: 5px; border-radius: 50%; background: #8DB9F0; flex-shrink: 0; }
     .pyq-paper-name { flex: 1; }
     .pyq-paper-link {
       font-size: 10px; font-weight: 600;
       padding: 2px 8px; border-radius: 5px;
       background: var(--surface-elevated); border: 1px solid var(--border-hairline);
-      color: var(--text-muted); text-decoration: none;
+      color: var(--text-secondary); text-decoration: none;
       cursor: pointer; font-family: var(--font-mono);
       transition: all var(--transition-fast);
     }
     .pyq-paper-link:hover {
-      background: var(--accent-blue-dim); border-color: rgba(59,130,246,0.4); color: #60a5fa;
+      background: #EFF6FF; border-color: #8DB9F0; color: #1E40AF;
     }
 
     /* ─── Panic Pack Section ─── */
@@ -612,7 +627,7 @@
     }
     .panic-card {
       background: var(--surface-card);
-      border: 1px solid rgba(249,115,22,0.2);
+      border: 1px solid var(--border-hairline);
       border-radius: var(--radius-md);
       padding: 0.85rem 1rem;
       cursor: pointer;
@@ -620,8 +635,8 @@
       display: flex; flex-direction: column; gap: 0.5rem;
     }
     .panic-card:hover {
-      background: rgba(249,115,22,0.06);
-      border-color: rgba(249,115,22,0.4);
+      background: #FFF7F3;
+      border-color: #F5B69E;
       transform: translateY(-1px);
     }
     .panic-card-icon { font-size: 18px; }
@@ -820,9 +835,9 @@
     }
     .toast {
       display: flex; align-items: center; gap: 0.6rem;
-      background: var(--surface-elevated); border: 1px solid var(--border-subtle);
+      background: var(--surface-card); border: 1px solid #8DB9F0;
       border-radius: var(--radius-md); padding: 0.75rem 1rem;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.14);
       min-width: 240px; max-width: 320px;
       font-size: 13px; color: var(--text-primary);
       animation: toastIn 0.2s ease forwards;
@@ -878,7 +893,7 @@
     <a href="index.html" class="brand-link" style="color: #0F172A !important; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 1.25rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
           📐 MAKAUT CampusSense
         </a>
-    <span class="header-branch-badge" id="branch-badge" style="background:var(--emerald-surface);color:var(--emerald-primary);border:1px solid var(--surface-border);border-radius:9999px;font-weight:600;padding:3px 10px;font-size:12px;">B.Tech CSE · Sem 5</span>
+    <span class="header-branch-badge" id="branch-badge" style="background:#EFF6FF;color:#1E40AF;border:1px solid #8DB9F0;border-radius:9999px;font-weight:600;padding:3px 10px;font-size:12px;">B.Tech CSE · Sem 5</span>
   </div>
 
   <!-- Centre: CmdK Search -->
@@ -954,11 +969,11 @@
       <span class="nav-item-icon">🏠</span>
       <span class="nav-item-label">Home</span>
     </a>
-    <a href="index.html#landing-curriculum" class="nav-item">
+    <a href="index.html#syllabus-section" class="nav-item">
       <span class="nav-item-icon">🗂️</span>
       <span class="nav-item-label">Full Syllabus</span>
     </a>
-    <a href="index.html#landing-pyqs" class="nav-item">
+    <a href="index.html#pyq-section" class="nav-item">
       <span class="nav-item-icon">📋</span>
       <span class="nav-item-label">All PYQs</span>
     </a>
@@ -1031,8 +1046,8 @@
             </div>
           </div>
           <div class="course-actions">
-            <a href="index.html#landing-curriculum" class="course-action-btn primary">📘 View Syllabus Blueprint →</a>
-            <a href="index.html#landing-pyqs" class="course-action-btn secondary">📄 Access PYQ Archives →</a>
+            <a href="index.html#syllabus-section" class="course-action-btn primary">📘 View Syllabus Blueprint →</a>
+            <a href="index.html#pyq-section" class="course-action-btn secondary">📄 Access PYQ Archives →</a>
           </div>
         </div>
       </div>
@@ -1082,8 +1097,8 @@
             </div>
           </div>
           <div class="course-actions">
-            <a href="index.html#landing-curriculum" class="course-action-btn primary">📘 View Syllabus Blueprint →</a>
-            <a href="index.html#landing-pyqs" class="course-action-btn secondary">📄 Access PYQ Archives →</a>
+            <a href="index.html#syllabus-section" class="course-action-btn primary">📘 View Syllabus Blueprint →</a>
+            <a href="index.html#pyq-section" class="course-action-btn secondary">📄 Access PYQ Archives →</a>
           </div>
         </div>
       </div>
@@ -1133,8 +1148,8 @@
             </div>
           </div>
           <div class="course-actions">
-            <a href="index.html#landing-curriculum" class="course-action-btn primary">📘 View Syllabus Blueprint →</a>
-            <a href="index.html#landing-pyqs" class="course-action-btn secondary">📄 Access PYQ Archives →</a>
+            <a href="index.html#syllabus-section" class="course-action-btn primary">📘 View Syllabus Blueprint →</a>
+            <a href="index.html#pyq-section" class="course-action-btn secondary">📄 Access PYQ Archives →</a>
           </div>
         </div>
       </div>
@@ -1184,8 +1199,8 @@
             </div>
           </div>
           <div class="course-actions">
-            <a href="index.html#landing-curriculum" class="course-action-btn primary">📘 View Syllabus Blueprint →</a>
-            <a href="index.html#landing-pyqs" class="course-action-btn secondary">📄 Access PYQ Archives →</a>
+            <a href="index.html#syllabus-section" class="course-action-btn primary">📘 View Syllabus Blueprint →</a>
+            <a href="index.html#pyq-section" class="course-action-btn secondary">📄 Access PYQ Archives →</a>
           </div>
         </div>
       </div>
@@ -1209,22 +1224,22 @@
             <div class="pyq-paper-row">
               <span class="pyq-paper-dot"></span>
               <span class="pyq-paper-name">CS501 – Automata Theory</span>
-              <a class="pyq-paper-link" href="index.html#landing-pyqs" aria-label="Open CS501 2024 paper">PDF →</a>
+              <a class="pyq-paper-link" href="index.html#pyq-section" aria-label="Open CS501 2024 paper">PDF →</a>
             </div>
             <div class="pyq-paper-row">
               <span class="pyq-paper-dot"></span>
               <span class="pyq-paper-name">CS502 – DBMS</span>
-              <a class="pyq-paper-link" href="index.html#landing-pyqs" aria-label="Open CS502 2024 paper">PDF →</a>
+              <a class="pyq-paper-link" href="index.html#pyq-section" aria-label="Open CS502 2024 paper">PDF →</a>
             </div>
             <div class="pyq-paper-row">
               <span class="pyq-paper-dot"></span>
               <span class="pyq-paper-name">CS503 – Operating Systems</span>
-              <a class="pyq-paper-link" href="index.html#landing-pyqs" aria-label="Open CS503 2024 paper">PDF →</a>
+              <a class="pyq-paper-link" href="index.html#pyq-section" aria-label="Open CS503 2024 paper">PDF →</a>
             </div>
             <div class="pyq-paper-row">
               <span class="pyq-paper-dot"></span>
               <span class="pyq-paper-name">CS504 – OOP with Java</span>
-              <a class="pyq-paper-link" href="index.html#landing-pyqs" aria-label="Open CS504 2024 paper">PDF →</a>
+              <a class="pyq-paper-link" href="index.html#pyq-section" aria-label="Open CS504 2024 paper">PDF →</a>
             </div>
           </div>
         </div>
@@ -1239,22 +1254,22 @@
             <div class="pyq-paper-row">
               <span class="pyq-paper-dot"></span>
               <span class="pyq-paper-name">CS501 – Automata Theory</span>
-              <a class="pyq-paper-link" href="index.html#landing-pyqs">PDF →</a>
+              <a class="pyq-paper-link" href="index.html#pyq-section">PDF →</a>
             </div>
             <div class="pyq-paper-row">
               <span class="pyq-paper-dot"></span>
               <span class="pyq-paper-name">CS502 – DBMS</span>
-              <a class="pyq-paper-link" href="index.html#landing-pyqs">PDF →</a>
+              <a class="pyq-paper-link" href="index.html#pyq-section">PDF →</a>
             </div>
             <div class="pyq-paper-row">
               <span class="pyq-paper-dot"></span>
               <span class="pyq-paper-name">CS503 – Operating Systems</span>
-              <a class="pyq-paper-link" href="index.html#landing-pyqs">PDF →</a>
+              <a class="pyq-paper-link" href="index.html#pyq-section">PDF →</a>
             </div>
             <div class="pyq-paper-row">
               <span class="pyq-paper-dot"></span>
               <span class="pyq-paper-name">CS504 – OOP with Java</span>
-              <a class="pyq-paper-link" href="index.html#landing-pyqs">PDF →</a>
+              <a class="pyq-paper-link" href="index.html#pyq-section">PDF →</a>
             </div>
           </div>
         </div>
@@ -1269,17 +1284,17 @@
             <div class="pyq-paper-row">
               <span class="pyq-paper-dot"></span>
               <span class="pyq-paper-name">CS501 – Automata Theory</span>
-              <a class="pyq-paper-link" href="index.html#landing-pyqs">PDF →</a>
+              <a class="pyq-paper-link" href="index.html#pyq-section">PDF →</a>
             </div>
             <div class="pyq-paper-row">
               <span class="pyq-paper-dot"></span>
               <span class="pyq-paper-name">CS502 – DBMS</span>
-              <a class="pyq-paper-link" href="index.html#landing-pyqs">PDF →</a>
+              <a class="pyq-paper-link" href="index.html#pyq-section">PDF →</a>
             </div>
             <div class="pyq-paper-row">
               <span class="pyq-paper-dot"></span>
               <span class="pyq-paper-name">CS503 – Operating Systems</span>
-              <a class="pyq-paper-link" href="index.html#landing-pyqs">PDF →</a>
+              <a class="pyq-paper-link" href="index.html#pyq-section">PDF →</a>
             </div>
           </div>
         </div>
@@ -1294,22 +1309,22 @@
             <div class="pyq-paper-row">
               <span class="pyq-paper-dot"></span>
               <span class="pyq-paper-name">CS501 – Automata Theory</span>
-              <a class="pyq-paper-link" href="index.html#landing-pyqs">PDF →</a>
+              <a class="pyq-paper-link" href="index.html#pyq-section">PDF →</a>
             </div>
             <div class="pyq-paper-row">
               <span class="pyq-paper-dot"></span>
               <span class="pyq-paper-name">CS502 – DBMS</span>
-              <a class="pyq-paper-link" href="index.html#landing-pyqs">PDF →</a>
+              <a class="pyq-paper-link" href="index.html#pyq-section">PDF →</a>
             </div>
             <div class="pyq-paper-row">
               <span class="pyq-paper-dot"></span>
               <span class="pyq-paper-name">CS503 – Operating Systems</span>
-              <a class="pyq-paper-link" href="index.html#landing-pyqs">PDF →</a>
+              <a class="pyq-paper-link" href="index.html#pyq-section">PDF →</a>
             </div>
             <div class="pyq-paper-row">
               <span class="pyq-paper-dot"></span>
               <span class="pyq-paper-name">CS504 – OOP with Java</span>
-              <a class="pyq-paper-link" href="index.html#landing-pyqs">PDF →</a>
+              <a class="pyq-paper-link" href="index.html#pyq-section">PDF →</a>
             </div>
           </div>
         </div>
@@ -1324,17 +1339,17 @@
             <div class="pyq-paper-row">
               <span class="pyq-paper-dot"></span>
               <span class="pyq-paper-name">CS501 – Automata Theory</span>
-              <a class="pyq-paper-link" href="index.html#landing-pyqs">PDF →</a>
+              <a class="pyq-paper-link" href="index.html#pyq-section">PDF →</a>
             </div>
             <div class="pyq-paper-row">
               <span class="pyq-paper-dot"></span>
               <span class="pyq-paper-name">CS502 – DBMS</span>
-              <a class="pyq-paper-link" href="index.html#landing-pyqs">PDF →</a>
+              <a class="pyq-paper-link" href="index.html#pyq-section">PDF →</a>
             </div>
             <div class="pyq-paper-row">
               <span class="pyq-paper-dot"></span>
               <span class="pyq-paper-name">CS503 – Operating Systems</span>
-              <a class="pyq-paper-link" href="index.html#landing-pyqs">PDF →</a>
+              <a class="pyq-paper-link" href="index.html#pyq-section">PDF →</a>
             </div>
           </div>
         </div>
@@ -1349,7 +1364,7 @@
             <div class="pyq-paper-row">
               <span class="pyq-paper-dot"></span>
               <span class="pyq-paper-name">Full Archive Bundle</span>
-              <a class="pyq-paper-link" href="index.html#landing-pyqs">View All →</a>
+              <a class="pyq-paper-link" href="index.html#pyq-section">View All →</a>
             </div>
           </div>
         </div>
@@ -1385,7 +1400,28 @@
       </div>
       <div style="background:var(--surface-card);border:1px solid var(--border-hairline);border-radius:var(--radius-md);padding:1.25rem;">
         <div class="pref-group">
+          <div class="pref-item">
+            <label class="pref-label" for="pref-animations">Reduce Motion</label>
+            <label class="toggle-switch">
+              <input type="checkbox" id="pref-animations" onchange="toggleReduceMotion(this.checked)" />
+              <span class="toggle-slider"></span>
+            </label>
           </div>
+          <div class="pref-item">
+            <label class="pref-label" for="pref-notifications">Exam Reminders</label>
+            <label class="toggle-switch">
+              <input type="checkbox" id="pref-notifications" onchange="savePref('exam_reminders', this.checked)" />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="pref-item">
+            <label class="pref-label" for="pref-compact">Compact View</label>
+            <label class="toggle-switch">
+              <input type="checkbox" id="pref-compact" onchange="savePref('compact_view', this.checked)" />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
         <div style="margin-top:1.25rem;display:flex;gap:0.75rem;flex-wrap:wrap;">
           <button class="course-action-btn secondary" onclick="clearDeck()" style="font-size:12px;">🗑️ Clear Revision Deck</button>
           <button class="course-action-btn secondary" onclick="clearBookmarks()" style="font-size:12px;">🔖 Clear All Bookmarks</button>
@@ -1475,7 +1511,7 @@ const SEARCH_INDEX = [
   { icon:'🔥', label:'Panic Pack Topics', sub:'16 High-Yield', href:'#panic' },
   { icon:'🔖', label:'Bookmarked Notes', sub:'Your Bookmarks', href:'#bookmarks' },
   { icon:'⚙️', label:'Preferences &amp; Settings', sub:'Dashboard', href:'#preferences' },
-  { icon:'📚', label:'Full Syllabus Blueprint', sub:'CampusSense Home', href:'index.html#landing-curriculum' },
+  { icon:'📚', label:'Full Syllabus Blueprint', sub:'CampusSense Home', href:'index.html#syllabus-section' },
   { icon:'🏠', label:'Go to Home Page', sub:'CampusSense', href:'/' },
 ];
 
@@ -1585,7 +1621,6 @@ async function handleSignOut() {
   ];
   keysToRemove.forEach(k => { try { localStorage.removeItem(k); } catch {} });
   // Navigate home
-  try { history.replaceState(null, '', '/'); } catch {}
   window.location.replace('index.html');
 }
 
@@ -1646,7 +1681,7 @@ function initScrollSpy() {
 // ── Unit click ───────────────────────────────────
 function handleUnitClick(courseCode, unitName) {
   // Route to the main app's curriculum section with context
-  window.location.href = `index.html#landing-curriculum`;
+  window.location.href = `index.html#syllabus-section`;
 }
 
 // ── Save to Deck ─────────────────────────────────
@@ -1798,7 +1833,7 @@ function renderBookmarks() {
     container.innerHTML = `
       <div class="bookmarks-empty">
         <div style="font-size:24px;margin-bottom:0.5rem;">🔖</div>
-        No bookmarks yet. Bookmark topic cards from the <a href="index.html#landing-curriculum" style="color:var(--accent-blue);text-decoration:none;">Curriculum Matrix</a> on the home page.
+        No bookmarks yet. Bookmark topic cards from the <a href="index.html#syllabus-section" style="color:var(--accent-blue);text-decoration:none;">Curriculum Matrix</a> on the home page.
       </div>`;
     return;
   }
