@@ -15725,7 +15725,7 @@ body, html {
 body.landing-body, body.dashboard-body, .page-wrapper {
   background: 
     linear-gradient(rgba(233, 232, 248, 0.48), rgba(233, 232, 248, 0.58)), 
-    url('images/makaut-haringhata-boulevard.jpg') center center / cover no-repeat fixed !important;
+    url('images/makaut-haringhata-boulevard.jpg?v=20261110_v9') center center / cover no-repeat fixed !important;
 }
 
 #app, main, section, .hero-section, #features-section, #syllabus-section, #pyq-section, footer, .landing-footer {
@@ -15739,7 +15739,7 @@ body.landing-body, body.dashboard-body, .page-wrapper {
   align-items: center !important;
   justify-content: center !important;
   background: linear-gradient(rgba(233, 232, 248, 0.48), rgba(233, 232, 248, 0.58)),
-              url('images/makaut-haringhata-boulevard.jpg') center center / cover no-repeat fixed !important;
+              url('images/makaut-haringhata-boulevard.jpg?v=20261110_v9') center center / cover no-repeat fixed !important;
   padding: 1.5rem !important;
   box-sizing: border-box !important;
 }
@@ -15759,7 +15759,7 @@ body.dashboard-body,
 .page-wrapper {
   background: 
     linear-gradient(rgba(233, 232, 248, 0.48), rgba(233, 232, 248, 0.58)), 
-    url('images/makaut-haringhata-boulevard.jpg') center center / cover no-repeat fixed !important;
+    url('images/makaut-haringhata-boulevard.jpg?v=20261110_v9') center center / cover no-repeat fixed !important;
   background-color: var(--surface-canvas, #E9E8F8) !important;
 }
 
@@ -15769,7 +15769,7 @@ body.dashboard-body,
   align-items: center !important;
   justify-content: center !important;
   background: linear-gradient(rgba(233, 232, 248, 0.48), rgba(233, 232, 248, 0.58)),
-              url('images/makaut-haringhata-boulevard.jpg') center center / cover no-repeat fixed !important;
+              url('images/makaut-haringhata-boulevard.jpg?v=20261110_v9') center center / cover no-repeat fixed !important;
   padding: 1.5rem !important;
   box-sizing: border-box !important;
 }
@@ -15817,7 +15817,7 @@ html, body {
   width: 100% !important;
   background: 
     linear-gradient(rgba(233, 232, 248, 0.48), rgba(233, 232, 248, 0.58)), 
-    url('images/makaut-haringhata-boulevard.jpg') center top / cover no-repeat fixed !important;
+    url('images/makaut-haringhata-boulevard.jpg?v=20261110_v9') center top / cover no-repeat fixed !important;
   background-color: #E9E8F8 !important;
 }
 
@@ -15828,7 +15828,7 @@ body.dashboard-body,
 .page-wrapper {
   background: 
     linear-gradient(rgba(233, 232, 248, 0.48), rgba(233, 232, 248, 0.58)), 
-    url('images/makaut-haringhata-boulevard.jpg') center top / cover no-repeat fixed !important;
+    url('images/makaut-haringhata-boulevard.jpg?v=20261110_v9') center top / cover no-repeat fixed !important;
   background-color: #E9E8F8 !important;
 }
 
@@ -15885,7 +15885,7 @@ html, body {
   background-color: #E9E8F8 !important;
   background-image: 
     linear-gradient(rgba(233, 232, 248, 0.48), rgba(233, 232, 248, 0.58)),
-    url('images/makaut-haringhata-boulevard.jpg') !important;
+    url('images/makaut-haringhata-boulevard.jpg?v=20261110_v9') !important;
   background-position: center top !important;
   background-size: cover !important;
   background-repeat: no-repeat !important;
@@ -16004,7 +16004,7 @@ body.landing-body, body.dashboard-body,
   background-color: #E9E8F8 !important;
   background-image:
     linear-gradient(rgba(233, 232, 248, 0.40), rgba(233, 232, 248, 0.45)),
-    url('images/makaut-haringhata-boulevard.jpg') !important;
+    url('images/makaut-haringhata-boulevard.jpg?v=20261110_v9') !important;
   background-position: center top !important;
   background-size: cover !important;
   background-attachment: fixed !important;
@@ -16021,7 +16021,7 @@ body.landing-body, body.dashboard-body,
   background-color: #E9E8F8 !important;
   background-image:
     linear-gradient(rgba(233, 232, 248, 0.40), rgba(233, 232, 248, 0.45)),
-    url('images/makaut-haringhata-boulevard.jpg') !important;
+    url('images/makaut-haringhata-boulevard.jpg?v=20261110_v9') !important;
   background-position: center top !important;
   background-size: cover !important;
   background-attachment: fixed !important;
@@ -16409,4 +16409,17 @@ footer, .footer-section, .landing-footer {
 
 .pyq-no-results strong {
   color: #0F172A !important;
+}
+
+/* PYQ Section Lead Subtitle: Single Line on Desktop */
+#pyq-section .section-lead-subtitle {
+  max-width: 100% !important;
+  font-size: clamp(0.88rem, 1.25vw, 1rem) !important;
+  white-space: nowrap !important;
+}
+
+@media (max-width: 820px) {
+  #pyq-section .section-lead-subtitle {
+    white-space: normal !important;
+  }
 }
