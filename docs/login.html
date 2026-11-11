@@ -1017,11 +1017,22 @@
     }
 
     function completeAuthentication(user) {
+      let prevEmail = "";
+      try {
+        prevEmail = (JSON.parse(localStorage.getItem("campussense_user_session") || "{}").email || "").trim().toLowerCase();
+      } catch (e) {}
+      const nextEmail = ((user && user.email) || "").trim().toLowerCase();
+
       localStorage.setItem("campussense_logged_in", "true");
       localStorage.setItem("campussense_auth_provider", "clerk_otp");
       localStorage.setItem("campussense_user_session", JSON.stringify(user));
 
-      if (localStorage.getItem("academic_profile_completed") === "true") {
+      // Sign-up or switching accounts must always route through academic profile setup first
+      if (currentMode === "signup" || (prevEmail && nextEmail && prevEmail !== nextEmail)) {
+        localStorage.removeItem("academic_profile_completed");
+      }
+
+      if (currentMode !== "signup" && localStorage.getItem("academic_profile_completed") === "true") {
         showAlert("success", "Verification successful! Redirecting to Student Workspace...");
         setTimeout(() => {
           window.location.replace("dashboard.html");
