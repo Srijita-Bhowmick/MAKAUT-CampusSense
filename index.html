@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -30,7 +30,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Plus+Jakarta+Sans:wght@600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20261111_v15">
+    <link rel="stylesheet" href="styles.css?v=20261112_v17">
 
     <!-- Schema.org EducationalOrganization -->
     <script type="application/ld+json">
@@ -81,7 +81,7 @@
           <a 
             href="login.html?v=20261111_v13" 
             id="nav-signin-link" 
-            style="display: inline-flex !important; align-items: center !important; white-space: nowrap !important; color: #0F172A !important; font-family: 'Inter', sans-serif !important; font-weight: 500 !important; font-size: 0.95rem !important; text-decoration: none !important; padding: 0.5rem 0.75rem !important;"
+            style="display: inline-flex; align-items: center; white-space: nowrap; color: #0F172A !important; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.95rem; text-decoration: none; padding: 0.5rem 0.75rem;"
           >
             Sign In
           </a>
@@ -215,7 +215,7 @@
               <a 
                 href="#syllabus-section" 
                 class="hero-cta-btn hero-btn-explore" 
-                style="background-color: #F5B69E !important; color: #000000 !important; font-weight: 700 !important; font-size: 0.95rem !important; padding: 0.85rem 1.85rem !important; border-radius: 0.5rem !important; border: none !important; cursor: pointer !important; text-decoration: none !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; height: 48px !important; box-shadow: 0 4px 14px rgba(245, 182, 158, 0.45) !important; transition: all 0.15s ease-in-out !important;"
+                style="background-color: #F5B69E !important; color: #000000 !important; font-weight: 700; font-size: 0.95rem; padding: 0.85rem 1.85rem; border-radius: 0.5rem; border: none; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; height: 48px; box-shadow: 0 4px 14px rgba(245, 182, 158, 0.45); transition: all 0.15s ease-in-out;"
               >
                 Explore Curriculums and PYQs →
               </a>
@@ -226,7 +226,7 @@
                 id="btn-hero-panic"
                 onclick="document.getElementById('panic-pack-modal').style.display='flex';" 
                 class="hero-cta-btn hero-btn-panic" 
-                style="background-color: #F5B69E !important; color: #000000 !important; font-weight: 700 !important; font-size: 0.95rem !important; padding: 0.85rem 1.85rem !important; border-radius: 0.5rem !important; border: none !important; cursor: pointer !important; text-decoration: none !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; height: 48px !important; box-shadow: 0 4px 14px rgba(245, 182, 158, 0.45) !important; transition: all 0.15s ease-in-out !important;"
+                style="background-color: #F5B69E !important; color: #000000 !important; font-weight: 700; font-size: 0.95rem; padding: 0.85rem 1.85rem; border-radius: 0.5rem; border: none; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; height: 48px; box-shadow: 0 4px 14px rgba(245, 182, 158, 0.45); transition: all 0.15s ease-in-out;"
               >
                 View 16+ Panic Pack →
               </button>
@@ -499,7 +499,7 @@
     </main>
 
     <!-- G. Floating Bottom-Right "Ask AI" Button (Pure Plain Text Pill in Warm Sunset Peach) -->
-    <button id="floating-ask-ai" class="floating-ask-ai" onclick="window.location.href='login.html?v=20261111_v13'" style="position: fixed !important; bottom: 1.5rem !important; right: 1.5rem !important; z-index: 9999 !important; background-color: #F5B69E !important; color: #000000 !important; font-weight: 700 !important; font-size: 0.95rem !important; padding: 0.75rem 1.4rem !important; border-radius: 9999px !important; border: none !important; box-shadow: 0 4px 18px rgba(245, 182, 158, 0.5) !important; cursor: pointer !important; display: inline-flex !important; align-items: center !important; justify-content: center !important;">
+    <button id="floating-ask-ai" class="floating-ask-ai" onclick="window.location.href='login.html?v=20261111_v13'" style="position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999; background-color: #F5B69E !important; color: #000000 !important; font-weight: 700; font-size: 0.95rem; padding: 0.75rem 1.4rem; border-radius: 9999px; border: none; box-shadow: 0 4px 18px rgba(245, 182, 158, 0.5); cursor: pointer; display: inline-flex; align-items: center; justify-content: center;">
       Ask AI
     </button>
 
@@ -534,7 +534,7 @@
 
         <!-- 2. Self-Contained Feedback Modal (Section 2) -->
     <div id="feedback-modal" class="modal-overlay modal-hidden" onclick="handleFeedbackBackdropClick(event)">
-  <div class="feedback-card" style="background: #FFFFFF !important; border: 2px solid #8DB9F0 !important; border-radius: 1.25rem !important; padding: 2rem !important; width: 100% !important; max-width: 480px !important; box-shadow: 0 25px 50px rgba(0,0,0,0.2) !important; box-sizing: border-box !important; text-align: left !important;" onclick="event.stopPropagation();">
+  <div class="feedback-card" style="background: #FFFFFF !important; border: 2px solid #8DB9F0 !important; border-radius: 1.25rem !important; padding: 2rem; width: 100% !important; max-width: 480px !important; box-shadow: 0 25px 50px rgba(0,0,0,0.2) !important; box-sizing: border-box !important; text-align: left !important;" onclick="event.stopPropagation();">
     <h3 style="margin: 0 0 0.35rem 0; font-size: 1.35rem; font-weight: 800; color: #0F172A; font-family: 'Manrope', sans-serif;">
       Share Academic Feedback
     </h3>
