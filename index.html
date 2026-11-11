@@ -84,7 +84,7 @@
           </a>
 
           <a 
-            href="login.html" 
+            href="login.html#/sign-up" 
             id="nav-signup-btn" 
             class="nav-peach-pill"
           >
@@ -1097,6 +1097,7 @@
                   localStorage.removeItem('campussense_logged_in');
                   localStorage.removeItem('campussense_auth_provider');
                   localStorage.removeItem('campussense_user_session');
+                  localStorage.removeItem('academic_profile_completed');
                   if (window.Clerk?.signOut) {
                     try { await window.Clerk.signOut(); } catch (err) {}
                   }
