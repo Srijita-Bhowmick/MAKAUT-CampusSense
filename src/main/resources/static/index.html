@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
@@ -30,7 +30,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Plus+Jakarta+Sans:wght@600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20261112_v17">
+    <link rel="stylesheet" href="styles.css?v=20261111_v15">
 
     <!-- Schema.org EducationalOrganization -->
     <script type="application/ld+json">
@@ -67,59 +67,51 @@
             <a href="javascript:void(0)" id="nav-panic-link" class="landing-nav-link nav-panic-link" data-nav="panic-pack" style="color: #0F172A !important; font-weight: 600; font-size: 0.95rem; text-decoration: none; margin: 0 1rem; background: transparent !important; border: none !important; cursor: pointer;">🔥 Panic Pack</a>
         </nav>
 
-        <!-- Right-Hand Controls: Feedback, Sign In, Sign Up / Dashboard -->
-        <div class="nav-right" style="display: flex; align-items: center; gap: 0.75rem;">
-          <button
-            type="button"
-            id="nav-feedback-btn"
-            class="nav-peach-pill"
+        <!-- Right-Hand Controls: Feedback, Sign In, Sign Up -->
+                        <div class="nav-right" style="display: flex; align-items: center; gap: 0.75rem;">
+          <button 
+            type="button" 
+            id="nav-feedback-btn" 
+            class="nav-peach-pill" 
             onclick="openFeedbackModal()"
-            aria-label="Send Feedback"
-            title="Send Feedback"
           >
-            <span class="desktop-text">Feedback</span>
-            <span class="mobile-text" aria-hidden="true">💬</span>
+            Feedback
           </button>
 
-          <a
-            href="login.html?v=20261111_v13"
-            id="nav-signin-link"
-            style="display: inline-flex; align-items: center; white-space: nowrap; color: #0F172A !important; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.95rem; text-decoration: none; padding: 0.5rem 0.75rem;"
+          <a 
+            href="login.html?v=20261111_v13" 
+            id="nav-signin-link" 
+            style="display: inline-flex !important; align-items: center !important; white-space: nowrap !important; color: #0F172A !important; font-family: 'Inter', sans-serif !important; font-weight: 500 !important; font-size: 0.95rem !important; text-decoration: none !important; padding: 0.5rem 0.75rem !important;"
           >
             Sign In
           </a>
 
-          <a
-            href="login.html?v=20261111_v13#/sign-up"
-            id="nav-signup-btn"
+          <a 
+            href="login.html?v=20261111_v13#/sign-up" 
+            id="nav-signup-btn" 
             class="nav-peach-pill"
           >
             Sign Up
           </a>
 
-          <a
-            href="dashboard.html?v=20261111_v14"
-            id="nav-back-dashboard-btn"
-            class="nav-dashboard-pill btn-dashboard-nav nav-auth-hidden"
+          <a 
+            href="dashboard.html?v=20261111_v14" 
+            id="nav-back-dashboard-btn" 
+            class="nav-dashboard-pill" 
+            style="display: none !important;"
             onclick="try{sessionStorage.removeItem('campussense_from_dashboard');}catch(_){}"
             aria-label="Back to Dashboard"
           >
-            <span class="desktop-text">&larr; Back to Dashboard</span>
-            <span class="mobile-text">Dashboard &rarr;</span>
+            Back to Dashboard →
           </a>
         </div>
     </header>
     <script>
       window.syncBackToDashboardShortcut = function () {
         try {
-          var dashBtn = document.getElementById('nav-back-dashboard-btn');
-          var signInLink = document.getElementById('nav-signin-link');
-          var signUpBtn = document.getElementById('nav-signup-btn');
-          var rawToken = '';
-          try { rawToken = (localStorage.getItem('campussense_token') || '').trim(); } catch (_) {}
-
+          var btn = document.getElementById('nav-back-dashboard-btn');
+          if (!btn) return;
           var isAuth = Boolean(
-            rawToken ||
             (window.Clerk && window.Clerk.user) ||
             localStorage.getItem('campussense_logged_in') === 'true'
           );
@@ -128,50 +120,38 @@
             Boolean(localStorage.getItem('campussense_academic_profile'));
 
           var urlParams = new URLSearchParams(window.location.search || '');
-          if (urlParams.get('from') === 'dashboard' && window.history && typeof window.history.replaceState === 'function') {
-            try {
-              var cleanUrl = new URL(window.location.href);
-              cleanUrl.searchParams.delete('from');
-              window.history.replaceState({}, '', cleanUrl.pathname + cleanUrl.search + cleanUrl.hash);
-            } catch (_) {}
-          }
+          var urlFromDashboard = urlParams.get('from') === 'dashboard';
+          var sessionFromDashboard = false;
+          try {
+            sessionFromDashboard = sessionStorage.getItem('campussense_from_dashboard') === 'true';
+          } catch (_) {}
 
-          if (isAuth) {
-            if (signInLink) {
-              signInLink.classList.add('nav-auth-hidden');
-              signInLink.style.setProperty('display', 'none', 'important');
-            }
-            if (signUpBtn) {
-              signUpBtn.classList.add('nav-auth-hidden');
-              signUpBtn.style.setProperty('display', 'none', 'important');
-            }
-            if (dashBtn) {
-              var pathnameLower = window.location.pathname.toLowerCase();
-              var isDocs = pathnameLower.indexOf('/docs/') !== -1;
-              var isGh = pathnameLower.indexOf('makaut-campussense') !== -1 && !isDocs;
-              var targetFile = (hasAcademic || rawToken) ? 'dashboard.html?v=20261111_v14' : 'set-academic.html?v=20261111_v14';
-              dashBtn.href = window.location.protocol === 'file:'
-                ? targetFile
-                : ((isGh ? '/MAKAUT-CampusSense/' : (isDocs ? '/docs/' : '/')) + targetFile);
-              dashBtn.classList.remove('nav-auth-hidden');
-              dashBtn.style.setProperty('display', 'inline-flex', 'important');
-            }
-          } else {
+          if (isAuth && hasAcademic && (urlFromDashboard || sessionFromDashboard)) {
             try {
-              sessionStorage.removeItem('campussense_from_dashboard');
+              sessionStorage.setItem('campussense_from_dashboard', 'true');
             } catch (_) {}
-            if (dashBtn) {
-              dashBtn.classList.add('nav-auth-hidden');
-              dashBtn.style.setProperty('display', 'none', 'important');
+            if (urlFromDashboard && window.history && typeof window.history.replaceState === 'function') {
+              try {
+                var cleanUrl = new URL(window.location.href);
+                cleanUrl.searchParams.delete('from');
+                window.history.replaceState({}, '', cleanUrl.pathname + cleanUrl.search + cleanUrl.hash);
+              } catch (_) {}
             }
-            if (signInLink) {
-              signInLink.classList.remove('nav-auth-hidden');
-              signInLink.style.setProperty('display', 'inline-flex', 'important');
+            var pathnameLower = window.location.pathname.toLowerCase();
+            var isDocs = pathnameLower.indexOf('/docs/') !== -1;
+            var isGh = pathnameLower.indexOf('makaut-campussense') !== -1 && !isDocs;
+            var targetFile = 'dashboard.html?v=20261111_v14';
+            btn.href = window.location.protocol === 'file:'
+              ? targetFile
+              : ((isGh ? '/MAKAUT-CampusSense/' : (isDocs ? '/docs/' : '/')) + targetFile);
+            btn.style.setProperty('display', 'inline-flex', 'important');
+          } else {
+            if (!isAuth || !hasAcademic) {
+              try {
+                sessionStorage.removeItem('campussense_from_dashboard');
+              } catch (_) {}
             }
-            if (signUpBtn) {
-              signUpBtn.classList.remove('nav-auth-hidden');
-              signUpBtn.style.setProperty('display', 'inline-flex', 'important');
-            }
+            btn.style.setProperty('display', 'none', 'important');
           }
         } catch (e) {}
       };
@@ -235,7 +215,7 @@
               <a 
                 href="#syllabus-section" 
                 class="hero-cta-btn hero-btn-explore" 
-                style="background-color: #F5B69E !important; color: #000000 !important; font-weight: 700; font-size: 0.95rem; padding: 0.85rem 1.85rem; border-radius: 0.5rem; border: none; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; height: 48px; box-shadow: 0 4px 14px rgba(245, 182, 158, 0.45); transition: all 0.15s ease-in-out;"
+                style="background-color: #F5B69E !important; color: #000000 !important; font-weight: 700 !important; font-size: 0.95rem !important; padding: 0.85rem 1.85rem !important; border-radius: 0.5rem !important; border: none !important; cursor: pointer !important; text-decoration: none !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; height: 48px !important; box-shadow: 0 4px 14px rgba(245, 182, 158, 0.45) !important; transition: all 0.15s ease-in-out !important;"
               >
                 Explore Curriculums and PYQs →
               </a>
@@ -246,7 +226,7 @@
                 id="btn-hero-panic"
                 onclick="document.getElementById('panic-pack-modal').style.display='flex';" 
                 class="hero-cta-btn hero-btn-panic" 
-                style="background-color: #F5B69E !important; color: #000000 !important; font-weight: 700; font-size: 0.95rem; padding: 0.85rem 1.85rem; border-radius: 0.5rem; border: none; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; height: 48px; box-shadow: 0 4px 14px rgba(245, 182, 158, 0.45); transition: all 0.15s ease-in-out;"
+                style="background-color: #F5B69E !important; color: #000000 !important; font-weight: 700 !important; font-size: 0.95rem !important; padding: 0.85rem 1.85rem !important; border-radius: 0.5rem !important; border: none !important; cursor: pointer !important; text-decoration: none !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; height: 48px !important; box-shadow: 0 4px 14px rgba(245, 182, 158, 0.45) !important; transition: all 0.15s ease-in-out !important;"
               >
                 View 16+ Panic Pack →
               </button>
@@ -519,7 +499,7 @@
     </main>
 
     <!-- G. Floating Bottom-Right "Ask AI" Button (Pure Plain Text Pill in Warm Sunset Peach) -->
-    <button id="floating-ask-ai" class="floating-ask-ai" onclick="window.location.href='login.html?v=20261111_v13'" style="position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999; background-color: #F5B69E !important; color: #000000 !important; font-weight: 700; font-size: 0.95rem; padding: 0.75rem 1.4rem; border-radius: 9999px; border: none; box-shadow: 0 4px 18px rgba(245, 182, 158, 0.5); cursor: pointer; display: inline-flex; align-items: center; justify-content: center;">
+    <button id="floating-ask-ai" class="floating-ask-ai" onclick="window.location.href='login.html?v=20261111_v13'" style="position: fixed !important; bottom: 1.5rem !important; right: 1.5rem !important; z-index: 9999 !important; background-color: #F5B69E !important; color: #000000 !important; font-weight: 700 !important; font-size: 0.95rem !important; padding: 0.75rem 1.4rem !important; border-radius: 9999px !important; border: none !important; box-shadow: 0 4px 18px rgba(245, 182, 158, 0.5) !important; cursor: pointer !important; display: inline-flex !important; align-items: center !important; justify-content: center !important;">
       Ask AI
     </button>
 
@@ -554,7 +534,7 @@
 
         <!-- 2. Self-Contained Feedback Modal (Section 2) -->
     <div id="feedback-modal" class="modal-overlay modal-hidden" onclick="handleFeedbackBackdropClick(event)">
-  <div class="feedback-card" style="background: #FFFFFF !important; border: 2px solid #8DB9F0 !important; border-radius: 1.25rem !important; padding: 2rem; width: 100% !important; max-width: 480px !important; box-shadow: 0 25px 50px rgba(0,0,0,0.2) !important; box-sizing: border-box !important; text-align: left !important;" onclick="event.stopPropagation();">
+  <div class="feedback-card" style="background: #FFFFFF !important; border: 2px solid #8DB9F0 !important; border-radius: 1.25rem !important; padding: 2rem !important; width: 100% !important; max-width: 480px !important; box-shadow: 0 25px 50px rgba(0,0,0,0.2) !important; box-sizing: border-box !important; text-align: left !important;" onclick="event.stopPropagation();">
     <h3 style="margin: 0 0 0.35rem 0; font-size: 1.35rem; font-weight: 800; color: #0F172A; font-family: 'Manrope', sans-serif;">
       Share Academic Feedback
     </h3>
@@ -1186,8 +1166,7 @@
         if (clerkSessionSynced) return;
         try {
           const signOutBtn = document.getElementById('btn-dashboard-sign-out');
-          const rawToken = (localStorage.getItem('campussense_token') || '').trim();
-          const isLocalStudent = localStorage.getItem('campussense_logged_in') === 'true' || Boolean(rawToken && !rawToken.startsWith('cs_clerk_'));
+          const isLocalStudent = localStorage.getItem('campussense_logged_in') === 'true';
 
           if (window.Clerk) {
             if (!window.Clerk.loaded && typeof window.Clerk.load === 'function') {
@@ -1201,7 +1180,7 @@
             }
           }
 
-          if ((window.Clerk && window.Clerk.user) || isLocalStudent || Boolean(rawToken)) {
+          if ((window.Clerk && window.Clerk.user) || isLocalStudent) {
             document.querySelectorAll('#btn-sign-in, #btn-sign-up, #btn-nav-signin, #btn-nav-signup').forEach(btn => btn.style.display = 'none');
             if (signOutBtn) {
               signOutBtn.style.display = 'inline-flex';

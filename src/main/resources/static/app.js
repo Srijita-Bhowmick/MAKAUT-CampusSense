@@ -20900,22 +20900,17 @@ window.submitFeedbackForm = function() {
 };
 
 function initInteractiveModals() {
-  const isLandingAuth = Boolean(
-    (localStorage.getItem('campussense_token') || '').trim() ||
-    localStorage.getItem('campussense_logged_in') === 'true' ||
-    (window.Clerk && window.Clerk.user)
-  );
   const signInLink = document.getElementById('nav-signin-link');
+  if (signInLink) {
+    signInLink.style.setProperty('display', 'inline-flex', 'important');
+    signInLink.style.setProperty('visibility', 'visible', 'important');
+    signInLink.style.setProperty('opacity', '1', 'important');
+  }
   const signUpBtn = document.getElementById('nav-signup-btn');
-  if (typeof window.syncBackToDashboardShortcut === 'function') {
-    window.syncBackToDashboardShortcut();
-  } else {
-    if (signInLink) {
-      signInLink.style.setProperty('display', isLandingAuth ? 'none' : 'inline-flex', 'important');
-    }
-    if (signUpBtn) {
-      signUpBtn.style.setProperty('display', isLandingAuth ? 'none' : 'inline-flex', 'important');
-    }
+  if (signUpBtn) {
+    signUpBtn.style.setProperty('display', 'inline-flex', 'important');
+    signUpBtn.style.setProperty('visibility', 'visible', 'important');
+    signUpBtn.style.setProperty('opacity', '1', 'important');
   }
   const feedbackModal = document.getElementById('feedback-modal');
   const feedbackBtn = document.getElementById('nav-feedback-btn') || document.getElementById('btn-feedback');

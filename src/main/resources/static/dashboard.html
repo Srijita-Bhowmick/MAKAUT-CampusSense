@@ -2,7 +2,7 @@
 <html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
@@ -1936,30 +1936,6 @@
       box-shadow: var(--shadow-elevated);
     }
 
-    .menu-backdrop {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.45);
-      z-index: 998;
-      backdrop-filter: blur(2px);
-      -webkit-backdrop-filter: blur(2px);
-    }
-
-    .menu-backdrop.active {
-      display: block;
-    }
-
-    .mobile-quick-jumps {
-      display: none;
-    }
-
-    @media (min-width: 769px) {
-      .mobile-quick-jumps {
-        display: none !important;
-      }
-    }
-
     /* Responsive Breakpoints */
     @media (max-width: 1080px) {
       #mainWorkspace { margin-right: 0; }
@@ -1969,389 +1945,55 @@
     @media (max-width: 820px) {
       .mobile-menu-btn { display: inline-flex; }
       #leftNavRail { transform: translateX(-105%); }
-      #leftNavRail.open, #leftNavRail.active { transform: translateX(0); box-shadow: 12px 0 32px rgba(15, 23, 42, 0.18); }
+      #leftNavRail.open { transform: translateX(0); box-shadow: 12px 0 32px rgba(15, 23, 42, 0.18); }
       #mainWorkspace { margin-left: 0; padding: 1.1rem 1rem 5rem; }
       .top-context-chip, .user-pill .user-name-label { display: none; }
     }
 
-    @media screen and (max-width: 768px) {
-      :root {
-        --sat: env(safe-area-inset-top, 0px);
-        --sar: env(safe-area-inset-right, 0px);
-        --sab: env(safe-area-inset-bottom, 0px);
-        --sal: env(safe-area-inset-left, 0px);
+    @media (min-width: 769px) {
+      .mobile-quick-jumps {
+        display: none !important;
       }
+    }
 
-      *, *::before, *::after {
-        box-sizing: border-box;
-      }
-
-      html, body {
-        width: 100%;
-        max-width: 100vw;
-        overflow-x: hidden;
-        position: relative;
-        -webkit-text-size-adjust: 100%;
-        background-attachment: scroll;
-      }
-
-      #dashHeader {
-        position: sticky;
-        top: 0;
-        left: auto;
-        right: auto;
-        height: auto;
-        min-height: 0;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        padding: calc(0.55rem + var(--sat)) calc(0.75rem + var(--sar)) 0.6rem calc(0.75rem + var(--sal));
-        gap: 0.45rem;
-      }
-
-      #dashShell {
-        padding-top: 0;
-        min-height: auto;
-      }
-
-      .header-left {
-        order: 1;
-        flex: 1 1 auto;
-        min-width: 0;
-        gap: 0.35rem;
-        flex-shrink: 1;
-      }
-
-      .mobile-menu-btn {
-        display: inline-flex;
-        width: 32px;
-        height: 32px;
-        font-size: 1rem;
-        flex-shrink: 0;
-      }
-
-      .brand-logo-link {
-        font-size: clamp(0.84rem, 3.6vw, 1.1rem);
-        gap: 0.38rem;
-        min-width: 0;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-      .brand-shield {
-        width: 26px;
-        height: 26px;
-      }
-
-      .header-right {
-        order: 2;
-        flex: 0 0 auto;
-        gap: 0.35rem;
-      }
-
-      .user-pill {
-        padding: 0.18rem;
-      }
-
-      .user-avatar {
-        width: 24px;
-        height: 24px;
-        font-size: 10px;
-      }
-
-      .signout-btn {
-        padding: 0.32rem 0.56rem;
-        font-size: 0.74rem;
-        line-height: 1.2;
-        white-space: nowrap;
-      }
-
+    @media (max-width: 768px) {
       .mobile-quick-jumps {
         display: flex !important;
-        align-items: center !important;
         overflow-x: auto !important;
         gap: 0.5rem !important;
-        padding: 0.5rem 1rem !important;
-        scrollbar-width: none !important;
+        padding: 0.5rem 0.85rem !important;
         background: #FFFFFF !important;
-        border-bottom: 1px solid #8DB9F0 !important;
+        border-bottom: 1.5px solid #8DB9F0 !important;
+        scrollbar-width: none !important;
         -webkit-overflow-scrolling: touch !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
+        margin-top: var(--header-h) !important;
+        position: sticky !important;
+        top: var(--header-h) !important;
+        z-index: 440 !important;
       }
-
       .mobile-quick-jumps::-webkit-scrollbar {
         display: none !important;
       }
-
-      .mobile-jump-pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.28rem;
-        padding: 0.34rem 0.72rem;
-        border-radius: 9999px;
-        background: #EFF6FF;
-        border: 1.5px solid #8DB9F0;
-        color: #0F172A;
-        font-family: var(--font-display);
-        font-size: 0.78rem;
-        font-weight: 700;
-        white-space: nowrap;
-        text-decoration: none;
-        flex-shrink: 0;
-        cursor: pointer;
-        transition: background 0.15s ease, border-color 0.15s ease;
+      .mobile-quick-jumps a {
+        flex-shrink: 0 !important;
+        font-size: 0.8rem !important;
+        color: #0F172A !important;
+        background: #E9E8F8 !important;
+        padding: 0.35rem 0.65rem !important;
+        border-radius: 9999px !important;
+        text-decoration: none !important;
+        font-weight: 500 !important;
+        white-space: nowrap !important;
       }
-
-      .mobile-jump-pill.active,
-      .mobile-jump-pill:active {
-        background: #F5B69E;
-        border-color: #E39474;
-        color: #000000;
-      }
-
-      #headerSearchWrap {
-        order: 3;
-        flex: 1 0 100%;
-        width: 100%;
-        max-width: 100%;
-      }
-
-      #workspaceSearchInput {
-        height: 36px;
-        font-size: 0.85rem;
-        padding: 0 2.25rem 0 2.15rem;
-      }
-
-      #leftNavRail {
-        top: 0;
-        height: 100dvh;
-        max-width: 82vw;
-        z-index: 999;
-        padding-top: calc(1.25rem + var(--sat));
-        padding-bottom: calc(1.25rem + var(--sab));
-        transform: translateX(-105%);
-      }
-
-      #leftNavRail.open,
-      #leftNavRail.active {
-        transform: translateX(0);
-        box-shadow: 12px 0 32px rgba(15, 23, 42, 0.22);
-      }
-
-      #mainWorkspace {
-        width: 100%;
-        max-width: 100%;
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-        padding: 0.9rem 0.85rem calc(4.75rem + var(--sab));
-      }
-
-      .active-context-ribbon {
-        padding: 0.85rem 1rem;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.55rem;
-      }
-
-      .ribbon-value {
-        font-size: clamp(0.92rem, 3.8vw, 1rem);
-      }
-
-      .ribbon-metrics {
-        width: 100%;
-        gap: 0.4rem;
-      }
-
-      .section-header-row {
-        flex-wrap: wrap;
-        gap: 0.5rem;
-      }
-
-      .card-grid-2,
-      .pyq-subject-selector-grid {
-        grid-template-columns: 1fr;
-        width: 100%;
-        padding: 0;
-        gap: 0.85rem;
-      }
-
-      .subject-accordion-card,
-      .pyq-elongated-tile,
-      .white-blue-card,
-      .unit-module-row,
-      .pyq-expansion-banner,
-      .first-year-guide {
-        width: 100%;
-        max-width: 100%;
-        margin-left: 0;
-        margin-right: 0;
-        box-sizing: border-box;
-      }
-
-      .accordion-header-btn {
-        padding: 0.85rem 1rem;
-        align-items: flex-start;
-      }
-
-      .course-header-main {
-        flex: 1 1 100%;
-        min-width: 0;
-        flex-wrap: wrap;
-        gap: 0.55rem;
-      }
-
-      .course-header-actions {
-        width: 100%;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-      }
-
-      .course-header-actions button {
-        flex: 1 1 calc(50% - 0.5rem);
-        min-width: 120px;
-        font-size: 0.8rem;
-        padding: 0.5rem;
-        text-align: center;
-        justify-content: center;
-        white-space: normal;
-        line-height: 1.25;
-      }
-
-      .pyq-elongated-tile {
-        padding: 1rem;
-      }
-
-      .pyq-tile-top-row,
-      .card-top-meta {
-        flex-wrap: wrap;
-        gap: 0.45rem;
-      }
-
-      .pyq-tile-heading {
-        font-size: 0.95rem;
-        overflow-wrap: break-word;
-      }
-
-      .unit-info {
-        min-width: 0;
-        flex-wrap: wrap;
-      }
-
-      .btn-trio {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        width: 100%;
-      }
-
-      .btn-trio button,
-      .btn-trio a {
-        flex: 1 1 calc(50% - 0.5rem);
-        min-width: 120px;
-        font-size: 0.8rem;
-        padding: 0.5rem;
-        text-align: center;
-        justify-content: center;
-        white-space: normal;
-        line-height: 1.25;
-      }
-
-      #aiFloatingTrigger {
-        position: fixed;
-        z-index: 990;
-        bottom: calc(1rem + var(--sab));
-        right: calc(1rem + var(--sar));
-        padding: 0.55rem 1rem;
-        font-size: 0.85rem;
-        border-radius: 9999px;
-      }
-
-      #aiDrawer {
-        width: 100vw !important;
-        max-width: 100% !important;
-        min-width: 0 !important;
-        height: 100dvh !important;
-        top: 0 !important;
-        right: 0 !important;
-        bottom: 0 !important;
-        left: 0 !important;
-        border-left: none !important;
-        border-radius: 0 !important;
-        z-index: 1100 !important;
-        padding-top: var(--sat);
-        padding-bottom: var(--sab);
-      }
-
-      #aiResizerHandle {
-        display: none;
-      }
-
-      #pdfPreviewModal {
-        padding: 0.5rem;
-      }
-
-      .pdf-modal-card {
-        width: 100%;
-        height: 92dvh;
-      }
-
-      .pdf-modal-head {
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        padding: 0.75rem 0.9rem;
-      }
-
-      .pdf-modal-title {
-        flex: 1 0 100%;
-        font-size: 0.9rem;
-      }
-
-      #panicDossierModal {
-        padding: 0.5rem;
-      }
-
-      .panic-modal-card {
-        height: 92dvh;
-        max-height: 92dvh;
-      }
-
-      .panic-modal-head {
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        padding: 0.75rem 0.9rem;
-      }
-
-      .panic-modal-title {
-        font-size: 0.92rem;
-      }
-
-      .panic-modal-actions {
-        width: 100%;
-      }
-
-      .panic-modal-actions button {
-        flex: 1 1 auto;
-        justify-content: center;
-      }
-
-      .panic-modal-subbanner {
-        padding: 0.55rem 0.9rem;
-        font-size: 0.76rem;
-      }
-
-      .panic-modal-body {
-        padding: 0.75rem;
+      #dashShell {
+        padding-top: 0 !important;
       }
     }
+
   </style>
 </head>
 <body>
 <script>
-  // Default mobile Ask AI drawer closed on initial paint so mobile users land straight on the clean workspace
   if (window.innerWidth <= 768) {
     document.body.classList.add('ai-drawer-collapsed');
   }
@@ -2404,15 +2046,12 @@
   </div>
 </header>
 
-<!-- Mobile Fast-Jump Navigation Pills (Visible strictly <= 768px) -->
-<nav class="mobile-quick-jumps" id="mobileQuickJumps" aria-label="Mobile Section Fast Jumps">
-  <a href="#section-study-tracker" class="mobile-jump-pill active" data-target="section-study-tracker" onclick="return scrollToWorkspaceSection('section-study-tracker', this, event);">Syllabus 📚</a>
-  <a href="#section-pyqs" class="mobile-jump-pill" data-target="section-pyqs" onclick="return scrollToWorkspaceSection('section-pyqs', this, event);">PYQs 📑</a>
-  <a href="#section-panic-pack" class="mobile-jump-pill" data-target="section-panic-pack" onclick="return scrollToWorkspaceSection('section-panic-pack', this, event);">Panic Pack ⚡</a>
-  <a href="#section-save-to-deck" class="mobile-jump-pill" data-target="section-save-to-deck" onclick="return scrollToWorkspaceSection('section-save-to-deck', this, event);">Save to Deck 📂</a>
+<nav class="mobile-quick-jumps" aria-label="Mobile Quick Jumps">
+  <a href="#section-study-tracker" onclick="return scrollToWorkspaceSection('section-study-tracker', this, event);">Syllabus 📚</a>
+  <a href="#section-pyqs" onclick="return scrollToWorkspaceSection('section-pyqs', this, event);">PYQs 📑</a>
+  <a href="#section-panic-pack" onclick="return scrollToWorkspaceSection('section-panic-pack', this, event);">Panic Pack ⚡</a>
+  <a href="#section-deck" onclick="return scrollToWorkspaceSection('section-save-to-deck', this, event);">Save to Deck 📂</a>
 </nav>
-
-<div id="navMenuBackdrop" class="menu-backdrop" aria-hidden="true"></div>
 
 <div id="dashShell">
   <!-- Strict 4-Item Navigator + 3-Item Quick Links -->
@@ -3979,24 +3618,14 @@ let scrollSpyLockUntil = 0;
 let scrollSpyTargetY = null;
 
 function setActiveNavItem(sectionId) {
-  const normalizedId = sectionId === 'section-deck' ? 'section-save-to-deck' : sectionId;
   document.querySelectorAll('#leftNavRail .rail-item[data-target]').forEach(el => {
-    const isMatch = el.getAttribute('data-target') === normalizedId;
+    const isMatch = el.getAttribute('data-target') === sectionId;
     el.classList.toggle('active', isMatch);
     if (isMatch) {
       el.setAttribute('aria-current', 'location');
-      DASH_STATE.activeNav = el.getAttribute('data-nav') || normalizedId;
+      DASH_STATE.activeNav = el.getAttribute('data-nav') || sectionId;
     } else {
       el.removeAttribute('aria-current');
-    }
-  });
-  document.querySelectorAll('#mobileQuickJumps .mobile-jump-pill[data-target]').forEach(pill => {
-    const isMatch = pill.getAttribute('data-target') === normalizedId;
-    pill.classList.toggle('active', isMatch);
-    if (isMatch) {
-      pill.setAttribute('aria-current', 'location');
-    } else {
-      pill.removeAttribute('aria-current');
     }
   });
 }
@@ -4082,9 +3711,7 @@ function scrollToWorkspaceSection(sectionId, linkEl, evt) {
   const targetEl = document.getElementById(normalizedId);
   if (!targetEl) return false;
 
-  const isMobile = window.innerWidth <= 768;
-  const hdr = document.getElementById('dashHeader');
-  const headerHeight = isMobile ? ((hdr ? hdr.offsetHeight : 96) + 12) : 62;
+  const headerHeight = window.innerWidth <= 768 ? 108 : 62;
   const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
   const rawTop = Math.max(0, Math.round(targetEl.getBoundingClientRect().top + window.scrollY - (headerHeight + 18)));
   const targetTop = Math.min(rawTop, maxScroll);
@@ -4128,25 +3755,12 @@ function resetToHomeView() {
 }
 
 function toggleMobileRail() {
-  const rail = document.getElementById('leftNavRail');
-  const backdrop = document.getElementById('navMenuBackdrop');
-  if (!rail) return;
-  const willOpen = !rail.classList.contains('open');
-  rail.classList.toggle('open', willOpen);
-  rail.classList.toggle('active', willOpen);
-  if (backdrop) backdrop.classList.toggle('active', willOpen);
+  document.getElementById('leftNavRail').classList.toggle('open');
 }
 
 function closeMobileRail() {
-  const rail = document.getElementById('leftNavRail');
-  const backdrop = document.getElementById('navMenuBackdrop');
-  if (rail) {
-    rail.classList.remove('open');
-    rail.classList.remove('active');
-  }
-  if (backdrop) backdrop.classList.remove('active');
+  document.getElementById('leftNavRail').classList.remove('open');
 }
-window.closeMobileMenu = closeMobileRail;
 
 // ── Search History (`campussense_search_history`) & Debounced Multi-Section Search ──
 const SEARCH_HISTORY_KEY = 'campussense_search_history';
@@ -4418,7 +4032,7 @@ function collapseAiDrawer() {
   const mw = document.getElementById('mainWorkspace');
   if (mw) mw.style.marginRight = '0';
 }
-window.closeAiSidebar = collapseAiDrawer;
+const closeAiSidebar = collapseAiDrawer;
 
 function expandAiDrawer() {
   document.body.classList.remove('ai-drawer-collapsed');
@@ -4429,7 +4043,6 @@ function expandAiDrawer() {
     mw.style.marginRight = `${w}px`;
   }
 }
-window.openAiSidebar = expandAiDrawer;
 
 function appendAiBubble(role, htmlContent) {
   const feed = document.getElementById('aiMessagesFeed');
@@ -4600,20 +4213,11 @@ document.addEventListener('DOMContentLoaded', () => {
   renderAiQueryHistory();
   initResizableAiDrawer();
 
-  // Default AI sidebar state: closed on mobile (<= 768px), open on desktop
-  const isMobileViewport = window.innerWidth <= 768;
-  if (isMobileViewport) {
-    collapseAiDrawer();
-  } else {
-    expandAiDrawer();
-  }
-
-  // Hamburger drawer: click outside backdrop to dismiss immediately
-  const navBackdrop = document.getElementById('navMenuBackdrop');
-  if (navBackdrop) {
-    navBackdrop.addEventListener('click', () => {
-      closeMobileRail();
-    });
+  // On page initialization:
+  if (window.innerWidth <= 768) {
+    if (typeof closeAiSidebar === 'function') {
+      closeAiSidebar();
+    }
   }
 
   // Initialize Two-Way IntersectionObserver ScrollSpy across all 4 visible workspace sections
@@ -4646,7 +4250,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'Escape') {
       closePdfPreview();
       closePanicDossierModal();
-      closeMobileRail();
     }
   });
 });
