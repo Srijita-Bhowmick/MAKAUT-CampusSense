@@ -935,7 +935,38 @@
         document.body.classList.remove('modal-open');
       }
 
+      function openLandingPdfModal(fileUrl, paperTitle) {
+        return openLandingPdfPreview(paperTitle, fileUrl);
+      }
+
+      function handleLandingPyqPreview(fileUrl, paperTitle, paperCode) {
+        const token = localStorage.getItem('campussense_token');
+        const isLoggedInFlag = localStorage.getItem('campussense_logged_in') === 'true';
+        const isClerkSignedIn = Boolean(window.Clerk && window.Clerk.user);
+
+        if (!token && !isLoggedInFlag && !isClerkSignedIn) {
+          // 1. Capture the intent before routing away
+          try {
+            sessionStorage.setItem('landing_pending_preview', JSON.stringify({
+              fileUrl: fileUrl,
+              title: paperTitle,
+              code: paperCode,
+              targetSectionId: 'pyq-section'
+            }));
+          } catch (e) {}
+
+          // 2. Route to login with the redirect flag
+          window.location.href = 'login.html?redirect=landing';
+          return;
+        }
+
+        // If already authenticated, open the landing preview modal directly
+        openLandingPdfModal(fileUrl, paperTitle);
+      }
+
       window.openLandingPdfPreview = openLandingPdfPreview;
+      window.openLandingPdfModal = openLandingPdfModal;
+      window.handleLandingPyqPreview = handleLandingPyqPreview;
       window.downloadLandingSyllabus = downloadLandingSyllabus;
       window.closeLandingPdfPreview = closeLandingPdfPreview;
     </script>
@@ -1160,6 +1191,7 @@
                   window.logoutUser();
                 } else {
                   localStorage.removeItem('campussense_logged_in');
+                  localStorage.removeItem('campussense_token');
                   localStorage.removeItem('campussense_auth_provider');
                   localStorage.removeItem('campussense_user_session');
                   localStorage.removeItem('academic_profile_completed');
@@ -1176,6 +1208,9 @@
             if (signOutBtn) signOutBtn.style.display = 'none';
             document.querySelectorAll('#btn-sign-in, #btn-sign-up, #btn-nav-signin, #btn-nav-signup').forEach(btn => btn.style.display = '');
             try {
+              if (String(localStorage.getItem('campussense_token') || '').startsWith('cs_clerk_')) {
+                localStorage.removeItem('campussense_token');
+              }
               sessionStorage.removeItem('campussense_from_dashboard');
               if (new URLSearchParams(window.location.search || '').get('from') === 'dashboard' && window.history && typeof window.history.replaceState === 'function') {
                 var strippedUrl = new URL(window.location.href);
@@ -1219,6 +1254,51 @@
 
     <!-- Subject-Wise Sem 1-8 PYQ Registry & Filtering Engine -->
     <script src="js/pyq-catalog.js?v=20261111_v13"></script>
-    <script src="js/pyq-engine.js?v=20261111_v13"></script>
+    <script src="js/pyq-engine.js?v=20261112_v16"></script>
+    <script>
+      document.addEventListener('click', (e) => {
+        if (e.target.closest('#nav-signin-link, #nav-signup-btn, #floating-ask-ai, .feature-bento-card')) {
+          try { sessionStorage.removeItem('landing_pending_preview'); } catch (_) {}
+        }
+      }, true);
+
+      document.addEventListener('DOMContentLoaded', () => {
+        const pendingData = sessionStorage.getItem('landing_pending_preview');
+        if (!pendingData) return;
+
+        const isAuth = Boolean(
+          localStorage.getItem('campussense_token') ||
+          localStorage.getItem('campussense_logged_in') === 'true' ||
+          (window.Clerk && window.Clerk.user)
+        );
+        if (!isAuth) return;
+
+        try {
+          const { fileUrl, title, targetSectionId } = JSON.parse(pendingData);
+          sessionStorage.removeItem('landing_pending_preview'); // Clear immediately to prevent repeat triggers
+
+          if (typeof window.renderFilteredPYQs === 'function') {
+            window.renderFilteredPYQs();
+          }
+
+          // 1. Smoothly scroll directly to the PYQ section on the landing page
+          const targetSection = document.getElementById(targetSectionId || 'pyq-section')
+            || document.getElementById('pyq-section')
+            || document.getElementById('dynamicPyqGrid');
+          if (targetSection) {
+            targetSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+
+          // 2. Open the landing page preview modal with the exact PDF
+          setTimeout(() => {
+            if (typeof window.openLandingPdfModal === 'function') {
+              window.openLandingPdfModal(fileUrl, title);
+            }
+          }, 400); // 400ms delay to allow smooth scroll to settle
+        } catch (err) {
+          console.error('Error handling pending preview:', err);
+        }
+      });
+    </script>
 </body>
 </html>

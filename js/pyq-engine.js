@@ -37,14 +37,35 @@ function escapeJsStr(str) {
   return String(str || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
 }
 
-function resolveLoginUrl() {
-  return resolveCatalogPdfUrl('login.html?v=20261111_v13') || 'login.html?v=20261111_v13';
+function resolveLoginUrl(query = '') {
+  const base = resolveCatalogPdfUrl('login.html') || 'login.html';
+  return query ? `${base}${base.includes('?') ? '&' : '?'}${query.replace(/^\?/, '')}` : `${base}?v=20261111_v13`;
 }
 
-function redirectToAuthForPyq(action, title, path) {
+function redirectToAuthForPyq(action, title, path, code) {
+  const act = action || 'preview';
+  const isAuth = Boolean(
+    localStorage.getItem('campussense_token') ||
+    localStorage.getItem('campussense_logged_in') === 'true' ||
+    (window.Clerk && window.Clerk.user)
+  );
+  if (act === 'download' && isAuth && typeof window.downloadLandingSyllabus === 'function') {
+    window.downloadLandingSyllabus(path, `${title || 'MAKAUT_Paper'}.pdf`);
+    return;
+  }
   try {
+    if (act === 'preview') {
+      sessionStorage.setItem('landing_pending_preview', JSON.stringify({
+        fileUrl: path || '',
+        title: title || 'MAKAUT PYQ',
+        code: code || '',
+        targetSectionId: 'pyq-section'
+      }));
+      window.location.href = 'login.html?redirect=landing';
+      return;
+    }
     sessionStorage.setItem('pending_download_action', JSON.stringify({
-      action: action || 'preview',
+      action: act,
       title: title || 'MAKAUT PYQ',
       fileUrl: path || ''
     }));
@@ -80,11 +101,13 @@ function renderFilteredPYQs() {
 
   if (noResults) noResults.style.display = 'none';
   const loginHref = resolveLoginUrl();
+  const previewLoginHref = 'login.html?redirect=landing';
   grid.innerHTML = matches.map(item => {
     const itemYear = getAcademicYear(item);
     const yearLabel = YEAR_LABELS[itemYear] || `Year ${itemYear}`;
     const safeJsTitle = escapeJsStr(`${item.code}: ${item.title} PYQ`);
     const safeJsPath = escapeJsStr(item.path);
+    const safeJsCode = escapeJsStr(item.code);
     return `
       <div class="pyq-card" data-year="${itemYear}" data-semester="${item.sem}">
         <div>
@@ -96,8 +119,8 @@ function renderFilteredPYQs() {
           <p>Verified Archive Series: ${item.years}</p>
         </div>
         <div class="card-actions">
-          <a href="${loginHref}" onclick="event.preventDefault(); event.stopPropagation(); redirectToAuthForPyq('preview', '${safeJsTitle}', '${safeJsPath}');" class="btn-preview">Preview</a>
-          <a href="${loginHref}" onclick="event.preventDefault(); event.stopPropagation(); redirectToAuthForPyq('download', '${safeJsTitle}', '${safeJsPath}');" class="btn-download">Download</a>
+          <a href="${previewLoginHref}" onclick="event.preventDefault(); event.stopPropagation(); if (typeof window.handleLandingPyqPreview === 'function') { window.handleLandingPyqPreview('${safeJsPath}', '${safeJsTitle}', '${safeJsCode}'); } else { redirectToAuthForPyq('preview', '${safeJsTitle}', '${safeJsPath}', '${safeJsCode}'); }" class="btn-preview">Preview</a>
+          <a href="${loginHref}" onclick="event.preventDefault(); event.stopPropagation(); redirectToAuthForPyq('download', '${safeJsTitle}', '${safeJsPath}', '${safeJsCode}');" class="btn-download">Download</a>
         </div>
       </div>
     `;
