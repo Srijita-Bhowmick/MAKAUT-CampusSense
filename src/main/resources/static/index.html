@@ -748,12 +748,44 @@
     </div>
 
     <script>
+      const isHostedGhPagesRoot = typeof window !== 'undefined' &&
+        window.location.hostname.toLowerCase().endsWith('.github.io') &&
+        window.location.pathname.toLowerCase().includes('makaut-campussense') &&
+        !window.location.pathname.toLowerCase().includes('/docs/');
+      let _ghDocsPrefix = isHostedGhPagesRoot ? 'docs/' : '';
+      window.__GH_DOCS_PREFIX__ = _ghDocsPrefix;
+
+      function syncLandingSyllabusLinks() {
+        document.querySelectorAll('#syllabus-section a.btn-preview[href], #syllabus-section a.btn-download[href]').forEach(a => {
+          const raw = a.getAttribute('data-raw-href') || a.getAttribute('href');
+          if (!raw) return;
+          if (!a.getAttribute('data-raw-href')) a.setAttribute('data-raw-href', raw);
+          a.setAttribute('href', encodeURI(resolveAppUrl(raw)));
+        });
+      }
+
+      if (isHostedGhPagesRoot && typeof fetch === 'function') {
+        syncLandingSyllabusLinks();
+        fetch('/MAKAUT-CampusSense/1st%20year/syllabus/Maths-1.pdf', { method: 'HEAD' })
+          .then(res => {
+            if (res.ok) {
+              _ghDocsPrefix = '';
+              window.__GH_DOCS_PREFIX__ = '';
+              syncLandingSyllabusLinks();
+            }
+          })
+          .catch(() => {});
+      }
+
       function resolveAppUrl(url) {
         if (!url) return '';
         const trimmed = url.trim();
         if (/^(https?:|blob:|data:)/i.test(trimmed)) return trimmed;
         let clean = trimmed.replace(/^\/+/, '');
         clean = clean.replace(/^MAKAUT-CampusSense\//i, '');
+        if (_ghDocsPrefix && (clean.startsWith('1st year/') || clean.startsWith('3rd to 8th sem/'))) {
+          clean = _ghDocsPrefix + clean;
+        }
         const isGhPages = window.location.pathname.toLowerCase().includes('makaut-campussense');
         const base = isGhPages ? '/MAKAUT-CampusSense/' : '';
         return base + clean;
@@ -799,7 +831,8 @@
         if (iframe) {
           iframe.style.opacity = '1';
           iframe.style.display = 'block';
-          iframe.src = safeUrl;
+          iframe.src = 'about:blank';
+          setTimeout(() => { iframe.src = safeUrl; }, 20);
         }
 
         if (modal) {
@@ -1028,7 +1061,7 @@
     <!-- Offline Verified Knowledge Index -->
     <script src="makaut_knowledge_index.js"></script>
     <!-- Application Script -->
-    <script src="app.js?v=20261022_v1"></script>
+    <script src="app.js?v=20261111_v11"></script>
     <!-- Clerk session sync (dynamically hydrated without hardcoded tokens) -->
     <script defer crossorigin="anonymous" id="clerk-sdk-script" data-clerk-publishable-key="pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk" src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js"></script>
     <script>

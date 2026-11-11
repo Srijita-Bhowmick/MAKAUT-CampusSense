@@ -232,7 +232,17 @@ window.onClerkLoaded = function() {
         if (/^(https?:|blob:|data:)/i.test(relativePath.trim())) {
             return relativePath.trim();
         }
-        const clean = sanitizePdfUrl(relativePath).replace(/^\/+/, '');
+        let clean = sanitizePdfUrl(relativePath).replace(/^\/+/, '');
+        const isGhRoot = typeof window !== 'undefined' &&
+            window.location.hostname.toLowerCase().endsWith('.github.io') &&
+            window.location.pathname.toLowerCase().includes('makaut-campussense') &&
+            !window.location.pathname.toLowerCase().includes('/docs/');
+        const prefix = (typeof window !== 'undefined' && typeof window.__GH_DOCS_PREFIX__ === 'string')
+            ? window.__GH_DOCS_PREFIX__
+            : (isGhRoot ? 'docs/' : '');
+        if (prefix && !clean.startsWith('docs/') && (clean.startsWith('1st%20year/') || clean.startsWith('1st year/') || clean.startsWith('3rd%20to%208th%20sem/') || clean.startsWith('3rd to 8th sem/'))) {
+            clean = prefix + clean;
+        }
         return getAppBasePath() + clean;
     }
     window.resolveAssetPath = resolveAssetPath;
@@ -12438,7 +12448,7 @@ window.getSubjectDocuments = getSubjectDocuments;
                     localStorage.removeItem('campussense_logged_in');
                     localStorage.removeItem('campussense_user_session');
                     localStorage.removeItem('campussense_auth_provider');
-                    window.location.href = '/';
+                    window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('index.html') : 'index.html');
                 }
             };
         }
@@ -12764,15 +12774,12 @@ window.getSubjectDocuments = getSubjectDocuments;
             m.classList.remove('active');
         });
 
-        // Explicitly purge #landing-curriculum and any URL hash, then redirect cleanly to '/'
+        // Explicitly purge #landing-curriculum and any URL hash, then redirect cleanly
         if (window.location.hash) {
             window.location.hash = '';
         }
-        if (window.history && window.history.replaceState) {
-            window.history.replaceState(null, '', '/');
-        }
 
-        window.location.href = '/';
+        window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('index.html') : 'index.html');
     };
     window.logoutUser = window.handleSignOut;
 
