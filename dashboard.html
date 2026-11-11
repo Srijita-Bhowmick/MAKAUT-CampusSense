@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
@@ -7,1714 +7,1628 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>Dashboard — MAKAUT CampusSense</title>
-  <meta name="description" content="Your personal student dashboard for MAKAUT CampusSense. Access curriculum, PYQs, panic packs and revision decks." />
+  <meta name="description" content="Dynamic student workspace for MAKAUT CampusSense: interactive study tracker, semester PYQ vault, 16-topic panic pack, saved deck, and resizable Ask AI assistant." />
   <meta name="robots" content="noindex, nofollow" />
-  <meta name="theme-color" content="#0b0f19" />
+  <meta name="theme-color" content="#E9E8F8" />
 
-  <!-- Early Theme Ingestion (Zero Flash) -->
   <script>
     (function () {
       try {
-        document.documentElement.setAttribute('data-theme', 'light'); document.documentElement.classList.remove('dark');
+        document.documentElement.setAttribute('data-theme', 'light');
+        document.documentElement.classList.remove('dark');
       } catch (e) {}
     })();
   </script>
 
-  <!-- Runtime Config -->
-  <script id="campussense-runtime-config">
-    window.__CAMPUSSENSE_CONFIG__ = window.__CAMPUSSENSE_CONFIG__ || {
+  <script>
+    window.__CAMPUSSENSE_CONFIG__ = {
       clerkPublishableKey: "pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk",
       apiBaseUrl: window.location.origin,
       isCloudflarePages: window.location.hostname.endsWith('.pages.dev') || window.location.hostname.includes('campussense.pages.dev')
     };
   </script>
-
-  <!-- Clerk SDK -->
-  <script id="clerk-sdk-script" async crossorigin="anonymous"
-    src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js"
-    data-clerk-publishable-key="pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk">
+  <script async crossorigin="anonymous"
+    data-clerk-publishable-key="pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk"
+    src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js">
   </script>
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Plus+Jakarta+Sans:wght@600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Plus+Jakarta+Sans:wght@600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 
   <style>
-    /* ─── Viewport Stability ─── */
-    html, body {
-      min-height: 100vh !important;
-      width: 100% !important;
-      max-width: 100vw !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      overflow-x: hidden !important;
-      overflow-y: scroll !important;
-      background-color: var(--surface-canvas) !important;
-      color: var(--text-primary) !important;
-      font-family: 'Inter', sans-serif !important;
-    }
-
-    /* ─── CSS Variables: Poppy Editorial Palette ─── */
-    :root,
-    [data-theme="dark"],
-    [data-theme="light"],
-    html.dark,
-    html:not(.dark) {
-      /* Soft Lavender White / Powder Blue / Sunset Peach */
+    :root, [data-theme="light"] {
+      --wash-overlay: linear-gradient(rgba(233, 232, 248, 0.40), rgba(233, 232, 248, 0.45));
       --surface-canvas: #E9E8F8;
       --surface-card: #FFFFFF;
-      --surface-elevated: #F4F7FC;
-      --surface-border: rgba(141, 185, 240, 0.45);
-      --surface-border-focus: #8DB9F0;
-      --text-primary: #0F172A;
-      --text-secondary: #334155;
-      --text-tertiary: #64748B;
+      --surface-soft: #F8FAFF;
       --powder-blue: #8DB9F0;
-      --powder-blue-hover: #6BA3E3;
+      --powder-blue-soft: #EFF6FF;
       --sunset-peach: #F5B69E;
-      --sunset-peach-hover: #E39474;
-      --danger-action: #EF4444;
-
-      --emerald-primary: #8DB9F0;
-      --emerald-hover: #6BA3E3;
-      --emerald-surface: rgba(141, 185, 240, 0.20);
-      --vermilion-primary: #F5B69E;
-      --vermilion-hover: #E39474;
-      --vermilion-surface: rgba(245, 182, 158, 0.25);
-      --btn-primary-bg: #F5B69E;
-      --btn-primary-text: #0F172A;
-      --btn-secondary-bg: #8DB9F0;
-      --btn-secondary-text: #0F172A;
-
-      --surface-hover:   #EFF6FF;
-      --border-hairline: var(--surface-border);
-      --border-subtle:   rgba(141, 185, 240, 0.65);
-      --card-bg:         var(--surface-card);
-      --body-bg:         var(--surface-canvas);
-      --text-muted:      var(--text-tertiary);
-      --accent-blue:     #1E40AF;
-      --accent-blue-dim: #EFF6FF;
-      --accent-indigo:   #4F46E5;
-      --accent-green:    #16A34A;
-      --accent-orange:   #F5B69E;
-      --accent-red:      var(--danger-action);
-      --font-display:    'Manrope', 'Plus Jakarta Sans', system-ui, sans-serif;
-      --font-body:       'Inter', system-ui, sans-serif;
-      --font-mono:       'JetBrains Mono', monospace;
-      --radius-sm:       8px;
-      --radius-md:       12px;
-      --radius-lg:       16px;
-      --transition-fast: 150ms cubic-bezier(0.4,0,0.2,1);
-      --transition-base: 200ms cubic-bezier(0.4,0,0.2,1);
-      --sidebar-width:   240px;
-      --dock-width:      380px;
-      --header-height:   56px;
+      --sunset-peach-hover: #ECA488;
+      --text-navy: #0F172A;
+      --text-slate: #475569;
+      --text-muted: #64748B;
+      --danger: #EF4444;
+      --success-bg: #ECFDF5;
+      --success-border: #6EE7B7;
+      --success-text: #065F46;
+      --border-blue: 1.5px solid #8DB9F0;
+      --shadow-card: 0 4px 16px rgba(15, 23, 42, 0.06);
+      --shadow-elevated: 0 12px 32px rgba(15, 23, 42, 0.12);
+      --font-display: 'Manrope', 'Plus Jakarta Sans', system-ui, sans-serif;
+      --font-body: 'Inter', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --header-h: 62px;
+      --nav-w: 242px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
     }
 
-    /* ─── Base ─── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-      background-color: var(--surface-canvas);
-      color: var(--text-primary);
+    html, body {
+      min-height: 100vh;
+      width: 100%;
+      overflow-x: hidden;
       font-family: var(--font-body);
-      font-size: 14px;
-      line-height: 1.6;
+      color: var(--text-navy);
+      background-color: var(--surface-canvas);
+      background-image:
+        linear-gradient(rgba(233, 232, 248, 0.40), rgba(233, 232, 248, 0.45)),
+        url('images/makaut-haringhata-boulevard.jpg?v=20261110_v9');
+      background-position: center top;
+      background-size: cover;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
     }
 
-    /* ─── Auth Guard Veil ─── */
+    /* ── Auth Guard Veil ── */
     #auth-veil {
       position: fixed;
       inset: 0;
-      background: var(--surface-canvas);
       z-index: 9999;
+      background: #E9E8F8;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    #auth-veil .spinner {
-      width: 36px;
-      height: 36px;
-      border: 3px solid var(--border-subtle);
-      border-top-color: var(--accent-blue);
+    .spinner {
+      width: 30px;
+      height: 30px;
+      border: 3px solid #CBD5E1;
+      border-top-color: #2563EB;
       border-radius: 50%;
       animation: spin 0.7s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ─── Header ─── */
-    #dash-header {
+    /* ── Top Navigation Bar ── */
+    #dashHeader {
       position: fixed;
-      top: 0; left: 0; right: 0;
-      height: var(--header-height);
-      z-index: 1000;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--header-h);
+      z-index: 500;
       background: rgba(255, 255, 255, 0.94);
-      border-bottom: 1px solid var(--border-hairline);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1.5px solid #8DB9F0;
+      padding: 0 1.25rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 1rem;
-      padding: 0 1.25rem;
+      box-shadow: 0 2px 12px rgba(15, 23, 42, 0.05);
     }
-    [data-theme="light"] #dash-header { background: rgba(255, 255, 255, 0.94); }
-    [data-theme="dark"] #dash-header { background: rgba(255, 255, 255, 0.94); }
 
-    /* Wordmark */
-    .header-wordmark {
+    .header-left {
       display: flex;
       align-items: center;
-      gap: 0.6rem;
-      text-decoration: none;
+      gap: 0.75rem;
       flex-shrink: 0;
     }
-    .header-wordmark-logo {
-      width: 30px; height: 30px;
-      background: linear-gradient(135deg, var(--accent-blue), var(--accent-indigo));
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 14px; font-weight: 800; color: #fff;
-      font-family: var(--font-display);
-      flex-shrink: 0;
+
+    .mobile-menu-btn {
+      display: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      border: var(--border-blue);
+      background: #FFFFFF;
+      color: var(--text-navy);
+      font-size: 1.1rem;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
     }
-    .header-wordmark-name {
-      font-family: var(--font-display);
-      font-weight: 800;
-      font-size: 15px;
-      color: var(--text-primary);
-      letter-spacing: -0.02em;
-    }
-    .header-branch-badge {
+
+    .brand-logo-link {
       display: inline-flex;
       align-items: center;
-      gap: 0.25rem;
-      padding: 3px 10px;
-      background: var(--accent-blue-dim);
-      border: 1px solid #8DB9F0;
-      border-radius: 9999px;
-      font-size: 11px;
-      font-weight: 600;
-      color: #1E40AF;
-      font-family: var(--font-mono);
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    /* CmdK Search */
-    #cmdK-bar {
-      flex: 1;
-      max-width: 480px;
-      position: relative;
-    }
-    #cmdK-input {
-      width: 100%;
-      background: var(--surface-elevated);
-      border: 1px solid var(--border-hairline);
-      border-radius: var(--radius-md);
-      padding: 0.45rem 2.8rem 0.45rem 2.4rem;
-      color: var(--text-primary);
-      font-family: var(--font-body);
-      font-size: 13px;
-      outline: none;
-      transition: border-color var(--transition-fast);
-    }
-    #cmdK-input::placeholder { color: var(--text-muted); }
-    #cmdK-input:focus { border-color: var(--accent-blue); }
-    .cmdK-icon-left {
-      position: absolute; left: 0.7rem; top: 50%; transform: translateY(-50%);
-      color: var(--text-muted); pointer-events: none; font-size: 14px;
-    }
-    .cmdK-shortcut {
-      position: absolute; right: 0.6rem; top: 50%; transform: translateY(-50%);
-      background: var(--surface-card); border: 1px solid var(--border-hairline);
-      border-radius: 5px; padding: 1px 5px;
-      font-family: var(--font-mono); font-size: 10px; color: var(--text-muted);
-      pointer-events: none;
-    }
-    #cmdK-results {
-      display: none;
-      position: absolute; top: calc(100% + 6px); left: 0; right: 0;
-      background: var(--surface-elevated);
-      border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-md);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.4);
-      max-height: 320px; overflow-y: auto; z-index: 200;
-      padding: 0.5rem 0;
-    }
-    #cmdK-results.visible { display: block; }
-    .cmdK-result-item {
-      display: flex; align-items: center; gap: 0.6rem;
-      padding: 0.5rem 0.9rem; cursor: pointer;
-      color: var(--text-secondary); font-size: 13px;
-      transition: background var(--transition-fast);
-    }
-    .cmdK-result-item:hover { background: var(--surface-hover); color: var(--text-primary); }
-    .cmdK-result-icon { font-size: 14px; flex-shrink: 0; }
-    .cmdK-result-label { font-weight: 500; }
-    .cmdK-result-sub { font-size: 11px; color: var(--text-muted); margin-left: auto; font-family: var(--font-mono); }
-    .cmdK-empty { padding: 1rem; text-align: center; color: var(--text-muted); font-size: 13px; }
-
-    /* Header right */
-    .header-right {
-      display: flex; align-items: center; gap: 0.6rem; flex-shrink: 0;
-    }
-    .user-chip {
-      display: flex; align-items: center; gap: 0.5rem;
-      background: var(--surface-elevated);
-      border: 1px solid var(--border-hairline);
-      border-radius: 20px; padding: 4px 10px 4px 4px;
-      cursor: default;
-    }
-    .user-avatar {
-      width: 24px; height: 24px; border-radius: 50%;
-      background: linear-gradient(135deg, #2563EB, #1E40AF);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 11px; font-weight: 700; color: #fff;
-      font-family: var(--font-display); flex-shrink: 0;
-    }
-    .user-name {
-      font-size: 12px; font-weight: 600; color: var(--text-primary);
-      font-family: var(--font-body); max-width: 110px;
-      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-    }
-    #signout-btn {
-      background-color: var(--danger-action) !important;
-      color: #FFFFFF !important;
-      font-weight: 600 !important;
-      font-family: var(--font-body);
-      font-size: 13px !important;
-      border: none !important;
-      border-radius: 0.5rem !important;
-      padding: 0.5rem 1rem !important;
-      cursor: pointer !important;
-      transition: background-color var(--transition-fast), transform var(--transition-fast);
-      white-space: nowrap;
-    }
-    #signout-btn:hover { background-color: #dc2626 !important; transform: translateY(-1px); }
-    #signout-btn:active { transform: translateY(0); }
-
-    /* ─── Layout Shell ─── */
-    #dash-shell {
-      display: flex;
-      padding-top: var(--header-height);
-      min-height: 100vh;
-    }
-
-    /* ─── Left Sidebar / Navigator ─── */
-    #dash-nav {
-      width: var(--sidebar-width);
-      min-width: var(--sidebar-width);
-      max-width: var(--sidebar-width);
-      background: var(--surface-card);
-      border-right: 1px solid var(--border-hairline);
-      position: fixed;
-      top: var(--header-height);
-      bottom: 0;
-      left: 0;
-      overflow-y: auto;
-      overflow-x: hidden;
-      z-index: 100;
-      padding: 1rem 0.75rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-      scrollbar-width: thin;
-      scrollbar-color: var(--border-subtle) transparent;
-    }
-    .nav-section-label {
-      font-size: 10px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 0.08em; color: var(--text-muted);
-      padding: 0.6rem 0.5rem 0.4rem;
-      font-family: var(--font-mono);
-    }
-    .nav-item {
-      display: flex; align-items: center; gap: 0.65rem;
-      padding: 0.55rem 0.75rem;
-      border-radius: var(--radius-sm);
-      color: var(--text-secondary);
+      gap: 0.55rem;
       text-decoration: none;
-      font-size: 13px; font-weight: 500;
-      font-family: var(--font-body);
-      cursor: pointer;
-      transition: background var(--transition-fast), color var(--transition-fast);
-      border: none; background: transparent; width: 100%; text-align: left;
-      position: relative;
-    }
-    .nav-item:hover { background: var(--surface-elevated); color: var(--text-primary); }
-    .nav-item.active {
-      background: var(--emerald-surface) !important;
-      color: var(--emerald-primary) !important;
-      font-weight: 600;
-      border-left: 3px solid var(--emerald-primary) !important;
-    }
-    .nav-item.active::before {
-      display: none;
-    }
-    .nav-item-icon { font-size: 15px; flex-shrink: 0; }
-    .nav-item-label { flex: 1; }
-    .nav-badge {
-      background: var(--sunset-peach);
-      color: #0F172A;
-      font-size: 10px; font-weight: 700;
-      padding: 1px 6px; border-radius: 10px;
-      font-family: var(--font-mono);
-    }
-    .nav-divider { height: 1px; background: var(--border-hairline); margin: 0.5rem 0; }
-
-    /* ─── Main Workspace ─── */
-    #dash-workspace {
-      flex: 1;
-      margin-left: var(--sidebar-width);
-      margin-right: var(--dock-width);
-      padding: 1.5rem 1.75rem;
-      min-height: calc(100vh - var(--header-height));
-    }
-
-    /* Active context banner */
-    .context-banner {
-      display: flex; align-items: center; gap: 0.75rem;
-      background: var(--surface-card);
-      border: 1px solid var(--border-hairline);
-      border-radius: var(--radius-md);
-      padding: 0.75rem 1.25rem;
-      margin-bottom: 1.5rem;
-    }
-    .context-banner-label {
-      font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);
-      text-transform: uppercase; letter-spacing: 0.06em;
-    }
-    .context-banner-value {
-      font-size: 14px; font-weight: 700; color: var(--text-primary);
+      color: var(--text-navy);
       font-family: var(--font-display);
-    }
-    .context-banner-sep { width: 1px; height: 20px; background: var(--border-subtle); }
-    .context-chip {
-      display: inline-flex; align-items: center; gap: 0.3rem;
-      padding: 2px 8px;
-      background: var(--accent-blue-dim);
-      border: 1px solid #8DB9F0;
-      border-radius: 20px;
-      font-size: 11px; font-weight: 600; color: #1E40AF;
-      font-family: var(--font-mono);
+      font-weight: 800;
+      font-size: 1.12rem;
+      letter-spacing: -0.02em;
       white-space: nowrap;
-      flex-shrink: 0;
     }
 
-    /* 1st Year Positive Syllabus vs PYQ Alignment Callout (Balanced Editorial Highlight) */
-    .first-year-alignment-note {
-      display: none;
-      align-items: flex-start;
-      gap: 0.9rem;
-      background: linear-gradient(135deg, #FFFFFF 0%, #EFF6FF 65%, #FFF4EE 100%);
-      border: 1.5px solid #8DB9F0;
-      border-left: 4px solid #3B82F6;
-      border-radius: var(--radius-md);
-      padding: 0.95rem 1.2rem;
-      margin-bottom: 1.5rem;
-      box-shadow: 0 4px 14px rgba(30, 64, 175, 0.08);
-    }
-    .first-year-alignment-icon {
-      width: 34px;
-      height: 34px;
+    .brand-shield {
+      width: 32px;
+      height: 32px;
       border-radius: 9px;
-      background: #FFE8DC;
-      border: 1px solid #F5B69E;
-      color: #0F172A;
+      background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+      border: 1.5px solid #8DB9F0;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 16px;
+      color: #1E40AF;
       flex-shrink: 0;
-      margin-top: 1px;
     }
-    .first-year-alignment-body {
+
+    .top-context-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.3rem 0.78rem;
+      border-radius: 9999px;
+      background: var(--powder-blue-soft);
+      border: var(--border-blue);
+      color: #1E40AF;
+      font-size: 12px;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      white-space: nowrap;
+    }
+
+    /* Center High-Contrast Search Engine Bar */
+    .header-search-wrap {
       flex: 1;
-      min-width: 0;
+      max-width: 520px;
+      position: relative;
+      display: flex;
+      align-items: center;
     }
-    .first-year-alignment-header {
+
+    .search-icon {
+      position: absolute;
+      left: 0.9rem;
+      color: #475569;
+      pointer-events: none;
+      font-size: 14px;
+    }
+
+    #workspaceSearchInput {
+      width: 100%;
+      height: 39px;
+      padding: 0 2.5rem 0 2.35rem;
+      border-radius: 9999px;
+      border: 1.5px solid #8DB9F0;
+      background: #FFFFFF;
+      color: var(--text-navy);
+      font-family: var(--font-body);
+      font-size: 13.5px;
+      font-weight: 500;
+      outline: none;
+      box-shadow: 0 2px 8px rgba(141, 185, 240, 0.18);
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    #workspaceSearchInput::placeholder {
+      color: #64748B;
+      font-weight: 400;
+    }
+
+    #workspaceSearchInput:focus {
+      border-color: #2563EB;
+      box-shadow: 0 0 0 3px rgba(141, 185, 240, 0.35);
+    }
+
+    .search-clear-btn {
+      position: absolute;
+      right: 0.65rem;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: none;
+      background: #E2E8F0;
+      color: #0F172A;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      flex-shrink: 0;
+    }
+
+    .user-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #FFFFFF;
+      border: var(--border-blue);
+      border-radius: 9999px;
+      padding: 0.25rem 0.75rem 0.25rem 0.3rem;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-navy);
+    }
+
+    .user-avatar {
+      width: 27px;
+      height: 27px;
+      border-radius: 50%;
+      background: var(--sunset-peach);
+      color: #000000;
+      font-weight: 800;
+      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+    }
+
+    .signout-btn {
+      background: var(--sunset-peach);
+      color: #000000;
+      border: 1.5px solid #E5987B;
+      border-radius: 9px;
+      padding: 0.44rem 0.9rem;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s ease, transform 0.15s ease;
+    }
+
+    .signout-btn:hover {
+      background: var(--sunset-peach-hover);
+      transform: translateY(-1px);
+    }
+
+    /* ── Layout Shell ── */
+    #dashShell {
+      display: flex;
+      padding-top: var(--header-h);
+      min-height: 100vh;
+    }
+
+    /* ── Left Navigation Rail ── */
+    #leftNavRail {
+      position: fixed;
+      top: var(--header-h);
+      left: 0;
+      bottom: 0;
+      width: var(--nav-w);
+      z-index: 400;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border-right: 1.5px solid #8DB9F0;
+      padding: 1.15rem 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      overflow-y: auto;
+      transition: transform 0.22s ease;
+    }
+
+    .rail-section-label {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--text-slate);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.55rem 0.65rem 0.35rem;
+    }
+
+    .rail-item {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.62rem 0.78rem;
+      border-radius: 10px;
+      border: 1.5px solid transparent;
+      background: transparent;
+      color: var(--text-navy);
+      font-family: var(--font-body);
+      font-size: 13.5px;
+      font-weight: 600;
+      text-decoration: none;
+      text-align: left;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .rail-item:hover {
+      background: #EFF6FF;
+      border-color: rgba(141, 185, 240, 0.6);
+    }
+
+    .rail-item.active {
+      background: var(--sunset-peach);
+      color: #000000;
+      border-color: #E39474;
+      font-weight: 700;
+      box-shadow: 0 3px 10px rgba(245, 182, 158, 0.35);
+    }
+
+    .rail-item-label { flex: 1; }
+
+    .rail-badge {
+      padding: 1px 7px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      background: var(--sunset-peach);
+      color: #000000;
+      border: 1px solid rgba(15, 23, 42, 0.15);
+    }
+
+    .rail-item.active .rail-badge {
+      background: #FFFFFF;
+      color: #000000;
+    }
+
+    .rail-divider {
+      height: 1px;
+      background: rgba(141, 185, 240, 0.45);
+      margin: 0.65rem 0.35rem;
+    }
+
+    /* ── Center Main Workspace ── */
+    #mainWorkspace {
+      flex: 1;
+      margin-left: var(--nav-w);
+      margin-right: 360px;
+      padding: 1.5rem 1.75rem 5rem;
+      min-width: 0;
+      transition: margin-right 0.12s ease;
+    }
+
+    body.ai-drawer-collapsed #mainWorkspace {
+      margin-right: 0;
+    }
+
+    /* Active Context Ribbon */
+    .active-context-ribbon {
+      background: var(--surface-card);
+      border: var(--border-blue);
+      border-radius: var(--radius-md);
+      padding: 0.95rem 1.25rem;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+      margin-bottom: 1.15rem;
+    }
+
+    .ribbon-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-slate);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 0.2rem;
+    }
+
+    .ribbon-value {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-navy);
+    }
+
+    .ribbon-metrics {
       display: flex;
       align-items: center;
       flex-wrap: wrap;
       gap: 0.55rem;
-      margin-bottom: 0.3rem;
     }
-    .first-year-alignment-title {
-      font-family: var(--font-display);
-      font-size: 14px;
-      font-weight: 700;
-      color: #0F172A;
-    }
-    .first-year-alignment-pill {
+
+    .metric-pill {
       display: inline-flex;
       align-items: center;
-      padding: 2px 9px;
+      gap: 0.35rem;
+      padding: 0.32rem 0.72rem;
       border-radius: 9999px;
-      font-family: var(--font-mono);
-      font-size: 10.5px;
+      background: #F8FAFF;
+      border: var(--border-blue);
+      font-size: 12px;
       font-weight: 600;
-      background: #DBEAFE;
-      color: #1E40AF;
+      color: var(--text-navy);
+      white-space: nowrap;
+    }
+
+    .metric-pill.peach {
+      background: var(--sunset-peach);
+      color: #000000;
+      border-color: #E39474;
+    }
+
+    /* Toned-down Conditional 1st-Year Reference Guide */
+    .first-year-guide {
+      display: none;
+      align-items: flex-start;
+      gap: 0.85rem;
+      background: #FFFFFF;
+      border: var(--border-blue);
+      border-left: 4px solid #8DB9F0;
+      border-radius: var(--radius-md);
+      padding: 0.85rem 1.15rem;
+      margin-bottom: 1.25rem;
+      box-shadow: var(--shadow-card);
+    }
+
+    .first-year-guide-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #EFF6FF;
       border: 1px solid #8DB9F0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      flex-shrink: 0;
     }
-    .first-year-alignment-text {
+
+    .first-year-guide-title {
+      font-family: var(--font-display);
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-navy);
+      margin-bottom: 0.2rem;
+    }
+
+    .first-year-guide-text {
       font-size: 13px;
-      font-weight: 400;
-      line-height: 1.55;
-      color: #1E293B;
+      line-height: 1.5;
+      color: var(--text-slate);
     }
-    .first-year-alignment-text strong {
+
+    /* Study Progress Card */
+    .progress-strip {
+      background: var(--surface-card);
+      border: var(--border-blue);
+      border-radius: var(--radius-md);
+      padding: 0.9rem 1.2rem;
+      margin-bottom: 1.35rem;
+      box-shadow: var(--shadow-card);
+    }
+
+    .progress-strip-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-navy);
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      border-radius: 9999px;
+      background: #E2E8F0;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #8DB9F0 0%, #F5B69E 100%);
+      border-radius: 9999px;
+      transition: width 0.25s ease;
+    }
+
+    /* Sections */
+    .workspace-section {
+      margin-bottom: 1.75rem;
+    }
+
+    .section-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .section-heading {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text-navy);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.92);
+      border: var(--border-blue);
+      border-radius: 9999px;
+      padding: 0.35rem 0.95rem;
+    }
+
+    .section-sub-pill {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 0.28rem 0.72rem;
+      border-radius: 9999px;
+      background: #FFFFFF;
+      border: var(--border-blue);
+      color: var(--text-slate);
+    }
+
+    /* Subject Module Accordion Cards */
+    .subject-accordion-card {
+      background: var(--surface-card);
+      border: var(--border-blue);
+      border-radius: var(--radius-md);
+      margin-bottom: 0.85rem;
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+    }
+
+    .accordion-header-btn {
+      width: 100%;
+      padding: 1rem 1.2rem;
+      background: #FFFFFF;
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.15s ease;
+    }
+
+    .accordion-header-btn:hover {
+      background: #F8FAFF;
+    }
+
+    .subject-code-pill {
+      padding: 0.32rem 0.68rem;
+      border-radius: 8px;
+      background: var(--powder-blue-soft);
+      border: 1.5px solid #8DB9F0;
+      color: #1E40AF;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 700;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .subject-title-group {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .subject-title-text {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-navy);
+      margin-bottom: 0.18rem;
+    }
+
+    .subject-meta-text {
+      font-size: 12.5px;
+      color: var(--text-slate);
+    }
+
+    .accordion-chevron {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      border: 1.5px solid #8DB9F0;
+      background: #FFFFFF;
+      color: var(--text-navy);
+      font-size: 12px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: transform 0.2s ease;
+    }
+
+    .subject-accordion-card.open .accordion-chevron {
+      background: var(--sunset-peach);
+      border-color: #E39474;
+      color: #000000;
+    }
+
+    .accordion-body {
+      display: none;
+      border-top: 1px solid rgba(141, 185, 240, 0.45);
+      background: #F8FAFF;
+      padding: 0.75rem 1.15rem 1rem;
+    }
+
+    .subject-accordion-card.open .accordion-body {
+      display: block;
+    }
+
+    .unit-module-row {
+      background: #FFFFFF;
+      border: 1.5px solid #8DB9F0;
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      margin-top: 0.65rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .unit-info {
+      flex: 1;
+      min-width: 220px;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.65rem;
+    }
+
+    .unit-check {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      accent-color: #2563EB;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .unit-badge-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: #1E40AF;
+      background: #EFF6FF;
+      border: 1px solid #8DB9F0;
+      padding: 2px 7px;
+      border-radius: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .unit-topic-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-navy);
+      line-height: 1.35;
+    }
+
+    .unit-hours-sub {
+      font-size: 12px;
+      color: var(--text-slate);
+      margin-top: 0.18rem;
+      line-height: 1.4;
+    }
+
+    /* Interactive Button Trio */
+    .btn-trio {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      flex-shrink: 0;
+    }
+
+    .btn-secondary-outline {
+      background: #FFFFFF;
+      border: 1.5px solid #8DB9F0;
+      color: #0F172A;
+      border-radius: 8px;
+      padding: 0.38rem 0.72rem;
+      font-size: 12px;
       font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .btn-secondary-outline:hover {
+      background: #EFF6FF;
+      border-color: #2563EB;
+    }
+
+    .btn-secondary-outline.saved {
+      background: #ECFDF5;
+      border-color: #34D399;
+      color: #065F46;
+      font-weight: 700;
+    }
+
+    .btn-primary-peach {
+      background: #F5B69E;
+      border: 1.5px solid #E39474;
+      color: #000000;
+      border-radius: 8px;
+      padding: 0.38rem 0.78rem;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s ease;
+    }
+
+    .btn-primary-peach:hover {
+      background: var(--sunset-peach-hover);
+    }
+
+    /* PYQs, Panic Pack & Deck Cards */
+    .card-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 0.9rem;
+    }
+
+    .white-blue-card {
+      background: #FFFFFF;
+      border: 1.5px solid #8DB9F0;
+      border-radius: var(--radius-md);
+      padding: 1rem 1.1rem;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .card-top-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .card-title-bold {
+      font-family: var(--font-display);
+      font-size: 14.5px;
+      font-weight: 800;
+      color: var(--text-navy);
+      line-height: 1.35;
+    }
+
+    .card-sub-slate {
+      font-size: 12.5px;
+      color: var(--text-slate);
+      line-height: 1.45;
+    }
+
+    .year-peach-badge {
+      padding: 2px 8px;
+      border-radius: 9999px;
+      background: #F5B69E;
+      color: #000000;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .panic-model-answer {
+      display: none;
+      margin-top: 0.45rem;
+      padding: 0.65rem 0.75rem;
+      background: #F8FAFF;
+      border: 1px solid #8DB9F0;
+      border-radius: 8px;
+      font-size: 12px;
+      line-height: 1.5;
       color: #0F172A;
     }
 
-    /* Section heading */
-    .workspace-section { margin-bottom: 2rem; scroll-margin-top: calc(var(--header-height) + 16px); }
-    .workspace-section-header {
-      display: flex; align-items: center; gap: 0.6rem;
-      margin-bottom: 1rem;
-    }
-    .workspace-section-title {
-      font-family: var(--font-display);
-      font-size: 16px; font-weight: 700; color: var(--text-primary);
-      letter-spacing: -0.02em;
-    }
-    .workspace-section-count {
-      font-family: var(--font-mono); font-size: 11px;
-      color: var(--text-muted); background: var(--surface-elevated);
-      padding: 1px 7px; border-radius: 10px;
+    .white-blue-card.expanded .panic-model-answer {
+      display: block;
     }
 
-    /* ─── Course Accordion ─── */
-    .course-accordion {
-      background: var(--surface-card);
-      border: 1px solid var(--border-hairline);
-      border-radius: var(--radius-lg);
-      margin-bottom: 0.85rem;
-      overflow: hidden;
-      transition: box-shadow var(--transition-base);
-    }
-    .course-accordion:hover { box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08); border-color: rgba(141, 185, 240, 0.85); }
-
-    .course-accordion-header {
-      display: flex; align-items: center; gap: 0.75rem;
-      padding: 1rem 1.25rem;
-      cursor: pointer;
-      user-select: none;
-      background: transparent;
-      border: none; width: 100%; text-align: left;
-      transition: background var(--transition-fast);
-    }
-    .course-accordion-header:hover { background: var(--surface-elevated); }
-
-    .course-code-badge {
-      font-family: var(--font-mono);
-      font-size: 10px; font-weight: 700;
-      padding: 3px 8px; border-radius: 6px;
-      background: var(--accent-blue-dim);
-      border: 1px solid #8DB9F0;
-      color: #1E40AF;
-      flex-shrink: 0;
-    }
-    .course-title-block { flex: 1; }
-    .course-title {
-      font-family: var(--font-display);
-      font-size: 14px; font-weight: 700; color: var(--text-primary);
-      letter-spacing: -0.01em; line-height: 1.3;
-    }
-    .course-meta {
-      font-size: 11px; color: var(--text-muted); margin-top: 1px;
-      font-family: var(--font-body);
-    }
-    .course-credit-pill {
-      font-size: 10px; font-weight: 600;
-      padding: 2px 7px; border-radius: 10px;
-      background: rgba(34,197,94,0.12);
-      border: 1px solid rgba(34,197,94,0.25);
-      color: #4ade80;
-      font-family: var(--font-mono);
-      flex-shrink: 0;
-    }
-    .course-chevron {
-      color: var(--text-muted); font-size: 14px;
-      transition: transform var(--transition-fast);
-      flex-shrink: 0;
-    }
-    .course-accordion.open .course-chevron { transform: rotate(180deg); }
-
-    .course-accordion-body {
-      display: none;
-      border-top: 1px solid var(--border-hairline);
-      padding: 0.75rem 1.25rem 1rem;
-      background: #F8FAFC;
-    }
-    [data-theme="light"] .course-accordion-body { background: #F8FAFC; }
-    .course-accordion.open .course-accordion-body { display: block; }
-
-    /* Unit rows */
-    .unit-list { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 0.85rem; }
-    .unit-row {
-      display: flex; align-items: center; gap: 0.75rem;
-      padding: 0.55rem 0.9rem;
-      background: var(--surface-elevated);
-      border: 1px solid var(--border-hairline);
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      transition: background var(--transition-fast), border-color var(--transition-fast);
-      text-decoration: none;
-      color: inherit;
-    }
-    .unit-row:hover {
-      background: var(--surface-hover);
-      border-color: var(--border-subtle);
-    }
-    .unit-number {
-      font-family: var(--font-mono); font-size: 10px; font-weight: 600;
-      color: var(--text-muted); flex-shrink: 0; min-width: 2.5rem;
-    }
-    .unit-name { font-size: 13px; font-weight: 500; color: var(--text-primary); flex: 1; }
-    .unit-lectures {
-      font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);
-      flex-shrink: 0;
-    }
-    .unit-save-btn {
-      background: transparent; border: 1px solid var(--border-hairline);
-      border-radius: 6px; padding: 3px 8px;
-      font-size: 10px; font-weight: 600; color: var(--text-muted);
-      cursor: pointer; white-space: nowrap;
-      transition: all var(--transition-fast);
-      font-family: var(--font-body);
-    }
-    .unit-save-btn:hover {
-      background: #EFF6FF;
-      border-color: #8DB9F0;
-      color: #1E40AF;
-    }
-    .unit-save-btn.saved {
-      background: rgba(22, 163, 74, 0.12);
-      border-color: rgba(22, 163, 74, 0.35);
-      color: #15803D;
-    }
-    .tag-high-yield,
-    .vermilion-tag {
-      background: var(--vermilion-surface) !important;
-      color: var(--vermilion-primary) !important;
-      font-weight: 600 !important;
-      font-size: 0.75rem !important;
-      padding: 0.25rem 0.6rem !important;
-      border-radius: 0.25rem !important;
-      margin-left: 0.5rem;
-      white-space: nowrap;
-    }
-
-    /* Course actions */
-    .course-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
-    .course-action-btn {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      padding: 0.45rem 0.9rem;
-      border-radius: var(--radius-sm);
-      font-size: 12px; font-weight: 600;
-      font-family: var(--font-body);
-      cursor: pointer; text-decoration: none;
-      transition: all var(--transition-fast);
-      white-space: nowrap;
-    }
-    .course-action-btn.primary {
-      background: #F5B69E; color: #0F172A; border: 1px solid #E39474; font-weight: 700;
-    }
-    .course-action-btn.primary:hover { background: #f7a88b; transform: translateY(-1px); }
-    .course-action-btn.secondary {
-      background: #FFFFFF; color: #0F172A;
-      border: 1px solid #8DB9F0;
-    }
-    .course-action-btn.secondary:hover {
-      background: #EFF6FF; color: #1E40AF;
-      border-color: #6BA3E3;
-    }
-
-    /* ─── PYQ Archive Cards ─── */
-    .pyq-archive-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 0.85rem;
-    }
-    .pyq-card {
-      background: var(--surface-card);
-      border: 1px solid var(--border-hairline);
+    .empty-state-box {
+      background: #FFFFFF;
+      border: 1.5px dashed #8DB9F0;
       border-radius: var(--radius-md);
-      padding: 1rem 1.25rem;
-      display: flex; flex-direction: column; gap: 0.75rem;
-      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
-    }
-    .pyq-card:hover {
-      border-color: #8DB9F0;
-      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08);
-    }
-    .pyq-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem; }
-    .pyq-card-year {
-      font-family: var(--font-display);
-      font-size: 18px; font-weight: 800; color: var(--text-primary);
-      letter-spacing: -0.03em;
-    }
-    .pyq-card-type {
-      font-size: 10px; font-weight: 600;
-      padding: 2px 7px; border-radius: 10px;
-      font-family: var(--font-mono);
-    }
-    .pyq-card-type.regular {
-      background: #EFF6FF; border: 1px solid #8DB9F0; color: #1E40AF;
-    }
-    .pyq-card-type.backlog {
-      background: #FFF7F3; border: 1px solid #F5B69E; color: #9A3412;
-    }
-    .pyq-card-type.archive {
-      background: #F5F3FF; border: 1px solid #C4B5FD; color: #5B21B6;
-    }
-    .pyq-card-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
-    .pyq-card-papers { display: flex; flex-direction: column; gap: 0.35rem; }
-    .pyq-paper-row {
-      display: flex; align-items: center; gap: 0.5rem;
-      font-size: 12px; color: var(--text-secondary);
-    }
-    .pyq-paper-dot { width: 5px; height: 5px; border-radius: 50%; background: #8DB9F0; flex-shrink: 0; }
-    .pyq-paper-name { flex: 1; }
-    .pyq-paper-link {
-      font-size: 10px; font-weight: 600;
-      padding: 2px 8px; border-radius: 5px;
-      background: var(--surface-elevated); border: 1px solid var(--border-hairline);
-      color: var(--text-secondary); text-decoration: none;
-      cursor: pointer; font-family: var(--font-mono);
-      transition: all var(--transition-fast);
-    }
-    .pyq-paper-link:hover {
-      background: #EFF6FF; border-color: #8DB9F0; color: #1E40AF;
+      padding: 2rem 1.25rem;
+      text-align: center;
+      color: var(--text-slate);
+      font-size: 13.5px;
     }
 
-    /* ─── Panic Pack Section ─── */
-    .panic-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 0.75rem;
-    }
-    .panic-card {
-      background: var(--surface-card);
-      border: 1px solid var(--border-hairline);
-      border-radius: var(--radius-md);
-      padding: 0.85rem 1rem;
-      cursor: pointer;
-      transition: all var(--transition-fast);
-      display: flex; flex-direction: column; gap: 0.5rem;
-    }
-    .panic-card:hover {
-      background: #FFF7F3;
-      border-color: #F5B69E;
-      transform: translateY(-1px);
-    }
-    .panic-card-icon { font-size: 18px; }
-    .panic-card-title { font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.3; }
-    .panic-card-sub { font-size: 11px; color: var(--text-muted); }
-
-    /* ─── Bookmarks section ─── */
-    .bookmarks-empty {
-      background: var(--surface-card); border: 1px dashed var(--border-subtle);
-      border-radius: var(--radius-md); padding: 2rem; text-align: center;
-      color: var(--text-muted); font-size: 13px;
-    }
-    .bookmarks-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 0.75rem;
-    }
-    .bookmark-card {
-      background: var(--surface-card); border: 1px solid var(--border-hairline);
-      border-radius: var(--radius-md); padding: 0.9rem 1.1rem;
-      display: flex; align-items: flex-start; gap: 0.75rem;
-      transition: border-color var(--transition-fast);
-    }
-    .bookmark-card:hover { border-color: var(--border-subtle); }
-    .bookmark-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
-    .bookmark-info { flex: 1; }
-    .bookmark-title { font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.3; }
-    .bookmark-meta { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-    .bookmark-remove {
-      background: transparent; border: none; cursor: pointer;
-      font-size: 16px; color: var(--text-muted); transition: color var(--transition-fast);
-      flex-shrink: 0;
-    }
-    .bookmark-remove:hover { color: var(--accent-red); }
-
-    /* ─── Right Dock / Revision Deck ─── */
-    #dash-dock {
-      width: var(--dock-width);
-      min-width: var(--dock-width);
-      background: var(--surface-card);
-      border-left: 1px solid var(--border-hairline);
+    /* ── Right-Docked Floating Resizable Ask AI Drawer ── */
+    #aiDrawer {
       position: fixed;
-      top: var(--header-height); right: 0; bottom: 0;
-      overflow-y: auto; overflow-x: hidden;
-      padding: 1.25rem 1rem;
-      display: flex; flex-direction: column; gap: 1rem;
-      scrollbar-width: thin;
-      scrollbar-color: var(--border-subtle) transparent;
+      top: var(--header-h);
+      right: 0;
+      bottom: 0;
+      width: 360px;
+      min-width: 280px;
+      max-width: 600px;
+      z-index: 450;
+      background: #FFFFFF;
+      border-left: 1.5px solid #8DB9F0;
+      box-shadow: -8px 0 28px rgba(15, 23, 42, 0.08);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.22s ease;
     }
-    .dock-header {
-      display: flex; align-items: center; justify-content: space-between;
+
+    body.ai-drawer-collapsed #aiDrawer {
+      transform: translateX(102%);
+      pointer-events: none;
+    }
+
+    /* Left-Edge Drag Handle */
+    #aiResizerHandle {
+      position: absolute;
+      left: -6px;
+      top: 0;
+      bottom: 0;
+      width: 12px;
+      cursor: ew-resize;
+      z-index: 460;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+    }
+
+    .resizer-grip {
+      width: 16px;
+      height: 44px;
+      border-radius: 9999px;
+      background: #FFFFFF;
+      border: 1.5px solid #8DB9F0;
+      color: #1E40AF;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
+    }
+
+    #aiResizerHandle:hover .resizer-grip {
+      background: #F5B69E;
+      border-color: #E39474;
+      color: #000000;
+    }
+
+    .ai-drawer-header {
+      padding: 0.9rem 1rem;
+      border-bottom: 1.5px solid #8DB9F0;
+      background: #F8FAFF;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       gap: 0.5rem;
     }
-    .dock-title {
+
+    .ai-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .ai-title {
       font-family: var(--font-display);
-      font-size: 14px; font-weight: 700; color: var(--text-primary);
-    }
-    .dock-count-badge {
-      background: var(--surface-elevated); border: 1px solid var(--border-hairline);
-      border-radius: 10px; padding: 1px 7px;
-      font-family: var(--font-mono); font-size: 10px; color: var(--text-muted);
-    }
-    .deck-empty-state {
-      background: var(--surface-elevated); border: 1px dashed var(--border-subtle);
-      border-radius: var(--radius-md); padding: 1.5rem 1rem;
-      text-align: center; color: var(--text-muted);
-      font-size: 12px; line-height: 1.6;
-    }
-    .deck-empty-icon { font-size: 24px; margin-bottom: 0.5rem; }
-    .deck-items { display: flex; flex-direction: column; gap: 0.5rem; }
-    .deck-item {
-      display: flex; align-items: center; gap: 0.6rem;
-      background: var(--surface-elevated); border: 1px solid var(--border-hairline);
-      border-radius: var(--radius-sm); padding: 0.65rem 0.85rem;
-      transition: border-color var(--transition-fast);
-    }
-    .deck-item:hover { border-color: var(--border-subtle); }
-    .deck-item-label { flex: 1; font-size: 12px; font-weight: 500; color: var(--text-primary); line-height: 1.4; }
-    .deck-item-sub { font-size: 10px; color: var(--text-muted); margin-top: 1px; font-family: var(--font-mono); }
-    .deck-item-remove {
-      background: transparent; border: none; cursor: pointer;
-      font-size: 15px; color: var(--text-muted);
-      transition: color var(--transition-fast); flex-shrink: 0;
-    }
-    .deck-item-remove:hover { color: var(--accent-red); }
-    .dock-divider { height: 1px; background: var(--border-hairline); }
-    .dock-action-btn {
-      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-      width: 100%; padding: 0.6rem 1rem;
-      background: var(--surface-elevated); border: 1px solid var(--border-hairline);
-      border-radius: var(--radius-sm);
-      font-size: 12px; font-weight: 600; color: var(--text-secondary);
-      font-family: var(--font-body); cursor: pointer;
-      transition: all var(--transition-fast);
-    }
-    .dock-action-btn:hover {
-      background: var(--surface-hover); border-color: var(--border-subtle);
-      color: var(--text-primary);
-    }
-    .dock-action-btn.export {
-      background: var(--accent-blue-dim); border-color: rgba(59,130,246,0.3); color: #60a5fa;
-    }
-    .dock-action-btn.export:hover { background: rgba(59,130,246,0.2); }
-
-    /* Preferences panel */
-    .pref-group { display: flex; flex-direction: column; gap: 0.5rem; }
-    .pref-item {
-      display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
-      padding: 0.6rem 0;
-      border-bottom: 1px solid var(--border-hairline);
-    }
-    .pref-item:last-child { border-bottom: none; }
-    .pref-label { font-size: 13px; color: var(--text-secondary); }
-    .toggle-switch {
-      position: relative; width: 36px; height: 20px; flex-shrink: 0;
-    }
-    .toggle-switch input { opacity: 0; width: 0; height: 0; }
-    .toggle-slider {
-      position: absolute; inset: 0; background: var(--border-subtle); border-radius: 20px;
-      cursor: pointer; transition: background var(--transition-fast);
-    }
-    .toggle-slider::before {
-      content: ''; position: absolute;
-      width: 14px; height: 14px; left: 3px; bottom: 3px;
-      background: #fff; border-radius: 50%;
-      transition: transform var(--transition-fast);
-    }
-    .toggle-switch input:checked + .toggle-slider { background: var(--accent-blue); }
-    .toggle-switch input:checked + .toggle-slider::before { transform: translateX(16px); }
-
-    /* ─── Mobile Menu Toggle ─── */
-    #mobile-menu-btn {
-      display: none; background: transparent; border: 1px solid var(--border-hairline);
-      border-radius: 7px; padding: 6px 8px; cursor: pointer; color: var(--text-secondary);
-      font-size: 16px; align-items: center; justify-content: center;
-      transition: background var(--transition-fast);
-    }
-    #mobile-menu-btn:hover { background: var(--surface-elevated); }
-    #dock-toggle-btn {
-      display: none; background: transparent; border: 1px solid var(--border-hairline);
-      border-radius: 7px; padding: 6px 8px; cursor: pointer; color: var(--text-secondary);
-      font-size: 16px; align-items: center; justify-content: center;
-      transition: background var(--transition-fast);
-    }
-    #dock-toggle-btn:hover { background: var(--surface-elevated); }
-
-    /* ─── Responsive ─── */
-    @media (max-width: 1200px) {
-      :root {
-        --dock-width: 320px;
-      }
-    }
-    @media (max-width: 1024px) {
-      #dash-dock {
-        transform: translateX(100%);
-        transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
-        z-index: 200;
-      }
-      #dash-dock.dock-open { transform: translateX(0); }
-      #dash-workspace { margin-right: 0; }
-      #dock-toggle-btn { display: flex; }
-    }
-    @media (max-width: 768px) {
-      #dash-nav {
-        transform: translateX(-100%);
-        transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
-        z-index: 300;
-      }
-      #dash-nav.nav-open { transform: translateX(0); }
-      #dash-workspace { margin-left: 0; }
-      #mobile-menu-btn { display: flex; }
-      #cmdK-bar { max-width: 200px; }
-      .header-wordmark-name { display: none; }
-      .user-name { display: none; }
-      #dash-dock {
-        width: 100vw; min-width: 0;
-      }
-    }
-    @media (max-width: 480px) {
-      #cmdK-bar { display: none; }
-      #dash-workspace { padding: 1rem; }
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-navy);
     }
 
-    /* ─── Nav Overlay (mobile) ─── */
-    #nav-overlay {
+    .ai-context-tag {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 700;
+      background: #F5B69E;
+      color: #000000;
+      padding: 2px 7px;
+      border-radius: 9999px;
+    }
+
+    .ai-close-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      border: 1.5px solid #8DB9F0;
+      background: #FFFFFF;
+      color: #0F172A;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .ai-close-btn:hover {
+      background: #F5B69E;
+      color: #000000;
+      border-color: #E39474;
+    }
+
+    .ai-messages-feed {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0.95rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      background: #FFFFFF;
+    }
+
+    .ai-bubble {
+      padding: 0.75rem 0.9rem;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--text-navy);
+    }
+
+    .ai-bubble.assistant {
+      background: #F8FAFF;
+      border: 1.5px solid #8DB9F0;
+    }
+
+    .ai-bubble.user {
+      background: #F5B69E;
+      color: #000000;
+      border: 1.5px solid #E39474;
+      align-self: flex-end;
+      max-width: 88%;
+      font-weight: 600;
+    }
+
+    .ai-bubble ul {
+      margin: 0.4rem 0 0.2rem 1.1rem;
+    }
+
+    .ai-controls-footer {
+      padding: 0.85rem 1rem 1rem;
+      border-top: 1.5px solid #8DB9F0;
+      background: #F8FAFF;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .ai-quick-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .ai-chip-btn {
+      background: #FFFFFF;
+      border: 1.5px solid #8DB9F0;
+      color: #0F172A;
+      border-radius: 9999px;
+      padding: 0.26rem 0.65rem;
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .ai-chip-btn:hover {
+      background: #EFF6FF;
+      border-color: #2563EB;
+    }
+
+    #aiQueryInput {
+      width: 100%;
+      min-height: 68px;
+      max-height: 130px;
+      resize: vertical;
+      padding: 0.65rem 0.78rem;
+      border-radius: 10px;
+      border: 1.5px solid #8DB9F0;
+      background: #FFFFFF;
+      color: var(--text-navy);
+      font-family: var(--font-body);
+      font-size: 13px;
+      outline: none;
+    }
+
+    #aiQueryInput:focus {
+      border-color: #2563EB;
+    }
+
+    #generateStudyGuideBtn {
+      width: 100%;
+      padding: 0.65rem 1rem;
+      border-radius: 10px;
+      background: #F5B69E;
+      border: 1.5px solid #E39474;
+      color: #000000;
+      font-family: var(--font-display);
+      font-size: 13.5px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    #generateStudyGuideBtn:hover {
+      background: var(--sunset-peach-hover);
+    }
+
+    /* Bottom-Right Floating Trigger Pill */
+    #aiFloatingTrigger {
+      position: fixed;
+      right: 1.35rem;
+      bottom: 1.35rem;
+      z-index: 480;
+      background: #F5B69E;
+      color: #000000;
+      border: 1.5px solid #E39474;
+      border-radius: 9999px;
+      padding: 0.68rem 1.25rem;
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.16);
       display: none;
-      position: fixed; inset: 0; background: rgba(0,0,0,0.5);
-      z-index: 250; cursor: pointer;
-    }
-    #nav-overlay.visible { display: block; }
-
-    /* ─── Toast ─── */
-    #toast-container {
-      position: fixed; bottom: 1.5rem; right: 1.5rem;
-      z-index: 9998; display: flex; flex-direction: column; gap: 0.5rem;
-    }
-    .toast {
-      display: flex; align-items: center; gap: 0.6rem;
-      background: var(--surface-card); border: 1px solid #8DB9F0;
-      border-radius: var(--radius-md); padding: 0.75rem 1rem;
-      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.14);
-      min-width: 240px; max-width: 320px;
-      font-size: 13px; color: var(--text-primary);
-      animation: toastIn 0.2s ease forwards;
-    }
-    .toast.toast-success { border-color: rgba(34,197,94,0.4); }
-    .toast.toast-error { border-color: rgba(239,68,68,0.4); }
-    @keyframes toastIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-    @keyframes toastOut { to { opacity: 0; transform: translateY(-8px); } }
-    .toast.removing { animation: toastOut 0.15s ease forwards; }
-  
-    .nav-item.active {
-      background-color: #8DB9F0 !important;
-      background: #8DB9F0 !important;
-      color: #0F172A !important;
-      font-weight: 700 !important;
-    }
-    .nav-item.active .nav-item-label, .nav-item.active .nav-item-icon {
-      color: #0F172A !important;
-    }
-    .dock-action-btn.export, #export-deck-btn {
-      background-color: #F5B69E !important;
-      background: #F5B69E !important;
-      color: #0F172A !important;
-      font-weight: 700 !important;
-      border: none !important;
-    }
-    .dock-action-btn.export:hover, #export-deck-btn:hover {
-      background-color: #E39474 !important;
+      align-items: center;
+      gap: 0.4rem;
     }
 
-</style>
+    body.ai-drawer-collapsed #aiFloatingTrigger {
+      display: inline-flex;
+    }
+
+    /* ── In-Browser PDF Preview Modal ── */
+    #pdfPreviewModal {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(15, 23, 42, 0.58);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+    }
+
+    #pdfPreviewModal.active {
+      display: flex;
+    }
+
+    .pdf-modal-card {
+      width: 100%;
+      max-width: 960px;
+      height: 86vh;
+      background: #FFFFFF;
+      border: 2px solid #8DB9F0;
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: var(--shadow-elevated);
+    }
+
+    .pdf-modal-head {
+      padding: 0.85rem 1.15rem;
+      border-bottom: 1.5px solid #8DB9F0;
+      background: #F8FAFF;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .pdf-modal-title {
+      font-family: var(--font-display);
+      font-size: 14.5px;
+      font-weight: 800;
+      color: var(--text-navy);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .pdf-modal-frame {
+      flex: 1;
+      width: 100%;
+      border: none;
+      background: #F1F5F9;
+    }
+
+    /* Toast */
+    #toastBox {
+      position: fixed;
+      bottom: 1.35rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3000;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      pointer-events: none;
+    }
+    .toast-pill {
+      background: #0F172A;
+      color: #FFFFFF;
+      border: 1.5px solid #8DB9F0;
+      padding: 0.55rem 1rem;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: var(--shadow-elevated);
+    }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 1080px) {
+      #mainWorkspace { margin-right: 0; }
+      #aiDrawer { box-shadow: -12px 0 36px rgba(15, 23, 42, 0.2); }
+    }
+
+    @media (max-width: 820px) {
+      .mobile-menu-btn { display: inline-flex; }
+      #leftNavRail { transform: translateX(-105%); }
+      #leftNavRail.open { transform: translateX(0); box-shadow: 12px 0 32px rgba(15, 23, 42, 0.18); }
+      #mainWorkspace { margin-left: 0; padding: 1.1rem 1rem 5rem; }
+      .top-context-chip, .user-pill .user-name-label { display: none; }
+    }
+  </style>
 </head>
-<body class="dashboard-body" style="background: linear-gradient(rgba(233, 232, 248, 0.30), rgba(233, 232, 248, 0.35)), url('images/makaut-haringhata-boulevard.jpg?v=20261110_v9') center center / cover no-repeat fixed !important; min-height: 100vh !important;">
+<body>
 
-<!-- Auth Guard Veil -->
-<div id="auth-veil">
-  <div class="spinner"></div>
-</div>
+<div id="auth-veil"><div class="spinner"></div></div>
+<div id="toastBox" aria-live="polite"></div>
 
-<!-- Toast Container -->
-<div id="toast-container" aria-live="polite"></div>
-
-<!-- Nav Overlay (mobile) -->
-<div id="nav-overlay" role="button" aria-label="Close navigation" tabindex="0"></div>
-
-<!-- ═══════════════════════════════════════════════
-     HEADER
-═══════════════════════════════════════════════ -->
-<header id="dash-header" role="banner">
-  <!-- Left: Wordmark + hamburger -->
-  <div style="display:flex;align-items:center;gap:0.6rem;flex-shrink:0;">
-    <button id="mobile-menu-btn" aria-label="Toggle navigation" aria-expanded="false">☰</button>
-    <a href="index.html" class="brand-link" style="color: #0F172A !important; font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 1.25rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
-          📐 MAKAUT CampusSense
-        </a>
-    <span class="header-branch-badge" id="branch-badge" style="background:#EFF6FF;color:#1E40AF;border:1px solid #8DB9F0;border-radius:9999px;font-weight:600;padding:3px 10px;font-size:12px;">B.Tech CSE · Sem 5</span>
+<!-- Top Navigation Bar -->
+<header id="dashHeader" role="banner">
+  <div class="header-left">
+    <button type="button" class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation" onclick="toggleMobileRail()">☰</button>
+    <a href="index.html" class="brand-logo-link">
+      <span class="brand-shield" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <path d="M9 12l2 2 4-4"/>
+        </svg>
+      </span>
+      <span>MAKAUT CampusSense</span>
+    </a>
+    <span class="top-context-chip" id="topContextChip">Loading…</span>
   </div>
 
-  <!-- Centre: CmdK Search -->
-  <div id="cmdK-bar" role="search">
-    <span class="cmdK-icon-left">🔍</span>
+  <div class="header-search-wrap" role="search">
+    <span class="search-icon" aria-hidden="true">🔍</span>
     <input
-      id="cmdK-input"
+      id="workspaceSearchInput"
       type="search"
-      placeholder="Search Blueprints, PYQs, Topics…"
+      placeholder="Search Blueprints, PYQs, Topics..."
       autocomplete="off"
-      spellcheck="false"
-      aria-label="Search"
-      aria-controls="cmdK-results"
-      aria-autocomplete="list"
+      aria-label="Search Blueprints, PYQs, Topics"
+      oninput="filterWorkspace(this.value)"
     />
-    <span class="cmdK-shortcut">⌘K</span>
-    <div id="cmdK-results" role="listbox" aria-label="Search results"></div>
+    <button type="button" class="search-clear-btn" id="searchClearBtn" aria-label="Clear search" onclick="clearWorkspaceSearch()">✕</button>
   </div>
 
-  <!-- Right: user chip + sign out + dock toggle -->
   <div class="header-right">
-    <button id="dock-toggle-btn" aria-label="Toggle revision dock" title="Revision Dock">📑</button>
-    <div class="user-chip" id="user-chip">
-      <div class="user-avatar" id="user-avatar">?</div>
-      <span class="user-name" id="user-name">Loading…</span>
+    <div class="user-pill" id="userProfilePill">
+      <span class="user-avatar" id="userAvatar">SS</span>
+      <span class="user-name-label" id="userNameLabel">Student Scholar</span>
     </div>
-    <button id="signout-btn" type="button" style="background-color: var(--danger-action) !important; color: #FFFFFF !important; border-radius: 0.5rem; font-weight: 600; padding: 0.5rem 1rem; border: none; cursor: pointer;">Sign Out</button>
+    <button type="button" class="signout-btn" id="signOutBtn" onclick="handleSignOut()">Sign Out</button>
   </div>
 </header>
 
-<!-- ═══════════════════════════════════════════════
-     SHELL: Sidebar + Workspace + Dock
-═══════════════════════════════════════════════ -->
-<div id="dash-shell">
-
-  <!-- ── Left Navigator Sidebar ── -->
-  <nav id="dash-nav" aria-label="Dashboard navigation">
-    <span class="nav-section-label">Navigator</span>
-
-    <button class="nav-item active" data-section="curriculum" onclick="scrollToSection('curriculum',this)" aria-current="page">
-      <span class="nav-item-icon">📚</span>
-      <span class="nav-item-label">Curriculum Matrix</span>
+<div id="dashShell">
+  <!-- Strict 4-Item Navigator + 3-Item Quick Links -->
+  <nav id="leftNavRail" aria-label="Dashboard Navigation">
+    <div class="rail-section-label">Navigator</div>
+    <button type="button" class="rail-item active" data-nav="study-tracker" onclick="switchNavSection('study-tracker', this)">
+      <span aria-hidden="true">📚</span>
+      <span class="rail-item-label">Study Tracker</span>
+    </button>
+    <button type="button" class="rail-item" data-nav="pyqs" onclick="switchNavSection('pyqs', this)">
+      <span aria-hidden="true">📄</span>
+      <span class="rail-item-label">PYQs</span>
+      <span class="rail-badge" id="navPyqCount">0</span>
+    </button>
+    <button type="button" class="rail-item" data-nav="panic" onclick="switchNavSection('panic', this)">
+      <span aria-hidden="true">🔥</span>
+      <span class="rail-item-label">Panic Pack</span>
+      <span class="rail-badge" id="navPanicCount">16</span>
+    </button>
+    <button type="button" class="rail-item" data-nav="deck" onclick="switchNavSection('deck', this)">
+      <span aria-hidden="true">📂</span>
+      <span class="rail-item-label">Save to Deck</span>
+      <span class="rail-badge" id="navDeckCount">0</span>
     </button>
 
-    <button class="nav-item" data-section="pyqs" onclick="scrollToSection('pyqs',this)">
-      <span class="nav-item-icon">📄</span>
-      <span class="nav-item-label">Examination Vault</span>
-    </button>
-
-    <button class="nav-item" data-section="panic" onclick="scrollToSection('panic',this)">
-      <span class="nav-item-icon">🔥</span>
-      <span class="nav-item-label">Panic Pack</span>
-      <span class="nav-badge" id="panic-count-badge">16</span>
-    </button>
-
-    <button class="nav-item" data-section="bookmarks" onclick="scrollToSection('bookmarks',this)">
-      <span class="nav-item-icon">🔖</span>
-      <span class="nav-item-label">Bookmarked Notes</span>
-    </button>
-
-    <div class="nav-divider"></div>
-    <span class="nav-section-label">Settings</span>
-
-    <button class="nav-item" data-section="preferences" onclick="scrollToSection('preferences',this)">
-      <span class="nav-item-icon">⚙️</span>
-      <span class="nav-item-label">Preferences</span>
-    </button>
-
-    <div class="nav-divider"></div>
-    <span class="nav-section-label">Quick Links</span>
-
-    <a href="index.html" class="nav-item">
-      <span class="nav-item-icon">🏠</span>
-      <span class="nav-item-label">Home</span>
+    <div class="rail-divider"></div>
+    <div class="rail-section-label">Quick Links</div>
+    <a href="#home" class="rail-item" onclick="event.preventDefault(); resetToHomeView();">
+      <span aria-hidden="true">🏠</span>
+      <span class="rail-item-label">Home</span>
     </a>
-    <a href="index.html#syllabus-section" class="nav-item">
-      <span class="nav-item-icon">🗂️</span>
-      <span class="nav-item-label">Full Syllabus</span>
+    <a href="1st%20year/syllabus/Maths-1.pdf" target="_blank" rel="noopener" class="rail-item" id="fullSyllabusQuickLink">
+      <span aria-hidden="true">📘</span>
+      <span class="rail-item-label">Full Syllabus</span>
     </a>
-    <a href="index.html#pyq-section" class="nav-item">
-      <span class="nav-item-icon">📋</span>
-      <span class="nav-item-label">All PYQs</span>
+    <a href="set-academic.html?v=20261111_v14" class="rail-item">
+      <span aria-hidden="true">🎓</span>
+      <span class="rail-item-label">Set Academic</span>
     </a>
   </nav>
 
-  <!-- ── Main Workspace ── -->
-  <main id="dash-workspace" role="main" aria-label="Dashboard workspace">
-
-    <!-- Context Banner -->
-    <div class="context-banner" role="status" aria-label="Active academic context">
+  <!-- Active Central Workspace -->
+  <main id="mainWorkspace" role="main">
+    <!-- Active Context Ribbon -->
+    <div class="active-context-ribbon" role="status">
       <div>
-        <div class="context-banner-label">Active Context</div>
-        <div class="context-banner-value" id="context-value">B.Tech CSE · 5th Semester</div>
+        <div class="ribbon-label">Active Workspace</div>
+        <div class="ribbon-value" id="activeWorkspaceText">ACTIVE WORKSPACE: Loading…</div>
       </div>
-      <div class="context-banner-sep"></div>
-      <span class="context-chip" id="academic-session-chip">2024–25</span>
-      <span class="context-chip" id="session-chip">Session —</span>
-      <a href="set-academic.html?v=20261111_v14" class="context-chip" style="text-decoration:none; margin-left:auto; background:#EFF6FF; color:#1E40AF; border:1px solid #8DB9F0; font-weight:600;">Edit Profile →</a>
+      <div class="ribbon-metrics">
+        <span class="metric-pill" id="metricSubjectsPill">0 Subjects</span>
+        <span class="metric-pill" id="metricPyqsPill">0 PYQs</span>
+        <span class="metric-pill peach" id="metricDeckPill">0 Saved in Deck</span>
+      </div>
     </div>
 
-    <!-- 1st Year Only: Positive Curriculum & PYQ Edition Note -->
-    <div class="first-year-alignment-note" id="first-year-alignment-note" role="note" aria-label="1st Year Syllabus and PYQ Edition Note" style="display: none;">
-      <span class="first-year-alignment-icon" aria-hidden="true">✨</span>
-      <div class="first-year-alignment-body">
-        <div class="first-year-alignment-header">
-          <span class="first-year-alignment-title">1st Year Syllabus &amp; PYQ Reference Guide</span>
-          <span class="first-year-alignment-pill">2026 Syllabus · 2018 PYQ Pattern</span>
-        </div>
-        <p class="first-year-alignment-text">
-          Your <strong>1st Year Syllabus</strong> follows MAKAUT&apos;s newest <strong>2026 curriculum</strong> (Effective A.Y. 2026–27), whereas the <strong>PYQ Archives</strong> are based on the <strong>2018 MAKAUT syllabus</strong>.
+    <!-- Conditional 1st-Year Only Guide -->
+    <div class="first-year-guide" id="firstYearReferenceGuide" role="note" aria-label="1st Year Syllabus and PYQ Reference Guide">
+      <span class="first-year-guide-icon" aria-hidden="true">📘</span>
+      <div>
+        <div class="first-year-guide-title">1st Year Syllabus &amp; PYQ Reference Guide</div>
+        <p class="first-year-guide-text">
+          Your <strong>1st Year Syllabus</strong> follows MAKAUT&apos;s foundation curriculum, whereas the <strong>PYQ Archives</strong> are organized by core subjects.
         </p>
       </div>
     </div>
 
-    <!-- ══ Section: Curriculum Matrix ══ -->
-    <section class="workspace-section" id="curriculum" aria-label="Curriculum Matrix">
-      <div class="workspace-section-header">
-        <h2 class="workspace-section-title">📚 Curriculum Matrix</h2>
-        <span class="workspace-section-count">4 Subjects</span>
+    <!-- Study Progress Strip -->
+    <div class="progress-strip" id="studyProgressCard">
+      <div class="progress-strip-top">
+        <span id="progressSummaryLabel">Study Tracker Progress: 0 of 0 modules completed</span>
+        <span id="progressPercentLabel">0%</span>
       </div>
-
-      <!-- PCC-CS501 -->
-      <div class="course-accordion" id="acc-cs501">
-        <button class="course-accordion-header" onclick="toggleAccordion('acc-cs501')" aria-expanded="false" aria-controls="body-cs501">
-          <span class="course-code-badge">PCC-CS501</span>
-          <div class="course-title-block">
-            <div class="course-title">Formal Language &amp; Automata Theory</div>
-            <div class="course-meta">5 Units · 40 Lectures</div>
-          </div>
-          
-          <span class="course-chevron" aria-hidden="true">▾</span>
-        </button>
-        <div class="course-accordion-body" id="body-cs501" role="region" aria-label="PCC-CS501 units">
-          <div class="unit-list">
-            <div class="unit-row" onclick="handleUnitClick('PCC-CS501','Unit 1: Introduction to Finite Automata')">
-              <span class="unit-number">Unit 1</span>
-              <span class="unit-name">Introduction to Finite Automata &amp; Regular Languages</span>
-              <span class="unit-lectures">8 Lectures</span>
-              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 1: Finite Automata','PCC-CS501')" data-deck-id="cs501-u1">+ Deck</button>
-            </div>
-            <div class="unit-row" onclick="handleUnitClick('PCC-CS501','Unit 2: Regular Expressions')">
-              <span class="unit-number">Unit 2</span>
-              <span class="unit-name">Regular Expressions &amp; Closure Properties</span>
-              <span class="unit-lectures">8 Lectures</span>
-              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 2: Regular Expressions','PCC-CS501')" data-deck-id="cs501-u2">+ Deck</button>
-            </div>
-            <div class="unit-row" onclick="handleUnitClick('PCC-CS501','Unit 3: Context-Free Grammars')">
-              <span class="unit-number">Unit 3</span>
-              <span class="unit-name">Context-Free Grammars &amp; Pushdown Automata</span>
-              <span class="unit-lectures">8 Lectures</span>
-              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 3: CFG &amp; PDA','PCC-CS501')" data-deck-id="cs501-u3">+ Deck</button>
-            </div>
-            <div class="unit-row" onclick="handleUnitClick('PCC-CS501','Unit 4: Turing Machines')">
-              <span class="unit-number">Unit 4</span>
-              <span class="unit-name">Turing Machines &amp; Variants</span>
-              <span class="unit-lectures">8 Lectures</span>
-              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 4: Turing Machines','PCC-CS501')" data-deck-id="cs501-u4">+ Deck</button>
-            </div>
-            <div class="unit-row" onclick="handleUnitClick('PCC-CS501','Unit 5: Decidability &amp; Complexity')">
-              <span class="unit-number">Unit 5</span>
-              <span class="unit-name">Decidability, Complexity &amp; NP-Completeness</span>
-              <span class="unit-lectures">8 Lectures</span>
-              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 5: Decidability','PCC-CS501')" data-deck-id="cs501-u5">+ Deck</button>
-            </div>
-          </div>
-          <div class="course-actions">
-            <a href="index.html#syllabus-section" class="course-action-btn primary">📘 View Syllabus Blueprint →</a>
-            <a href="index.html#pyq-section" class="course-action-btn secondary">📄 Access PYQ Archives →</a>
-          </div>
-        </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressBarFill"></div>
       </div>
-
-      <!-- PCC-CS502 -->
-      <div class="course-accordion" id="acc-cs502">
-        <button class="course-accordion-header" onclick="toggleAccordion('acc-cs502')" aria-expanded="false" aria-controls="body-cs502">
-          <span class="course-code-badge">PCC-CS502</span>
-          <div class="course-title-block">
-            <div class="course-title">Database Management Systems</div>
-            <div class="course-meta">5 Units · 42 Lectures</div>
-          </div>
-          
-          <span class="course-chevron" aria-hidden="true">▾</span>
-        </button>
-        <div class="course-accordion-body" id="body-cs502" role="region" aria-label="PCC-CS502 units">
-          <div class="unit-list">
-            <div class="unit-row" onclick="handleUnitClick('PCC-CS502','Unit 1: Relational Model')">
-              <span class="unit-number">Unit 1</span>
-              <span class="unit-name">Relational Model &amp; Extended ER Diagrams</span>
-              <span class="unit-lectures">8 Lectures</span>
-              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 1: Relational Model','PCC-CS502')" data-deck-id="cs502-u1">+ Deck</button>
-            </div>
-            <div class="unit-row" onclick="handleUnitClick('PCC-CS502','Unit 2: SQL &amp; Relational Algebra')">
-              <span class="unit-number">Unit 2</span>
-              <span class="unit-name">SQL, Relational Algebra &amp; Calculus</span>
-              <span class="unit-lectures">10 Lectures</span>
-              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 2: SQL &amp; Relational Algebra','PCC-CS502')" data-deck-id="cs502-u2">+ Deck</button>
-            </div>
-            <div class="unit-row" onclick="handleUnitClick('PCC-CS502','Unit 3: Normalization')">
-              <span class="unit-number">Unit 3</span>
-              <span class="unit-name">Normalization: 1NF to BCNF, Functional Dependencies</span>
-              <span class="unit-lectures">8 Lectures</span>
-              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 3: Normal Forms','PCC-CS502')" data-deck-id="cs502-u3">+ Deck</button>
-            </div>
-            <div class="unit-row" onclick="handleUnitClick('PCC-CS502','Unit 4: Transactions &amp; Concurrency')">
-              <span class="unit-number">Unit 4</span>
-              <span class="unit-name">ACID Transactions, Serializability &amp; Concurrency Control</span>
-              <span class="unit-lectures">8 Lectures</span>
-              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 4: Transactions','PCC-CS502')" data-deck-id="cs502-u4">+ Deck</button>
-            </div>
-            <div class="unit-row" onclick="handleUnitClick('PCC-CS502','Unit 5: Recovery &amp; Indexing')">
-              <span class="unit-number">Unit 5</span>
-              <span class="unit-name">Database Recovery, Indexing &amp; B+ Trees</span>
-              <span class="unit-lectures">8 Lectures</span>
-              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 5: Recovery &amp; Indexing','PCC-CS502')" data-deck-id="cs502-u5">+ Deck</button>
-            </div>
-          </div>
-          <div class="course-actions">
-            <a href="index.html#syllabus-section" class="course-action-btn primary">📘 View Syllabus Blueprint →</a>
-            <a href="index.html#pyq-section" class="course-action-btn secondary">📄 Access PYQ Archives →</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- PCC-CS503 -->
-      <div class="course-accordion open" id="acc-cs503">
-        <button class="course-accordion-header" onclick="toggleAccordion('acc-cs503')" aria-expanded="true" aria-controls="body-cs503">
-          <span class="course-code-badge">PCC-CS503</span>
-          <div class="course-title-block">
-            <div class="course-title">Operating Systems</div>
-            <div class="course-meta">5 Units · 40 Lectures</div>
-          </div>
-          
-          <span class="course-chevron" aria-hidden="true">▾</span>
-        </button>
-        <div class="course-accordion-body" id="body-cs503" role="region" aria-label="PCC-CS503 units">
-          <div class="unit-list">
-            <div class="unit-row" onclick="handleUnitClick('PCC-CS503','Unit 1: Introduction to OS')">
-              <span class="unit-number">Unit 1</span>
-              <span class="unit-name">Introduction to OS: Architecture, Types &amp; System Calls</span>
-              <span class="unit-lectures">6 Lectures</span>
-              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 1: OS Introduction','PCC-CS503')" data-deck-id="cs503-u1">+ Deck</button>
-            </div>
-            <div class="unit-row" onclick="handleUnitClick('PCC-CS503','Unit 2: Process &amp; CPU Scheduling')">
-              <span class="unit-number">Unit 2</span>
-              <span class="unit-name">Process Scheduling: FCFS, SJF, Round Robin, Priority</span>
-              <span class="unit-lectures">10 Lectures</span>
-              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 2: CPU Scheduling','PCC-CS503')" data-deck-id="cs503-u2">+ Deck</button>
-            </div>
-            <div class="unit-row" onclick="handleUnitClick('PCC-CS503','Unit 3: Memory Management')">
-              <span class="unit-number">Unit 3</span>
-              <span class="unit-name">Memory Management: Paging, Segmentation &amp; Virtual Memory</span>
-              <span class="unit-lectures">10 Lectures</span>
-              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 3: Memory Management','PCC-CS503')" data-deck-id="cs503-u3">+ Deck</button>
-            </div>
-            <div class="unit-row" onclick="handleUnitClick('PCC-CS503','Unit 4: Synchronization &amp; Deadlocks')">
-              <span class="unit-number">Unit 4</span>
-              <span class="unit-name">Process Sync, Semaphores, Monitors &amp; Deadlock Avoidance</span>
-              <span class="unit-lectures">8 Lectures</span>
-              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 4: Deadlocks &amp; Sync','PCC-CS503')" data-deck-id="cs503-u4">+ Deck</button>
-            </div>
-            <div class="unit-row" onclick="handleUnitClick('PCC-CS503','Unit 5: File &amp; Storage Systems')">
-              <span class="unit-number">Unit 5</span>
-              <span class="unit-name">File Systems, Disk Scheduling &amp; I/O Management</span>
-              <span class="unit-lectures">6 Lectures</span>
-              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 5: File Systems','PCC-CS503')" data-deck-id="cs503-u5">+ Deck</button>
-            </div>
-          </div>
-          <div class="course-actions">
-            <a href="index.html#syllabus-section" class="course-action-btn primary">📘 View Syllabus Blueprint →</a>
-            <a href="index.html#pyq-section" class="course-action-btn secondary">📄 Access PYQ Archives →</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- PCC-CS504 -->
-      <div class="course-accordion" id="acc-cs504">
-        <button class="course-accordion-header" onclick="toggleAccordion('acc-cs504')" aria-expanded="false" aria-controls="body-cs504">
-          <span class="course-code-badge">PCC-CS504</span>
-          <div class="course-title-block">
-            <div class="course-title">Object-Oriented Programming with Java</div>
-            <div class="course-meta">5 Units · 40 Lectures</div>
-          </div>
-          
-          <span class="course-chevron" aria-hidden="true">▾</span>
-        </button>
-        <div class="course-accordion-body" id="body-cs504" role="region" aria-label="PCC-CS504 units">
-          <div class="unit-list">
-            <div class="unit-row" onclick="handleUnitClick('PCC-CS504','Unit 1: OOP Paradigm &amp; Java Fundamentals')">
-              <span class="unit-number">Unit 1</span>
-              <span class="unit-name">OOP Paradigm, JVM Architecture &amp; Java Fundamentals</span>
-              <span class="unit-lectures">8 Lectures</span>
-              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 1: Java Fundamentals','PCC-CS504')" data-deck-id="cs504-u1">+ Deck</button>
-            </div>
-            <div class="unit-row" onclick="handleUnitClick('PCC-CS504','Unit 2: Inheritance &amp; Polymorphism')">
-              <span class="unit-number">Unit 2</span>
-              <span class="unit-name">Inheritance, Polymorphism, Interfaces &amp; Abstract Classes</span>
-              <span class="unit-lectures">8 Lectures</span>
-              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 2: Inheritance &amp; Polymorphism','PCC-CS504')" data-deck-id="cs504-u2">+ Deck</button>
-            </div>
-            <div class="unit-row" onclick="handleUnitClick('PCC-CS504','Unit 3: Collections &amp; Generics')">
-              <span class="unit-number">Unit 3</span>
-              <span class="unit-name">Java Collections Framework, Generics &amp; Iterators</span>
-              <span class="unit-lectures">8 Lectures</span>
-              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 3: Collections','PCC-CS504')" data-deck-id="cs504-u3">+ Deck</button>
-            </div>
-            <div class="unit-row" onclick="handleUnitClick('PCC-CS504','Unit 4: Multithreading &amp; Concurrency')">
-              <span class="unit-number">Unit 4</span>
-              <span class="unit-name">Multithreading, Concurrency &amp; Thread Synchronization</span>
-              <span class="unit-lectures">8 Lectures</span>
-              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 4: Multithreading','PCC-CS504')" data-deck-id="cs504-u4">+ Deck</button>
-            </div>
-            <div class="unit-row" onclick="handleUnitClick('PCC-CS504','Unit 5: Exception Handling &amp; I/O')">
-              <span class="unit-number">Unit 5</span>
-              <span class="unit-name">Exception Handling, I/O Streams &amp; File Operations</span>
-              <span class="unit-lectures">8 Lectures</span>
-              <button class="unit-save-btn" onclick="saveToDeck(event,'Unit 5: Exception &amp; IO','PCC-CS504')" data-deck-id="cs504-u5">+ Deck</button>
-            </div>
-          </div>
-          <div class="course-actions">
-            <a href="index.html#syllabus-section" class="course-action-btn primary">📘 View Syllabus Blueprint →</a>
-            <a href="index.html#pyq-section" class="course-action-btn secondary">📄 Access PYQ Archives →</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ══ Section: PYQ Examination Vault ══ -->
-    <section class="workspace-section" id="pyqs" aria-label="Examination Vault">
-      <div class="workspace-section-header">
-        <h2 class="workspace-section-title">📄 Ingested Question Archives</h2>
-        <span class="workspace-section-count">2018–2024</span>
-      </div>
-      <div class="pyq-archive-grid">
-
-        <div class="pyq-card">
-          <div class="pyq-card-top">
-            <span class="pyq-card-year">2024</span>
-            <span class="pyq-card-type regular">Regular</span>
-          </div>
-          <div class="pyq-card-desc">End-Semester Examination papers for B.Tech CSE 5th Semester, 2024 Regular batch.</div>
-          <div class="pyq-card-papers">
-            <div class="pyq-paper-row">
-              <span class="pyq-paper-dot"></span>
-              <span class="pyq-paper-name">CS501 – Automata Theory</span>
-              <a class="pyq-paper-link" href="index.html#pyq-section" aria-label="Open CS501 2024 paper">PDF →</a>
-            </div>
-            <div class="pyq-paper-row">
-              <span class="pyq-paper-dot"></span>
-              <span class="pyq-paper-name">CS502 – DBMS</span>
-              <a class="pyq-paper-link" href="index.html#pyq-section" aria-label="Open CS502 2024 paper">PDF →</a>
-            </div>
-            <div class="pyq-paper-row">
-              <span class="pyq-paper-dot"></span>
-              <span class="pyq-paper-name">CS503 – Operating Systems</span>
-              <a class="pyq-paper-link" href="index.html#pyq-section" aria-label="Open CS503 2024 paper">PDF →</a>
-            </div>
-            <div class="pyq-paper-row">
-              <span class="pyq-paper-dot"></span>
-              <span class="pyq-paper-name">CS504 – OOP with Java</span>
-              <a class="pyq-paper-link" href="index.html#pyq-section" aria-label="Open CS504 2024 paper">PDF →</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="pyq-card">
-          <div class="pyq-card-top">
-            <span class="pyq-card-year">2023</span>
-            <span class="pyq-card-type regular">Regular</span>
-          </div>
-          <div class="pyq-card-desc">End-Semester papers for B.Tech CSE 5th Semester, 2023 Regular.</div>
-          <div class="pyq-card-papers">
-            <div class="pyq-paper-row">
-              <span class="pyq-paper-dot"></span>
-              <span class="pyq-paper-name">CS501 – Automata Theory</span>
-              <a class="pyq-paper-link" href="index.html#pyq-section">PDF →</a>
-            </div>
-            <div class="pyq-paper-row">
-              <span class="pyq-paper-dot"></span>
-              <span class="pyq-paper-name">CS502 – DBMS</span>
-              <a class="pyq-paper-link" href="index.html#pyq-section">PDF →</a>
-            </div>
-            <div class="pyq-paper-row">
-              <span class="pyq-paper-dot"></span>
-              <span class="pyq-paper-name">CS503 – Operating Systems</span>
-              <a class="pyq-paper-link" href="index.html#pyq-section">PDF →</a>
-            </div>
-            <div class="pyq-paper-row">
-              <span class="pyq-paper-dot"></span>
-              <span class="pyq-paper-name">CS504 – OOP with Java</span>
-              <a class="pyq-paper-link" href="index.html#pyq-section">PDF →</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="pyq-card">
-          <div class="pyq-card-top">
-            <span class="pyq-card-year">2023</span>
-            <span class="pyq-card-type backlog">Backlog</span>
-          </div>
-          <div class="pyq-card-desc">Backlog / Supplementary papers for B.Tech CSE 5th Semester, 2023.</div>
-          <div class="pyq-card-papers">
-            <div class="pyq-paper-row">
-              <span class="pyq-paper-dot"></span>
-              <span class="pyq-paper-name">CS501 – Automata Theory</span>
-              <a class="pyq-paper-link" href="index.html#pyq-section">PDF →</a>
-            </div>
-            <div class="pyq-paper-row">
-              <span class="pyq-paper-dot"></span>
-              <span class="pyq-paper-name">CS502 – DBMS</span>
-              <a class="pyq-paper-link" href="index.html#pyq-section">PDF →</a>
-            </div>
-            <div class="pyq-paper-row">
-              <span class="pyq-paper-dot"></span>
-              <span class="pyq-paper-name">CS503 – Operating Systems</span>
-              <a class="pyq-paper-link" href="index.html#pyq-section">PDF →</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="pyq-card">
-          <div class="pyq-card-top">
-            <span class="pyq-card-year">2022</span>
-            <span class="pyq-card-type archive">Archive</span>
-          </div>
-          <div class="pyq-card-desc">2022 archived end-semester papers. Verified &amp; indexed.</div>
-          <div class="pyq-card-papers">
-            <div class="pyq-paper-row">
-              <span class="pyq-paper-dot"></span>
-              <span class="pyq-paper-name">CS501 – Automata Theory</span>
-              <a class="pyq-paper-link" href="index.html#pyq-section">PDF →</a>
-            </div>
-            <div class="pyq-paper-row">
-              <span class="pyq-paper-dot"></span>
-              <span class="pyq-paper-name">CS502 – DBMS</span>
-              <a class="pyq-paper-link" href="index.html#pyq-section">PDF →</a>
-            </div>
-            <div class="pyq-paper-row">
-              <span class="pyq-paper-dot"></span>
-              <span class="pyq-paper-name">CS503 – Operating Systems</span>
-              <a class="pyq-paper-link" href="index.html#pyq-section">PDF →</a>
-            </div>
-            <div class="pyq-paper-row">
-              <span class="pyq-paper-dot"></span>
-              <span class="pyq-paper-name">CS504 – OOP with Java</span>
-              <a class="pyq-paper-link" href="index.html#pyq-section">PDF →</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="pyq-card">
-          <div class="pyq-card-top">
-            <span class="pyq-card-year">2021</span>
-            <span class="pyq-card-type archive">Archive</span>
-          </div>
-          <div class="pyq-card-desc">2021 end-semester papers (COVID batch, revised syllabus).</div>
-          <div class="pyq-card-papers">
-            <div class="pyq-paper-row">
-              <span class="pyq-paper-dot"></span>
-              <span class="pyq-paper-name">CS501 – Automata Theory</span>
-              <a class="pyq-paper-link" href="index.html#pyq-section">PDF →</a>
-            </div>
-            <div class="pyq-paper-row">
-              <span class="pyq-paper-dot"></span>
-              <span class="pyq-paper-name">CS502 – DBMS</span>
-              <a class="pyq-paper-link" href="index.html#pyq-section">PDF →</a>
-            </div>
-            <div class="pyq-paper-row">
-              <span class="pyq-paper-dot"></span>
-              <span class="pyq-paper-name">CS503 – Operating Systems</span>
-              <a class="pyq-paper-link" href="index.html#pyq-section">PDF →</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="pyq-card">
-          <div class="pyq-card-top">
-            <span class="pyq-card-year">2018–20</span>
-            <span class="pyq-card-type archive">Archive</span>
-          </div>
-          <div class="pyq-card-desc">Historical archives: 2018, 2019, 2020 papers (pre-revision syllabus).</div>
-          <div class="pyq-card-papers">
-            <div class="pyq-paper-row">
-              <span class="pyq-paper-dot"></span>
-              <span class="pyq-paper-name">Full Archive Bundle</span>
-              <a class="pyq-paper-link" href="index.html#pyq-section">View All →</a>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ══ Section: Panic Pack ══ -->
-    <section class="workspace-section" id="panic" aria-label="Panic Pack">
-      <div class="workspace-section-header">
-        <h2 class="workspace-section-title">🔥 Panic Pack</h2>
-        <span class="workspace-section-count" id="panic-section-count">16 Topics</span>
-      </div>
-      <p style="font-size:13px;color:var(--text-muted);margin-bottom:1rem;">High-yield topics most likely to appear in MAKAUT 5th Semester exams, curated from PYQ frequency analysis.</p>
-      <div class="panic-grid" id="panic-grid">
-        <!-- Populated by JS -->
-      </div>
-    </section>
-
-    <!-- ══ Section: Bookmarked Notes ══ -->
-    <section class="workspace-section" id="bookmarks" aria-label="Bookmarked Notes">
-      <div class="workspace-section-header">
-        <h2 class="workspace-section-title">🔖 Bookmarked Notes</h2>
-        <span class="workspace-section-count" id="bookmarks-count-badge">0 Saved</span>
-      </div>
-      <div id="bookmarks-container"></div>
-    </section>
-
-    <!-- ══ Section: Preferences ══ -->
-    <section class="workspace-section" id="preferences" aria-label="Preferences">
-      <div class="workspace-section-header">
-        <h2 class="workspace-section-title">⚙️ Preferences</h2>
-      </div>
-      <div style="background:var(--surface-card);border:1px solid var(--border-hairline);border-radius:var(--radius-md);padding:1.25rem;">
-        <div class="pref-group">
-          <div class="pref-item">
-            <label class="pref-label" for="pref-animations">Reduce Motion</label>
-            <label class="toggle-switch">
-              <input type="checkbox" id="pref-animations" onchange="toggleReduceMotion(this.checked)" />
-              <span class="toggle-slider"></span>
-            </label>
-          </div>
-          <div class="pref-item">
-            <label class="pref-label" for="pref-notifications">Exam Reminders</label>
-            <label class="toggle-switch">
-              <input type="checkbox" id="pref-notifications" onchange="savePref('exam_reminders', this.checked)" />
-              <span class="toggle-slider"></span>
-            </label>
-          </div>
-          <div class="pref-item">
-            <label class="pref-label" for="pref-compact">Compact View</label>
-            <label class="toggle-switch">
-              <input type="checkbox" id="pref-compact" onchange="savePref('compact_view', this.checked)" />
-              <span class="toggle-slider"></span>
-            </label>
-          </div>
-        </div>
-        <div style="margin-top:1.25rem;display:flex;gap:0.75rem;flex-wrap:wrap;">
-          <button class="course-action-btn secondary" onclick="clearDeck()" style="font-size:12px;">🗑️ Clear Revision Deck</button>
-          <button class="course-action-btn secondary" onclick="clearBookmarks()" style="font-size:12px;">🔖 Clear All Bookmarks</button>
-          <button class="course-action-btn secondary" style="color:var(--accent-red);border-color:rgba(239,68,68,0.3);font-size:12px;" onclick="document.getElementById('signout-btn').click()">⚡ Sign Out</button>
-        </div>
-      </div>
-    </section>
-
-      <footer class="dashboard-footer" style="background-color: transparent !important; color: #0F172A !important; border-top: 1px solid rgba(141, 185, 240, 0.45) !important; width: 100% !important; padding: 2rem 1rem !important; margin: 3rem 0 0 0 !important; box-sizing: border-box !important; text-align: center;">
-              <p style="color: #0F172A !important; font-weight: 500; font-size: 0.95rem; text-decoration: none !important; margin: 1rem 0;">
-  Curated for MAKAUT-affiliated colleges, maintained by 
-  <span style="font-size: 1.0rem !important; font-weight: 700 !important; text-decoration: underline !important; color: #0F172A !important;">
-    Srijita Bhowmick
-  </span>
-</p>
-      <p style="color: #334155 !important; font-size: 0.8rem; max-width: 650px; margin: 0 auto 0.75rem auto; line-height: 1.5; text-decoration: none !important;">
-        MAKAUT CampusSense is an independent, nonprofit student academic resources platform built solely for educational and research purposes.
-      </p>
-      <div>
-        <a href="privacy.html" style="color: #0F172A !important; font-weight: 700; font-size: 0.825rem; text-decoration: underline !important;">
-          Privacy Policy & Educational Terms
-        </a>
-      </div>
-    </footer>
-  </main><!-- /#dash-workspace -->
-
-  <!-- ── Right Dock: Revision Deck ── -->
-  <aside id="dash-dock" aria-label="Revision Deck">
-    <div class="dock-header">
-      <h2 class="dock-title">📑 Saved Revision Deck</h2>
-      <span class="dock-count-badge" id="deck-count-badge">0 Items</span>
     </div>
 
-    <div id="deck-body">
-      <!-- Populated by JS -->
+    <!-- Section 1: Study Tracker (Course Module Accordion) -->
+    <section class="workspace-section" id="section-study-tracker">
+      <div class="section-header-row">
+        <h2 class="section-heading">📚 Course Module Study Tracker</h2>
+        <span class="section-sub-pill" id="studyTrackSubPill">0 Enrolled Courses</span>
+      </div>
+      <div id="studyAccordionContainer"></div>
+    </section>
+
+    <!-- Section 2: Semester PYQ Vault -->
+    <section class="workspace-section" id="section-pyqs">
+      <div class="section-header-row">
+        <h2 class="section-heading">📄 University PYQ Archives</h2>
+        <span class="section-sub-pill" id="pyqSectionSubPill">Filtered for Active Semester</span>
+      </div>
+      <div class="card-grid-2" id="pyqVaultGrid"></div>
+    </section>
+
+    <!-- Section 3: 16-Topic Panic Pack -->
+    <section class="workspace-section" id="section-panic">
+      <div class="section-header-row">
+        <h2 class="section-heading">🔥 High-Yield Panic Pack</h2>
+        <span class="section-sub-pill" id="panicSectionSubPill">16 Repeat Topics</span>
+      </div>
+      <div class="card-grid-2" id="panicPackGrid"></div>
+    </section>
+
+    <!-- Section 4: Saved Study Deck -->
+    <section class="workspace-section" id="section-deck">
+      <div class="section-header-row">
+        <h2 class="section-heading">📂 Saved Study Deck</h2>
+        <div style="display:flex;gap:0.45rem;flex-wrap:wrap;">
+          <button type="button" class="btn-primary-peach" onclick="exportStudyDeck()">⬇ Export Deck</button>
+          <button type="button" class="btn-secondary-outline" onclick="clearStudyDeck()">Clear Deck</button>
+        </div>
+      </div>
+      <div id="savedDeckContainer"></div>
+    </section>
+  </main>
+
+  <!-- Right-Docked Floating Resizable Ask AI Drawer -->
+  <aside id="aiDrawer" aria-label="Ask AI Assistant">
+    <div id="aiResizerHandle" title="Drag left edge to resize Ask AI drawer (280px – 600px)" aria-label="Resize Ask AI drawer">
+      <span class="resizer-grip">⁝⁝</span>
     </div>
 
-    <div class="dock-divider"></div>
-    <button class="dock-action-btn export" onclick="exportRevisionDeck()" id="export-deck-btn">
-      ⬇️ Export Revision Deck
-    </button>
-    <button class="dock-action-btn" onclick="clearDeck()">
-      🗑️ Clear Deck
-    </button>
+    <div class="ai-drawer-header">
+      <div class="ai-title-wrap">
+        <span class="ai-title">Ask AI ✧</span>
+        <span class="ai-context-tag" id="aiContextBadge">MAKAUT</span>
+      </div>
+      <button type="button" class="ai-close-btn" id="aiCloseBtn" aria-label="Minimize Ask AI drawer" onclick="collapseAiDrawer()">✕</button>
+    </div>
+
+    <div class="ai-messages-feed" id="aiMessagesFeed"></div>
+
+    <div class="ai-controls-footer">
+      <div class="ai-quick-chips">
+        <button type="button" class="ai-chip-btn" onclick="triggerAiQuickPrompt('Summarize Module 2')">Summarize Module 2</button>
+        <button type="button" class="ai-chip-btn" onclick="triggerAiQuickPrompt('Find 2023 PYQs')">Find 2023 PYQs</button>
+        <button type="button" class="ai-chip-btn" onclick="triggerAiQuickPrompt('Exam Patterns')">Exam Patterns</button>
+      </div>
+      <textarea id="aiQueryInput" placeholder="Ask anything about your curriculum or PYQs..."></textarea>
+      <button type="button" id="generateStudyGuideBtn" onclick="handleGenerateStudyGuide()">Generate Study Guide</button>
+    </div>
   </aside>
+</div>
 
-</div><!-- /#dash-shell -->
+<!-- Bottom-Right Floating Trigger Pill -->
+<button type="button" id="aiFloatingTrigger" onclick="expandAiDrawer()" aria-label="Open Ask AI Drawer">
+  Ask AI ✧
+</button>
 
-<!-- Shared App JS -->
+<!-- In-Browser PDF Preview Modal -->
+<div id="pdfPreviewModal" role="dialog" aria-modal="true" aria-labelledby="pdfModalTitle">
+  <div class="pdf-modal-card">
+    <div class="pdf-modal-head">
+      <span class="pdf-modal-title" id="pdfModalTitle">Document Preview</span>
+      <div style="display:flex;gap:0.5rem;align-items:center;flex-shrink:0;">
+        <a href="#" target="_blank" rel="noopener" class="btn-secondary-outline" id="pdfModalOpenTab" style="text-decoration:none;">Open Tab ↗</a>
+        <a href="#" download class="btn-primary-peach" id="pdfModalDownloadBtn">Download</a>
+        <button type="button" class="btn-secondary-outline" onclick="closePdfPreview()">✕ Close</button>
+      </div>
+    </div>
+    <iframe id="pdfModalIframe" class="pdf-modal-frame" title="PDF Preview"></iframe>
+  </div>
+</div>
+
+<!-- Shared Curriculum & PYQ Registries -->
+<script src="js/pyq-catalog.js?v=20261111_v13"></script>
 <script src="app.js?v=20261111_v13"></script>
 
 <script>
-/* ════════════════════════════════════════════════
-   CAMPUSSENSE DASHBOARD — Inline Controller
-   (Runs after DOM is ready; app.js already loaded)
-════════════════════════════════════════════════ */
+// ═════════════════════════════════════════════════════════════════════
+// DYNAMIC DASHBOARD ENGINE (Zero Hardcoded UI Stubs)
+// ═════════════════════════════════════════════════════════════════════
 
-// ── Panic Pack Data ──────────────────────────────
-const PANIC_TOPICS = [
-  { icon:'🔄', title:'CPU Scheduling Algorithms', sub:'PCC-CS503 · Unit 2 · High Yield', section:'curriculum' },
-  { icon:'🗄️', title:'Database Normalization (BCNF)', sub:'PCC-CS502 · Unit 3 · Very High', section:'curriculum' },
-  { icon:'🤖', title:'NFA to DFA Conversion', sub:'PCC-CS501 · Unit 1 · High Yield', section:'curriculum' },
-  { icon:'☕', title:'Java Collections Framework', sub:'PCC-CS504 · Unit 3 · High Yield', section:'curriculum' },
-  { icon:'🔒', title:'Deadlock Detection &amp; Banker\'s', sub:'PCC-CS503 · Unit 4 · Very High', section:'curriculum' },
-  { icon:'📊', title:'SQL Joins &amp; Aggregate Functions', sub:'PCC-CS502 · Unit 2 · Very High', section:'curriculum' },
-  { icon:'🧮', title:'Regular Expressions &amp; Pumping Lemma', sub:'PCC-CS501 · Unit 2 · High Yield', section:'curriculum' },
-  { icon:'🧵', title:'Multithreading &amp; Race Conditions', sub:'PCC-CS504 · Unit 4 · High Yield', section:'curriculum' },
-  { icon:'💾', title:'Virtual Memory &amp; Page Replacement', sub:'PCC-CS503 · Unit 3 · Very High', section:'curriculum' },
-  { icon:'🌳', title:'B+ Trees &amp; Indexing', sub:'PCC-CS502 · Unit 5 · High Yield', section:'curriculum' },
-  { icon:'📐', title:'Context-Free Grammars &amp; CYK', sub:'PCC-CS501 · Unit 3 · Medium', section:'curriculum' },
-  { icon:'🔑', title:'ACID Properties &amp; 2PL Protocol', sub:'PCC-CS502 · Unit 4 · Very High', section:'curriculum' },
-  { icon:'🖥️', title:'System Calls &amp; Process States', sub:'PCC-CS503 · Unit 1 · High Yield', section:'curriculum' },
-  { icon:'🎭', title:'Runtime Polymorphism &amp; Overriding', sub:'PCC-CS504 · Unit 2 · High Yield', section:'curriculum' },
-  { icon:'📜', title:'Turing Machines &amp; Halting Problem', sub:'PCC-CS501 · Unit 4 · Medium', section:'curriculum' },
-  { icon:'📁', title:'File Systems &amp; Disk Scheduling', sub:'PCC-CS503 · Unit 5 · High Yield', section:'curriculum' },
-];
+// Structured Module Registry (matches MAKAUT syllabi & real repository PDFs)
+const ACADEMIC_REGISTRY = {
+  "CSE": {
+    "5": [
+      {
+        code: "ESC501",
+        title: "Software Engineering",
+        credits: 3,
+        syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
+        units: [
+          { num: "Unit 1", name: "SDLC Models (Waterfall, Agile, Spiral) & Requirements Engineering", hours: "8 Lectures", subtopics: "Software Engineering paradigms, SRS specification, feasibility & DFD.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "System Design, Cohesion, Coupling, UML & Estimation (COCOMO)", hours: "10 Lectures", subtopics: "Architectural design, Halstead metrics, function points, COCOMO modeling.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Testing Strategies (White-Box, Black-Box), SQA & Maintenance", hours: "8 Lectures", subtopics: "Unit, integration, cyclomatic complexity, ISO 9000, CMMI & SCM.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+        ]
+      },
+      {
+        code: "PCC-CS501",
+        title: "Formal Language & Automata Theory",
+        credits: 3,
+        syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
+        units: [
+          { num: "Unit 1", name: "Introduction to Automata & Regular Expressions", hours: "8 Lectures", subtopics: "DFA, NFA, epsilon-NFA equivalence, Myhill-Nerode theorem, Pumping Lemma.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "Context-Free Grammars & Pushdown Automata", hours: "10 Lectures", subtopics: "Ambiguity, Chomsky Normal Form, Greibach Normal Form, deterministic PDA.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Turing Machines & Computability Theory", hours: "10 Lectures", subtopics: "Recursive & RE languages, Halting problem, undecidability & Church thesis.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+        ]
+      },
+      {
+        code: "PCC-CS502",
+        title: "Operating Systems",
+        credits: 3,
+        syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
+        units: [
+          { num: "Unit 1", name: "Introduction to OS: Architecture, System Calls & Process Lifecycle", hours: "7 Lectures", subtopics: "OS structures, kernel modes, PCB, IPC, threads & process states.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "CPU Scheduling (FCFS, SJF, RR, Priority) & Deadlock Handling", hours: "11 Lectures", subtopics: "Synchronization, semaphores, Monitors, Banker's algorithm & deadlock recovery.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Memory Management: Paging, Segmentation, Virtual Memory & Disk I/O", hours: "10 Lectures", subtopics: "Page replacement (FIFO, LRU, Optimal), thrashing, SCAN/C-SCAN disk scheduling.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+        ]
+      },
+      {
+        code: "PCC-CS503",
+        title: "Object Oriented Programming",
+        credits: 3,
+        syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
+        units: [
+          { num: "Unit 1", name: "OOP Principles: Encapsulation, Classes, Objects & Constructors", hours: "7 Lectures", subtopics: "Java bytecode/JVM, data abstraction, method overloading & access modifiers.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "Inheritance, Polymorphism, Abstract Classes, Interfaces & Packages", hours: "10 Lectures", subtopics: "Dynamic method dispatch, multiple interface inheritance & classpath structure.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Exception Handling, Multithreading, Generics & Event-Driven UI", hours: "9 Lectures", subtopics: "try-catch-finally, thread synchronization, collections & Swing/AWT listeners.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+        ]
+      },
+      {
+        code: "HSMC-501",
+        title: "Introduction to Industrial Management",
+        credits: 3,
+        syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
+        units: [
+          { num: "Unit 1", name: "Management Principles, Organization Structures & Taylor/Fayol", hours: "7 Lectures", subtopics: "Planning, organizing, staffing, scientific management & hierarchy.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "Production Planning, PERT/CPM, Inventory Control & EOQ", hours: "9 Lectures", subtopics: "Critical path calculation, float analysis, ABC inventory & MRP.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Operations Research, Linear Programming & Quality Management", hours: "8 Lectures", subtopics: "Simplex method, Six Sigma, SQC control charts & TQM fundamentals.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+        ]
+      }
+    ]
+  }
+};
 
-// ── CmdK Search Index ────────────────────────────
-const SEARCH_INDEX = [
-  { icon:'📘', label:'CPU Scheduling — OS Unit 2', sub:'PCC-CS503', href:'#curriculum' },
-  { icon:'📘', label:'DBMS Normalization — Unit 3', sub:'PCC-CS502', href:'#curriculum' },
-  { icon:'📘', label:'NFA/DFA — Automata Unit 1', sub:'PCC-CS501', href:'#curriculum' },
-  { icon:'📘', label:'Java OOP — Collections Unit 3', sub:'PCC-CS504', href:'#curriculum' },
-  { icon:'📄', label:'2024 Regular Question Papers', sub:'PYQ Vault', href:'#pyqs' },
-  { icon:'📄', label:'2023 Regular &amp; Backlog Papers', sub:'PYQ Vault', href:'#pyqs' },
-  { icon:'📄', label:'2022 Archive Papers', sub:'PYQ Vault', href:'#pyqs' },
-  { icon:'🔥', label:'Panic Pack Topics', sub:'16 High-Yield', href:'#panic' },
-  { icon:'🔖', label:'Bookmarked Notes', sub:'Your Bookmarks', href:'#bookmarks' },
-  { icon:'⚙️', label:'Preferences &amp; Settings', sub:'Dashboard', href:'#preferences' },
-  { icon:'📚', label:'Full Syllabus Blueprint', sub:'CampusSense Home', href:'index.html#syllabus-section' },
-  { icon:'🏠', label:'Go to Home Page', sub:'CampusSense', href:'/' },
-];
+const CORE_BRANCH_DEFAULTS = {
+  "ECE": {
+    fullName: "Electronics & Communication Engineering",
+    fallbackPdf: "1st year/syllabus/BEE.pdf",
+    semSubjects: {
+      "3": [["EC-301", "Electronic Devices & Circuits"], ["EC-302", "Digital System Design"], ["EC-303", "Signals & Systems"], ["ES-CS301", "Data Structures & C"]],
+      "4": [["EC-401", "Analog Communication"], ["EC-402", "Analog Electronic Circuits"], ["EC-403", "Microprocessor & Microcontrollers"], ["BS-M401", "Numerical Methods"]],
+      "5": [["EC-501", "Electromagnetic Waves"], ["EC-502", "Computer Architecture"], ["EC-503", "Digital Communication"], ["EC-504", "Digital Signal Processing"]],
+      "6": [["EC-601", "Control Systems"], ["EC-602", "Computer Networks"], ["EC-603", "VLSI Design"], ["EC-604", "Optical & Antenna Engineering"]],
+      "7": [["EC-701", "Microwave & Radar Engineering"], ["EC-702", "Embedded Systems"], ["EC-703", "Wireless & Mobile Communication"]],
+      "8": [["EC-801", "Satellite & Optical Fiber Communication"], ["EC-802", "Internet of Things Architecture"], ["HU-801", "Principles of Management"]]
+    }
+  },
+  "EE": {
+    fullName: "Electrical Engineering",
+    fallbackPdf: "1st year/syllabus/BEE.pdf",
+    semSubjects: {
+      "3": [["EE-301", "Electric Circuit Theory"], ["EE-302", "Analog Electronics"], ["EE-303", "Electromagnetic Fields"], ["EE-304", "Engineering Mechanics"]],
+      "4": [["EE-401", "Electrical Machines-I"], ["EE-402", "Digital Electronics"], ["EE-403", "Electrical & Electronic Measurements"], ["EE-404", "Thermal & Fluid Machines"]],
+      "5": [["EE-501", "Power Systems-I"], ["EE-502", "Control Systems"], ["EE-503", "Power Electronics"], ["EE-504", "Electrical Machines-II"]],
+      "6": [["EE-601", "Power Systems-II"], ["EE-602", "Microprocessor & Microcontroller"], ["EE-603", "Digital Signal Processing"]],
+      "7": [["EE-701", "Electric Drives"], ["EE-702", "High Voltage Engineering"], ["EE-703", "Utilization of Electric Power"]],
+      "8": [["EE-801", "Power System Protection & Switchgear"], ["EE-802", "Smart Grid & Renewable Integration"]]
+    }
+  },
+  "ME": {
+    fullName: "Mechanical Engineering",
+    fallbackPdf: "1st year/syllabus/Physics.pdf",
+    semSubjects: {
+      "3": [["ME-301", "Thermodynamics"], ["ME-302", "Mechanics of Solids"], ["ME-303", "Engineering Materials"], ["ME-304", "Manufacturing Processes"]],
+      "4": [["ME-401", "Applied Thermodynamics"], ["ME-402", "Fluid Mechanics & Fluid Machines"], ["ME-403", "Kinematics & Theory of Machines"], ["ME-404", "Metrology & Instrumentation"]],
+      "5": [["ME-501", "Heat Transfer"], ["ME-502", "Design of Machine Elements"], ["ME-503", "Manufacturing Technology"], ["ME-504", "IC Engines & Turbines"]],
+      "6": [["ME-601", "Design of Transmission Systems"], ["ME-602", "Refrigeration & Air Conditioning"], ["ME-603", "CAD/CAM & Robotics"]],
+      "7": [["ME-701", "Finite Element Analysis"], ["ME-702", "Industrial Engineering & Operations Research"]],
+      "8": [["ME-801", "Automobile Engineering & Power Plant"], ["ME-802", "Total Quality Management"]]
+    }
+  },
+  "CE": {
+    fullName: "Civil Engineering",
+    fallbackPdf: "1st year/syllabus/Graphics.pdf",
+    semSubjects: {
+      "3": [["CE-301", "Engineering Mechanics & Solids"], ["CE-302", "Surveying & Geomatics"], ["CE-303", "Building Materials & Construction"], ["CE-304", "Engineering Geology"]],
+      "4": [["CE-401", "Structural Analysis-I"], ["CE-402", "Fluid Mechanics & Hydraulics"], ["CE-403", "Soil Mechanics"], ["CE-404", "Concrete Technology"]],
+      "5": [["CE-501", "Design of RC Structures"], ["CE-502", "Structural Analysis-II"], ["CE-503", "Geotechnical Foundation Engineering"], ["CE-504", "Water Resources Engineering"]],
+      "6": [["CE-601", "Design of Steel Structures"], ["CE-602", "Highway & Pavement Engineering"], ["CE-603", "Environmental Engineering"]],
+      "7": [["CE-701", "Railway, Bridge & Tunnel Engineering"], ["CE-702", "Quantity Surveying & Valuation"]],
+      "8": [["CE-801", "Transportation Engineering & Project Mgmt"], ["CE-802", "Pre-stressed Concrete & Earthquake Design"]]
+    }
+  }
+};
 
-// ── Utility: localStorage safe helpers ──────────
-function lsGet(key, fallback = null) {
-  try { const v = localStorage.getItem(key); return v !== null ? v : fallback; }
-  catch { return fallback; }
-}
-function lsSet(key, val) {
-  try { localStorage.setItem(key, val); } catch {}
-}
-function lsGetJson(key, fallback = null) {
-  try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }
-  catch { return fallback; }
-}
-function lsSetJson(key, val) {
-  try { localStorage.setItem(key, JSON.stringify(val)); } catch {}
+const DASH_STATE = {
+  deptKey: 'Common',
+  deptDisplay: '1st Year Foundation',
+  semester: '1-2',
+  isFirstYear: true,
+  fullSyllabusPath: '1st year/syllabus/Maths-1.pdf',
+  subjects: [],
+  pyqs: [],
+  panicTopics: [],
+  activeNav: 'study-tracker',
+  ghDocsPrefix: ''
+};
+
+// ── GitHub Pages /docs vs root path detection ──
+(function initAssetPrefix() {
+  const isHostedGh =
+    window.location.hostname.toLowerCase().endsWith('.github.io') &&
+    window.location.pathname.toLowerCase().includes('makaut-campussense') &&
+    !window.location.pathname.toLowerCase().includes('/docs/');
+  if (isHostedGh && typeof fetch === 'function') {
+    DASH_STATE.ghDocsPrefix = 'docs/';
+    fetch('/MAKAUT-CampusSense/1st%20year/syllabus/Maths-1.pdf', { method: 'HEAD' })
+      .then(res => {
+        if (res.ok) {
+          DASH_STATE.ghDocsPrefix = '';
+          syncQuickSyllabusLink();
+        }
+      })
+      .catch(() => {});
+  }
+})();
+
+function resolveDashboardPdfUrl(rawPath) {
+  if (!rawPath) return '';
+  const trimmed = String(rawPath).trim();
+  if (/^(https?:|blob:|data:)/i.test(trimmed)) return trimmed;
+
+  let clean = '';
+  if (typeof window.normalizePdfUrl === 'function') {
+    clean = window.normalizePdfUrl(trimmed).replace(/^\/+/, '');
+    try { clean = decodeURIComponent(clean); } catch (e) {}
+  } else {
+    clean = trimmed.replace(/^\/+/, '');
+  }
+  clean = clean.replace(/^MAKAUT-CampusSense\//i, '').replace(/^docs\//i, '');
+  if (DASH_STATE.ghDocsPrefix && (clean.startsWith('1st year/') || clean.startsWith('3rd to 8th sem/'))) {
+    clean = DASH_STATE.ghDocsPrefix + clean;
+  }
+  const isGhPages = window.location.pathname.toLowerCase().includes('makaut-campussense');
+  return encodeURI((isGhPages ? '/MAKAUT-CampusSense/' : '') + clean);
 }
 
-// ── Toast ────────────────────────────────────────
-function showToast(msg, type = 'default', durationMs = 2800) {
-  const container = document.getElementById('toast-container');
-  if (!container) return;
-  const t = document.createElement('div');
-  t.className = `toast toast-${type}`;
-  const icons = { success: '✅', error: '❌', default: 'ℹ️' };
-  t.innerHTML = `<span>${icons[type] || 'ℹ️'}</span><span>${msg}</span>`;
-  container.appendChild(t);
-  setTimeout(() => {
-    t.classList.add('removing');
-    t.addEventListener('animationend', () => t.remove(), { once: true });
-    setTimeout(() => { if (t.parentNode) t.remove(); }, 300);
-  }, durationMs);
+function showToast(msg) {
+  const box = document.getElementById('toastBox');
+  if (!box) return;
+  const pill = document.createElement('div');
+  pill.className = 'toast-pill';
+  pill.textContent = msg;
+  box.appendChild(pill);
+  setTimeout(() => { pill.remove(); }, 2500);
 }
 
-// ── Auth Guard ───────────────────────────────────
+function escapeHtml(str) {
+  return String(str || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function escapeAttr(str) {
+  return escapeHtml(str).replace(/'/g, '&#39;');
+}
+
+function ordinalSem(n) {
+  const s = ['', '1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th'];
+  const num = parseInt(n, 10);
+  return s[num] || (n + 'th');
+}
+
+// ── Auth Guard ──────────────────────────────────
 function runAuthGuard() {
-  const veil = document.getElementById('auth-veil');
-  const isLoggedIn = lsGet('campussense_logged_in') === 'true';
+  const isLoggedIn = localStorage.getItem('campussense_logged_in') === 'true';
   if (!isLoggedIn) {
-    window.location.replace('login.html?v=20261111_v13');
+    window.location.replace('login.html?v=20261111_v14');
     return false;
   }
   if (!localStorage.getItem('academic_profile_completed')) {
     window.location.replace('set-academic.html?v=20261111_v14');
     return false;
   }
-  // Reveal page after guard passes
-  if (veil) { veil.style.display = 'none'; }
+  const veil = document.getElementById('auth-veil');
+  if (veil) veil.style.display = 'none';
   return true;
 }
 
-// ── Load User Profile ────────────────────────────
-function loadUserProfile() {
-  const session = lsGetJson('campussense_user_session', {});
-  const academic = lsGetJson('campussense_academic_profile', {});
-
-  const name = session.name || session.firstName || session.email?.split('@')[0] || 'Student';
-  const email = session.email || '';
-  const branch = academic.branch || lsGet('user_department') || academic.stream || lsGet('user_stream') || session.branch || 'B.Tech CSE';
-  const semester = academic.semester || lsGet('user_semester') || session.semester || '5';
-  const semRange = academic.semesterRange || (semester === '1-2' ? '1–2' : semester);
-
-  // Avatar initials
-  const initials = name.split(' ').map(p => p[0]).join('').slice(0,2).toUpperCase() || 'ST';
-  const avatarEl = document.getElementById('user-avatar');
-  const nameEl = document.getElementById('user-name');
-  const badgeEl = document.getElementById('branch-badge');
-  const contextEl = document.getElementById('context-value');
-  const sessionChip = document.getElementById('session-chip');
-
-  if (avatarEl) avatarEl.textContent = initials;
-  if (nameEl) nameEl.textContent = name;
-  if (badgeEl) badgeEl.textContent = `${branch} · Sem ${semRange}`;
-  if (contextEl) contextEl.textContent = (semester === '1-2' || academic.semesterRange === '1-2')
-    ? `${branch} · Semesters 1 & 2`
-    : `${branch} · ${ordinal(parseInt(semester))} Semester`;
-  if (sessionChip) sessionChip.textContent = session.rollNumber || email || 'Session';
-
-  const isFirstYear =
-    String(academic.yearMode || lsGet('campussense_year_mode', '')).toUpperCase() === 'FIRST_YEAR' ||
-    String(academic.stage || lsGet('campussense_stage', '')).toLowerCase() === '1st_year' ||
-    String(semester) === '1-2' ||
-    String(semester) === '1' ||
-    String(semester) === '2' ||
-    String(academic.semesterRange || '') === '1-2' ||
-    String(branch).toLowerCase().includes('1st year') ||
-    String(academic.stream || lsGet('user_stream', '')).toLowerCase() === 'common';
-
-  const firstYearNote = document.getElementById('first-year-alignment-note');
-  if (firstYearNote) {
-    firstYearNote.style.display = isFirstYear ? 'flex' : 'none';
-  }
-  const academicSessionChip = document.getElementById('academic-session-chip');
-  if (academicSessionChip) {
-    academicSessionChip.textContent = isFirstYear ? '2026–27 Syllabus' : '2024–25';
-  }
-}
-
-function ordinal(n) {
-  const s = ['', '1st','2nd','3rd','4th','5th','6th','7th','8th'];
-  return s[n] || n + 'th';
-}
-
-// ── Sign Out ─────────────────────────────────────
 async function handleSignOut() {
-  const btn = document.getElementById('signout-btn');
+  const btn = document.getElementById('signOutBtn');
   if (btn) { btn.disabled = true; btn.textContent = 'Signing out…'; }
   try {
     if (window.Clerk && typeof window.Clerk.signOut === 'function') {
       await window.Clerk.signOut();
     }
-  } catch (err) {
-    console.warn('[CampusSense] Clerk signOut error:', err);
-  }
-  // Clear all session keys
-  const keysToRemove = [
+  } catch (_) {}
+  [
     'campussense_logged_in',
     'campussense_user_session',
     'campussense_academic_profile',
@@ -1723,433 +1637,837 @@ async function handleSignOut() {
     'user_stream',
     'user_department',
     'user_semester',
+    'campussense_stream',
+    'campussense_branch',
+    'campussense_semester',
+    'campussense_stage',
+    'campussense_year_mode'
+  ].forEach(k => { try { localStorage.removeItem(k); } catch (_) {} });
+  window.location.replace('login.html?v=20261111_v14');
+}
+
+// ── Resolve Active Student Academic Context ──
+function resolveAcademicContext() {
+  let academic = {};
+  let session = {};
+  try { academic = JSON.parse(localStorage.getItem('campussense_academic_profile') || '{}') || {}; } catch (_) {}
+  try {
+    const rawSess = JSON.parse(localStorage.getItem('campussense_user_session') || '{}');
+    session = typeof rawSess === 'string' ? { name: rawSess } : (rawSess || {});
+  } catch (_) {
+    session = { name: localStorage.getItem('campussense_user_session') || 'Student Scholar' };
+  }
+
+  const rawDept = localStorage.getItem('user_department') || academic.stream || localStorage.getItem('user_stream') || 'Common';
+  const rawSem = localStorage.getItem('user_semester') || academic.semesterRange || academic.semester || '1-2';
+  const stage = (academic.yearMode || localStorage.getItem('campussense_year_mode') || '').toUpperCase();
+
+  const isFirstYear =
+    stage === 'FIRST_YEAR' ||
+    String(localStorage.getItem('campussense_stage') || '').toLowerCase() === '1st_year' ||
+    rawSem === '1-2' ||
+    rawSem === '1' ||
+    rawSem === '2' ||
+    String(rawDept).toLowerCase().includes('1st year') ||
+    String(rawDept).toLowerCase() === 'common';
+
+  const normDept = isFirstYear ? 'Common' : String(rawDept).toUpperCase().replace(/^B\.TECH\s+/i, '').trim();
+  DASH_STATE.deptKey = normDept;
+  DASH_STATE.semester = isFirstYear ? '1-2' : String(rawSem);
+  DASH_STATE.isFirstYear = isFirstYear;
+  DASH_STATE.deptDisplay = isFirstYear
+    ? '1st Year Foundation'
+    : (normDept.startsWith('B.Tech') ? normDept : `B.Tech ${normDept}`);
+
+  // Top Header Context + Avatar + Name
+  const name = session.name || session.firstName || (session.email ? session.email.split('@')[0] : '') || 'Student Scholar';
+  const initials = name.split(/\s+/).map(w => w[0] || '').join('').slice(0, 2).toUpperCase() || 'SS';
+  document.getElementById('userAvatar').textContent = initials;
+  document.getElementById('userNameLabel').textContent = name;
+
+  document.getElementById('topContextChip').textContent = isFirstYear
+    ? '1st Year Foundation'
+    : `${DASH_STATE.deptDisplay} · Sem ${DASH_STATE.semester}`;
+
+  document.getElementById('activeWorkspaceText').textContent = isFirstYear
+    ? 'ACTIVE WORKSPACE: 1st Year Foundation · Semesters 1 & 2'
+    : `ACTIVE WORKSPACE: ${DASH_STATE.deptDisplay} · ${ordinalSem(DASH_STATE.semester)} Semester`;
+
+  document.getElementById('aiContextBadge').textContent = isFirstYear
+    ? '1st Year'
+    : `${normDept} · S${DASH_STATE.semester}`;
+
+  // Conditional 1st-Year Guide
+  const guide = document.getElementById('firstYearReferenceGuide');
+  if (guide) {
+    guide.style.display = isFirstYear ? 'flex' : 'none';
+  }
+}
+
+function syncQuickSyllabusLink() {
+  const el = document.getElementById('fullSyllabusQuickLink');
+  if (el && DASH_STATE.fullSyllabusPath) {
+    el.href = resolveDashboardPdfUrl(DASH_STATE.fullSyllabusPath);
+  }
+}
+
+// ── Build Dynamic Curriculum, PYQs, and Panic Pack for Active Context ──
+function synthesizeUnits(course) {
+  if (Array.isArray(course.units) && course.units.length > 0) {
+    return course.units.map((u, idx) => ({
+      num: u.num || `Unit ${u.unitNumber || (idx + 1)}`,
+      name: u.name || u.title || `Module ${idx + 1}`,
+      subtopics: u.subtopics || course.description || 'Core university syllabus module & concepts',
+      hours: u.hours ? (typeof u.hours === 'number' ? `${u.hours} Lectures` : u.hours) : '8 Lectures',
+      pdf: u.pdf || course.syllabusUrl || DASH_STATE.fullSyllabusPath
+    }));
+  }
+  const cleanTitle = course.name || course.title || course.code;
+  const pdf = course.syllabusUrl || DASH_STATE.fullSyllabusPath;
+  return [
+    {
+      num: 'Unit 1',
+      name: `Foundations & Core Principles of ${cleanTitle}`,
+      subtopics: `Fundamental definitions, mathematical models, and core architecture for ${course.code}.`,
+      hours: '8 Lectures',
+      pdf
+    },
+    {
+      num: 'Unit 2',
+      name: `Design Methodology & Algorithmic / Analytical Techniques`,
+      subtopics: `Problem-solving frameworks, standard theorems, and worked numerical formulations.`,
+      hours: '10 Lectures',
+      pdf
+    },
+    {
+      num: 'Unit 3',
+      name: `Advanced Systems, Case Studies & Exam Applications`,
+      subtopics: `High-weightage university derivation patterns and real engineering implementations.`,
+      hours: '8 Lectures',
+      pdf
+    }
   ];
-  keysToRemove.forEach(k => { try { localStorage.removeItem(k); } catch {} });
-  // Navigate home
-  window.location.replace('index.html');
 }
 
-// ── Accordion ────────────────────────────────────
-function toggleAccordion(id) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  const isOpen = el.classList.toggle('open');
-  const btn = el.querySelector('.course-accordion-header');
-  if (btn) btn.setAttribute('aria-expanded', String(isOpen));
-}
+function loadActiveAcademicData() {
+  const masterMap = window.STREAM_MASTER_SYLLABI || {};
+  const streamKeyLower = DASH_STATE.deptKey.toLowerCase();
+  const masterObj = masterMap[DASH_STATE.deptKey] || masterMap[streamKeyLower] || null;
 
-// ── Nav active + scroll ──────────────────────────
-function scrollToSection(sectionId, navItemEl) {
-  const section = document.getElementById(sectionId);
-  if (section) {
-    const top = section.getBoundingClientRect().top + window.scrollY - 72;
-    window.scrollTo({ top, behavior: 'smooth' });
-  }
-  // Update active nav item
-  document.querySelectorAll('.nav-item').forEach(el => {
-    el.classList.remove('active');
-    el.removeAttribute('aria-current');
-  });
-  if (navItemEl) {
-    navItemEl.classList.add('active');
-    navItemEl.setAttribute('aria-current', 'page');
-  }
-  // Close mobile nav
-  closeMobileNav();
-}
-
-// ── Scroll spy ───────────────────────────────────
-function initScrollSpy() {
-  const sections = ['curriculum','pyqs','panic','bookmarks','preferences'];
-  const navItems = {};
-  sections.forEach(id => {
-    navItems[id] = document.querySelector(`.nav-item[data-section="${id}"]`);
-  });
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        sections.forEach(id => {
-          const ni = navItems[id];
-          if (ni) { ni.classList.remove('active'); ni.removeAttribute('aria-current'); }
-        });
-        const ni = navItems[e.target.id];
-        if (ni) { ni.classList.add('active'); ni.setAttribute('aria-current','page'); }
-      }
-    });
-  }, { rootMargin: '-20% 0px -60% 0px', threshold: 0 });
-  sections.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) observer.observe(el);
-  });
-}
-
-// ── Unit click ───────────────────────────────────
-function handleUnitClick(courseCode, unitName) {
-  // Route to the main app's curriculum section with context
-  window.location.href = `index.html#syllabus-section`;
-}
-
-// ── Save to Deck ─────────────────────────────────
-function saveToDeck(event, unitName, courseCode) {
-  event.stopPropagation();
-  const deck = lsGetJson('campussense_saved_deck', []);
-  const id = `${courseCode}-${unitName}`.replace(/\s+/g,'_').toLowerCase();
-
-  // Deduplicate
-  if (deck.find(d => d.id === id)) {
-    showToast(`Already in deck: ${unitName}`, 'default');
-    return;
-  }
-  deck.unshift({ id, label: unitName, sub: courseCode, savedAt: Date.now() });
-  lsSetJson('campussense_saved_deck', deck);
-
-  // Update button
-  const btn = event.currentTarget || event.target;
-  if (btn) { btn.textContent = '✓ Saved'; btn.classList.add('saved'); }
-
-  renderDeck();
-  showToast(`Added to deck: ${unitName}`, 'success');
-}
-
-// ── Render Revision Deck ─────────────────────────
-function renderDeck() {
-  const deck = lsGetJson('campussense_saved_deck', []);
-  const body = document.getElementById('deck-body');
-  const countBadge = document.getElementById('deck-count-badge');
-  if (countBadge) countBadge.textContent = `${deck.length} Item${deck.length !== 1 ? 's' : ''}`;
-
-  if (!body) return;
-  if (deck.length === 0) {
-    body.innerHTML = `
-      <div class="deck-empty-state">
-        <div class="deck-empty-icon">📭</div>
-        No saved items yet.<br>Click <strong>+ Deck</strong> on any unit to save it here.
-      </div>`;
-    return;
-  }
-
-  body.innerHTML = `
-    <div class="deck-items" id="deck-items-list">
-      ${deck.map((item, idx) => `
-        <div class="deck-item" data-deck-idx="${idx}">
-          <div style="flex:1;">
-            <div class="deck-item-label">${item.label}</div>
-            <div class="deck-item-sub">${item.sub}</div>
-          </div>
-          <button class="deck-item-remove" onclick="removeDeckItem('${item.id}')" aria-label="Remove ${item.label} from deck">✕</button>
-        </div>
-      `).join('')}
-    </div>`;
-
-  // Sync "saved" state on unit save buttons
-  document.querySelectorAll('.unit-save-btn').forEach(btn => {
-    const deckId = btn.getAttribute('data-deck-id');
-    if (deckId && deck.find(d => d.id.includes(deckId.replace('-','')))) {
-      btn.textContent = '✓ Saved';
-      btn.classList.add('saved');
-    }
-  });
-}
-
-function removeDeckItem(id) {
-  let deck = lsGetJson('campussense_saved_deck', []);
-  deck = deck.filter(d => d.id !== id);
-  lsSetJson('campussense_saved_deck', deck);
-  renderDeck();
-  // Reset any matching save button
-  document.querySelectorAll('.unit-save-btn').forEach(btn => {
-    btn.textContent = '+ Deck';
-    btn.classList.remove('saved');
-  });
-  // Re-check remaining
-  deck.forEach(item => {
-    document.querySelectorAll('.unit-save-btn').forEach(btn => {
-      const deckId = btn.getAttribute('data-deck-id');
-      if (deckId && item.id.includes(deckId)) {
-        btn.textContent = '✓ Saved';
-        btn.classList.add('saved');
-      }
-    });
-  });
-  showToast('Removed from deck', 'default', 1800);
-}
-
-function clearDeck() {
-  if (!confirm('Clear all items from your Revision Deck?')) return;
-  lsSetJson('campussense_saved_deck', []);
-  document.querySelectorAll('.unit-save-btn').forEach(btn => {
-    btn.textContent = '+ Deck';
-    btn.classList.remove('saved');
-  });
-  renderDeck();
-  showToast('Revision Deck cleared', 'default');
-}
-
-function exportRevisionDeck() {
-  const deck = lsGetJson('campussense_saved_deck', []);
-  if (deck.length === 0) { showToast('Deck is empty', 'error', 2000); return; }
-  const lines = [
-    'MAKAUT CampusSense — Revision Deck Export',
-    `Exported: ${new Date().toLocaleString()}`,
-    '─'.repeat(50),
-    '',
-    ...deck.map((item, i) => `${i+1}. [${item.sub}] ${item.label}`),
-    '',
-    '─'.repeat(50),
-    'https://campussense.pages.dev'
-  ];
-  const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'CampusSense_RevisionDeck.txt';
-  a.click();
-  URL.revokeObjectURL(url);
-  showToast('Deck exported!', 'success');
-}
-
-// ── Panic Pack ───────────────────────────────────
-function renderPanicPack() {
-  const grid = document.getElementById('panic-grid');
-  if (!grid) return;
-  grid.innerHTML = PANIC_TOPICS.map((t, i) => `
-    <div class="panic-card" onclick="scrollToSection('${t.section}', null)" role="button" tabindex="0"
-         aria-label="Panic topic: ${t.title}"
-         onkeydown="if(event.key==='Enter'||event.key===' ')this.click()">
-      <div class="panic-card-icon">${t.icon}</div>
-      <div class="panic-card-title">${t.title}</div>
-      <div class="panic-card-sub">${t.sub}</div>
-    </div>
-  `).join('');
-  const countEl = document.getElementById('panic-section-count');
-  const badgeEl = document.getElementById('panic-count-badge');
-  if (countEl) countEl.textContent = `${PANIC_TOPICS.length} Topics`;
-  if (badgeEl) badgeEl.textContent = PANIC_TOPICS.length;
-}
-
-// ── Bookmarks ────────────────────────────────────
-function renderBookmarks() {
-  const bookmarks = lsGetJson('campussense_bookmarks', []);
-  const container = document.getElementById('bookmarks-container');
-  const countEl = document.getElementById('bookmarks-count-badge');
-  if (countEl) countEl.textContent = `${bookmarks.length} Saved`;
-  if (!container) return;
-
-  if (bookmarks.length === 0) {
-    container.innerHTML = `
-      <div class="bookmarks-empty">
-        <div style="font-size:24px;margin-bottom:0.5rem;">🔖</div>
-        No bookmarks yet. Bookmark topic cards from the <a href="index.html#syllabus-section" style="color:var(--accent-blue);text-decoration:none;">Curriculum Matrix</a> on the home page.
-      </div>`;
-    return;
-  }
-
-  container.innerHTML = `
-    <div class="bookmarks-grid">
-      ${bookmarks.map((b, i) => `
-        <div class="bookmark-card">
-          <span class="bookmark-icon">📌</span>
-          <div class="bookmark-info">
-            <div class="bookmark-title">${b.title || 'Untitled'}</div>
-            <div class="bookmark-meta">${b.sub || b.courseCode || ''}</div>
-          </div>
-          <button class="bookmark-remove" onclick="removeBookmark(${i})" aria-label="Remove bookmark">✕</button>
-        </div>
-      `).join('')}
-    </div>`;
-}
-
-function removeBookmark(idx) {
-  let bm = lsGetJson('campussense_bookmarks', []);
-  bm.splice(idx, 1);
-  lsSetJson('campussense_bookmarks', bm);
-  renderBookmarks();
-  showToast('Bookmark removed', 'default', 1800);
-}
-
-function clearBookmarks() {
-  if (!confirm('Clear all bookmarks?')) return;
-  lsSetJson('campussense_bookmarks', []);
-  renderBookmarks();
-  showToast('All bookmarks cleared', 'default');
-}
-
-// ── Preferences ──────────────────────────────────
-function loadPrefs() {
-  // Theme permanently light
-
-  const reduceMotion = lsGet('campussense_reduce_motion') === 'true';
-  const rmEl = document.getElementById('pref-animations');
-  if (rmEl) rmEl.checked = reduceMotion;
-
-  const reminders = lsGet('campussense_exam_reminders') === 'true';
-  const remEl = document.getElementById('pref-notifications');
-  if (remEl) remEl.checked = reminders;
-
-  const compact = lsGet('campussense_compact_view') === 'true';
-  const cmEl = document.getElementById('pref-compact');
-  if (cmEl) cmEl.checked = compact;
-}
-
-function toggleTheme() { /* Theme toggle permanently removed */ }
-
-function toggleReduceMotion(enabled) {
-  lsSet('campussense_reduce_motion', String(enabled));
-  document.documentElement.style.setProperty('--transition-fast', enabled ? '0ms' : '150ms cubic-bezier(0.4,0,0.2,1)');
-  document.documentElement.style.setProperty('--transition-base', enabled ? '0ms' : '200ms cubic-bezier(0.4,0,0.2,1)');
-}
-
-function savePref(key, val) {
-  lsSet(`campussense_${key}`, String(val));
-}
-
-// ── CmdK Search ──────────────────────────────────
-function initCmdK() {
-  const input = document.getElementById('cmdK-input');
-  const results = document.getElementById('cmdK-results');
-  if (!input || !results) return;
-
-  input.addEventListener('input', () => {
-    const q = input.value.trim().toLowerCase();
-    if (q.length < 1) { results.classList.remove('visible'); return; }
-
-    const matches = SEARCH_INDEX.filter(item =>
-      item.label.toLowerCase().includes(q) || item.sub.toLowerCase().includes(q)
-    ).slice(0, 8);
-
-    if (matches.length === 0) {
-      results.innerHTML = `<div class="cmdK-empty">No results for "${q}"</div>`;
-    } else {
-      results.innerHTML = matches.map(m => `
-        <div class="cmdK-result-item" onclick="cmdKNavigate('${m.href}')" tabindex="0"
-             onkeydown="if(event.key==='Enter')cmdKNavigate('${m.href}')">
-          <span class="cmdK-result-icon">${m.icon}</span>
-          <span class="cmdK-result-label">${m.label}</span>
-          <span class="cmdK-result-sub">${m.sub}</span>
-        </div>`).join('');
-    }
-    results.classList.add('visible');
-  });
-
-  input.addEventListener('keydown', e => {
-    if (e.key === 'Escape') { results.classList.remove('visible'); input.blur(); }
-  });
-
-  document.addEventListener('click', e => {
-    if (!document.getElementById('cmdK-bar').contains(e.target)) {
-      results.classList.remove('visible');
-    }
-  });
-
-  // CmdK keyboard shortcut
-  document.addEventListener('keydown', e => {
-    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
-      e.preventDefault();
-      input.focus(); input.select();
-    }
-  });
-}
-
-function cmdKNavigate(href) {
-  const results = document.getElementById('cmdK-results');
-  const input = document.getElementById('cmdK-input');
-  if (results) results.classList.remove('visible');
-  if (input) input.value = '';
-  if (href.startsWith('#')) {
-    const sectionId = href.replace('#', '');
-    scrollToSection(sectionId, document.querySelector(`.nav-item[data-section="${sectionId}"]`));
+  if (DASH_STATE.isFirstYear) {
+    DASH_STATE.fullSyllabusPath = '1st year/syllabus/Maths-1.pdf';
+  } else if (masterObj && masterObj.path) {
+    DASH_STATE.fullSyllabusPath = masterObj.path;
+  } else if (CORE_BRANCH_DEFAULTS[DASH_STATE.deptKey]) {
+    DASH_STATE.fullSyllabusPath = CORE_BRANCH_DEFAULTS[DASH_STATE.deptKey].fallbackPdf;
   } else {
-    window.location.href = href;
+    DASH_STATE.fullSyllabusPath = '3rd to 8th sem/cse/syllabus/CSE20.pdf';
   }
-}
+  syncQuickSyllabusLink();
 
-// ── Mobile Nav ───────────────────────────────────
-function initMobileNav() {
-  const menuBtn = document.getElementById('mobile-menu-btn');
-  const nav = document.getElementById('dash-nav');
-  const overlay = document.getElementById('nav-overlay');
+  // 1) Resolve Enrolled Subjects
+  let resolvedSubjects = [];
+  if (DASH_STATE.isFirstYear) {
+    const firstYearList = Array.isArray(window.MAKAUT_CURRICULUM) ? window.MAKAUT_CURRICULUM : [];
+    resolvedSubjects = firstYearList.map(c => ({
+      code: c.code,
+      title: c.name || c.title,
+      semester: String(c.semester || '1'),
+      credits: c.credits || 3,
+      syllabusPdf: c.syllabusUrl || '1st year/syllabus/Maths-1.pdf',
+      units: synthesizeUnits(c),
+      pyqs: Array.isArray(c.pyqs) ? c.pyqs : []
+    }));
+  } else {
+    const semTarget = String(DASH_STATE.semester);
+    const registryBucket = ACADEMIC_REGISTRY[DASH_STATE.deptKey]?.[semTarget];
+    const deptStream = window.DEPARTMENT_STREAMS?.[DASH_STATE.deptKey] || window.DEPARTMENT_STREAMS?.[streamKeyLower];
+    const deptCourses = (deptStream?.courses || []).filter(c => String(c.semester) === semTarget);
 
-  function openNav() {
-    nav.classList.add('nav-open');
-    overlay.classList.add('visible');
-    if (menuBtn) menuBtn.setAttribute('aria-expanded', 'true');
-    menuBtn.textContent = '✕';
+    if (deptCourses.length > 0) {
+      resolvedSubjects = deptCourses.map(c => {
+        const cNorm = String(c.code || '').replace(/[^A-Z0-9]/gi, '').toUpperCase();
+        const regMatch = (registryBucket || []).find(r => String(r.code || '').replace(/[^A-Z0-9]/gi, '').toUpperCase() === cNorm);
+        return {
+          code: c.code,
+          title: c.name || c.title,
+          semester: semTarget,
+          credits: c.credits || 3,
+          syllabusPdf: DASH_STATE.fullSyllabusPath,
+          units: regMatch ? synthesizeUnits(regMatch) : synthesizeUnits({ ...c, syllabusUrl: DASH_STATE.fullSyllabusPath }),
+          pyqs: Array.isArray(c.pyqs) ? c.pyqs : []
+        };
+      });
+    } else if (registryBucket && registryBucket.length > 0) {
+      resolvedSubjects = registryBucket.map(r => ({ ...r, semester: semTarget, syllabusPdf: r.syllabusPdf || DASH_STATE.fullSyllabusPath, pyqs: [] }));
+    } else {
+      const coreDef = CORE_BRANCH_DEFAULTS[DASH_STATE.deptKey];
+      const coreList = coreDef?.semSubjects?.[semTarget] || CORE_BRANCH_DEFAULTS.ECE.semSubjects['3'];
+      resolvedSubjects = coreList.map(([code, title]) => ({
+        code,
+        title,
+        semester: semTarget,
+        credits: 3,
+        syllabusPdf: DASH_STATE.fullSyllabusPath,
+        units: synthesizeUnits({ code, name: title, syllabusUrl: DASH_STATE.fullSyllabusPath }),
+        pyqs: []
+      }));
+    }
   }
-  function closeNav() {
-    nav.classList.remove('nav-open');
-    overlay.classList.remove('visible');
-    if (menuBtn) menuBtn.setAttribute('aria-expanded', 'false');
-    menuBtn.textContent = '☰';
-  }
-  window.closeMobileNav = closeNav;
+  DASH_STATE.subjects = resolvedSubjects;
 
-  if (menuBtn) menuBtn.addEventListener('click', () => {
-    if (nav.classList.contains('nav-open')) closeNav(); else openNav();
+  // 2) Resolve PYQs Strictly for Active Branch & Semester
+  const seenPyqKeys = new Set();
+  const collectedPyqs = [];
+  resolvedSubjects.forEach(sub => {
+    (sub.pyqs || []).forEach(p => {
+      const path = p.fileUrl || p.path || '';
+      const key = `${sub.code}-${p.year}-${path}`;
+      if (!seenPyqKeys.has(key) && path) {
+        seenPyqKeys.add(key);
+        collectedPyqs.push({
+          code: sub.code,
+          subject: sub.title,
+          title: p.title || `${sub.title} (${p.year})`,
+          year: String(p.year || '2024'),
+          sem: sub.semester,
+          path
+        });
+      }
+    });
   });
-  if (overlay) overlay.addEventListener('click', closeNav);
+
+  // Supplement from global PYQ_CATALOG (especially for ECE/EE/ME/CE or matching dept/sem)
+  const catalog = (typeof PYQ_CATALOG !== 'undefined' && Array.isArray(PYQ_CATALOG)) ? PYQ_CATALOG : [];
+  catalog.forEach(item => {
+    const itemDept = String(item.dept || '').toUpperCase();
+    const semMatch = DASH_STATE.isFirstYear
+      ? (item.year === '1' || item.sem === '1' || item.sem === '2')
+      : String(item.sem) === String(DASH_STATE.semester);
+    const deptMatch = DASH_STATE.isFirstYear
+      ? itemDept === 'COMMON'
+      : (itemDept === DASH_STATE.deptKey || (DASH_STATE.deptKey === 'CSE-AIML' && itemDept === 'CSE'));
+    if (semMatch && deptMatch) {
+      const key = `${item.code}-${item.years}-${item.path}`;
+      if (!seenPyqKeys.has(key)) {
+        seenPyqKeys.add(key);
+        collectedPyqs.push({
+          code: item.code,
+          subject: item.title,
+          title: `${item.title} (${item.code}) Archive`,
+          year: item.years || '2021–2024',
+          sem: String(item.sem || DASH_STATE.semester),
+          path: item.path
+        });
+      }
+    }
+  });
+  DASH_STATE.pyqs = collectedPyqs;
+
+  // 3) Resolve 16 Panic Pack High-Yield Topics for Active Context
+  const globalPanic = Array.isArray(window.MAKAUT_PANIC_QUESTIONS) ? window.MAKAUT_PANIC_QUESTIONS : [];
+  let panicList = [];
+  if (DASH_STATE.isFirstYear && globalPanic.length > 0) {
+    panicList = globalPanic.slice(0, 16).map(q => ({
+      code: q.subjectCode || '1st Year',
+      title: q.topicName || 'High-Yield Topic',
+      question: q.questionText,
+      marks: q.marks || 10,
+      years: Array.isArray(q.examYears) ? q.examYears.join(', ') : '2019–2024',
+      answer: q.modelAnswerSnippet || 'Review core derivation, standard boundary conditions, and past paper numericals.'
+    }));
+  }
+  // Fill / Build up to 16 stream+semester-specific high-yield cards
+  let idx = 0;
+  const templates = [
+    ['Core Derivation & Proof', '10 Marks', '2021, 2022, 2023, 2024'],
+    ['Standard Numerical Problem', '10 Marks', '2019, 2022, 2023, 2024'],
+    ['Conceptual Comparison & Tradeoffs', '5 Marks', '2020, 2022, 2024'],
+    ['Architecture / Block Diagram Analysis', '10 Marks', '2019, 2021, 2023, 2025']
+  ];
+  while (panicList.length < 16 && resolvedSubjects.length > 0) {
+    const sub = resolvedSubjects[idx % resolvedSubjects.length];
+    const unit = sub.units[Math.floor(idx / resolvedSubjects.length) % sub.units.length] || sub.units[0];
+    const tpl = templates[idx % templates.length];
+    panicList.push({
+      code: sub.code,
+      title: `${unit.name.split(':')[0]} — ${tpl[0]}`,
+      question: `High-repeat MAKAUT university question on "${unit.name}" in ${sub.title} (${sub.code}).`,
+      marks: parseInt(tpl[1], 10),
+      years: tpl[2],
+      answer: `Focus Areas: ${unit.subtopics || unit.name} Structured 10-mark answer strategy: state definitions clearly, sketch labeled diagram/equations, and conclude with complexity/applications.`
+    });
+    idx++;
+  }
+  DASH_STATE.panicTopics = panicList.slice(0, 16);
 }
 
-// ── Dock Toggle (tablet) ─────────────────────────
-function initDockToggle() {
-  const btn = document.getElementById('dock-toggle-btn');
-  const dock = document.getElementById('dash-dock');
-  if (!btn || !dock) return;
-  btn.addEventListener('click', () => {
-    dock.classList.toggle('dock-open');
+// ── Deck Management (`saved_study_deck`) ──
+function getSavedDeck() {
+  try { return JSON.parse(localStorage.getItem('saved_study_deck') || '[]') || []; } catch (_) { return []; }
+}
+
+function isItemSavedInDeck(itemTitle, itemCode) {
+  return getSavedDeck().some(d => d.title === itemTitle && d.code === itemCode);
+}
+
+function saveToDeck(itemTitle, itemCode, filePath, btnEl) {
+  let deck = getSavedDeck();
+  const existsIdx = deck.findIndex(d => d.title === itemTitle && d.code === itemCode);
+  if (existsIdx === -1) {
+    deck.unshift({ title: itemTitle, code: itemCode, path: filePath || DASH_STATE.fullSyllabusPath, savedAt: new Date().toISOString() });
+    localStorage.setItem('saved_study_deck', JSON.stringify(deck));
+    if (btnEl) {
+      btnEl.textContent = 'Saved in Deck ✓';
+      btnEl.classList.add('saved');
+    }
+    showToast(`Saved to Deck: ${itemTitle}`);
+  } else {
+    showToast(`Already saved in Deck: ${itemTitle}`);
+  }
+  updateDeckBadge();
+  renderSavedDeckSection();
+}
+
+function removeFromDeck(index) {
+  let deck = getSavedDeck();
+  deck.splice(index, 1);
+  localStorage.setItem('saved_study_deck', JSON.stringify(deck));
+  updateDeckBadge();
+  renderStudyTracker();
+  renderPyqVault();
+  renderSavedDeckSection();
+  showToast('Removed from Study Deck');
+}
+
+function clearStudyDeck() {
+  if (!confirm('Clear all items from your Saved Study Deck?')) return;
+  localStorage.setItem('saved_study_deck', '[]');
+  updateDeckBadge();
+  renderStudyTracker();
+  renderPyqVault();
+  renderSavedDeckSection();
+  showToast('Study Deck cleared');
+}
+
+function exportStudyDeck() {
+  const deck = getSavedDeck();
+  if (!deck.length) { showToast('Save at least one item to export.'); return; }
+  const lines = [
+    `MAKAUT CampusSense — Saved Study Deck`,
+    `Workspace: ${DASH_STATE.deptDisplay} (Sem ${DASH_STATE.semester})`,
+    `Exported: ${new Date().toLocaleString()}`,
+    '',
+    ...deck.map((d, i) => `${i + 1}. [${d.code}] ${d.title}\n   Resource: ${d.path || '-'}`)
+  ];
+  const blob = new Blob([lines.join('\n')], { type: 'text/plain;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'MAKAUT_Saved_Study_Deck.txt';
+  a.click();
+  showToast('Exported Study Deck');
+}
+
+function updateDeckBadge() {
+  const count = getSavedDeck().length;
+  const navBadge = document.getElementById('navDeckCount');
+  const metricPill = document.getElementById('metricDeckPill');
+  if (navBadge) navBadge.textContent = count;
+  if (metricPill) metricPill.textContent = `${count} Saved in Deck`;
+}
+
+// ── Progress Tracking (`study_completed_units`) ──
+function getCompletedUnitsMap() {
+  try { return JSON.parse(localStorage.getItem('study_completed_units') || '{}') || {}; } catch (_) { return {}; }
+}
+
+function toggleUnitComplete(unitId, checked) {
+  const map = getCompletedUnitsMap();
+  if (checked) map[unitId] = true; else delete map[unitId];
+  localStorage.setItem('study_completed_units', JSON.stringify(map));
+  updateProgressBar();
+}
+
+function updateProgressBar() {
+  const map = getCompletedUnitsMap();
+  let total = 0;
+  let done = 0;
+  DASH_STATE.subjects.forEach(sub => {
+    sub.units.forEach(u => {
+      total++;
+      const uid = `${sub.code}::${u.num}`;
+      if (map[uid]) done++;
+    });
+  });
+  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+  document.getElementById('progressSummaryLabel').textContent = `Study Tracker Progress: ${done} of ${total} modules completed`;
+  document.getElementById('progressPercentLabel').textContent = `${pct}%`;
+  document.getElementById('progressBarFill').style.width = `${pct}%`;
+}
+
+// ── PDF Preview & Download Actions ──
+function openPdfPreviewModal(title, rawPath) {
+  const resolved = resolveDashboardPdfUrl(rawPath || DASH_STATE.fullSyllabusPath);
+  const modal = document.getElementById('pdfPreviewModal');
+  const titleEl = document.getElementById('pdfModalTitle');
+  const iframe = document.getElementById('pdfModalIframe');
+  const openBtn = document.getElementById('pdfModalOpenTab');
+  const dlBtn = document.getElementById('pdfModalDownloadBtn');
+
+  titleEl.textContent = title || 'Document Preview';
+  openBtn.href = resolved;
+  dlBtn.href = resolved;
+  dlBtn.setAttribute('download', (title || 'MAKAUT_Document').replace(/[^a-zA-Z0-9_-]/g, '_') + '.pdf');
+
+  iframe.src = 'about:blank';
+  setTimeout(() => { iframe.src = resolved; }, 20);
+  modal.classList.add('active');
+}
+
+function closePdfPreview() {
+  const modal = document.getElementById('pdfPreviewModal');
+  const iframe = document.getElementById('pdfModalIframe');
+  modal.classList.remove('active');
+  iframe.src = 'about:blank';
+}
+
+function downloadDocument(title, rawPath) {
+  const resolved = resolveDashboardPdfUrl(rawPath || DASH_STATE.fullSyllabusPath);
+  const a = document.createElement('a');
+  a.href = resolved;
+  a.download = (title || 'MAKAUT_Resource').replace(/[^a-zA-Z0-9_-]/g, '_') + '.pdf';
+  a.target = '_blank';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  showToast(`Downloading: ${title}`);
+}
+
+// ── Renderers ──────────────────────────────────
+function renderStudyTracker() {
+  const container = document.getElementById('studyAccordionContainer');
+  const subjects = DASH_STATE.subjects;
+  const completedMap = getCompletedUnitsMap();
+
+  document.getElementById('metricSubjectsPill').textContent = `${subjects.length} Subject${subjects.length === 1 ? '' : 's'}`;
+  document.getElementById('studyTrackSubPill').textContent = `${subjects.length} Enrolled Course${subjects.length === 1 ? '' : 's'}`;
+
+  if (!subjects.length) {
+    container.innerHTML = `<div class="empty-state-box">No courses matched the active workspace. Use <strong>Set Academic</strong> to adjust your stream.</div>`;
+    updateProgressBar();
+    return;
+  }
+
+  container.innerHTML = subjects.map((sub, sIdx) => {
+    const unitCount = sub.units.length;
+    const totalLectures = sub.units.reduce((acc, u) => acc + (parseInt(String(u.hours), 10) || 8), 0);
+    const unitsHtml = sub.units.map((u, uIdx) => {
+      const uid = `${sub.code}::${u.num}`;
+      const isChecked = !!completedMap[uid];
+      const itemTitle = `${sub.code} ${u.num}: ${u.name}`;
+      const isSaved = isItemSavedInDeck(itemTitle, sub.code);
+      return `
+        <div class="unit-module-row">
+          <div class="unit-info">
+            <input type="checkbox" class="unit-check" ${isChecked ? 'checked' : ''} onchange="toggleUnitComplete('${escapeAttr(uid)}', this.checked)" aria-label="Mark ${escapeAttr(itemTitle)} complete" />
+            <span class="unit-badge-num">${escapeHtml(u.num)}</span>
+            <div>
+              <div class="unit-topic-title">${escapeHtml(u.name)}</div>
+              <div class="unit-hours-sub">${escapeHtml(u.hours)} · ${escapeHtml(u.subtopics || '')}</div>
+            </div>
+          </div>
+          <div class="btn-trio">
+            <button type="button" class="btn-secondary-outline" onclick="openPdfPreviewModal('${escapeAttr(itemTitle)}', '${escapeAttr(u.pdf || sub.syllabusPdf)}')">Preview</button>
+            <button type="button" class="btn-primary-peach" onclick="downloadDocument('${escapeAttr(itemTitle)}', '${escapeAttr(u.pdf || sub.syllabusPdf)}')">Download</button>
+            <button type="button" class="btn-secondary-outline ${isSaved ? 'saved' : ''}" onclick="saveToDeck('${escapeAttr(itemTitle)}', '${escapeAttr(sub.code)}', '${escapeAttr(u.pdf || sub.syllabusPdf)}', this)">${isSaved ? 'Saved in Deck ✓' : '+ Save to deck 📂'}</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    return `
+      <div class="subject-accordion-card" id="subject-card-${sIdx}">
+        <button type="button" class="accordion-header-btn" aria-expanded="false" onclick="toggleSubjectAccordion('subject-card-${sIdx}')">
+          <span class="subject-code-pill">${escapeHtml(sub.code)}</span>
+          <div class="subject-title-group">
+            <div class="subject-title-text">${escapeHtml(sub.title)}</div>
+            <div class="subject-meta-text">${unitCount} Modules · ${totalLectures} Lectures · ${sub.credits || 3} Credits</div>
+          </div>
+          <span class="accordion-chevron" aria-hidden="true">▾</span>
+        </button>
+        <div class="accordion-body">
+          ${unitsHtml}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  updateProgressBar();
+}
+
+function toggleSubjectAccordion(cardId) {
+  const card = document.getElementById(cardId);
+  if (!card) return;
+  const open = card.classList.toggle('open');
+  const btn = card.querySelector('.accordion-header-btn');
+  const chev = card.querySelector('.accordion-chevron');
+  if (btn) btn.setAttribute('aria-expanded', String(open));
+  if (chev) chev.textContent = open ? '▴' : '▾';
+}
+
+function renderPyqVault() {
+  const grid = document.getElementById('pyqVaultGrid');
+  const pyqs = DASH_STATE.pyqs;
+  document.getElementById('navPyqCount').textContent = pyqs.length;
+  document.getElementById('metricPyqsPill').textContent = `${pyqs.length} PYQs`;
+  document.getElementById('pyqSectionSubPill').textContent = `${pyqs.length} Question Papers (${DASH_STATE.isFirstYear ? 'Sem 1–2' : 'Sem ' + DASH_STATE.semester})`;
+
+  if (!pyqs.length) {
+    grid.innerHTML = `<div class="empty-state-box">No direct PYQ papers indexed for ${escapeHtml(DASH_STATE.deptDisplay)} Sem ${escapeHtml(DASH_STATE.semester)}. Try Ask AI or Full Syllabus.</div>`;
+    return;
+  }
+
+  grid.innerHTML = pyqs.map(p => {
+    const isSaved = isItemSavedInDeck(p.title, p.code);
+    return `
+      <div class="white-blue-card filterable-card">
+        <div>
+          <div class="card-top-meta">
+            <span class="subject-code-pill">${escapeHtml(p.code)}</span>
+            <span class="year-peach-badge">${escapeHtml(p.year)}</span>
+          </div>
+          <div class="card-title-bold" style="margin-top:0.55rem;">${escapeHtml(p.title)}</div>
+          <div class="card-sub-slate" style="margin-top:0.2rem;">Subject: ${escapeHtml(p.subject)} · Sem ${escapeHtml(p.sem)}</div>
+        </div>
+        <div class="btn-trio">
+          <button type="button" class="btn-secondary-outline" onclick="openPdfPreviewModal('${escapeAttr(p.title)}', '${escapeAttr(p.path)}')">Preview</button>
+          <button type="button" class="btn-primary-peach" onclick="downloadDocument('${escapeAttr(p.title)}', '${escapeAttr(p.path)}')">Download</button>
+          <button type="button" class="btn-secondary-outline ${isSaved ? 'saved' : ''}" onclick="saveToDeck('${escapeAttr(p.title)}', '${escapeAttr(p.code)}', '${escapeAttr(p.path)}', this)">${isSaved ? 'Saved in Deck ✓' : '+ Save to deck 📂'}</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderPanicPack() {
+  const grid = document.getElementById('panicPackGrid');
+  const topics = DASH_STATE.panicTopics;
+  document.getElementById('navPanicCount').textContent = topics.length;
+  document.getElementById('panicSectionSubPill').textContent = `${topics.length} High-Yield Topics`;
+
+  grid.innerHTML = topics.map((t, i) => {
+    const isSaved = isItemSavedInDeck(t.title, t.code);
+    return `
+      <div class="white-blue-card filterable-card" id="panic-card-${i}">
+        <div>
+          <div class="card-top-meta">
+            <span class="subject-code-pill">${escapeHtml(t.code)}</span>
+            <span class="year-peach-badge">${t.marks} Marks</span>
+          </div>
+          <div class="card-title-bold" style="margin-top:0.55rem;">${escapeHtml(t.title)}</div>
+          <div class="card-sub-slate" style="margin-top:0.25rem;">${escapeHtml(t.question)}</div>
+          <div class="card-sub-slate" style="margin-top:0.25rem;font-family:var(--font-mono);font-size:11px;">Repeated: ${escapeHtml(t.years)}</div>
+          <div class="panic-model-answer"><strong>Formula / Strategy Note:</strong> ${escapeHtml(t.answer)}</div>
+        </div>
+        <div class="btn-trio">
+          <button type="button" class="btn-secondary-outline" onclick="document.getElementById('panic-card-${i}').classList.toggle('expanded')">Formula / Solution</button>
+          <button type="button" class="btn-secondary-outline ${isSaved ? 'saved' : ''}" onclick="saveToDeck('${escapeAttr(t.title)}', '${escapeAttr(t.code)}', '${escapeAttr(DASH_STATE.fullSyllabusPath)}', this)">${isSaved ? 'Saved in Deck ✓' : '+ Save to deck 📂'}</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderSavedDeckSection() {
+  const container = document.getElementById('savedDeckContainer');
+  const deck = getSavedDeck();
+  if (!deck.length) {
+    container.innerHTML = `<div class="empty-state-box">No saved units or PYQs yet. Click <strong>+ Save to deck 📂</strong> on any module or question paper above to bookmark it here.</div>`;
+    return;
+  }
+
+  container.innerHTML = `<div class="card-grid-2">` + deck.map((d, idx) => `
+    <div class="white-blue-card filterable-card">
+      <div>
+        <div class="card-top-meta">
+          <span class="subject-code-pill">${escapeHtml(d.code)}</span>
+          <span class="section-sub-pill" style="font-size:10.5px;">Saved</span>
+        </div>
+        <div class="card-title-bold" style="margin-top:0.55rem;">${escapeHtml(d.title)}</div>
+      </div>
+      <div class="btn-trio">
+        <button type="button" class="btn-secondary-outline" onclick="openPdfPreviewModal('${escapeAttr(d.title)}', '${escapeAttr(d.path)}')">Preview</button>
+        <button type="button" class="btn-primary-peach" onclick="downloadDocument('${escapeAttr(d.title)}', '${escapeAttr(d.path)}')">Download</button>
+        <button type="button" class="btn-secondary-outline" onclick="removeFromDeck(${idx})">Remove ✕</button>
+      </div>
+    </div>
+  `).join('') + `</div>`;
+}
+
+// ── Left Navigation Switching & Home Reset ──
+function switchNavSection(targetKey, btnEl) {
+  DASH_STATE.activeNav = targetKey;
+  document.querySelectorAll('#leftNavRail button.rail-item').forEach(b => b.classList.remove('active'));
+  if (btnEl) btnEl.classList.add('active');
+
+  const sections = {
+    'study-tracker': document.getElementById('section-study-tracker'),
+    'pyqs': document.getElementById('section-pyqs'),
+    'panic': document.getElementById('section-panic'),
+    'deck': document.getElementById('section-deck')
+  };
+  const progressCard = document.getElementById('studyProgressCard');
+
+  Object.entries(sections).forEach(([k, el]) => {
+    if (!el) return;
+    el.style.display = (k === targetKey) ? 'block' : 'none';
+  });
+  if (progressCard) {
+    progressCard.style.display = (targetKey === 'study-tracker') ? 'block' : 'none';
+  }
+  closeMobileRail();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function resetToHomeView() {
+  DASH_STATE.activeNav = 'home';
+  document.querySelectorAll('#leftNavRail button.rail-item').forEach(b => b.classList.remove('active'));
+  const firstNav = document.querySelector('#leftNavRail button[data-nav="study-tracker"]');
+  if (firstNav) firstNav.classList.add('active');
+
+  document.getElementById('studyProgressCard').style.display = 'block';
+  ['section-study-tracker', 'section-pyqs', 'section-panic', 'section-deck'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'block';
+  });
+  clearWorkspaceSearch();
+  closeMobileRail();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleMobileRail() {
+  document.getElementById('leftNavRail').classList.toggle('open');
+}
+
+function closeMobileRail() {
+  document.getElementById('leftNavRail').classList.remove('open');
+}
+
+// ── Live Multi-Field Search Filter ──
+function filterWorkspace(query) {
+  const q = String(query || '').toLowerCase().trim();
+  const clearBtn = document.getElementById('searchClearBtn');
+  if (clearBtn) clearBtn.style.display = q ? 'inline-flex' : 'none';
+
+  // When searching, show all sections so matching PYQs, subjects, panic items, and deck notes surface immediately
+  if (q) {
+    ['section-study-tracker', 'section-pyqs', 'section-panic', 'section-deck'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'block';
+    });
+  } else if (DASH_STATE.activeNav && DASH_STATE.activeNav !== 'home') {
+    const btn = document.querySelector(`#leftNavRail button[data-nav="${DASH_STATE.activeNav}"]`);
+    switchNavSection(DASH_STATE.activeNav, btn);
+  }
+
+  document.querySelectorAll('.subject-accordion-card').forEach(card => {
+    const text = card.innerText.toLowerCase();
+    const matched = !q || text.includes(q);
+    card.style.display = matched ? 'block' : 'none';
+    if (q && matched) card.classList.add('open');
+  });
+
+  document.querySelectorAll('.filterable-card').forEach(card => {
+    const text = card.innerText.toLowerCase();
+    card.style.display = (!q || text.includes(q)) ? 'flex' : 'none';
   });
 }
 
-// ── Main Init ────────────────────────────────────
+function clearWorkspaceSearch() {
+  const inp = document.getElementById('workspaceSearchInput');
+  if (inp) inp.value = '';
+  filterWorkspace('');
+}
+
+// ── Floating Left-Edge Resizable Ask AI Drawer ──
+function initResizableAiDrawer() {
+  const drawer = document.getElementById('aiDrawer');
+  const resizer = document.getElementById('aiResizerHandle');
+  if (!drawer || !resizer) return;
+
+  let isResizing = false;
+
+  const updateWidth = (clientX) => {
+    const newWidth = Math.min(600, Math.max(280, window.innerWidth - clientX));
+    drawer.style.width = `${newWidth}px`;
+    if (window.innerWidth > 1080 && !document.body.classList.contains('ai-drawer-collapsed')) {
+      document.getElementById('mainWorkspace').style.marginRight = `${newWidth}px`;
+    }
+  };
+
+  resizer.addEventListener('mousedown', (e) => {
+    e.preventDefault();
+    isResizing = true;
+    document.body.style.cursor = 'ew-resize';
+    document.body.style.userSelect = 'none';
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (!isResizing) return;
+    updateWidth(e.clientX);
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (isResizing) {
+      isResizing = false;
+      document.body.style.cursor = 'default';
+      document.body.style.userSelect = 'auto';
+    }
+  });
+
+  resizer.addEventListener('touchstart', () => { isResizing = true; }, { passive: true });
+  document.addEventListener('touchmove', (e) => {
+    if (!isResizing || !e.touches[0]) return;
+    updateWidth(e.touches[0].clientX);
+  }, { passive: true });
+  document.addEventListener('touchend', () => { isResizing = false; });
+}
+
+function collapseAiDrawer() {
+  document.body.classList.add('ai-drawer-collapsed');
+  document.getElementById('mainWorkspace').style.marginRight = '0';
+}
+
+function expandAiDrawer() {
+  document.body.classList.remove('ai-drawer-collapsed');
+  const drawer = document.getElementById('aiDrawer');
+  const w = drawer ? (parseInt(drawer.style.width, 10) || 360) : 360;
+  if (window.innerWidth > 1080) {
+    document.getElementById('mainWorkspace').style.marginRight = `${w}px`;
+  }
+}
+
+function appendAiBubble(role, htmlContent) {
+  const feed = document.getElementById('aiMessagesFeed');
+  if (!feed) return;
+  const div = document.createElement('div');
+  div.className = `ai-bubble ${role}`;
+  div.innerHTML = htmlContent;
+  feed.appendChild(div);
+  feed.scrollTop = feed.scrollHeight;
+}
+
+function synthesizeLocalAiAnswer(query) {
+  const q = query.toLowerCase();
+  const subjects = DASH_STATE.subjects;
+  const pyqs = DASH_STATE.pyqs;
+  const panic = DASH_STATE.panicTopics;
+
+  if (q.includes('module 2') || q.includes('summarize')) {
+    const bullets = subjects.slice(0, 4).map(sub => {
+      const m2 = sub.units[1] || sub.units[0];
+      return `<li><strong>${escapeHtml(sub.code)} (${escapeHtml(sub.title)}):</strong> ${escapeHtml(m2.name)} — <em>${escapeHtml(m2.subtopics)}</em></li>`;
+    }).join('');
+    return `<strong>Module 2 Study Summary — ${escapeHtml(DASH_STATE.deptDisplay)} (Sem ${escapeHtml(DASH_STATE.semester)}):</strong><ul>${bullets}</ul>`;
+  }
+
+  if (q.includes('2023') || q.includes('pyq') || q.includes('paper')) {
+    const matchPyqs = pyqs.filter(p => q.includes('2023') ? (p.year.includes('2023') || p.year.includes('–')) : true).slice(0, 5);
+    if (matchPyqs.length) {
+      const items = matchPyqs.map(p => `<li><strong>${escapeHtml(p.code)}:</strong> ${escapeHtml(p.title)} (${escapeHtml(p.year)})</li>`).join('');
+      return `<strong>Matched University PYQs for ${escapeHtml(DASH_STATE.deptDisplay)} (Sem ${escapeHtml(DASH_STATE.semester)}):</strong><ul>${items}</ul>`;
+    }
+  }
+
+  if (q.includes('pattern') || q.includes('exam') || q.includes('repeat')) {
+    const topPanic = panic.slice(0, 4).map(t => `<li><strong>${escapeHtml(t.code)} (${t.marks}M):</strong> ${escapeHtml(t.title)} — Repeated: ${escapeHtml(t.years)}</li>`).join('');
+    return `<strong>MAKAUT Exam Pattern &amp; High-Yield Blueprint (${escapeHtml(DASH_STATE.deptDisplay)}):</strong><ul>${topPanic}</ul><div style="margin-top:0.35rem;font-size:12px;color:#475569;">Tip: End-semester papers weight Group B (5M analytical) + Group C (10M derivations &amp; numericals).</div>`;
+  }
+
+  // Keyword match across units & subjects
+  const matchingSub = subjects.find(s => s.title.toLowerCase().includes(q) || s.code.toLowerCase().includes(q) || s.units.some(u => u.name.toLowerCase().includes(q)));
+  if (matchingSub) {
+    const modList = matchingSub.units.map(u => `<li><strong>${escapeHtml(u.num)}:</strong> ${escapeHtml(u.name)} (${escapeHtml(u.hours)})</li>`).join('');
+    return `<strong>Study Guide for ${escapeHtml(matchingSub.code)}: ${escapeHtml(matchingSub.title)}</strong><ul>${modList}</ul>`;
+  }
+
+  const overview = subjects.slice(0, 3).map(s => `<li><strong>${escapeHtml(s.code)}:</strong> ${escapeHtml(s.title)} (${s.units.length} modules)</li>`).join('');
+  return `<strong>Personalized Study Guide — ${escapeHtml(DASH_STATE.deptDisplay)} (Sem ${escapeHtml(DASH_STATE.semester)}):</strong><ul>${overview}</ul><div style="margin-top:0.35rem;font-size:12px;color:#475569;">Use the quick chips below or search any subject code for targeted PYQs &amp; module notes.</div>`;
+}
+
+async function runAiQuery(promptText) {
+  const q = String(promptText || '').trim();
+  if (!q) return;
+  appendAiBubble('user', escapeHtml(q));
+
+  // Attempt live backend RAG query if running on Spring Boot (localhost), fall back cleanly on GitHub Pages
+  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    try {
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), 1400);
+      const res = await fetch('/api/v1/chat/query', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: q, stream: DASH_STATE.deptKey, semester: DASH_STATE.semester }),
+        signal: ctrl.signal
+      });
+      clearTimeout(t);
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.answer && !data.answer.toLowerCase().includes('no sources found')) {
+          appendAiBubble('assistant', escapeHtml(data.answer).replace(/\n/g, '<br>'));
+          return;
+        }
+      }
+    } catch (_) {}
+  }
+
+  appendAiBubble('assistant', synthesizeLocalAiAnswer(q));
+}
+
+function triggerAiQuickPrompt(text) {
+  expandAiDrawer();
+  runAiQuery(text);
+}
+
+function handleGenerateStudyGuide() {
+  const inp = document.getElementById('aiQueryInput');
+  const val = inp ? inp.value.trim() : '';
+  const query = val || `Generate a complete exam study guide for ${DASH_STATE.deptDisplay} Semester ${DASH_STATE.semester}`;
+  if (inp) inp.value = '';
+  runAiQuery(query);
+}
+
+// ── Init Everything on DOM Ready ──
 document.addEventListener('DOMContentLoaded', () => {
-  // Auth guard runs first
   if (!runAuthGuard()) return;
 
-  // Load profile from localStorage
-  loadUserProfile();
-
-  // Render dynamic sections
+  resolveAcademicContext();
+  loadActiveAcademicData();
+  renderStudyTracker();
+  renderPyqVault();
   renderPanicPack();
-  renderDeck();
-  renderBookmarks();
+  renderSavedDeckSection();
+  updateDeckBadge();
+  initResizableAiDrawer();
 
-  // Load preferences
-  loadPrefs();
+  // Default view: Study Tracker active on left rail while showing study tracker
+  const activeNavBtn = document.querySelector('#leftNavRail button[data-nav="study-tracker"]');
+  switchNavSection('study-tracker', activeNavBtn);
 
-  // Wire sign-out
-  const signoutBtn = document.getElementById('signout-btn');
-  if (signoutBtn) signoutBtn.addEventListener('click', handleSignOut);
+  // Welcome message in Ask AI drawer
+  appendAiBubble(
+    'assistant',
+    `<strong>Hi! I&apos;m your MAKAUT Study Copilot.</strong><br>Currently tuned to <strong>${escapeHtml(DASH_STATE.deptDisplay)} (Sem ${escapeHtml(DASH_STATE.semester)})</strong> with ${DASH_STATE.subjects.length} enrolled courses &amp; ${DASH_STATE.pyqs.length} indexed PYQs.<br><span style="font-size:12px;color:#475569;">Drag the <strong>⁝⁝</strong> handle on the left edge to resize this panel (280px–600px).</span>`
+  );
 
-  // CmdK
-  initCmdK();
-
-  // Mobile nav
-  initMobileNav();
-
-  // Dock toggle
-  initDockToggle();
-
-  // Scroll spy
-  initScrollSpy();
-
-  // Sync accordion "open" state aria
-  document.querySelectorAll('.course-accordion.open .course-accordion-header').forEach(btn => {
-    btn.setAttribute('aria-expanded', 'true');
+  // Close PDF modal on backdrop click or Escape
+  document.getElementById('pdfPreviewModal').addEventListener('click', (e) => {
+    if (e.target.id === 'pdfPreviewModal') closePdfPreview();
   });
-});
-
-// ── Also guard on window load (Clerk may not be ready at DOMContentLoaded) ──
-window.addEventListener('load', () => {
-  // Try to hydrate Clerk from config
-  try {
-    const cfg = window.__CAMPUSSENSE_CONFIG__;
-    const pk = cfg && cfg.clerkPublishableKey;
-    if (pk && window.Clerk && !window.Clerk.__initialized) {
-      window.Clerk.load({ publishableKey: pk }).catch(() => {});
-    }
-  } catch {}
-  // Final auth & onboarding guard pass
-  const isLoggedIn = lsGet('campussense_logged_in') === 'true';
-  if (!isLoggedIn) { window.location.replace('login.html?v=20261111_v13'); return; }
-  if (!localStorage.getItem('academic_profile_completed')) { window.location.replace('set-academic.html?v=20261111_v14'); }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closePdfPreview();
+  });
 });
 </script>
 </body>
