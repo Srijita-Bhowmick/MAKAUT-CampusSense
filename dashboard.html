@@ -67,10 +67,14 @@
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     html, body {
       min-height: 100vh;
       width: 100%;
-      overflow-x: hidden;
+      overflow-x: clip;
       font-family: var(--font-body);
       color: var(--text-navy);
       background-color: var(--surface-canvas);
@@ -340,7 +344,7 @@
       gap: 0.6rem;
       padding: 0.62rem 0.78rem;
       border-radius: 10px;
-      border: 1.5px solid transparent;
+      border: 2px solid transparent;
       background: transparent;
       color: var(--text-navy);
       font-family: var(--font-body);
@@ -354,15 +358,15 @@
 
     .rail-item:hover {
       background: #EFF6FF;
-      border-color: rgba(141, 185, 240, 0.6);
+      border-color: rgba(141, 185, 240, 0.65);
     }
 
     .rail-item.active {
-      background: var(--sunset-peach);
-      color: #000000;
-      border-color: #E39474;
+      background: #EFF6FF;
+      color: #0F172A;
+      border: 2px solid #8DB9F0;
       font-weight: 700;
-      box-shadow: 0 3px 10px rgba(245, 182, 158, 0.35);
+      box-shadow: 0 3px 10px rgba(141, 185, 240, 0.25);
     }
 
     .rail-item-label { flex: 1; }
@@ -379,8 +383,9 @@
     }
 
     .rail-item.active .rail-badge {
-      background: #FFFFFF;
+      background: var(--sunset-peach);
       color: #000000;
+      border-color: #E39474;
     }
 
     .rail-divider {
@@ -394,7 +399,7 @@
       flex: 1;
       margin-left: var(--nav-w);
       margin-right: 360px;
-      padding: 1.5rem 1.75rem 5rem;
+      padding: 1.5rem 1.75rem 9rem;
       min-width: 0;
       transition: margin-right 0.12s ease;
     }
@@ -542,7 +547,8 @@
 
     /* Sections */
     .workspace-section {
-      margin-bottom: 1.75rem;
+      margin-bottom: 2.25rem;
+      scroll-margin-top: calc(var(--header-h) + 18px);
     }
 
     .section-header-row {
@@ -1369,25 +1375,25 @@
   <!-- Strict 4-Item Navigator + 3-Item Quick Links -->
   <nav id="leftNavRail" aria-label="Dashboard Navigation">
     <div class="rail-section-label">Navigator</div>
-    <button type="button" class="rail-item active" data-nav="study-tracker" onclick="switchNavSection('study-tracker', this)">
+    <a href="#section-study-tracker" class="rail-item active" data-nav="study-tracker" data-target="section-study-tracker">
       <span aria-hidden="true">📚</span>
       <span class="rail-item-label">Study Tracker</span>
-    </button>
-    <button type="button" class="rail-item" data-nav="pyqs" onclick="switchNavSection('pyqs', this)">
+    </a>
+    <a href="#section-pyqs" class="rail-item" data-nav="pyqs" data-target="section-pyqs">
       <span aria-hidden="true">📄</span>
       <span class="rail-item-label">PYQs</span>
       <span class="rail-badge" id="navPyqCount">0</span>
-    </button>
-    <button type="button" class="rail-item" data-nav="panic" onclick="switchNavSection('panic', this)">
+    </a>
+    <a href="#section-panic-pack" class="rail-item" data-nav="panic" data-target="section-panic-pack">
       <span aria-hidden="true">🔥</span>
       <span class="rail-item-label">Panic Pack</span>
       <span class="rail-badge" id="navPanicCount">16</span>
-    </button>
-    <button type="button" class="rail-item" data-nav="deck" onclick="switchNavSection('deck', this)">
+    </a>
+    <a href="#section-save-to-deck" class="rail-item" data-nav="save-to-deck" data-target="section-save-to-deck">
       <span aria-hidden="true">📂</span>
       <span class="rail-item-label">Save to Deck</span>
       <span class="rail-badge" id="navDeckCount">0</span>
-    </button>
+    </a>
 
     <div class="rail-divider"></div>
     <div class="rail-section-label">Quick Links</div>
@@ -1461,7 +1467,7 @@
     </section>
 
     <!-- Section 3: 16-Topic Panic Pack -->
-    <section class="workspace-section" id="section-panic">
+    <section class="workspace-section" id="section-panic-pack">
       <div class="section-header-row">
         <h2 class="section-heading">🔥 High-Yield Panic Pack</h2>
         <span class="section-sub-pill" id="panicSectionSubPill">16 Repeat Topics</span>
@@ -1470,7 +1476,7 @@
     </section>
 
     <!-- Section 4: Saved Study Deck -->
-    <section class="workspace-section" id="section-deck">
+    <section class="workspace-section" id="section-save-to-deck">
       <div class="section-header-row">
         <h2 class="section-heading">📂 Saved Study Deck</h2>
         <div style="display:flex;gap:0.45rem;flex-wrap:wrap;">
@@ -1616,6 +1622,7 @@ const ACADEMIC_REGISTRY = {
       },
       {
         code: "PEC-IT501B",
+        altCodes: ["PEC-CSBS-501-B"],
         title: "Artificial Intelligence",
         credits: 3,
         syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
@@ -1625,6 +1632,322 @@ const ACADEMIC_REGISTRY = {
           { num: "Unit 3", name: "Knowledge Representation Issues & Ontological Mapping", hours: "3 Lectures", subtopics: "Representation approaches, frame problem & structured knowledge mapping.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
           { num: "Unit 4", name: "Predicate Logic, Resolution & Probabilistic Reasoning", hours: "6 Lectures", subtopics: "First-order logic, natural deduction, Bayesian networks, Dempster-Shafer & Fuzzy logic.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
           { num: "Unit 5", name: "Natural Language Processing, Machine Learning & Expert Systems", hours: "6 Lectures", subtopics: "Syntactic/semantic NLP, decision trees, neural nets, genetic learning & expert shells.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+        ]
+      },
+      {
+        code: "PEC-IT501A",
+        title: "Theory of Computation",
+        credits: 3,
+        syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
+        units: [
+          { num: "Unit 1", name: "Alphabet, Formal Languages & Chomsky Hierarchy", hours: "6 Lectures", subtopics: "Grammars, productions, derivation trees & Chomsky classification.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "Regular Languages, Finite Automata & Pumping Lemma", hours: "7 Lectures", subtopics: "DFA, NFA, epsilon-NFA, regular expressions, Myhill-Nerode & closure properties.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Context-Free Grammars, CNF/GNF & Pushdown Automata", hours: "6 Lectures", subtopics: "Ambiguity, Chomsky/Greibach Normal Forms, DPDA/NPDA & CFL Pumping Lemma.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 4", name: "Context-Sensitive Languages & Linear Bounded Automata", hours: "6 Lectures", subtopics: "CSG productions and Linear Bounded Automata (LBA).", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 5", name: "Turing Machines, Computability & Recursive Languages", hours: "6 Lectures", subtopics: "Standard Turing Machine variants, recursive & recursively enumerable languages.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 6", name: "Church-Turing Thesis & Undecidability", hours: "6 Lectures", subtopics: "Universal Turing machine, Halting Problem, diagonalization & Post's Correspondence Problem.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+        ]
+      }
+    ],
+    "3": [
+      {
+        code: "ESC 301",
+        title: "Analog & Digital Electronics",
+        credits: 3,
+        syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
+        units: [
+          { num: "Unit 1", name: "Classes of Amplifiers, Feedback & Oscillators", hours: "9 Lectures", subtopics: "Class A, B, AB, C power amplifiers, feedback topologies & RC/LC oscillators.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "Binary Number Systems, Boolean Algebra & Combinational Circuits", hours: "11 Lectures", subtopics: "BCD, Gray codes, K-Maps, adders, subtractors, MUX/DEMUX, encoders & decoders.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Sequential Circuits: Flip-Flops, Registers & Counters", hours: "10 Lectures", subtopics: "SR, JK, D, T, Master-Slave flip-flops, shift registers & synchronous/asynchronous counters.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 4", name: "A/D & D/A Converters and Memory Architecture", hours: "6 Lectures", subtopics: "R-2R ladder DAC, successive approximation ADC & semiconductor memory families.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+        ]
+      },
+      {
+        code: "PCC-CS301",
+        title: "Data Structure & Algorithms",
+        credits: 3,
+        syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
+        units: [
+          { num: "Unit 1", name: "Introduction, Asymptotic Notations, Arrays & Searching", hours: "10 Lectures", subtopics: "Time-space tradeoffs, Big-O/Omega/Theta, sparse matrices, linear & binary search.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "Stacks, Queues, Circular Queues & Expression Evaluation", hours: "9 Lectures", subtopics: "ADT Stack & Queue, infix-postfix conversion, recursion & Tower of Hanoi.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Linked Lists, Trees, BST, AVL, B-Trees & Graph Traversal", hours: "10 Lectures", subtopics: "Singly/doubly/circular lists, binary tree traversals, AVL rotations, BFS & DFS.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 4", name: "Sorting Algorithms & Hashing Techniques", hours: "9 Lectures", subtopics: "Selection, bubble, insertion, quick, merge, heap sort, hash functions & collision resolution.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+        ]
+      },
+      {
+        code: "PCC-CS302",
+        title: "Computer Organisation",
+        credits: 3,
+        syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
+        units: [
+          { num: "Unit 1", name: "Stored Program Architecture & Addressing Modes", hours: "8 Lectures", subtopics: "von Neumann architecture, instruction cycle, fetch-decode-execute & addressing modes.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "Computer Arithmetic: Adders, Booth's Multiplication & Division", hours: "8 Lectures", subtopics: "Carry look-ahead adders, signed multiplication, restoring/non-restoring division & IEEE 754.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Memory Hierarchy, Cache Organization & CPU-Memory Interfacing", hours: "10 Lectures", subtopics: "RAM/ROM, cache mapping (direct, associative, set-associative) & virtual memory.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 4", name: "Control Unit Design (Hardwired & Microprogrammed) & Pipelining", hours: "10 Lectures", subtopics: "Hardwired vs microprogrammed control, instruction pipelining & I/O interrupts.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+        ]
+      },
+      {
+        code: "BSC 301",
+        title: "Mathematics-III (Differential Calculus)",
+        credits: 2,
+        syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
+        units: [
+          { num: "Unit 1", name: "Sequences, Infinite Series, Power Series & Taylor Series", hours: "8 Lectures", subtopics: "Convergence tests, D'Alembert/Cauchy tests & Taylor expansions.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "Multivariable Differential Calculus, Jacobian & Extrema", hours: "7 Lectures", subtopics: "Partial derivatives, chain rule, implicit functions, directional derivatives & extrema.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Double & Triple Integrals and Change of Order", hours: "8 Lectures", subtopics: "Cartesian/polar integration, area and volume computation.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 4", name: "First-Order Ordinary Differential Equations", hours: "9 Lectures", subtopics: "Exact, linear, Bernoulli equations & Clairaut's equation.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 5", name: "Graph Theory, Euler & Hamiltonian Graphs and Trees", hours: "8 Lectures", subtopics: "Walks, paths, matrix representation, shortest path & spanning trees.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+        ]
+      },
+      {
+        code: "HSMC 301",
+        title: "Economics for Engineers",
+        credits: 3,
+        syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
+        units: [
+          { num: "Unit 1", name: "Economic Decisions Making, Roles & Process", hours: "9 Lectures", subtopics: "Cost concepts, engineering economy & present worth comparisons.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "Cash Flow Diagrams, Interest & Equivalence", hours: "9 Lectures", subtopics: "Time value of money, compound interest formulas, IRR & payback period.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Inflation, Price Change & Cost Indexes", hours: "9 Lectures", subtopics: "Inflation modeling, real vs nominal interest & index computation.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 4", name: "Depreciation Models & After-Tax Evaluation", hours: "9 Lectures", subtopics: "Straight-line, declining balance, sum-of-years digits & obsolescence.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+        ]
+      }
+    ],
+    "4": [
+      {
+        code: "PCC-CS401",
+        title: "Discrete Mathematics",
+        credits: 4,
+        syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
+        units: [
+          { num: "Unit 1", name: "Sets, Relations, Posets, Lattices & Functions", hours: "8 Lectures", subtopics: "Cartesian products, equivalence relations, Hasse diagrams & Boolean lattices.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "Counting Techniques, Pigeonhole Principle & Generating Functions", hours: "5 Lectures", subtopics: "Inclusion-exclusion, permutations, combinations & recurrence relations.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Propositional & Predicate Logic and Rules of Inference", hours: "8 Lectures", subtopics: "Truth tables, logical equivalence, quantifiers & mathematical induction.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 4", name: "Algebraic Structures: Groups, Rings, Fields & Morphisms", hours: "7 Lectures", subtopics: "Semigroups, monoids, Lagrange theorem, homomorphisms & rings.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 5", name: "Graphs, Planar Graphs, Coloring & Trees", hours: "8 Lectures", subtopics: "Connectivity, chromatic numbers, isomorphism & Euler/Hamiltonian paths.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+        ]
+      },
+      {
+        code: "PCC-CS402",
+        title: "Computer Architecture",
+        credits: 3,
+        syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
+        units: [
+          { num: "Unit 1", name: "Basic Computer Architecture & Quantitative Performance Metrics", hours: "12 Lectures", subtopics: "Amdahl's law, CPI, instruction sets & processor organization.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "Hierarchical Memory, Inclusion, Coherence & Locality", hours: "8 Lectures", subtopics: "Cache optimizations, write policies & memory bandwidth.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Instruction-Level Parallelism (ILP) & Superscalar Execution", hours: "6 Lectures", subtopics: "Data/control hazards, dynamic scheduling, Tomasulo algorithm & VLIW.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 4", name: "Multiprocessor & Shared-Memory Parallel Architectures", hours: "7 Lectures", subtopics: "Flynn's taxonomy, cache coherence protocols (MSI/MESI) & interconnections.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+        ]
+      },
+      {
+        code: "PCC-CS403",
+        title: "Formal Language & Automata Theory",
+        credits: 3,
+        syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
+        units: [
+          { num: "Unit 1", name: "Alphabet, Formal Languages & Chomsky Hierarchy", hours: "6 Lectures", subtopics: "Grammars, productions, derivation & Chomsky classification.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "Regular Languages, DFA/NFA & Regular Expressions", hours: "7 Lectures", subtopics: "Finite automata minimization, Myhill-Nerode & Pumping Lemma.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Context-Free Grammars & Pushdown Automata (PDA)", hours: "6 Lectures", subtopics: "CFG simplification, CNF, GNF, deterministic/non-deterministic PDA.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 4", name: "Context-Sensitive Languages & Linear Bounded Automata", hours: "6 Lectures", subtopics: "CSG derivations & Linear Bounded Automata.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 5", name: "Turing Machines & Recursive Enumerability", hours: "6 Lectures", subtopics: "Basic TM model, variants & recursive languages.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 6", name: "Church-Turing Thesis & Undecidability", hours: "6 Lectures", subtopics: "Universal TM, diagonalization, Halting Problem & reducibility.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+        ]
+      },
+      {
+        code: "PCC-CS404",
+        altCodes: ["ES-CS401"],
+        title: "Design & Analysis of Algorithms",
+        credits: 3,
+        syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
+        units: [
+          { num: "Unit 1", name: "Algorithm Characteristics, Asymptotic Analysis & Recurrences", hours: "8 Lectures", subtopics: "Substitution, recursion-tree & Master Theorem bounds.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "Algorithmic Strategies: Divide-Conquer, Greedy, DP & Branch-Bound", hours: "8 Lectures", subtopics: "Knapsack, LCS, matrix chain, TSP & N-Queens backtracking.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Graph & Tree Algorithms: DFS, BFS, MST & Shortest Paths", hours: "6 Lectures", subtopics: "Prim, Kruskal, Dijkstra, Bellman-Ford, Floyd-Warshall & topological sort.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 4", name: "Tractable & Intractable Problems: P, NP, NP-Complete & NP-Hard", hours: "10 Lectures", subtopics: "Cook-Levin reduction, SAT, Vertex Cover & Hamiltonian cycle.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 5", name: "Approximation, Randomized Algorithms & Amortized Analysis", hours: "6 Lectures", subtopics: "Probabilistic analysis, approximation ratios & string matching (KMP).", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+        ]
+      }
+    ],
+    "6": [
+      {
+        code: "PCC-CS601",
+        title: "Database Management Systems",
+        credits: 3,
+        syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
+        units: [
+          { num: "Unit 1", name: "Database System Architecture, ER Model & Data Models", hours: "9 Lectures", subtopics: "Data independence, DDL/DML, 3-schema architecture & ER-to-relational mapping.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "Relational Algebra, Calculus, SQL & Normalization (BCNF/3NF)", hours: "13 Lectures", subtopics: "Relational queries, functional dependencies, lossless joins & dependency preservation.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Storage Strategies: Indexing, B/B+ Trees & Hashing", hours: "3 Lectures", subtopics: "Clustered/unclustered indices, B+ tree search/insert & dynamic hashing.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 4", name: "Transaction Processing, ACID, Concurrency & Recovery", hours: "5 Lectures", subtopics: "Conflict serializability, two-phase locking (2PL), timestamps & log-based recovery.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 5", name: "Database Security: DAC, MAC, RBAC & Access Control", hours: "3 Lectures", subtopics: "Authentication, authorization, SQL injection mitigation & encryption.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 6", name: "Object-Oriented, Logical & Distributed Databases", hours: "3 Lectures", subtopics: "Object-relational concepts & distributed database fundamentals.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+        ]
+      },
+      {
+        code: "PCC-CS602",
+        title: "Computer Networks",
+        credits: 3,
+        syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
+        units: [
+          { num: "Unit 1", name: "Data Communication, OSI/TCP-IP Models & Physical Layer", hours: "9 Lectures", subtopics: "Transmission media, multiplexing (FDM/TDM/WDM) & switching modes.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "Data Link Layer, Error Control (CRC) & MAC Protocols (CSMA/CD)", hours: "8 Lectures", subtopics: "Stop-and-Wait, Go-Back-N, Selective Repeat ARQ, ALOHA & Ethernet.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Network Layer: IPv4/IPv6, CIDR Subnetting & Routing Protocols", hours: "14 Lectures", subtopics: "ARP/RARP, NAT, Distance Vector (RIP), Link State (OSPF) & congestion control.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 4", name: "Transport Layer: UDP, TCP Three-Way Handshake & Flow Control", hours: "8 Lectures", subtopics: "Port addressing, sliding window, congestion avoidance & QoS.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 5", name: "Application Layer: DNS, HTTP, SMTP, FTP & SNMP", hours: "8 Lectures", subtopics: "Client-server socket workflows & application protocols.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+        ]
+      },
+      {
+        code: "PEC-IT601B",
+        title: "Distributed Systems",
+        credits: 3,
+        syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
+        units: [
+          { num: "Unit 1", name: "Introduction to Distributed Processing & DDBS Architectures", hours: "8 Lectures", subtopics: "Transparency, client-server/peer-to-peer design & distributed challenges.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "Distributed Database Design, Fragmentation & Allocation", hours: "11 Lectures", subtopics: "Horizontal/vertical fragmentation & replication strategies.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Distributed Query Processing & Optimization", hours: "11 Lectures", subtopics: "Query decomposition, semi-join reduction & distributed cost models.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 4", name: "Distributed Transactions, 2PC Commit & Recovery Protocols", hours: "8 Lectures", subtopics: "Distributed locking, deadlock detection & fault tolerance.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 5", name: "Parallel Database Architectures & Parallel Query Processing", hours: "6 Lectures", subtopics: "Shared-memory, shared-disk & shared-nothing parallel joins.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 6", name: "Advanced Topics: Mobile & Multi-Database Systems", hours: "4 Lectures", subtopics: "Distributed object management & schema integration.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+        ]
+      },
+      {
+        code: "PEC-IT601D",
+        title: "Image Processing",
+        credits: 3,
+        syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
+        units: [
+          { num: "Unit 1", name: "Digital Image Fundamentals & Human Visual Perception", hours: "9 Lectures", subtopics: "Image representation, resolution & color models.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "Image Formation, Sampling, Quantization & Geometric Transforms", hours: "4 Lectures", subtopics: "Affine transforms, interpolation & perspective projection.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Mathematical Preliminaries, Connectivity & Image Transforms", hours: "9 Lectures", subtopics: "Adjacency, distance measures, 2D DFT & DCT.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 4", name: "Spatial & Frequency Domain Image Enhancement", hours: "8 Lectures", subtopics: "Histogram equalization, smoothing/sharpening & Butterworth filters.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 5", name: "Image Restoration, Noise Models & Wiener Filtering", hours: "7 Lectures", subtopics: "Degradation functions, inverse filtering & constrained restoration.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 6", name: "Image Segmentation: Edge Detection, Thresholding & Region Growing", hours: "7 Lectures", subtopics: "Sobel, Canny, Hough transform & watershed segmentation.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+        ]
+      },
+      {
+        code: "OEC-IT601A",
+        title: "Numerical Methods",
+        credits: 3,
+        syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
+        units: [
+          { num: "Unit 1", name: "Approximation & Error Analysis in Numerical Computation", hours: "2 Lectures", subtopics: "Truncation, round-off, absolute/relative errors & significant digits.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "Interpolation: Newton Forward/Backward, Lagrange & Divided Diff", hours: "8 Lectures", subtopics: "Finite differences, error bounds & central difference formulas.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Numerical Integration: Trapezoidal & Simpson's 1/3 Rules", hours: "3 Lectures", subtopics: "Newton-Cotes quadrature & error estimates.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 4", name: "Solution of Linear Systems: Gauss Elimination, LU & Seidel", hours: "8 Lectures", subtopics: "Matrix inversion, Gauss-Jacobi & Gauss-Seidel iterative methods.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 5", name: "Algebraic & Transcendental Equations: Bisection, Regula-Falsi & NR", hours: "3 Lectures", subtopics: "Newton-Raphson convergence & fixed-point iteration.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 6", name: "Numerical Solution of ODEs: Euler & Runge-Kutta (RK4) Methods", hours: "2 Lectures", subtopics: "Modified Euler and 4th-order Runge-Kutta step formulas.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+        ]
+      },
+      {
+        code: "PROJ-CS601",
+        title: "Research Methodology",
+        credits: 3,
+        syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
+        units: [
+          { num: "Unit 1", name: "Research Formulation, Problem Definition & Design", hours: "9 Lectures", subtopics: "Research objectives, literature survey & hypothesis design.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "Data Collection, Sampling & Statistical Analysis", hours: "9 Lectures", subtopics: "Method validation, observation & hypothesis testing.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Research Ethics, Plagiarism, Patents & IPR Publishing", hours: "9 Lectures", subtopics: "Copyright, patent filing, journal impact & peer review ethics.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 4", name: "Interpretation of Results & Technical Report Writing", hours: "9 Lectures", subtopics: "Report structuring, citations, LaTeX formatting & presentations.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+        ]
+      }
+    ],
+    "7": [
+      {
+        code: "PEC-CS701E",
+        title: "Machine Learning",
+        credits: 3,
+        syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
+        units: [
+          { num: "Unit 1", name: "Supervised Learning: Regression, Classification, SVM & Decision Trees", hours: "10 Lectures", subtopics: "Linear/logistic regression, Naive Bayes, SVM kernels & entropy/Gini splits.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "Unsupervised Learning: K-Means, Hierarchical Clustering & PCA", hours: "7 Lectures", subtopics: "EM algorithm, GMM, SVD & dimensionality reduction.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Model Evaluation, Cross-Validation & Ensemble Bagging/Boosting", hours: "6 Lectures", subtopics: "Bias-variance tradeoff, ROC-AUC, Random Forest & AdaBoost.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 4", name: "Sparse Modeling, Sequence/HMM & Deep Neural Networks", hours: "9 Lectures", subtopics: "L1/L2 regularization, backpropagation, CNN & RNN architectures.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 5", name: "Scalable, Online & Distributed Machine Learning", hours: "9 Lectures", subtopics: "Stochastic gradient descent, MapReduce ML & recommendation systems.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 6", name: "Recent Trends: Reinforcement & Semi-Supervised Learning", hours: "5 Lectures", subtopics: "MDP, Q-learning & transfer learning concepts.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+        ]
+      },
+      {
+        code: "PEC-CS702B",
+        title: "Soft Computing",
+        credits: 3,
+        syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
+        units: [
+          { num: "Unit 1", name: "Introduction to Soft Computing & Hybrid Systems", hours: "8 Lectures", subtopics: "Hard vs soft computing, fuzzy/neuro-genetic hybridization.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "Fuzzy Sets, Relations & Mamdani/Sugeno Inference Systems", hours: "10 Lectures", subtopics: "Membership functions, fuzzy arithmetic & defuzzification methods.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Artificial Neural Networks: Perceptron, Backprop, Kohonen & Hopfield", hours: "10 Lectures", subtopics: "Activation functions, RBF networks & associative memories.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 4", name: "Genetic Algorithms: Selection, Crossover, Mutation & NSGA", hours: "10 Lectures", subtopics: "Schema theorem, fitness scaling & multi-objective optimization.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 5", name: "Swarm & Metaheuristic Optimization: ACO, PSO & Tabu Search", hours: "4 Lectures", subtopics: "Simulated annealing, ant colony & hybrid neuro-fuzzy ANFIS.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+        ]
+      },
+      {
+        code: "OEC-IT701A",
+        altCodes: ["OEC-CS701A"],
+        title: "Operations Research",
+        credits: 3,
+        syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
+        units: [
+          { num: "Unit 1", name: "Linear Programming: Graphical, Simplex, Dual & Transportation", hours: "17 Lectures", subtopics: "Big-M, Two-phase method, sensitivity analysis & assignment models.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "Network Analysis: Shortest Path, Max-Flow & PERT/CPM", hours: "9 Lectures", subtopics: "Ford-Fulkerson max-flow min-cut & critical path scheduling.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Game Theory: Two-Person Zero-Sum, Saddle Point & Dominance", hours: "5 Lectures", subtopics: "Minimax-Maximin theorem & mixed strategies via LP.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 4", name: "Queuing Theory: Birth-Death Process & M/M/1 Models", hours: "5 Lectures", subtopics: "Kendall's notation, Poisson arrivals, waiting times & Little's law.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+        ]
+      },
+      {
+        code: "OEC-CS701B",
+        title: "Multimedia Systems",
+        credits: 3,
+        syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
+        units: [
+          { num: "Unit 1", name: "Introduction to Multimedia Components & System Architecture", hours: "2 Lectures", subtopics: "Hypermedia, multimedia hardware & authoring environments.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "Text, MIDI/Digital Audio, Image Formats & Video Encoding", hours: "14 Lectures", subtopics: "Huffman/LZW compression, JPEG, MPEG standards & audio sampling.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Multimedia Synchronization & Storage Access Techniques", hours: "8 Lectures", subtopics: "Intra/inter-object sync, optical storage & QoS streaming.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 4", name: "Image/Video Databases, Content Retrieval & SMIL/XML", hours: "17 Lectures", subtopics: "Indexing content features & document architecture.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 5", name: "Multimedia Applications: VoD, Interactive TV & Conferencing", hours: "4 Lectures", subtopics: "RTP/RTSP streaming protocols & media servers.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+        ]
+      }
+    ],
+    "8": [
+      {
+        code: "PEC-CS801B",
+        title: "Cryptography and Network Security",
+        credits: 3,
+        syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
+        units: [
+          { num: "Unit 1", name: "Attacks, Security Services, Mechanisms & OSI Security Architecture", hours: "5 Lectures", subtopics: "Confidentiality, integrity, availability & active/passive attacks.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "Classical Cryptography: Substitution, Transposition & Steganography", hours: "7 Lectures", subtopics: "Caesar, Playfair, Hill, Vigenere & Vernam ciphers.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Symmetric Block Ciphers: Feistel, DES, AES & Cipher Modes", hours: "8 Lectures", subtopics: "ECB, CBC, CFB, OFB modes & finite fields GF(2^n).", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 4", name: "Asymmetric Cryptography: RSA, Diffie-Hellman, SHA & Digital Signatures", hours: "5 Lectures", subtopics: "Modular arithmetic, Fermat/Euler theorems, MD5/SHA & DSS.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 5", name: "Internet Security Protocols, Kerberos, X.509 & SSL/TLS", hours: "6 Lectures", subtopics: "PKI certificates, IPSec AH/ESP & Transport Layer Security.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 6", name: "Electronic Mail Security: Pretty Good Privacy (PGP) & S/MIME", hours: "4 Lectures", subtopics: "MIME extensions, authentication & email encryption.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 7", name: "Firewalls, Intrusion Detection & DMZ Topologies", hours: "3 Lectures", subtopics: "Packet filters, stateful inspection, bastions & proxy firewalls.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+        ]
+      },
+      {
+        code: "PEC-CS801E",
+        altCodes: ["OEC-AID701A"],
+        title: "Internet of Things",
+        credits: 3,
+        syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
+        units: [
+          { num: "Unit 1", name: "IoT Fundamentals & Environmental Parameter Monitoring", hours: "7 Lectures", subtopics: "Physical/logical design, IoT levels & environmental telemetry.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "Sensors & Transducers: Working Principles & Selection Criteria", hours: "8 Lectures", subtopics: "Thermal, optical, mechanical & piezoelectric sensors.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Static & Dynamic Characteristics of Smart Sensors", hours: "11 Lectures", subtopics: "Sensitivity, linearity, hysteresis, resolution & calibration.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 4", name: "Smart Sensor Architecture, IEEE 1451 & WSN Gateways", hours: "10 Lectures", subtopics: "A/D interfacing, microcontrollers, MQTT/CoAP & edge protocols.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 5", name: "Interface Electronics, Signal Conditioning & Power Management", hours: "7 Lectures", subtopics: "Instrumentation amplifiers, bridges, energy harvesting & sleep modes.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 6", name: "Evolving Trends in Smart IoT, Cloud Analytics & Smart Cities", hours: "5 Lectures", subtopics: "Industrial IoT, wearable health monitors & agricultural IoT.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+        ]
+      },
+      {
+        code: "OEC-CS801A",
+        title: "Big Data Analysis",
+        credits: 3,
+        syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
+        units: [
+          { num: "Unit 1", name: "Big Data Characteristics, 5Vs, Data Marketing & Fraud Analytics", hours: "8 Lectures", subtopics: "Structured vs unstructured pipelines & enterprise use cases.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "NoSQL Aggregate Data Models (Key-Value, Document & Column)", hours: "8 Lectures", subtopics: "CAP theorem, sharding, replica sets & consistency tradeoffs.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Hadoop HDFS Architecture, Streaming & Hadoop Pipes", hours: "9 Lectures", subtopics: "NameNode/DataNode blocks, replication & fault recovery.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 4", name: "MapReduce Workflows, Anatomy of a Job Run & YARN", hours: "10 Lectures", subtopics: "Map, shuffle/sort, combiners, partitioners & MRUnit testing.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 5", name: "HBase Columnar Store & Apache Cassandra Data Model", hours: "7 Lectures", subtopics: "LSM trees, gossip protocol & consistent hashing.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 6", name: "Apache Pig, Grunt Shell & Pig Latin Dataflow Scripting", hours: "6 Lectures", subtopics: "Bags, tuples, relational operators & UDF extensions.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
         ]
       }
     ]
@@ -1989,7 +2312,10 @@ function loadActiveAcademicData() {
     if (deptCourses.length > 0) {
       resolvedSubjects = deptCourses.map(c => {
         const cNorm = String(c.code || '').replace(/[^A-Z0-9]/gi, '').toUpperCase();
-        const regMatch = (registryBucket || []).find(r => String(r.code || '').replace(/[^A-Z0-9]/gi, '').toUpperCase() === cNorm);
+        const regMatch = (registryBucket || []).find(r => {
+          const codes = [r.code, ...(Array.isArray(r.altCodes) ? r.altCodes : [])];
+          return codes.some(rc => String(rc || '').replace(/[^A-Z0-9]/gi, '').toUpperCase() === cNorm);
+        });
         return {
           code: c.code,
           legacyCode: c.code,
@@ -2475,44 +2801,150 @@ function renderSavedDeckSection() {
   `).join('') + `</div>`;
 }
 
-// ── Left Navigation Switching & Home Reset ──
-function switchNavSection(targetKey, btnEl) {
-  DASH_STATE.activeNav = targetKey;
-  document.querySelectorAll('#leftNavRail button.rail-item').forEach(b => b.classList.remove('active'));
-  if (btnEl) btnEl.classList.add('active');
+// ── Two-Way ScrollSpy & Smooth Anchor Navigation ──
+const WORKSPACE_SECTION_IDS = [
+  'section-study-tracker',
+  'section-pyqs',
+  'section-panic-pack',
+  'section-save-to-deck'
+];
+let scrollSpyObserver = null;
+let scrollSpyLockUntil = 0;
+let scrollSpyTargetY = null;
 
-  const sections = {
-    'study-tracker': document.getElementById('section-study-tracker'),
-    'pyqs': document.getElementById('section-pyqs'),
-    'panic': document.getElementById('section-panic'),
-    'deck': document.getElementById('section-deck')
-  };
-  const progressCard = document.getElementById('studyProgressCard');
-
-  Object.entries(sections).forEach(([k, el]) => {
-    if (!el) return;
-    el.style.display = (k === targetKey) ? 'block' : 'none';
+function setActiveNavItem(sectionId) {
+  document.querySelectorAll('#leftNavRail .rail-item[data-target]').forEach(el => {
+    const isMatch = el.getAttribute('data-target') === sectionId;
+    el.classList.toggle('active', isMatch);
+    if (isMatch) {
+      el.setAttribute('aria-current', 'location');
+      DASH_STATE.activeNav = el.getAttribute('data-nav') || sectionId;
+    } else {
+      el.removeAttribute('aria-current');
+    }
   });
-  if (progressCard) {
-    progressCard.style.display = (targetKey === 'study-tracker') ? 'block' : 'none';
+}
+
+function resolveActiveSectionByScroll() {
+  if (scrollSpyTargetY !== null && Math.abs(window.scrollY - scrollSpyTargetY) <= 12) {
+    scrollSpyLockUntil = 0;
+    scrollSpyTargetY = null;
   }
+  if (Date.now() < scrollSpyLockUntil) return;
+  const sections = WORKSPACE_SECTION_IDS
+    .map(id => document.getElementById(id))
+    .filter(el => el && el.style.display !== 'none');
+  if (!sections.length) return;
+
+  // At bottom of page -> activate the final visible section (#section-save-to-deck)
+  if ((window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - 24)) {
+    setActiveNavItem(sections[sections.length - 1].id);
+    return;
+  }
+
+  // Near top of workspace -> activate Study Tracker
+  if (window.scrollY <= 36) {
+    setActiveNavItem(sections[0].id);
+    return;
+  }
+
+  const headerThreshold = 132; // fixed header (62px) + comfortable visual trigger offset
+  let currentId = sections[0].id;
+  for (const sec of sections) {
+    const rect = sec.getBoundingClientRect();
+    if (rect.top <= headerThreshold) {
+      currentId = sec.id;
+    }
+  }
+  setActiveNavItem(currentId);
+}
+
+function initWorkspaceScrollSpy() {
+  if (scrollSpyObserver) {
+    scrollSpyObserver.disconnect();
+    scrollSpyObserver = null;
+  }
+  const sections = WORKSPACE_SECTION_IDS
+    .map(id => document.getElementById(id))
+    .filter(Boolean);
+
+  if ('IntersectionObserver' in window) {
+    scrollSpyObserver = new IntersectionObserver(() => {
+      resolveActiveSectionByScroll();
+    }, {
+      root: null,
+      rootMargin: '-76px 0px -35% 0px',
+      threshold: [0, 0.1, 0.25, 0.5, 0.75, 1.0]
+    });
+    sections.forEach(sec => scrollSpyObserver.observe(sec));
+  }
+
+  if (!window.__workspaceScrollBound) {
+    window.__workspaceScrollBound = true;
+    const cancelLock = () => {
+      scrollSpyLockUntil = 0;
+      scrollSpyTargetY = null;
+    };
+    window.addEventListener('wheel', cancelLock, { passive: true });
+    window.addEventListener('touchstart', cancelLock, { passive: true });
+    window.addEventListener('scroll', resolveActiveSectionByScroll, { passive: true });
+  }
+  document.querySelectorAll('#leftNavRail a.rail-item[data-target]').forEach(link => {
+    if (!link.__scrollBound) {
+      link.__scrollBound = true;
+      link.addEventListener('click', (e) => {
+        scrollToWorkspaceSection(link.getAttribute('data-target'), link, e);
+      });
+    }
+  });
+  resolveActiveSectionByScroll();
+}
+
+function scrollToWorkspaceSection(sectionId, linkEl, evt) {
+  if (evt) evt.preventDefault();
+  const targetEl = document.getElementById(sectionId);
+  if (!targetEl) return false;
+
+  const headerHeight = 62;
+  const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+  const rawTop = Math.max(0, Math.round(targetEl.getBoundingClientRect().top + window.scrollY - (headerHeight + 18)));
+  const targetTop = Math.min(rawTop, maxScroll);
+
+  scrollSpyTargetY = targetTop;
+  scrollSpyLockUntil = Date.now() + 1200;
+  setActiveNavItem(sectionId);
   closeMobileRail();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  window.scrollTo({ top: targetTop, behavior: 'smooth' });
+  if (window.history && typeof window.history.replaceState === 'function') {
+    try { window.history.replaceState(null, '', `#${sectionId}`); } catch (_) {}
+  }
+  return false;
+}
+
+function switchNavSection(targetKey, btnEl) {
+  const keyToSection = {
+    'study-tracker': 'section-study-tracker',
+    'pyqs': 'section-pyqs',
+    'panic': 'section-panic-pack',
+    'panic-pack': 'section-panic-pack',
+    'deck': 'section-save-to-deck',
+    'save-to-deck': 'section-save-to-deck'
+  };
+  const sectionId = keyToSection[targetKey] || 'section-study-tracker';
+  scrollToWorkspaceSection(sectionId, btnEl);
 }
 
 function resetToHomeView() {
-  DASH_STATE.activeNav = 'home';
-  document.querySelectorAll('#leftNavRail button.rail-item').forEach(b => b.classList.remove('active'));
-  const firstNav = document.querySelector('#leftNavRail button[data-nav="study-tracker"]');
-  if (firstNav) firstNav.classList.add('active');
-
   document.getElementById('studyProgressCard').style.display = 'block';
-  ['section-study-tracker', 'section-pyqs', 'section-panic', 'section-deck'].forEach(id => {
+  WORKSPACE_SECTION_IDS.forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.display = 'block';
   });
   clearWorkspaceSearch();
   closeMobileRail();
+  scrollSpyLockUntil = Date.now() + 700;
+  setActiveNavItem('section-study-tracker');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -2530,19 +2962,13 @@ function filterWorkspace(query) {
   const clearBtn = document.getElementById('searchClearBtn');
   if (clearBtn) clearBtn.style.display = q ? 'inline-flex' : 'none';
 
-  // When searching, show all sections & all matching PYQs across subjects
-  if (q) {
-    if (DASH_STATE.isFirstYear) renderPyqVault(true);
-    ['section-study-tracker', 'section-pyqs', 'section-panic', 'section-deck'].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.style.display = 'block';
-    });
-  } else {
-    if (DASH_STATE.isFirstYear) renderPyqVault(false);
-    if (DASH_STATE.activeNav && DASH_STATE.activeNav !== 'home') {
-      const btn = document.querySelector(`#leftNavRail button[data-nav="${DASH_STATE.activeNav}"]`);
-      switchNavSection(DASH_STATE.activeNav, btn);
-    }
+  WORKSPACE_SECTION_IDS.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'block';
+  });
+
+  if (DASH_STATE.isFirstYear) {
+    renderPyqVault(Boolean(q));
   }
 
   document.querySelectorAll('.subject-accordion-card').forEach(card => {
@@ -2556,6 +2982,10 @@ function filterWorkspace(query) {
     const text = card.innerText.toLowerCase();
     card.style.display = (!q || text.includes(q)) ? 'flex' : 'none';
   });
+
+  if (!q) {
+    resolveActiveSectionByScroll();
+  }
 }
 
 function clearWorkspaceSearch() {
@@ -2727,9 +3157,14 @@ document.addEventListener('DOMContentLoaded', () => {
   updateDeckBadge();
   initResizableAiDrawer();
 
-  // Default view: Study Tracker active on left rail while showing study tracker
-  const activeNavBtn = document.querySelector('#leftNavRail button[data-nav="study-tracker"]');
-  switchNavSection('study-tracker', activeNavBtn);
+  // Initialize Two-Way IntersectionObserver ScrollSpy across all 4 visible workspace sections
+  initWorkspaceScrollSpy();
+  if (window.location.hash) {
+    const hashId = window.location.hash.replace(/^#/, '');
+    if (WORKSPACE_SECTION_IDS.includes(hashId)) {
+      setTimeout(() => scrollToWorkspaceSection(hashId), 80);
+    }
+  }
 
   // Welcome message in Ask AI drawer
   appendAiBubble(
