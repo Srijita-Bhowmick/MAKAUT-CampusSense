@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=20261111_v15" />
+  <link rel="stylesheet" href="styles.css?v=20261112_v17" />
   <style>
     body {
       min-height: 100vh;
@@ -183,6 +183,80 @@
     .btn-submit:hover {
       background: #f7a88b;
       transform: translateY(-1px);
+    }
+
+    @media screen and (max-width: 768px) {
+      :root {
+        --sat: env(safe-area-inset-top, 0px);
+        --sar: env(safe-area-inset-right, 0px);
+        --sab: env(safe-area-inset-bottom, 0px);
+        --sal: env(safe-area-inset-left, 0px);
+      }
+
+      *, *::before, *::after {
+        box-sizing: border-box;
+      }
+
+      html, body {
+        width: 100% !important;
+        max-width: 100vw !important;
+        min-height: 100dvh !important;
+        overflow-x: hidden !important;
+        position: relative !important;
+        -webkit-text-size-adjust: 100% !important;
+        background-attachment: scroll !important;
+      }
+
+      html {
+        overflow-y: auto !important;
+      }
+
+      body {
+        overflow-y: visible !important;
+      }
+
+      header {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        width: 100% !important;
+        padding: calc(0.65rem + var(--sat)) 1rem 0.65rem 1rem !important;
+      }
+
+      header a span {
+        font-size: clamp(0.95rem, 4vw, 1.2rem) !important;
+      }
+
+      .setup-container {
+        width: 100%;
+        padding: 0.85rem 0.85rem calc(2rem + var(--sab));
+        align-items: flex-start;
+      }
+
+      .setup-card {
+        width: 100%;
+        max-width: 100%;
+        padding: 1.4rem 1rem;
+      }
+
+      .setup-card h2 {
+        font-size: clamp(1.25rem, 5vw, 1.55rem) !important;
+        line-height: 1.25 !important;
+      }
+
+      .track-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+        margin: 1.25rem 0;
+      }
+
+      .setup-card .sem-pill {
+        flex: 1 1 calc(33.333% - 0.5rem) !important;
+        min-width: 72px !important;
+        padding: 0.5rem 0.55rem !important;
+        font-size: 0.82rem !important;
+      }
     }
   </style>
 </head>

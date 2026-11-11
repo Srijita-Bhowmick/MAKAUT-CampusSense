@@ -2,7 +2,7 @@
 <html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
@@ -1680,6 +1680,297 @@
       #leftNavRail.open { transform: translateX(0); box-shadow: 12px 0 32px rgba(15, 23, 42, 0.18); }
       #mainWorkspace { margin-left: 0; padding: 1.1rem 1rem 5rem; }
       .top-context-chip, .user-pill .user-name-label { display: none; }
+    }
+
+    @media screen and (max-width: 768px) {
+      :root {
+        --sat: env(safe-area-inset-top, 0px);
+        --sar: env(safe-area-inset-right, 0px);
+        --sab: env(safe-area-inset-bottom, 0px);
+        --sal: env(safe-area-inset-left, 0px);
+      }
+
+      *, *::before, *::after {
+        box-sizing: border-box;
+      }
+
+      html, body {
+        width: 100%;
+        max-width: 100vw;
+        overflow-x: hidden;
+        position: relative;
+        -webkit-text-size-adjust: 100%;
+        background-attachment: scroll;
+      }
+
+      #dashHeader {
+        position: sticky;
+        top: 0;
+        left: auto;
+        right: auto;
+        height: auto;
+        min-height: 0;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: calc(0.55rem + var(--sat)) calc(0.75rem + var(--sar)) 0.6rem calc(0.75rem + var(--sal));
+        gap: 0.45rem;
+      }
+
+      #dashShell {
+        padding-top: 0;
+        min-height: auto;
+      }
+
+      .header-left {
+        order: 1;
+        flex: 1 1 auto;
+        min-width: 0;
+        gap: 0.35rem;
+        flex-shrink: 1;
+      }
+
+      .mobile-menu-btn {
+        display: inline-flex;
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+        flex-shrink: 0;
+      }
+
+      .brand-logo-link {
+        font-size: clamp(0.84rem, 3.6vw, 1.1rem);
+        gap: 0.38rem;
+        min-width: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .brand-shield {
+        width: 26px;
+        height: 26px;
+      }
+
+      .header-right {
+        order: 2;
+        flex: 0 0 auto;
+        gap: 0.35rem;
+      }
+
+      .user-pill {
+        padding: 0.18rem;
+      }
+
+      .user-avatar {
+        width: 24px;
+        height: 24px;
+        font-size: 10px;
+      }
+
+      .signout-btn {
+        padding: 0.35rem 0.58rem;
+        font-size: 0.75rem;
+        white-space: nowrap;
+      }
+
+      #headerSearchWrap {
+        order: 3;
+        flex: 1 0 100%;
+        width: 100%;
+        max-width: 100%;
+      }
+
+      #workspaceSearchInput {
+        height: 36px;
+        font-size: 0.85rem;
+        padding: 0 2.25rem 0 2.15rem;
+      }
+
+      #leftNavRail {
+        top: 0;
+        height: 100dvh;
+        max-width: 82vw;
+        z-index: 490;
+        padding-top: calc(6.25rem + var(--sat));
+        padding-bottom: calc(1.25rem + var(--sab));
+        transform: translateX(-105%);
+      }
+
+      #leftNavRail.open {
+        transform: translateX(0);
+        box-shadow: 12px 0 32px rgba(15, 23, 42, 0.22);
+      }
+
+      #mainWorkspace {
+        width: 100%;
+        max-width: 100%;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding: 0.9rem 0.85rem calc(4.75rem + var(--sab));
+      }
+
+      .active-context-ribbon {
+        padding: 0.85rem 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.55rem;
+      }
+
+      .ribbon-value {
+        font-size: clamp(0.92rem, 3.8vw, 1rem);
+      }
+
+      .ribbon-metrics {
+        width: 100%;
+        gap: 0.4rem;
+      }
+
+      .section-header-row {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .card-grid-2,
+      .pyq-subject-selector-grid {
+        grid-template-columns: 1fr;
+        width: 100%;
+        padding: 0;
+        gap: 0.85rem;
+      }
+
+      .subject-accordion-card,
+      .pyq-elongated-tile,
+      .white-blue-card,
+      .unit-module-row,
+      .pyq-expansion-banner,
+      .first-year-guide {
+        width: 100%;
+        max-width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        box-sizing: border-box;
+      }
+
+      .accordion-header-btn {
+        padding: 0.85rem 1rem;
+        align-items: flex-start;
+      }
+
+      .course-header-main {
+        flex: 1 1 100%;
+        min-width: 0;
+        flex-wrap: wrap;
+        gap: 0.55rem;
+      }
+
+      .course-header-actions {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .course-header-actions button {
+        flex: 1 1 calc(50% - 0.5rem);
+        min-width: 120px;
+        font-size: 0.8rem;
+        padding: 0.5rem;
+        text-align: center;
+        justify-content: center;
+        white-space: normal;
+        line-height: 1.25;
+      }
+
+      .pyq-elongated-tile {
+        padding: 1rem;
+      }
+
+      .pyq-tile-top-row,
+      .card-top-meta {
+        flex-wrap: wrap;
+        gap: 0.45rem;
+      }
+
+      .pyq-tile-heading {
+        font-size: 0.95rem;
+        overflow-wrap: break-word;
+      }
+
+      .unit-info {
+        min-width: 0;
+        flex-wrap: wrap;
+      }
+
+      .btn-trio {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        width: 100%;
+      }
+
+      .btn-trio button,
+      .btn-trio a {
+        flex: 1 1 calc(50% - 0.5rem);
+        min-width: 120px;
+        font-size: 0.8rem;
+        padding: 0.5rem;
+        text-align: center;
+        justify-content: center;
+        white-space: normal;
+        line-height: 1.25;
+      }
+
+      #aiFloatingTrigger {
+        position: fixed;
+        z-index: 1050;
+        bottom: calc(1rem + var(--sab));
+        right: calc(1rem + var(--sar));
+        padding: 0.55rem 1rem;
+        font-size: 0.85rem;
+        border-radius: 9999px;
+      }
+
+      #aiDrawer {
+        width: 100vw !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        height: 100dvh !important;
+        top: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        border-left: none !important;
+        border-radius: 0 !important;
+        z-index: 1100 !important;
+        padding-top: var(--sat);
+        padding-bottom: var(--sab);
+      }
+
+      #aiResizerHandle {
+        display: none;
+      }
+
+      #pdfPreviewModal {
+        padding: 0.5rem;
+      }
+
+      .pdf-modal-card {
+        width: 100%;
+        height: 92dvh;
+      }
+
+      .pdf-modal-head {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding: 0.75rem 0.9rem;
+      }
+
+      .pdf-modal-title {
+        flex: 1 0 100%;
+        font-size: 0.9rem;
+      }
     }
   </style>
 </head>
