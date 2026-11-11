@@ -98,11 +98,17 @@ window.onClerkLoaded = function() {
             if (id === 'saved-deck-drawer' || id === 'drawer-saved-deck') {
                 return _origGetElementById('drawer-saved-deck') || _origGetElementById('saved-deck-drawer') || _origGetElementById(id);
             }
-                        if (id === 'btn-sign-in' || id === 'btn-nav-signin' || id === 'nav-signin-link') {
-                return _origGetElementById('nav-signin-link') || _origGetElementById('btn-sign-in') || _origGetElementById('btn-nav-signin') || _origGetElementById(id);
+            if (id === 'btn-sign-in' || id === 'btn-nav-signin') {
+                return _origGetElementById('btn-sign-in') || _origGetElementById('btn-nav-signin') || _origGetElementById(id);
             }
-            if (id === 'btn-sign-up' || id === 'btn-nav-signup' || id === 'nav-signup-btn') {
-                return _origGetElementById('nav-signup-btn') || _origGetElementById('btn-sign-up') || _origGetElementById('btn-nav-signup') || _origGetElementById(id);
+            if (id === 'nav-signin-link') {
+                return _origGetElementById('nav-signin-link') || _origGetElementById(id);
+            }
+            if (id === 'btn-sign-up' || id === 'btn-nav-signup') {
+                return _origGetElementById('btn-sign-up') || _origGetElementById('btn-nav-signup') || _origGetElementById(id);
+            }
+            if (id === 'nav-signup-btn') {
+                return _origGetElementById('nav-signup-btn') || _origGetElementById(id);
             }
             if (id === 'btn-open-feedback' || id === 'btn-feedback' || id === 'nav-feedback-btn') {
                 return _origGetElementById('nav-feedback-btn') || _origGetElementById('btn-feedback') || _origGetElementById('btn-open-feedback') || _origGetElementById(id);
@@ -11810,8 +11816,8 @@ window.getSubjectDocuments = getSubjectDocuments;
         }
         const signInBtn = document.getElementById('btn-sign-in');
         const signUpBtn = document.getElementById('btn-sign-up');
-        if (signInBtn) signInBtn.style.display = isAuth ? 'none' : '';
-        if (signUpBtn) signUpBtn.style.display = isAuth ? 'none' : '';
+        if (signInBtn && signInBtn.id !== 'nav-signin-link') signInBtn.style.display = isAuth ? 'none' : '';
+        if (signUpBtn && signUpBtn.id !== 'nav-signup-btn') signUpBtn.style.display = isAuth ? 'none' : '';
     }
     window.updateContextUI = updateContextUI;
     updateContextUI();
@@ -12803,14 +12809,14 @@ window.getSubjectDocuments = getSubjectDocuments;
     if (btnNavSignIn) {
         btnNavSignIn.addEventListener('click', (e) => {
             if (e) e.preventDefault();
-            window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html');
+            window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html?v=20261111_v13') : 'login.html?v=20261111_v13');
         });
     }
 
     if (btnNavSignUp) {
         btnNavSignUp.addEventListener('click', (e) => {
             if (e) e.preventDefault();
-            window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html#/sign-up') : 'login.html#/sign-up');
+            window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html?v=20261111_v13#/sign-up') : 'login.html?v=20261111_v13#/sign-up');
         });
     }
 
@@ -13726,7 +13732,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             const href = el.getAttribute('href');
             if (!href || href === '#' || href.startsWith('javascript:')) {
                 if (e) e.preventDefault();
-                window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html');
+                window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html?v=20261111_v13') : 'login.html?v=20261111_v13');
             }
         });
     });
@@ -13734,7 +13740,7 @@ window.getSubjectDocuments = getSubjectDocuments;
     if (btnLandingAuth) {
         btnLandingAuth.addEventListener('click', (e) => {
             if (e) e.preventDefault();
-            window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html');
+            window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html?v=20261111_v13') : 'login.html?v=20261111_v13');
         });
     }
 
@@ -13742,14 +13748,14 @@ window.getSubjectDocuments = getSubjectDocuments;
     if (authTriggerBtn) {
         authTriggerBtn.addEventListener('click', (e) => {
             if (e) e.preventDefault();
-            window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html');
+            window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html?v=20261111_v13') : 'login.html?v=20261111_v13');
         });
     }
 
     document.querySelectorAll('.auth-trigger-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             if (e) e.preventDefault();
-            window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html');
+            window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html?v=20261111_v13') : 'login.html?v=20261111_v13');
         });
     });
 
@@ -20847,7 +20853,7 @@ function initFloatingAskAi() {
   const askAiBtn = document.getElementById('floating-ask-ai');
   if (askAiBtn) {
     askAiBtn.textContent = 'Ask AI';
-    askAiBtn.onclick = () => { window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html'); };
+    askAiBtn.onclick = () => { window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html?v=20261111_v13') : 'login.html?v=20261111_v13'); };
   }
 }
 if (document.readyState === 'loading') {
@@ -20892,6 +20898,18 @@ window.submitFeedbackForm = function() {
 };
 
 function initInteractiveModals() {
+  const signInLink = document.getElementById('nav-signin-link');
+  if (signInLink) {
+    signInLink.style.setProperty('display', 'inline-flex', 'important');
+    signInLink.style.setProperty('visibility', 'visible', 'important');
+    signInLink.style.setProperty('opacity', '1', 'important');
+  }
+  const signUpBtn = document.getElementById('nav-signup-btn');
+  if (signUpBtn) {
+    signUpBtn.style.setProperty('display', 'inline-flex', 'important');
+    signUpBtn.style.setProperty('visibility', 'visible', 'important');
+    signUpBtn.style.setProperty('opacity', '1', 'important');
+  }
   const feedbackModal = document.getElementById('feedback-modal');
   const feedbackBtn = document.getElementById('nav-feedback-btn') || document.getElementById('btn-feedback');
   if (feedbackBtn && feedbackModal) {

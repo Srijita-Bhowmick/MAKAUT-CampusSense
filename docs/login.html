@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <title>Sign In & Sign Up — MAKAUT CampusSense</title>
   <meta name="description" content="Passwordless authentication for MAKAUT CampusSense via Clerk and Cloudflare Turnstile. Sign in or sign up with any email and 6-digit OTP verification." />
 
@@ -619,7 +622,7 @@
         groupDept.style.display = "none";
         btnSend.querySelector("span:first-child").textContent = "Get Verification Code";
         document.title = "Sign In — MAKAUT CampusSense";
-        try { history.replaceState(null, null, window.location.pathname); } catch (e) {}
+        try { history.replaceState(null, null, window.location.pathname + window.location.search); } catch (e) {}
       }
     }
 
@@ -1024,7 +1027,7 @@
 
       showAlert("success", "Verification successful! Redirecting to Academic Profile Setup...");
       setTimeout(() => {
-        window.location.replace("set-academic.html?v=20261111_v12");
+        window.location.replace("set-academic.html?v=20261111_v13");
       }, 350);
     }
 

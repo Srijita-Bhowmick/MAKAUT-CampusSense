@@ -38,7 +38,7 @@ function escapeJsStr(str) {
 }
 
 function resolveLoginUrl() {
-  return resolveCatalogPdfUrl('login.html?v=20261111_v12') || 'login.html?v=20261111_v12';
+  return resolveCatalogPdfUrl('login.html?v=20261111_v13') || 'login.html?v=20261111_v13';
 }
 
 function redirectToAuthForPyq(action, title, path) {

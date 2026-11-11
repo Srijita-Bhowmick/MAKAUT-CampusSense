@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <title>Dashboard — MAKAUT CampusSense</title>
   <meta name="description" content="Your personal student dashboard for MAKAUT CampusSense. Access curriculum, PYQs, panic packs and revision decks." />
   <meta name="robots" content="noindex, nofollow" />
@@ -1471,7 +1474,7 @@
 </div><!-- /#dash-shell -->
 
 <!-- Shared App JS -->
-<script src="app.js?v=20261111_v11"></script>
+<script src="app.js?v=20261111_v13"></script>
 
 <script>
 /* ════════════════════════════════════════════════
@@ -1552,11 +1555,11 @@ function runAuthGuard() {
   const veil = document.getElementById('auth-veil');
   const isLoggedIn = lsGet('campussense_logged_in') === 'true';
   if (!isLoggedIn) {
-    window.location.replace('login.html');
+    window.location.replace('login.html?v=20261111_v13');
     return false;
   }
   if (!localStorage.getItem('academic_profile_completed')) {
-    window.location.replace('set-academic.html');
+    window.location.replace('set-academic.html?v=20261111_v13');
     return false;
   }
   // Reveal page after guard passes
@@ -2043,8 +2046,8 @@ window.addEventListener('load', () => {
   } catch {}
   // Final auth & onboarding guard pass
   const isLoggedIn = lsGet('campussense_logged_in') === 'true';
-  if (!isLoggedIn) { window.location.replace('login.html'); return; }
-  if (!localStorage.getItem('academic_profile_completed')) { window.location.replace('set-academic.html'); }
+  if (!isLoggedIn) { window.location.replace('login.html?v=20261111_v13'); return; }
+  if (!localStorage.getItem('academic_profile_completed')) { window.location.replace('set-academic.html?v=20261111_v13'); }
 });
 </script>
 </body>
