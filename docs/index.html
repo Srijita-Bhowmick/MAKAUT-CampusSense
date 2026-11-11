@@ -30,7 +30,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Plus+Jakarta+Sans:wght@600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20261112_v20">
+    <link rel="stylesheet" href="styles.css?v=20261112_v21">
 
     <!-- Schema.org EducationalOrganization -->
     <script type="application/ld+json">
@@ -806,7 +806,7 @@
             </div>
           </div>
           <!-- Embedded Iframe Frame -->
-          <iframe id="pdf-viewer-frame" class="pdf-viewer-frame" src="about:blank" style="flex: 1; width: 100%; border: none; background: #ffffff; opacity: 1 !important; display: block !important;" title="Document Viewer" allow="fullscreen"></iframe>
+          <iframe id="pdf-viewer-frame" class="pdf-viewer-frame" src="about:blank" style="flex: 1; width: 100%; border: none; background: #ffffff; opacity: 1 !important; display: block !important;" title="Document Viewer" allow="autoplay; fullscreen"></iframe>
           <iframe id="pdf-viewer-iframe" style="display: none;" aria-hidden="true"></iframe>
         </div>
       </div>
@@ -851,9 +851,37 @@
         if (_ghDocsPrefix && (clean.startsWith('1st year/') || clean.startsWith('3rd to 8th sem/'))) {
           clean = _ghDocsPrefix + clean;
         }
-        const isGhPages = window.location.pathname.toLowerCase().includes('makaut-campussense');
-        const base = isGhPages ? '/MAKAUT-CampusSense/' : '';
+        const pathnameLower = window.location.pathname.toLowerCase();
+        const isGhPages = pathnameLower.includes('makaut-campussense');
+        const base = isGhPages
+          ? (pathnameLower.includes('/makaut-campussense/docs/') ? '/MAKAUT-CampusSense/docs/' : '/MAKAUT-CampusSense/')
+          : '';
         return base + clean;
+      }
+
+      function isLandingMobilePdfClient() {
+        const ua = (typeof navigator !== 'undefined' && navigator.userAgent) ? navigator.userAgent : '';
+        const isMobileUa = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|VivoBrowser|SamsungBrowser/i.test(ua);
+        return (typeof window !== 'undefined' && window.innerWidth <= 768) || isMobileUa;
+      }
+
+      function shouldUseLandingEmbeddedPdfViewer() {
+        if (!isLandingMobilePdfClient()) return false;
+        try {
+          if (!/^https?:$/i.test(window.location.protocol)) return false;
+          const host = (window.location.hostname || '').toLowerCase();
+          if (!host || host === 'localhost' || host === '127.0.0.1' || host === '[::1]' || host.endsWith('.local')) {
+            return false;
+          }
+        } catch (_) {}
+        return true;
+      }
+
+      function getEmbeddablePdfUrl(rawUrl) {
+        if (!rawUrl) return 'about:blank';
+        const cleanUrl = String(rawUrl).split('#')[0];
+        const absoluteUrl = new URL(cleanUrl, window.location.href).href;
+        return `https://docs.google.com/viewer?url=${encodeURIComponent(absoluteUrl)}&embedded=true`;
       }
 
       function openLandingPdfPreview(title, url) {
@@ -894,10 +922,11 @@
         });
 
         if (iframe) {
+          const targetFrameUrl = shouldUseLandingEmbeddedPdfViewer() ? getEmbeddablePdfUrl(safeUrl) : safeUrl;
           iframe.style.opacity = '1';
           iframe.style.display = 'block';
           iframe.src = 'about:blank';
-          setTimeout(() => { iframe.src = safeUrl; }, 20);
+          setTimeout(() => { iframe.src = targetFrameUrl; }, 20);
         }
 
         if (modal) {
@@ -1157,7 +1186,7 @@
     <!-- Offline Verified Knowledge Index -->
     <script src="makaut_knowledge_index.js"></script>
     <!-- Application Script -->
-    <script src="app.js?v=20261111_v13"></script>
+    <script src="app.js?v=20261112_v21"></script>
     <!-- Clerk session sync (dynamically hydrated without hardcoded tokens) -->
     <script defer crossorigin="anonymous" id="clerk-sdk-script" data-clerk-publishable-key="pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk" src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js"></script>
     <script>

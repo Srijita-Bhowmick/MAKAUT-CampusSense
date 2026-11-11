@@ -419,6 +419,31 @@ window.onClerkLoaded = function() {
         wireNavPanicLink();
     }
 
+    function isMobilePdfEnv() {
+      const ua = (typeof navigator !== 'undefined' && navigator.userAgent) ? navigator.userAgent : '';
+      const isMobileUa = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|VivoBrowser|SamsungBrowser/i.test(ua);
+      if (!((typeof window !== 'undefined' && window.innerWidth <= 768) || isMobileUa)) return false;
+      try {
+        if (!/^https?:$/i.test(window.location.protocol)) return false;
+        const host = (window.location.hostname || '').toLowerCase();
+        if (!host || host === 'localhost' || host === '127.0.0.1' || host === '[::1]' || host.endsWith('.local')) {
+          return false;
+        }
+      } catch (_) {}
+      return true;
+    }
+
+    function getEmbeddablePdfUrl(rawUrl) {
+      if (!rawUrl) return 'about:blank';
+      const cleanUrl = String(rawUrl).split('#')[0];
+      const absoluteUrl = new URL(cleanUrl, window.location.href).href;
+      return `https://docs.google.com/viewer?url=${encodeURIComponent(absoluteUrl)}&embedded=true`;
+    }
+
+    function resolveMobilePdfIframeSrc(rawUrl, desktopUrl) {
+      return isMobilePdfEnv() ? getEmbeddablePdfUrl(rawUrl) : desktopUrl;
+    }
+
     window.previewPdfFile = function(rawUrl, title) {
       const isSyllabus = isSyllabusResource(rawUrl, title);
       if (!isSyllabus && !isUserAuthenticated()) {
@@ -473,8 +498,9 @@ window.onClerkLoaded = function() {
       // 4. Defer setting iframe src until modal layout is calculated
       setTimeout(() => {
         if (iframe) {
-          // Append toolbar parameters for clean viewport display
-          iframe.src = resolvedUrl + '#toolbar=1&navpanes=0';
+          // Append toolbar parameters on desktop; use inline embedded viewer on mobile
+          const desktopSrc = resolvedUrl + '#toolbar=1&navpanes=0';
+          iframe.src = resolveMobilePdfIframeSrc(resolvedUrl, desktopSrc);
         }
       }, 60);
     };
@@ -15384,9 +15410,10 @@ window.getSubjectDocuments = getSubjectDocuments;
                 downloadDirectBtn.setAttribute('download', preferredName);
             }
 
+            const embedTargetUrl = resolveMobilePdfIframeSrc(resolvedUrl, finalUrl);
             iframe.src = 'about:blank';
             setTimeout(() => {
-                if (iframe) iframe.src = finalUrl;
+                if (iframe) iframe.src = embedTargetUrl;
             }, 60);
         }
 
