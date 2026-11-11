@@ -98,10 +98,11 @@
             href="dashboard.html?v=20261111_v14" 
             id="nav-back-dashboard-btn" 
             class="nav-dashboard-pill" 
-            style="display: none;"
+            style="display: none !important;"
+            onclick="try{sessionStorage.removeItem('campussense_from_dashboard');}catch(_){}"
             aria-label="Back to Dashboard"
           >
-            ← Back to Dashboard
+            Back to Dashboard →
           </a>
         </div>
     </header>
@@ -114,13 +115,42 @@
             (window.Clerk && window.Clerk.user) ||
             localStorage.getItem('campussense_logged_in') === 'true'
           );
-          if (isAuth) {
-            var hasAcademic = localStorage.getItem('academic_profile_completed') === 'true' || Boolean(localStorage.getItem('campussense_academic_profile'));
-            var targetFile = hasAcademic ? 'dashboard.html?v=20261111_v14' : 'set-academic.html?v=20261111_v14';
-            var isGh = window.location.pathname.toLowerCase().indexOf('makaut-campussense') !== -1 && window.location.pathname.toLowerCase().indexOf('/docs/') === -1;
-            btn.href = (isGh ? '/MAKAUT-CampusSense/' : '') + targetFile;
+          var hasAcademic =
+            localStorage.getItem('academic_profile_completed') === 'true' ||
+            Boolean(localStorage.getItem('campussense_academic_profile'));
+
+          var urlParams = new URLSearchParams(window.location.search || '');
+          var urlFromDashboard = urlParams.get('from') === 'dashboard';
+          var sessionFromDashboard = false;
+          try {
+            sessionFromDashboard = sessionStorage.getItem('campussense_from_dashboard') === 'true';
+          } catch (_) {}
+
+          if (isAuth && hasAcademic && (urlFromDashboard || sessionFromDashboard)) {
+            try {
+              sessionStorage.setItem('campussense_from_dashboard', 'true');
+            } catch (_) {}
+            if (urlFromDashboard && window.history && typeof window.history.replaceState === 'function') {
+              try {
+                var cleanUrl = new URL(window.location.href);
+                cleanUrl.searchParams.delete('from');
+                window.history.replaceState({}, '', cleanUrl.pathname + cleanUrl.search + cleanUrl.hash);
+              } catch (_) {}
+            }
+            var pathnameLower = window.location.pathname.toLowerCase();
+            var isDocs = pathnameLower.indexOf('/docs/') !== -1;
+            var isGh = pathnameLower.indexOf('makaut-campussense') !== -1 && !isDocs;
+            var targetFile = 'dashboard.html?v=20261111_v14';
+            btn.href = window.location.protocol === 'file:'
+              ? targetFile
+              : ((isGh ? '/MAKAUT-CampusSense/' : (isDocs ? '/docs/' : '/')) + targetFile);
             btn.style.setProperty('display', 'inline-flex', 'important');
           } else {
+            if (!isAuth || !hasAcademic) {
+              try {
+                sessionStorage.removeItem('campussense_from_dashboard');
+              } catch (_) {}
+            }
             btn.style.setProperty('display', 'none', 'important');
           }
         } catch (e) {}
@@ -1133,6 +1163,7 @@
                   localStorage.removeItem('campussense_auth_provider');
                   localStorage.removeItem('campussense_user_session');
                   localStorage.removeItem('academic_profile_completed');
+                  try { sessionStorage.removeItem('campussense_from_dashboard'); } catch (_) {}
                   if (window.Clerk?.signOut) {
                     try { await window.Clerk.signOut(); } catch (err) {}
                   }
@@ -1144,6 +1175,14 @@
           } else {
             if (signOutBtn) signOutBtn.style.display = 'none';
             document.querySelectorAll('#btn-sign-in, #btn-sign-up, #btn-nav-signin, #btn-nav-signup').forEach(btn => btn.style.display = '');
+            try {
+              sessionStorage.removeItem('campussense_from_dashboard');
+              if (new URLSearchParams(window.location.search || '').get('from') === 'dashboard' && window.history && typeof window.history.replaceState === 'function') {
+                var strippedUrl = new URL(window.location.href);
+                strippedUrl.searchParams.delete('from');
+                window.history.replaceState({}, '', strippedUrl.pathname + strippedUrl.search + strippedUrl.hash);
+              }
+            } catch (_) {}
           }
           if (typeof window.syncBackToDashboardShortcut === 'function') {
             window.syncBackToDashboardShortcut();

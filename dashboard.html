@@ -1661,11 +1661,11 @@
 
     <div class="rail-divider"></div>
     <div class="rail-section-label">Quick Links</div>
-    <a href="/index.html" class="rail-item quick-link-item" id="quickHomeLink">
+    <a href="/index.html?from=dashboard" class="rail-item quick-link-item" id="quickHomeLink" onclick="markQuickLinkNavigation()">
       <span class="icon" aria-hidden="true">🏠</span>
       <span class="rail-item-label">Home</span>
     </a>
-    <a href="/index.html#syllabus-section" class="rail-item quick-link-item" id="quickFullSyllabusLink">
+    <a href="/index.html?from=dashboard#syllabus-section" class="rail-item quick-link-item" id="quickFullSyllabusLink" onclick="markQuickLinkNavigation()">
       <span class="icon" aria-hidden="true">📁</span>
       <span class="rail-item-label">Full Syllabus</span>
     </a>
@@ -2341,13 +2341,23 @@ const DASH_STATE = {
   ghDocsPrefix: ''
 };
 
+function markQuickLinkNavigation() {
+  try {
+    sessionStorage.setItem('campussense_from_dashboard', 'true');
+  } catch (_) {}
+}
+
 function syncQuickLinks() {
-  const isGh = window.location.pathname.toLowerCase().includes('makaut-campussense');
-  const prefix = isGh ? '/MAKAUT-CampusSense/' : '/';
+  const pathnameLower = window.location.pathname.toLowerCase();
+  const isDocs = pathnameLower.includes('/docs/');
+  const isGh = pathnameLower.includes('makaut-campussense') && !isDocs;
+  const base = window.location.protocol === 'file:'
+    ? 'index.html'
+    : (isGh ? '/MAKAUT-CampusSense/index.html' : (isDocs ? '/docs/index.html' : '/index.html'));
   const homeEl = document.getElementById('quickHomeLink');
   const syllEl = document.getElementById('quickFullSyllabusLink');
-  if (homeEl) homeEl.href = `${prefix}index.html`;
-  if (syllEl) syllEl.href = `${prefix}index.html#syllabus-section`;
+  if (homeEl) homeEl.href = `${base}?from=dashboard`;
+  if (syllEl) syllEl.href = `${base}?from=dashboard#syllabus-section`;
 }
 
 // ── GitHub Pages /docs vs root path detection ──
@@ -2455,6 +2465,7 @@ async function handleSignOut() {
     'campussense_stage',
     'campussense_year_mode'
   ].forEach(k => { try { localStorage.removeItem(k); } catch (_) {} });
+  try { sessionStorage.removeItem('campussense_from_dashboard'); } catch (_) {}
   window.location.replace('login.html?v=20261111_v14');
 }
 
@@ -3689,6 +3700,7 @@ function handleGenerateStudyGuide() {
 // ── Init Everything on DOM Ready ──
 document.addEventListener('DOMContentLoaded', () => {
   if (!runAuthGuard()) return;
+  try { sessionStorage.removeItem('campussense_from_dashboard'); } catch (_) {}
 
   syncQuickLinks();
   resolveAcademicContext();

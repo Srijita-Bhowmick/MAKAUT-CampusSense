@@ -1024,6 +1024,7 @@
       localStorage.setItem("campussense_auth_provider", "clerk_otp");
       localStorage.setItem("campussense_user_session", JSON.stringify(user));
       localStorage.removeItem("academic_profile_completed");
+      try { sessionStorage.removeItem("campussense_from_dashboard"); } catch (_) {}
 
       showAlert("success", "Verification successful! Redirecting to Academic Profile Setup...");
       setTimeout(() => {
