@@ -15724,7 +15724,7 @@ body, html {
 
 body.landing-body, body.dashboard-body, .page-wrapper {
   background: 
-    linear-gradient(rgba(233, 232, 248, 0.48), rgba(233, 232, 248, 0.58)), 
+    linear-gradient(rgba(233, 232, 248, 0.30), rgba(233, 232, 248, 0.35)), 
     url('images/makaut-haringhata-boulevard.jpg?v=20261110_v9') center center / cover no-repeat fixed !important;
 }
 
@@ -15738,7 +15738,7 @@ body.landing-body, body.dashboard-body, .page-wrapper {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  background: linear-gradient(rgba(233, 232, 248, 0.48), rgba(233, 232, 248, 0.58)),
+  background: linear-gradient(rgba(233, 232, 248, 0.30), rgba(233, 232, 248, 0.35)),
               url('images/makaut-haringhata-boulevard.jpg?v=20261110_v9') center center / cover no-repeat fixed !important;
   padding: 1.5rem !important;
   box-sizing: border-box !important;
@@ -15758,7 +15758,7 @@ body.dashboard-body,
 .dashboard-wrapper,
 .page-wrapper {
   background: 
-    linear-gradient(rgba(233, 232, 248, 0.48), rgba(233, 232, 248, 0.58)), 
+    linear-gradient(rgba(233, 232, 248, 0.30), rgba(233, 232, 248, 0.35)), 
     url('images/makaut-haringhata-boulevard.jpg?v=20261110_v9') center center / cover no-repeat fixed !important;
   background-color: var(--surface-canvas, #E9E8F8) !important;
 }
@@ -15768,7 +15768,7 @@ body.dashboard-body,
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  background: linear-gradient(rgba(233, 232, 248, 0.48), rgba(233, 232, 248, 0.58)),
+  background: linear-gradient(rgba(233, 232, 248, 0.30), rgba(233, 232, 248, 0.35)),
               url('images/makaut-haringhata-boulevard.jpg?v=20261110_v9') center center / cover no-repeat fixed !important;
   padding: 1.5rem !important;
   box-sizing: border-box !important;
@@ -15816,7 +15816,7 @@ html, body {
   min-height: 100vh !important;
   width: 100% !important;
   background: 
-    linear-gradient(rgba(233, 232, 248, 0.48), rgba(233, 232, 248, 0.58)), 
+    linear-gradient(rgba(233, 232, 248, 0.30), rgba(233, 232, 248, 0.35)), 
     url('images/makaut-haringhata-boulevard.jpg?v=20261110_v9') center top / cover no-repeat fixed !important;
   background-color: #E9E8F8 !important;
 }
@@ -15827,7 +15827,7 @@ body.dashboard-body,
 .dashboard-wrapper,
 .page-wrapper {
   background: 
-    linear-gradient(rgba(233, 232, 248, 0.48), rgba(233, 232, 248, 0.58)), 
+    linear-gradient(rgba(233, 232, 248, 0.30), rgba(233, 232, 248, 0.35)), 
     url('images/makaut-haringhata-boulevard.jpg?v=20261110_v9') center top / cover no-repeat fixed !important;
   background-color: #E9E8F8 !important;
 }
@@ -15884,7 +15884,7 @@ html, body {
   width: 100% !important;
   background-color: #E9E8F8 !important;
   background-image: 
-    linear-gradient(rgba(233, 232, 248, 0.48), rgba(233, 232, 248, 0.58)),
+    linear-gradient(rgba(233, 232, 248, 0.30), rgba(233, 232, 248, 0.35)),
     url('images/makaut-haringhata-boulevard.jpg?v=20261110_v9') !important;
   background-position: center top !important;
   background-size: cover !important;
@@ -16003,7 +16003,7 @@ body.landing-body, body.dashboard-body,
   padding: 0 !important;
   background-color: #E9E8F8 !important;
   background-image:
-    linear-gradient(rgba(233, 232, 248, 0.40), rgba(233, 232, 248, 0.45)),
+    linear-gradient(rgba(233, 232, 248, 0.30), rgba(233, 232, 248, 0.35)),
     url('images/makaut-haringhata-boulevard.jpg?v=20261110_v9') !important;
   background-position: center top !important;
   background-size: cover !important;
@@ -16020,7 +16020,7 @@ body.landing-body, body.dashboard-body,
   justify-content: center !important;
   background-color: #E9E8F8 !important;
   background-image:
-    linear-gradient(rgba(233, 232, 248, 0.40), rgba(233, 232, 248, 0.45)),
+    linear-gradient(rgba(233, 232, 248, 0.30), rgba(233, 232, 248, 0.35)),
     url('images/makaut-haringhata-boulevard.jpg?v=20261110_v9') !important;
   background-position: center top !important;
   background-size: cover !important;
