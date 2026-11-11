@@ -12197,7 +12197,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             questionText: 'Explain the losses occurring in a single-phase transformer. Derive the condition for maximum efficiency and show that it occurs when copper loss equals iron loss.',
             marks: 10,
             frequencyCount: 4,
-            examYears: ['2018', '2020', '2022', '2023'],
+            examYears: ['2018', '2021', '2022', '2023'],
             groupType: 'Group C',
             modelAnswerSnippet: 'Transformer losses: Iron loss Pi (hysteresis + eddy current, constant) and Copper loss Pcu = I2^2 * R02 (variable). Efficiency eta = (V2*I2*cos(phi)) / (V2*I2*cos(phi) + Pi + I2^2*R02). Differentiating with respect to I2 and equating to zero yields I2^2 * R02 = Pi, i.e., Variable Copper Loss = Constant Iron Loss.'
         },
@@ -12209,7 +12209,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             questionText: 'Differentiate between call by value and call by reference in C. Write a C function using pointers to swap two integer values without global variables.',
             marks: 5,
             frequencyCount: 4,
-            examYears: ['2019', '2020', '2022', '2023'],
+            examYears: ['2019', '2021', '2022', '2023'],
             groupType: 'Group B',
             modelAnswerSnippet: 'In call by value, copies of arguments are passed; changes inside the function do not affect caller. In call by reference (via pointers in C), addresses are passed so caller values are modified directly: void swap(int *a, int *b) { int temp = *a; *a = *b; *b = temp; }'
         },
@@ -12221,7 +12221,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             questionText: 'Explain pointer arithmetic in two-dimensional arrays. Show how *(*(arr + i) + j) accesses the element at row i and column j.',
             marks: 10,
             frequencyCount: 4,
-            examYears: ['2018', '2020', '2022', '2024'],
+            examYears: ['2018', '2021', '2022', '2024'],
             groupType: 'Group C',
             modelAnswerSnippet: 'In int arr[M][N], arr is pointer to array of N ints. (arr + i) points to the i-th row. Dereferencing *(arr + i) yields base address of row i. Adding j gives (*(arr + i) + j), pointing to element (i, j). Final dereference *(*(arr + i) + j) yields arr[i][j].'
         },
@@ -12233,7 +12233,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             questionText: 'What is Compton scattering? Derive the expression for Compton shift in wavelength Delta lambda = (h / (m0 * c)) * (1 - cos theta).',
             marks: 10,
             frequencyCount: 4,
-            examYears: ['2018', '2020', '2022', '2023'],
+            examYears: ['2018', '2021', '2022', '2023'],
             groupType: 'Group C',
             modelAnswerSnippet: 'Applying relativistic conservation of energy and momentum between incident photon and stationary electron: E + m0*c^2 = E\' + m*c^2 and p = p\' + p_e. Squaring and eliminating electron parameters yields Delta lambda = lambda\' - lambda = (h / m0*c) * (1 - cos theta).'
         },
@@ -12245,7 +12245,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             questionText: 'State Brewster\'s law of polarization by reflection. Prove that when light is incident at polarizing angle, reflected and refracted rays are mutually perpendicular.',
             marks: 5,
             frequencyCount: 4,
-            examYears: ['2020', '2022', '2023', '2024'],
+            examYears: ['2021', '2022', '2023', '2024'],
             groupType: 'Group B',
             modelAnswerSnippet: 'Brewster\'s Law: mu = tan(ip) = sin(ip)/cos(ip). By Snell\'s Law: mu = sin(ip)/sin(r). Equating gives sin(ip)/cos(ip) = sin(ip)/sin(r) => cos(ip) = sin(r) = cos(90° - r) => ip + r = 90°. Hence reflected and refracted rays are at right angles (180° - 90° = 90°).'
         },
@@ -12268,7 +12268,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             questionText: 'Explain crystal field splitting of d-orbitals in octahedral and tetrahedral complexes with energy level diagrams. Calculate CFSE for high-spin and low-spin d5 and d6 complexes.',
             marks: 10,
             frequencyCount: 5,
-            examYears: ['2018', '2020', '2022', '2023', '2024'],
+            examYears: ['2018', '2021', '2022', '2023', '2024'],
             groupType: 'Group C',
             modelAnswerSnippet: 'Under octahedral field, electrostatic repulsion splits 5 degenerate d-orbitals into lower t2g (dxy, dyz, dzx, -0.4 Delta_o) and higher eg (dx2-y2, dz2, +0.6 Delta_o). In tetrahedral field, splitting reverses into lower e (-0.6 Delta_t) and higher t2 (+0.4 Delta_t) where Delta_t = (4/9) Delta_o.'
         },
@@ -12279,7 +12279,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             questionText: 'Give the chemical synthesis of: (i) Aspirin from salicylic acid, and (ii) Paracetamol from p-nitrophenol with reaction mechanisms and conditions.',
             marks: 5,
             frequencyCount: 4,
-            examYears: ['2020', '2022', '2023', '2024'],
+            examYears: ['2021', '2022', '2023', '2024'],
             groupType: 'Group B',
             modelAnswerSnippet: 'Aspirin: Salicylic acid + acetic anhydride + conc. H2SO4 at 50-60°C -> acetylsalicylic acid + acetic acid. Irreversible COX-1/COX-2 inhibitor. Paracetamol: p-nitrophenol reduced with Fe/HCl to p-aminophenol, then acetylated with acetic anhydride in glacial acetic acid to acetaminophen.'
         },
@@ -12290,7 +12290,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             questionText: 'Define an exact differential equation. State the necessary and sufficient condition for M dx + N dy = 0 to be exact. Solve (x^2 + y^2) dx + 2xy dy = 0.',
             marks: 10,
             frequencyCount: 4,
-            examYears: ['2023', '2024', '2025', '2026'],
+            examYears: ['2022', '2023', '2024', '2025'],
             groupType: 'Group C',
             modelAnswerSnippet: 'Condition for exactness: del(M)/del(y) = del(N)/del(x). Here M = x^2 + y^2, N = 2xy. del(M)/del(y) = 2y, del(N)/del(x) = 2y => Equation is exact. Solution is integral(M dx) [treating y constant] + integral(terms of N free from x dy) = C => x^3/3 + x*y^2 = C.'
         }

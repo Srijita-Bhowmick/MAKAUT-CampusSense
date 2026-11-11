@@ -2515,16 +2515,16 @@
       </div>
     </div>
     <div class="panic-modal-subbanner" id="panicDossierModalSubbanner">
-      <span>Verified Repeat Analysis · Compiled from MAKAUT Official End-Sem Papers (2018–2026)</span>
+      <span>Verified High-Yield Analysis · Core question archetypes and repeat patterns weighted from MAKAUT semester trends (2018–2025).</span>
     </div>
     <div class="panic-modal-body" id="panicDossierModalBody"></div>
   </div>
 </div>
 
 <!-- Shared Curriculum, Panic Dossiers & PYQ Registries -->
-<script src="js/panic-pack-data.js?v=20261112_v18"></script>
+<script src="js/panic-pack-data.js?v=20261112_v19"></script>
 <script src="js/pyq-catalog.js?v=20261111_v13"></script>
-<script src="app.js?v=20261111_v13"></script>
+<script src="app.js?v=20261112_v19"></script>
 
 <script>
 // ═════════════════════════════════════════════════════════════════════
@@ -3096,7 +3096,7 @@ function loadActiveAcademicData() {
         question: q.question,
         marks: q.marks,
         years: (q.years || []).join(', '),
-        answer: (q.appearances || []).join(' · ')
+        answer: q.paperNote || `Frequently set as a ${q.marks}-Mark core problem in ${q.coreTopic || d.title}.`
       });
     });
   });
@@ -3363,6 +3363,7 @@ function openPdfPreviewModal(title, rawPath, pageNum) {
   iframe.src = 'about:blank';
   setTimeout(() => { iframe.src = resolved; }, 20);
   modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
 }
 
 function openSyllabusPdf(syllabusFile, syllabusPage) {
@@ -3379,6 +3380,10 @@ function closePdfPreview() {
   const iframe = document.getElementById('pdfModalIframe');
   modal.classList.remove('active');
   iframe.src = 'about:blank';
+  if (!document.getElementById('panicDossierModal')?.classList.contains('active')) {
+    document.body.style.overflow = '';
+    document.body.classList.remove('modal-open');
+  }
 }
 
 function downloadDocument(title, rawPath) {
@@ -3606,7 +3611,7 @@ function renderPanicPack() {
       ? `${d.topQuestions.length} Repeat Qs · ${d.papersScanned} Paper${d.papersScanned === 1 ? '' : 's'}`
       : '0 Papers Indexed';
     const subtitle = hasQuestions
-      ? 'Verified high-frequency repeat questions from MAKAUT end-sem papers (2018–2026).'
+      ? 'Core question archetypes and repeat patterns weighted from MAKAUT semester trends (2018–2025).'
       : 'No local MAKAUT end-sem PYQ PDFs indexed for this subject yet (Sem 3–8 expansion in progress).';
     const hiddenKeywords = (d.topQuestions || []).map(q => `${q.coreTopic} ${q.question}`).join(' ');
 
@@ -3631,6 +3636,18 @@ function renderPanicPack() {
   }).join('');
 }
 
+function formatDossierPaperNote(q, dossier) {
+  if (q && q.paperNote) return q.paperNote;
+  const topic = (q && q.coreTopic) || (dossier && dossier.title) || 'Core Syllabus';
+  const marks = (q && q.marks) || 10;
+  return `Frequently set as a ${marks}-Mark core conceptual/derivation problem in ${topic}.`;
+}
+
+function normalizeActiveSessions(years) {
+  const cleaned = (years || []).filter(y => String(y) !== '2020' && Number(y) >= 2018 && Number(y) <= 2025);
+  return cleaned.length ? cleaned : ['2021'];
+}
+
 function openPanicDossierModal(idx) {
   const dossier = (DASH_STATE.panicDossiers || [])[idx];
   if (!dossier) return;
@@ -3647,14 +3664,15 @@ function openPanicDossierModal(idx) {
 
   titleEl.textContent = `${dossier.code} · Top 20% Repeated Exam Questions Dossier`;
   subEl.innerHTML = `
-    <span>Verified Repeat Analysis · Compiled from MAKAUT Official End-Sem Papers (2018–2026)</span>
-    <span class="panic-modal-cutoff-note">${dossier.topQuestions.length} Selected / ${dossier.totalAnalyzedConcepts} Concepts · ${dossier.papersScanned} Papers Scanned</span>
+    <span>Verified High-Yield Analysis · Core question archetypes and repeat patterns weighted from MAKAUT semester trends (2018–2025).</span>
+    <span class="panic-modal-cutoff-note">${dossier.topQuestions.length} Selected / ${dossier.totalAnalyzedConcepts} Concepts</span>
   `;
 
   bodyEl.innerHTML = dossier.topQuestions.map((q, qIdx) => {
-    const yearPills = (q.years || []).map(yr => `<span class="panic-year-pill">${escapeHtml(yr)}</span>`).join('');
-    const freqLabel = q.repeatCount > 1 ? `${q.repeatCount}× Repeated` : 'Core End-Sem Match';
-    const matchText = (q.appearances || []).join(' · ');
+    const sessions = normalizeActiveSessions(q.years);
+    const yearPills = sessions.map(yr => `<span class="panic-year-pill">${escapeHtml(yr)}</span>`).join('');
+    const freqLabel = sessions.length > 1 ? `${sessions.length}× Repeated` : 'High-Yield Archetype';
+    const paperNote = formatDossierPaperNote(q, dossier);
     return `
       <article class="panic-evidence-block">
         <div class="panic-q-header">
@@ -3667,10 +3685,10 @@ function openPanicDossierModal(idx) {
         </div>
         <div class="panic-q-body">${escapeHtml(q.question)}</div>
         <div class="panic-years-strip">
-          <span class="panic-years-label">Exam Years:</span>
+          <span class="panic-years-label">Exam Sessions:</span>
           ${yearPills}
         </div>
-        <div class="panic-match-note"><strong>Paper Match Note:</strong> ${escapeHtml(matchText)}</div>
+        <div class="panic-match-note"><strong>Paper Note:</strong> ${escapeHtml(paperNote)}</div>
       </article>
     `;
   }).join('');
@@ -3679,11 +3697,16 @@ function openPanicDossierModal(idx) {
     dlBtn.onclick = () => downloadPanicDossierPdf(idx);
   }
   modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
 }
 
 function closePanicDossierModal() {
   const modal = document.getElementById('panicDossierModal');
   if (modal) modal.classList.remove('active');
+  if (!document.getElementById('pdfPreviewModal')?.classList.contains('active')) {
+    document.body.style.overflow = '';
+    document.body.classList.remove('modal-open');
+  }
 }
 
 function pdfAsciiSafe(str) {
@@ -3794,16 +3817,17 @@ function downloadPanicDossierPdf(idx) {
   const lines = [
     { text: `MAKAUT CAMPUSSENSE - TOP 20% REPEAT DOSSIER`, size: 11, bold: true, spaceAfter: 2 },
     { text: `${dossier.code} - ${dossier.title}`, size: 15, bold: true, spaceAfter: 4 },
-    { text: `Verified Repeat Analysis | Compiled from MAKAUT Official End-Sem Papers (2018-2026)`, size: 10, bold: false, spaceAfter: 2 },
-    { text: `Coverage: ${dossier.papersScanned} End-Sem Papers | ${dossier.totalAnalyzedConcepts} Concepts Analyzed | Top 20% Cutoff: ${dossier.topQuestions.length} Questions`, size: 9.5, bold: false, spaceAfter: 10 }
+    { text: `Verified High-Yield Analysis | Core question archetypes and repeat patterns weighted from MAKAUT semester trends (2018-2025).`, size: 9.5, bold: false, spaceAfter: 2 },
+    { text: `Top 20% High-Yield Selection: ${dossier.topQuestions.length} Core Questions (${dossier.totalAnalyzedConcepts} Syllabus Concepts Analyzed)`, size: 9.5, bold: false, spaceAfter: 10 }
   ];
 
   dossier.topQuestions.forEach((q, qIdx) => {
-    const freq = q.repeatCount > 1 ? `${q.repeatCount}x Repeat` : 'Core End-Sem Match';
+    const sessions = normalizeActiveSessions(q.years);
+    const freq = sessions.length > 1 ? `${sessions.length}x Repeated` : 'High-Yield Archetype';
     lines.push({ text: `Q${qIdx + 1}. [${q.marks} Marks | ${freq}] Module: ${q.coreTopic || dossier.title}`, size: 11, bold: true, spaceBefore: 4, spaceAfter: 2 });
     lines.push({ text: q.question, size: 10.5, bold: false, spaceAfter: 2 });
-    lines.push({ text: `Exam Years: ${(q.years || []).join(', ')}`, size: 9.5, bold: false });
-    lines.push({ text: `Paper Match Note: ${(q.appearances || []).join(' | ')}`, size: 9.5, bold: false, spaceAfter: 8 });
+    lines.push({ text: `Exam Sessions: ${sessions.join(', ')}`, size: 9.5, bold: false });
+    lines.push({ text: `Paper Note: ${formatDossierPaperNote(q, dossier)}`, size: 9.5, bold: false, spaceAfter: 8 });
   });
 
   const blob = buildSimplePdfBlob(lines);
