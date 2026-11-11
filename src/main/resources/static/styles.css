@@ -16494,3 +16494,90 @@ footer, .footer-section, .landing-footer {
   outline: none !important;
   box-shadow: 0 0 0 3px rgba(141, 185, 240, 0.75) !important;
 }
+
+/* ===================================================================
+   SCOPED FLUID RESPONSIVE ENGINE (@media screen and (max-width: 768px))
+   Zero impact on desktop layout, grids, or cards.
+   =================================================================== */
+@media screen and (max-width: 768px) {
+  html, body {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+    position: relative;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  #main-header,
+  .editorial-sticky-navbar,
+  .landing-sticky-navbar,
+  .app-header {
+    padding: 0.6rem 0.7rem !important;
+    gap: 0.35rem !important;
+    max-width: 100vw !important;
+  }
+
+  #main-header .brand-link,
+  .editorial-sticky-navbar .brand-link,
+  .landing-sticky-navbar .brand-link {
+    font-size: clamp(0.7rem, 3vw, 0.92rem) !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+  }
+
+  #main-header .nav-right,
+  .landing-sticky-navbar .nav-right {
+    gap: 0.22rem !important;
+    flex-shrink: 0 !important;
+  }
+
+  #main-header #nav-feedback-btn,
+  #main-header #nav-signin-link,
+  #main-header #nav-signup-btn,
+  #main-header .nav-peach-pill,
+  #main-header .nav-dashboard-pill,
+  #main-header #nav-back-dashboard-btn {
+    padding: 0.28rem 0.42rem !important;
+    font-size: 0.7rem !important;
+    line-height: 1.2 !important;
+    white-space: nowrap !important;
+  }
+
+  #portal h1,
+  .editorial-hero-heading,
+  .editorial-hero-title {
+    font-size: clamp(1.85rem, 7.5vw, 2.5rem) !important;
+    line-height: 1.15 !important;
+    max-width: 100% !important;
+    overflow-wrap: break-word !important;
+  }
+
+  /* Prevent horizontal blowout in main layout containers */
+  .dashboard-container,
+  .main-content,
+  .cards-grid,
+  .section-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0.85rem !important;
+    padding-right: 0.85rem !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Make cards stretch naturally to phone width without breaking proportions */
+  .card,
+  .pyq-card,
+  .panic-pack-card,
+  .stat-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+}
