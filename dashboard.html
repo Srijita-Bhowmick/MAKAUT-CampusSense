@@ -1031,7 +1031,37 @@
       gap: 0.9rem;
     }
 
-    /* Level 1: Compact 1st-Year Subject Filter Chips */
+    /* Level 1: PYQ Expansion Banner & Compact Subject Filter Chips */
+    .pyq-expansion-banner {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background-color: #FFFFFF;
+      border: 1.5px solid #8DB9F0;
+      border-radius: 0.75rem;
+      padding: 0.65rem 1rem;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 2px 8px rgba(141, 185, 240, 0.12);
+    }
+
+    .pyq-banner-icon {
+      font-size: 1rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .pyq-banner-text {
+      font-size: 0.85rem;
+      color: #0F172A;
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    .pyq-banner-text strong {
+      color: #0F172A;
+      font-weight: 600;
+    }
+
     .pyq-subject-selector-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -1798,6 +1828,12 @@
           <h2 class="section-heading">📄 PYQs Archive</h2>
           <span class="section-sub-pill" id="pyqSectionSubPill">Filtered for Active Semester</span>
         </div>
+      </div>
+      <div class="pyq-expansion-banner">
+        <span class="pyq-banner-icon">⚡</span>
+        <p class="pyq-banner-text">
+          <strong>PYQ Bank in progress.</strong> Question papers for all semesters are being expanded in structured phases, with Semesters 3–8 currently prioritized. Stay tuned.
+        </p>
       </div>
       <div id="pyqSubjectSelectorGrid" class="pyq-subject-selector-grid" style="display:none;"></div>
       <div class="pyq-elongated-list" id="pyqVaultGrid"></div>

@@ -610,7 +610,7 @@
         groupDept.style.display = "block";
         btnSend.querySelector("span:first-child").textContent = "Generate Verification Code";
         document.title = "Sign Up — MAKAUT CampusSense";
-        try { history.replaceState(null, null, "#/sign-up"); } catch (e) {}
+        try { history.replaceState(null, null, window.location.pathname + window.location.search + "#/sign-up"); } catch (e) {}
       } else {
         tabSignIn.classList.add("active");
         tabSignUp.classList.remove("active");
@@ -1021,8 +1021,23 @@
 
     function completeAuthentication(user) {
       localStorage.setItem("campussense_logged_in", "true");
+      localStorage.setItem("campussense_token", "cs_clerk_" + Date.now());
       localStorage.setItem("campussense_auth_provider", "clerk_otp");
       localStorage.setItem("campussense_user_session", JSON.stringify(user));
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const shouldReturnToLanding =
+        urlParams.get("redirect") === "landing" ||
+        Boolean(sessionStorage.getItem("landing_pending_preview"));
+
+      if (shouldReturnToLanding) {
+        showAlert("success", "Verification successful! Returning to your document preview...");
+        setTimeout(() => {
+          window.location.replace("index.html");
+        }, 300);
+        return;
+      }
+
       localStorage.removeItem("academic_profile_completed");
       try { sessionStorage.removeItem("campussense_from_dashboard"); } catch (_) {}
 
