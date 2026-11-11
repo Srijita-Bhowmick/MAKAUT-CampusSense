@@ -1936,6 +1936,30 @@
       box-shadow: var(--shadow-elevated);
     }
 
+    .menu-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.45);
+      z-index: 998;
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+    }
+
+    .menu-backdrop.active {
+      display: block;
+    }
+
+    .mobile-quick-jumps {
+      display: none;
+    }
+
+    @media (min-width: 769px) {
+      .mobile-quick-jumps {
+        display: none !important;
+      }
+    }
+
     /* Responsive Breakpoints */
     @media (max-width: 1080px) {
       #mainWorkspace { margin-right: 0; }
@@ -1945,7 +1969,7 @@
     @media (max-width: 820px) {
       .mobile-menu-btn { display: inline-flex; }
       #leftNavRail { transform: translateX(-105%); }
-      #leftNavRail.open { transform: translateX(0); box-shadow: 12px 0 32px rgba(15, 23, 42, 0.18); }
+      #leftNavRail.open, #leftNavRail.active { transform: translateX(0); box-shadow: 12px 0 32px rgba(15, 23, 42, 0.18); }
       #mainWorkspace { margin-left: 0; padding: 1.1rem 1rem 5rem; }
       .top-context-chip, .user-pill .user-name-label { display: none; }
     }
@@ -2038,9 +2062,54 @@
       }
 
       .signout-btn {
-        padding: 0.35rem 0.58rem;
-        font-size: 0.75rem;
+        padding: 0.32rem 0.56rem;
+        font-size: 0.74rem;
+        line-height: 1.2;
         white-space: nowrap;
+      }
+
+      .mobile-quick-jumps {
+        display: flex !important;
+        align-items: center !important;
+        overflow-x: auto !important;
+        gap: 0.5rem !important;
+        padding: 0.5rem 1rem !important;
+        scrollbar-width: none !important;
+        background: #FFFFFF !important;
+        border-bottom: 1px solid #8DB9F0 !important;
+        -webkit-overflow-scrolling: touch !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+
+      .mobile-quick-jumps::-webkit-scrollbar {
+        display: none !important;
+      }
+
+      .mobile-jump-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.28rem;
+        padding: 0.34rem 0.72rem;
+        border-radius: 9999px;
+        background: #EFF6FF;
+        border: 1.5px solid #8DB9F0;
+        color: #0F172A;
+        font-family: var(--font-display);
+        font-size: 0.78rem;
+        font-weight: 700;
+        white-space: nowrap;
+        text-decoration: none;
+        flex-shrink: 0;
+        cursor: pointer;
+        transition: background 0.15s ease, border-color 0.15s ease;
+      }
+
+      .mobile-jump-pill.active,
+      .mobile-jump-pill:active {
+        background: #F5B69E;
+        border-color: #E39474;
+        color: #000000;
       }
 
       #headerSearchWrap {
@@ -2060,13 +2129,14 @@
         top: 0;
         height: 100dvh;
         max-width: 82vw;
-        z-index: 490;
-        padding-top: calc(6.25rem + var(--sat));
+        z-index: 999;
+        padding-top: calc(1.25rem + var(--sat));
         padding-bottom: calc(1.25rem + var(--sab));
         transform: translateX(-105%);
       }
 
-      #leftNavRail.open {
+      #leftNavRail.open,
+      #leftNavRail.active {
         transform: translateX(0);
         box-shadow: 12px 0 32px rgba(15, 23, 42, 0.22);
       }
@@ -2192,7 +2262,7 @@
 
       #aiFloatingTrigger {
         position: fixed;
-        z-index: 1050;
+        z-index: 990;
         bottom: calc(1rem + var(--sab));
         right: calc(1rem + var(--sar));
         padding: 0.55rem 1rem;
@@ -2280,6 +2350,12 @@
   </style>
 </head>
 <body>
+<script>
+  // Default mobile Ask AI drawer closed on initial paint so mobile users land straight on the clean workspace
+  if (window.innerWidth <= 768) {
+    document.body.classList.add('ai-drawer-collapsed');
+  }
+</script>
 
 <div id="auth-veil"><div class="spinner"></div></div>
 <div id="toastBox" aria-live="polite"></div>
@@ -2327,6 +2403,16 @@
     <button type="button" class="signout-btn" id="signOutBtn" onclick="handleSignOut()">Sign Out</button>
   </div>
 </header>
+
+<!-- Mobile Fast-Jump Navigation Pills (Visible strictly <= 768px) -->
+<nav class="mobile-quick-jumps" id="mobileQuickJumps" aria-label="Mobile Section Fast Jumps">
+  <a href="#section-study-tracker" class="mobile-jump-pill active" data-target="section-study-tracker" onclick="return scrollToWorkspaceSection('section-study-tracker', this, event);">Syllabus 📚</a>
+  <a href="#section-pyqs" class="mobile-jump-pill" data-target="section-pyqs" onclick="return scrollToWorkspaceSection('section-pyqs', this, event);">PYQs 📑</a>
+  <a href="#section-panic-pack" class="mobile-jump-pill" data-target="section-panic-pack" onclick="return scrollToWorkspaceSection('section-panic-pack', this, event);">Panic Pack ⚡</a>
+  <a href="#section-save-to-deck" class="mobile-jump-pill" data-target="section-save-to-deck" onclick="return scrollToWorkspaceSection('section-save-to-deck', this, event);">Save to Deck 📂</a>
+</nav>
+
+<div id="navMenuBackdrop" class="menu-backdrop" aria-hidden="true"></div>
 
 <div id="dashShell">
   <!-- Strict 4-Item Navigator + 3-Item Quick Links -->
@@ -3893,14 +3979,24 @@ let scrollSpyLockUntil = 0;
 let scrollSpyTargetY = null;
 
 function setActiveNavItem(sectionId) {
+  const normalizedId = sectionId === 'section-deck' ? 'section-save-to-deck' : sectionId;
   document.querySelectorAll('#leftNavRail .rail-item[data-target]').forEach(el => {
-    const isMatch = el.getAttribute('data-target') === sectionId;
+    const isMatch = el.getAttribute('data-target') === normalizedId;
     el.classList.toggle('active', isMatch);
     if (isMatch) {
       el.setAttribute('aria-current', 'location');
-      DASH_STATE.activeNav = el.getAttribute('data-nav') || sectionId;
+      DASH_STATE.activeNav = el.getAttribute('data-nav') || normalizedId;
     } else {
       el.removeAttribute('aria-current');
+    }
+  });
+  document.querySelectorAll('#mobileQuickJumps .mobile-jump-pill[data-target]').forEach(pill => {
+    const isMatch = pill.getAttribute('data-target') === normalizedId;
+    pill.classList.toggle('active', isMatch);
+    if (isMatch) {
+      pill.setAttribute('aria-current', 'location');
+    } else {
+      pill.removeAttribute('aria-current');
     }
   });
 }
@@ -3982,22 +4078,25 @@ function initWorkspaceScrollSpy() {
 
 function scrollToWorkspaceSection(sectionId, linkEl, evt) {
   if (evt) evt.preventDefault();
-  const targetEl = document.getElementById(sectionId);
+  const normalizedId = sectionId === 'section-deck' ? 'section-save-to-deck' : sectionId;
+  const targetEl = document.getElementById(normalizedId);
   if (!targetEl) return false;
 
-  const headerHeight = 62;
+  const isMobile = window.innerWidth <= 768;
+  const hdr = document.getElementById('dashHeader');
+  const headerHeight = isMobile ? ((hdr ? hdr.offsetHeight : 96) + 12) : 62;
   const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
   const rawTop = Math.max(0, Math.round(targetEl.getBoundingClientRect().top + window.scrollY - (headerHeight + 18)));
   const targetTop = Math.min(rawTop, maxScroll);
 
   scrollSpyTargetY = targetTop;
   scrollSpyLockUntil = Date.now() + 1200;
-  setActiveNavItem(sectionId);
+  setActiveNavItem(normalizedId);
   closeMobileRail();
 
   window.scrollTo({ top: targetTop, behavior: 'smooth' });
   if (window.history && typeof window.history.replaceState === 'function') {
-    try { window.history.replaceState(null, '', `#${sectionId}`); } catch (_) {}
+    try { window.history.replaceState(null, '', `#${normalizedId}`); } catch (_) {}
   }
   return false;
 }
@@ -4029,12 +4128,25 @@ function resetToHomeView() {
 }
 
 function toggleMobileRail() {
-  document.getElementById('leftNavRail').classList.toggle('open');
+  const rail = document.getElementById('leftNavRail');
+  const backdrop = document.getElementById('navMenuBackdrop');
+  if (!rail) return;
+  const willOpen = !rail.classList.contains('open');
+  rail.classList.toggle('open', willOpen);
+  rail.classList.toggle('active', willOpen);
+  if (backdrop) backdrop.classList.toggle('active', willOpen);
 }
 
 function closeMobileRail() {
-  document.getElementById('leftNavRail').classList.remove('open');
+  const rail = document.getElementById('leftNavRail');
+  const backdrop = document.getElementById('navMenuBackdrop');
+  if (rail) {
+    rail.classList.remove('open');
+    rail.classList.remove('active');
+  }
+  if (backdrop) backdrop.classList.remove('active');
 }
+window.closeMobileMenu = closeMobileRail;
 
 // ── Search History (`campussense_search_history`) & Debounced Multi-Section Search ──
 const SEARCH_HISTORY_KEY = 'campussense_search_history';
@@ -4306,6 +4418,7 @@ function collapseAiDrawer() {
   const mw = document.getElementById('mainWorkspace');
   if (mw) mw.style.marginRight = '0';
 }
+window.closeAiSidebar = collapseAiDrawer;
 
 function expandAiDrawer() {
   document.body.classList.remove('ai-drawer-collapsed');
@@ -4316,6 +4429,7 @@ function expandAiDrawer() {
     mw.style.marginRight = `${w}px`;
   }
 }
+window.openAiSidebar = expandAiDrawer;
 
 function appendAiBubble(role, htmlContent) {
   const feed = document.getElementById('aiMessagesFeed');
@@ -4486,10 +4600,27 @@ document.addEventListener('DOMContentLoaded', () => {
   renderAiQueryHistory();
   initResizableAiDrawer();
 
+  // Default AI sidebar state: closed on mobile (<= 768px), open on desktop
+  const isMobileViewport = window.innerWidth <= 768;
+  if (isMobileViewport) {
+    collapseAiDrawer();
+  } else {
+    expandAiDrawer();
+  }
+
+  // Hamburger drawer: click outside backdrop to dismiss immediately
+  const navBackdrop = document.getElementById('navMenuBackdrop');
+  if (navBackdrop) {
+    navBackdrop.addEventListener('click', () => {
+      closeMobileRail();
+    });
+  }
+
   // Initialize Two-Way IntersectionObserver ScrollSpy across all 4 visible workspace sections
   initWorkspaceScrollSpy();
   if (window.location.hash) {
-    const hashId = window.location.hash.replace(/^#/, '');
+    const rawHashId = window.location.hash.replace(/^#/, '');
+    const hashId = rawHashId === 'section-deck' ? 'section-save-to-deck' : rawHashId;
     if (WORKSPACE_SECTION_IDS.includes(hashId)) {
       setTimeout(() => scrollToWorkspaceSection(hashId), 80);
     }
@@ -4515,6 +4646,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'Escape') {
       closePdfPreview();
       closePanicDossierModal();
+      closeMobileRail();
     }
   });
 });

@@ -67,51 +67,59 @@
             <a href="javascript:void(0)" id="nav-panic-link" class="landing-nav-link nav-panic-link" data-nav="panic-pack" style="color: #0F172A !important; font-weight: 600; font-size: 0.95rem; text-decoration: none; margin: 0 1rem; background: transparent !important; border: none !important; cursor: pointer;">🔥 Panic Pack</a>
         </nav>
 
-        <!-- Right-Hand Controls: Feedback, Sign In, Sign Up -->
-                        <div class="nav-right" style="display: flex; align-items: center; gap: 0.75rem;">
-          <button 
-            type="button" 
-            id="nav-feedback-btn" 
-            class="nav-peach-pill" 
+        <!-- Right-Hand Controls: Feedback, Sign In, Sign Up / Dashboard -->
+        <div class="nav-right" style="display: flex; align-items: center; gap: 0.75rem;">
+          <button
+            type="button"
+            id="nav-feedback-btn"
+            class="nav-peach-pill"
             onclick="openFeedbackModal()"
+            aria-label="Send Feedback"
+            title="Send Feedback"
           >
-            Feedback
+            <span class="desktop-text">Feedback</span>
+            <span class="mobile-text" aria-hidden="true">💬</span>
           </button>
 
-          <a 
-            href="login.html?v=20261111_v13" 
-            id="nav-signin-link" 
+          <a
+            href="login.html?v=20261111_v13"
+            id="nav-signin-link"
             style="display: inline-flex; align-items: center; white-space: nowrap; color: #0F172A !important; font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.95rem; text-decoration: none; padding: 0.5rem 0.75rem;"
           >
             Sign In
           </a>
 
-          <a 
-            href="login.html?v=20261111_v13#/sign-up" 
-            id="nav-signup-btn" 
+          <a
+            href="login.html?v=20261111_v13#/sign-up"
+            id="nav-signup-btn"
             class="nav-peach-pill"
           >
             Sign Up
           </a>
 
-          <a 
-            href="dashboard.html?v=20261111_v14" 
-            id="nav-back-dashboard-btn" 
-            class="nav-dashboard-pill" 
-            style="display: none !important;"
+          <a
+            href="dashboard.html?v=20261111_v14"
+            id="nav-back-dashboard-btn"
+            class="nav-dashboard-pill btn-dashboard-nav nav-auth-hidden"
             onclick="try{sessionStorage.removeItem('campussense_from_dashboard');}catch(_){}"
             aria-label="Back to Dashboard"
           >
-            Back to Dashboard →
+            <span class="desktop-text">&larr; Back to Dashboard</span>
+            <span class="mobile-text">Dashboard &rarr;</span>
           </a>
         </div>
     </header>
     <script>
       window.syncBackToDashboardShortcut = function () {
         try {
-          var btn = document.getElementById('nav-back-dashboard-btn');
-          if (!btn) return;
+          var dashBtn = document.getElementById('nav-back-dashboard-btn');
+          var signInLink = document.getElementById('nav-signin-link');
+          var signUpBtn = document.getElementById('nav-signup-btn');
+          var rawToken = '';
+          try { rawToken = (localStorage.getItem('campussense_token') || '').trim(); } catch (_) {}
+
           var isAuth = Boolean(
+            rawToken ||
             (window.Clerk && window.Clerk.user) ||
             localStorage.getItem('campussense_logged_in') === 'true'
           );
@@ -120,38 +128,50 @@
             Boolean(localStorage.getItem('campussense_academic_profile'));
 
           var urlParams = new URLSearchParams(window.location.search || '');
-          var urlFromDashboard = urlParams.get('from') === 'dashboard';
-          var sessionFromDashboard = false;
-          try {
-            sessionFromDashboard = sessionStorage.getItem('campussense_from_dashboard') === 'true';
-          } catch (_) {}
-
-          if (isAuth && hasAcademic && (urlFromDashboard || sessionFromDashboard)) {
+          if (urlParams.get('from') === 'dashboard' && window.history && typeof window.history.replaceState === 'function') {
             try {
-              sessionStorage.setItem('campussense_from_dashboard', 'true');
+              var cleanUrl = new URL(window.location.href);
+              cleanUrl.searchParams.delete('from');
+              window.history.replaceState({}, '', cleanUrl.pathname + cleanUrl.search + cleanUrl.hash);
             } catch (_) {}
-            if (urlFromDashboard && window.history && typeof window.history.replaceState === 'function') {
-              try {
-                var cleanUrl = new URL(window.location.href);
-                cleanUrl.searchParams.delete('from');
-                window.history.replaceState({}, '', cleanUrl.pathname + cleanUrl.search + cleanUrl.hash);
-              } catch (_) {}
+          }
+
+          if (isAuth) {
+            if (signInLink) {
+              signInLink.classList.add('nav-auth-hidden');
+              signInLink.style.setProperty('display', 'none', 'important');
             }
-            var pathnameLower = window.location.pathname.toLowerCase();
-            var isDocs = pathnameLower.indexOf('/docs/') !== -1;
-            var isGh = pathnameLower.indexOf('makaut-campussense') !== -1 && !isDocs;
-            var targetFile = 'dashboard.html?v=20261111_v14';
-            btn.href = window.location.protocol === 'file:'
-              ? targetFile
-              : ((isGh ? '/MAKAUT-CampusSense/' : (isDocs ? '/docs/' : '/')) + targetFile);
-            btn.style.setProperty('display', 'inline-flex', 'important');
+            if (signUpBtn) {
+              signUpBtn.classList.add('nav-auth-hidden');
+              signUpBtn.style.setProperty('display', 'none', 'important');
+            }
+            if (dashBtn) {
+              var pathnameLower = window.location.pathname.toLowerCase();
+              var isDocs = pathnameLower.indexOf('/docs/') !== -1;
+              var isGh = pathnameLower.indexOf('makaut-campussense') !== -1 && !isDocs;
+              var targetFile = (hasAcademic || rawToken) ? 'dashboard.html?v=20261111_v14' : 'set-academic.html?v=20261111_v14';
+              dashBtn.href = window.location.protocol === 'file:'
+                ? targetFile
+                : ((isGh ? '/MAKAUT-CampusSense/' : (isDocs ? '/docs/' : '/')) + targetFile);
+              dashBtn.classList.remove('nav-auth-hidden');
+              dashBtn.style.setProperty('display', 'inline-flex', 'important');
+            }
           } else {
-            if (!isAuth || !hasAcademic) {
-              try {
-                sessionStorage.removeItem('campussense_from_dashboard');
-              } catch (_) {}
+            try {
+              sessionStorage.removeItem('campussense_from_dashboard');
+            } catch (_) {}
+            if (dashBtn) {
+              dashBtn.classList.add('nav-auth-hidden');
+              dashBtn.style.setProperty('display', 'none', 'important');
             }
-            btn.style.setProperty('display', 'none', 'important');
+            if (signInLink) {
+              signInLink.classList.remove('nav-auth-hidden');
+              signInLink.style.setProperty('display', 'inline-flex', 'important');
+            }
+            if (signUpBtn) {
+              signUpBtn.classList.remove('nav-auth-hidden');
+              signUpBtn.style.setProperty('display', 'inline-flex', 'important');
+            }
           }
         } catch (e) {}
       };
@@ -1166,7 +1186,8 @@
         if (clerkSessionSynced) return;
         try {
           const signOutBtn = document.getElementById('btn-dashboard-sign-out');
-          const isLocalStudent = localStorage.getItem('campussense_logged_in') === 'true';
+          const rawToken = (localStorage.getItem('campussense_token') || '').trim();
+          const isLocalStudent = localStorage.getItem('campussense_logged_in') === 'true' || Boolean(rawToken && !rawToken.startsWith('cs_clerk_'));
 
           if (window.Clerk) {
             if (!window.Clerk.loaded && typeof window.Clerk.load === 'function') {
@@ -1180,7 +1201,7 @@
             }
           }
 
-          if ((window.Clerk && window.Clerk.user) || isLocalStudent) {
+          if ((window.Clerk && window.Clerk.user) || isLocalStudent || Boolean(rawToken)) {
             document.querySelectorAll('#btn-sign-in, #btn-sign-up, #btn-nav-signin, #btn-nav-signup').forEach(btn => btn.style.display = 'none');
             if (signOutBtn) {
               signOutBtn.style.display = 'inline-flex';
