@@ -462,18 +462,18 @@
       border-color: #E39474;
     }
 
-    /* Toned-down Conditional 1st-Year Reference Guide */
+    /* Toned-down Conditional 1st-Year Reference Guide (#FFF7F3 soft wash, subtle #8DB9F0 accent) */
     .first-year-guide {
       display: none;
       align-items: flex-start;
       gap: 0.85rem;
-      background: #FFFFFF;
-      border: var(--border-blue);
-      border-left: 4px solid #8DB9F0;
+      background: #FFF7F3;
+      border: 1px solid rgba(141, 185, 240, 0.55);
+      border-left: 3.5px solid #8DB9F0;
       border-radius: var(--radius-md);
-      padding: 0.85rem 1.15rem;
+      padding: 0.9rem 1.15rem;
       margin-bottom: 1.25rem;
-      box-shadow: var(--shadow-card);
+      box-shadow: 0 2px 10px rgba(141, 185, 240, 0.08);
     }
 
     .first-year-guide-icon {
@@ -493,14 +493,14 @@
       font-family: var(--font-display);
       font-size: 13.5px;
       font-weight: 700;
-      color: var(--text-navy);
+      color: #0F172A;
       margin-bottom: 0.2rem;
     }
 
     .first-year-guide-text {
       font-size: 13px;
       line-height: 1.5;
-      color: var(--text-slate);
+      color: #0F172A;
     }
 
     /* Study Progress Card */
@@ -787,6 +787,135 @@
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
       gap: 0.9rem;
+    }
+
+    /* Level 1: 1st-Year Subject Selection Boxes */
+    .pyq-subject-selector-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+      gap: 0.8rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .pyq-subject-box {
+      background: #FFFFFF;
+      border: 1.5px solid #8DB9F0;
+      border-radius: 0.9rem;
+      padding: 0.9rem 1rem;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.45rem;
+      box-shadow: 0 4px 12px rgba(141, 185, 240, 0.10);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .pyq-subject-box:hover {
+      transform: translateY(-2px);
+      background: #F8FAFF;
+      border-color: #2563EB;
+    }
+
+    .pyq-subject-box.active {
+      background: #EFF6FF;
+      border-color: #2563EB;
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.15);
+    }
+
+    .pyq-subject-box-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.4rem;
+    }
+
+    .pyq-subject-box-count {
+      padding: 2px 8px;
+      border-radius: 9999px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      background: #F5B69E;
+      color: #000000;
+    }
+
+    .pyq-subject-box-name {
+      font-family: var(--font-display);
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #0F172A;
+      line-height: 1.3;
+    }
+
+    .pyq-subject-box-sem {
+      font-size: 11.5px;
+      color: #475569;
+    }
+
+    /* Level 2: Elongated Horizontal PYQ Tiles */
+    .pyq-elongated-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    .pyq-elongated-tile {
+      width: 100%;
+      border: 1.5px solid #8DB9F0;
+      border-radius: 1rem;
+      background: #FFFFFF;
+      padding: 1.25rem 1.5rem;
+      box-shadow: 0 4px 14px rgba(141, 185, 240, 0.12);
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .pyq-tile-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .pyq-code-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.26rem 0.72rem;
+      border-radius: 8px;
+      background: #EFF6FF;
+      color: #1E40AF;
+      border: 1.5px solid #8DB9F0;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+
+    .pyq-year-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.24rem 0.72rem;
+      border-radius: 9999px;
+      background: #F5B69E;
+      color: #000000;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+
+    .pyq-tile-heading {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 800;
+      color: #0F172A;
+      line-height: 1.35;
+    }
+
+    .pyq-tile-subtext {
+      font-size: 13px;
+      color: #475569;
     }
 
     .white-blue-card {
@@ -1262,16 +1391,16 @@
 
     <div class="rail-divider"></div>
     <div class="rail-section-label">Quick Links</div>
-    <a href="#home" class="rail-item" onclick="event.preventDefault(); resetToHomeView();">
-      <span aria-hidden="true">🏠</span>
+    <a href="/index.html" class="rail-item quick-link-item" id="quickHomeLink">
+      <span class="icon" aria-hidden="true">🏠</span>
       <span class="rail-item-label">Home</span>
     </a>
-    <a href="1st%20year/syllabus/Maths-1.pdf" target="_blank" rel="noopener" class="rail-item" id="fullSyllabusQuickLink">
-      <span aria-hidden="true">📘</span>
+    <a href="/index.html#syllabus-section" class="rail-item quick-link-item" id="quickFullSyllabusLink">
+      <span class="icon" aria-hidden="true">📁</span>
       <span class="rail-item-label">Full Syllabus</span>
     </a>
-    <a href="set-academic.html?v=20261111_v14" class="rail-item">
-      <span aria-hidden="true">🎓</span>
+    <a href="set-academic.html?v=20261111_v14" class="rail-item quick-link-item">
+      <span class="icon" aria-hidden="true">🎓</span>
       <span class="rail-item-label">Set Academic</span>
     </a>
   </nav>
@@ -1295,9 +1424,8 @@
     <div class="first-year-guide" id="firstYearReferenceGuide" role="note" aria-label="1st Year Syllabus and PYQ Reference Guide">
       <span class="first-year-guide-icon" aria-hidden="true">📘</span>
       <div>
-        <div class="first-year-guide-title">1st Year Syllabus &amp; PYQ Reference Guide</div>
         <p class="first-year-guide-text">
-          Your <strong>1st Year Syllabus</strong> follows MAKAUT&apos;s foundation curriculum, whereas the <strong>PYQ Archives</strong> are organized by core subjects.
+          <strong>1st Year Syllabus &amp; PYQ Reference Guide:</strong> Your 1st Year Syllabus follows MAKAUT&apos;s 2026 foundation curriculum, whereas the PYQ Archives are organized by the core subjects from the 2018 curriculum.
         </p>
       </div>
     </div>
@@ -1328,7 +1456,8 @@
         <h2 class="section-heading">📄 University PYQ Archives</h2>
         <span class="section-sub-pill" id="pyqSectionSubPill">Filtered for Active Semester</span>
       </div>
-      <div class="card-grid-2" id="pyqVaultGrid"></div>
+      <div id="pyqSubjectSelectorGrid" class="pyq-subject-selector-grid" style="display:none;"></div>
+      <div class="pyq-elongated-list" id="pyqVaultGrid"></div>
     </section>
 
     <!-- Section 3: 16-Topic Panic Pack -->
@@ -1410,7 +1539,7 @@
 // DYNAMIC DASHBOARD ENGINE (Zero Hardcoded UI Stubs)
 // ═════════════════════════════════════════════════════════════════════
 
-// Structured Module Registry (matches MAKAUT syllabi & real repository PDFs)
+// Audited Module Registry (verified strictly against local repository PDFs: CSE20.pdf & 1st year/syllabus/*.pdf)
 const ACADEMIC_REGISTRY = {
   "CSE": {
     "5": [
@@ -1420,20 +1549,28 @@ const ACADEMIC_REGISTRY = {
         credits: 3,
         syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
         units: [
-          { num: "Unit 1", name: "SDLC Models (Waterfall, Agile, Spiral) & Requirements Engineering", hours: "8 Lectures", subtopics: "Software Engineering paradigms, SRS specification, feasibility & DFD.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
-          { num: "Unit 2", name: "System Design, Cohesion, Coupling, UML & Estimation (COCOMO)", hours: "10 Lectures", subtopics: "Architectural design, Halstead metrics, function points, COCOMO modeling.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
-          { num: "Unit 3", name: "Testing Strategies (White-Box, Black-Box), SQA & Maintenance", hours: "8 Lectures", subtopics: "Unit, integration, cyclomatic complexity, ISO 9000, CMMI & SCM.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+          { num: "Unit 1", name: "System Analysis & Design, SDLC, Waterfall, Spiral & COCOMO Model", hours: "10 Lectures", subtopics: "Business System Concept, Feasibility Analysis, Technical Feasibility, Cost-Benefit Analysis.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "System Design, Context Diagrams, DFDs & Partitioning", hours: "5 Lectures", subtopics: "Top-Down and Bottom-Up design, Decision tree, decision table, Functional vs OO approach.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Coding, Documentation, Testing & Verification/Validation Metrics", hours: "12 Lectures", subtopics: "Structured & OO coding, levels of testing, integration testing, reliability & control metrics.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 4", name: "Software Project Management, SCM & Quality Assurance", hours: "7 Lectures", subtopics: "Project Scheduling, Staffing, Software Configuration Management, Quality Assurance, Monitoring.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 5", name: "Static & Dynamic UML Modeling Diagrams", hours: "10 Lectures", subtopics: "Class diagram, collaboration, sequence, state chart, activity & implementation diagrams.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
         ]
       },
       {
         code: "PCC-CS501",
-        title: "Formal Language & Automata Theory",
+        title: "Compiler Design",
         credits: 3,
         syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
         units: [
-          { num: "Unit 1", name: "Introduction to Automata & Regular Expressions", hours: "8 Lectures", subtopics: "DFA, NFA, epsilon-NFA equivalence, Myhill-Nerode theorem, Pumping Lemma.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
-          { num: "Unit 2", name: "Context-Free Grammars & Pushdown Automata", hours: "10 Lectures", subtopics: "Ambiguity, Chomsky Normal Form, Greibach Normal Form, deterministic PDA.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
-          { num: "Unit 3", name: "Turing Machines & Computability Theory", hours: "10 Lectures", subtopics: "Recursive & RE languages, Halting problem, undecidability & Church thesis.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+          { num: "Unit 1", name: "Introduction to Compiling & Phases of a Compiler", hours: "3 Lectures", subtopics: "Compilers, analysis of source program, phases of compiler, cousins of compiler.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "Lexical Analysis, Regular Expressions, NFA/DFA & Lex", hours: "6 Lectures", subtopics: "Tokens, patterns, lexemes, input buffering, finite automata & lexical analyzer generator.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Syntax Analysis: LL(1), Operator Precedence & LR/SLR/LALR Parsers", hours: "9 Lectures", subtopics: "Context-free grammars, top-down & bottom-up parsing, handles, YACC & error recovery.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 4", name: "Syntax Directed Translation (S-attributed & L-attributed)", hours: "5 Lectures", subtopics: "Syntax-directed definitions, syntax trees, bottom-up evaluation of inherited attributes.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 5", name: "Type Checking & Type Systems", hours: "4 Lectures", subtopics: "Specification of a simple type checker, equivalence of type expressions, type conversions.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 6", name: "Run-Time Environments & Storage Allocation", hours: "5 Lectures", subtopics: "Activation trees & records, control stack, call by value/reference/name & symbol tables.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 7", name: "Intermediate Code Generation (Three-Address Code)", hours: "4 Lectures", subtopics: "Intermediate languages, graphical representation, quadruples, triples & indirect triples.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 8", name: "Code Optimization (Basic Blocks, DAGs & Peephole)", hours: "5 Lectures", subtopics: "Transformation of basic blocks, DAG representation, loops in flow graphs, peephole optimization.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 9", name: "Code Generation & Register Allocation", hours: "4 Lectures", subtopics: "Issues in code generator design, simple code generator, register allocation & assignment.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
         ]
       },
       {
@@ -1442,9 +1579,12 @@ const ACADEMIC_REGISTRY = {
         credits: 3,
         syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
         units: [
-          { num: "Unit 1", name: "Introduction to OS: Architecture, System Calls & Process Lifecycle", hours: "7 Lectures", subtopics: "OS structures, kernel modes, PCB, IPC, threads & process states.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
-          { num: "Unit 2", name: "CPU Scheduling (FCFS, SJF, RR, Priority) & Deadlock Handling", hours: "11 Lectures", subtopics: "Synchronization, semaphores, Monitors, Banker's algorithm & deadlock recovery.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
-          { num: "Unit 3", name: "Memory Management: Paging, Segmentation, Virtual Memory & Disk I/O", hours: "10 Lectures", subtopics: "Page replacement (FIFO, LRU, Optimal), thrashing, SCAN/C-SCAN disk scheduling.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+          { num: "Unit 1", name: "Introduction: Generations, OS Services & System Calls", hours: "3 Lectures", subtopics: "Layered & Microkernel OS, Virtual Machines, UNIX and Windows OS architecture.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "Processes, Threads & CPU Scheduling (FCFS, SJF, RR, RM/EDF)", hours: "10 Lectures", subtopics: "PCB, context switching, multithreading, preemptive/non-preemptive & real-time scheduling.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Inter-Process Communication & Synchronization", hours: "5 Lectures", subtopics: "Critical section, Peterson's solution, semaphores, monitors, Producer-Consumer & Dining Philosopher.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 4", name: "Deadlocks: Prevention, Banker's Algorithm, Detection & Recovery", hours: "5 Lectures", subtopics: "Necessary conditions, resource allocation, Banker's safety check & deadlock recovery.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 5", name: "Memory Management, Paging & Virtual Memory", hours: "8 Lectures", subtopics: "Contiguous allocation, fragmentation, paging hardware, thrashing, FIFO, Optimal & LRU.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 6", name: "I/O Hardware, File Systems & Disk Scheduling (FCFS, SSTF, SCAN)", hours: "6 Lectures", subtopics: "DMA, interrupt handlers, directory & file allocation methods, SCAN/C-SCAN disk scheduling.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
         ]
       },
       {
@@ -1453,9 +1593,11 @@ const ACADEMIC_REGISTRY = {
         credits: 3,
         syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
         units: [
-          { num: "Unit 1", name: "OOP Principles: Encapsulation, Classes, Objects & Constructors", hours: "7 Lectures", subtopics: "Java bytecode/JVM, data abstraction, method overloading & access modifiers.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
-          { num: "Unit 2", name: "Inheritance, Polymorphism, Abstract Classes, Interfaces & Packages", hours: "10 Lectures", subtopics: "Dynamic method dispatch, multiple interface inheritance & classpath structure.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
-          { num: "Unit 3", name: "Exception Handling, Multithreading, Generics & Event-Driven UI", hours: "9 Lectures", subtopics: "try-catch-finally, thread synchronization, collections & Swing/AWT listeners.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+          { num: "Unit 1", name: "Abstract Data Types & Concrete State Specifications", hours: "8 Lectures", subtopics: "ADT design, concrete state space, concrete invariant & abstraction functions.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "Features of OOP: Encapsulation, Object Identity & Polymorphism", hours: "8 Lectures", subtopics: "Class contracts, object identity, method overloading and dynamic dispatch.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Inheritance in OO Design, Design Patterns & Iterators", hours: "6 Lectures", subtopics: "Inheritance hierarchies, pattern classification & the Iterator design pattern.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 4", name: "Model-View-Controller (MVC) Pattern & OO Memory Management", hours: "6 Lectures", subtopics: "Commands as methods and objects, OO language runtime & garbage collection.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 5", name: "Generic Types, Collections & GUI Programming (Swing)", hours: "6 Lectures", subtopics: "Generic containers, Swing widgets, event handling & OO software development process.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
         ]
       },
       {
@@ -1464,13 +1606,59 @@ const ACADEMIC_REGISTRY = {
         credits: 3,
         syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
         units: [
-          { num: "Unit 1", name: "Management Principles, Organization Structures & Taylor/Fayol", hours: "7 Lectures", subtopics: "Planning, organizing, staffing, scientific management & hierarchy.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
-          { num: "Unit 2", name: "Production Planning, PERT/CPM, Inventory Control & EOQ", hours: "9 Lectures", subtopics: "Critical path calculation, float analysis, ABC inventory & MRP.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
-          { num: "Unit 3", name: "Operations Research, Linear Programming & Quality Management", hours: "8 Lectures", subtopics: "Simplex method, Six Sigma, SQC control charts & TQM fundamentals.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+          { num: "Unit 1", name: "Introduction, Organization Structure & Factory/Labor Laws", hours: "6 Lectures", subtopics: "System concepts, span of control, centralization, job satisfaction & labor laws.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "Critical Path Method (CPM) & PERT Network Crashing", hours: "8 Lectures", subtopics: "Network diagrams, LPO/EPO computation, floats & project network crashing.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Materials Management, Storekeeping, EOQ & MRP", hours: "6 Lectures", subtopics: "Purchase systems, codification, Economic Order Quantity (EOQ), ABC analysis & MRP.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 4", name: "Production Planning & Control (PPC) & Gantt Chart Scheduling", hours: "8 Lectures", subtopics: "Critical ratio scheduling, Gantt charts, bottlenecking & production utilization.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 5", name: "Value Analysis (DARSIRI Method) & Cost Control", hours: "4 Lectures", subtopics: "VA flow diagram, DARSIRI method, waste reduction & cost control guidelines.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 6", name: "Recent Trends: ERP, MS Project, JIT & Supply Chain Management", hours: "4 Lectures", subtopics: "Enterprise Resource Planning, Just-in-Time manufacturing & Logistics.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
+        ]
+      },
+      {
+        code: "PEC-IT501B",
+        title: "Artificial Intelligence",
+        credits: 3,
+        syllabusPdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf",
+        units: [
+          { num: "Unit 1", name: "AI Introduction, Intelligent Agents & State-Space Search", hours: "6 Lectures", subtopics: "PEAS environments, goal/utility/learning agents, production systems & search formulation.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 2", name: "Uninformed, Heuristic (A*, Hill Climbing) & Adversarial Search", hours: "13 Lectures", subtopics: "BFS, DFS, bidirectional, A*, simulated annealing, CSPs, Minimax & Alpha-Beta pruning.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 3", name: "Knowledge Representation Issues & Ontological Mapping", hours: "3 Lectures", subtopics: "Representation approaches, frame problem & structured knowledge mapping.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 4", name: "Predicate Logic, Resolution & Probabilistic Reasoning", hours: "6 Lectures", subtopics: "First-order logic, natural deduction, Bayesian networks, Dempster-Shafer & Fuzzy logic.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" },
+          { num: "Unit 5", name: "Natural Language Processing, Machine Learning & Expert Systems", hours: "6 Lectures", subtopics: "Syntactic/semantic NLP, decision trees, neural nets, genetic learning & expert shells.", pdf: "3rd to 8th sem/cse/syllabus/CSE20.pdf" }
         ]
       }
     ]
   }
+};
+
+// Local PDF audit corrections for 1st Year (credits, semesters, hours, missing Graphics course)
+const FY_SYLLABUS_AUDIT = {
+  '26-BS-PH101': { semester: '1', credits: 3, contactHours: 36, pyqLegacyCode: 'BS-PH101' },
+  '26-BS-CH101': { semester: '1', credits: 3, contactHours: 36, pyqLegacyCode: 'BS-CH101' },
+  '26-BS-M101':  { semester: '1', credits: 3, contactHours: 36, pyqLegacyCode: 'BS-M101' },
+  '26-BS-M201':  { semester: '2', credits: 3, contactHours: 36, pyqLegacyCode: 'BS-M201' },
+  '26-ES-EE101': { semester: '1', credits: 4, contactHours: 44, pyqLegacyCode: 'ES-EE101' },
+  '26-AEC-101':  { semester: '1', credits: 2, contactHours: 26, pyqLegacyCode: 'HM-HU201' },
+  '26-BS-BI201': { semester: '2', credits: 2, contactHours: 26, pyqLegacyCode: 'BS-BIO201' },
+  '26-VAC-201':  { semester: '2', credits: 3, contactHours: 42, pyqLegacyCode: 'MC-ES201' },
+  '26-ES-CS201': { semester: '2', credits: 3, contactHours: 36, pyqLegacyCode: 'ES-CS201' }
+};
+
+const FY_EXTRA_LOCAL_COURSE = {
+  code: 'ES-ME191',
+  name: 'Engineering Graphics & Design',
+  semester: 1,
+  credits: 3,
+  syllabusUrl: '1st year/syllabus/Graphics.pdf',
+  units: [
+    { unitNumber: 1, title: 'Module I: Introduction to Engineering Drawing', subtopics: 'Conventions, lettering, dimensioning, types of lines, BIS SP:46 standards.', hours: 6 },
+    { unitNumber: 2, title: 'Module II: Orthographic Projections', subtopics: 'First and Third Angle Projections, projections of points, lines, and planes.', hours: 6 },
+    { unitNumber: 3, title: 'Module III: Projections of Regular Solids', subtopics: 'Prisms, pyramids, cylinders, cones inclined to both reference planes.', hours: 6 },
+    { unitNumber: 4, title: 'Module IV: Sections and Sectional Views', subtopics: 'True shapes of sections of right angular solids cut by inclined cutting planes.', hours: 6 },
+    { unitNumber: 5, title: 'Module V: Isometric Projections', subtopics: 'Principles of isometric projection, isometric scale, isometric views of complex solids.', hours: 6 },
+    { unitNumber: 6, title: 'Module VI: Computer Aided Drafting (CAD)', subtopics: 'Introduction to CAD software interface, 2D drafting commands, dimensioning and layers.', hours: 6 }
+  ],
+  pyqs: []
 };
 
 const CORE_BRANCH_DEFAULTS = {
@@ -1532,10 +1720,20 @@ const DASH_STATE = {
   fullSyllabusPath: '1st year/syllabus/Maths-1.pdf',
   subjects: [],
   pyqs: [],
+  selectedPyqSubjectCode: '',
   panicTopics: [],
   activeNav: 'study-tracker',
   ghDocsPrefix: ''
 };
+
+function syncQuickLinks() {
+  const isGh = window.location.pathname.toLowerCase().includes('makaut-campussense');
+  const prefix = isGh ? '/MAKAUT-CampusSense/' : '/';
+  const homeEl = document.getElementById('quickHomeLink');
+  const syllEl = document.getElementById('quickFullSyllabusLink');
+  if (homeEl) homeEl.href = `${prefix}index.html`;
+  if (syllEl) syllEl.href = `${prefix}index.html#syllabus-section`;
+}
 
 // ── GitHub Pages /docs vs root path detection ──
 (function initAssetPrefix() {
@@ -1549,7 +1747,6 @@ const DASH_STATE = {
       .then(res => {
         if (res.ok) {
           DASH_STATE.ghDocsPrefix = '';
-          syncQuickSyllabusLink();
         }
       })
       .catch(() => {});
@@ -1705,10 +1902,7 @@ function resolveAcademicContext() {
 }
 
 function syncQuickSyllabusLink() {
-  const el = document.getElementById('fullSyllabusQuickLink');
-  if (el && DASH_STATE.fullSyllabusPath) {
-    el.href = resolveDashboardPdfUrl(DASH_STATE.fullSyllabusPath);
-  }
+  syncQuickLinks();
 }
 
 // ── Build Dynamic Curriculum, PYQs, and Panic Pack for Active Context ──
@@ -1763,21 +1957,29 @@ function loadActiveAcademicData() {
   } else {
     DASH_STATE.fullSyllabusPath = '3rd to 8th sem/cse/syllabus/CSE20.pdf';
   }
-  syncQuickSyllabusLink();
+  syncQuickLinks();
 
-  // 1) Resolve Enrolled Subjects
+  // 1) Resolve Enrolled Subjects with Local PDF Audit Corrections
   let resolvedSubjects = [];
   if (DASH_STATE.isFirstYear) {
-    const firstYearList = Array.isArray(window.MAKAUT_CURRICULUM) ? window.MAKAUT_CURRICULUM : [];
-    resolvedSubjects = firstYearList.map(c => ({
-      code: c.code,
-      title: c.name || c.title,
-      semester: String(c.semester || '1'),
-      credits: c.credits || 3,
-      syllabusPdf: c.syllabusUrl || '1st year/syllabus/Maths-1.pdf',
-      units: synthesizeUnits(c),
-      pyqs: Array.isArray(c.pyqs) ? c.pyqs : []
-    }));
+    const firstYearList = Array.isArray(window.MAKAUT_CURRICULUM) ? [...window.MAKAUT_CURRICULUM] : [];
+    if (!firstYearList.some(x => x.code === 'ES-ME191')) {
+      firstYearList.push(FY_EXTRA_LOCAL_COURSE);
+    }
+    resolvedSubjects = firstYearList.map(c => {
+      const audit = FY_SYLLABUS_AUDIT[c.code] || {};
+      return {
+        code: c.code,
+        legacyCode: audit.pyqLegacyCode || c.legacyCode || c.code,
+        title: c.name || c.title,
+        semester: audit.semester || String(c.semester || '1'),
+        credits: audit.credits || c.credits || 3,
+        contactHours: audit.contactHours || c.contactHours || 36,
+        syllabusPdf: c.syllabusUrl || '1st year/syllabus/Maths-1.pdf',
+        units: synthesizeUnits(c),
+        pyqs: Array.isArray(c.pyqs) ? c.pyqs : []
+      };
+    });
   } else {
     const semTarget = String(DASH_STATE.semester);
     const registryBucket = ACADEMIC_REGISTRY[DASH_STATE.deptKey]?.[semTarget];
@@ -1790,21 +1992,23 @@ function loadActiveAcademicData() {
         const regMatch = (registryBucket || []).find(r => String(r.code || '').replace(/[^A-Z0-9]/gi, '').toUpperCase() === cNorm);
         return {
           code: c.code,
-          title: c.name || c.title,
+          legacyCode: c.code,
+          title: (regMatch && regMatch.title) ? regMatch.title : (c.name || c.title),
           semester: semTarget,
-          credits: c.credits || 3,
+          credits: (regMatch && regMatch.credits) ? regMatch.credits : (c.credits || 3),
           syllabusPdf: DASH_STATE.fullSyllabusPath,
           units: regMatch ? synthesizeUnits(regMatch) : synthesizeUnits({ ...c, syllabusUrl: DASH_STATE.fullSyllabusPath }),
           pyqs: Array.isArray(c.pyqs) ? c.pyqs : []
         };
       });
     } else if (registryBucket && registryBucket.length > 0) {
-      resolvedSubjects = registryBucket.map(r => ({ ...r, semester: semTarget, syllabusPdf: r.syllabusPdf || DASH_STATE.fullSyllabusPath, pyqs: [] }));
+      resolvedSubjects = registryBucket.map(r => ({ ...r, legacyCode: r.code, semester: semTarget, syllabusPdf: r.syllabusPdf || DASH_STATE.fullSyllabusPath, pyqs: [] }));
     } else {
       const coreDef = CORE_BRANCH_DEFAULTS[DASH_STATE.deptKey];
       const coreList = coreDef?.semSubjects?.[semTarget] || CORE_BRANCH_DEFAULTS.ECE.semSubjects['3'];
       resolvedSubjects = coreList.map(([code, title]) => ({
         code,
+        legacyCode: code,
         title,
         semester: semTarget,
         credits: 3,
@@ -1816,28 +2020,41 @@ function loadActiveAcademicData() {
   }
   DASH_STATE.subjects = resolvedSubjects;
 
-  // 2) Resolve PYQs Strictly for Active Branch & Semester
-  const seenPyqKeys = new Set();
+  // 2) Resolve PYQs Strictly for Active Branch & Semester (Deduplicated by Normalized Filename/Path)
+  const normFileKey = (rawPath) => String(rawPath || '')
+    .trim()
+    .replace(/^\/+/, '')
+    .replace(/^MAKAUT-CampusSense\//i, '')
+    .replace(/^docs\//i, '')
+    .replace(/1st_year/gi, '1st year')
+    .toLowerCase();
+
+  const seenPyqFiles = new Set();
   const collectedPyqs = [];
   resolvedSubjects.forEach(sub => {
     (sub.pyqs || []).forEach(p => {
       const path = p.fileUrl || p.path || '';
-      const key = `${sub.code}-${p.year}-${path}`;
-      if (!seenPyqKeys.has(key) && path) {
-        seenPyqKeys.add(key);
+      const fKey = normFileKey(path);
+      if (fKey && !seenPyqFiles.has(fKey)) {
+        seenPyqFiles.add(fKey);
+        const semInPath = /btech-2-sem/i.test(path) ? '2' : (/btech-1-sem/i.test(path) ? '1' : sub.semester);
+        const cleanTitle = (p.title || `MAKAUT ${p.year || '2024'} ${sub.title} (${sub.legacyCode || sub.code})`)
+          .replace(/\bSem\s*[12]\s*/i, '');
         collectedPyqs.push({
+          subjectCode: sub.code,
           code: sub.code,
+          legacyCode: sub.legacyCode || sub.code,
           subject: sub.title,
-          title: p.title || `${sub.title} (${p.year})`,
+          title: cleanTitle,
           year: String(p.year || '2024'),
-          sem: sub.semester,
+          sem: semInPath,
           path
         });
       }
     });
   });
 
-  // Supplement from global PYQ_CATALOG (especially for ECE/EE/ME/CE or matching dept/sem)
+  // Supplement from global PYQ_CATALOG without duplicating exact files already added
   const catalog = (typeof PYQ_CATALOG !== 'undefined' && Array.isArray(PYQ_CATALOG)) ? PYQ_CATALOG : [];
   catalog.forEach(item => {
     const itemDept = String(item.dept || '').toUpperCase();
@@ -1847,22 +2064,30 @@ function loadActiveAcademicData() {
     const deptMatch = DASH_STATE.isFirstYear
       ? itemDept === 'COMMON'
       : (itemDept === DASH_STATE.deptKey || (DASH_STATE.deptKey === 'CSE-AIML' && itemDept === 'CSE'));
-    if (semMatch && deptMatch) {
-      const key = `${item.code}-${item.years}-${item.path}`;
-      if (!seenPyqKeys.has(key)) {
-        seenPyqKeys.add(key);
-        collectedPyqs.push({
-          code: item.code,
-          subject: item.title,
-          title: `${item.title} (${item.code}) Archive`,
-          year: item.years || '2021–2024',
-          sem: String(item.sem || DASH_STATE.semester),
-          path: item.path
-        });
-      }
+    const fKey = normFileKey(item.path);
+    if (semMatch && deptMatch && fKey && !seenPyqFiles.has(fKey)) {
+      seenPyqFiles.add(fKey);
+      const yrMatch = String(item.path || '').match(/-(20\d{2})\.pdf$/i);
+      const yrStr = yrMatch ? yrMatch[1] : (item.years || '2021–2024');
+      collectedPyqs.push({
+        subjectCode: item.code,
+        code: item.code,
+        legacyCode: item.code,
+        subject: item.title,
+        title: `MAKAUT ${yrStr} ${item.title} (${item.code})`,
+        year: yrStr,
+        sem: String(item.sem || DASH_STATE.semester),
+        path: item.path
+      });
     }
   });
   DASH_STATE.pyqs = collectedPyqs;
+  if (DASH_STATE.isFirstYear) {
+    const firstWithPyqs = resolvedSubjects.find(s => collectedPyqs.some(p => p.subjectCode === s.code));
+    DASH_STATE.selectedPyqSubjectCode = firstWithPyqs ? firstWithPyqs.code : '';
+  } else {
+    DASH_STATE.selectedPyqSubjectCode = '';
+  }
 
   // 3) Resolve 16 Panic Pack High-Yield Topics for Active Context
   const globalPanic = Array.isArray(window.MAKAUT_PANIC_QUESTIONS) ? window.MAKAUT_PANIC_QUESTIONS : [];
@@ -2079,7 +2304,7 @@ function renderStudyTracker() {
           <div class="btn-trio">
             <button type="button" class="btn-secondary-outline" onclick="openPdfPreviewModal('${escapeAttr(itemTitle)}', '${escapeAttr(u.pdf || sub.syllabusPdf)}')">Preview</button>
             <button type="button" class="btn-primary-peach" onclick="downloadDocument('${escapeAttr(itemTitle)}', '${escapeAttr(u.pdf || sub.syllabusPdf)}')">Download</button>
-            <button type="button" class="btn-secondary-outline ${isSaved ? 'saved' : ''}" onclick="saveToDeck('${escapeAttr(itemTitle)}', '${escapeAttr(sub.code)}', '${escapeAttr(u.pdf || sub.syllabusPdf)}', this)">${isSaved ? 'Saved in Deck ✓' : '+ Save to deck 📂'}</button>
+            <button type="button" class="btn-secondary-outline ${isSaved ? 'saved' : ''}" onclick="saveToDeck('${escapeAttr(itemTitle)}', '${escapeAttr(sub.code)}', '${escapeAttr(u.pdf || sub.syllabusPdf)}', this)">${isSaved ? 'Saved in Deck ✓' : '+ Save to deck 📁'}</button>
           </div>
         </div>
       `;
@@ -2115,7 +2340,13 @@ function toggleSubjectAccordion(cardId) {
   if (chev) chev.textContent = open ? '▴' : '▾';
 }
 
-function renderPyqVault() {
+function selectPyqSubject(subjectCode) {
+  DASH_STATE.selectedPyqSubjectCode = subjectCode;
+  renderPyqVault();
+}
+
+function renderPyqVault(showAllMatches = false) {
+  const selectorGrid = document.getElementById('pyqSubjectSelectorGrid');
   const grid = document.getElementById('pyqVaultGrid');
   const pyqs = DASH_STATE.pyqs;
   document.getElementById('navPyqCount').textContent = pyqs.length;
@@ -2123,26 +2354,66 @@ function renderPyqVault() {
   document.getElementById('pyqSectionSubPill').textContent = `${pyqs.length} Question Papers (${DASH_STATE.isFirstYear ? 'Sem 1–2' : 'Sem ' + DASH_STATE.semester})`;
 
   if (!pyqs.length) {
+    if (selectorGrid) selectorGrid.style.display = 'none';
     grid.innerHTML = `<div class="empty-state-box">No direct PYQ papers indexed for ${escapeHtml(DASH_STATE.deptDisplay)} Sem ${escapeHtml(DASH_STATE.semester)}. Try Ask AI or Full Syllabus.</div>`;
     return;
   }
 
-  grid.innerHTML = pyqs.map(p => {
+  let visiblePyqs = pyqs;
+
+  if (DASH_STATE.isFirstYear && !showAllMatches) {
+    const groups = DASH_STATE.subjects
+      .map(sub => ({
+        code: sub.code,
+        legacyCode: sub.legacyCode || sub.code,
+        title: sub.title,
+        semester: sub.semester,
+        papers: pyqs.filter(p => p.subjectCode === sub.code)
+      }))
+      .filter(g => g.papers.length > 0);
+
+    if (groups.length > 0) {
+      if (!groups.some(g => g.code === DASH_STATE.selectedPyqSubjectCode)) {
+        DASH_STATE.selectedPyqSubjectCode = groups[0].code;
+      }
+      selectorGrid.style.display = 'grid';
+      selectorGrid.innerHTML = groups.map(g => {
+        const isActive = g.code === DASH_STATE.selectedPyqSubjectCode;
+        return `
+          <button type="button" class="pyq-subject-box ${isActive ? 'active' : ''}" onclick="selectPyqSubject('${escapeAttr(g.code)}')" aria-pressed="${isActive}">
+            <div class="pyq-subject-box-top">
+              <span class="pyq-code-badge">${escapeHtml(g.code)}</span>
+              <span class="pyq-subject-box-count">${g.papers.length} Paper${g.papers.length === 1 ? '' : 's'}</span>
+            </div>
+            <div class="pyq-subject-box-name">${escapeHtml(g.title)}</div>
+            <div class="pyq-subject-box-sem">2018 Archive · Sem ${escapeHtml(g.semester)}</div>
+          </button>
+        `;
+      }).join('');
+
+      const activeGroup = groups.find(g => g.code === DASH_STATE.selectedPyqSubjectCode) || groups[0];
+      visiblePyqs = activeGroup ? activeGroup.papers : pyqs;
+    } else if (selectorGrid) {
+      selectorGrid.style.display = 'none';
+    }
+  } else if (selectorGrid) {
+    selectorGrid.style.display = 'none';
+  }
+
+  grid.innerHTML = visiblePyqs.map(p => {
     const isSaved = isItemSavedInDeck(p.title, p.code);
     return `
-      <div class="white-blue-card filterable-card">
-        <div>
-          <div class="card-top-meta">
-            <span class="subject-code-pill">${escapeHtml(p.code)}</span>
-            <span class="year-peach-badge">${escapeHtml(p.year)}</span>
-          </div>
-          <div class="card-title-bold" style="margin-top:0.55rem;">${escapeHtml(p.title)}</div>
-          <div class="card-sub-slate" style="margin-top:0.2rem;">Subject: ${escapeHtml(p.subject)} · Sem ${escapeHtml(p.sem)}</div>
+      <div class="pyq-elongated-tile filterable-card">
+        <div class="pyq-tile-top-row">
+          <span class="pyq-code-badge">${escapeHtml(p.code)}</span>
+          <span class="pyq-year-badge">${escapeHtml(p.year)}</span>
         </div>
+        <div class="pyq-tile-heading">${escapeHtml(p.title)}</div>
+        <div class="pyq-tile-subtext">Subject: ${escapeHtml(p.subject)} · Sem ${escapeHtml(p.sem)}</div>
         <div class="btn-trio">
           <button type="button" class="btn-secondary-outline" onclick="openPdfPreviewModal('${escapeAttr(p.title)}', '${escapeAttr(p.path)}')">Preview</button>
           <button type="button" class="btn-primary-peach" onclick="downloadDocument('${escapeAttr(p.title)}', '${escapeAttr(p.path)}')">Download</button>
-          <button type="button" class="btn-secondary-outline ${isSaved ? 'saved' : ''}" onclick="saveToDeck('${escapeAttr(p.title)}', '${escapeAttr(p.code)}', '${escapeAttr(p.path)}', this)">${isSaved ? 'Saved in Deck ✓' : '+ Save to deck 📂'}</button>
+          <button type="button" class="btn-secondary-outline ${isSaved ? 'saved' : ''}" onclick="saveToDeck('${escapeAttr(p.title)}', '${escapeAttr(p.code)}', '${escapeAttr(p.path)}', this)">${isSaved ? 'Saved in Deck ✓' : '+ Save to deck 📁'}</button>
         </div>
       </div>
     `;
@@ -2171,7 +2442,7 @@ function renderPanicPack() {
         </div>
         <div class="btn-trio">
           <button type="button" class="btn-secondary-outline" onclick="document.getElementById('panic-card-${i}').classList.toggle('expanded')">Formula / Solution</button>
-          <button type="button" class="btn-secondary-outline ${isSaved ? 'saved' : ''}" onclick="saveToDeck('${escapeAttr(t.title)}', '${escapeAttr(t.code)}', '${escapeAttr(DASH_STATE.fullSyllabusPath)}', this)">${isSaved ? 'Saved in Deck ✓' : '+ Save to deck 📂'}</button>
+          <button type="button" class="btn-secondary-outline ${isSaved ? 'saved' : ''}" onclick="saveToDeck('${escapeAttr(t.title)}', '${escapeAttr(t.code)}', '${escapeAttr(DASH_STATE.fullSyllabusPath)}', this)">${isSaved ? 'Saved in Deck ✓' : '+ Save to deck 📁'}</button>
         </div>
       </div>
     `;
@@ -2182,7 +2453,7 @@ function renderSavedDeckSection() {
   const container = document.getElementById('savedDeckContainer');
   const deck = getSavedDeck();
   if (!deck.length) {
-    container.innerHTML = `<div class="empty-state-box">No saved units or PYQs yet. Click <strong>+ Save to deck 📂</strong> on any module or question paper above to bookmark it here.</div>`;
+    container.innerHTML = `<div class="empty-state-box">No saved units or PYQs yet. Click <strong>+ Save to deck 📁</strong> on any module or question paper above to bookmark it here.</div>`;
     return;
   }
 
@@ -2259,15 +2530,19 @@ function filterWorkspace(query) {
   const clearBtn = document.getElementById('searchClearBtn');
   if (clearBtn) clearBtn.style.display = q ? 'inline-flex' : 'none';
 
-  // When searching, show all sections so matching PYQs, subjects, panic items, and deck notes surface immediately
+  // When searching, show all sections & all matching PYQs across subjects
   if (q) {
+    if (DASH_STATE.isFirstYear) renderPyqVault(true);
     ['section-study-tracker', 'section-pyqs', 'section-panic', 'section-deck'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.style.display = 'block';
     });
-  } else if (DASH_STATE.activeNav && DASH_STATE.activeNav !== 'home') {
-    const btn = document.querySelector(`#leftNavRail button[data-nav="${DASH_STATE.activeNav}"]`);
-    switchNavSection(DASH_STATE.activeNav, btn);
+  } else {
+    if (DASH_STATE.isFirstYear) renderPyqVault(false);
+    if (DASH_STATE.activeNav && DASH_STATE.activeNav !== 'home') {
+      const btn = document.querySelector(`#leftNavRail button[data-nav="${DASH_STATE.activeNav}"]`);
+      switchNavSection(DASH_STATE.activeNav, btn);
+    }
   }
 
   document.querySelectorAll('.subject-accordion-card').forEach(card => {
@@ -2442,6 +2717,7 @@ function handleGenerateStudyGuide() {
 document.addEventListener('DOMContentLoaded', () => {
   if (!runAuthGuard()) return;
 
+  syncQuickLinks();
   resolveAcademicContext();
   loadActiveAcademicData();
   renderStudyTracker();
