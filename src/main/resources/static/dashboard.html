@@ -1645,6 +1645,274 @@
       background: #F1F5F9;
     }
 
+    /* ── Panic Pack Top 20% Repeat Dossier Cards & Modal ── */
+    .panic-dossier-card {
+      gap: 0.72rem;
+    }
+
+    .panic-dossier-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.22rem 0.62rem;
+      border-radius: 9999px;
+      background: #FFF1EA;
+      color: #9A3412;
+      border: 1.5px solid #F5B69E;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .panic-dossier-stats {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: #1E40AF;
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      padding: 0.2rem 0.55rem;
+      border-radius: 9999px;
+      white-space: nowrap;
+    }
+
+    .panic-dossier-stats.empty {
+      color: #475569;
+      background: #F8FAFC;
+      border-color: #CBD5E1;
+    }
+
+    .panic-sr-keywords {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    #panicDossierModal {
+      position: fixed;
+      inset: 0;
+      z-index: 2050;
+      background: rgba(15, 23, 42, 0.58);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+    }
+
+    #panicDossierModal.active {
+      display: flex;
+    }
+
+    .panic-modal-card {
+      width: 100%;
+      max-width: 880px;
+      max-height: 88vh;
+      background: #FFFFFF;
+      border: 2px solid #8DB9F0;
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: var(--shadow-elevated);
+    }
+
+    .panic-modal-head {
+      padding: 0.9rem 1.2rem;
+      border-bottom: 1.5px solid #8DB9F0;
+      background: #F8FAFF;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .panic-modal-title-wrap {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .panic-modal-title {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 15.5px;
+      font-weight: 800;
+      color: var(--text-navy);
+      line-height: 1.35;
+    }
+
+    .panic-modal-actions {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .panic-modal-subbanner {
+      padding: 0.65rem 1.2rem;
+      background: #FFF9F5;
+      border-bottom: 1.5px solid #8DB9F0;
+      border-left: 4px solid #F5B69E;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #0F172A;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .panic-modal-cutoff-note {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: #1E40AF;
+      background: #EFF6FF;
+      border: 1px solid #8DB9F0;
+      padding: 0.18rem 0.55rem;
+      border-radius: 9999px;
+    }
+
+    .panic-modal-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.1rem 1.25rem;
+      background: #F8FAFF;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    .panic-evidence-block {
+      background: #FFFFFF;
+      border: 1.5px solid #8DB9F0;
+      border-radius: 12px;
+      padding: 0.95rem 1.1rem;
+      box-shadow: 0 2px 10px rgba(141, 185, 240, 0.12);
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .panic-q-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .panic-q-meta-left {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .panic-q-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.2rem 0.58rem;
+      border-radius: 7px;
+      background: #0F172A;
+      color: #FFFFFF;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 800;
+    }
+
+    .panic-marks-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      background: #F5B69E;
+      color: #000000;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .panic-topic-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.2rem 0.6rem;
+      border-radius: 7px;
+      background: #EFF6FF;
+      border: 1px solid #8DB9F0;
+      color: #1E40AF;
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+
+    .panic-freq-badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 800;
+      color: #065F46;
+      background: #ECFDF5;
+      border: 1px solid #34D399;
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+    }
+
+    .panic-q-body {
+      font-size: 14px;
+      font-weight: 600;
+      color: #0F172A;
+      line-height: 1.55;
+      overflow-wrap: anywhere;
+    }
+
+    .panic-years-strip {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+
+    .panic-years-label {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #475569;
+      margin-right: 0.15rem;
+    }
+
+    .panic-year-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.15rem 0.52rem;
+      border-radius: 6px;
+      background: #EFF6FF;
+      border: 1px solid #8DB9F0;
+      color: #1E40AF;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .panic-match-note {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      color: #334155;
+      background: #F8FAFC;
+      border: 1px solid #CBD5E1;
+      border-radius: 8px;
+      padding: 0.45rem 0.68rem;
+      line-height: 1.45;
+      overflow-wrap: anywhere;
+    }
+
     /* Toast */
     #toastBox {
       position: fixed;
@@ -1971,6 +2239,43 @@
         flex: 1 0 100%;
         font-size: 0.9rem;
       }
+
+      #panicDossierModal {
+        padding: 0.5rem;
+      }
+
+      .panic-modal-card {
+        height: 92dvh;
+        max-height: 92dvh;
+      }
+
+      .panic-modal-head {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding: 0.75rem 0.9rem;
+      }
+
+      .panic-modal-title {
+        font-size: 0.92rem;
+      }
+
+      .panic-modal-actions {
+        width: 100%;
+      }
+
+      .panic-modal-actions button {
+        flex: 1 1 auto;
+        justify-content: center;
+      }
+
+      .panic-modal-subbanner {
+        padding: 0.55rem 0.9rem;
+        font-size: 0.76rem;
+      }
+
+      .panic-modal-body {
+        padding: 0.75rem;
+      }
     }
   </style>
 </head>
@@ -2134,12 +2439,12 @@
 
     <div class="workspace-section-divider" aria-hidden="true"></div>
 
-    <!-- Section 3: 16-Topic Panic Pack -->
+    <!-- Section 3: Panic Pack (Top 20% Repeat Dossiers) -->
     <section class="workspace-section" id="section-panic-pack">
       <div class="section-header-row">
         <div class="section-heading-group">
           <h2 class="section-heading">🔥 Panic Pack</h2>
-          <span class="section-sub-pill" id="panicSectionSubPill">16 Repeat Topics</span>
+          <span class="section-sub-pill" id="panicSectionSubPill">Top 20% Repeat Dossiers</span>
         </div>
       </div>
       <div class="card-grid-2" id="panicPackGrid"></div>
@@ -2222,7 +2527,27 @@
   </div>
 </div>
 
-<!-- Shared Curriculum & PYQ Registries -->
+<!-- High-Yield Top 20% Repeat Questions Dossier Preview Modal -->
+<div id="panicDossierModal" role="dialog" aria-modal="true" aria-labelledby="panicDossierModalTitle">
+  <div class="panic-modal-card">
+    <div class="panic-modal-head">
+      <div class="panic-modal-title-wrap">
+        <h3 class="panic-modal-title" id="panicDossierModalTitle">Top 20% Repeated Exam Questions Dossier</h3>
+      </div>
+      <div class="panic-modal-actions">
+        <button type="button" class="btn-primary-peach" id="panicModalDownloadBtn">Download Dossier</button>
+        <button type="button" class="btn-secondary-outline" onclick="closePanicDossierModal()">✕ Close</button>
+      </div>
+    </div>
+    <div class="panic-modal-subbanner" id="panicDossierModalSubbanner">
+      <span>Verified Repeat Analysis · Compiled from MAKAUT Official End-Sem Papers (2018–2026)</span>
+    </div>
+    <div class="panic-modal-body" id="panicDossierModalBody"></div>
+  </div>
+</div>
+
+<!-- Shared Curriculum, Panic Dossiers & PYQ Registries -->
+<script src="js/panic-pack-data.js?v=20261112_v18"></script>
 <script src="js/pyq-catalog.js?v=20261111_v13"></script>
 <script src="app.js?v=20261111_v13"></script>
 
@@ -2326,6 +2651,7 @@ const DASH_STATE = {
   subjects: [],
   pyqs: [],
   selectedPyqSubjectCode: '',
+  panicDossiers: [],
   panicTopics: [],
   activeNav: 'study-tracker',
   ghDocsPrefix: ''
@@ -2784,42 +3110,123 @@ function loadActiveAcademicData() {
   const firstWithPyqs = resolvedSubjects.find(s => collectedPyqs.some(p => normCourseCode(p.subjectCode) === normCourseCode(s.code)));
   DASH_STATE.selectedPyqSubjectCode = firstWithPyqs ? firstWithPyqs.code : '';
 
-  // 3) Resolve 16 Panic Pack High-Yield Topics for Active Context
-  const globalPanic = Array.isArray(window.MAKAUT_PANIC_QUESTIONS) ? window.MAKAUT_PANIC_QUESTIONS : [];
-  let panicList = [];
-  if (DASH_STATE.isFirstYear && globalPanic.length > 0) {
-    panicList = globalPanic.slice(0, 16).map(q => ({
-      code: q.subjectCode || '1st Year',
-      title: q.topicName || 'High-Yield Topic',
-      question: q.questionText,
-      marks: q.marks || 10,
-      years: Array.isArray(q.examYears) ? q.examYears.join(', ') : '2019–2024',
-      answer: q.modelAnswerSnippet || 'Review core derivation, standard boundary conditions, and past paper numericals.'
-    }));
-  }
-  // Fill / Build up to 16 stream+semester-specific high-yield cards
-  let idx = 0;
-  const templates = [
-    ['Core Derivation & Proof', '10 Marks', '2021, 2022, 2023, 2024'],
-    ['Standard Numerical Problem', '10 Marks', '2019, 2022, 2023, 2024'],
-    ['Conceptual Comparison & Tradeoffs', '5 Marks', '2020, 2022, 2024'],
-    ['Architecture / Block Diagram Analysis', '10 Marks', '2019, 2021, 2023, 2025']
-  ];
-  while (panicList.length < 16 && resolvedSubjects.length > 0) {
-    const sub = resolvedSubjects[idx % resolvedSubjects.length];
-    const unit = sub.units[Math.floor(idx / resolvedSubjects.length) % sub.units.length] || sub.units[0];
-    const tpl = templates[idx % templates.length];
-    panicList.push({
-      code: sub.code,
-      title: `${unit.name.split(':')[0]} — ${tpl[0]}`,
-      question: `High-repeat MAKAUT university question on "${unit.name}" in ${sub.title} (${sub.code}).`,
-      marks: parseInt(tpl[1], 10),
-      years: tpl[2],
-      answer: `Focus Areas: ${unit.subtopics || unit.name} Structured 10-mark answer strategy: state definitions clearly, sketch labeled diagram/equations, and conclude with complexity/applications.`
+  // 3) Resolve Top 20% Repeat PYQ Dossiers for Active Semester
+  DASH_STATE.panicDossiers = resolveSemesterPanicDossiers(resolvedSubjects);
+  const derivedTopics = [];
+  DASH_STATE.panicDossiers.forEach(d => {
+    d.topQuestions.forEach(q => {
+      derivedTopics.push({
+        code: d.code,
+        title: `${d.title} · ${q.coreTopic}`,
+        question: q.question,
+        marks: q.marks,
+        years: (q.years || []).join(', '),
+        answer: (q.appearances || []).join(' · ')
+      });
     });
-    idx++;
+  });
+  DASH_STATE.panicTopics = derivedTopics;
+}
+
+function canonicalPanicSlug(rawTitle, aliases) {
+  let s = String(rawTitle || '').toLowerCase().replace(/&/g, ' and ').replace(/\(.*?\)/g, ' ');
+  s = s.replace(/[^a-z0-9]+/g, ' ').trim();
+  const words = s.split(/\s+/).filter(Boolean).map(w =>
+    (w.length > 4 && w.endsWith('s') && !/(?:ss|us|is|cs)$/.test(w)) ? w.slice(0, -1) : w
+  );
+  let norm = words.join(' ')
+    .replace(/\b(humanitie?s?\s*\d*|differential calculus|using c|and uml|ecs\d+|ce|hs)\b/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/organization/g, 'organisation')
+    .replace(/datamining/g, 'data mining')
+    .replace(/ecommerce/g, 'e commerce');
+  return (aliases && aliases[norm]) ? aliases[norm] : norm;
+}
+
+function selectTop20RepeatQuestions(dossier) {
+  if (!dossier || !Array.isArray(dossier.questionsPool)) return [];
+  const totalConcepts = Math.max(dossier.totalAnalyzedConcepts || dossier.questionsPool.length, dossier.questionsPool.length);
+  const cutoff = Math.max(3, Math.min(10, Math.ceil(totalConcepts * 0.20), dossier.questionsPool.length));
+  return [...dossier.questionsPool]
+    .sort((a, b) => (b.repeatCount - a.repeatCount) || (b.marks - a.marks) || ((b.question || '').length - (a.question || '').length))
+    .slice(0, cutoff);
+}
+
+function isTheorySubjectForPanicPack(sub) {
+  const code = String(sub.code || '').toUpperCase().trim();
+  const title = String(sub.title || '');
+  if (code.startsWith('MC') && !title.toLowerCase().includes('industrial')) return false;
+  if (sub.isPractical === true) return false;
+  if (/\b(?:lab|practical|workshop|seminar|viva|internship|industrial training|sessional)\b/i.test(title)) return false;
+  if (/project/i.test(title) && !/research methodology/i.test(title)) return false;
+  if (/\d{3}$/.test(code) && /[9]/.test(code.slice(-2, -1)) && !/research methodology/i.test(title)) return false;
+  return true;
+}
+
+function resolveSemesterPanicDossiers(subjects) {
+  const reg = window.MAKAUT_PANIC_DOSSIERS || {};
+  const dossiersMap = reg.dossiers || {};
+  const codeToKey = reg.codeToKey || {};
+  const aliases = reg.titleAliases || {};
+
+  const seenSlugs = new Set();
+  const candidates = [];
+
+  (subjects || []).forEach((sub, origIdx) => {
+    if (!isTheorySubjectForPanicPack(sub)) return;
+    const cNorm = normCourseCode(sub.code);
+    const lNorm = normCourseCode(sub.legacyCode);
+    let key = codeToKey[cNorm] || codeToKey[lNorm] || null;
+    if (!key || !dossiersMap[key]) {
+      const sl = canonicalPanicSlug(sub.title, aliases);
+      if (dossiersMap[sl]) key = sl;
+    }
+
+    const rawDossier = (key && dossiersMap[key]) ? dossiersMap[key] : null;
+    if (DASH_STATE.isFirstYear && !rawDossier) return;
+
+    if (rawDossier && seenSlugs.has(key)) {
+      // Avoid duplicate subject card if same paper pool already mapped under primary code
+      if (!codeToKey[cNorm] && !codeToKey[lNorm]) return;
+    }
+    if (rawDossier) seenSlugs.add(key);
+
+    const codeUpper = String(sub.code || '').toUpperCase();
+    const isCore = /^(?:PCC|ESC|BSC|BS|ES|HSMC|HM|PROJ|26-)/i.test(codeUpper);
+    const topQuestions = rawDossier ? selectTop20RepeatQuestions(rawDossier) : [];
+
+    candidates.push({
+      code: sub.code,
+      title: sub.title,
+      semester: sub.semester || DASH_STATE.semester,
+      syllabusPdf: sub.syllabusPdf || DASH_STATE.fullSyllabusPath,
+      papersScanned: rawDossier ? (rawDossier.papersScanned || 0) : 0,
+      yearsCovered: rawDossier ? (rawDossier.yearsCovered || []) : [],
+      totalAnalyzedConcepts: rawDossier ? (rawDossier.totalAnalyzedConcepts || topQuestions.length) : 0,
+      topQuestions,
+      isCore,
+      origIdx
+    });
+  });
+
+  if (DASH_STATE.isFirstYear) {
+    return candidates.sort((a, b) => a.origIdx - b.origIdx);
   }
-  DASH_STATE.panicTopics = panicList.slice(0, 16);
+
+  const verified = candidates.filter(c => c.topQuestions.length > 0);
+  if (verified.length > 0) {
+    const coreVerified = verified.filter(c => c.isCore);
+    if (coreVerified.length >= 5) {
+      const electives = verified.filter(c => !c.isCore).sort((a, b) => b.papersScanned - a.papersScanned);
+      const targetMax = Math.max(coreVerified.length, 6);
+      return [...coreVerified, ...electives].slice(0, targetMax).sort((a, b) => a.origIdx - b.origIdx);
+    }
+    return verified.slice(0, 6).sort((a, b) => a.origIdx - b.origIdx);
+  }
+
+  // Honest fallback for core branches (ECE/EE/ME/CE) where repo currently holds only syllabus or sparse shared papers
+  return candidates.slice(0, 6).sort((a, b) => a.origIdx - b.origIdx);
 }
 
 // ── Deck Management (`saved_study_deck`) ──
@@ -2877,6 +3284,8 @@ function saveCourseToDeck(code, title, syllabusFile, btnEl) {
     showToast(`Course already in Deck: ${code}`);
   }
   updateDeckBadge();
+  renderStudyTracker();
+  renderPanicPack();
   renderSavedDeckSection();
 }
 
@@ -2887,6 +3296,7 @@ function removeFromDeck(index) {
   updateDeckBadge();
   renderStudyTracker();
   renderPyqVault();
+  renderPanicPack();
   renderSavedDeckSection();
   showToast('Removed from Study Deck');
 }
@@ -2897,6 +3307,7 @@ function clearStudyDeck() {
   updateDeckBadge();
   renderStudyTracker();
   renderPyqVault();
+  renderPanicPack();
   renderSavedDeckSection();
   showToast('Study Deck cleared');
 }
@@ -3204,31 +3615,234 @@ function renderPyqVault(showAllMatches = false) {
 
 function renderPanicPack() {
   const grid = document.getElementById('panicPackGrid');
-  const topics = DASH_STATE.panicTopics;
-  document.getElementById('navPanicCount').textContent = topics.length;
-  document.getElementById('panicSectionSubPill').textContent = `${topics.length} High-Yield Topics`;
+  const dossiers = DASH_STATE.panicDossiers || [];
+  document.getElementById('navPanicCount').textContent = dossiers.length;
+  document.getElementById('panicSectionSubPill').textContent = `${dossiers.length} Core Subject Dossier${dossiers.length === 1 ? '' : 's'} · Top 20% PYQs`;
 
-  grid.innerHTML = topics.map((t, i) => {
-    const isSaved = isItemSavedInDeck(t.title, t.code);
+  if (!dossiers.length) {
+    grid.innerHTML = `<div class="empty-state-box">No theory subjects matched for ${escapeHtml(DASH_STATE.deptDisplay)} (Sem ${escapeHtml(DASH_STATE.semester)}) in this view.</div>`;
+    return;
+  }
+
+  grid.innerHTML = dossiers.map((d, i) => {
+    const hasQuestions = d.topQuestions && d.topQuestions.length > 0;
+    const isSaved = isCourseSavedInDeck(d.code, d.title);
+    const statsLabel = hasQuestions
+      ? `${d.topQuestions.length} Repeat Qs · ${d.papersScanned} Paper${d.papersScanned === 1 ? '' : 's'}`
+      : '0 Papers Indexed';
+    const subtitle = hasQuestions
+      ? 'Verified high-frequency repeat questions from MAKAUT end-sem papers (2018–2026).'
+      : 'No local MAKAUT end-sem PYQ PDFs indexed for this subject yet (Sem 3–8 expansion in progress).';
+    const hiddenKeywords = (d.topQuestions || []).map(q => `${q.coreTopic} ${q.question}`).join(' ');
+
     return `
-      <div class="white-blue-card filterable-card panic-pack-item" id="panic-card-${i}">
+      <div class="white-blue-card filterable-card panic-pack-item panic-dossier-card" id="panic-card-${i}">
         <div>
           <div class="card-top-meta">
-            <span class="subject-code-pill">${escapeHtml(t.code)}</span>
-            <span class="year-peach-badge">${t.marks} Marks</span>
+            <span class="panic-dossier-badge">TOP 20% REPEAT DOSSIER</span>
+            <span class="panic-dossier-stats ${hasQuestions ? '' : 'empty'}">${escapeHtml(statsLabel)}</span>
           </div>
-          <div class="card-title-bold" style="margin-top:0.55rem;">${escapeHtml(t.title)}</div>
-          <div class="card-sub-slate" style="margin-top:0.25rem;">${escapeHtml(t.question)}</div>
-          <div class="card-sub-slate" style="margin-top:0.25rem;font-family:var(--font-mono);font-size:11px;">Repeated: ${escapeHtml(t.years)}</div>
-          <div class="panic-model-answer"><strong>Formula / Strategy Note:</strong> ${escapeHtml(t.answer)}</div>
+          <div class="card-title-bold" style="margin-top:0.55rem;">${escapeHtml(d.code)} &middot; ${escapeHtml(d.title)}</div>
+          <div class="card-sub-slate" style="margin-top:0.3rem;">${escapeHtml(subtitle)}</div>
+          <span class="panic-sr-keywords">${escapeHtml(hiddenKeywords)}</span>
         </div>
         <div class="btn-trio">
-          <button type="button" class="btn-secondary-outline" onclick="document.getElementById('panic-card-${i}').classList.toggle('expanded')">Formula / Solution</button>
-          <button type="button" class="btn-secondary-outline ${isSaved ? 'saved' : ''}" onclick="saveToDeck('${escapeAttr(t.title)}', '${escapeAttr(t.code)}', '${escapeAttr(DASH_STATE.fullSyllabusPath)}', this)">${isSaved ? 'Saved in Deck ✓' : '+ Save to deck 📁'}</button>
+          <button type="button" class="btn-secondary-outline" ${hasQuestions ? '' : 'disabled style="opacity:0.55;cursor:not-allowed;"'} onclick="openPanicDossierModal(${i})">Preview</button>
+          <button type="button" class="btn-primary-peach" ${hasQuestions ? '' : 'disabled style="opacity:0.55;cursor:not-allowed;"'} onclick="downloadPanicDossierPdf(${i})">Download</button>
+          <button type="button" class="btn-secondary-outline ${isSaved ? 'saved' : ''}" onclick="saveCourseToDeck('${escapeAttr(d.code)}', '${escapeAttr(d.title)}', '${escapeAttr(d.syllabusPdf || DASH_STATE.fullSyllabusPath)}', this)">${isSaved ? 'Saved in Deck ✓' : '+ Save Course to Deck 📂'}</button>
         </div>
       </div>
     `;
   }).join('');
+}
+
+function openPanicDossierModal(idx) {
+  const dossier = (DASH_STATE.panicDossiers || [])[idx];
+  if (!dossier) return;
+  if (!dossier.topQuestions || !dossier.topQuestions.length) {
+    showToast(`No end-sem PYQs indexed yet for ${dossier.code}.`);
+    return;
+  }
+
+  const modal = document.getElementById('panicDossierModal');
+  const titleEl = document.getElementById('panicDossierModalTitle');
+  const subEl = document.getElementById('panicDossierModalSubbanner');
+  const bodyEl = document.getElementById('panicDossierModalBody');
+  const dlBtn = document.getElementById('panicModalDownloadBtn');
+
+  titleEl.textContent = `${dossier.code} · Top 20% Repeated Exam Questions Dossier`;
+  subEl.innerHTML = `
+    <span>Verified Repeat Analysis · Compiled from MAKAUT Official End-Sem Papers (2018–2026)</span>
+    <span class="panic-modal-cutoff-note">${dossier.topQuestions.length} Selected / ${dossier.totalAnalyzedConcepts} Concepts · ${dossier.papersScanned} Papers Scanned</span>
+  `;
+
+  bodyEl.innerHTML = dossier.topQuestions.map((q, qIdx) => {
+    const yearPills = (q.years || []).map(yr => `<span class="panic-year-pill">${escapeHtml(yr)}</span>`).join('');
+    const freqLabel = q.repeatCount > 1 ? `${q.repeatCount}× Repeated` : 'Core End-Sem Match';
+    const matchText = (q.appearances || []).join(' · ');
+    return `
+      <article class="panic-evidence-block">
+        <div class="panic-q-header">
+          <div class="panic-q-meta-left">
+            <span class="panic-q-num">Q${qIdx + 1}</span>
+            <span class="panic-marks-tag">${escapeHtml(q.marks)} Marks</span>
+            <span class="panic-topic-pill">${escapeHtml(q.coreTopic || dossier.title)}</span>
+          </div>
+          <span class="panic-freq-badge">${escapeHtml(freqLabel)}</span>
+        </div>
+        <div class="panic-q-body">${escapeHtml(q.question)}</div>
+        <div class="panic-years-strip">
+          <span class="panic-years-label">Exam Years:</span>
+          ${yearPills}
+        </div>
+        <div class="panic-match-note"><strong>Paper Match Note:</strong> ${escapeHtml(matchText)}</div>
+      </article>
+    `;
+  }).join('');
+
+  if (dlBtn) {
+    dlBtn.onclick = () => downloadPanicDossierPdf(idx);
+  }
+  modal.classList.add('active');
+}
+
+function closePanicDossierModal() {
+  const modal = document.getElementById('panicDossierModal');
+  if (modal) modal.classList.remove('active');
+}
+
+function pdfAsciiSafe(str) {
+  return String(str || '')
+    .replace(/[\u2013\u2014·•]/g, '-')
+    .replace(/[\u2018\u2019]/g, "'")
+    .replace(/[\u201C\u201D]/g, '"')
+    .replace(/\u00D7/g, 'x')
+    .replace(/[^\x20-\x7E]/g, ' ');
+}
+
+function pdfWrapText(text, maxChars) {
+  const words = pdfAsciiSafe(text).split(/\s+/).filter(Boolean);
+  const lines = [];
+  let cur = '';
+  words.forEach(w => {
+    if (!cur) {
+      cur = w;
+    } else if (cur.length + 1 + w.length <= maxChars) {
+      cur += ' ' + w;
+    } else {
+      lines.push(cur);
+      cur = w;
+    }
+  });
+  if (cur) lines.push(cur);
+  return lines.length ? lines : [''];
+}
+
+function buildSimplePdfBlob(specLines) {
+  // Valid multi-page PDF 1.4 generator with WinAnsi Helvetica & Helvetica-Bold (zero external deps)
+  const pageW = 595;
+  const pageH = 842;
+  const marginX = 46;
+  const topY = 794;
+  const bottomY = 52;
+
+  const pages = [];
+  let curOps = [];
+  let y = topY;
+
+  const startNewPage = () => {
+    if (curOps.length) pages.push(curOps.join('\n'));
+    curOps = [];
+    y = topY;
+  };
+
+  specLines.forEach(item => {
+    const font = item.bold ? '/F2' : '/F1';
+    const size = item.size || 10.5;
+    const leading = item.leading || Math.round(size * 1.42);
+    const wrapped = item.raw === '' ? [''] : pdfWrapText(item.text || '', Math.floor((pageW - 2 * marginX) / (size * 0.50)));
+
+    if (item.spaceBefore) y -= item.spaceBefore;
+    wrapped.forEach(lineText => {
+      if (y - leading < bottomY) startNewPage();
+      if (lineText) {
+        const escaped = lineText.replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
+        curOps.push(`BT ${font} ${size} Tf ${marginX} ${y} Td (${escaped}) Tj ET`);
+      }
+      y -= leading;
+    });
+    if (item.spaceAfter) y -= item.spaceAfter;
+  });
+  if (curOps.length || !pages.length) pages.push(curOps.join('\n'));
+
+  const objects = [];
+  const addObj = (body) => { objects.push(body); return objects.length; };
+  const catalogId = addObj('');
+  const pagesId = addObj('');
+  const f1Id = addObj('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>');
+  const f2Id = addObj('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>');
+
+  const pageIds = [];
+  pages.forEach(streamContent => {
+    const contentId = addObj(`<< /Length ${streamContent.length} >>\nstream\n${streamContent}\nendstream`);
+    const pId = addObj(`<< /Type /Page /Parent ${pagesId} 0 R /MediaBox [0 0 ${pageW} ${pageH}] /Resources << /Font << /F1 ${f1Id} 0 R /F2 ${f2Id} 0 R >> >> /Contents ${contentId} 0 R >>`);
+    pageIds.push(pId);
+  });
+
+  objects[catalogId - 1] = `<< /Type /Catalog /Pages ${pagesId} 0 R >>`;
+  objects[pagesId - 1] = `<< /Type /Pages /Kids [${pageIds.map(id => `${id} 0 R`).join(' ')}] /Count ${pageIds.length} >>`;
+
+  let pdfStr = '%PDF-1.4\n';
+  const offsets = [0];
+  objects.forEach((body, idx) => {
+    offsets.push(pdfStr.length);
+    pdfStr += `${idx + 1} 0 obj\n${body}\nendobj\n`;
+  });
+  const xrefPos = pdfStr.length;
+  pdfStr += `xref\n0 ${objects.length + 1}\n0000000000 65535 f \n`;
+  for (let i = 1; i < offsets.length; i++) {
+    pdfStr += `${String(offsets[i]).padStart(10, '0')} 00000 n \n`;
+  }
+  pdfStr += `trailer\n<< /Size ${objects.length + 1} /Root ${catalogId} 0 R >>\nstartxref\n${xrefPos}\n%%EOF`;
+
+  return new Blob([pdfStr], { type: 'application/pdf' });
+}
+
+function downloadPanicDossierPdf(idx) {
+  const dossier = (DASH_STATE.panicDossiers || [])[idx];
+  if (!dossier) return;
+  if (!dossier.topQuestions || !dossier.topQuestions.length) {
+    showToast(`No end-sem PYQs indexed yet for ${dossier.code}.`);
+    return;
+  }
+
+  const lines = [
+    { text: `MAKAUT CAMPUSSENSE - TOP 20% REPEAT DOSSIER`, size: 11, bold: true, spaceAfter: 2 },
+    { text: `${dossier.code} - ${dossier.title}`, size: 15, bold: true, spaceAfter: 4 },
+    { text: `Verified Repeat Analysis | Compiled from MAKAUT Official End-Sem Papers (2018-2026)`, size: 10, bold: false, spaceAfter: 2 },
+    { text: `Coverage: ${dossier.papersScanned} End-Sem Papers | ${dossier.totalAnalyzedConcepts} Concepts Analyzed | Top 20% Cutoff: ${dossier.topQuestions.length} Questions`, size: 9.5, bold: false, spaceAfter: 10 }
+  ];
+
+  dossier.topQuestions.forEach((q, qIdx) => {
+    const freq = q.repeatCount > 1 ? `${q.repeatCount}x Repeat` : 'Core End-Sem Match';
+    lines.push({ text: `Q${qIdx + 1}. [${q.marks} Marks | ${freq}] Module: ${q.coreTopic || dossier.title}`, size: 11, bold: true, spaceBefore: 4, spaceAfter: 2 });
+    lines.push({ text: q.question, size: 10.5, bold: false, spaceAfter: 2 });
+    lines.push({ text: `Exam Years: ${(q.years || []).join(', ')}`, size: 9.5, bold: false });
+    lines.push({ text: `Paper Match Note: ${(q.appearances || []).join(' | ')}`, size: 9.5, bold: false, spaceAfter: 8 });
+  });
+
+  const blob = buildSimplePdfBlob(lines);
+  const safeCode = String(dossier.code || 'MAKAUT').replace(/[^A-Za-z0-9_-]+/g, '_');
+  const fileName = `MAKAUT_${safeCode}_Top20_Repeat_Dossier.pdf`;
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = fileName;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+  showToast(`Downloaded ${fileName}`);
 }
 
 function renderSavedDeckSection() {
@@ -3887,12 +4501,21 @@ document.addEventListener('DOMContentLoaded', () => {
     `<strong>Hi! I&apos;m your MAKAUT Study Copilot.</strong><br>Currently tuned to <strong>${escapeHtml(DASH_STATE.deptDisplay)} (Sem ${escapeHtml(DASH_STATE.semester)})</strong> with ${DASH_STATE.subjects.length} enrolled courses &amp; ${DASH_STATE.pyqs.length} indexed PYQs.<br><span style="font-size:12px;color:#475569;">Drag the <strong>⁝⁝</strong> handle on the left edge to resize this panel (280px–600px).</span>`
   );
 
-  // Close PDF modal on backdrop click or Escape
+  // Close PDF & Panic Dossier modals on backdrop click or Escape
   document.getElementById('pdfPreviewModal').addEventListener('click', (e) => {
     if (e.target.id === 'pdfPreviewModal') closePdfPreview();
   });
+  const panicModal = document.getElementById('panicDossierModal');
+  if (panicModal) {
+    panicModal.addEventListener('click', (e) => {
+      if (e.target.id === 'panicDossierModal') closePanicDossierModal();
+    });
+  }
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closePdfPreview();
+    if (e.key === 'Escape') {
+      closePdfPreview();
+      closePanicDossierModal();
+    }
   });
 });
 </script>
