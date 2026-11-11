@@ -681,14 +681,33 @@
       transition: width 0.25s ease;
     }
 
-    /* Sections & Middle-Row Dividers */
+    /* High-Visibility Workspace Section Divider */
     .workspace-section-divider {
+      display: block;
       width: 100%;
-      height: 1.5px;
-      background: linear-gradient(90deg, rgba(141, 185, 240, 0.15) 0%, #8DB9F0 50%, rgba(141, 185, 240, 0.15) 100%);
-      margin: 2.25rem 0 1.75rem 0;
+      height: 2px;
+      background-color: #8DB9F0; /* Solid Powder Blue */
+      margin: 3rem 0 2rem 0;
       border: none;
       border-radius: 9999px;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+      position: relative;
+    }
+
+    /* Center Accent Pill */
+    .workspace-section-divider::after {
+      content: "✦";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #FFFFFF;
+      color: #8DB9F0;
+      font-size: 0.85rem;
+      padding: 0 0.75rem;
+      border: 1.5px solid #8DB9F0;
+      border-radius: 9999px;
+      line-height: 1.2;
     }
 
     .workspace-section {
@@ -1687,7 +1706,7 @@
       </div>
     </div>
 
-    <hr class="workspace-section-divider" aria-hidden="true" />
+    <div class="workspace-section-divider" aria-hidden="true"></div>
 
     <div class="empty-state-box" id="searchNoResultsBox" style="display:none;margin-bottom:1.25rem;"></div>
 
@@ -1695,20 +1714,20 @@
     <section class="workspace-section" id="section-study-tracker">
       <div class="section-header-row">
         <div class="section-heading-group">
-          <h2 class="section-heading">✦ Study Tracker</h2>
+          <h2 class="section-heading">📚 Study Tracker</h2>
           <span class="section-sub-pill" id="studyTrackSubPill">0 Enrolled Courses</span>
         </div>
       </div>
       <div id="studyAccordionContainer"></div>
     </section>
 
-    <hr class="workspace-section-divider" aria-hidden="true" />
+    <div class="workspace-section-divider" aria-hidden="true"></div>
 
     <!-- Section 2: Semester PYQ Vault -->
     <section class="workspace-section" id="section-pyqs">
       <div class="section-header-row">
         <div class="section-heading-group">
-          <h2 class="section-heading">✦ PYQs Archive</h2>
+          <h2 class="section-heading">📄 PYQs Archive</h2>
           <span class="section-sub-pill" id="pyqSectionSubPill">Filtered for Active Semester</span>
         </div>
       </div>
@@ -1716,26 +1735,26 @@
       <div class="pyq-elongated-list" id="pyqVaultGrid"></div>
     </section>
 
-    <hr class="workspace-section-divider" aria-hidden="true" />
+    <div class="workspace-section-divider" aria-hidden="true"></div>
 
     <!-- Section 3: 16-Topic Panic Pack -->
     <section class="workspace-section" id="section-panic-pack">
       <div class="section-header-row">
         <div class="section-heading-group">
-          <h2 class="section-heading">✦ Panic Pack</h2>
+          <h2 class="section-heading">🔥 Panic Pack</h2>
           <span class="section-sub-pill" id="panicSectionSubPill">16 Repeat Topics</span>
         </div>
       </div>
       <div class="card-grid-2" id="panicPackGrid"></div>
     </section>
 
-    <hr class="workspace-section-divider" aria-hidden="true" />
+    <div class="workspace-section-divider" aria-hidden="true"></div>
 
     <!-- Section 4: Saved Study Deck -->
     <section class="workspace-section" id="section-save-to-deck">
       <div class="section-header-row">
         <div class="section-heading-group">
-          <h2 class="section-heading">✦ Saved Decks</h2>
+          <h2 class="section-heading">📂 Saved Decks</h2>
           <span class="section-sub-pill" id="savedDeckSectionCount">0 Saved</span>
         </div>
         <div style="display:flex;gap:0.45rem;flex-wrap:wrap;">
