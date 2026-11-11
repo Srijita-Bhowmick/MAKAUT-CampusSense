@@ -135,25 +135,32 @@
       border-color: #F5B69E;
     }
 
-    .sem-pills {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
+    .sem-pills,
+    .setup-card .sem-pills {
+      display: grid !important;
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: 0.6rem !important;
+      width: 100% !important;
     }
 
     .setup-card .sem-pill {
-      flex: 1;
-      min-width: 60px;
+      width: 100% !important;
+      min-width: 0 !important;
       background: #FFFFFF !important;
       border: 1.5px solid #8DB9F0 !important;
       border-radius: 9999px !important;
-      padding: 0.45rem 0.6rem !important;
-      font-size: 0.825rem !important;
+      padding: 0.65rem 0.5rem !important;
+      font-size: 0.88rem !important;
       font-weight: 600 !important;
       color: #0F172A !important;
       cursor: pointer !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
       text-align: center !important;
+      white-space: nowrap !important;
       transition: all 0.15s ease !important;
+      box-sizing: border-box !important;
       box-shadow: none !important;
     }
 
