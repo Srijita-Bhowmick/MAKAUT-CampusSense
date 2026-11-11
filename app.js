@@ -11818,6 +11818,7 @@ window.getSubjectDocuments = getSubjectDocuments;
         const signUpBtn = document.getElementById('btn-sign-up');
         if (signInBtn && signInBtn.id !== 'nav-signin-link') signInBtn.style.display = isAuth ? 'none' : '';
         if (signUpBtn && signUpBtn.id !== 'nav-signup-btn') signUpBtn.style.display = isAuth ? 'none' : '';
+        if (typeof window.syncBackToDashboardShortcut === 'function') window.syncBackToDashboardShortcut();
     }
     window.updateContextUI = updateContextUI;
     updateContextUI();
@@ -18364,7 +18365,7 @@ window.getSubjectDocuments = getSubjectDocuments;
                             updateUIAfterLogin(emission.user);
                         } else if (emission && emission.user === null) {
                             const authProvider = localStorage.getItem('campussense_auth_provider');
-                            if (authProvider !== 'student' && window.isLoggedIn) {
+                            if (authProvider === 'clerk' && window.isLoggedIn) {
                                 window.isLoggedIn = false;
                                 isLoggedIn = false;
                                 localStorage.removeItem('campussense_logged_in');
@@ -18376,6 +18377,7 @@ window.getSubjectDocuments = getSubjectDocuments;
                                 if (btnNavSignIn) btnNavSignIn.style.display = 'inline-flex';
                                 if (btnNavSignUp) btnNavSignUp.style.display = 'inline-flex';
                             }
+                            if (typeof window.syncBackToDashboardShortcut === 'function') window.syncBackToDashboardShortcut();
                         }
                     });
                 }
