@@ -93,8 +93,40 @@
           >
             Sign Up
           </a>
+
+          <a 
+            href="dashboard.html?v=20261111_v14" 
+            id="nav-back-dashboard-btn" 
+            class="nav-dashboard-pill" 
+            style="display: none;"
+            aria-label="Back to Dashboard"
+          >
+            ← Back to Dashboard
+          </a>
         </div>
     </header>
+    <script>
+      window.syncBackToDashboardShortcut = function () {
+        try {
+          var btn = document.getElementById('nav-back-dashboard-btn');
+          if (!btn) return;
+          var isAuth = Boolean(
+            (window.Clerk && window.Clerk.user) ||
+            localStorage.getItem('campussense_logged_in') === 'true'
+          );
+          if (isAuth) {
+            var hasAcademic = localStorage.getItem('academic_profile_completed') === 'true' || Boolean(localStorage.getItem('campussense_academic_profile'));
+            var targetFile = hasAcademic ? 'dashboard.html?v=20261111_v14' : 'set-academic.html?v=20261111_v14';
+            var isGh = window.location.pathname.toLowerCase().indexOf('makaut-campussense') !== -1 && window.location.pathname.toLowerCase().indexOf('/docs/') === -1;
+            btn.href = (isGh ? '/MAKAUT-CampusSense/' : '') + targetFile;
+            btn.style.setProperty('display', 'inline-flex', 'important');
+          } else {
+            btn.style.setProperty('display', 'none', 'important');
+          }
+        } catch (e) {}
+      };
+      window.syncBackToDashboardShortcut();
+    </script>
 
     <!-- Hidden compatibility elements to guarantee ZERO runtime null errors in app.js -->
     <div style="display:none;" aria-hidden="true">
@@ -1113,10 +1145,19 @@
             if (signOutBtn) signOutBtn.style.display = 'none';
             document.querySelectorAll('#btn-sign-in, #btn-sign-up, #btn-nav-signin, #btn-nav-signup').forEach(btn => btn.style.display = '');
           }
+          if (typeof window.syncBackToDashboardShortcut === 'function') {
+            window.syncBackToDashboardShortcut();
+          }
         } catch (err) {
           console.warn("[Clerk] Session sync error:", err);
         }
       }
+      window.addEventListener('pageshow', function () {
+        if (typeof window.syncBackToDashboardShortcut === 'function') window.syncBackToDashboardShortcut();
+      });
+      window.addEventListener('storage', function () {
+        if (typeof window.syncBackToDashboardShortcut === 'function') window.syncBackToDashboardShortcut();
+      });
       if (window.Clerk) {
         syncClerkSession();
       } else {
