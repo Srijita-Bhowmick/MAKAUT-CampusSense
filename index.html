@@ -25,6 +25,29 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="MAKAUT CampusSense — Curated Syllabi, Subject-wise PYQs & Exam Revisions">
     <meta name="twitter:description" content="Curated syllabi, subject-wise past question papers (PYQs), and exam-ready revision drills for MAKAUT engineering students.">
+
+    <!-- Immediate Returning User Check: If already signed in, go directly to Dashboard -->
+    <script>
+      (function checkReturningStudent() {
+        try {
+          const isAuth = localStorage.getItem('campussense_logged_in') === 'true' ||
+                         Boolean(localStorage.getItem('campussense_user_session')) ||
+                         Boolean(localStorage.getItem('campussense_token'));
+          if (!isAuth) return;
+
+          const params = new URLSearchParams(window.location.search || '');
+          const stayOnLanding = params.get('from') === 'dashboard' ||
+                                params.get('view') === 'landing' ||
+                                window.location.hash === '#landing';
+          if (!stayOnLanding) {
+            const hasAcademic = localStorage.getItem('academic_profile_completed') === 'true' ||
+                                Boolean(localStorage.getItem('campussense_academic_profile'));
+            const target = hasAcademic ? 'dashboard.html?v=20261111_v14' : 'set-academic.html?v=20261111_v14';
+            window.location.replace(target);
+          }
+        } catch (_) {}
+      })();
+    </script>
     
     <!-- Design System & Tokens -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -110,48 +133,49 @@
       window.syncBackToDashboardShortcut = function () {
         try {
           var btn = document.getElementById('nav-back-dashboard-btn');
-          if (!btn) return;
+          var signinLink = document.getElementById('nav-signin-link');
+          var signupBtn = document.getElementById('nav-signup-btn');
           var isAuth = Boolean(
             (window.Clerk && window.Clerk.user) ||
-            localStorage.getItem('campussense_logged_in') === 'true'
+            localStorage.getItem('campussense_logged_in') === 'true' ||
+            Boolean(localStorage.getItem('campussense_user_session'))
           );
           var hasAcademic =
             localStorage.getItem('academic_profile_completed') === 'true' ||
             Boolean(localStorage.getItem('campussense_academic_profile'));
 
-          var urlParams = new URLSearchParams(window.location.search || '');
-          var urlFromDashboard = urlParams.get('from') === 'dashboard';
-          var sessionFromDashboard = false;
-          try {
-            sessionFromDashboard = sessionStorage.getItem('campussense_from_dashboard') === 'true';
-          } catch (_) {}
-
-          if (isAuth && hasAcademic && (urlFromDashboard || sessionFromDashboard)) {
-            try {
-              sessionStorage.setItem('campussense_from_dashboard', 'true');
-            } catch (_) {}
-            if (urlFromDashboard && window.history && typeof window.history.replaceState === 'function') {
-              try {
-                var cleanUrl = new URL(window.location.href);
-                cleanUrl.searchParams.delete('from');
-                window.history.replaceState({}, '', cleanUrl.pathname + cleanUrl.search + cleanUrl.hash);
-              } catch (_) {}
+          if (isAuth) {
+            // Already signed in: Hide Sign In & Sign Up completely!
+            if (signinLink) signinLink.style.setProperty('display', 'none', 'important');
+            if (signupBtn) signupBtn.style.setProperty('display', 'none', 'important');
+            document.querySelectorAll('#btn-sign-in, #btn-sign-up, #btn-nav-signin, #btn-nav-signup, #nav-signin-link, #nav-signup-btn').forEach(function(el) {
+              el.style.setProperty('display', 'none', 'important');
+            });
+            if (btn) {
+              btn.textContent = 'Go to Dashboard →';
+              var pathnameLower = window.location.pathname.toLowerCase();
+              var isDocs = pathnameLower.indexOf('/docs/') !== -1;
+              var isGh = pathnameLower.indexOf('makaut-campussense') !== -1 && !isDocs;
+              var targetFile = 'dashboard.html?v=20261111_v14';
+              btn.href = window.location.protocol === 'file:'
+                ? targetFile
+                : ((isGh ? '/MAKAUT-CampusSense/' : (isDocs ? '/docs/' : '/')) + targetFile);
+              btn.style.setProperty('display', 'inline-flex', 'important');
             }
-            var pathnameLower = window.location.pathname.toLowerCase();
-            var isDocs = pathnameLower.indexOf('/docs/') !== -1;
-            var isGh = pathnameLower.indexOf('makaut-campussense') !== -1 && !isDocs;
-            var targetFile = 'dashboard.html?v=20261111_v14';
-            btn.href = window.location.protocol === 'file:'
-              ? targetFile
-              : ((isGh ? '/MAKAUT-CampusSense/' : (isDocs ? '/docs/' : '/')) + targetFile);
-            btn.style.setProperty('display', 'inline-flex', 'important');
+            // Update all feature cards and CTA buttons on the landing page to go to dashboard.html instead of login.html
+            document.querySelectorAll('.feature-bento-card, .feature-card, #floating-ask-ai').forEach(function(el) {
+              el.setAttribute('onclick', "window.location.href='dashboard.html?v=20261111_v14'");
+            });
+            document.querySelectorAll('button[onclick*="login.html"]').forEach(function(el) {
+              el.setAttribute('onclick', "window.location.href='dashboard.html?v=20261111_v14'");
+            });
+            document.querySelectorAll('a[href*="login.html"]').forEach(function(el) {
+              el.href = 'dashboard.html?v=20261111_v14';
+            });
           } else {
-            if (!isAuth || !hasAcademic) {
-              try {
-                sessionStorage.removeItem('campussense_from_dashboard');
-              } catch (_) {}
-            }
-            btn.style.setProperty('display', 'none', 'important');
+            if (btn) btn.style.setProperty('display', 'none', 'important');
+            if (signinLink) signinLink.style.setProperty('display', 'inline-flex', 'important');
+            if (signupBtn) signupBtn.style.setProperty('display', 'inline-flex', 'important');
           }
         } catch (e) {}
       };
@@ -1210,7 +1234,8 @@
           }
 
           if ((window.Clerk && window.Clerk.user) || isLocalStudent) {
-            document.querySelectorAll('#btn-sign-in, #btn-sign-up, #btn-nav-signin, #btn-nav-signup').forEach(btn => btn.style.display = 'none');
+            document.querySelectorAll('#btn-sign-in, #btn-sign-up, #btn-nav-signin, #btn-nav-signup, #nav-signin-link, #nav-signup-btn').forEach(btn => btn.style.setProperty('display', 'none', 'important'));
+            if (typeof window.syncBackToDashboardShortcut === 'function') window.syncBackToDashboardShortcut();
             if (signOutBtn) {
               signOutBtn.style.display = 'inline-flex';
               signOutBtn.onclick = async (e) => {
@@ -1235,7 +1260,8 @@
             }
           } else {
             if (signOutBtn) signOutBtn.style.display = 'none';
-            document.querySelectorAll('#btn-sign-in, #btn-sign-up, #btn-nav-signin, #btn-nav-signup').forEach(btn => btn.style.display = '');
+            document.querySelectorAll('#btn-sign-in, #btn-sign-up, #btn-nav-signin, #btn-nav-signup, #nav-signin-link, #nav-signup-btn').forEach(btn => btn.style.display = '');
+            if (typeof window.syncBackToDashboardShortcut === 'function') window.syncBackToDashboardShortcut();
             try {
               if (String(localStorage.getItem('campussense_token') || '').startsWith('cs_clerk_')) {
                 localStorage.removeItem('campussense_token');
