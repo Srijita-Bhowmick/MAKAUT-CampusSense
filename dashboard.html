@@ -2913,9 +2913,9 @@ function loadActiveAcademicData() {
         code: d.code,
         title: `${d.title} · ${q.coreTopic}`,
         question: q.question,
-        marks: q.marks,
+        repeatCount: q.repeatCount,
         years: (q.years || []).join(', '),
-        answer: q.paperNote || `Frequently set as a ${q.marks}-Mark core problem in ${q.coreTopic || d.title}.`
+        answer: formatDossierPaperNote(q, d)
       });
     });
   });
@@ -2943,7 +2943,7 @@ function selectTop20RepeatQuestions(dossier) {
   const totalConcepts = Math.max(dossier.totalAnalyzedConcepts || dossier.questionsPool.length, dossier.questionsPool.length);
   const cutoff = Math.max(3, Math.min(10, Math.ceil(totalConcepts * 0.20), dossier.questionsPool.length));
   return [...dossier.questionsPool]
-    .sort((a, b) => (b.repeatCount - a.repeatCount) || (b.marks - a.marks) || ((b.question || '').length - (a.question || '').length))
+    .sort((a, b) => (b.repeatCount - a.repeatCount) || ((b.years || []).length - (a.years || []).length) || ((b.question || '').length - (a.question || '').length))
     .slice(0, cutoff);
 }
 
@@ -3485,10 +3485,13 @@ function renderPanicPack() {
 }
 
 function formatDossierPaperNote(q, dossier) {
-  if (q && q.paperNote) return q.paperNote;
+  if (q && q.paperNote) {
+    return String(q.paperNote)
+      .replace(/\bas\s+an?\s+\d+[-\s]*Marks?\b/gi, 'as a')
+      .replace(/\bas\s+a\s+([aeiouAEIOU])/g, 'as an $1');
+  }
   const topic = (q && q.coreTopic) || (dossier && dossier.title) || 'Core Syllabus';
-  const marks = (q && q.marks) || 10;
-  return `Frequently set as a ${marks}-Mark core conceptual/derivation problem in ${topic}.`;
+  return `Frequently set as a core conceptual/derivation problem in ${topic}.`;
 }
 
 function normalizeActiveSessions(years) {
@@ -3526,7 +3529,6 @@ function openPanicDossierModal(idx) {
         <div class="panic-q-header">
           <div class="panic-q-meta-left">
             <span class="panic-q-num">Q${qIdx + 1}</span>
-            <span class="panic-marks-tag">${escapeHtml(q.marks)} Marks</span>
             <span class="panic-topic-pill">${escapeHtml(q.coreTopic || dossier.title)}</span>
           </div>
           <span class="panic-freq-badge">${escapeHtml(freqLabel)}</span>
@@ -3672,7 +3674,7 @@ function downloadPanicDossierPdf(idx) {
   dossier.topQuestions.forEach((q, qIdx) => {
     const sessions = normalizeActiveSessions(q.years);
     const freq = sessions.length > 1 ? `${sessions.length}x Repeated` : 'High-Yield Archetype';
-    lines.push({ text: `Q${qIdx + 1}. [${q.marks} Marks | ${freq}] Module: ${q.coreTopic || dossier.title}`, size: 11, bold: true, spaceBefore: 4, spaceAfter: 2 });
+    lines.push({ text: `Q${qIdx + 1}. [${freq}] Module: ${q.coreTopic || dossier.title}`, size: 11, bold: true, spaceBefore: 4, spaceAfter: 2 });
     lines.push({ text: q.question, size: 10.5, bold: false, spaceAfter: 2 });
     lines.push({ text: `Exam Sessions: ${sessions.join(', ')}`, size: 9.5, bold: false });
     lines.push({ text: `Paper Note: ${formatDossierPaperNote(q, dossier)}`, size: 9.5, bold: false, spaceAfter: 8 });
@@ -4047,7 +4049,7 @@ function collectActiveAcademicContext() {
         const yrs = Array.isArray(q.years) ? q.years.join(',') : (q.years || '');
         const count = q.repeatCount ? `${q.repeatCount}x` : 'High-Yield';
         const qSnippet = String(q.question || q.coreTopic || '').slice(0, 140);
-        return `[${q.marks || 10}M | ${count}${yrs ? ' | ' + yrs : ''}] ${qSnippet}`;
+        return `[${count}${yrs ? ' · ' + yrs : ''}] ${qSnippet}`;
       }).join(' | ');
       if (qs) {
         sections.push(`- ${d.code} (${d.title}): ${qs}`);
@@ -4161,9 +4163,12 @@ function generateLocalSyllabusFallback(query, department, semester) {
   }
 
   if (qLower.includes('pattern') || qLower.includes('exam') || qLower.includes('repeat')) {
-    const topPanic = panic.slice(0, 4).map(t => `<li><strong>${escapeHtml(t.code)} (${escapeHtml(String(t.marks || 10))}M):</strong> ${escapeHtml(t.title)} — Repeated: ${escapeHtml(t.years || '2018–2025')}</li>`).join('');
+    const topPanic = panic.slice(0, 4).map(t => {
+      const freqPrefix = t.repeatCount && t.repeatCount > 1 ? `Repeated ${t.repeatCount}x · ` : '';
+      return `<li><strong>${escapeHtml(t.code)}:</strong> ${escapeHtml(t.title)} — ${escapeHtml(freqPrefix)}${escapeHtml(t.years || '2018–2025')}</li>`;
+    }).join('');
     if (topPanic) {
-      return `<strong>MAKAUT Exam Pattern &amp; High-Yield Blueprint (${escapeHtml(deptLabel)}):</strong><ul>${topPanic}</ul><div style="margin-top:0.35rem;font-size:12px;color:#475569;">Tip: End-semester papers weight Group B (5M analytical) + Group C (10M derivations &amp; numericals). Open <strong>Panic Pack</strong> for full repeat dossiers.</div>`;
+      return `<strong>MAKAUT Exam Pattern &amp; High-Yield Blueprint (${escapeHtml(deptLabel)}):</strong><ul>${topPanic}</ul><div style="margin-top:0.35rem;font-size:12px;color:#475569;">Tip: End-semester papers focus heavily on Group B analytical questions and Group C derivations &amp; numericals. Open <strong>Panic Pack</strong> for full repeat dossiers.</div>`;
     }
   }
 
@@ -4232,7 +4237,7 @@ function generateLocalSyllabusFallback(query, department, semester) {
       const repItems = scoredRepeats.slice(0, 3).map(({ code, tq }) => {
         const yrs = Array.isArray(tq.years) && tq.years.length ? tq.years.join(', ') : 'MAKAUT PYQ Trend';
         const freq = tq.repeatCount ? `Repeated ${tq.repeatCount}x` : 'High-Yield Repeat';
-        return `<li><strong>🔥 ${escapeHtml(code)} (${escapeHtml(String(tq.marks || 10))}M · ${escapeHtml(freq)} · ${escapeHtml(yrs)}):</strong> ${escapeHtml(tq.question || tq.coreTopic)}</li>`;
+        return `<li><strong>🔥 ${escapeHtml(code)} (${escapeHtml(freq)} · ${escapeHtml(yrs)}):</strong> ${escapeHtml(tq.question || tq.coreTopic)}</li>`;
       }).join('');
       html += `<div style="margin-top:0.35rem;font-weight:700;font-size:12px;">High-Frequency Repeat Exam Alerts:</div><ul>${repItems}</ul>`;
     }
