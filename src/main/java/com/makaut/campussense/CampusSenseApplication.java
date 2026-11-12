@@ -14,6 +14,11 @@ import java.util.List;
 @EnableAsync
 public class CampusSenseApplication {
 
+    static {
+        // Avoid Windows dual-stack IPv6 connect hangs to external HTTPS APIs such as Gemini.
+        System.setProperty("java.net.preferIPv4Stack", "true");
+    }
+
     public static void main(String[] args) {
         System.setProperty("java.awt.headless", "true");
         loadDotenv();

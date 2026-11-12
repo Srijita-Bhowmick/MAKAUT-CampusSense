@@ -61,12 +61,12 @@ public class GeminiChatService {
             "points, formulas, and code snippets. " +
             "(4) Keep answers structured, concise, and high-yield for university exam preparation. " +
             "(5) EMOTIONAL SUPPORT & STRESS REASSURANCE: You are also a calm, warm, encouraging peer mentor for " +
-            "MAKAUT engineering students dealing with exam anxiety, burnout, self-doubt, or pre-exam panic. When " +
-            "a student expresses stress, fear of failing, overwhelm, or asks for emotional support, respond with " +
-            "genuine empathy, validate their feelings without judgment, remind them that one exam does not define " +
-            "them, and offer 1-2 gentle, actionable micro-steps (like taking a slow breath or breaking just one " +
-            "high-yield topic into a 15-minute win) using their active semester context only if helpful—never dump " +
-            "raw syllabus lists when they need comfort.";
+            "MAKAUT engineering students dealing with exam anxiety, exhaustion, fatigue, burnout, self-doubt, or " +
+            "pre-exam panic. When a student expresses stress, tiredness, overwhelm, fear of failing, or asks for " +
+            "emotional support—or sends casual non-academic messages—respond with genuine empathy, validate their " +
+            "feelings without judgment, suggest a guilt-free 10-minute water/rest break if they are drained, remind " +
+            "them that one exam does not define them, and offer 1 tiny zero-pressure step only when they are ready—" +
+            "never dump syllabus or repeat-question lists unless they explicitly ask about academic topics.";
 
     private final RestClient restClient;
     private final ObjectMapper objectMapper;
@@ -78,11 +78,11 @@ public class GeminiChatService {
             RestClient.Builder restClientBuilder,
             ObjectMapper objectMapper,
             @Value("${gemini.api.key:}") String apiKey,
-            @Value("${gemini.api.url:https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent}") String apiUrl,
+            @Value("${gemini.api.url:https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent}") String apiUrl,
             @Value("${gemini.dotenv.fallback:true}") boolean dotEnvFallbackEnabled) {
         SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
-        requestFactory.setConnectTimeout(Duration.ofSeconds(2));
-        requestFactory.setReadTimeout(Duration.ofSeconds(4));
+        requestFactory.setConnectTimeout(Duration.ofMillis(1500));
+        requestFactory.setReadTimeout(Duration.ofMillis(3500));
         this.restClient = restClientBuilder.clone().requestFactory(requestFactory).build();
         this.objectMapper = objectMapper;
         this.apiKey = resolveApiKey(apiKey, dotEnvFallbackEnabled);

@@ -4172,11 +4172,14 @@ const aiChatHistory = [];
 const AI_MAX_HISTORY_TURNS = 6;
 const AI_STOP_WORDS = new Set([
   'a', 'an', 'the', 'is', 'are', 'was', 'were', 'be', 'been', 'being',
+  'i', 'im', 'ive', 'id', 'ill', 'me', 'my', 'we', 'our', 'you', 'your',
   'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'from', 'as', 'into',
   'what', 'which', 'who', 'whom', 'whose', 'when', 'where', 'why', 'how',
-  'tell', 'me', 'about', 'explain', 'define', 'give', 'list', 'show', 'find',
+  'tell', 'about', 'explain', 'define', 'give', 'list', 'show', 'find',
+  'feel', 'feeling', 'really', 'very', 'just', 'today', 'right', 'now',
+  'dont', 'cant', 'wont', 'should', 'could', 'would', 'have', 'has', 'had',
   'summarize', 'summary', 'notes', 'note', 'important', 'question', 'questions',
-  'topic', 'topics', 'exam', 'makaut', 'please', 'can', 'you', 'my', 'semester', 'sem'
+  'topic', 'topics', 'exam', 'makaut', 'please', 'can', 'semester', 'sem'
 ]);
 const AI_SHORTCUT_MAP = {
   dsa: ['data structure', 'algorithms', 'pcc-cs301'],
@@ -4328,6 +4331,8 @@ function formatAiMarkdown(rawText) {
 function generateLocalSyllabusFallback(query, department, semester) {
   const q = String(query || '').trim();
   const qLower = q.toLowerCase();
+  const qSquashed = qLower.replace(/(.)\1{2,}/g, '$1');
+  const qSquashedDouble = qLower.replace(/(.)\1{2,}/g, '$1$1');
   const deptLabel = department || DASH_STATE.deptDisplay || 'MAKAUT Engineering';
   const semLabel = semester || DASH_STATE.semester || '1';
   const subjects = DASH_STATE.subjects || [];
@@ -4335,18 +4340,18 @@ function generateLocalSyllabusFallback(query, department, semester) {
   const dossiers = DASH_STATE.panicDossiers || [];
   const panic = DASH_STATE.panicTopics || [];
 
-  const normalizedGreeting = qLower.replace(/[!?.~,;:'"]+/g, ' ').replace(/\s+/g, ' ').trim();
+  const normalizedGreeting = qSquashed.replace(/[!?.~,;:'"]+/g, ' ').replace(/\s+/g, ' ').trim();
   const isPureGreeting = /^(hi+|hello+|hey+|yo|hola|namaste|good\s+(morning|afternoon|evening|night))(\s+(there|ai|bot|buddy|copilot|campussense))?$/.test(normalizedGreeting);
   if (isPureGreeting) {
     const firstName = getUserFirstName();
     return `Hi ${escapeHtml(firstName)}! I&apos;m your MAKAUT CampusSense AI assistant for <strong>${escapeHtml(deptLabel)} (Sem ${escapeHtml(semLabel)})</strong>. Ask me to explain a syllabus topic, summarize a module, solve a PYQ, or write code!`;
   }
 
-  const emotionalCuePattern = /(?:\bemotional\s+support\b|\bstress(?:ed)?\b|\banxious\b|\banxiety\b|\bpanick?(?:ing|ed)?\b|\bscared\b|\boverwhelmed\b|\bdepressed\b|\bsad\b|\bcrying\b|\bfailing\b|\bcan'?t\s+do\s+this\b|\bburnt\s*out\b|\bburnout\b|\bhopeless\b|\bdemotivated\b|\bnervous\b)/i;
+  const emotionalCuePattern = /(?:\bemotional\s+support\b|\bexhaust(?:ed|ing)?\b|\btired(?:ness)?\b|\bdrained\b|\bsleepy\b|\bfatigu(?:ed|e)\b|\bworn[-\s]+out\b|\bburn(?:ed|t)?[-\s]*out\b|\bburnout\b|\blow\s+energy\b|\b(?:can'?t|cannot|unable\s+to|not\s+able\s+to)\s+focus\b|\bgiv(?:e|ing)\s+up\b|\bfrustrat(?:ed|ing|ion)\b|\bbreak(?:ing)?\s+down\b|\bmental\s+breakdown\b|\bhard\s+time\b|\brough\s+day\b|\bstress(?:ed|ing|ful)?\b|\banxious\b|\banxiety\b|\bpanick?(?:ing|ed)?\b|\bscared\b|\boverwhelmed\b|\bdepressed\b|\bsad\b|\bcrying\b|\bfailing\b|\b(?:can'?t|cannot)\s+do\s+this\b|\bhopeless\b|\bdemotivated\b|\bnervous\b|\bstruggl(?:ing|e)\b)/i;
   const isPanicPackQuery = qLower.includes('panic pack') || qLower.includes('repeat');
-  if (!isPanicPackQuery && emotionalCuePattern.test(qLower)) {
+  if (!isPanicPackQuery && (emotionalCuePattern.test(qLower) || emotionalCuePattern.test(qSquashed) || emotionalCuePattern.test(qSquashedDouble))) {
     const firstName = getUserFirstName();
-    return `<div style="margin-bottom:0.35rem;">I&apos;m right here with you, <strong>${escapeHtml(firstName)}</strong>. Take a slow, deep breath—exam pressure at MAKAUT gets heavy, and feeling overwhelmed doesn&apos;t mean you&apos;re going to fail. One exam does not define you or your future.</div><div style="font-size:12.5px;color:#334155;">You don&apos;t have to finish everything tonight. Whenever you&apos;re ready, we can tackle just one easy high-yield topic from <strong>${escapeHtml(deptLabel)} (Sem ${escapeHtml(semLabel)})</strong> together for 10–15 minutes—or you can just vent here.</div>`;
+    return `<div style="margin-bottom:0.35rem;">I hear you, <strong>${escapeHtml(firstName)}</strong>. Feeling exhausted, stressed, or overwhelmed doesn&apos;t mean you&apos;re going to fail—exam pressure at MAKAUT is heavy, and one exam or rough day does not define you.</div><div style="font-size:12.5px;color:#334155;">Please take a 10-minute break to drink some water and rest without any guilt. Only when you feel ready, we can take one tiny, zero-pressure step on <strong>${escapeHtml(deptLabel)} (Sem ${escapeHtml(semLabel)})</strong>—or you can just pause and breathe right now.</div>`;
   }
 
   const modMatch = qLower.match(/(?:module|unit)\s*(\d+)/);
@@ -4368,7 +4373,7 @@ function generateLocalSyllabusFallback(query, department, semester) {
     return `<strong>Key Formulas &amp; Core Concepts — ${escapeHtml(deptLabel)} (Sem ${escapeHtml(semLabel)}):</strong><ul>${keyTopics}</ul><div style="margin-top:0.35rem;font-size:12px;color:#475569;">Ask about a specific subject code (e.g., <strong>${escapeHtml((subjects[0] && subjects[0].code) || 'PCC-CS301')}</strong> formulas) for a full formula sheet.</div>`;
   }
 
-  if (qLower.includes('revision') || qLower.includes('plan')) {
+  if (qLower.includes('revision') || /\b(?:study|exam)\s+plan\b/i.test(qSquashed)) {
     const planItems = subjects.slice(0, 4).map((sub, idx) => {
       const topUnit = (sub.units && sub.units[0] && sub.units[0].name) || 'Core Foundations';
       return `<li><strong>Phase ${idx + 1} · ${escapeHtml(sub.code)} (${escapeHtml(sub.title)}):</strong> Cover ${escapeHtml(topUnit)} first, then solve repeated Group B/C questions from the Panic Pack.</li>`;
@@ -4394,11 +4399,21 @@ function generateLocalSyllabusFallback(query, department, semester) {
     }
   }
 
+  const academicIntentPattern = /(?:\bsyllabus\b|\bsyllabi\b|\bmodules?\b|\bunits?\b|\bpyqs?\b|\bquestions?\b|\bexams?\b|\bsubjects?\b|\bcodes?\b|\bformulas?\b|\bderivations?\b|\brevisions?\b|\bstudy\b|\bstudying\b|\bnotes?\b|\bmarks?\b|\bcredits?\b|\bpanic\s*pack\b|\bpapers?\b|\bpattern\b|\brepeat(?:s|ed)?\b|\bcurricul(?:um|a)\b|\btopics?\b|\bchapters?\b|\bblueprints?\b|\bimportant\b|pcc-|pec-|oec-|\b(?:bsc|esc|hmc|mc)(?:\d|[-\s]|\b)|\b(?:bs|es|pc|pe|oe|hm)-?[a-z]*\d{2,3}[a-z]?\b|\b(?:dsa|dbms|os|cn|toc|flat|daa|co|ca|se|oop|pps|bee|ph101|ch101|m101|m201)\b)/i;
+  const hasAcademicIntent = academicIntentPattern.test(qLower) || academicIntentPattern.test(qSquashed);
+  if (!hasAcademicIntent) {
+    const firstName = getUserFirstName();
+    if (/\b(?:thanks?|thank\s+you|thx|tysm)\b/i.test(qSquashed)) {
+      return `You&apos;re always welcome, <strong>${escapeHtml(firstName)}</strong>! Take things at your own pace—I&apos;m right here whenever you want to chat or dive into a <strong>${escapeHtml(deptLabel)} (Sem ${escapeHtml(semLabel)})</strong> topic.`;
+    }
+    return `<div style="margin-bottom:0.35rem;">I&apos;m here with you, <strong>${escapeHtml(firstName)}</strong>! No pressure at all—I won&apos;t throw a wall of syllabus notes at you unless you ask for one.</div><div style="font-size:12.5px;color:#334155;">Whenever you feel ready, tell me what&apos;s on your mind or ask about any <strong>${escapeHtml(deptLabel)} (Sem ${escapeHtml(semLabel)})</strong> subject code, module, formula, or PYQ.</div>`;
+  }
+
   // Tokenize keywords (stripping stop words & expanding common MAKAUT shortcodes)
-  const rawTokens = qLower.replace(/[^a-z0-9\s-]/g, ' ').split(/\s+/).filter(Boolean);
+  const rawTokens = qSquashed.replace(/['’]/g, '').replace(/[^a-z0-9\s-]/g, ' ').split(/\s+/).filter(Boolean);
   const keywords = new Set();
   rawTokens.forEach(tok => {
-    if (!AI_STOP_WORDS.has(tok) && (tok.length >= 2 || /\d/.test(tok))) {
+    if (!AI_STOP_WORDS.has(tok) && (tok.length >= 3 || /\d/.test(tok))) {
       keywords.add(tok);
       const normalized = tok.replace(/-/g, '');
       if (normalized !== tok) keywords.add(normalized);
