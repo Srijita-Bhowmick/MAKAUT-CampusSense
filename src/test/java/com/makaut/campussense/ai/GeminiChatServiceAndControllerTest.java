@@ -3,6 +3,7 @@ package com.makaut.campussense.ai;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,6 +15,8 @@ import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.client.RestClient;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
@@ -33,7 +36,8 @@ import org.springframework.test.web.client.match.MockRestRequestMatchers;
 @ActiveProfiles("dev")
 @TestPropertySource(properties = {
         "gemini.api.key=",
-        "gemini.api.url=https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
+        "gemini.dotenv.fallback=false",
+        "gemini.api.url=https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent"
 })
 @SuppressWarnings("null")
 class GeminiChatServiceAndControllerTest {
@@ -73,7 +77,7 @@ class GeminiChatServiceAndControllerTest {
                 builder.build(),
                 objectMapper,
                 "test-ephemeral-token",
-                "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
+                "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent"
         );
 
         String mockGeminiJson = """
@@ -93,7 +97,7 @@ class GeminiChatServiceAndControllerTest {
                 }
                 """;
 
-        server.expect(requestTo("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=test-ephemeral-token"))
+        server.expect(requestTo("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=test-ephemeral-token"))
                 .andExpect(method(HttpMethod.POST))
                 .andExpect(MockRestRequestMatchers.jsonPath("$.systemInstruction.parts[0].text", containsString("Maulana Abul Kalam Azad University of Technology")))
                 .andExpect(MockRestRequestMatchers.jsonPath("$.systemInstruction.parts[0].text", containsString("PCC-CS404")))
@@ -131,10 +135,10 @@ class GeminiChatServiceAndControllerTest {
                 builder.build(),
                 objectMapper,
                 "test-ephemeral-token",
-                "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
+                "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent"
         );
 
-        server.expect(requestTo("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=test-ephemeral-token"))
+        server.expect(requestTo("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=test-ephemeral-token"))
                 .andRespond(withServerError());
 
         AiChatRequest req = new AiChatRequest("What is ACID?", "CSE", "6", "", List.of());
@@ -144,5 +148,25 @@ class GeminiChatServiceAndControllerTest {
         assertEquals(GeminiChatService.MODE_FALLBACK_REQUIRED, response.getSourceMode());
         assertFalse(response.isGroundedInSyllabus());
         assertEquals("", response.getReply());
+    }
+
+    @Test
+    @DisplayName("GeminiChatService: reads GEMINI_API_KEY from .env.local file and includes greeting instructions")
+    void readsDotEnvKeyAndBuildsGreetingInstruction(@TempDir Path tempDir) throws Exception {
+        Path dotEnvLocal = tempDir.resolve(".env.local");
+        Files.writeString(dotEnvLocal, "# local test config\nGEMINI_API_KEY=\"synthetic-dotenv-token-123\"\n");
+
+        assertEquals("synthetic-dotenv-token-123", GeminiChatService.readGeminiKeyFromDotEnv(dotEnvLocal));
+
+        GeminiChatService service = new GeminiChatService(
+                RestClient.builder().build(),
+                objectMapper,
+                "synthetic-token",
+                "https://example.invalid"
+        );
+        AiChatRequest req = new AiChatRequest("hi", "CSE", "4", "SUBJECT: PCC-CS404", List.of());
+        String instruction = service.buildSystemInstruction(req);
+        assertTrue(instruction.contains("conversational greeting"));
+        assertTrue(instruction.contains("do NOT dump the entire syllabus"));
     }
 }

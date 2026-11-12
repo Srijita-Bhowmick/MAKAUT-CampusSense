@@ -149,7 +149,7 @@ public class LlmService {
     }
 
     private String callGemini(String activeKey, String context, String userQuery) throws Exception {
-        String endpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + activeKey.trim();
+        String endpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=" + activeKey.trim();
         String prompt = "You are MAKAUT CampusSense Academic AI, an expert engineering tutor for MAKAUT students. Provide accurate, clear step-by-step explanations with formulas, proofs, and curriculum context.\n\nContext:\n" + context + "\n\nStudent Query:\n" + userQuery;
 
         Map<String, Object> textPart = Map.of("text", prompt);

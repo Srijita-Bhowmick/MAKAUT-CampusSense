@@ -373,6 +373,16 @@
       margin-bottom: 0.2rem;
     }
 
+    .dashboard-welcome-greeting {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text-navy);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 0.25rem;
+    }
+
     .ribbon-value {
       font-family: var(--font-display);
       font-size: 16px;
@@ -1139,36 +1149,88 @@
     }
 
     .ai-drawer-header {
-      padding: 0.9rem 1rem;
+      padding: 0.68rem 0.75rem;
       border-bottom: 1.5px solid #8DB9F0;
       background: #F8FAFF;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 0.5rem;
+      gap: 0.35rem;
+      flex-shrink: 0;
     }
 
     .ai-title-wrap {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.35rem;
+      min-width: 0;
     }
 
     .ai-title {
       font-family: var(--font-display);
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 800;
       color: var(--text-navy);
+      white-space: nowrap;
     }
 
     .ai-context-tag {
       font-family: var(--font-mono);
-      font-size: 10.5px;
+      font-size: 10px;
       font-weight: 700;
       background: #F5B69E;
       color: #000000;
-      padding: 2px 7px;
+      padding: 2px 6px;
       border-radius: 9999px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 120px;
+    }
+
+    .ai-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      flex-shrink: 0;
+    }
+
+    .ai-header-btn {
+      height: 26px;
+      padding: 0 0.44rem;
+      border-radius: 7px;
+      border: 1.5px solid #8DB9F0;
+      background: #FFFFFF;
+      color: #0F172A;
+      font-size: 10.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      white-space: nowrap;
+      transition: background 0.12s ease, border-color 0.12s ease;
+    }
+
+    .ai-header-btn:hover,
+    .ai-header-btn.active {
+      background: #EFF6FF;
+      border-color: #2563EB;
+    }
+
+    .ai-history-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 16px;
+      height: 16px;
+      padding: 0 4px;
+      border-radius: 9999px;
+      background: #F5B69E;
+      color: #000000;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 800;
     }
 
     .ai-close-btn {
@@ -1189,14 +1251,26 @@
       border-color: #E39474;
     }
 
-    /* Ask AI Recent Queries Sub-Panel */
+    /* Ask AI Floating Collapsible History Dropdown */
     .ai-history-panel {
-      border-bottom: 1.5px solid rgba(141, 185, 240, 0.55);
-      background: #F8FAFF;
-      padding: 0.55rem 0.9rem;
-      display: flex;
+      position: absolute;
+      top: 52px;
+      left: 0.75rem;
+      right: 0.75rem;
+      z-index: 470;
+      border: 1.5px solid #8DB9F0;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.14);
+      padding: 0.65rem 0.75rem;
+      display: none;
       flex-direction: column;
-      gap: 0.4rem;
+      gap: 0.45rem;
+      max-height: 260px;
+    }
+
+    .ai-history-panel.open {
+      display: flex;
     }
 
     .ai-history-panel-head {
@@ -1204,58 +1278,115 @@
       align-items: center;
       justify-content: space-between;
       gap: 0.4rem;
+      padding-bottom: 0.35rem;
+      border-bottom: 1px solid rgba(141, 185, 240, 0.45);
     }
 
-    .ai-history-toggle-btn {
-      border: none;
-      background: transparent;
-      color: #0F172A;
+    .ai-history-title {
       font-family: var(--font-mono);
       font-size: 11px;
       font-weight: 700;
+      color: #0F172A;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .history-clear-link {
+      border: none;
+      background: transparent;
+      color: #B91C1C;
+      font-size: 11px;
+      font-weight: 700;
       cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      padding: 0;
+      padding: 0.1rem 0.3rem;
+      border-radius: 5px;
+    }
+
+    .history-clear-link:hover {
+      background: #FEE2E2;
     }
 
     .ai-history-chips {
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
       gap: 0.35rem;
-      max-height: 82px;
+      max-height: 195px;
       overflow-y: auto;
     }
 
-    .ai-history-panel.collapsed .ai-history-chips {
-      display: none;
+    .ai-history-item {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      width: 100%;
     }
 
-    .ai-history-chip {
-      max-width: 100%;
-      background: #FFFFFF;
+    .ai-history-load-btn {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      background: #F8FAFF;
       border: 1px solid #8DB9F0;
       color: #0F172A;
-      border-radius: 9999px;
-      padding: 0.18rem 0.58rem;
-      font-size: 11px;
+      border-radius: 8px;
+      padding: 0.38rem 0.58rem;
+      font-size: 11.5px;
       font-weight: 600;
       cursor: pointer;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      text-align: left;
       transition: background 0.12s ease, border-color 0.12s ease;
     }
 
-    .ai-history-chip:hover {
+    .ai-history-load-btn:hover {
       background: #EFF6FF;
-      border-color: #F5B69E;
+      border-color: #2563EB;
+    }
+
+    .ai-history-query-text {
+      flex: 1;
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .ai-history-action-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      color: #1D4ED8;
+      flex-shrink: 0;
+    }
+
+    .ai-history-del-btn {
+      width: 26px;
+      height: 26px;
+      flex-shrink: 0;
+      border-radius: 7px;
+      border: 1px solid rgba(141, 185, 240, 0.7);
+      background: #FFFFFF;
+      color: #64748B;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ai-history-del-btn:hover {
+      background: #FEE2E2;
+      color: #B91C1C;
+      border-color: #FCA5A5;
     }
 
     .ai-history-empty {
       font-size: 11.5px;
       color: #64748B;
+      padding: 0.3rem 0.1rem;
     }
 
     .ai-messages-feed {
@@ -1305,18 +1436,33 @@
 
     .ai-quick-chips {
       display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
+      flex-wrap: nowrap;
+      align-items: center;
+      gap: 0.35rem;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-bottom: 1px;
+    }
+
+    .ai-quick-chips::-webkit-scrollbar {
+      display: none;
     }
 
     .ai-chip-btn {
+      flex: 0 0 auto;
+      max-width: 170px;
       background: #FFFFFF;
       border: 1.5px solid #8DB9F0;
       color: #0F172A;
       border-radius: 9999px;
-      padding: 0.26rem 0.65rem;
-      font-size: 11.5px;
+      padding: 0.24rem 0.58rem;
+      font-size: 11px;
+      line-height: 1.25;
       font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       cursor: pointer;
     }
 
@@ -2163,6 +2309,7 @@
     <!-- Active Context Ribbon -->
     <div class="active-context-ribbon" role="status">
       <div>
+        <div class="dashboard-welcome-greeting" id="dashboardGreetingText">Hi Scholar! 👋</div>
         <div class="ribbon-label">Active Workspace</div>
         <div class="ribbon-value" id="activeWorkspaceText">ACTIVE WORKSPACE: Loading…</div>
       </div>
@@ -2267,15 +2414,23 @@
         <span class="ai-title">Ask AI ✧</span>
         <span class="ai-context-tag" id="aiContextBadge">MAKAUT</span>
       </div>
-      <button type="button" class="ai-close-btn" id="aiCloseBtn" aria-label="Minimize Ask AI drawer" onclick="collapseAiDrawer()">✕</button>
+      <div class="ai-header-actions">
+        <button type="button" class="ai-header-btn" id="aiHistoryToggleBtn" onclick="toggleAiHistoryPanel()" aria-expanded="false" aria-controls="aiRecentQueriesPanel" title="Chat History">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"></circle>
+            <polyline points="12 7 12 12 15 14"></polyline>
+          </svg>
+          <span>History</span>
+          <span class="ai-history-count" id="aiHistoryCountBadge" style="display:none;">0</span>
+        </button>
+        <button type="button" class="ai-header-btn" id="aiNewChatBtn" onclick="startNewAiChat()" title="Start New Chat">New Chat</button>
+        <button type="button" class="ai-close-btn" id="aiCloseBtn" aria-label="Minimize Ask AI drawer" onclick="collapseAiDrawer()">✕</button>
+      </div>
     </div>
 
-    <div class="ai-history-panel" id="aiRecentQueriesPanel">
+    <div class="ai-history-panel" id="aiRecentQueriesPanel" role="region" aria-label="Saved AI Chat History" hidden>
       <div class="ai-history-panel-head">
-        <button type="button" class="ai-history-toggle-btn" id="aiHistoryToggleBtn" onclick="toggleAiHistoryPanel()" aria-expanded="true">
-          <span>Recent Queries 🕒</span>
-          <span id="aiHistoryChevron">▾</span>
-        </button>
+        <span class="ai-history-title">Saved Prompts</span>
         <button type="button" class="history-clear-link" id="clearAiHistoryBtn" onclick="clearAiQueryHistory()">Clear</button>
       </div>
       <div class="ai-history-chips" id="aiHistoryChips"></div>
@@ -2284,10 +2439,11 @@
     <div class="ai-messages-feed" id="aiMessagesFeed"></div>
 
     <div class="ai-controls-footer">
-      <div class="ai-quick-chips">
-        <button type="button" class="ai-chip-btn" onclick="triggerAiQuickPrompt('Summarize Module 2')">Summarize Module 2</button>
-        <button type="button" class="ai-chip-btn" onclick="triggerAiQuickPrompt('Find 2023 PYQs')">Find 2023 PYQs</button>
-        <button type="button" class="ai-chip-btn" onclick="triggerAiQuickPrompt('Exam Patterns')">Exam Patterns</button>
+      <div class="ai-quick-chips" aria-label="Suggested Prompts">
+        <button type="button" class="ai-chip-btn" onclick="triggerAiQuickPrompt('Summarize Module 1')">Summarize Module 1</button>
+        <button type="button" class="ai-chip-btn" onclick="triggerAiQuickPrompt('Top repeat PYQs')">Top repeat PYQs</button>
+        <button type="button" class="ai-chip-btn" onclick="triggerAiQuickPrompt('Explain key formulas')">Explain key formulas</button>
+        <button type="button" class="ai-chip-btn" onclick="triggerAiQuickPrompt('Exam revision plan')">Exam revision plan</button>
       </div>
       <textarea id="aiQueryInput" placeholder="Ask anything about your curriculum or PYQs..."></textarea>
       <button type="button" id="generateStudyGuideBtn" onclick="handleGenerateStudyGuide()">Generate Study Guide</button>
@@ -2616,6 +2772,38 @@ async function handleSignOut() {
 }
 
 // ── Resolve Active Student Academic Context ──
+function getUserFirstName(sessionObj) {
+  const isGenericName = (val) => !val || /^(student(\s+scholar)?|scholar)$/i.test(val.trim());
+  let rawName = '';
+  try {
+    const stored = (localStorage.getItem('campussense_user_name') || '').trim();
+    if (!isGenericName(stored)) rawName = stored;
+  } catch (_) {}
+  if (!rawName && sessionObj) {
+    const cand = (sessionObj.name || sessionObj.firstName || '').trim();
+    if (!isGenericName(cand)) rawName = cand;
+  }
+  if (!rawName) {
+    try {
+      const rawSess = JSON.parse(localStorage.getItem('campussense_user_session') || '{}');
+      const cand = rawSess && typeof rawSess === 'object'
+        ? (rawSess.name || rawSess.firstName || '').trim()
+        : (typeof rawSess === 'string' ? rawSess.trim() : '');
+      if (!isGenericName(cand)) rawName = cand;
+    } catch (_) {
+      const cand = (localStorage.getItem('campussense_user_session') || '').trim();
+      if (!isGenericName(cand)) rawName = cand;
+    }
+  }
+  if (isGenericName(rawName)) {
+    return 'Scholar';
+  }
+  const firstToken = rawName.split(/\s+/).filter(Boolean)[0] || 'Scholar';
+  const cleaned = firstToken.replace(/^[^a-zA-Z0-9]+|[^a-zA-Z0-9'-]+$/g, '');
+  if (!cleaned) return 'Scholar';
+  return cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
+}
+
 function resolveAcademicContext() {
   let academic = {};
   let session = {};
@@ -2648,8 +2836,14 @@ function resolveAcademicContext() {
     ? '1st Year Foundation'
     : (normDept.startsWith('B.Tech') ? normDept : `B.Tech ${normDept}`);
 
-  // Top Header Context + Avatar + Name
-  const name = session.name || session.firstName || (session.email ? session.email.split('@')[0] : '') || 'Student Scholar';
+  // Top Header Context + Avatar + Name + Personalized Greeting
+  const firstName = getUserFirstName(session);
+  const greetingEl = document.getElementById('dashboardGreetingText');
+  if (greetingEl) {
+    greetingEl.textContent = `Hi ${firstName}! 👋`;
+  }
+  const storedFullName = (localStorage.getItem('campussense_user_name') || '').trim();
+  const name = storedFullName || session.name || session.firstName || (session.email ? session.email.split('@')[0] : '') || 'Student Scholar';
   const initials = name.split(/\s+/).map(w => w[0] || '').join('').slice(0, 2).toUpperCase() || 'SS';
   document.getElementById('userAvatar').textContent = initials;
   document.getElementById('userNameLabel').textContent = name;
@@ -4146,12 +4340,38 @@ function generateLocalSyllabusFallback(query, department, semester) {
   const dossiers = DASH_STATE.panicDossiers || [];
   const panic = DASH_STATE.panicTopics || [];
 
-  if (qLower.includes('module 2') || (qLower.includes('summarize') && qLower.includes('module'))) {
+  const normalizedGreeting = qLower.replace(/[!?.~,;:'"]+/g, ' ').replace(/\s+/g, ' ').trim();
+  const isPureGreeting = /^(hi+|hello+|hey+|yo|hola|namaste|good\s+(morning|afternoon|evening|night))(\s+(there|ai|bot|buddy|copilot|campussense))?$/.test(normalizedGreeting);
+  if (isPureGreeting) {
+    const firstName = getUserFirstName();
+    return `Hi ${escapeHtml(firstName)}! I&apos;m your MAKAUT CampusSense AI assistant for <strong>${escapeHtml(deptLabel)} (Sem ${escapeHtml(semLabel)})</strong>. Ask me to explain a syllabus topic, summarize a module, solve a PYQ, or write code!`;
+  }
+
+  const modMatch = qLower.match(/(?:module|unit)\s*(\d+)/);
+  if (modMatch || (qLower.includes('summarize') && qLower.includes('module'))) {
+    const requestedMod = modMatch ? Math.max(1, parseInt(modMatch[1], 10)) : 1;
+    const modIdx = requestedMod - 1;
     const bullets = subjects.slice(0, 4).map(sub => {
-      const m2 = (sub.units && (sub.units[1] || sub.units[0])) || { name: 'Core Syllabus Module', subtopics: '' };
-      return `<li><strong>${escapeHtml(sub.code)} (${escapeHtml(sub.title)}):</strong> ${escapeHtml(m2.name)}${m2.subtopics ? ' — <em>' + escapeHtml(m2.subtopics) + '</em>' : ''}</li>`;
+      const m = (sub.units && (sub.units[modIdx] || sub.units[0])) || { name: 'Core Syllabus Module', subtopics: '' };
+      return `<li><strong>${escapeHtml(sub.code)} (${escapeHtml(sub.title)}):</strong> ${escapeHtml(m.name)}${m.subtopics ? ' — <em>' + escapeHtml(m.subtopics) + '</em>' : ''}</li>`;
     }).join('');
-    return `<strong>Module 2 Study Summary — ${escapeHtml(deptLabel)} (Sem ${escapeHtml(semLabel)}):</strong><ul>${bullets}</ul><div style="margin-top:0.35rem;font-size:12px;color:#475569;">Open <strong>Course Curriculum &amp; Study Tracker</strong> above to expand all module PDFs.</div>`;
+    return `<strong>Module ${requestedMod} Study Summary — ${escapeHtml(deptLabel)} (Sem ${escapeHtml(semLabel)}):</strong><ul>${bullets}</ul><div style="margin-top:0.35rem;font-size:12px;color:#475569;">Open <strong>Course Curriculum &amp; Study Tracker</strong> above to expand all module PDFs.</div>`;
+  }
+
+  if (qLower.includes('formula') || qLower.includes('derivation')) {
+    const keyTopics = subjects.slice(0, 4).map(sub => {
+      const u1 = (sub.units && sub.units[0]) || { name: 'Core Fundamentals', subtopics: '' };
+      return `<li><strong>${escapeHtml(sub.code)} · ${escapeHtml(sub.title)}:</strong> Focus on theorems, governing equations, and complexity/analytical identities in <em>${escapeHtml(u1.name)}</em>${u1.subtopics ? ' (' + escapeHtml(u1.subtopics) + ')' : ''}.</li>`;
+    }).join('');
+    return `<strong>Key Formulas &amp; Core Concepts — ${escapeHtml(deptLabel)} (Sem ${escapeHtml(semLabel)}):</strong><ul>${keyTopics}</ul><div style="margin-top:0.35rem;font-size:12px;color:#475569;">Ask about a specific subject code (e.g., <strong>${escapeHtml((subjects[0] && subjects[0].code) || 'PCC-CS301')}</strong> formulas) for a full formula sheet.</div>`;
+  }
+
+  if (qLower.includes('revision') || qLower.includes('plan')) {
+    const planItems = subjects.slice(0, 4).map((sub, idx) => {
+      const topUnit = (sub.units && sub.units[0] && sub.units[0].name) || 'Core Foundations';
+      return `<li><strong>Phase ${idx + 1} · ${escapeHtml(sub.code)} (${escapeHtml(sub.title)}):</strong> Cover ${escapeHtml(topUnit)} first, then solve repeated Group B/C questions from the Panic Pack.</li>`;
+    }).join('');
+    return `<strong>Exam Revision Plan — ${escapeHtml(deptLabel)} (Sem ${escapeHtml(semLabel)}):</strong><ul>${planItems}</ul><div style="margin-top:0.35rem;font-size:12px;color:#475569;">Use the checkboxes in <strong>Study Tracker</strong> and review <strong>Panic Pack</strong> high-repeat dossiers daily.</div>`;
   }
 
   if (qLower.includes('2023') || qLower.includes('pyq') || qLower.includes('paper')) {
@@ -4280,20 +4500,36 @@ function saveAiQueryHistory(rawQuery) {
 
 function renderAiQueryHistory() {
   const container = document.getElementById('aiHistoryChips');
-  if (!container) return;
+  const countBadge = document.getElementById('aiHistoryCountBadge');
   const items = getAiQueryHistory();
+  if (countBadge) {
+    if (items.length > 0) {
+      countBadge.textContent = String(items.length);
+      countBadge.style.display = 'inline-flex';
+    } else {
+      countBadge.style.display = 'none';
+    }
+  }
+  if (!container) return;
   if (!items.length) {
-    container.innerHTML = `<span class="ai-history-empty">Your recent AI prompts will appear here.</span>`;
+    container.innerHTML = `<span class="ai-history-empty">No saved prompts yet. Your recent Ask AI prompts will appear here.</span>`;
     return;
   }
   container.innerHTML = items.map((item, idx) => `
-    <button type="button" class="ai-history-chip" title="${escapeAttr(item.query)}" onclick="replayAiHistoryQuery(${idx})">${escapeHtml(item.query)}</button>
+    <div class="ai-history-item">
+      <button type="button" class="ai-history-load-btn" title="${escapeAttr(item.query)}" onclick="replayAiHistoryQuery(${idx})">
+        <span class="ai-history-query-text">${escapeHtml(item.query)}</span>
+        <span class="ai-history-action-tag">Load</span>
+      </button>
+      <button type="button" class="ai-history-del-btn" aria-label="Delete saved prompt" title="Delete" onclick="deleteAiHistoryItem(${idx})">×</button>
+    </div>
   `).join('');
 }
 
 function replayAiHistoryQuery(index) {
   const items = getAiQueryHistory();
   const entry = items[index];
+  closeAiHistoryPanel();
   if (!entry) return;
   const inp = document.getElementById('aiQueryInput');
   if (inp) inp.value = entry.query;
@@ -4301,20 +4537,70 @@ function replayAiHistoryQuery(index) {
   runAiQuery(entry.query);
 }
 
+function deleteAiHistoryItem(index) {
+  const items = getAiQueryHistory();
+  if (index < 0 || index >= items.length) return;
+  items.splice(index, 1);
+  localStorage.setItem(AI_HISTORY_KEY, JSON.stringify(items));
+  renderAiQueryHistory();
+}
+
 function clearAiQueryHistory() {
   localStorage.setItem(AI_HISTORY_KEY, '[]');
   renderAiQueryHistory();
+  closeAiHistoryPanel();
   showToast('Ask AI history cleared');
+}
+
+function openAiHistoryPanel() {
+  const panel = document.getElementById('aiRecentQueriesPanel');
+  const toggleBtn = document.getElementById('aiHistoryToggleBtn');
+  if (!panel) return;
+  panel.hidden = false;
+  panel.classList.add('open');
+  if (toggleBtn) {
+    toggleBtn.classList.add('active');
+    toggleBtn.setAttribute('aria-expanded', 'true');
+  }
+}
+
+function closeAiHistoryPanel() {
+  const panel = document.getElementById('aiRecentQueriesPanel');
+  const toggleBtn = document.getElementById('aiHistoryToggleBtn');
+  if (!panel) return;
+  panel.classList.remove('open');
+  panel.hidden = true;
+  if (toggleBtn) {
+    toggleBtn.classList.remove('active');
+    toggleBtn.setAttribute('aria-expanded', 'false');
+  }
 }
 
 function toggleAiHistoryPanel() {
   const panel = document.getElementById('aiRecentQueriesPanel');
-  const toggleBtn = document.getElementById('aiHistoryToggleBtn');
-  const chev = document.getElementById('aiHistoryChevron');
   if (!panel) return;
-  const collapsed = panel.classList.toggle('collapsed');
-  if (toggleBtn) toggleBtn.setAttribute('aria-expanded', String(!collapsed));
-  if (chev) chev.textContent = collapsed ? '▸' : '▾';
+  if (panel.classList.contains('open')) {
+    closeAiHistoryPanel();
+  } else {
+    renderAiQueryHistory();
+    openAiHistoryPanel();
+  }
+}
+
+function renderAiWelcomeBubble() {
+  const firstName = getUserFirstName();
+  appendAiBubble(
+    'assistant',
+    `<strong>Hi ${escapeHtml(firstName)}! I&apos;m your MAKAUT Study Copilot.</strong><br>Currently tuned to <strong>${escapeHtml(DASH_STATE.deptDisplay)} (Sem ${escapeHtml(DASH_STATE.semester)})</strong> with ${DASH_STATE.subjects.length} enrolled courses &amp; ${DASH_STATE.pyqs.length} indexed PYQs.<br><span style="font-size:12px;color:#475569;">Drag the <strong>⁝⁝</strong> handle on the left edge to resize this panel (280px–600px).</span>`
+  );
+}
+
+function startNewAiChat() {
+  closeAiHistoryPanel();
+  const feed = document.getElementById('aiMessagesFeed');
+  if (feed) feed.innerHTML = '';
+  aiChatHistory.length = 0;
+  renderAiWelcomeBubble();
 }
 
 async function handleAskAiSubmit(promptText) {
@@ -4355,7 +4641,7 @@ async function handleAskAiSubmit(promptText) {
         const data = await res.json();
         if (data && data.sourceMode === 'GEMINI_LIVE' && data.reply) {
           if (thinkingEl) thinkingEl.remove();
-          const badgeNote = `<div style="margin-top:0.45rem;font-size:11px;color:#475569;">&#10024; Gemini 2.5 Flash${data.groundedInSyllabus ? ' &middot; Grounded in MAKAUT Syllabus' : ''}</div>`;
+          const badgeNote = `<div style="margin-top:0.45rem;font-size:11px;color:#475569;">&#10024; Gemini 3.8 Flash${data.groundedInSyllabus ? ' &middot; Grounded in MAKAUT Syllabus' : ''}</div>`;
           appendAiBubble('assistant', formatAiMarkdown(data.reply) + badgeNote);
           pushAiChatTurn('user', q);
           pushAiChatTurn('model', data.reply);
@@ -4444,10 +4730,16 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Welcome message in Ask AI drawer
-  appendAiBubble(
-    'assistant',
-    `<strong>Hi! I&apos;m your MAKAUT Study Copilot.</strong><br>Currently tuned to <strong>${escapeHtml(DASH_STATE.deptDisplay)} (Sem ${escapeHtml(DASH_STATE.semester)})</strong> with ${DASH_STATE.subjects.length} enrolled courses &amp; ${DASH_STATE.pyqs.length} indexed PYQs.<br><span style="font-size:12px;color:#475569;">Drag the <strong>⁝⁝</strong> handle on the left edge to resize this panel (280px–600px).</span>`
-  );
+  renderAiWelcomeBubble();
+
+  // Auto-close Ask AI History overlay when clicking outside
+  document.addEventListener('click', (e) => {
+    const panel = document.getElementById('aiRecentQueriesPanel');
+    const toggleBtn = document.getElementById('aiHistoryToggleBtn');
+    if (!panel || !panel.classList.contains('open')) return;
+    if (panel.contains(e.target) || (toggleBtn && toggleBtn.contains(e.target))) return;
+    closeAiHistoryPanel();
+  });
 
   // Close PDF & Panic Dossier modals on backdrop click or Escape
   document.getElementById('pdfPreviewModal').addEventListener('click', (e) => {
@@ -4461,6 +4753,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
+      closeAiHistoryPanel();
       closePdfPreview();
       closePanicDossierModal();
       closeMobileRail();

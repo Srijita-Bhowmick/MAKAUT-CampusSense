@@ -18248,13 +18248,20 @@ window.getSubjectDocuments = getSubjectDocuments;
 
     function updateUIAfterLogin(user) {
         if (!user) return;
-        userName = user.fullName || user.firstName || user.username || 'Student';
+        const existingStoredName = (localStorage.getItem('campussense_user_name') || '').trim();
+        const incomingName = (user.fullName || user.firstName || user.username || '').trim();
+        const isGenericName = (val) => !val || /^student(\s+scholar)?$/i.test(val) || /^scholar$/i.test(val);
+        userName = !isGenericName(incomingName)
+            ? incomingName
+            : (!isGenericName(existingStoredName) ? existingStoredName : 'Scholar');
         isLoggedIn = true;
         window.isLoggedIn = true;
         const userEmail = user.primaryEmailAddress?.emailAddress || `${userName.toLowerCase().replace(/\s+/g, '')}@makaut.edu.in`;
 
         localStorage.setItem('campussense_logged_in', 'true');
-        localStorage.setItem('campussense_user_name', userName);
+        if (!isGenericName(userName) || !existingStoredName) {
+            localStorage.setItem('campussense_user_name', userName);
+        }
         localStorage.setItem('campussense_user_id', user.id || userEmail);
         localStorage.setItem('campussense_user_email', userEmail);
         sessionStorage.setItem('campussense_session_token', 'cs_clerk_' + (user.id || Date.now()));
@@ -19941,7 +19948,7 @@ if (document.readyState === 'loading') {
         }
       }
 
-      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${apiKey}`;
       const systemInstruction = "You are MAKAUT CampusSense Academic AI, an expert engineering tutor for MAKAUT students. Provide accurate, clear step-by-step explanations with formulas, proofs, and curriculum context.";
 
       const response = await fetch(endpoint, {

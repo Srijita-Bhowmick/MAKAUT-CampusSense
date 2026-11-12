@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * REST endpoint exposing context-grounded Gemini 2.5 Flash chat with resilient fallback signaling.
+ * REST endpoint exposing context-grounded Gemini 3.8 Flash chat with resilient fallback signaling.
  */
 @RestController
 @RequestMapping("/api/ai")
