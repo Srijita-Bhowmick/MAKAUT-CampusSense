@@ -19948,7 +19948,7 @@ if (document.readyState === 'loading') {
         }
       }
 
-      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${apiKey}`;
+      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key=${apiKey}`;
       const systemInstruction = "You are MAKAUT CampusSense Academic AI, an expert engineering tutor for MAKAUT students. Provide accurate, clear step-by-step explanations with formulas, proofs, and curriculum context.";
 
       const response = await fetch(endpoint, {

@@ -26,7 +26,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Context-grounded Gemini 3.8 Flash service for the MAKAUT CampusSense Ask AI drawer.
+ * Context-grounded Gemini Flash service for the MAKAUT CampusSense Ask AI drawer.
  * Returns FALLBACK_REQUIRED gracefully whenever GEMINI_API_KEY is unset or upstream fails.
  */
 @Service
@@ -39,7 +39,7 @@ public class GeminiChatService {
     public static final String MODE_FALLBACK_REQUIRED = "FALLBACK_REQUIRED";
 
     private static final int MAX_HISTORY_TURNS = 6;
-    private static final int MAX_ACADEMIC_CONTEXT_CHARS = 4500;
+    private static final int MAX_ACADEMIC_CONTEXT_CHARS = 2500;
     private static final Pattern CODE_TOKEN_PATTERN = Pattern.compile("\\b[A-Z]{2,5}[- ]?[A-Z]{0,4}\\d{3}[A-Z]?\\b");
     private static final Pattern KEY_REDACTION_PATTERN = Pattern.compile("(?i)([?&]key=)[^&\\s]+");
     private static final Pattern RAW_GOOGLE_KEY_PATTERN = Pattern.compile("AIza[0-9A-Za-z_-]{15,}");
@@ -71,11 +71,11 @@ public class GeminiChatService {
             RestClient.Builder restClientBuilder,
             ObjectMapper objectMapper,
             @Value("${gemini.api.key:}") String apiKey,
-            @Value("${gemini.api.url:https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent}") String apiUrl,
+            @Value("${gemini.api.url:https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent}") String apiUrl,
             @Value("${gemini.dotenv.fallback:true}") boolean dotEnvFallbackEnabled) {
         SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
-        requestFactory.setConnectTimeout(Duration.ofSeconds(5));
-        requestFactory.setReadTimeout(Duration.ofSeconds(15));
+        requestFactory.setConnectTimeout(Duration.ofSeconds(2));
+        requestFactory.setReadTimeout(Duration.ofSeconds(4));
         this.restClient = restClientBuilder.clone().requestFactory(requestFactory).build();
         this.objectMapper = objectMapper;
         this.apiKey = resolveApiKey(apiKey, dotEnvFallbackEnabled);
@@ -188,8 +188,8 @@ public class GeminiChatService {
             ));
             payload.put("contents", buildContents(request));
             payload.put("generationConfig", Map.of(
-                    "temperature", 0.35,
-                    "maxOutputTokens", 1200
+                    "temperature", 0.4,
+                    "maxOutputTokens", 650
             ));
 
             String targetUrl = buildTargetUrl(apiUrl, apiKey);

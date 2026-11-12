@@ -1426,19 +1426,19 @@
     }
 
     .ai-controls-footer {
-      padding: 0.85rem 1rem 1rem;
+      padding: 0.75rem 0.75rem 0.9rem;
       border-top: 1.5px solid #8DB9F0;
       background: #F8FAFF;
       display: flex;
       flex-direction: column;
-      gap: 0.55rem;
+      gap: 0.5rem;
     }
 
     .ai-quick-chips {
       display: flex;
       flex-wrap: nowrap;
       align-items: center;
-      gap: 0.35rem;
+      gap: 0.3rem;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
@@ -1451,14 +1451,13 @@
 
     .ai-chip-btn {
       flex: 0 0 auto;
-      max-width: 170px;
       background: #FFFFFF;
       border: 1.5px solid #8DB9F0;
       color: #0F172A;
       border-radius: 9999px;
-      padding: 0.24rem 0.58rem;
-      font-size: 11px;
-      line-height: 1.25;
+      padding: 5px 8px;
+      font-size: 0.71rem;
+      line-height: 1.2;
       font-weight: 600;
       white-space: nowrap;
       overflow: hidden;
@@ -4225,39 +4224,35 @@ function collectActiveAcademicContext() {
 
   const subjects = Array.isArray(DASH_STATE.subjects) ? DASH_STATE.subjects : [];
   if (subjects.length) {
-    sections.push('SUBJECT SYLLABI:');
-    subjects.forEach(sub => {
-      const unitsSummary = (sub.units || []).slice(0, 6).map(u => {
-        const subtopicSnippet = String(u.subtopics || '').slice(0, 120);
-        return `${u.num}: ${u.name}${subtopicSnippet ? ' (' + subtopicSnippet + ')' : ''}`;
-      }).join('; ');
+    sections.push('SUBJECTS & UNITS:');
+    subjects.slice(0, 8).forEach(sub => {
+      const unitsSummary = (sub.units || []).slice(0, 5).map(u => `${u.num}: ${u.name}`).join('; ');
       sections.push(`- ${sub.code} (${sub.title}): ${unitsSummary}`);
     });
   }
 
   const dossiers = Array.isArray(DASH_STATE.panicDossiers) ? DASH_STATE.panicDossiers : [];
   if (dossiers.length) {
-    sections.push('TOP 20% REPEATED EXAM QUESTIONS:');
-    dossiers.forEach(d => {
-      const qs = (d.topQuestions || []).slice(0, 4).map(q => {
-        const yrs = Array.isArray(q.years) ? q.years.join(',') : (q.years || '');
-        const count = q.repeatCount ? `${q.repeatCount}x` : 'High-Yield';
-        const qSnippet = String(q.question || q.coreTopic || '').slice(0, 140);
-        return `[${count}${yrs ? ' · ' + yrs : ''}] ${qSnippet}`;
+    sections.push('TOP REPEAT PYQS:');
+    dossiers.slice(0, 6).forEach(d => {
+      const qs = (d.topQuestions || []).slice(0, 3).map(q => {
+        const count = q.repeatCount ? `${q.repeatCount}x` : 'Repeat';
+        const qSnippet = String(q.question || q.coreTopic || '').slice(0, 85);
+        return `[${count}] ${qSnippet}`;
       }).join(' | ');
       if (qs) {
-        sections.push(`- ${d.code} (${d.title}): ${qs}`);
+        sections.push(`- ${d.code}: ${qs}`);
       }
     });
   }
 
   const pyqs = Array.isArray(DASH_STATE.pyqs) ? DASH_STATE.pyqs : [];
   if (pyqs.length) {
-    const pyqList = pyqs.slice(0, 10).map(p => `${p.code} (${p.year})`).join(', ');
-    sections.push(`INDEXED PYQ PAPERS (${pyqs.length} total): ${pyqList}`);
+    const pyqList = pyqs.slice(0, 6).map(p => `${p.code} (${p.year})`).join(', ');
+    sections.push(`PYQS (${pyqs.length} indexed): ${pyqList}`);
   }
 
-  return sections.join('\n').slice(0, 4000);
+  return sections.join('\n').slice(0, 2400);
 }
 
 function pushAiChatTurn(role, text) {
@@ -4621,7 +4616,7 @@ async function handleAskAiSubmit(promptText) {
     let timeoutId = null;
     try {
       const ctrl = new AbortController();
-      timeoutId = setTimeout(() => ctrl.abort(), 8000);
+      timeoutId = setTimeout(() => ctrl.abort(), 4500);
       const res = await fetch(CAMPUSSENSE_AI_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -4641,7 +4636,7 @@ async function handleAskAiSubmit(promptText) {
         const data = await res.json();
         if (data && data.sourceMode === 'GEMINI_LIVE' && data.reply) {
           if (thinkingEl) thinkingEl.remove();
-          const badgeNote = `<div style="margin-top:0.45rem;font-size:11px;color:#475569;">&#10024; Gemini 3.8 Flash${data.groundedInSyllabus ? ' &middot; Grounded in MAKAUT Syllabus' : ''}</div>`;
+          const badgeNote = `<div style="margin-top:0.45rem;font-size:11px;color:#475569;">&#10024; Gemini Flash${data.groundedInSyllabus ? ' &middot; Grounded in MAKAUT Syllabus' : ''}</div>`;
           appendAiBubble('assistant', formatAiMarkdown(data.reply) + badgeNote);
           pushAiChatTurn('user', q);
           pushAiChatTurn('model', data.reply);
