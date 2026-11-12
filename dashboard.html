@@ -4166,6 +4166,15 @@ function appendAiBubble(role, htmlContent) {
 function resolveCampussenseApiBase() {
   let base = '';
   try {
+    const params = new URLSearchParams(window.location.search || '');
+    const queryBase = (params.get('api_base') || '').trim();
+    if (/^https?:\/\/[a-z0-9.-]+(:\d+)?(\/.*)?$/i.test(queryBase)) {
+      base = queryBase.replace(/\/+$/, '');
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('campussense_api_base', base);
+      }
+      return base;
+    }
     if (typeof window.CAMPUSSENSE_API_BASE === 'string' && window.CAMPUSSENSE_API_BASE.trim()) {
       base = window.CAMPUSSENSE_API_BASE.trim();
     } else if (typeof localStorage !== 'undefined') {
@@ -4200,6 +4209,9 @@ const AI_STOP_WORDS = new Set([
   'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'from', 'as', 'into',
   'what', 'which', 'who', 'whom', 'whose', 'when', 'where', 'why', 'how',
   'tell', 'about', 'explain', 'define', 'give', 'list', 'show', 'find',
+  'difference', 'between', 'program', 'code', 'write', 'using', 'short',
+  'example', 'examples', 'does', 'work', 'works', 'mean', 'meaning',
+  'concept', 'basics', 'overview', 'help', 'brief', 'compare', 'vs',
   'feel', 'feeling', 'really', 'very', 'just', 'today', 'right', 'now',
   'dont', 'cant', 'wont', 'should', 'could', 'would', 'have', 'has', 'had',
   'summarize', 'summary', 'notes', 'note', 'important', 'question', 'questions',
@@ -4212,12 +4224,15 @@ const AI_SHORTCUT_MAP = {
   cn: ['computer networks', 'tcp', 'osi', 'pcc-cs602'],
   toc: ['automata', 'turing', 'dfa', 'cfg', 'pcc-cs403'],
   flat: ['automata', 'turing', 'dfa', 'cfg', 'pcc-cs403'],
+  cd: ['compiler', 'lexical', 'parsing', 'pcc-cs501'],
+  compiler: ['compiler', 'lexical', 'parsing', 'pcc-cs501'],
   daa: ['algorithm', 'dynamic programming', 'greedy', 'pcc-cs404'],
   co: ['computer organisation', 'alu', 'booth', 'pcc-cs302'],
   ca: ['computer architecture', 'pipelining', 'cache', 'pcc-cs402'],
   se: ['software engineering', 'sdlc', 'uml', 'esc501'],
   oop: ['object oriented', 'polymorphism', 'inheritance', 'pcc-cs503'],
   ai: ['artificial intelligence', 'heuristic', 'search', 'pec-it501b'],
+  blockchain: ['blockchain', 'consensus', 'merkle', 'distributed ledger'],
   pps: ['programming', 'c language', 'es-cs201'],
   bee: ['electrical', 'thevenin', 'transformer', 'es-ee101'],
   ph101: ['physics', 'diffraction', 'laser', 'bs-ph101'],
@@ -4462,6 +4477,81 @@ function formatAiMarkdown(rawText) {
   return htmlParts.join('');
 }
 
+const AI_CONCEPT_GUIDES = [
+  {
+    test: /\b(?:deadlock|coffman|banker'?s?\s*algorithm)\b/i,
+    title: 'Deadlock & Banker’s Algorithm (Operating Systems · PCC-CS502)',
+    body: '<ul><li><strong>4 Necessary Conditions (Coffman):</strong> Mutual Exclusion, Hold &amp; Wait, No Preemption, Circular Wait.</li><li><strong>Handling:</strong> Prevention (break ≥1 condition), Avoidance (<strong>Banker’s Algorithm</strong> checks safe sequence using <code>Need = Max - Allocation</code>), Detection &amp; Recovery.</li></ul>'
+  },
+  {
+    test: /\b(?:paging|virtual\s*memory|page\s*replacement|thrashing|segmentation|tlb)\b/i,
+    title: 'Virtual Memory, Paging & Page Replacement (OS · PCC-CS502)',
+    body: '<ul><li><strong>Paging:</strong> Divides logical memory into <em>Pages</em> and physical RAM into equal <em>Frames</em>; uses Page Table + TLB to avoid external fragmentation.</li><li><strong>Page Replacement:</strong> FIFO (suffers Belady’s anomaly), Optimal (theoretical benchmark), <strong>LRU</strong> (replaces least recently used).</li><li><strong>Thrashing:</strong> Excessive paging when working set exceeds available frames.</li></ul>'
+  },
+  {
+    test: /\b(?:cpu\s*scheduling|round\s*robin|sjf|fcfs|semaphore|mutex|critical\s*section)\b/i,
+    title: 'CPU Scheduling & Process Synchronization (OS · PCC-CS502)',
+    body: '<ul><li><strong>Scheduling Metrics:</strong> Turnaround Time = Completion − Arrival; Waiting Time = Turnaround − Burst. SJF minimizes average wait; <strong>Round Robin</strong> prevents starvation using time quantum <code>q</code>.</li><li><strong>Synchronization:</strong> Mutual exclusion via <code>wait(S)</code> / <code>signal(S)</code> semaphores solves Producer-Consumer &amp; Dining Philosophers.</li></ul>'
+  },
+  {
+    test: /\b(?:normali[sz]ation|1nf|2nf|3nf|bcnf|acid|transaction|2pl|b\+?\s*tree|serializabilit)\b/i,
+    title: 'Normalization, BCNF & Transactions (DBMS · PCC-CS601)',
+    body: '<ul><li><strong>Normal Forms:</strong> <strong>1NF</strong> (atomic values) → <strong>2NF</strong> (no partial dependency) → <strong>3NF</strong> (no transitive dependency) → <strong>BCNF</strong> (for every <code>X → Y</code>, <code>X</code> is a superkey).</li><li><strong>ACID Properties:</strong> Atomicity, Consistency, Isolation (via Two-Phase Locking / 2PL), Durability.</li></ul>'
+  },
+  {
+    test: /\b(?:sql|inner\s*join|outer\s*join|primary\s*key|foreign\s*key|er\s*diagram)\b/i,
+    title: 'SQL Keys, Joins & Relational Model (DBMS · PCC-CS601)',
+    body: '<ul><li><strong>Keys:</strong> Superkey → Candidate Key (minimal) → Primary Key (non-null unique) → Foreign Key (referential integrity).</li><li><strong>Joins:</strong> <code>INNER JOIN</code> (matching rows), <code>LEFT/RIGHT JOIN</code> (preserves unmatched side), <code>GROUP BY ... HAVING</code> (filters aggregates).</li></ul>'
+  },
+  {
+    test: /\b(?:osi\s*model|tcp|udp|ip\s*address|subnet|routing|dijkstra|distance\s*vector|link\s*state)\b/i,
+    title: 'OSI Model, TCP vs UDP & Routing (Computer Networks · PCC-CS602)',
+    body: '<ul><li><strong>7 OSI Layers:</strong> Physical, Data Link, Network, Transport, Session, Presentation, Application.</li><li><strong>TCP vs UDP:</strong> TCP is connection-oriented &amp; reliable (3-way handshake, flow/congestion control); UDP is connectionless &amp; low-latency.</li><li><strong>Routing:</strong> Distance Vector (Bellman-Ford / RIP) vs Link State (Dijkstra / OSPF).</li></ul>'
+  },
+  {
+    test: /\b(?:dfa|nfa|pumping\s*lemma|cfg|context\s*free|pda|pushdown|turing\s*machine|automata|chomsky)\b/i,
+    title: 'Finite Automata, CFG & Turing Machines (FLAT/TOC · PCC-CS403)',
+    body: '<ul><li><strong>DFA vs NFA:</strong> Equal expressive power (Regular Languages); DFA has exactly 1 transition per symbol, NFA allows ε-moves and multiple states (subset construction converts NFA→DFA).</li><li><strong>Pumping Lemma:</strong> Proves a language is NOT regular by contradicting string pumping <code>xy^iz</code>.</li><li><strong>Hierarchy:</strong> Regular (FA) ⊂ Context-Free (CFG/PDA) ⊂ Recursive (Turing Machine).</li></ul>'
+  },
+  {
+    test: /\b(?:compiler|lexical|syntax\s*analysis|ll\(1\)|lr\(1\)|lalr|three\s*address|tac)\b/i,
+    title: 'Compiler Phases & Parsing (Compiler Design · PCC-CS501)',
+    body: '<ul><li><strong>6 Phases:</strong> Lexical Analyzer (tokens) → Syntax Analyzer (parse tree) → Semantic Analyzer → Intermediate Code (Three-Address Code) → Code Optimization → Code Generation.</li><li><strong>Parsers:</strong> Top-down <strong>LL(1)</strong> uses <code>FIRST</code> &amp; <code>FOLLOW</code> sets; Bottom-up <strong>SLR/LALR/CLR</strong> uses shift-reduce actions.</li></ul>'
+  },
+  {
+    test: /\b(?:binary\s*search|quick\s*sort|merge\s*sort|dynamic\s*programming|greedy|master\s*theorem|np[-\s]?complete|time\s*complexit|big[-\s]?o|knapsack|bellman)\b/i,
+    title: 'Algorithm Design & Complexity Analysis (DAA · PCC-CS404)',
+    body: '<ul><li><strong>Complexities:</strong> Binary Search <code>O(log n)</code> · Merge Sort <code>O(n log n)</code> worst-case · Quick Sort <code>O(n log n)</code> avg / <code>O(n^2)</code> worst · BFS/DFS <code>O(V + E)</code>.</li><li><strong>Paradigms:</strong> <strong>Greedy</strong> makes locally optimal choices (Fractional Knapsack, Kruskal/Prim); <strong>Dynamic Programming</strong> caches overlapping subproblems (0/1 Knapsack, LCS, Floyd-Warshall).</li></ul>'
+  },
+  {
+    test: /\b(?:polymorphism|inheritance|encapsulation|abstraction|overloading|overriding|oop)\b/i,
+    title: 'Object-Oriented Programming Pillars (OOP · PCC-CS503)',
+    body: '<ul><li><strong>4 Pillars:</strong> Encapsulation (bundling data + methods), Abstraction (hiding internals via interfaces/abstract classes), Inheritance (code reuse), and <strong>Polymorphism</strong>.</li><li><strong>Polymorphism:</strong> Compile-time = Method Overloading (same name, different params); Runtime = Method Overriding (dynamic dispatch).</li></ul>'
+  },
+  {
+    test: /\b(?:stack|queue|linked\s*list|binary\s*tree|bst|avl|hashing|heap)\b/i,
+    title: 'Core Data Structures & Rotations (DSA · PCC-CS301)',
+    body: '<ul><li><strong>Linear:</strong> Stack (LIFO: push/pop/postfix eval), Queue (FIFO/Circular/Priority Queue), Linked List (<code>O(1)</code> head insert/delete).</li><li><strong>Non-Linear:</strong> BST (Inorder gives sorted order), <strong>AVL Tree</strong> (self-balancing via LL, RR, LR, RL rotations, balance factor <code>{-1,0,1}</code>), Hashing (chaining/open addressing).</li></ul>'
+  },
+  {
+    test: /\b(?:blockchain|merkle|proof\s*of\s*work|consensus|smart\s*contract|distributed\s*ledger)\b/i,
+    title: 'Blockchain Architecture & Consensus',
+    body: '<ul><li><strong>Structure:</strong> Immutable linked blocks storing a cryptographic hash of the previous block, timestamp, nonce, and a <strong>Merkle Tree</strong> root of transactions.</li><li><strong>Consensus &amp; Contracts:</strong> Distributed agreement via Proof-of-Work (PoW), Proof-of-Stake (PoS), or PBFT; <strong>Smart Contracts</strong> are self-executing deterministic code deployed on-chain.</li></ul>'
+  },
+  {
+    test: /\b(?:thevenin|transformer|diffraction|laser|nernst|cayley|laplace)\b/i,
+    title: '1st-Year Engineering Core Formula & Concept Guide',
+    body: '<ul><li><strong>BEE:</strong> Thevenin equivalent reduces linear networks to <code>V_th</code> in series with <code>R_th</code>; Ideal Transformer obeys <code>V1/V2 = N1/N2 = I2/I1</code>.</li><li><strong>Physics/Chem/Math:</strong> Fraunhofer diffraction maxima obey <code>a sinθ = nλ</code>; Nernst Eq: <code>E = E° − (0.0591/n)log Q</code>; Cayley-Hamilton states every square matrix satisfies its own characteristic equation.</li></ul>'
+  }
+];
+
+function answerEngineeringConceptFallback(query) {
+  const q = String(query || '').trim();
+  const hits = AI_CONCEPT_GUIDES.filter(g => g.test.test(q)).slice(0, 2);
+  if (!hits.length) return '';
+  return hits.map(h => `<div style="margin-bottom:0.45rem;"><strong>${h.title}</strong>${h.body}</div>`).join('');
+}
+
 function generateLocalSyllabusFallback(query, department, semester) {
   const q = String(query || '').trim();
   const qLower = q.toLowerCase();
@@ -4488,6 +4578,16 @@ function generateLocalSyllabusFallback(query, department, semester) {
     return `<div style="margin-bottom:0.35rem;">I hear you, <strong>${escapeHtml(firstName)}</strong>. Feeling exhausted, stressed, or overwhelmed doesn&apos;t mean you&apos;re going to fail—exam pressure at MAKAUT is heavy, and one exam or rough day does not define you.</div><div style="font-size:12.5px;color:#334155;">Please take a 10-minute break to drink some water and rest without any guilt. Only when you feel ready, we can take one tiny, zero-pressure step on <strong>${escapeHtml(deptLabel)} (Sem ${escapeHtml(semLabel)})</strong>—or you can just pause and breathe right now.</div>`;
   }
 
+  if (/^(?:thanks?|thank\s+you|thx|tysm|ok\s+thanks?|cool\s+thanks?)(?:\s+(?:so\s+much|a\s+lot|very\s+much|bro|buddy|mate))?[\s!.]*$/i.test(qSquashed)) {
+    const firstName = getUserFirstName();
+    return `You&apos;re always welcome, <strong>${escapeHtml(firstName)}</strong>! Take things at your own pace—I&apos;m right here whenever you want to chat or dive into a <strong>${escapeHtml(deptLabel)} (Sem ${escapeHtml(semLabel)})</strong> topic.`;
+  }
+
+  if (/^(?:how\s+are\s+you|who\s+are\s+you|what'?s\s+up|wassup|how\s+is\s+it\s+going|i\s+am\s+bored|im\s+bored)[\s!?.]*$/i.test(qSquashed)) {
+    const firstName = getUserFirstName();
+    return `<div style="margin-bottom:0.35rem;">Doing great and ready to help, <strong>${escapeHtml(firstName)}</strong>! I&apos;m your MAKAUT CampusSense Study Copilot for <strong>${escapeHtml(deptLabel)} (Sem ${escapeHtml(semLabel)})</strong>.</div><div style="font-size:12.5px;color:#334155;">Ask me about any topic (e.g., <em>Explain deadlock</em>, <em>BCNF in DBMS</em>, <em>Summarize Module 1</em>), or click a quick chip below!</div>`;
+  }
+
   const modMatch = qLower.match(/(?:module|unit)\s*(\d+)/);
   if (modMatch || (qLower.includes('summarize') && qLower.includes('module'))) {
     const requestedMod = modMatch ? Math.max(1, parseInt(modMatch[1], 10)) : 1;
@@ -4506,16 +4606,22 @@ function generateLocalSyllabusFallback(query, department, semester) {
   }
 
   if (qLower.includes('formula') || qLower.includes('derivation')) {
-    const keyTopics = subjects.slice(0, 4).map(sub => {
-      const u1 = (sub.units && sub.units[0]) || { name: 'Core Fundamentals', subtopics: '' };
+    const focused = findQueryMatchedSubjects(q, subjects);
+    const formulaSubjects = focused.length ? focused : subjects.slice(0, 4);
+    const keyTopics = formulaSubjects.map(sub => {
+      const cleanUnits = (sub.units || []).filter(isCleanSyllabusUnit);
+      const u1 = cleanUnits[0] || { name: 'Core Fundamentals', subtopics: '' };
       return `<li><strong>${escapeHtml(sub.code)} · ${escapeHtml(sub.title)}:</strong> Focus on theorems, governing equations, and complexity/analytical identities in <em>${escapeHtml(u1.name)}</em>${u1.subtopics ? ' (' + escapeHtml(u1.subtopics) + ')' : ''}.</li>`;
     }).join('');
-    return `<strong>Key Formulas &amp; Core Concepts — ${escapeHtml(deptLabel)} (Sem ${escapeHtml(semLabel)}):</strong><ul>${keyTopics}</ul><div style="margin-top:0.35rem;font-size:12px;color:#475569;">Ask about a specific subject code (e.g., <strong>${escapeHtml((subjects[0] && subjects[0].code) || 'PCC-CS301')}</strong> formulas) for a full formula sheet.</div>`;
+    return `<strong>Key Formulas &amp; Core Concepts — ${escapeHtml(deptLabel)} (Sem ${escapeHtml(semLabel)}):</strong><ul>${keyTopics}</ul><div style="margin-top:0.35rem;font-size:12px;color:#475569;">Ask about a specific subject code (e.g., <strong>${escapeHtml((formulaSubjects[0] && formulaSubjects[0].code) || 'PCC-CS301')}</strong> formulas) for a full formula sheet.</div>`;
   }
 
   if (qLower.includes('revision') || /\b(?:study|exam)\s+plan\b/i.test(qSquashed)) {
-    const planItems = subjects.slice(0, 4).map((sub, idx) => {
-      const topUnit = (sub.units && sub.units[0] && sub.units[0].name) || 'Core Foundations';
+    const focused = findQueryMatchedSubjects(q, subjects);
+    const planSubjects = focused.length ? focused : subjects.slice(0, 4);
+    const planItems = planSubjects.map((sub, idx) => {
+      const cleanUnits = (sub.units || []).filter(isCleanSyllabusUnit);
+      const topUnit = (cleanUnits[0] && cleanUnits[0].name) || 'Core Foundations';
       return `<li><strong>Phase ${idx + 1} · ${escapeHtml(sub.code)} (${escapeHtml(sub.title)}):</strong> Cover ${escapeHtml(topUnit)} first, then solve repeated Group B/C questions from the Panic Pack.</li>`;
     }).join('');
     return `<strong>Exam Revision Plan — ${escapeHtml(deptLabel)} (Sem ${escapeHtml(semLabel)}):</strong><ul>${planItems}</ul><div style="margin-top:0.35rem;font-size:12px;color:#475569;">Use the checkboxes in <strong>Study Tracker</strong> and review <strong>Panic Pack</strong> high-repeat dossiers daily.</div>`;
@@ -4539,16 +4645,6 @@ function generateLocalSyllabusFallback(query, department, semester) {
     }
   }
 
-  const academicIntentPattern = /(?:\bsyllabus\b|\bsyllabi\b|\bmodules?\b|\bunits?\b|\bpyqs?\b|\bquestions?\b|\bexams?\b|\bsubjects?\b|\bcodes?\b|\bformulas?\b|\bderivations?\b|\brevisions?\b|\bstudy\b|\bstudying\b|\bnotes?\b|\bmarks?\b|\bcredits?\b|\bpanic\s*pack\b|\bpapers?\b|\bpattern\b|\brepeat(?:s|ed)?\b|\bcurricul(?:um|a)\b|\btopics?\b|\bchapters?\b|\bblueprints?\b|\bimportant\b|pcc-|pec-|oec-|\b(?:bsc|esc|hmc|mc)(?:\d|[-\s]|\b)|\b(?:bs|es|pc|pe|oe|hm)-?[a-z]*\d{2,3}[a-z]?\b|\b(?:dsa|dbms|os|cn|toc|flat|daa|co|ca|se|oop|pps|bee|ph101|ch101|m101|m201)\b)/i;
-  const hasAcademicIntent = academicIntentPattern.test(qLower) || academicIntentPattern.test(qSquashed);
-  if (!hasAcademicIntent) {
-    const firstName = getUserFirstName();
-    if (/\b(?:thanks?|thank\s+you|thx|tysm)\b/i.test(qSquashed)) {
-      return `You&apos;re always welcome, <strong>${escapeHtml(firstName)}</strong>! Take things at your own pace—I&apos;m right here whenever you want to chat or dive into a <strong>${escapeHtml(deptLabel)} (Sem ${escapeHtml(semLabel)})</strong> topic.`;
-    }
-    return `<div style="margin-bottom:0.35rem;">I&apos;m here with you, <strong>${escapeHtml(firstName)}</strong>! No pressure at all—I won&apos;t throw a wall of syllabus notes at you unless you ask for one.</div><div style="font-size:12.5px;color:#334155;">Whenever you feel ready, tell me what&apos;s on your mind or ask about any <strong>${escapeHtml(deptLabel)} (Sem ${escapeHtml(semLabel)})</strong> subject code, module, formula, or PYQ.</div>`;
-  }
-
   // Tokenize keywords (stripping stop words & expanding common MAKAUT shortcodes)
   const rawTokens = qSquashed.replace(/['’]/g, '').replace(/[^a-z0-9\s-]/g, ' ').split(/\s+/).filter(Boolean);
   const keywords = new Set();
@@ -4566,11 +4662,12 @@ function generateLocalSyllabusFallback(query, department, semester) {
   });
   const tokenList = Array.from(keywords);
 
-  const scoredSubjects = subjects.map(sub => {
+  let scoredSubjects = subjects.map(sub => {
     const codeNorm = String(sub.code || '').toLowerCase();
     const legNorm = String(sub.legacyCode || '').toLowerCase();
     const titleNorm = String(sub.title || '').toLowerCase();
     const matchedUnits = (sub.units || []).filter(u => {
+      if (!isCleanSyllabusUnit(u)) return false;
       const unitHay = `${u.num || ''} ${u.name || ''} ${u.subtopics || ''}`.toLowerCase();
       return tokenList.some(k => unitHay.includes(k));
     });
@@ -4582,6 +4679,17 @@ function generateLocalSyllabusFallback(query, department, semester) {
     score += matchedUnits.length * 3;
     return { sub, matchedUnits, score };
   }).filter(item => item.score > 0).sort((a, b) => b.score - a.score);
+
+  if (!scoredSubjects.length) {
+    const crossMatches = findQueryMatchedSubjects(q, []);
+    if (crossMatches.length) {
+      scoredSubjects = crossMatches.map(sub => ({
+        sub,
+        matchedUnits: (sub.units || []).filter(isCleanSyllabusUnit).slice(0, 3),
+        score: 5
+      }));
+    }
+  }
 
   const scoredRepeats = [];
   dossiers.forEach(d => {
@@ -4600,33 +4708,45 @@ function generateLocalSyllabusFallback(query, department, semester) {
     return tokenList.some(k => hay.includes(k));
   }).slice(0, 3);
 
-  if (scoredSubjects.length || scoredRepeats.length || matchedPyqs.length) {
-    let html = `<strong>MAKAUT Syllabus &amp; PYQ Match — ${escapeHtml(deptLabel)} (Sem ${escapeHtml(semLabel)}):</strong>`;
-    if (scoredSubjects.length) {
-      const subItems = scoredSubjects.slice(0, 3).map(({ sub, matchedUnits }) => {
-        const unitsToShow = (matchedUnits.length ? matchedUnits : (sub.units || [])).slice(0, 3);
-        const unitDesc = unitsToShow.map(u => `${escapeHtml(u.num)}: ${escapeHtml(u.name)}`).join(' · ');
-        return `<li><strong>${escapeHtml(sub.code)} · ${escapeHtml(sub.title)}:</strong> ${unitDesc || 'Full semester blueprint indexed.'}</li>`;
-      }).join('');
-      html += `<ul>${subItems}</ul>`;
-    }
-    if (scoredRepeats.length) {
-      const repItems = scoredRepeats.slice(0, 3).map(({ code, tq }) => {
-        const yrs = Array.isArray(tq.years) && tq.years.length ? tq.years.join(', ') : 'MAKAUT PYQ Trend';
-        const freq = tq.repeatCount ? `Repeated ${tq.repeatCount}x` : 'High-Yield Repeat';
-        return `<li><strong>🔥 ${escapeHtml(code)} (${escapeHtml(freq)} · ${escapeHtml(yrs)}):</strong> ${escapeHtml(tq.question || tq.coreTopic)}</li>`;
-      }).join('');
-      html += `<div style="margin-top:0.35rem;font-weight:700;font-size:12px;">High-Frequency Repeat Exam Alerts:</div><ul>${repItems}</ul>`;
-    }
-    if (matchedPyqs.length) {
-      const pyqCodes = matchedPyqs.map(p => `${escapeHtml(p.code)} (${escapeHtml(p.year)})`).join(', ');
-      html += `<div style="margin-top:0.35rem;font-size:12px;color:#475569;"><strong>Direct Papers:</strong> ${pyqCodes} — open <strong>Exam PYQ Vault</strong> or <strong>Panic Pack</strong> above to inspect PDFs &amp; dossiers.</div>`;
+  const conceptHtml = answerEngineeringConceptFallback(q);
+
+  if (conceptHtml || scoredSubjects.length || scoredRepeats.length || matchedPyqs.length) {
+    let html = conceptHtml ? conceptHtml : '';
+    if (scoredSubjects.length || scoredRepeats.length || matchedPyqs.length) {
+      html += `<strong>MAKAUT Syllabus &amp; PYQ Match — ${escapeHtml(deptLabel)} (Sem ${escapeHtml(semLabel)}):</strong>`;
+      if (scoredSubjects.length) {
+        const subItems = scoredSubjects.slice(0, 3).map(({ sub, matchedUnits }) => {
+          const cleanUnits = (matchedUnits.length ? matchedUnits : (sub.units || []).filter(isCleanSyllabusUnit)).slice(0, 3);
+          const unitDesc = cleanUnits.map(u => `${escapeHtml(u.num)}: ${escapeHtml(u.name)}`).join(' · ');
+          return `<li><strong>${escapeHtml(sub.code)} · ${escapeHtml(sub.title)}:</strong> ${unitDesc || 'Full semester blueprint indexed.'}</li>`;
+        }).join('');
+        html += `<ul>${subItems}</ul>`;
+      }
+      if (scoredRepeats.length) {
+        const repItems = scoredRepeats.slice(0, 3).map(({ code, tq }) => {
+          const yrs = Array.isArray(tq.years) && tq.years.length ? tq.years.join(', ') : 'MAKAUT PYQ Trend';
+          const freq = tq.repeatCount ? `Repeated ${tq.repeatCount}x` : 'High-Yield Repeat';
+          return `<li><strong>🔥 ${escapeHtml(code)} (${escapeHtml(freq)} · ${escapeHtml(yrs)}):</strong> ${escapeHtml(tq.question || tq.coreTopic)}</li>`;
+        }).join('');
+        html += `<div style="margin-top:0.35rem;font-weight:700;font-size:12px;">High-Frequency Repeat Exam Alerts:</div><ul>${repItems}</ul>`;
+      }
+      if (matchedPyqs.length) {
+        const pyqCodes = matchedPyqs.map(p => `${escapeHtml(p.code)} (${escapeHtml(p.year)})`).join(', ');
+        html += `<div style="margin-top:0.35rem;font-size:12px;color:#475569;"><strong>Direct Papers:</strong> ${pyqCodes} — open <strong>Exam PYQ Vault</strong> or <strong>Panic Pack</strong> above to inspect PDFs &amp; dossiers.</div>`;
+      }
     }
     return html;
   }
 
-  const overview = subjects.slice(0, 4).map(s => `<li><strong>${escapeHtml(s.code)}:</strong> ${escapeHtml(s.title)} (${(s.units || []).length} modules)</li>`).join('');
-  return `<strong>Personalized Study Guide — ${escapeHtml(deptLabel)} (Sem ${escapeHtml(semLabel)}):</strong><ul>${overview}</ul><div style="margin-top:0.35rem;font-size:12px;color:#475569;">Ask about any subject code (e.g., <strong>${escapeHtml((subjects[0] && subjects[0].code) || 'PCC-CS301')}</strong>), syllabus module, or click the quick chips below to view <strong>PYQ Vault</strong> &amp; <strong>Panic Pack</strong> repeat questions.</div>`;
+  const academicIntentPattern = /(?:\bsyllabus\b|\bsyllabi\b|\bmodules?\b|\bunits?\b|\bpyqs?\b|\bquestions?\b|\bexams?\b|\bsubjects?\b|\bcodes?\b|\bformulas?\b|\bderivations?\b|\brevisions?\b|\bstudy\b|\bstudying\b|\bnotes?\b|\bmarks?\b|\bcredits?\b|\bpanic\s*pack\b|\bpapers?\b|\bpattern\b|\brepeat(?:s|ed)?\b|\bcurricul(?:um|a)\b|\btopics?\b|\bchapters?\b|\bblueprints?\b|\bimportant\b|\balgorithms?\b|\bprograms?\b|\bcode\b|\bfunctions?\b|\bexplain\b|\bdefine\b|\bwhat\s+is\b|\bhow\s+does\b|pcc-|pec-|oec-|\b(?:bsc|esc|hmc|mc)(?:\d|[-\s]|\b)|\b(?:bs|es|pc|pe|oe|hm)-?[a-z]*\d{2,3}[a-z]?\b|\b(?:dsa|dbms|os|cn|toc|flat|daa|co|ca|se|oop|pps|bee|ph101|ch101|m101|m201)\b)/i;
+  const hasAcademicIntent = academicIntentPattern.test(qLower) || academicIntentPattern.test(qSquashed);
+  if (!hasAcademicIntent) {
+    const firstName = getUserFirstName();
+    return `<div style="margin-bottom:0.35rem;">I&apos;m here with you, <strong>${escapeHtml(firstName)}</strong>! No pressure at all—I won&apos;t throw a wall of syllabus notes at you unless you ask for one.</div><div style="font-size:12.5px;color:#334155;">Whenever you feel ready, tell me what&apos;s on your mind or ask about any <strong>${escapeHtml(deptLabel)} (Sem ${escapeHtml(semLabel)})</strong> subject code, module, formula, or PYQ.</div>`;
+  }
+
+  const overview = subjects.slice(0, 4).map(s => `<li><strong>${escapeHtml(s.code)}:</strong> ${escapeHtml(s.title)} (${(s.units || []).filter(isCleanSyllabusUnit).length || (s.units || []).length} modules)</li>`).join('');
+  return `<strong>Study Copilot — ${escapeHtml(deptLabel)} (Sem ${escapeHtml(semLabel)}):</strong><ul>${overview}</ul><div style="margin-top:0.35rem;font-size:12px;color:#475569;">Try asking by subject code or topic (e.g., <strong>${escapeHtml((subjects[0] && subjects[0].code) || 'PCC-CS301')}</strong>, <em>deadlock</em>, <em>normalization</em>, <em>automata</em>) or use the quick chips below.</div>`;
 }
 
 function synthesizeLocalAiAnswer(query) {
@@ -4651,7 +4771,9 @@ function saveAiQueryHistory(rawQuery) {
   if (!q) return;
   const list = getAiQueryHistory().filter(item => item.query.toLowerCase() !== q.toLowerCase());
   list.unshift({ query: q, timestamp: new Date().toISOString() });
-  localStorage.setItem(AI_HISTORY_KEY, JSON.stringify(list.slice(0, 10)));
+  try {
+    localStorage.setItem(AI_HISTORY_KEY, JSON.stringify(list.slice(0, 10)));
+  } catch (_) {}
   renderAiQueryHistory();
 }
 
@@ -4698,12 +4820,16 @@ function deleteAiHistoryItem(index) {
   const items = getAiQueryHistory();
   if (index < 0 || index >= items.length) return;
   items.splice(index, 1);
-  localStorage.setItem(AI_HISTORY_KEY, JSON.stringify(items));
+  try {
+    localStorage.setItem(AI_HISTORY_KEY, JSON.stringify(items));
+  } catch (_) {}
   renderAiQueryHistory();
 }
 
 function clearAiQueryHistory() {
-  localStorage.setItem(AI_HISTORY_KEY, '[]');
+  try {
+    localStorage.setItem(AI_HISTORY_KEY, '[]');
+  } catch (_) {}
   renderAiQueryHistory();
   closeAiHistoryPanel();
   showToast('Ask AI history cleared');

@@ -19,3 +19,5 @@ services:
         value: pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk
       - key: CLERK_SECRET_KEY
         value: sk_test_pJ1VAe96OhB6iomGiQ4CLjefswTH7koQpTyER9UaFn
+      - key: GEMINI_API_KEY
+        sync: false
