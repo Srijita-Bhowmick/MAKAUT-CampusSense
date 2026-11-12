@@ -168,5 +168,56 @@ class GeminiChatServiceAndControllerTest {
         String instruction = service.buildSystemInstruction(req);
         assertTrue(instruction.contains("conversational greeting"));
         assertTrue(instruction.contains("do NOT dump the entire syllabus"));
+        assertTrue(instruction.contains("EMOTIONAL SUPPORT & STRESS REASSURANCE"));
+        assertTrue(instruction.contains("validate their feelings without judgment"));
+    }
+
+    @Test
+    @DisplayName("GeminiChatService: handles empathetic emotional support requests without syllabus over-grounding")
+    void serviceHandlesEmotionalSupportPromptsCalmly() {
+        RestClient.Builder builder = RestClient.builder();
+        MockRestServiceServer server = MockRestServiceServer.bindTo(builder).build();
+        GeminiChatService service = new GeminiChatService(
+                builder.build(),
+                objectMapper,
+                "test-ephemeral-token",
+                "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent"
+        );
+
+        String mockEmpathyJson = """
+                {
+                  "candidates": [
+                    {
+                      "content": {
+                        "role": "model",
+                        "parts": [
+                          {
+                            "text": "Take a slow breath—feeling overwhelmed before exams is completely normal, and one paper does not define you. Want to pick just one 15-minute topic together?"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+                """;
+
+        server.expect(requestTo("https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key=test-ephemeral-token"))
+                .andExpect(method(HttpMethod.POST))
+                .andExpect(MockRestRequestMatchers.jsonPath("$.systemInstruction.parts[0].text", containsString("peer mentor")))
+                .andRespond(withSuccess(mockEmpathyJson, MediaType.APPLICATION_JSON));
+
+        AiChatRequest req = new AiChatRequest(
+                "I'm really stressed and scared I might fail my exams",
+                "CSE",
+                "4",
+                "SUBJECT: PCC-CS404 Design and Analysis of Algorithms",
+                List.of()
+        );
+        AiChatResponse response = service.generateReply(req);
+        server.verify();
+
+        assertEquals(GeminiChatService.MODE_GEMINI_LIVE, response.getSourceMode());
+        assertFalse(response.isGroundedInSyllabus());
+        assertTrue(response.getReply().contains("slow breath"));
     }
 }

@@ -1455,9 +1455,9 @@
       border: 1.5px solid #8DB9F0;
       color: #0F172A;
       border-radius: 9999px;
-      padding: 5px 8px;
+      padding: 6px 9px;
       font-size: 0.71rem;
-      line-height: 1.2;
+      line-height: 1.25;
       font-weight: 600;
       white-space: nowrap;
       overflow: hidden;
@@ -4340,6 +4340,13 @@ function generateLocalSyllabusFallback(query, department, semester) {
   if (isPureGreeting) {
     const firstName = getUserFirstName();
     return `Hi ${escapeHtml(firstName)}! I&apos;m your MAKAUT CampusSense AI assistant for <strong>${escapeHtml(deptLabel)} (Sem ${escapeHtml(semLabel)})</strong>. Ask me to explain a syllabus topic, summarize a module, solve a PYQ, or write code!`;
+  }
+
+  const emotionalCuePattern = /(?:\bemotional\s+support\b|\bstress(?:ed)?\b|\banxious\b|\banxiety\b|\bpanick?(?:ing|ed)?\b|\bscared\b|\boverwhelmed\b|\bdepressed\b|\bsad\b|\bcrying\b|\bfailing\b|\bcan'?t\s+do\s+this\b|\bburnt\s*out\b|\bburnout\b|\bhopeless\b|\bdemotivated\b|\bnervous\b)/i;
+  const isPanicPackQuery = qLower.includes('panic pack') || qLower.includes('repeat');
+  if (!isPanicPackQuery && emotionalCuePattern.test(qLower)) {
+    const firstName = getUserFirstName();
+    return `<div style="margin-bottom:0.35rem;">I&apos;m right here with you, <strong>${escapeHtml(firstName)}</strong>. Take a slow, deep breath—exam pressure at MAKAUT gets heavy, and feeling overwhelmed doesn&apos;t mean you&apos;re going to fail. One exam does not define you or your future.</div><div style="font-size:12.5px;color:#334155;">You don&apos;t have to finish everything tonight. Whenever you&apos;re ready, we can tackle just one easy high-yield topic from <strong>${escapeHtml(deptLabel)} (Sem ${escapeHtml(semLabel)})</strong> together for 10–15 minutes—or you can just vent here.</div>`;
   }
 
   const modMatch = qLower.match(/(?:module|unit)\s*(\d+)/);
