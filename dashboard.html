@@ -4221,23 +4221,130 @@ function resolveActiveDeptAndSem() {
   return { department: dept, semester: sem };
 }
 
-function collectActiveAcademicContext() {
+const AI_GENERIC_SUBJECT_WORDS = new Set([
+  'module', 'unit', 'chapter', 'topic', 'topics', 'summarize', 'summary', 'explain',
+  'help', 'please', 'what', 'about', 'syllabus', 'subject', 'paper', 'exam', 'pyq',
+  'introduction', 'theory', 'system', 'systems', 'technology', 'engineering', 'science',
+  'management', 'applications', 'application', 'fundamentals', 'design', 'analysis',
+  'computing', 'computer', 'principles', 'basics', 'advanced', 'modern', 'laboratory'
+]);
+
+const AI_BIBLIOGRAPHY_UNIT_PATTERN = /(?:\b(?:mcgraw[-\s]*hill|prentice[-\s]*hall|tmh|pearson|wiley|crc\s+press|mit\s+press|apress|igi\s+global|addison[-\s]*wesley|oxford\s+university\s+press|springer|elsevier|phi\s+learning|tata\s+mcgraw)\b|\b(?:continuous\s+assessment|type\s+of\s+course|course\s+designation|on\s+completion\s+of\s+the\s+course|final\s+exam:\s*\d+\s*marks?)\b|;\s*[A-Z][A-Za-z.\s]{1,20}\.)/i;
+
+function isCleanSyllabusUnit(unit) {
+  if (!unit) return false;
+  const combined = `${unit.name || ''} ${unit.subtopics || ''}`.trim();
+  if (!combined) return false;
+  if (AI_BIBLIOGRAPHY_UNIT_PATTERN.test(combined)) return false;
+  const trimmedName = String(unit.name || '').trim().toLowerCase();
+  return !['knowledge', 'level', 'semester-viii', 'semester-vii', 'type of course'].includes(trimmedName);
+}
+
+function findQueryMatchedSubjects(query, activeSubjects) {
+  const qLower = String(query || '').toLowerCase();
+  if (!qLower.trim()) return [];
+  const qNorm = qLower.replace(/[^a-z0-9\s-]/g, ' ');
+  const words = qNorm.split(/\s+/).filter(Boolean);
+  const specificTokens = new Set();
+  words.forEach(w => {
+    if (!AI_STOP_WORDS.has(w) && !AI_GENERIC_SUBJECT_WORDS.has(w) && (w.length >= 4 || /\d/.test(w))) {
+      specificTokens.add(w);
+      specificTokens.add(w.replace(/-/g, ''));
+    }
+    if (AI_SHORTCUT_MAP[w]) {
+      AI_SHORTCUT_MAP[w].forEach(alias => alias.split(/\s+/).forEach(p => {
+        if (p.length >= 3 && !AI_GENERIC_SUBJECT_WORDS.has(p)) specificTokens.add(p);
+      }));
+    }
+  });
+  if (!specificTokens.size) return [];
+
+  const scoreSubject = (sub) => {
+    const code = String(sub.code || '').toLowerCase();
+    const codeFlat = code.replace(/[-\s]/g, '');
+    const title = String(sub.title || '').toLowerCase();
+    const titleWords = title.replace(/[^a-z0-9\s]/g, ' ').split(/\s+/).filter(w => w.length >= 3 && !AI_GENERIC_SUBJECT_WORDS.has(w));
+    let score = 0;
+    specificTokens.forEach(tok => {
+      if (tok === code || tok === codeFlat || (tok.length >= 5 && (code.includes(tok) || codeFlat.includes(tok)))) {
+        score += 12;
+      } else if (titleWords.some(tw => tw === tok || (tok.length >= 5 && tw.includes(tok)))) {
+        score += 5;
+      }
+    });
+    if (title.length >= 5 && qLower.includes(title)) score += 15;
+    return score;
+  };
+
+  const localHits = (Array.isArray(activeSubjects) ? activeSubjects : [])
+    .map(sub => ({ sub, score: scoreSubject(sub) }))
+    .filter(item => item.score >= 5)
+    .sort((a, b) => b.score - a.score)
+    .map(item => item.sub);
+
+  if (localHits.length) return localHits.slice(0, 2);
+
+  if (typeof ACADEMIC_REGISTRY === 'object' && ACADEMIC_REGISTRY) {
+    const registryHits = [];
+    const seen = new Set();
+    Object.values(ACADEMIC_REGISTRY).forEach(sems => {
+      Object.values(sems || {}).forEach(list => {
+        (list || []).forEach(sub => {
+          const sc = scoreSubject(sub);
+          if (sc >= 5) {
+            const key = `${sub.code}|${sub.title}`.toLowerCase();
+            if (!seen.has(key)) {
+              seen.add(key);
+              registryHits.push({ sub, score: sc });
+            }
+          }
+        });
+      });
+    });
+    registryHits.sort((a, b) => b.score - a.score);
+    return registryHits.slice(0, 2).map(item => item.sub);
+  }
+  return [];
+}
+
+function collectActiveAcademicContext(query) {
   const { department, semester } = resolveActiveDeptAndSem();
   const sections = [`Department: ${department} | Semester: ${semester}`];
+  const qLower = String(query || '').toLowerCase().trim();
+  const qSquashed = qLower.replace(/(.)\1{2,}/g, '$1');
+
+  // Avoid sending syllabus bloat for greetings or pure emotional-support prompts
+  const isGreeting = /^(hi+|hello+|hey+|yo|hola|namaste|good\s+(morning|afternoon|evening|night))\b/.test(qSquashed);
+  const emotionalCue = /(?:\bemotional\s+support\b|\bexhaust(?:ed|ing)?\b|\btired(?:ness)?\b|\bdrained\b|\bsleepy\b|\bfatigu(?:ed|e)\b|\bworn[-\s]+out\b|\bburn(?:ed|t)?[-\s]*out\b|\bburnout\b|\boverwhelmed\b|\bstress(?:ed)?\b|\banxious\b|\bpanick?(?:ing|ed)?\b)/i;
+  if (isGreeting || (emotionalCue.test(qSquashed) && !qLower.includes('panic pack') && !qLower.includes('module') && !qLower.includes('syllabus'))) {
+    return sections.join('\n');
+  }
 
   const subjects = Array.isArray(DASH_STATE.subjects) ? DASH_STATE.subjects : [];
-  if (subjects.length) {
-    sections.push('SUBJECTS & UNITS:');
-    subjects.slice(0, 8).forEach(sub => {
-      const unitsSummary = (sub.units || []).slice(0, 5).map(u => `${u.num}: ${u.name}`).join('; ');
-      sections.push(`- ${sub.code} (${sub.title}): ${unitsSummary}`);
+  const focusedSubjects = findQueryMatchedSubjects(query, subjects);
+  const subjectsToInclude = focusedSubjects.length ? focusedSubjects : subjects.slice(0, 8);
+  const focusedCodes = new Set(focusedSubjects.map(s => String(s.code || '').toLowerCase().replace(/[-\s]/g, '')));
+
+  if (subjectsToInclude.length) {
+    sections.push(focusedSubjects.length ? 'FOCUS SUBJECT:' : 'SUBJECTS & UNITS:');
+    subjectsToInclude.forEach(sub => {
+      const cleanUnits = (sub.units || []).filter(isCleanSyllabusUnit).slice(0, 5);
+      if (cleanUnits.length) {
+        const unitsSummary = cleanUnits.map(u => `${u.num}: ${u.name}`).join('; ');
+        sections.push(`- ${sub.code} (${sub.title}): ${unitsSummary}`);
+      } else {
+        sections.push(`- ${sub.code} (${sub.title}): Use authentic MAKAUT syllabus topics for ${sub.title}; do not cite textbook titles.`);
+      }
     });
   }
 
   const dossiers = Array.isArray(DASH_STATE.panicDossiers) ? DASH_STATE.panicDossiers : [];
-  if (dossiers.length) {
+  const filteredDossiers = focusedCodes.size
+    ? dossiers.filter(d => focusedCodes.has(String(d.code || '').toLowerCase().replace(/[-\s]/g, '')))
+    : dossiers.slice(0, 6);
+  if (filteredDossiers.length) {
     sections.push('TOP REPEAT PYQS:');
-    dossiers.slice(0, 6).forEach(d => {
+    filteredDossiers.forEach(d => {
       const qs = (d.topQuestions || []).slice(0, 3).map(q => {
         const count = q.repeatCount ? `${q.repeatCount}x` : 'Repeat';
         const qSnippet = String(q.question || q.coreTopic || '').slice(0, 85);
@@ -4250,9 +4357,12 @@ function collectActiveAcademicContext() {
   }
 
   const pyqs = Array.isArray(DASH_STATE.pyqs) ? DASH_STATE.pyqs : [];
-  if (pyqs.length) {
-    const pyqList = pyqs.slice(0, 6).map(p => `${p.code} (${p.year})`).join(', ');
-    sections.push(`PYQS (${pyqs.length} indexed): ${pyqList}`);
+  const filteredPyqs = focusedCodes.size
+    ? pyqs.filter(p => focusedCodes.has(String(p.code || '').toLowerCase().replace(/[-\s]/g, ''))).slice(0, 4)
+    : pyqs.slice(0, 6);
+  if (filteredPyqs.length) {
+    const pyqList = filteredPyqs.map(p => `${p.code} (${p.year})`).join(', ');
+    sections.push(`PYQS (${filteredPyqs.length} indexed): ${pyqList}`);
   }
 
   return sections.join('\n').slice(0, 2400);
@@ -4358,8 +4468,14 @@ function generateLocalSyllabusFallback(query, department, semester) {
   if (modMatch || (qLower.includes('summarize') && qLower.includes('module'))) {
     const requestedMod = modMatch ? Math.max(1, parseInt(modMatch[1], 10)) : 1;
     const modIdx = requestedMod - 1;
-    const bullets = subjects.slice(0, 4).map(sub => {
-      const m = (sub.units && (sub.units[modIdx] || sub.units[0])) || { name: 'Core Syllabus Module', subtopics: '' };
+    const focused = findQueryMatchedSubjects(q, subjects);
+    const modSubjects = focused.length ? focused : subjects.slice(0, 4);
+    const bullets = modSubjects.map(sub => {
+      const cleanUnits = (sub.units || []).filter(isCleanSyllabusUnit);
+      const m = cleanUnits[modIdx] || cleanUnits[0];
+      if (!m) {
+        return `<li><strong>${escapeHtml(sub.code)} (${escapeHtml(sub.title)}):</strong> Open the <strong>${escapeHtml(sub.code)} Syllabus PDF</strong> in Curriculum above for full Module ${requestedMod} topics.</li>`;
+      }
       return `<li><strong>${escapeHtml(sub.code)} (${escapeHtml(sub.title)}):</strong> ${escapeHtml(m.name)}${m.subtopics ? ' — <em>' + escapeHtml(m.subtopics) + '</em>' : ''}</li>`;
     }).join('');
     return `<strong>Module ${requestedMod} Study Summary — ${escapeHtml(deptLabel)} (Sem ${escapeHtml(semLabel)}):</strong><ul>${bullets}</ul><div style="margin-top:0.35rem;font-size:12px;color:#475569;">Open <strong>Course Curriculum &amp; Study Tracker</strong> above to expand all module PDFs.</div>`;
@@ -4646,7 +4762,7 @@ async function handleAskAiSubmit(promptText) {
           message: q,
           department,
           semester,
-          academicContext: collectActiveAcademicContext(),
+          academicContext: collectActiveAcademicContext(q),
           history: priorHistory
         }),
         signal: ctrl.signal

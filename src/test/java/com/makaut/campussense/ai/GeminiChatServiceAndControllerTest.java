@@ -37,7 +37,7 @@ import org.springframework.test.web.client.match.MockRestRequestMatchers;
 @TestPropertySource(properties = {
         "gemini.api.key=",
         "gemini.dotenv.fallback=false",
-        "gemini.api.url=https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent"
+        "gemini.api.url=https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent"
 })
 @SuppressWarnings("null")
 class GeminiChatServiceAndControllerTest {
@@ -77,7 +77,7 @@ class GeminiChatServiceAndControllerTest {
                 builder.build(),
                 objectMapper,
                 "test-ephemeral-token",
-                "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent"
+                "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent"
         );
 
         String mockGeminiJson = """
@@ -97,7 +97,7 @@ class GeminiChatServiceAndControllerTest {
                 }
                 """;
 
-        server.expect(requestTo("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=test-ephemeral-token"))
+        server.expect(requestTo("https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=test-ephemeral-token"))
                 .andExpect(method(HttpMethod.POST))
                 .andExpect(MockRestRequestMatchers.jsonPath("$.systemInstruction.parts[0].text", containsString("Maulana Abul Kalam Azad University of Technology")))
                 .andExpect(MockRestRequestMatchers.jsonPath("$.systemInstruction.parts[0].text", containsString("PCC-CS404")))
@@ -135,10 +135,10 @@ class GeminiChatServiceAndControllerTest {
                 builder.build(),
                 objectMapper,
                 "test-ephemeral-token",
-                "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent"
+                "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent"
         );
 
-        server.expect(requestTo("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=test-ephemeral-token"))
+        server.expect(requestTo("https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=test-ephemeral-token"))
                 .andRespond(withServerError());
 
         AiChatRequest req = new AiChatRequest("What is ACID?", "CSE", "6", "", List.of());
@@ -168,6 +168,9 @@ class GeminiChatServiceAndControllerTest {
         String instruction = service.buildSystemInstruction(req);
         assertTrue(instruction.contains("conversational greeting"));
         assertTrue(instruction.contains("do NOT dump the entire syllabus"));
+        assertTrue(instruction.contains("answer ONLY what they specifically asked"));
+        assertTrue(instruction.contains("bibliography/textbook names"));
+        assertTrue(instruction.contains("under 220 words"));
         assertTrue(instruction.contains("EMOTIONAL SUPPORT & STRESS REASSURANCE"));
         assertTrue(instruction.contains("validate their feelings without judgment"));
     }
@@ -181,7 +184,7 @@ class GeminiChatServiceAndControllerTest {
                 builder.build(),
                 objectMapper,
                 "test-ephemeral-token",
-                "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent"
+                "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent"
         );
 
         String mockEmpathyJson = """
@@ -201,7 +204,7 @@ class GeminiChatServiceAndControllerTest {
                 }
                 """;
 
-        server.expect(requestTo("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=test-ephemeral-token"))
+        server.expect(requestTo("https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=test-ephemeral-token"))
                 .andExpect(method(HttpMethod.POST))
                 .andExpect(MockRestRequestMatchers.jsonPath("$.systemInstruction.parts[0].text", containsString("peer mentor")))
                 .andRespond(withSuccess(mockEmpathyJson, MediaType.APPLICATION_JSON));
@@ -230,7 +233,7 @@ class GeminiChatServiceAndControllerTest {
                 builder.build(),
                 objectMapper,
                 "test-ephemeral-token",
-                "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent"
+                "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent"
         );
 
         String mockRestJson = """
@@ -250,7 +253,7 @@ class GeminiChatServiceAndControllerTest {
                 }
                 """;
 
-        server.expect(requestTo("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=test-ephemeral-token"))
+        server.expect(requestTo("https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=test-ephemeral-token"))
                 .andExpect(method(HttpMethod.POST))
                 .andExpect(MockRestRequestMatchers.jsonPath("$.contents[0].parts[0].text", is("im feeling exhausteddddd")))
                 .andExpect(MockRestRequestMatchers.jsonPath("$.systemInstruction.parts[0].text", containsString("exhaustion")))

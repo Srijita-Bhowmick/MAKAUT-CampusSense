@@ -46,27 +46,25 @@ public class GeminiChatService {
 
     private static final String BASE_SYSTEM_INSTRUCTION =
             "You are the MAKAUT CampusSense Academic Assistant—an expert engineering tutor built specifically " +
-            "for Maulana Abul Kalam Azad University of Technology (MAKAUT) B.Tech students. You have access " +
-            "to the student's active Department, Semester, Subject Syllabi, and Top 20% Repeated Exam Question " +
-            "Dossiers in the provided context. RULES: " +
+            "for Maulana Abul Kalam Azad University of Technology (MAKAUT) B.Tech students. RULES: " +
             "(1) If the student sends a short conversational greeting (e.g., \"hi\", \"hello\", \"hey\", " +
             "\"good morning\", \"good evening\", \"namaste\"), reply with a warm, natural, concise 1-2 sentence " +
             "greeting tailored to their active MAKAUT Department and Semester and ask how you can help—do NOT " +
             "dump the entire syllabus or repeat-question list unless asked. " +
-            "(2) When the student asks about syllabus modules, exam topics, important questions, or subject codes, " +
-            "ground your answer strictly in the provided MAKAUT context and explicitly point out high-frequency " +
-            "repeat exam topics. " +
-            "(3) When the student asks general computer science, mathematics, electronics, coding, or engineering " +
-            "questions, provide clear, accurate, exam-ready step-by-step explanations with clean formatting, bullet " +
-            "points, formulas, and code snippets. " +
-            "(4) Keep answers structured, concise, and high-yield for university exam preparation. " +
-            "(5) EMOTIONAL SUPPORT & STRESS REASSURANCE: You are also a calm, warm, encouraging peer mentor for " +
-            "MAKAUT engineering students dealing with exam anxiety, exhaustion, fatigue, burnout, self-doubt, or " +
-            "pre-exam panic. When a student expresses stress, tiredness, overwhelm, fear of failing, or asks for " +
-            "emotional support—or sends casual non-academic messages—respond with genuine empathy, validate their " +
-            "feelings without judgment, suggest a guilt-free 10-minute water/rest break if they are drained, remind " +
-            "them that one exam does not define them, and offer 1 tiny zero-pressure step only when they are ready—" +
-            "never dump syllabus or repeat-question lists unless they explicitly ask about academic topics.";
+            "(2) Read the user's exact question carefully and answer ONLY what they specifically asked—do not list " +
+            "unrelated subjects from their semester unless they ask for all subjects. " +
+            "(3) Be 100% factually accurate: if answering about a specific MAKAUT subject (such as Blockchain " +
+            "Technology, Automata, DAA, etc.), explain that exact subject's actual concepts and syllabus topics " +
+            "accurately—never mix up subjects or cite bibliography/textbook names as syllabus topics. Ground " +
+            "exam-prep answers in the provided focused MAKAUT context and highlight high-frequency repeat topics " +
+            "when relevant. " +
+            "(4) Keep answers crisp, well-structured, and fast (under 220 words) so generation completes within " +
+            "2-3 seconds, using clean bullet points, formulas, or short code snippets where helpful. " +
+            "(5) EMOTIONAL SUPPORT & STRESS REASSURANCE: When a student expresses stress, exhaustion, fatigue, " +
+            "burnout, fear of failing, overwhelm, or asks for emotional support—or sends casual non-academic " +
+            "messages—respond warmly like a supportive peer mentor, validate their feelings without judgment, " +
+            "suggest a guilt-free 10-minute water/rest break if they are drained, remind them that one exam does " +
+            "not define them, and offer 1 tiny zero-pressure step only when ready—never dump syllabus lists.";
 
     private final RestClient restClient;
     private final ObjectMapper objectMapper;
@@ -78,7 +76,7 @@ public class GeminiChatService {
             RestClient.Builder restClientBuilder,
             ObjectMapper objectMapper,
             @Value("${gemini.api.key:}") String apiKey,
-            @Value("${gemini.api.url:https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent}") String apiUrl,
+            @Value("${gemini.api.url:https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent}") String apiUrl,
             @Value("${gemini.dotenv.fallback:true}") boolean dotEnvFallbackEnabled) {
         SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
         requestFactory.setConnectTimeout(Duration.ofMillis(1500));
@@ -189,15 +187,19 @@ public class GeminiChatService {
         }
 
         try {
+            Map<String, Object> generationConfig = new LinkedHashMap<>();
+            generationConfig.put("temperature", 0.35);
+            generationConfig.put("maxOutputTokens", 340);
+            if (apiUrl.contains("gemini-3")) {
+                generationConfig.put("thinkingConfig", Map.of("thinkingLevel", "minimal"));
+            }
+
             Map<String, Object> payload = new LinkedHashMap<>();
             payload.put("systemInstruction", Map.of(
                     "parts", List.of(Map.of("text", buildSystemInstruction(request)))
             ));
             payload.put("contents", buildContents(request));
-            payload.put("generationConfig", Map.of(
-                    "temperature", 0.4,
-                    "maxOutputTokens", 650
-            ));
+            payload.put("generationConfig", generationConfig);
 
             String targetUrl = buildTargetUrl(apiUrl, apiKey);
             String rawResponse = restClient.post()
