@@ -2271,7 +2271,7 @@
 <header id="dashHeader" role="banner">
   <div class="header-left">
     <button type="button" class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation" onclick="toggleMobileRail()">☰</button>
-    <a href="index.html" class="brand-logo-link">
+    <a href="index.html?from=dashboard" class="brand-logo-link">
       <span class="brand-shield" aria-hidden="true">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
@@ -2766,14 +2766,21 @@ function ordinalSem(n) {
 
 // ── Auth Guard ──────────────────────────────────
 function runAuthGuard() {
-  const isLoggedIn = localStorage.getItem('campussense_logged_in') === 'true';
+  const isLoggedIn = localStorage.getItem('campussense_logged_in') === 'true' ||
+                     Boolean(localStorage.getItem('campussense_user_session')) ||
+                     Boolean(localStorage.getItem('campussense_token'));
   if (!isLoggedIn) {
     window.location.replace('login.html?v=20261111_v14');
     return false;
   }
-  if (!localStorage.getItem('academic_profile_completed')) {
+  const hasAcademic = localStorage.getItem('academic_profile_completed') === 'true' ||
+                      Boolean(localStorage.getItem('campussense_academic_profile'));
+  if (!hasAcademic) {
     window.location.replace('set-academic.html?v=20261111_v14');
     return false;
+  }
+  if (!localStorage.getItem('academic_profile_completed')) {
+    try { localStorage.setItem('academic_profile_completed', 'true'); } catch (_) {}
   }
   const veil = document.getElementById('auth-veil');
   if (veil) veil.style.display = 'none';

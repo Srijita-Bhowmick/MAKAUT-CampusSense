@@ -104,12 +104,30 @@ window.openAppAuthModal = function() {
 window.closeAppAuthModal = function() {};
 
 window.submitFallbackAuth = function() {
+  const isAuth = localStorage.getItem('campussense_logged_in') === 'true' ||
+                 Boolean(localStorage.getItem('campussense_user_session')) ||
+                 Boolean(localStorage.getItem('campussense_token'));
+  if (isAuth) {
+    const hasAcademic = localStorage.getItem('academic_profile_completed') === 'true' ||
+                        Boolean(localStorage.getItem('campussense_academic_profile'));
+    window.location.href = hasAcademic ? (typeof getAppUrl === 'function' ? getAppUrl('dashboard.html') : 'dashboard.html') : (typeof getAppUrl === 'function' ? getAppUrl('set-academic.html') : 'set-academic.html');
+    return;
+  }
   window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html');
 };
 
 window.triggerNativeClerkAuth = function(pendingAction = null, mode = 'signIn') {
   if (pendingAction) {
     try { sessionStorage.setItem('pending_download_action', JSON.stringify(pendingAction)); } catch (e) {}
+  }
+  const isAuth = localStorage.getItem('campussense_logged_in') === 'true' ||
+                 Boolean(localStorage.getItem('campussense_user_session')) ||
+                 Boolean(localStorage.getItem('campussense_token'));
+  if (isAuth) {
+    const hasAcademic = localStorage.getItem('academic_profile_completed') === 'true' ||
+                        Boolean(localStorage.getItem('campussense_academic_profile'));
+    window.location.href = hasAcademic ? (typeof getAppUrl === 'function' ? getAppUrl('dashboard.html') : 'dashboard.html') : (typeof getAppUrl === 'function' ? getAppUrl('set-academic.html') : 'set-academic.html');
+    return;
   }
   window.location.href = (mode === 'signUp' || mode === 'sign-up') ? (typeof getAppUrl === 'function' ? getAppUrl('login.html#/sign-up') : 'login.html#/sign-up') : (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html');
 };
@@ -18801,19 +18819,31 @@ window.getSubjectDocuments = getSubjectDocuments;
                 }
             });
 
+            const getAuthRoute = () => {
+                const isAuth = localStorage.getItem('campussense_logged_in') === 'true' ||
+                               Boolean(localStorage.getItem('campussense_user_session')) ||
+                               Boolean(localStorage.getItem('campussense_token'));
+                if (isAuth) {
+                    const hasAcademic = localStorage.getItem('academic_profile_completed') === 'true' ||
+                                        Boolean(localStorage.getItem('campussense_academic_profile'));
+                    return hasAcademic ? 'dashboard.html' : 'set-academic.html?v=20261111_v14';
+                }
+                return 'login.html';
+            };
+
             const btnLandingAuth = document.getElementById('btn-landing-auth');
             if (btnLandingAuth) {
-                btnLandingAuth.onclick = () => { window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html'); };
+                btnLandingAuth.onclick = () => { window.location.href = (typeof getAppUrl === 'function' ? getAppUrl(getAuthRoute()) : getAuthRoute()); };
             }
 
             const authTriggerBtn = document.getElementById('auth-trigger-btn');
             if (authTriggerBtn) {
-                authTriggerBtn.onclick = () => { window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html'); };
+                authTriggerBtn.onclick = () => { window.location.href = (typeof getAppUrl === 'function' ? getAppUrl(getAuthRoute()) : getAuthRoute()); };
             }
 
             document.querySelectorAll('.auth-trigger-btn').forEach(btn => {
                 if (btn) {
-                    btn.onclick = () => { window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html'); };
+                    btn.onclick = () => { window.location.href = (typeof getAppUrl === 'function' ? getAppUrl(getAuthRoute()) : getAuthRoute()); };
                 }
             });
 
@@ -18821,7 +18851,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             if (btnGlobalSignIn) {
                 btnGlobalSignIn.onclick = (e) => {
                     if (e) e.preventDefault();
-                    window.location.href = (typeof getAppUrl === 'function' ? getAppUrl('login.html') : 'login.html');
+                    window.location.href = (typeof getAppUrl === 'function' ? getAppUrl(getAuthRoute()) : getAuthRoute());
                 };
             }
 

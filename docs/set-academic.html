@@ -7,6 +7,19 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>Set Academic Profile — MAKAUT CampusSense</title>
+  <script>
+    (function guardAcademicProfile() {
+      try {
+        const hasAcademic = localStorage.getItem('academic_profile_completed') === 'true' ||
+                            Boolean(localStorage.getItem('campussense_academic_profile'));
+        const params = new URLSearchParams(window.location.search || '');
+        const isEditing = params.get('edit') === 'true' || params.get('change') === '1';
+        if (hasAcademic && !isEditing) {
+          window.location.replace('dashboard.html?v=20261111_v14');
+        }
+      } catch (_) {}
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />

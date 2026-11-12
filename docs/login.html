@@ -19,6 +19,23 @@
     })();
   </script>
 
+  <!-- Immediate Auth Guard: If signed in, never display the sign-in/sign-up form -->
+  <script>
+    (function guardAlreadyAuthenticated() {
+      try {
+        const isAuth = localStorage.getItem('campussense_logged_in') === 'true' ||
+                       Boolean(localStorage.getItem('campussense_user_session')) ||
+                       Boolean(localStorage.getItem('campussense_token'));
+        if (isAuth) {
+          const hasAcademic = localStorage.getItem('academic_profile_completed') === 'true' ||
+                              Boolean(localStorage.getItem('campussense_academic_profile'));
+          const target = hasAcademic ? 'dashboard.html' : 'set-academic.html?v=20261111_v14';
+          window.location.replace(target);
+        }
+      } catch (_) {}
+    })();
+  </script>
+
   <!-- Cloudflare Turnstile & Preconnects -->
   <link rel="preconnect" href="https://challenges.cloudflare.com" crossorigin>
   <link rel="dns-prefetch" href="https://challenges.cloudflare.com">
@@ -610,6 +627,12 @@
 
     window.addEventListener("load", async () => {
       await ensureClerkInitialized();
+      if (window.Clerk && window.Clerk.user) {
+        localStorage.setItem("campussense_logged_in", "true");
+        const hasAcademic = localStorage.getItem("academic_profile_completed") === "true" ||
+                            Boolean(localStorage.getItem("campussense_academic_profile"));
+        window.location.replace(hasAcademic ? "dashboard.html" : "set-academic.html?v=20261111_v14");
+      }
     });
 
     // Mode Detection (#/sign-up or #signup)
@@ -1105,8 +1128,17 @@
         return;
       }
 
-      localStorage.removeItem("academic_profile_completed");
+      const hasAcademicProfile = localStorage.getItem("academic_profile_completed") === "true" ||
+                                Boolean(localStorage.getItem("campussense_academic_profile"));
       try { sessionStorage.removeItem("campussense_from_dashboard"); } catch (_) {}
+
+      if (hasAcademicProfile) {
+        showAlert("success", "Verification successful! Redirecting to Dashboard...");
+        setTimeout(() => {
+          window.location.replace("dashboard.html");
+        }, 300);
+        return;
+      }
 
       showAlert("success", "Verification successful! Redirecting to Academic Profile Setup...");
       setTimeout(() => {
