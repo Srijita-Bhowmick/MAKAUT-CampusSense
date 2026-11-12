@@ -88,6 +88,7 @@ public class SecurityConfig {
                                 "/api/feedback",
                                 "/api/feedback/**",
                                 "/api/auth/**",
+                                "/api/ai/**",
                                 "/api/v1/**"
                         ).permitAll()
                         .anyRequest().authenticated()

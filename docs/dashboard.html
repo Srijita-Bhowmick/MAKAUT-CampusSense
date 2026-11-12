@@ -3959,50 +3959,297 @@ function expandAiDrawer() {
 
 function appendAiBubble(role, htmlContent) {
   const feed = document.getElementById('aiMessagesFeed');
-  if (!feed) return;
+  if (!feed) return null;
   const div = document.createElement('div');
   div.className = `ai-bubble ${role}`;
   div.innerHTML = htmlContent;
   feed.appendChild(div);
   feed.scrollTop = feed.scrollHeight;
+  return div;
 }
 
-function synthesizeLocalAiAnswer(query) {
-  const q = query.toLowerCase();
-  const subjects = DASH_STATE.subjects;
-  const pyqs = DASH_STATE.pyqs;
-  const panic = DASH_STATE.panicTopics;
+// Leave empty on static GitHub Pages; uses relative '/api/ai/chat' on Spring Boot host
+const CAMPUSSENSE_AI_ENDPOINT = window.location.hostname.includes('github.io')
+  ? ''
+  : '/api/ai/chat';
 
-  if (q.includes('module 2') || q.includes('summarize')) {
-    const bullets = subjects.slice(0, 4).map(sub => {
-      const m2 = sub.units[1] || sub.units[0];
-      return `<li><strong>${escapeHtml(sub.code)} (${escapeHtml(sub.title)}):</strong> ${escapeHtml(m2.name)} — <em>${escapeHtml(m2.subtopics)}</em></li>`;
-    }).join('');
-    return `<strong>Module 2 Study Summary — ${escapeHtml(DASH_STATE.deptDisplay)} (Sem ${escapeHtml(DASH_STATE.semester)}):</strong><ul>${bullets}</ul>`;
+const aiChatHistory = [];
+const AI_MAX_HISTORY_TURNS = 6;
+const AI_STOP_WORDS = new Set([
+  'a', 'an', 'the', 'is', 'are', 'was', 'were', 'be', 'been', 'being',
+  'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'from', 'as', 'into',
+  'what', 'which', 'who', 'whom', 'whose', 'when', 'where', 'why', 'how',
+  'tell', 'me', 'about', 'explain', 'define', 'give', 'list', 'show', 'find',
+  'summarize', 'summary', 'notes', 'note', 'important', 'question', 'questions',
+  'topic', 'topics', 'exam', 'makaut', 'please', 'can', 'you', 'my', 'semester', 'sem'
+]);
+const AI_SHORTCUT_MAP = {
+  dsa: ['data structure', 'algorithms', 'pcc-cs301'],
+  dbms: ['database', 'sql', 'normalization', 'pcc-cs601', 'pcc-cs502'],
+  os: ['operating system', 'deadlock', 'paging', 'pcc-cs502'],
+  cn: ['computer networks', 'tcp', 'osi', 'pcc-cs602'],
+  toc: ['automata', 'turing', 'dfa', 'cfg', 'pcc-cs403'],
+  flat: ['automata', 'turing', 'dfa', 'cfg', 'pcc-cs403'],
+  daa: ['algorithm', 'dynamic programming', 'greedy', 'pcc-cs404'],
+  co: ['computer organisation', 'alu', 'booth', 'pcc-cs302'],
+  ca: ['computer architecture', 'pipelining', 'cache', 'pcc-cs402'],
+  se: ['software engineering', 'sdlc', 'uml', 'esc501'],
+  oop: ['object oriented', 'polymorphism', 'inheritance', 'pcc-cs503'],
+  ai: ['artificial intelligence', 'heuristic', 'search', 'pec-it501b'],
+  pps: ['programming', 'c language', 'es-cs201'],
+  bee: ['electrical', 'thevenin', 'transformer', 'es-ee101'],
+  ph101: ['physics', 'diffraction', 'laser', 'bs-ph101'],
+  ch101: ['chemistry', 'thermodynamics', 'bs-ch101'],
+  m101: ['mathematics', 'matrix', 'calculus', 'bs-m101'],
+  m201: ['mathematics', 'differential', 'laplace', 'bs-m201']
+};
+
+function resolveActiveDeptAndSem() {
+  let storedProfile = null;
+  try {
+    storedProfile = JSON.parse(localStorage.getItem('campussense_academic_profile') || 'null');
+  } catch (_) {}
+  const dept = (storedProfile && (storedProfile.branch || storedProfile.department || storedProfile.stream))
+    || localStorage.getItem('user_department')
+    || DASH_STATE.deptDisplay
+    || DASH_STATE.deptKey
+    || 'MAKAUT B.Tech';
+  const sem = String(
+    (storedProfile && storedProfile.semester)
+    || localStorage.getItem('user_semester')
+    || DASH_STATE.semester
+    || '1'
+  );
+  return { department: dept, semester: sem };
+}
+
+function collectActiveAcademicContext() {
+  const { department, semester } = resolveActiveDeptAndSem();
+  const sections = [`Department: ${department} | Semester: ${semester}`];
+
+  const subjects = Array.isArray(DASH_STATE.subjects) ? DASH_STATE.subjects : [];
+  if (subjects.length) {
+    sections.push('SUBJECT SYLLABI:');
+    subjects.forEach(sub => {
+      const unitsSummary = (sub.units || []).slice(0, 6).map(u => {
+        const subtopicSnippet = String(u.subtopics || '').slice(0, 120);
+        return `${u.num}: ${u.name}${subtopicSnippet ? ' (' + subtopicSnippet + ')' : ''}`;
+      }).join('; ');
+      sections.push(`- ${sub.code} (${sub.title}): ${unitsSummary}`);
+    });
   }
 
-  if (q.includes('2023') || q.includes('pyq') || q.includes('paper')) {
-    const matchPyqs = pyqs.filter(p => q.includes('2023') ? (p.year.includes('2023') || p.year.includes('–')) : true).slice(0, 5);
+  const dossiers = Array.isArray(DASH_STATE.panicDossiers) ? DASH_STATE.panicDossiers : [];
+  if (dossiers.length) {
+    sections.push('TOP 20% REPEATED EXAM QUESTIONS:');
+    dossiers.forEach(d => {
+      const qs = (d.topQuestions || []).slice(0, 4).map(q => {
+        const yrs = Array.isArray(q.years) ? q.years.join(',') : (q.years || '');
+        const count = q.repeatCount ? `${q.repeatCount}x` : 'High-Yield';
+        const qSnippet = String(q.question || q.coreTopic || '').slice(0, 140);
+        return `[${q.marks || 10}M | ${count}${yrs ? ' | ' + yrs : ''}] ${qSnippet}`;
+      }).join(' | ');
+      if (qs) {
+        sections.push(`- ${d.code} (${d.title}): ${qs}`);
+      }
+    });
+  }
+
+  const pyqs = Array.isArray(DASH_STATE.pyqs) ? DASH_STATE.pyqs : [];
+  if (pyqs.length) {
+    const pyqList = pyqs.slice(0, 10).map(p => `${p.code} (${p.year})`).join(', ');
+    sections.push(`INDEXED PYQ PAPERS (${pyqs.length} total): ${pyqList}`);
+  }
+
+  return sections.join('\n').slice(0, 4000);
+}
+
+function pushAiChatTurn(role, text) {
+  const cleanText = String(text || '').trim();
+  if (!cleanText) return;
+  aiChatHistory.push({ role, text: cleanText });
+  while (aiChatHistory.length > AI_MAX_HISTORY_TURNS) {
+    aiChatHistory.shift();
+  }
+}
+
+function formatAiMarkdown(rawText) {
+  const codeBlocks = [];
+  let text = String(rawText || '');
+
+  // Preserve fenced code blocks safely before inline formatting
+  text = text.replace(/```([a-zA-Z0-9_+-]*)\r?\n([\s\S]*?)```/g, (_, lang, code) => {
+    const token = `__CODE_BLOCK_${codeBlocks.length}__`;
+    const langTag = lang ? `<div style="font-size:10px;color:#94A3B8;margin-bottom:0.25rem;text-transform:uppercase;">${escapeHtml(lang)}</div>` : '';
+    codeBlocks.push(`<pre style="background:#0F172A;color:#F8FAFC;padding:0.65rem 0.75rem;border-radius:8px;overflow-x:auto;font-size:12px;margin:0.45rem 0;white-space:pre;">${langTag}<code>${escapeHtml(code.replace(/\s+$/, ''))}</code></pre>`);
+    return `\n${token}\n`;
+  });
+
+  const applyInlineFormatting = (line) => {
+    let safe = escapeHtml(line);
+    safe = safe.replace(/`([^`]+)`/g, '<code style="background:#EFF6FF;color:#1E3A8A;padding:0.08rem 0.3rem;border-radius:4px;font-size:12px;">$1</code>');
+    safe = safe.replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>');
+    return safe;
+  };
+
+  const lines = text.split(/\r?\n/);
+  const htmlParts = [];
+  let inList = false;
+
+  lines.forEach(rawLine => {
+    const trimmed = rawLine.trim();
+    if (/^__CODE_BLOCK_\d+__$/.test(trimmed)) {
+      if (inList) { htmlParts.push('</ul>'); inList = false; }
+      const idx = parseInt(trimmed.replace(/\D/g, ''), 10);
+      htmlParts.push(codeBlocks[idx] || '');
+      return;
+    }
+
+    const bulletMatch = trimmed.match(/^(?:[-*•]|\d+\.)\s+(.+)$/);
+    if (bulletMatch) {
+      if (!inList) { htmlParts.push('<ul>'); inList = true; }
+      htmlParts.push(`<li>${applyInlineFormatting(bulletMatch[1])}</li>`);
+      return;
+    }
+
+    if (inList) {
+      htmlParts.push('</ul>');
+      inList = false;
+    }
+
+    if (!trimmed) {
+      htmlParts.push('<div style="height:0.35rem;"></div>');
+      return;
+    }
+
+    const headingMatch = trimmed.match(/^#{1,4}\s+(.+)$/);
+    if (headingMatch) {
+      htmlParts.push(`<div style="font-weight:700;margin:0.35rem 0 0.15rem;color:#0F172A;">${applyInlineFormatting(headingMatch[1])}</div>`);
+    } else {
+      htmlParts.push(`<div>${applyInlineFormatting(trimmed)}</div>`);
+    }
+  });
+
+  if (inList) htmlParts.push('</ul>');
+  return htmlParts.join('');
+}
+
+function generateLocalSyllabusFallback(query, department, semester) {
+  const q = String(query || '').trim();
+  const qLower = q.toLowerCase();
+  const deptLabel = department || DASH_STATE.deptDisplay || 'MAKAUT Engineering';
+  const semLabel = semester || DASH_STATE.semester || '1';
+  const subjects = DASH_STATE.subjects || [];
+  const pyqs = DASH_STATE.pyqs || [];
+  const dossiers = DASH_STATE.panicDossiers || [];
+  const panic = DASH_STATE.panicTopics || [];
+
+  if (qLower.includes('module 2') || (qLower.includes('summarize') && qLower.includes('module'))) {
+    const bullets = subjects.slice(0, 4).map(sub => {
+      const m2 = (sub.units && (sub.units[1] || sub.units[0])) || { name: 'Core Syllabus Module', subtopics: '' };
+      return `<li><strong>${escapeHtml(sub.code)} (${escapeHtml(sub.title)}):</strong> ${escapeHtml(m2.name)}${m2.subtopics ? ' — <em>' + escapeHtml(m2.subtopics) + '</em>' : ''}</li>`;
+    }).join('');
+    return `<strong>Module 2 Study Summary — ${escapeHtml(deptLabel)} (Sem ${escapeHtml(semLabel)}):</strong><ul>${bullets}</ul><div style="margin-top:0.35rem;font-size:12px;color:#475569;">Open <strong>Course Curriculum &amp; Study Tracker</strong> above to expand all module PDFs.</div>`;
+  }
+
+  if (qLower.includes('2023') || qLower.includes('pyq') || qLower.includes('paper')) {
+    const matchPyqs = pyqs.filter(p => qLower.includes('2023') ? (String(p.year).includes('2023') || String(p.year).includes('–')) : true).slice(0, 5);
     if (matchPyqs.length) {
       const items = matchPyqs.map(p => `<li><strong>${escapeHtml(p.code)}:</strong> ${escapeHtml(p.title)} (${escapeHtml(p.year)})</li>`).join('');
-      return `<strong>Matched University PYQs for ${escapeHtml(DASH_STATE.deptDisplay)} (Sem ${escapeHtml(DASH_STATE.semester)}):</strong><ul>${items}</ul>`;
+      return `<strong>Matched University PYQs for ${escapeHtml(deptLabel)} (Sem ${escapeHtml(semLabel)}):</strong><ul>${items}</ul><div style="margin-top:0.35rem;font-size:12px;color:#475569;">Go to <strong>Exam PYQ Vault</strong> above to preview or download the full question paper PDFs.</div>`;
     }
   }
 
-  if (q.includes('pattern') || q.includes('exam') || q.includes('repeat')) {
-    const topPanic = panic.slice(0, 4).map(t => `<li><strong>${escapeHtml(t.code)} (${t.marks}M):</strong> ${escapeHtml(t.title)} — Repeated: ${escapeHtml(t.years)}</li>`).join('');
-    return `<strong>MAKAUT Exam Pattern &amp; High-Yield Blueprint (${escapeHtml(DASH_STATE.deptDisplay)}):</strong><ul>${topPanic}</ul><div style="margin-top:0.35rem;font-size:12px;color:#475569;">Tip: End-semester papers weight Group B (5M analytical) + Group C (10M derivations &amp; numericals).</div>`;
+  if (qLower.includes('pattern') || qLower.includes('exam') || qLower.includes('repeat')) {
+    const topPanic = panic.slice(0, 4).map(t => `<li><strong>${escapeHtml(t.code)} (${escapeHtml(String(t.marks || 10))}M):</strong> ${escapeHtml(t.title)} — Repeated: ${escapeHtml(t.years || '2018–2025')}</li>`).join('');
+    if (topPanic) {
+      return `<strong>MAKAUT Exam Pattern &amp; High-Yield Blueprint (${escapeHtml(deptLabel)}):</strong><ul>${topPanic}</ul><div style="margin-top:0.35rem;font-size:12px;color:#475569;">Tip: End-semester papers weight Group B (5M analytical) + Group C (10M derivations &amp; numericals). Open <strong>Panic Pack</strong> for full repeat dossiers.</div>`;
+    }
   }
 
-  // Keyword match across units & subjects
-  const matchingSub = subjects.find(s => s.title.toLowerCase().includes(q) || s.code.toLowerCase().includes(q) || s.units.some(u => u.name.toLowerCase().includes(q)));
-  if (matchingSub) {
-    const modList = matchingSub.units.map(u => `<li><strong>${escapeHtml(u.num)}:</strong> ${escapeHtml(u.name)} (${escapeHtml(u.hours)})</li>`).join('');
-    return `<strong>Study Guide for ${escapeHtml(matchingSub.code)}: ${escapeHtml(matchingSub.title)}</strong><ul>${modList}</ul>`;
+  // Tokenize keywords (stripping stop words & expanding common MAKAUT shortcodes)
+  const rawTokens = qLower.replace(/[^a-z0-9\s-]/g, ' ').split(/\s+/).filter(Boolean);
+  const keywords = new Set();
+  rawTokens.forEach(tok => {
+    if (!AI_STOP_WORDS.has(tok) && (tok.length >= 2 || /\d/.test(tok))) {
+      keywords.add(tok);
+      const normalized = tok.replace(/-/g, '');
+      if (normalized !== tok) keywords.add(normalized);
+    }
+    if (AI_SHORTCUT_MAP[tok]) {
+      AI_SHORTCUT_MAP[tok].forEach(alias => {
+        alias.split(/\s+/).forEach(part => keywords.add(part));
+      });
+    }
+  });
+  const tokenList = Array.from(keywords);
+
+  const scoredSubjects = subjects.map(sub => {
+    const codeNorm = String(sub.code || '').toLowerCase();
+    const legNorm = String(sub.legacyCode || '').toLowerCase();
+    const titleNorm = String(sub.title || '').toLowerCase();
+    const matchedUnits = (sub.units || []).filter(u => {
+      const unitHay = `${u.num || ''} ${u.name || ''} ${u.subtopics || ''}`.toLowerCase();
+      return tokenList.some(k => unitHay.includes(k));
+    });
+    let score = 0;
+    tokenList.forEach(k => {
+      if (codeNorm.includes(k) || codeNorm.replace(/-/g, '').includes(k) || legNorm.includes(k)) score += 6;
+      if (titleNorm.includes(k)) score += 4;
+    });
+    score += matchedUnits.length * 3;
+    return { sub, matchedUnits, score };
+  }).filter(item => item.score > 0).sort((a, b) => b.score - a.score);
+
+  const scoredRepeats = [];
+  dossiers.forEach(d => {
+    (d.topQuestions || []).forEach(tq => {
+      const hay = `${d.code} ${d.title} ${tq.coreTopic || ''} ${tq.question || ''} ${tq.paperNote || ''}`.toLowerCase();
+      const hits = tokenList.reduce((acc, k) => acc + (hay.includes(k) ? 1 : 0), 0);
+      if (hits > 0) {
+        scoredRepeats.push({ code: d.code, title: d.title, tq, score: hits * 2 + (tq.repeatCount || 1) });
+      }
+    });
+  });
+  scoredRepeats.sort((a, b) => b.score - a.score);
+
+  const matchedPyqs = pyqs.filter(p => {
+    const hay = `${p.code} ${p.subject} ${p.title} ${p.year}`.toLowerCase();
+    return tokenList.some(k => hay.includes(k));
+  }).slice(0, 3);
+
+  if (scoredSubjects.length || scoredRepeats.length || matchedPyqs.length) {
+    let html = `<strong>MAKAUT Syllabus &amp; PYQ Match — ${escapeHtml(deptLabel)} (Sem ${escapeHtml(semLabel)}):</strong>`;
+    if (scoredSubjects.length) {
+      const subItems = scoredSubjects.slice(0, 3).map(({ sub, matchedUnits }) => {
+        const unitsToShow = (matchedUnits.length ? matchedUnits : (sub.units || [])).slice(0, 3);
+        const unitDesc = unitsToShow.map(u => `${escapeHtml(u.num)}: ${escapeHtml(u.name)}`).join(' · ');
+        return `<li><strong>${escapeHtml(sub.code)} · ${escapeHtml(sub.title)}:</strong> ${unitDesc || 'Full semester blueprint indexed.'}</li>`;
+      }).join('');
+      html += `<ul>${subItems}</ul>`;
+    }
+    if (scoredRepeats.length) {
+      const repItems = scoredRepeats.slice(0, 3).map(({ code, tq }) => {
+        const yrs = Array.isArray(tq.years) && tq.years.length ? tq.years.join(', ') : 'MAKAUT PYQ Trend';
+        const freq = tq.repeatCount ? `Repeated ${tq.repeatCount}x` : 'High-Yield Repeat';
+        return `<li><strong>🔥 ${escapeHtml(code)} (${escapeHtml(String(tq.marks || 10))}M · ${escapeHtml(freq)} · ${escapeHtml(yrs)}):</strong> ${escapeHtml(tq.question || tq.coreTopic)}</li>`;
+      }).join('');
+      html += `<div style="margin-top:0.35rem;font-weight:700;font-size:12px;">High-Frequency Repeat Exam Alerts:</div><ul>${repItems}</ul>`;
+    }
+    if (matchedPyqs.length) {
+      const pyqCodes = matchedPyqs.map(p => `${escapeHtml(p.code)} (${escapeHtml(p.year)})`).join(', ');
+      html += `<div style="margin-top:0.35rem;font-size:12px;color:#475569;"><strong>Direct Papers:</strong> ${pyqCodes} — open <strong>Exam PYQ Vault</strong> or <strong>Panic Pack</strong> above to inspect PDFs &amp; dossiers.</div>`;
+    }
+    return html;
   }
 
-  const overview = subjects.slice(0, 3).map(s => `<li><strong>${escapeHtml(s.code)}:</strong> ${escapeHtml(s.title)} (${s.units.length} modules)</li>`).join('');
-  return `<strong>Personalized Study Guide — ${escapeHtml(DASH_STATE.deptDisplay)} (Sem ${escapeHtml(DASH_STATE.semester)}):</strong><ul>${overview}</ul><div style="margin-top:0.35rem;font-size:12px;color:#475569;">Use the quick chips below or search any subject code for targeted PYQs &amp; module notes.</div>`;
+  const overview = subjects.slice(0, 4).map(s => `<li><strong>${escapeHtml(s.code)}:</strong> ${escapeHtml(s.title)} (${(s.units || []).length} modules)</li>`).join('');
+  return `<strong>Personalized Study Guide — ${escapeHtml(deptLabel)} (Sem ${escapeHtml(semLabel)}):</strong><ul>${overview}</ul><div style="margin-top:0.35rem;font-size:12px;color:#475569;">Ask about any subject code (e.g., <strong>${escapeHtml((subjects[0] && subjects[0].code) || 'PCC-CS301')}</strong>), syllabus module, or click the quick chips below to view <strong>PYQ Vault</strong> &amp; <strong>Panic Pack</strong> repeat questions.</div>`;
+}
+
+function synthesizeLocalAiAnswer(query) {
+  const { department, semester } = resolveActiveDeptAndSem();
+  return generateLocalSyllabusFallback(query, department, semester);
 }
 
 // ── Ask AI Query History (`campussense_ai_history`) ──
@@ -4065,40 +4312,70 @@ function toggleAiHistoryPanel() {
   if (chev) chev.textContent = collapsed ? '▸' : '▾';
 }
 
-async function runAiQuery(promptText) {
+async function handleAskAiSubmit(promptText) {
   const q = String(promptText || '').trim();
   if (!q) return;
   saveAiQueryHistory(q);
   appendAiBubble('user', escapeHtml(q));
 
-  // Attempt live backend RAG query if running on Spring Boot (localhost), fall back cleanly on GitHub Pages
-  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+  const thinkingEl = appendAiBubble(
+    'assistant',
+    '<span style="color:#64748B;font-style:italic;">Thinking...</span>'
+  );
+
+  const { department, semester } = resolveActiveDeptAndSem();
+  const priorHistory = aiChatHistory.slice(-AI_MAX_HISTORY_TURNS);
+
+  if (CAMPUSSENSE_AI_ENDPOINT) {
+    let timeoutId = null;
     try {
       const ctrl = new AbortController();
-      const t = setTimeout(() => ctrl.abort(), 1400);
-      const res = await fetch('/api/v1/chat/query', {
+      timeoutId = setTimeout(() => ctrl.abort(), 8000);
+      const res = await fetch(CAMPUSSENSE_AI_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: q, stream: DASH_STATE.deptKey, semester: DASH_STATE.semester }),
+        body: JSON.stringify({
+          message: q,
+          department,
+          semester,
+          academicContext: collectActiveAcademicContext(),
+          history: priorHistory
+        }),
         signal: ctrl.signal
       });
-      clearTimeout(t);
+      clearTimeout(timeoutId);
+      timeoutId = null;
+
       if (res.ok) {
         const data = await res.json();
-        if (data && data.answer && !data.answer.toLowerCase().includes('no sources found')) {
-          appendAiBubble('assistant', escapeHtml(data.answer).replace(/\n/g, '<br>'));
+        if (data && data.sourceMode === 'GEMINI_LIVE' && data.reply) {
+          if (thinkingEl) thinkingEl.remove();
+          const badgeNote = `<div style="margin-top:0.45rem;font-size:11px;color:#475569;">&#10024; Gemini 2.5 Flash${data.groundedInSyllabus ? ' &middot; Grounded in MAKAUT Syllabus' : ''}</div>`;
+          appendAiBubble('assistant', formatAiMarkdown(data.reply) + badgeNote);
+          pushAiChatTurn('user', q);
+          pushAiChatTurn('model', data.reply);
           return;
         }
       }
-    } catch (_) {}
+    } catch (_) {
+      if (timeoutId) clearTimeout(timeoutId);
+    }
   }
 
-  appendAiBubble('assistant', synthesizeLocalAiAnswer(q));
+  if (thinkingEl) thinkingEl.remove();
+  const fallbackHtml = generateLocalSyllabusFallback(q, department, semester);
+  appendAiBubble('assistant', fallbackHtml);
+  pushAiChatTurn('user', q);
+  pushAiChatTurn('model', fallbackHtml.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 600));
+}
+
+function runAiQuery(promptText) {
+  return handleAskAiSubmit(promptText);
 }
 
 function triggerAiQuickPrompt(text) {
   expandAiDrawer();
-  runAiQuery(text);
+  handleAskAiSubmit(text);
 }
 
 function handleGenerateStudyGuide() {
@@ -4106,7 +4383,7 @@ function handleGenerateStudyGuide() {
   const val = inp ? inp.value.trim() : '';
   const query = val || `Generate a complete exam study guide for ${DASH_STATE.deptDisplay} Semester ${DASH_STATE.semester}`;
   if (inp) inp.value = '';
-  runAiQuery(query);
+  handleAskAiSubmit(query);
 }
 
 // ── Init Everything on DOM Ready ──
@@ -4124,6 +4401,17 @@ document.addEventListener('DOMContentLoaded', () => {
   updateDeckBadge();
   renderAiQueryHistory();
   initResizableAiDrawer();
+
+  // Bind Enter-to-send (Shift+Enter preserves newline) on Ask AI input
+  const aiInputEl = document.getElementById('aiQueryInput');
+  if (aiInputEl) {
+    aiInputEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        handleGenerateStudyGuide();
+      }
+    });
+  }
 
   // On page initialization:
   if (window.innerWidth <= 768) {
