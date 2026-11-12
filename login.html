@@ -452,8 +452,8 @@
 
       <!-- STEP 1: Email Form (No Password) -->
       <form id="step1-form" onsubmit="handleSendOtp(event);">
-        <!-- Sign Up Only: Full Name (Optional) -->
-        <div class="form-group" id="group-name" style="display: none;">
+        <!-- Full Name (Shown on both Sign In and Sign Up) -->
+        <div class="form-group" id="group-name">
           <label for="auth-name" class="form-label">Full Name <span style="font-weight: 400; color: var(--text-muted);">(Optional)</span></label>
           <input type="text" id="auth-name" class="form-input" placeholder="e.g. Srijita Bhowmick" autocomplete="name" />
         </div>
@@ -618,7 +618,7 @@
         tabSignUp.setAttribute("aria-selected", "false");
         title.textContent = "Welcome to CampusSense";
         subtitle.textContent = "Passwordless student sign-in. Protected by Clerk & Cloudflare.";
-        groupName.style.display = "none";
+        groupName.style.display = "block";
         groupDept.style.display = "none";
         btnSend.querySelector("span:first-child").textContent = "Get Verification Code";
         document.title = "Sign In — MAKAUT CampusSense";
@@ -1014,16 +1014,48 @@
     }
 
     function deriveName(email) {
+      if (!email || typeof email !== "string" || !email.includes("@")) return "Student Scholar";
       const user = email.split("@")[0].replace(/[._-]/g, " ").trim();
       if (!user) return "Student Scholar";
-      return user.split(" ").map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ");
+      return user.split(" ").filter(Boolean).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ");
+    }
+
+    function resolvePersistedName(user) {
+      const inputEl = document.getElementById("auth-name");
+      const typedName = ((inputEl && inputEl.value) || currentName || "").trim();
+      if (typedName) return typedName;
+      const incomingName = user && typeof user.name === "string" ? user.name.trim() : "";
+      if (incomingName && incomingName.toLowerCase() !== "student scholar") return incomingName;
+      try {
+        const storedName = (localStorage.getItem("campussense_user_name") || "").trim();
+        if (storedName) return storedName;
+      } catch (_) {}
+      return incomingName || deriveName((user && user.email) || currentEmail);
+    }
+
+    function prefillSavedName() {
+      const inputEl = document.getElementById("auth-name");
+      if (!inputEl || inputEl.value.trim()) return;
+      try {
+        let savedName = (localStorage.getItem("campussense_user_name") || "").trim();
+        if (!savedName) {
+          const rawSess = JSON.parse(localStorage.getItem("campussense_user_session") || "null");
+          if (rawSess && typeof rawSess.name === "string" && rawSess.name.trim().toLowerCase() !== "student scholar") {
+            savedName = rawSess.name.trim();
+          }
+        }
+        if (savedName) inputEl.value = savedName;
+      } catch (_) {}
     }
 
     function completeAuthentication(user) {
+      const resolvedName = resolvePersistedName(user);
+      const hydratedUser = Object.assign({}, user || {}, { name: resolvedName });
       localStorage.setItem("campussense_logged_in", "true");
       localStorage.setItem("campussense_token", "cs_clerk_" + Date.now());
       localStorage.setItem("campussense_auth_provider", "clerk_otp");
-      localStorage.setItem("campussense_user_session", JSON.stringify(user));
+      localStorage.setItem("campussense_user_name", resolvedName);
+      localStorage.setItem("campussense_user_session", JSON.stringify(hydratedUser));
 
       const urlParams = new URLSearchParams(window.location.search);
       const shouldReturnToLanding =
@@ -1157,6 +1189,7 @@
 
     // Initialize
     detectInitialMode();
+    prefillSavedName();
     window.addEventListener("hashchange", detectInitialMode);
     setupOtpInputListeners();
   </script>
