@@ -15014,7 +15014,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             <div class="panic-preview-card" data-id="${q.id}">
                 <div class="panic-card-header-row">
                     <span class="panic-freq-badge">🔥 Seen ${q.frequencyCount} times</span>
-                    <span class="panic-marks-badge">${q.marks} Marks • ${escapeHtml(q.groupType)}</span>
+                    <span class="panic-marks-badge">${escapeHtml(q.groupType)}</span>
                 </div>
                 <div class="panic-preview-question">${escapeHtml(q.questionText)}</div>
                 <div class="panic-card-footer">
@@ -15105,7 +15105,7 @@ window.getSubjectDocuments = getSubjectDocuments;
                             <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
                                 <span class="subject-code-tag">${escapeHtml(q.subjectCode)}</span>
                                 <span class="panic-freq-badge">🔥 Seen ${q.frequencyCount} times</span>
-                                <span class="panic-marks-badge">${q.marks} Marks • ${escapeHtml(q.groupType)}</span>
+                                <span class="panic-marks-badge">${escapeHtml(q.groupType)}</span>
                             </div>
                             <div class="panic-year-chips">
                                 ${q.examYears.map(y => `<span class="year-chip">${y}</span>`).join('')}
@@ -15534,7 +15534,6 @@ window.getSubjectDocuments = getSubjectDocuments;
                         <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
                             <span class="subject-code-tag" style="font-size: 0.75rem;">${escapeHtml(item.subjectCode || (isPdf ? 'PDF' : 'MAKAUT'))}</span>
                             ${item.frequencyCount ? `<span class="panic-freq-badge" style="font-size: 0.75rem;">🔥 Seen ${item.frequencyCount}x</span>` : ''}
-                            ${item.marks ? `<span class="panic-marks-badge" style="font-size: 0.75rem;">${item.marks}M</span>` : ''}
                         </div>
                         <button class="btn-deck-remove-full" data-index="${idx}" title="Remove from Deck" style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.15rem; padding: 0.2rem 0.4rem; line-height: 1;">✕</button>
                     </div>
@@ -16441,7 +16440,7 @@ window.getSubjectDocuments = getSubjectDocuments;
                         badgeText: q.subjectCode || 'High-Yield',
                         title: q.questionText,
                         code: q.subjectCode || 'High-Yield',
-                        metaPill: `${q.marks || 5} Marks • Seen ${q.frequencyCount || 4}x`,
+                        metaPill: `Seen ${q.frequencyCount || 4}x`,
                         metaText: `${q.topicName || 'Core Topic'} • ${q.groupType || 'Group C'} Repeated Exam Question`,
                         stream: 'all',
                         tokens: tokens,
