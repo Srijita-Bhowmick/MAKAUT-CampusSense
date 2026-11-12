@@ -23,6 +23,59 @@ function lockBodyScroll(lock) {
 }
 window.lockBodyScroll = lockBodyScroll;
 
+// --- CENTRALIZED BACKEND API RESOLVER ---
+function resolveCampussenseApiBase() {
+  if (typeof window !== 'undefined' && typeof window.resolveCampussenseApiBase === 'function' && window.resolveCampussenseApiBase !== resolveCampussenseApiBase) {
+    return window.resolveCampussenseApiBase();
+  }
+  try {
+    const params = new URLSearchParams(window.location.search || '');
+    const queryBase = (params.get('api_base') || '').trim();
+    if (/^https?:\/\/[a-z0-9.-]+(:\d+)?(\/.*)?$/i.test(queryBase)) {
+      return queryBase.replace(/\/+$/, '');
+    }
+  } catch (_) {}
+  if (typeof window !== 'undefined' && typeof window.CAMPUSSENSE_API_BASE === 'string' && window.CAMPUSSENSE_API_BASE.trim()) {
+    return window.CAMPUSSENSE_API_BASE.trim().replace(/\/+$/, '');
+  }
+  const proto = (typeof window !== 'undefined' && window.location && window.location.protocol) ? window.location.protocol.toLowerCase() : '';
+  const host = (typeof window !== 'undefined' && window.location && window.location.hostname) ? window.location.hostname.toLowerCase() : '';
+  const port = (typeof window !== 'undefined' && window.location && window.location.port) ? String(window.location.port) : '';
+  const isLocalHost = !host || host === 'localhost' || host === '127.0.0.1' || host === '[::1]' || host.endsWith('.local');
+  const isLocalStaticPreview = proto === 'file:' || (isLocalHost && port && port !== '8080');
+
+  // Fall back to http://localhost:8080 ONLY if opened via file:// or a local static preview port
+  if (isLocalStaticPreview) {
+    return 'http://localhost:8080';
+  }
+  try {
+    if (typeof localStorage !== 'undefined') {
+      const stored = (localStorage.getItem('campussense_api_base') || '').trim().replace(/\/+$/, '');
+      if (stored && !(proto === 'https:' && (stored.includes('localhost') || stored.includes('127.0.0.1')))) {
+        return stored;
+      }
+    }
+  } catch (_) {}
+  if (typeof window !== 'undefined' && window.location && window.location.origin && window.location.origin !== 'null') {
+    return window.location.origin.replace(/\/+$/, '');
+  }
+  return '';
+}
+
+function getCampussenseApiUrl(path) {
+  const p = path.startsWith('/') ? path : `/${path}`;
+  const base = resolveCampussenseApiBase();
+  if (!base) return p;
+  if (typeof window !== 'undefined' && window.location && window.location.origin && base === window.location.origin) {
+    return p;
+  }
+  return `${base}${p}`;
+}
+if (typeof window !== 'undefined') {
+  window.resolveCampussenseApiBase = resolveCampussenseApiBase;
+  window.getCampussenseApiUrl = getCampussenseApiUrl;
+}
+
 function safeBind(selector, event, handler) {
   try {
     document.querySelectorAll(selector).forEach(el => {
@@ -746,7 +799,7 @@ window.onClerkLoaded = function() {
             let data = null;
             // 1. Try backend dynamic API first
             try {
-                const apiRes = await fetch('/api/resources');
+                const apiRes = await fetch(getCampussenseApiUrl('/api/resources'));
                 if (apiRes.ok) {
                     data = await apiRes.json();
                 }
@@ -17234,9 +17287,9 @@ window.getSubjectDocuments = getSubjectDocuments;
 
         try {
             const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 2000);
+            const timeoutId = setTimeout(() => controller.abort(), 15000);
 
-            const res = await fetch('/api/v1/chat/query', {
+            const res = await fetch(getCampussenseApiUrl('/api/v1/chat/query'), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -18177,7 +18230,7 @@ window.getSubjectDocuments = getSubjectDocuments;
             const message = document.getElementById('feedback-message')?.value || '';
 
             try {
-                const res = await fetch('/api/v1/feedback', {
+                const res = await fetch(getCampussenseApiUrl('/api/v1/feedback'), {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -18326,7 +18379,7 @@ window.getSubjectDocuments = getSubjectDocuments;
 
         if ((!clerkPublishableKey || !clerkPublishableKey.startsWith('pk_')) && navigator.onLine) {
             try {
-                const res = await fetch('/api/v1/config/auth-public', {
+                const res = await fetch(getCampussenseApiUrl('/api/v1/config/auth-public'), {
                     headers: { 'Accept': 'application/json' },
                     cache: 'no-store'
                 });
@@ -18993,7 +19046,7 @@ window.getSubjectDocuments = getSubjectDocuments;
                     const message = messageEl ? messageEl.value : '';
 
                     try {
-                        const res = await fetch('/api/v1/feedback', {
+                        const res = await fetch(getCampussenseApiUrl('/api/v1/feedback'), {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
@@ -20320,7 +20373,7 @@ In MAKAUT B.Tech AICTE-CBCS Regulations:
 
       // 5. SECONDARY SOURCE: Call Backend API if available
       try {
-        const resp = await fetch("/api/v1/chat/query", {
+        const resp = await fetch(getCampussenseApiUrl("/api/v1/chat/query"), {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ query: q, stream: "CSE", semester: 5 })
