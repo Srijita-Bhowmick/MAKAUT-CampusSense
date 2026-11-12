@@ -105,19 +105,31 @@ public class LlmService {
         return generateDomainGroundedMockResponse(context, userQuery);
     }
 
+    private boolean isOutOfScopeNegativeGrounding(String lowerQuery) {
+        return lowerQuery.contains("unrelated")
+                || lowerQuery.contains("football world cup")
+                || lowerQuery.contains("weather in tokyo")
+                || lowerQuery.contains("cooking")
+                || lowerQuery.contains("recipe")
+                || lowerQuery.contains("recipes")
+                || lowerQuery.contains("baking")
+                || lowerQuery.contains("mit aeronautics")
+                || lowerQuery.contains("aeronautics")
+                || lowerQuery.contains("harvard")
+                || lowerQuery.contains("stanford")
+                || lowerQuery.contains("astrology")
+                || lowerQuery.contains("horoscope")
+                || lowerQuery.contains("crypto")
+                || lowerQuery.contains("bitcoin");
+    }
+
     /**
      * Fallback completion when query has no direct syllabus chunks in vector database.
      * Uses backend Gemini or Groq API if present, with academic disclaimer.
      */
     public String generateFallbackCompletion(String userQuery) {
         String lowerQuery = userQuery.toLowerCase();
-        if (lowerQuery.contains("unrelated") ||
-            lowerQuery.contains("football world cup") ||
-            lowerQuery.contains("weather in tokyo") ||
-            lowerQuery.contains("cooking") ||
-            lowerQuery.contains("baking") ||
-            lowerQuery.contains("crypto") ||
-            lowerQuery.contains("bitcoin")) {
+        if (isOutOfScopeNegativeGrounding(lowerQuery)) {
             return PromptTemplates.UNVERIFIED_FALLBACK_MESSAGE;
         }
 
@@ -279,22 +291,7 @@ public class LlmService {
         String lowerQuery = query.toLowerCase();
 
         // Negative Grounding Guardrail Check
-        if (context.isBlank() ||
-            lowerQuery.contains("unrelated") ||
-            lowerQuery.contains("football world cup") ||
-            lowerQuery.contains("weather in tokyo") ||
-            lowerQuery.contains("cooking") ||
-            lowerQuery.contains("recipe") ||
-            lowerQuery.contains("recipes") ||
-            lowerQuery.contains("baking") ||
-            lowerQuery.contains("mit aeronautics") ||
-            lowerQuery.contains("aeronautics") ||
-            lowerQuery.contains("harvard") ||
-            lowerQuery.contains("stanford") ||
-            lowerQuery.contains("astrology") ||
-            lowerQuery.contains("horoscope") ||
-            lowerQuery.contains("crypto") ||
-            lowerQuery.contains("bitcoin")) {
+        if (context.isBlank() || isOutOfScopeNegativeGrounding(lowerQuery)) {
             return PromptTemplates.UNVERIFIED_FALLBACK_MESSAGE;
         }
 

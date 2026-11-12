@@ -189,7 +189,7 @@ public class GeminiChatService {
         try {
             Map<String, Object> generationConfig = new LinkedHashMap<>();
             generationConfig.put("temperature", 0.35);
-            generationConfig.put("maxOutputTokens", 340);
+            generationConfig.put("maxOutputTokens", 260);
             if (apiUrl.contains("gemini-3")) {
                 generationConfig.put("thinkingConfig", Map.of("thinkingLevel", "minimal"));
             }
