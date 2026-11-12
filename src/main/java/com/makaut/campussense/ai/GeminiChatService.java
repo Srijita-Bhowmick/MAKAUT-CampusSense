@@ -214,18 +214,27 @@ public class GeminiChatService {
             }
 
             JsonNode root = objectMapper.readTree(rawResponse);
-            JsonNode textNode = root.path("candidates")
+            JsonNode parts = root.path("candidates")
                     .path(0)
                     .path("content")
-                    .path("parts")
-                    .path(0)
-                    .path("text");
+                    .path("parts");
 
-            if (textNode.isMissingNode() || textNode.isNull()) {
+            if (!parts.isArray() || parts.isEmpty()) {
                 return fallbackRequired();
             }
 
-            String reply = textNode.asText("").trim();
+            StringBuilder combined = new StringBuilder();
+            for (JsonNode part : parts) {
+                if (part.path("thought").asBoolean(false)) {
+                    continue;
+                }
+                String chunk = part.path("text").asText("");
+                if (!chunk.isEmpty()) {
+                    combined.append(chunk);
+                }
+            }
+
+            String reply = combined.toString().trim();
             if (reply.isBlank()) {
                 return fallbackRequired();
             }

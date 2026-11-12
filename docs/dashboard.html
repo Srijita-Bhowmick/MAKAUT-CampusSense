@@ -4162,10 +4162,35 @@ function appendAiBubble(role, htmlContent) {
   return div;
 }
 
-// Leave empty on static GitHub Pages; uses relative '/api/ai/chat' on Spring Boot host
-const CAMPUSSENSE_AI_ENDPOINT = window.location.hostname.includes('github.io')
-  ? ''
-  : '/api/ai/chat';
+// Resolves optional backend API base URL (for GitHub Pages / external devices pointing to Spring Boot / Render)
+function resolveCampussenseApiBase() {
+  let base = '';
+  try {
+    if (typeof window.CAMPUSSENSE_API_BASE === 'string' && window.CAMPUSSENSE_API_BASE.trim()) {
+      base = window.CAMPUSSENSE_API_BASE.trim();
+    } else if (typeof localStorage !== 'undefined') {
+      base = (localStorage.getItem('campussense_api_base') || '').trim();
+    }
+  } catch (_) {
+    base = '';
+  }
+  return base.replace(/\/+$/, '');
+}
+
+let campussenseStaticAiUnavailable = false;
+
+function resolveCampussenseAiEndpoint() {
+  const apiBase = resolveCampussenseApiBase();
+  if (apiBase) {
+    return `${apiBase}/api/ai/chat`;
+  }
+  const host = (window.location && window.location.hostname) ? window.location.hostname.toLowerCase() : '';
+  const proto = (window.location && window.location.protocol) ? window.location.protocol.toLowerCase() : '';
+  if (campussenseStaticAiUnavailable || host.includes('github.io') || proto === 'file:') {
+    return '';
+  }
+  return '/api/ai/chat';
+}
 
 const aiChatHistory = [];
 const AI_MAX_HISTORY_TURNS = 6;
@@ -4741,12 +4766,13 @@ async function handleAskAiSubmit(promptText) {
   const { department, semester } = resolveActiveDeptAndSem();
   const priorHistory = aiChatHistory.slice(-AI_MAX_HISTORY_TURNS);
 
-  if (CAMPUSSENSE_AI_ENDPOINT) {
+  const aiEndpoint = resolveCampussenseAiEndpoint();
+  if (aiEndpoint) {
     let timeoutId = null;
     try {
       const ctrl = new AbortController();
       timeoutId = setTimeout(() => ctrl.abort(), 4500);
-      const res = await fetch(CAMPUSSENSE_AI_ENDPOINT, {
+      const res = await fetch(aiEndpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -4761,7 +4787,11 @@ async function handleAskAiSubmit(promptText) {
       clearTimeout(timeoutId);
       timeoutId = null;
 
-      if (res.ok) {
+      if (res.status === 404 || res.status === 405) {
+        if (!resolveCampussenseApiBase()) {
+          campussenseStaticAiUnavailable = true;
+        }
+      } else if (res.ok) {
         const data = await res.json();
         if (data && data.sourceMode === 'GEMINI_LIVE' && data.reply) {
           if (thinkingEl) thinkingEl.remove();

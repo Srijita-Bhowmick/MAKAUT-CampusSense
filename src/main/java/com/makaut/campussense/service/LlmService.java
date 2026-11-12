@@ -179,9 +179,22 @@ public class LlmService {
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() == 200) {
             JsonNode root = objectMapper.readTree(response.body());
-            JsonNode textNode = root.path("candidates").get(0).path("content").path("parts").get(0).path("text");
-            if (!textNode.isMissingNode()) {
-                return textNode.asText();
+            JsonNode parts = root.path("candidates").path(0).path("content").path("parts");
+            if (parts.isArray() && !parts.isEmpty()) {
+                StringBuilder combined = new StringBuilder();
+                for (JsonNode part : parts) {
+                    if (part.path("thought").asBoolean(false)) {
+                        continue;
+                    }
+                    String chunk = part.path("text").asText("");
+                    if (!chunk.isEmpty()) {
+                        combined.append(chunk);
+                    }
+                }
+                String fullText = combined.toString().trim();
+                if (!fullText.isEmpty()) {
+                    return fullText;
+                }
             }
         }
         throw new RuntimeException("Gemini API returned status " + response.statusCode());
