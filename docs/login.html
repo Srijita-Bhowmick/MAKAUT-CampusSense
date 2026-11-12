@@ -30,10 +30,57 @@
 
   <!-- Runtime Environment & Public Config Script -->
   <script id="campussense-runtime-config">
+    function resolveCampussenseApiBase() {
+      try {
+        const params = new URLSearchParams(window.location.search || '');
+        const queryBase = (params.get('api_base') || '').trim();
+        if (/^https?:\/\/[a-z0-9.-]+(:\d+)?(\/.*)?$/i.test(queryBase)) {
+          return queryBase.replace(/\/+$/, '');
+        }
+      } catch (_) {}
+      if (typeof window.CAMPUSSENSE_API_BASE === 'string' && window.CAMPUSSENSE_API_BASE.trim()) {
+        return window.CAMPUSSENSE_API_BASE.trim().replace(/\/+$/, '');
+      }
+      const proto = (window.location && window.location.protocol) ? window.location.protocol.toLowerCase() : '';
+      const host = (window.location && window.location.hostname) ? window.location.hostname.toLowerCase() : '';
+      const port = (window.location && window.location.port) ? String(window.location.port) : '';
+      const isLocalHost = !host || host === 'localhost' || host === '127.0.0.1' || host === '[::1]' || host.endsWith('.local');
+      const isLocalStaticPreview = proto === 'file:' || (isLocalHost && port && port !== '8080');
+
+      if (isLocalStaticPreview) {
+        return 'http://localhost:8080';
+      }
+      try {
+        if (typeof localStorage !== 'undefined') {
+          const stored = (localStorage.getItem('campussense_api_base') || '').trim().replace(/\/+$/, '');
+          if (stored && !(proto === 'https:' && (stored.includes('localhost') || stored.includes('127.0.0.1')))) {
+            return stored;
+          }
+        }
+      } catch (_) {}
+      if (window.location && window.location.origin && window.location.origin !== 'null') {
+        return window.location.origin.replace(/\/+$/, '');
+      }
+      return '';
+    }
+
+    function getCampussenseApiUrl(path) {
+      const p = path.startsWith('/') ? path : `/${path}`;
+      const base = resolveCampussenseApiBase();
+      if (!base) return p;
+      if (typeof window !== 'undefined' && window.location && window.location.origin && base === window.location.origin) {
+        return p;
+      }
+      return `${base}${p}`;
+    }
+
+    window.resolveCampussenseApiBase = resolveCampussenseApiBase;
+    window.getCampussenseApiUrl = getCampussenseApiUrl;
+
     window.__CAMPUSSENSE_CONFIG__ = window.__CAMPUSSENSE_CONFIG__ || {
       clerkPublishableKey: "pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk",
-      apiBaseUrl: window.location.origin,
-      isCloudflarePages: window.location.hostname.endsWith('.pages.dev') || window.location.hostname.includes('campussense.pages.dev')
+      apiBaseUrl: resolveCampussenseApiBase(),
+      isCloudflarePages: (window.location && window.location.hostname) ? (window.location.hostname.endsWith('.pages.dev') || window.location.hostname.includes('campussense.pages.dev')) : false
     };
     window.CLERK_PUBLISHABLE_KEY = "pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk";
   </script>
@@ -692,7 +739,7 @@
       transitionToStep2(`Dispatching 6-digit verification code to ${currentEmail}...`);
 
       // 2. Fire backend /api/v1/auth/send-otp in background (non-blocking)
-      const backendPromise = fetch("/api/v1/auth/send-otp", {
+      const backendPromise = fetch(getCampussenseApiUrl("/api/v1/auth/send-otp"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -960,7 +1007,7 @@
       let userData = null;
       try {
         const response = await withTimeout(
-          fetch("/api/v1/auth/verify-otp", {
+          fetch(getCampussenseApiUrl("/api/v1/auth/verify-otp"), {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

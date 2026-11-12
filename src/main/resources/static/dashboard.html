@@ -21,10 +21,48 @@
   </script>
 
   <script>
+    function resolveCampussenseApiBase() {
+      try {
+        const params = new URLSearchParams(window.location.search || '');
+        const queryBase = (params.get('api_base') || '').trim();
+        if (/^https?:\/\/[a-z0-9.-]+(:\d+)?(\/.*)?$/i.test(queryBase)) {
+          const clean = queryBase.replace(/\/+$/, '');
+          try { localStorage.setItem('campussense_api_base', clean); } catch (_) {}
+          return clean;
+        }
+      } catch (_) {}
+      if (typeof window.CAMPUSSENSE_API_BASE === 'string' && window.CAMPUSSENSE_API_BASE.trim()) {
+        return window.CAMPUSSENSE_API_BASE.trim().replace(/\/+$/, '');
+      }
+      const proto = (window.location && window.location.protocol) ? window.location.protocol.toLowerCase() : '';
+      const host = (window.location && window.location.hostname) ? window.location.hostname.toLowerCase() : '';
+      const port = (window.location && window.location.port) ? String(window.location.port) : '';
+      const isLocalHost = !host || host === 'localhost' || host === '127.0.0.1' || host === '[::1]' || host.endsWith('.local');
+      const isLocalStaticPreview = proto === 'file:' || (isLocalHost && port && port !== '8080');
+
+      if (isLocalStaticPreview) {
+        return 'http://localhost:8080';
+      }
+      try {
+        if (typeof localStorage !== 'undefined') {
+          const stored = (localStorage.getItem('campussense_api_base') || '').trim().replace(/\/+$/, '');
+          if (stored && !(proto === 'https:' && (stored.includes('localhost') || stored.includes('127.0.0.1')))) {
+            return stored;
+          }
+        }
+      } catch (_) {}
+      if (window.location && window.location.origin && window.location.origin !== 'null') {
+        return window.location.origin.replace(/\/+$/, '');
+      }
+      return '';
+    }
+
+    window.resolveCampussenseApiBase = resolveCampussenseApiBase;
+
     window.__CAMPUSSENSE_CONFIG__ = {
       clerkPublishableKey: "pk_test_Zmx5aW5nLWxpb25lc3MtNDcxNy5jbGVyay5hY2NvdW50cy5kZXYk",
-      apiBaseUrl: window.location.origin,
-      isCloudflarePages: window.location.hostname.endsWith('.pages.dev') || window.location.hostname.includes('campussense.pages.dev')
+      apiBaseUrl: resolveCampussenseApiBase(),
+      isCloudflarePages: (window.location && window.location.hostname) ? (window.location.hostname.endsWith('.pages.dev') || window.location.hostname.includes('campussense.pages.dev')) : false
     };
   </script>
   <script async crossorigin="anonymous"
@@ -4162,41 +4200,53 @@ function appendAiBubble(role, htmlContent) {
   return div;
 }
 
-// Resolves optional backend API base URL (for GitHub Pages / external devices pointing to Spring Boot / Render)
+// Resolves backend API base URL (uses origin on deployed domains, falls back to http://localhost:8080 only if opened via file:// or a local static preview port)
 function resolveCampussenseApiBase() {
-  let base = '';
   try {
     const params = new URLSearchParams(window.location.search || '');
     const queryBase = (params.get('api_base') || '').trim();
     if (/^https?:\/\/[a-z0-9.-]+(:\d+)?(\/.*)?$/i.test(queryBase)) {
-      base = queryBase.replace(/\/+$/, '');
-      if (typeof localStorage !== 'undefined') {
-        localStorage.setItem('campussense_api_base', base);
-      }
-      return base;
+      const clean = queryBase.replace(/\/+$/, '');
+      try { localStorage.setItem('campussense_api_base', clean); } catch (_) {}
+      return clean;
     }
-    if (typeof window.CAMPUSSENSE_API_BASE === 'string' && window.CAMPUSSENSE_API_BASE.trim()) {
-      base = window.CAMPUSSENSE_API_BASE.trim();
-    } else if (typeof localStorage !== 'undefined') {
-      base = (localStorage.getItem('campussense_api_base') || '').trim();
-    }
-  } catch (_) {
-    base = '';
+  } catch (_) {}
+  if (typeof window.CAMPUSSENSE_API_BASE === 'string' && window.CAMPUSSENSE_API_BASE.trim()) {
+    return window.CAMPUSSENSE_API_BASE.trim().replace(/\/+$/, '');
   }
-  return base.replace(/\/+$/, '');
-}
+  const proto = (window.location && window.location.protocol) ? window.location.protocol.toLowerCase() : '';
+  const host = (window.location && window.location.hostname) ? window.location.hostname.toLowerCase() : '';
+  const port = (window.location && window.location.port) ? String(window.location.port) : '';
+  const isLocalHost = !host || host === 'localhost' || host === '127.0.0.1' || host === '[::1]' || host.endsWith('.local');
+  const isLocalStaticPreview = proto === 'file:' || (isLocalHost && port && port !== '8080');
 
-let campussenseStaticAiUnavailable = false;
+  // Fall back to http://localhost:8080 ONLY if opened via file:// or a local static preview port
+  if (isLocalStaticPreview) {
+    return 'http://localhost:8080';
+  }
+  try {
+    if (typeof localStorage !== 'undefined') {
+      const stored = (localStorage.getItem('campussense_api_base') || '').trim().replace(/\/+$/, '');
+      if (stored) {
+        if (!(proto === 'https:' && (stored.includes('localhost') || stored.includes('127.0.0.1')))) {
+          return stored;
+        }
+      }
+    }
+  } catch (_) {}
+  if (window.location && window.location.origin && window.location.origin !== 'null') {
+    return window.location.origin.replace(/\/+$/, '');
+  }
+  return '';
+}
 
 function resolveCampussenseAiEndpoint() {
   const apiBase = resolveCampussenseApiBase();
   if (apiBase) {
+    if (typeof window !== 'undefined' && window.location && window.location.origin && apiBase === window.location.origin) {
+      return '/api/ai/chat';
+    }
     return `${apiBase}/api/ai/chat`;
-  }
-  const host = (window.location && window.location.hostname) ? window.location.hostname.toLowerCase() : '';
-  const proto = (window.location && window.location.protocol) ? window.location.protocol.toLowerCase() : '';
-  if (campussenseStaticAiUnavailable || host.includes('github.io') || proto === 'file:') {
-    return '';
   }
   return '/api/ai/chat';
 }
@@ -4893,11 +4943,13 @@ async function handleAskAiSubmit(promptText) {
   const priorHistory = aiChatHistory.slice(-AI_MAX_HISTORY_TURNS);
 
   const aiEndpoint = resolveCampussenseAiEndpoint();
+  let liveAnswerRendered = false;
+
   if (aiEndpoint) {
     let timeoutId = null;
     try {
       const ctrl = new AbortController();
-      timeoutId = setTimeout(() => ctrl.abort(), 4500);
+      timeoutId = setTimeout(() => ctrl.abort(), 15000);
       const res = await fetch(aiEndpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -4913,23 +4965,62 @@ async function handleAskAiSubmit(promptText) {
       clearTimeout(timeoutId);
       timeoutId = null;
 
-      if (res.status === 404 || res.status === 405) {
-        if (!resolveCampussenseApiBase()) {
-          campussenseStaticAiUnavailable = true;
-        }
-      } else if (res.ok) {
+      if (res.ok) {
         const data = await res.json();
-        if (data && data.sourceMode === 'GEMINI_LIVE' && data.reply) {
+        const replyText = data && (data.reply || data.response || (typeof data === 'string' ? data : ''));
+        if (replyText && typeof replyText === 'string' && replyText.trim()) {
           if (thinkingEl) thinkingEl.remove();
           const badgeNote = `<div style="margin-top:0.45rem;font-size:11px;color:#475569;">&#10024; Gemini Flash${data.groundedInSyllabus ? ' &middot; Grounded in MAKAUT Syllabus' : ''}</div>`;
-          appendAiBubble('assistant', formatAiMarkdown(data.reply) + badgeNote);
+          appendAiBubble('assistant', formatAiMarkdown(replyText) + badgeNote);
           pushAiChatTurn('user', q);
-          pushAiChatTurn('model', data.reply);
+          pushAiChatTurn('model', replyText);
+          liveAnswerRendered = true;
           return;
         }
       }
     } catch (_) {
       if (timeoutId) clearTimeout(timeoutId);
+    }
+  }
+
+  // Secondary live backend attempt via /api/v1/chat/query if /api/ai/chat did not render an answer
+  if (!liveAnswerRendered) {
+    let ragTimeout = null;
+    try {
+      const base = resolveCampussenseApiBase();
+      const ragEndpoint = (base && typeof window !== 'undefined' && window.location && base !== window.location.origin)
+        ? `${base}/api/v1/chat/query`
+        : '/api/v1/chat/query';
+      const ctrl = new AbortController();
+      ragTimeout = setTimeout(() => ctrl.abort(), 10000);
+      const ragRes = await fetch(ragEndpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          query: q,
+          stream: department || 'CSE',
+          semester: semester || 5
+        }),
+        signal: ctrl.signal
+      });
+      clearTimeout(ragTimeout);
+      ragTimeout = null;
+
+      if (ragRes.ok) {
+        const ragData = await ragRes.json();
+        const ragReply = ragData && (ragData.response || ragData.reply || '');
+        if (ragReply && typeof ragReply === 'string' && ragReply.trim()) {
+          if (thinkingEl) thinkingEl.remove();
+          const badgeNote = `<div style="margin-top:0.45rem;font-size:11px;color:#475569;">&#10024; CampusSense AI${ragData.verified ? ' &middot; Grounded in MAKAUT Syllabus' : ''}</div>`;
+          appendAiBubble('assistant', formatAiMarkdown(ragReply) + badgeNote);
+          pushAiChatTurn('user', q);
+          pushAiChatTurn('model', ragReply);
+          liveAnswerRendered = true;
+          return;
+        }
+      }
+    } catch (_) {
+      if (ragTimeout) clearTimeout(ragTimeout);
     }
   }
 
